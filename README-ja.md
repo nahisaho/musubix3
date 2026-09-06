@@ -4,6 +4,8 @@
 
 [English](README.md)
 
+[musubix2 から musubix3 で変わったこと](MUSUBIX2-TO-MUSUBIX3.md)
+
 要求 → 憲章 → 設計・ADR → 実装 → 追跡可能性 → 品質根拠、という
 仕様駆動開発（SDD）を、8つの Skills と決定的な検証エンジンで支援します。
 形式的整合性検査、コンパイラによる依存解析、ローカル知識検索も含みます。

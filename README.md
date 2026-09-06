@@ -4,6 +4,8 @@
 
 [日本語](README-ja.md)
 
+[What changed from musubix2 to musubix3 (Japanese)](MUSUBIX2-TO-MUSUBIX3.md)
+
 Specification-driven development (SDD) skills backed by deterministic checks:
 requirements → constitution → design/ADRs → implementation → traceability →
 quality evidence. Optional formal consistency, compiler dependency analysis and
