@@ -29,6 +29,10 @@ jobs:
           registry-url: https://registry.npmjs.org
       - name: Install npm with provenance support
         run: npm install --global npm@11.6.0
+      - name: Verify npm authentication
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm whoami
       - name: Download and verify immutable release assets
         env:
           GH_TOKEN: ${{ github.token }}
