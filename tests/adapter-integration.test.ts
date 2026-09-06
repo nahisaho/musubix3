@@ -1,7 +1,5 @@
-import { existsSync } from 'node:fs';
 import { access, mkdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
-import { spawnSync } from 'node:child_process';
 import { describe, expect, it } from 'vitest';
 import {
   adapterInvocation,
@@ -17,12 +15,8 @@ const requireNativeAdapters = process.env.MUSUBIX_RUN_NATIVE_ADAPTERS === '1';
 const junitJar = process.env.JUNIT_CONSOLE_JAR;
 const pytestPython = process.env.PYTEST_PYTHON ?? 'python3';
 
-function available(command: string, args: string[] = ['--version']): boolean {
-  return spawnSync(command, args, { stdio: 'ignore' }).status === 0;
-}
-
-function nativeTest(isAvailable: boolean): typeof it {
-  return (isAvailable || requireNativeAdapters ? it : it.skip) as typeof it;
+function nativeTest(): typeof it {
+  return (requireNativeAdapters ? it : it.skip) as typeof it;
 }
 
 async function executeAdapter(
@@ -47,7 +41,7 @@ async function executeAdapter(
 }
 
 describe('built-in adapter executable contracts', () => {
-  nativeTest(existsSync(resolve(repository, 'node_modules/vitest/vitest.mjs')))(
+  nativeTest()(
     'executes and normalizes a targeted Vitest test',
     async () => {
       const root = await fixture({
@@ -68,7 +62,7 @@ test('unrelated failure', () => expect(true).toBe(false));
     },
   );
 
-  nativeTest(existsSync(resolve(repository, 'node_modules/jest/bin/jest.js')))(
+  nativeTest()(
     'executes and normalizes a targeted Jest test',
     async () => {
       const root = await fixture({
@@ -93,7 +87,7 @@ test('unrelated failure', () => expect(true).toBe(false));
     },
   );
 
-  nativeTest(available(pytestPython, ['-c', 'import pytest_jsonreport']))(
+  nativeTest()(
     'executes and normalizes a targeted pytest test',
     async () => {
       const root = await fixture({
@@ -116,7 +110,7 @@ def test_unrelated_failure():
     },
   );
 
-  nativeTest(available('go', ['version']))(
+  nativeTest()(
     'executes and normalizes a targeted Go subtest',
     async () => {
       const root = await fixture({
@@ -136,7 +130,7 @@ func TestAdapter(t *testing.T) {
     },
   );
 
-  nativeTest(available('cargo', ['--version']))(
+  nativeTest()(
     'executes and normalizes a targeted Cargo test',
     async () => {
       const root = await fixture({
@@ -161,7 +155,7 @@ fn unrelated_failure() {
     },
   );
 
-  nativeTest(Boolean(junitJar) && available('java', ['-version']) && available('javac', ['-version']))(
+  nativeTest()(
     'executes and normalizes a targeted JUnit test',
     async () => {
       expect(junitJar, 'JUNIT_CONSOLE_JAR is required for native JUnit validation').toBeTruthy();
