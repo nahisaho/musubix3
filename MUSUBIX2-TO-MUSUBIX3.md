@@ -28,6 +28,73 @@ musubix2 で得た知見を基に、GitHub Copilot CLI専用のAI Coding Skills�
 | 配布 | npm CLI、Copilot／Claude assets、MCP設定 | npm、Copilot plugin／marketplace、8 Skills |
 | 成果物互換性 | - | musubix2との互換性・自動移行なし |
 
+## 良くなった点と劣化した点
+
+musubix3は、機能の多さよりも、検証可能性、再現性、GitHub Copilotとの
+統合を優先しています。そのため品質保証は強化されましたが、musubix2が
+内包していた生成・分析・実行機能の一部は削減されています。
+
+### 良くなった点
+
+| 項目 | 改善内容 |
+|---|---|
+| 品質判定 | 実コマンド、exit code、構造化report、fingerprintを検証 |
+| TDD | Red／Green／RefactorをTEST ID、実テスト結果、ソース変更、時系列、SHA-256 chainで証明 |
+| 仕様変更 | 要求変更、設計変更、Red、実装、Green、品質確認の順序を検査 |
+| 形式検証 | mock成功を廃止し、Z3／Leanの不在、timeout、errorを成功扱いしない |
+| モデル対応 | Formal modelがtraceを通してauthoritativeな成功テストへ接続されているか検査 |
+| トレーサビリティ | ID文字列検索中心のcoverageから、型付きedge、stale検出、双方向impactへ強化 |
+| 改ざん耐性 | Ed25519署名、GitHub OIDC、証拠hash、freshness、policy baselineを導入 |
+| Mutation品質 | 要求単位でmutantと、それを検出したテストを証拠化 |
+| Workflow検証 | Copilotが実際にSkillsを呼び出したかJSONL transcriptと1対1で照合 |
+| 大規模処理 | workflow transcriptを上限付きstreamingで処理 |
+| CI再現性 | Linux／Windows／macOS、固定toolchain、SHA-pinned Actionsで検証 |
+| 配布 | npm、Copilot plugin、marketplace、SBOM、checksum、OIDC attestationを提供 |
+| 保守性 | 26ワークスペースから3ワークスペースへ縮小し、責務を明確化 |
+
+最も大きな改善は、判定基準が**「成果物が存在する」から「成果物が正しい
+順序と実行結果に基づき、現在のソースと一致している」へ変わったこと**です。
+
+### 劣化・削減された点
+
+| 項目 | musubix3で失われたもの |
+|---|---|
+| 対応プラットフォーム | Claude向けSkillsと設定を廃止し、GitHub Copilot CLI専用になった |
+| MCP | 独自MCP server、`.mcp.json`、`.vscode/mcp.json`生成を廃止 |
+| コード生成 | `codegen`、`test:gen`、`design generate`を廃止 |
+| タスク管理 | `TASK-*`、依存DAG、独自task breakdown engineを廃止 |
+| Agent実行 | 独自Agent orchestrator、Skill registry／executorを廃止 |
+| 対話機能 | requirements wizard、interview、REPL、watcherを廃止 |
+| 研究・推論 | `deep-research`、`synthesis`、`explain`、`learn`を廃止 |
+| セキュリティ解析 | 組込みsecurity scannerを廃止。CodeQLなどが別途必要 |
+| Knowledge Graph | 永続的なontology／knowledge graph CRUDをローカル検索へ縮小 |
+| 自動移行 | musubix2の成果物、trace、TDD状態を変換できない |
+| 導入の手軽さ | strict gateにはTEST ID、注釈、構造化report、証拠設定が必要 |
+| 単独動作性 | GitHub Copilot CLIへの依存がmusubix2より強い |
+| 柔軟な推論 | 意味を推測せず未対応形式を`unsupported`にするため、対象範囲が狭く見える |
+
+### 劣化に見えるが意図的な責務分離
+
+削減された機能の一部は、単純な機能後退ではありません。
+
+- コード・テスト生成はCopilotのネイティブ編集へ委譲
+- Agent orchestratorはCopilotのsubagent／task機能へ委譲
+- security scannerはCopilot security review、CodeQL、Dependabotへ委譲
+- MCP serverはCopilotのネイティブMCP機能へ委譲
+- 曖昧な形式推論は、誤った検証成功を防ぐため意図的に削除
+- 自動タスク生成より、要求・実装・テスト間の実行証拠を優先
+
+### 総合評価
+
+musubix2は、機能の広さ、独立性、生成能力、複数AI環境への対応で優れています。
+
+musubix3は、実行結果の信頼性、変更追跡、TDDの真正性、形式検証の厳密性、
+CI再現性、証拠の改ざん耐性で優れています。
+
+musubix3は「多機能な独立開発プラットフォーム」としてはmusubix2より
+小さくなりました。一方、**GitHub Copilotで大規模開発を進め、完了を
+証拠付きで判定する用途では大幅に強化されています。**
+
 ## 1. 設計思想
 
 ### musubix2: 機能を内包するSDDプラットフォーム
