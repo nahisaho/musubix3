@@ -52,4 +52,4 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           RELEASE_TAG: ${{ inputs.release_tag }}
-        run: npm publish "release-assets/musubix3-${RELEASE_TAG#v}.tgz" --provenance --access public
+        run: npm publish "./release-assets/musubix3-${RELEASE_TAG#v}.tgz" --provenance --access public
