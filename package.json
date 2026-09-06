@@ -1,0 +1,59 @@
+{
+  "name": "musubix3",
+  "version": "0.1.0",
+  "description": "Evidence-driven specification development skills for GitHub Copilot CLI",
+  "type": "module",
+  "license": "MIT",
+  "author": "nahisaho",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nahisaho/musubix3.git"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "bin": {
+    "musubix3": "dist/packages/cli/src/main.js"
+  },
+  "exports": {
+    "./domain": "./dist/packages/domain/src/index.js",
+    "./analysis": "./dist/packages/analysis/src/index.js",
+    "./attestation": "./dist/packages/analysis/src/attestation.js"
+  },
+  "files": [
+    "dist",
+    "assets",
+    ".github/skills",
+    ".github/plugin/marketplace.json",
+    "plugin.json",
+    "README-ja.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:adapters": "vitest run tests/adapter-integration.test.ts --maxWorkers=1",
+    "test:watch": "vitest",
+    "pack:check": "node scripts/check-package.mjs",
+    "pack:smoke": "node scripts/smoke-package.mjs",
+    "release:prepare": "node scripts/release-prepare.mjs",
+    "release:attest": "node scripts/release-attestation.mjs",
+    "release:publish": "node scripts/release-publish.mjs",
+    "prepack": "npm run build"
+  },
+  "dependencies": {
+    "commander": "^13.1.0",
+    "typescript": "~5.9.3",
+    "yaml": "^2.8.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.19.0",
+    "jest": "^30.5.1",
+    "vitest": "^3.2.4"
+  }
+}

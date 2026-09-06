@@ -1,0 +1,11 @@
+node_modules/
+dist/
+coverage/
+.test-work/
+.test-tools/
+release-assets/
+*.tgz
+.musubix/cache/
+
+# musubix3 generated caches
+/.musubix/cache/

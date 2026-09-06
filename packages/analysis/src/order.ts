@@ -1,0 +1,125 @@
+import { error, type Diagnostic } from '../../domain/src/index.js';
+import { digest, exists, readText, within, writeJson } from './files.js';
+
+export type EvidenceOrderKind = 'change' | 'tdd';
+
+export interface EvidenceOrderRecord {
+  sequence: number;
+  kind: EvidenceOrderKind;
+  entityId: string;
+  phase: string;
+  previousSha256: string | null;
+  recordSha256: string;
+}
+
+export interface EvidenceOrderLog {
+  schemaVersion: 1;
+  records: EvidenceOrderRecord[];
+}
+
+const orderPath = '.musubix/evidence/order.json';
+
+function recordSha256(record: Omit<EvidenceOrderRecord, 'recordSha256'>): string {
+  return digest(JSON.stringify(record));
+}
+
+function recordKey(kind: EvidenceOrderKind, entityId: string, phase: string): string {
+  return JSON.stringify([kind, entityId, phase]);
+}
+
+export async function loadEvidenceOrder(root: string): Promise<EvidenceOrderLog | null> {
+  if (!await exists(within(root, orderPath))) return null;
+  const value = JSON.parse(await readText(root, orderPath)) as EvidenceOrderLog;
+  if (value.schemaVersion !== 1 || !Array.isArray(value.records)) {
+    throw new Error('Invalid monotonic evidence order log.');
+  }
+  return value;
+}
+
+export function validateEvidenceOrderLog(log: EvidenceOrderLog | null): {
+  valid: boolean;
+  records: Map<string, EvidenceOrderRecord>;
+  diagnostics: Diagnostic[];
+} {
+  const diagnostics: Diagnostic[] = [];
+  const records = new Map<string, EvidenceOrderRecord>();
+  if (!log) return { valid: true, records, diagnostics };
+  for (const [index, record] of log.records.entries()) {
+    const expectedSequence = index + 1;
+    const expectedPrevious = index === 0 ? null : log.records[index - 1]!.recordSha256;
+    if (!record || !['change', 'tdd'].includes(record.kind)
+      || typeof record.entityId !== 'string' || !record.entityId
+      || typeof record.phase !== 'string' || !record.phase
+      || !Number.isInteger(record.sequence) || record.sequence < 1
+      || (record.previousSha256 !== null && !/^[a-f0-9]{64}$/i.test(record.previousSha256))
+      || !/^[a-f0-9]{64}$/i.test(record.recordSha256)) {
+      diagnostics.push(error('EVIDENCE_ORDER_SCHEMA', `Monotonic evidence order record ${index + 1} is malformed.`, orderPath));
+      continue;
+    }
+    const { recordSha256: actual, ...payload } = record;
+    if (record.sequence !== expectedSequence) {
+      diagnostics.push(error('EVIDENCE_ORDER_SEQUENCE', `Evidence order record ${record.sequence} is out of order; expected ${expectedSequence}.`, orderPath));
+    }
+    if (record.previousSha256 !== expectedPrevious) {
+      diagnostics.push(error('EVIDENCE_ORDER_LINK', `Evidence order record ${record.sequence} does not link to its predecessor.`, orderPath));
+    }
+    if (actual !== recordSha256(payload)) {
+      diagnostics.push(error('EVIDENCE_ORDER_HASH', `Evidence order record ${record.sequence} has an invalid SHA-256.`, orderPath));
+    }
+    const key = recordKey(record.kind, record.entityId, record.phase);
+    if (records.has(key)) {
+      diagnostics.push(error('EVIDENCE_ORDER_DUPLICATE', `${record.kind}:${record.entityId}:${record.phase} appears more than once.`, orderPath));
+    }
+    records.set(key, record);
+  }
+  return { valid: !diagnostics.length, records, diagnostics };
+}
+
+export async function inspectEvidenceOrder(root: string): Promise<ReturnType<typeof validateEvidenceOrderLog>> {
+  try {
+    return validateEvidenceOrderLog(await loadEvidenceOrder(root));
+  } catch (cause) {
+    return {
+      valid: false,
+      records: new Map(),
+      diagnostics: [error(
+        'EVIDENCE_ORDER_SCHEMA',
+        cause instanceof Error ? cause.message : String(cause),
+        orderPath,
+      )],
+    };
+  }
+}
+
+export async function appendEvidenceOrder(
+  root: string,
+  input: Pick<EvidenceOrderRecord, 'kind' | 'entityId' | 'phase'>,
+): Promise<EvidenceOrderRecord> {
+  const log = await loadEvidenceOrder(root) ?? { schemaVersion: 1, records: [] };
+  const validated = validateEvidenceOrderLog(log);
+  if (!validated.valid) {
+    throw new Error('Existing monotonic evidence order is invalid; regenerate evidence before appending.');
+  }
+  if (validated.records.has(recordKey(input.kind, input.entityId, input.phase))) {
+    throw new Error(`${input.kind}:${input.entityId}:${input.phase} is already present in monotonic evidence order.`);
+  }
+  const previous = log.records.at(-1);
+  const payload: Omit<EvidenceOrderRecord, 'recordSha256'> = {
+    sequence: log.records.length + 1,
+    ...input,
+    previousSha256: previous?.recordSha256 ?? null,
+  };
+  const record = { ...payload, recordSha256: recordSha256(payload) };
+  log.records.push(record);
+  await writeJson(root, orderPath, log);
+  return record;
+}
+
+export function evidenceOrderRecord(
+  records: Map<string, EvidenceOrderRecord>,
+  kind: EvidenceOrderKind,
+  entityId: string,
+  phase: string,
+): EvidenceOrderRecord | undefined {
+  return records.get(recordKey(kind, entityId, phase));
+}
