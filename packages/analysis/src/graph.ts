@@ -1,5 +1,5 @@
 import ts from 'typescript';
-import { dirname, isAbsolute, relative, resolve } from 'node:path';
+import { dirname, isAbsolute, posix, relative, resolve } from 'node:path';
 import { error, type Diagnostic } from '../../domain/src/index.js';
 import type { Config } from './config.js';
 import { files, isSource, isTraceSource, portable, readText, snapshot, writeJson } from './files.js';
@@ -462,7 +462,7 @@ function indexJavaRelations(path: string, text: string, graph: CodeGraph, types:
 }
 
 function relativeTarget(from: string, specifier: string, known: Set<string>): string | null {
-  const target = portable(resolve('/', dirname(from), specifier).slice(1));
+  const target = posix.normalize(posix.join(posix.dirname(from), specifier.replaceAll('\\', '/')));
   return known.has(target) ? target : null;
 }
 

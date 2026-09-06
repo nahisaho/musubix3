@@ -31,8 +31,10 @@ export function verifyReleaseVersions(tag, directory = root) {
   return pkg;
 }
 
-function npmCommand() {
-  return process.platform === 'win32' ? 'npm.cmd' : 'npm';
+function npmInvocation(args) {
+  const npmCli = process.env.npm_execpath;
+  assert(npmCli, 'Run release preparation through npm so npm_execpath is available.');
+  return [process.execPath, [npmCli, ...args]];
 }
 
 export function prepareRelease(tag, outputDirectory, directory = root) {
@@ -41,11 +43,13 @@ export function prepareRelease(tag, outputDirectory, directory = root) {
   rmSync(output, { recursive: true, force: true });
   mkdirSync(output, { recursive: true });
 
-  const pack = JSON.parse(execFileSync(npmCommand(), [
+  const [npm, packArgs] = npmInvocation([
     'pack', '--json', '--ignore-scripts', '--pack-destination', output,
-  ], { cwd: directory, encoding: 'utf8' }))[0];
+  ]);
+  const pack = JSON.parse(execFileSync(npm, packArgs, { cwd: directory, encoding: 'utf8' }))[0];
   const tarball = resolve(output, basename(pack.filename));
-  const sbom = execFileSync(npmCommand(), ['sbom', '--sbom-format', 'cyclonedx'], {
+  const [npmForSbom, sbomArgs] = npmInvocation(['sbom', '--sbom-format', 'cyclonedx']);
+  const sbom = execFileSync(npmForSbom, sbomArgs, {
     cwd: directory,
     encoding: 'utf8',
     maxBuffer: 16 * 1024 * 1024,

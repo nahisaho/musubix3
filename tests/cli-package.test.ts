@@ -239,7 +239,7 @@ describe('distribution contracts', () => {
     expect((await readdir(resolve(repository, '.github/skills'))).sort()).toEqual([...skillNames].sort());
     for (const name of skillNames) {
       const text = await readText(repository, `.github/skills/${name}/SKILL.md`);
-      const yaml = /^---\n([\s\S]+?)\n---/.exec(text)?.[1];
+      const yaml = /^---\r?\n([\s\S]+?)\r?\n---/.exec(text)?.[1];
       expect(yaml).toBeDefined();
       const document = parseDocument(yaml!);
       expect(document.errors).toEqual([]);
@@ -247,7 +247,7 @@ describe('distribution contracts', () => {
       expect(text).toContain('input language');
       expect(text).toMatch(/[一-龠ぁ-んァ-ン]/);
       expect(text).toContain('native');
-      expect(text.split('\n').length).toBeLessThan(80);
+      expect(text.split(/\r?\n/).length).toBeLessThan(80);
     }
   });
 

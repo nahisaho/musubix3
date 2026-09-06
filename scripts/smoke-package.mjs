@@ -7,12 +7,17 @@ import { randomUUID } from 'node:crypto';
 const root = resolve('.');
 const work = resolve('.test-work', `package-${randomUUID()}`);
 const consumer = resolve(work, 'consumer');
-const npmCommand = process.platform === 'win32' ? 'npm.cmd' : 'npm';
+const npmCli = process.env.npm_execpath;
+assert(npmCli, 'Run this check through npm so npm_execpath is available.');
 mkdirSync(consumer, { recursive: true });
 try {
-  const packed = JSON.parse(execFileSync(npmCommand, ['pack', '--json', '--ignore-scripts', '--pack-destination', work], { cwd: root, encoding: 'utf8' }))[0];
+  const packed = JSON.parse(execFileSync(process.execPath, [
+    npmCli, 'pack', '--json', '--ignore-scripts', '--pack-destination', work,
+  ], { cwd: root, encoding: 'utf8' }))[0];
   writeFileSync(resolve(consumer, 'package.json'), '{"name":"musubix3-smoke-consumer","private":true,"type":"module"}\n');
-  execFileSync(npmCommand, ['install', '--ignore-scripts', '--no-audit', '--no-fund', '--workspaces=false', resolve(work, packed.filename)], { cwd: consumer, stdio: 'pipe' });
+  execFileSync(process.execPath, [
+    npmCli, 'install', '--ignore-scripts', '--no-audit', '--no-fund', '--workspaces=false', resolve(work, packed.filename),
+  ], { cwd: consumer, stdio: 'pipe' });
   const executable = resolve(consumer, 'node_modules/musubix3/dist/packages/cli/src/main.js');
   const run = (args) => execFileSync(process.execPath, [executable, ...args], { cwd: consumer, encoding: 'utf8' });
   const version = JSON.parse(readFileSync(resolve(root, 'package.json'), 'utf8')).version;

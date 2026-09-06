@@ -56,10 +56,14 @@ jobs:
           unzip -q /tmp/z3.zip -d /tmp/z3
           echo "/tmp/z3/z3-5.1.0-x64-glibc-2.39/bin" >> "$GITHUB_PATH"
       - name: Install pinned Lean toolchain
-        uses: leanprover/lean-action@50fcf42d2e460296f1a34b402e990d1b24f8b596 # v1
-        with:
-          auto-config: false
-          use-github-cache: false
+        run: |
+          curl --fail --silent --show-error --location \
+            https://github.com/leanprover/lean4/releases/download/v4.33.1/lean-4.33.1-linux.tar.zst \
+            --output /tmp/lean.tar.zst
+          echo "890afd185370f85666025b883914ab4f4b339136f8c96167b69cfb62aecaf235  /tmp/lean.tar.zst" \
+            | sha256sum --check
+          tar --zstd -xf /tmp/lean.tar.zst -C /tmp
+          echo "/tmp/lean-4.33.1-linux/bin" >> "$GITHUB_PATH"
       - run: npm ci
       - run: npm run typecheck
       - run: npm run build

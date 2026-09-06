@@ -17,10 +17,12 @@ export const runProcess: Runner = async (command, args, options) => new Promise(
   let stderr = '';
   let status: ProcessResult['status'] = 'completed';
   let settled = false;
+  let killFallback: NodeJS.Timeout | undefined;
   const finish = (exitCode: number | null): void => {
     if (settled) return;
     settled = true;
     clearTimeout(timer);
+    if (killFallback) clearTimeout(killFallback);
     resolve({ status, exitCode, stdout, stderr, durationMs: Date.now() - start });
   };
   const timer = setTimeout(() => {
@@ -30,7 +32,8 @@ export const runProcess: Runner = async (command, args, options) => new Promise(
       try { process.kill(-child.pid, 'SIGKILL'); }
       catch (cause) { if ((cause as NodeJS.ErrnoException).code !== 'ESRCH') stderr += String(cause); }
     } else child.kill('SIGKILL');
-    finish(null);
+    killFallback = setTimeout(() => finish(null), 1_000);
+    killFallback.unref();
   }, options.timeoutMs);
   child.stdout.on('data', (chunk: Buffer) => { stdout = (stdout + chunk.toString()).slice(-1_000_000); });
   child.stderr.on('data', (chunk: Buffer) => { stderr = (stderr + chunk.toString()).slice(-1_000_000); });

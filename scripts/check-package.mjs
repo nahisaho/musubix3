@@ -2,8 +2,11 @@ import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 
-const npmCommand = process.platform === 'win32' ? 'npm.cmd' : 'npm';
-const pack = JSON.parse(execFileSync(npmCommand, ['pack', '--dry-run', '--json', '--ignore-scripts'], { encoding: 'utf8' }))[0];
+const npmCli = process.env.npm_execpath;
+assert(npmCli, 'Run this check through npm so npm_execpath is available.');
+const pack = JSON.parse(execFileSync(process.execPath, [
+  npmCli, 'pack', '--dry-run', '--json', '--ignore-scripts',
+], { encoding: 'utf8' }))[0];
 const files = new Set(pack.files.map((file) => file.path));
 const manifest = JSON.parse(readFileSync('plugin.json', 'utf8'));
 const marketplace = JSON.parse(readFileSync('.github/plugin/marketplace.json', 'utf8'));
