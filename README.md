@@ -1,6 +1,6 @@
 # musubix3
 
-**Release candidate · GitHub Copilot CLI only · Node.js ≥20 · TypeScript · MIT**
+**Stable v0.1.0 · GitHub Copilot CLI only · Node.js ≥20 · TypeScript · MIT**
 
 [日本語](README-ja.md)
 
@@ -16,8 +16,25 @@ or requirements are satisfiable.
 
 ## Quick start
 
-The RC can be built and packed locally; registry commands below assume the
-package has been published. No publication is performed by installation tests.
+Run the published package from the target project:
+
+```sh
+npx musubix3@0.1.0 --version
+npx musubix3@0.1.0 init --dry-run
+npx musubix3@0.1.0 init
+copilot
+```
+
+For a reproducible project-local installation:
+
+```sh
+npm install --save-dev --save-exact musubix3@0.1.0
+npx --no-install musubix3 --version
+npx --no-install musubix3 init --dry-run
+npx --no-install musubix3 init
+```
+
+To build the repository itself:
 
 ```sh
 git clone https://github.com/nahisaho/musubix3.git
@@ -25,16 +42,6 @@ cd musubix3
 npm install
 npm run build
 node dist/packages/cli/src/main.js --help
-node dist/packages/cli/src/main.js init --root ../your-project --dry-run
-node dist/packages/cli/src/main.js init --root ../your-project
-```
-
-Once available on npm, from your target project:
-
-```sh
-npx musubix3 init --dry-run
-npx musubix3 init
-copilot
 ```
 
 Ask Copilot: “Use sdd-change to add this feature and propagate it through the

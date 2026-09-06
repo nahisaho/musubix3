@@ -1,6 +1,6 @@
 # musubix3
 
-**リリース候補 · GitHub Copilot CLI 専用 · Node.js ≥20 · TypeScript · MIT**
+**安定版 v0.1.0 · GitHub Copilot CLI 専用 · Node.js ≥20 · TypeScript · MIT**
 
 [English](README.md)
 
@@ -14,8 +14,25 @@ ID の接続や SAT 判定だけで、実装の正しさを保証するもので
 
 ## クイックスタート
 
-RC はローカルでビルド・パッケージ化できます。以下のレジストリ向けコマンドは、
-npm 公開後の利用例です。インストールテストは公開を行いません。
+対象プロジェクトで、公開済みパッケージを実行します。
+
+```sh
+npx musubix3@0.1.0 --version
+npx musubix3@0.1.0 init --dry-run
+npx musubix3@0.1.0 init
+copilot
+```
+
+バージョンを固定してプロジェクトへインストールする場合は、次を実行します。
+
+```sh
+npm install --save-dev --save-exact musubix3@0.1.0
+npx --no-install musubix3 --version
+npx --no-install musubix3 init --dry-run
+npx --no-install musubix3 init
+```
+
+リポジトリ自体をビルドする場合は、次を実行します。
 
 ```sh
 git clone https://github.com/nahisaho/musubix3.git
@@ -23,16 +40,6 @@ cd musubix3
 npm install
 npm run build
 node dist/packages/cli/src/main.js --help
-node dist/packages/cli/src/main.js init --root ../your-project --dry-run
-node dist/packages/cli/src/main.js init --root ../your-project
-```
-
-npm 公開後は、対象プロジェクトで実行します。
-
-```sh
-npx musubix3 init --dry-run
-npx musubix3 init
-copilot
 ```
 
 Copilot に「sdd-requirements でこの機能の要求を定義し、設計を計画して」と依頼します。
