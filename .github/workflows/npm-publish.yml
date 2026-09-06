@@ -1,0 +1,55 @@
+name: Publish npm Release
+
+run-name: Publish ${{ inputs.release_tag }} to npm
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: Existing stable GitHub Release tag
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: npm-publish-${{ inputs.release_tag }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: npm-publish
+    steps:
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+      - name: Install npm with provenance support
+        run: npm install --global npm@11.6.0
+      - name: Download and verify immutable release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ inputs.release_tag }}
+        run: |
+          [[ "$RELEASE_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$ ]]
+          mkdir release-assets
+          gh release download "$RELEASE_TAG" \
+            --repo "$GITHUB_REPOSITORY" \
+            --dir release-assets
+          (cd release-assets && sha256sum --check SHA256SUMS)
+          version="${RELEASE_TAG#v}"
+          tarball="release-assets/musubix3-${version}.tgz"
+          test -f "$tarball"
+          package_version="$(
+            tar -xOf "$tarball" package/package.json |
+              node -e "let text=''; process.stdin.on('data', chunk => text += chunk).on('end', () => process.stdout.write(JSON.parse(text).version))"
+          )"
+          test "$package_version" = "$version"
+      - name: Publish exact release tarball
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          RELEASE_TAG: ${{ inputs.release_tag }}
+        run: npm publish "release-assets/musubix3-${RELEASE_TAG#v}.tgz" --provenance --access public
