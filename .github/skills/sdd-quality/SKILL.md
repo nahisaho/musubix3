@@ -14,7 +14,7 @@ completed` exactly once.
    explicit independent approval. Use only the exact `musubix3` CLI; never
    substitute similarly named npm packages.
 2. Configure real tests/build/typecheck commands and timeouts. Use an explicit
-   custom report or a built-in Vitest/Jest, pytest, Go test, Cargo or JUnit
+   custom report or a built-in Vitest/Jest, pytest, Go test, Cargo, JUnit or .NET
    adapter. Require executable native adapter contracts in CI; JUnit targets use
    an exact `@Tag("TEST-*")`, and pytest requires `pytest-json-report`. Review
    `requiredChecks`, `qualityProfile`, coverage thresholds and architecture rules.
@@ -27,8 +27,8 @@ completed` exactly once.
    `evidence refresh --json` runs the same fail-closed pipeline. If `input-stability` fails,
    inspect its per-path added/modified/deleted diagnostics and stop generators
    or formatters before rerunning. Standard dependency/build directories,
-   including manifest-scoped Cargo and Maven `target/` and conventional `.venv`
-   or `venv` roots with a regular `pyvenv.cfg`, are excluded; arbitrary source
+   including manifest-scoped Cargo/Maven `target/`, .NET `bin`/`obj`, project-local
+   `.nuget/packages`, and `.venv` or `venv` roots with a regular `pyvenv.cfg`, are excluded; arbitrary source
    directories and source-like generated inputs are not silently ignored.
    Changed mode reports Git changes and dependent files but conservatively runs
    all checks, including commands. It never treats unrun checks as successful.

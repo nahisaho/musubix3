@@ -55,8 +55,18 @@ function typedCommentBlocks(text: string, path: string): { text: string; line: n
 }
 
 function maskGenericStrings(text: string, path: string): string {
+  const mask = (value: string): string => value.replace(/[^\r\n]/g, ' ');
+  if (path.endsWith('.hs')) {
+    return text.replace(/"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])'/g, mask);
+  }
+  if (path.endsWith('.lua')) {
+    return text.replace(/(?<!--)\[(=*)\[[\s\S]*?\]\1\]|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'/g, mask);
+  }
+  if (path.endsWith('.vb')) {
+    return text.replace(/"(?:[^"]|"")*"/g, mask);
+  }
   const chars = [...text];
-  const quotes = path.endsWith('.rs') ? ['"'] : ['"', "'", '`'];
+  const quotes = path.endsWith('.rs') || /\.(?:fs|fsx)$/.test(path) ? ['"'] : ['"', "'", '`'];
   for (let index = 0; index < chars.length; index += 1) {
     const quote = chars[index]!;
     if (!quotes.includes(quote)) continue;
@@ -87,17 +97,56 @@ function maskGenericStrings(text: string, path: string): string {
 
 function genericCommentBlocks(text: string, path: string): { text: string; line: number }[] {
   const searchable = maskGenericStrings(text, path);
-  const matches: { text: string; index: number }[] = [];
-  for (const pattern of [
-    /\/\*[\s\S]*?\*\//g,
-    /(?:^[ \t]*\/\/[^\r\n]*(?:\r?\n|$))+/gm,
-    /(?:^[ \t]*#[^\r\n]*(?:\r?\n|$))+/gm,
-  ]) {
+  const matches: { text: string; index: number; end: number }[] = [];
+  const nestedBlock = path.endsWith('.hs')
+    ? { open: '{-', close: '-}' }
+    : /\.(?:fs|fsx)$/.test(path)
+      ? { open: '(*', close: '*)' }
+      : undefined;
+  if (nestedBlock) {
+    for (let start = searchable.indexOf(nestedBlock.open); start >= 0; start = searchable.indexOf(nestedBlock.open, start + nestedBlock.open.length)) {
+      let depth = 1;
+      let cursor = start + nestedBlock.open.length;
+      while (cursor < searchable.length && depth > 0) {
+        if (searchable.startsWith(nestedBlock.open, cursor)) {
+          depth += 1;
+          cursor += nestedBlock.open.length;
+        } else if (searchable.startsWith(nestedBlock.close, cursor)) {
+          depth -= 1;
+          cursor += nestedBlock.close.length;
+        } else {
+          cursor += 1;
+        }
+      }
+      if (depth !== 0) break;
+      const original = text.slice(start, cursor);
+      if (/@(id|implements|verifies|design)\b/.test(original)) {
+        matches.push({ text: original, index: start, end: cursor });
+      }
+      start = cursor - nestedBlock.open.length;
+    }
+  }
+  const patterns = path.endsWith('.hs')
+    ? [/(?:^[ \t]*--[^\r\n]*(?:\r?\n|$))+/gm]
+    : /\.(?:fs|fsx)$/.test(path)
+      ? [/(?:^[ \t]*\/\/[^\r\n]*(?:\r?\n|$))+/gm]
+    : path.endsWith('.lua')
+      ? [/--\[(=*)\[[\s\S]*?\]\1\]/g, /(?:^[ \t]*--(?!\[=*\[)[^\r\n]*(?:\r?\n|$))+/gm]
+      : path.endsWith('.vb')
+        ? [/(?:^[ \t]*'[^\r\n]*(?:\r?\n|$))+/gm]
+        : [
+            /\/\*[\s\S]*?\*\//g,
+            /(?:^[ \t]*\/\/[^\r\n]*(?:\r?\n|$))+/gm,
+            /(?:^[ \t]*#[^\r\n]*(?:\r?\n|$))+/gm,
+          ];
+  for (const pattern of patterns) {
     for (const match of searchable.matchAll(pattern)) {
       if (match.index !== undefined) {
         const original = text.slice(match.index, match.index + match[0].length);
-        if (/@(id|implements|verifies|design)\b/.test(original)) {
-          matches.push({ text: original, index: match.index });
+        const end = match.index + match[0].length;
+        if (/@(id|implements|verifies|design)\b/.test(original)
+          && !matches.some((existing) => match.index! < existing.end && end > existing.index)) {
+          matches.push({ text: original, index: match.index, end });
         }
       }
     }

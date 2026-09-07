@@ -1,6 +1,6 @@
 # musubix3
 
-**最新公開版 v0.1.2 · GitHub Copilot CLI 専用 · Node.js ≥20 · TypeScript · MIT**
+**最新リリース v0.1.3 · GitHub Copilot CLI 専用 · Node.js ≥20 · TypeScript · MIT**
 
 [English](README.md)
 
@@ -19,16 +19,16 @@ ID の接続や SAT 判定だけで、実装の正しさを保証するもので
 対象プロジェクトで、公開済みパッケージを実行します。
 
 ```sh
-npx musubix3@0.1.2 --version
-npx musubix3@0.1.2 init --dry-run
-npx musubix3@0.1.2 init
+npx musubix3@0.1.3 --version
+npx musubix3@0.1.3 init --dry-run
+npx musubix3@0.1.3 init
 copilot
 ```
 
 バージョンを固定してプロジェクトへインストールする場合は、次を実行します。
 
 ```sh
-npm install --save-dev --save-exact musubix3@0.1.2
+npm install --save-dev --save-exact musubix3@0.1.3
 npx --no-install musubix3 --version
 npx --no-install musubix3 init --dry-run
 npx --no-install musubix3 init
@@ -279,10 +279,12 @@ feature: auth
 `ADRs` / `Depends-On`。ADR には背景・採用案・却下案・結果を記録します。
 C4-like 図は明示した内容だけを描画し、完全な C4 モデルを推論しません。
 
-JS/TS、Rust、Python、Go、Java/Kotlin、C/C++、C#、Ruby、PHP、Swift の
 正本となるコード・テストに、エンティティごとに1つのコメントを追加します。
-JS/TS では文字列中の記載をリンクとして扱いません。その他の言語では行コメント
-またはブロックコメントを使用します。網羅率だけを満たす代理 JS/TS ファイルは作成しません。
+JS/TSはparser-awareなcomment位置を使い、Haskellは`--`と`{- ... -}`、
+Luaは`--`と`--[[ ... ]]`、Visual Basicは`'''` XML documentを含む
+apostrophe commentを扱います。これらは文字列中の記載をリンクとして扱いません。
+その他の言語では対応する行commentまたはblock commentを使用します。
+網羅率だけを満たす代理JS/TSファイルは作成しません。
 
 ```ts
 /** @id CODE-AUTH-001
@@ -377,8 +379,10 @@ glob は `*` / `**` / `?` に対応し、外部依存は `npm:` 接頭辞で表�
 `tdd.redPreflightCommands`にはformatter等のplain command名を指定でき、
 Redのtest fingerprintを取得する前に成功が必須です。
 通常ファイルの`pyvenv.cfg`を含む`.venv`と`venv`はsnapshotと
-Code Graphから除外されますが、任意のsource directoryにmarkerを置いても
-除外されません。
+Code Graphから除外されます。Gradle `.gradle/`、Dart `.dart_tool/`、
+SwiftPM `.build/`、Zig `.zig-cache/`/`zig-out/`、.NET `.dotnet/`は、
+親directoryに対応manifestがある場合だけ除外されます。同名の任意source
+directoryは追跡対象のままです。
 `codeGraph.mode` の既定値は `compatible` で、未解決の計算された
 `import()` / `require()` は警告です。`strict` にするとグラフゲートを阻止する
 エラーになります。信頼済みbaselineが `strict` の場合、`compatible` への
@@ -411,12 +415,14 @@ strict OIDC identity/key binding、必須コマンド名の最低条件です。
 コマンド未設定は skipped です。
 
 TDD用コマンドには明示的な`tddArgs`と`tddReport`、または組込みの
-`vitest`、`jest`、`pytest`、`go-test`、`cargo`、`junit` adapterが必要です。
+`vitest`、`jest`、`pytest`、`go-test`、`cargo`、`junit`、`dotnet` adapterが必要です。
 明示設定を優先し、adapterは対象引数を導出してnative JSON/JSONL/XMLを正規化します。
 Vitest/Jestの無関係なskipped結果は対象TDDから除外します。pytestにはJSON pluginと
 `test_TEST_APP_001`形式、Goには`TEST-*`名のsubtest、Cargoには`test_app_001`形式、
-JUnitには正確な`@Tag("TEST-APP-001")`とIDをunderscore形式で含むmethod名が必要で、
-launcherのXML report directoryを読み取ります。各フェーズ前に旧レポートを削除し、
+JUnitには正確な`@Tag("TEST-APP-001")`と、IDを含むmethod名または`@DisplayName`を推奨します。
+正規化処理はtestcase属性とJUnit Platformのdisplay-name出力の両方を読み取り、
+xUnitには`[Fact(DisplayName = "TEST-APP-001 ...")]`が必要です。
+それぞれXMLまたはTRX report directoryを読み取ります。各フェーズ前に旧レポートを削除し、
 必要なreport親directoryを作成して、対象テストだけを含むfreshな `musubix-json` を要求します。Redは `failed`、
 Green/Refactorは `passed` のみ有効で、`skipped`、`error`、未生成、不正形式は失敗です。
 Green前にはテスト以外のプロジェクト入力が変更されている必要があります。
@@ -427,10 +433,11 @@ TDDと変更checkpointは共通の単調order ledgerを持ち、Red/Green境界�
 明示的なmigration診断で失敗します。欠落・並べ替え・改変・孤立レコードは
 証拠を無効にします。
 
-CIでは6種類すべてについて独立したnative contractを実行します。Vitest、Jest、
+CIではVitest、Jest、
 `pytest-json-report`付きpytest、Go test、Cargo test、固定版JUnit Platform Consoleの
 各fixtureに無関係な失敗テストを置き、生成selectorが対象IDだけを実行し、実際のnative
-reportを正規化できることを検証します。Jestは開発時依存だけであり、Python、
+reportを正規化できることを検証します。.NET adapterは標準TRXを読み取り、
+C#アプリ実験とunit contractで追加検証します。Jestは開発時依存だけであり、Python、
 Go/Rust、Java/JUnitのtoolingはCIでのみ準備され、packageのruntime依存には含まれません。
 
 変更checkpointは各変更要件にリンクした実装とCode Graph上の依存だけを指紋化するため、
@@ -482,7 +489,8 @@ terminal transcriptの古さと未来方向clock skewも制限します。
 並行eventはtimestamp順で出力されない場合があるため、全体sortではなくtool/resultの
 因果順序を検査します。
 gate実行中に入力が変わった場合、`input-stability`は追加・変更・削除された各pathと
-前後のSHA-256を報告します。Cargo/Mavenの標準`target/`は除外しますが、
+前後のSHA-256を報告します。Cargo/Mavenの標準`target/`、manifest直下の
+.NET `bin/`と`obj/`、project-local `.nuget/packages/`は除外しますが、
 source相当の生成入力はfail-closedのままです。組込みadapterは対象test選択とreport引数を
 所有します。Cargo/Goの既存設定にある先頭`test`は安全に統合し、
 `--json-report`など競合するreport引数は早期拒否します。
@@ -565,13 +573,17 @@ Ed25519鍵はmusubix3外で生成し、公開PEMだけを`attestation oidc-audie
   シンボル影響は保守的な**ファイル単位**の逆依存になります。
   非リテラル読み込みは既定では警告ですが、`codeGraph.mode: "strict"` では
   グラフゲートを阻止します。未解決外部パッケージは警告、未解決ローカル参照はエラー。
-  Rust、Python、Go、Java、C/C++、C#、PHP、R、Juliaはローカル
-  import/module/include/source、宣言、直接呼び出しを保守的に解析します。
-  その他の言語は未対応として報告します。他言語用の代理 JS/TS ファイルは
-  作成しません。
-  bundler 独自解決、リフレクションは対象外です。
+  bundler 独自解決とリフレクションは対象外です。Rust、Python、Go、Java、
+  Kotlin、C/C++、Objective-C/Objective-C++、C#、F#、Visual Basic .NET、
+  Ruby、PHP、Swift、Dart、Scala、Elixir、Haskell、Lua、Zig、Solidity、R、
+  Juliaはローカルimport/module/include/source、宣言、直接呼び出しを
+  保守的に解析します。その他の拡張子はグラフ入力に含めません。他言語用の
+  代理 JS/TS ファイルは作成しません。
   build/cache/dependency と symlink は除外しますが、任意の `.gitignore` は
   スキャンフィルターとして読みません。
+- 残るarchitecture改善には、実測根拠を伴うstrict call-resolution ratio policyと、
+  より広いnative test-runner adapter対応があります。このreleaseでは推測的に
+  有効化しません。
 - 検索は **TF-IDF/cosine** であり GraphRAG でも意味推論でもありません。
   日本語は文字 bigram。Git 根拠は最大100コミット・各30ファイルで、共変更は相関、
   著者別ディレクトリ件数は貢献の記録であって因果や専門性ではありません。

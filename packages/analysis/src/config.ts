@@ -18,7 +18,7 @@ export interface CommandConfig {
     format: 'musubix-mutation-json';
     path: string;
   };
-  adapter?: 'vitest' | 'jest' | 'pytest' | 'go-test' | 'cargo' | 'junit';
+  adapter?: 'vitest' | 'jest' | 'pytest' | 'go-test' | 'cargo' | 'junit' | 'dotnet';
   required: boolean;
   timeoutMs: number;
 }
@@ -181,6 +181,7 @@ function validateAdapterArgs(adapter: CommandConfig['adapter'], args: string[], 
     'go-test': ['-json', '-run'],
     cargo: ['--format'],
     junit: ['--scan-class-path', '--include-tag', '--reports-dir', '--fail-if-no-tests'],
+    dotnet: ['--filter', '--logger', '--results-directory'],
   }[adapter];
   const conflict = args.find((arg) => owned.some((value) => arg === value || arg.startsWith(`${value}=`)));
   if (conflict) {
@@ -250,8 +251,8 @@ export function parseConfig(input: unknown): Config {
     if (typeof c.name !== 'string' || !/^[a-zA-Z0-9_-]+$/.test(c.name)) throw new Error('Command name must be a simple nonempty identifier.');
     if (typeof c.command !== 'string' || !c.command.trim() || c.command.includes('\0')) throw new Error('Command executable must be nonempty.');
     if (c.required !== undefined && typeof c.required !== 'boolean') throw new Error('command.required must be boolean.');
-    if (c.adapter !== undefined && !['vitest', 'jest', 'pytest', 'go-test', 'cargo', 'junit'].includes(String(c.adapter))) {
-      throw new Error('command.adapter must be vitest, jest, pytest, go-test, cargo, or junit.');
+    if (c.adapter !== undefined && !['vitest', 'jest', 'pytest', 'go-test', 'cargo', 'junit', 'dotnet'].includes(String(c.adapter))) {
+      throw new Error('command.adapter must be vitest, jest, pytest, go-test, cargo, junit, or dotnet.');
     }
     const timeoutMs = optional(c.timeoutMs, 120_000);
     if (typeof timeoutMs !== 'number' || !Number.isInteger(timeoutMs) || timeoutMs < 1 || timeoutMs > 3_600_000) throw new Error('Command timeoutMs must be 1..3600000.');

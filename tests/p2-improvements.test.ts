@@ -165,6 +165,12 @@ describe('P2 built-in test adapters', () => {
       .toEqual(expect.arrayContaining(['test', '-json', './service', '-run', '/TEST-APP-003']));
     expect(adapterInvocation('cargo', 'test', 'TEST-APP-004').args)
       .toEqual(['test', 'test_app_004', '--', '--format', 'pretty']);
+    expect(adapterInvocation('dotnet', 'test', 'TEST-APP-006').args)
+      .toEqual([
+        'test', '--logger', 'trx;LogFilePrefix=results',
+        '--results-directory', '.musubix/evidence/native/test/TEST-APP-006',
+        '--filter', 'DisplayName~TEST-APP-006|Name~TEST-APP-006',
+      ]);
     expect(normalizeAdapterReport('jest', JSON.stringify({
       testResults: [{ assertionResults: [{ fullName: 'TEST-APP-001 does work', status: 'passed' }] }],
     })).tests).toEqual([{ id: 'TEST-APP-001', status: 'passed' }]);
@@ -180,6 +186,18 @@ describe('P2 built-in test adapters', () => {
     expect(normalizeAdapterReport('go-test', '{"Action":"pass","Test":"Test_TEST-APP-003"}\n').tests[0]?.status).toBe('passed');
     expect(normalizeAdapterReport('cargo', 'test tests::test_app_004 ... ok\n').tests[0]?.id).toBe('TEST-APP-004');
     expect(normalizeAdapterReport('junit', '<testsuite><testcase name="TEST-APP-005"><failure/></testcase></testsuite>').tests[0]?.status).toBe('failed');
+    expect(normalizeAdapterReport('junit',
+      '<testsuite><testcase classname="example.OrderedTest" name="TEST-APP-005 works"/></testsuite>',
+    ).tests).toEqual([{ id: 'TEST-APP-005', status: 'passed' }]);
+    expect(normalizeAdapterReport('junit', `<testsuite><testcase name="works()" classname="example.TaggedTest">
+      <system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:example.TaggedTest]/[method:works()]
+display-name: TEST-APP-005 tagged behavior
+]]></system-out>
+    </testcase></testsuite>`).tests).toEqual([{ id: 'TEST-APP-005', status: 'passed' }]);
+    expect(normalizeAdapterReport('dotnet',
+      '<TestRun><Results><UnitTestResult testName="TEST-APP-006 works" outcome="Passed" /></Results></TestRun>',
+    ).tests).toEqual([{ id: 'TEST-APP-006', status: 'passed' }]);
   });
 
   it('merges legacy test subcommands and rejects conflicting adapter-owned arguments', () => {
@@ -198,6 +216,24 @@ describe('P2 built-in test adapters', () => {
     expect(mergeAdapterArgs('go-test', ['test', '-count=1', './pkg'],
       adapterInvocation('go-test', 'go-tests').args))
       .toEqual(['test', '-count=1', '-json', './pkg']);
+    expect(mergeAdapterArgs('dotnet', ['test', 'FulfillmentHub.sln', '--no-restore'],
+      adapterInvocation('dotnet', 'dotnet-tests', 'TEST-APP-006').args))
+      .toEqual([
+        'test', 'FulfillmentHub.sln', '--no-restore',
+        '--logger', 'trx;LogFilePrefix=results',
+        '--results-directory', '.musubix/evidence/native/dotnet-tests/TEST-APP-006',
+        '--filter', 'DisplayName~TEST-APP-006|Name~TEST-APP-006',
+      ]);
+    expect(mergeAdapterArgs('dotnet',
+      ['test', 'FulfillmentHub.sln', '--', 'MSTest.MapInconclusiveToFailed=True'],
+      adapterInvocation('dotnet', 'dotnet-tests', 'TEST-APP-006').args))
+      .toEqual([
+        'test', 'FulfillmentHub.sln',
+        '--logger', 'trx;LogFilePrefix=results',
+        '--results-directory', '.musubix/evidence/native/dotnet-tests/TEST-APP-006',
+        '--filter', 'DisplayName~TEST-APP-006|Name~TEST-APP-006',
+        '--', 'MSTest.MapInconclusiveToFailed=True',
+      ]);
     expect(mergeAdapterArgs('go-test', ['test', '-exec', './wrapper', './...'],
       adapterInvocation('go-test', 'go-tests', 'TEST-APP-003', 'service/app_test.go').args))
       .toEqual(['test', '-exec', './wrapper', '-json', './service', '-run', '/TEST-APP-003']);
@@ -237,6 +273,28 @@ describe('P2 built-in test adapters', () => {
     const text = await readAdapterOutput(invocation, `${root}/${invocation.reportPath}`, '');
     expect(normalizeAdapterReport('junit', text ?? '', 'TEST-APP-006').tests)
       .toEqual([{ id: 'TEST-APP-006', status: 'passed' }]);
+  });
+
+  it('loads and normalizes .NET TRX results from the native report directory', async () => {
+    const root = await fixture();
+    const invocation = adapterInvocation('dotnet', 'test', 'TEST-APP-007');
+    await writeText(root, `${invocation.reportPath}/results.trx`,
+      '<TestRun><Results><UnitTestResult testName="TEST-APP-007 works" outcome="Passed" /></Results></TestRun>');
+    const text = await readAdapterOutput(invocation, `${root}/${invocation.reportPath}`, '');
+    expect(normalizeAdapterReport('dotnet', text ?? '', 'TEST-APP-007').tests)
+      .toEqual([{ id: 'TEST-APP-007', status: 'passed' }]);
+  });
+
+  it('accepts only real .NET results under the TRX Results hierarchy', () => {
+    expect(() => normalizeAdapterReport('dotnet',
+      '<TestRun><Results><!-- <UnitTestResult testName="TEST-FAKE-001" outcome="Passed" /> --></Results></TestRun>',
+    )).toThrow('No annotated TEST-* identities');
+    expect(() => normalizeAdapterReport('dotnet',
+      '<TestRun><Results><![CDATA[<UnitTestResult testName="TEST-FAKE-001" outcome="Passed" />]]></Results></TestRun>',
+    )).toThrow('No annotated TEST-* identities');
+    expect(() => normalizeAdapterReport('dotnet',
+      '<TestRun><Results><UnitTestResult testName="TEST-APP-007" outcome="Passed" /></TestRun>',
+    )).toThrow('mismatched XML element');
   });
 });
 

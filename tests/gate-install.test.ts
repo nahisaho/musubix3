@@ -562,6 +562,67 @@ export const unrelated = false;
       .toContainEqual(expect.objectContaining({ code: 'INPUT_MODIFIED', path: 'src/target/tracked.ts' }));
   });
 
+  it('ignores manifest-scoped .NET bin and obj output without hiding source directories', async () => {
+    const root = await project();
+    await writeText(root, 'src/service/Service.csproj', '<Project Sdk="Microsoft.NET.Sdk" />\n');
+    await writeText(root, 'src/service/obj/generated.cs', 'internal class Generated {}\n');
+    await writeText(root, 'src/obj/tracked.cs', 'internal class Tracked {}\n');
+    const runner: Runner = async () => {
+      await writeText(root, 'src/service/bin/Debug/net8.0/service.dll', 'binary');
+      await writeText(root, 'src/service/obj/generated.cs', 'internal class Changed {}\n');
+      await writeText(root, 'src/obj/tracked.cs', 'internal class Changed {}\n');
+      return processResult();
+    };
+    expect((await runGate(root, { runner })).checks.find((c) => c.name === 'input-stability')?.diagnostics)
+      .toEqual([expect.objectContaining({ code: 'INPUT_MODIFIED', path: 'src/obj/tracked.cs' })]);
+  });
+
+  it('ignores manifest-scoped ecosystem caches without hiding same-named source directories', async () => {
+    const root = await project();
+    const generated = [
+      ['gradle/build.gradle', 'gradle/.gradle/generated.ts'],
+      ['dart/pubspec.yaml', 'dart/.dart_tool/generated.dart'],
+      ['swift/Package.swift', 'swift/.build/generated.swift'],
+      ['zig/build.zig', 'zig/.zig-cache/generated.zig'],
+      ['zig/build.zig', 'zig/zig-out/generated.zig'],
+      ['Root.sln', '.dotnet/generated.cs'],
+    ] as const;
+    const tracked = [
+      'src/cache-names/.gradle/tracked.ts',
+      'src/cache-names/.dart_tool/tracked.dart',
+      'src/cache-names/.build/tracked.swift',
+      'src/cache-names/.zig-cache/tracked.zig',
+      'src/cache-names/zig-out/tracked.zig',
+      'src/cache-names/.dotnet/tracked.cs',
+    ];
+    for (const [manifest, path] of generated) {
+      await writeText(root, manifest, manifest.endsWith('pubspec.yaml') ? 'name: example\n' : 'manifest\n');
+      await writeText(root, path, 'before\n');
+    }
+    for (const path of tracked) await writeText(root, path, 'before\n');
+    const runner: Runner = async () => {
+      for (const [, path] of generated) await writeText(root, path, 'after\n');
+      for (const path of tracked) await writeText(root, path, 'after\n');
+      return processResult();
+    };
+    const diagnostics = (await runGate(root, { runner })).checks
+      .find((check) => check.name === 'input-stability')?.diagnostics;
+    expect(diagnostics?.map((diagnostic) => diagnostic.path).sort()).toEqual(tracked.sort());
+  });
+
+  it('ignores the conventional project-local NuGet package cache', async () => {
+    const root = await project();
+    await writeText(root, '.nuget/packages/example/1.0.0/library.dll', 'before');
+    await writeText(root, '.nuget/NuGet.Config', 'before');
+    const runner: Runner = async () => {
+      await writeText(root, '.nuget/packages/example/1.0.0/library.dll', 'after');
+      await writeText(root, '.nuget/NuGet.Config', 'after');
+      return processResult();
+    };
+    expect((await runGate(root, { runner })).checks.find((c) => c.name === 'input-stability')?.diagnostics)
+      .toEqual([expect.objectContaining({ code: 'INPUT_MODIFIED', path: '.nuget/NuGet.Config' })]);
+  });
+
   it('ignores Python virtual environments identified by pyvenv.cfg without hiding similarly named source', async () => {
     const root = await project();
     await writeText(root, '.venv/pyvenv.cfg', 'home = /usr/bin\n');

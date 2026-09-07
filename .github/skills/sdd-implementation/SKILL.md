@@ -18,8 +18,8 @@ After the work, run `npx musubix3 workflow-record sdd-implementation complete
    implementation. Configure the selected command with `tddArgs` containing
    `{testId}` or `{testPath}` and a `tddReport`, or use a built-in runner adapter.
    Follow its native identity contract: pytest/Cargo use underscore names, Go
-   uses a `TEST-*` subtest, and JUnit uses an exact `@Tag("TEST-*")` plus an
-   underscore-form ID in the method name.
+   uses a `TEST-*` subtest, JUnit uses an exact `@Tag("TEST-*")`, and xUnit uses
+   a `Fact` `DisplayName` containing the exact ID.
    Run the repository formatter before recording Red. Formatting is part of the
    test fingerprint: after Red, do not edit or reformat the authoritative test
    until the matching Green has been recorded.

@@ -56,6 +56,14 @@ export async function files(root: string): Promise<string[]> {
     const entries = await readdir(directory, { withFileTypes: true });
     const hasCargoOrMavenManifest = entries.some((entry) =>
       entry.isFile() && (entry.name === 'Cargo.toml' || entry.name === 'pom.xml'));
+    const hasGradleManifest = entries.some((entry) =>
+      entry.isFile() && ['build.gradle', 'build.gradle.kts', 'settings.gradle', 'settings.gradle.kts'].includes(entry.name));
+    const hasDartManifest = entries.some((entry) => entry.isFile() && entry.name === 'pubspec.yaml');
+    const hasSwiftManifest = entries.some((entry) => entry.isFile() && entry.name === 'Package.swift');
+    const hasZigManifest = entries.some((entry) =>
+      entry.isFile() && (entry.name === 'build.zig' || entry.name === 'build.zig.zon'));
+    const hasDotnetProject = entries.some((entry) =>
+      entry.isFile() && (/\.sln$/i.test(entry.name) || /\.(?:cs|fs|vb)proj$/i.test(entry.name)));
     for (const entry of entries.sort((a, b) => a.name.localeCompare(b.name))) {
       if (entry.isSymbolicLink()) continue;
       const absolute = resolve(directory, entry.name);
@@ -65,7 +73,14 @@ export async function files(root: string): Promise<string[]> {
           && await isRegularFile(resolve(absolute, 'pyvenv.cfg'));
         if (!excluded.has(entry.name)
           && !(entry.name === 'target' && hasCargoOrMavenManifest)
+          && !(entry.name === '.gradle' && hasGradleManifest)
+          && !(entry.name === '.dart_tool' && hasDartManifest)
+          && !(entry.name === '.build' && hasSwiftManifest)
+          && !((entry.name === '.zig-cache' || entry.name === 'zig-out') && hasZigManifest)
+          && !(entry.name === '.dotnet' && hasDotnetProject)
+          && !((entry.name === 'bin' || entry.name === 'obj') && hasDotnetProject)
           && !isPythonVirtualEnvironment
+          && path !== '.nuget/packages'
           && path !== '.musubix/cache'
           && path !== '.musubix/evidence') await walk(absolute);
       } else if (entry.isFile()) {
@@ -107,7 +122,7 @@ export function isSource(path: string): boolean {
 }
 
 export function isTraceSource(path: string): boolean {
-  return /\.(?:[cm]?[jt]sx?|rs|py|go|java|kt|kts|cs|c|cc|cpp|h|hh|hpp|rb|php|swift|[rR]|jl)$/.test(path)
+  return /\.(?:[cm]?[jt]sx?|rs|py|go|java|kt|kts|cs|c|cc|cpp|h|hh|hpp|rb|php|swift|dart|scala|ex|exs|hs|lua|zig|sol|m|mm|fs|fsx|vb|[rR]|jl)$/.test(path)
     && !/\.d\.[cm]?ts$/.test(path);
 }
 

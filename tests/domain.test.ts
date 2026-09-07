@@ -85,6 +85,17 @@ describe('constitution definitions', () => {
     expect(report.valid).toBe(false);
     expect(report.diagnostics.some((d) => d.code === code)).toBe(true);
   });
+
+  it.each(['tests.annotatedIds', 'tests.executedIds'])('accepts the %s test identity metric', (metric) => {
+    const report = validateConstitution(`---
+version: 1.0.0
+---
+## PRINC-001: Test identity
+### RULE-001: Measured identities
+Metric: ${metric}
+Limit: 10`);
+    expect(report.valid).toBe(true);
+  });
 });
 
 describe('explicit designs', () => {

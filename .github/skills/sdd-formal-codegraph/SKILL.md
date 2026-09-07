@@ -41,12 +41,12 @@ After the work, run `npx musubix3 workflow-record sdd-formal-codegraph complete
    JS/TS imports, re-exports, literal require/dynamic imports, manifest
    entrypoints and local cache-busting URL/templates with a static base are indexed.
    Set `codeGraph.mode` to `strict` when unresolved computed `import()` or
-   `require()` calls must block graph gates; the compatible default warns.
-   Conservative native adapters index Rust modules/`use`, Python imports, Go
-   module imports, Java package imports, C/C++ includes, C# namespace imports,
-   PHP namespace/import dependencies, R source/package dependencies and Julia
-   include/module imports, declarations and direct calls. Other languages are
-   reported as unsupported.
+   `require()` calls, including computed PHP include/require expressions, must
+   block graph gates; the compatible default warns.
+   Conservative native adapters index JS/TS, Rust, Python, Go, Java, Kotlin,
+   C/C++, Objective-C, C#/.NET, Ruby, PHP, Swift, Dart, Scala, Elixir, Haskell,
+   Lua, Zig, Solidity, R and Julia dependencies, declarations and direct calls.
+   Unrecognized extensions stay outside graph inputs.
    Statically resolved cache-busting imports remain valid in strict mode.
    Reflective behavior remains an explicit limitation.
 4. Use native navigation and review to confirm conservative results; rebuild

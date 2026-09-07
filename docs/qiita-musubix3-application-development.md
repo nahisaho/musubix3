@@ -1,5 +1,5 @@
 ---
-title: "GitHub Copilot CLI × musubix3で5言語・5規模のアプリを作り、仕様・TDD・形式検査・証拠ゲートまで通してみた"
+title: "GitHub Copilot CLI × musubix3で23言語のアプリを作り、仕様・TDD・形式検査・証拠ゲートまで通してみた"
 tags:
   - GitHubCopilot
   - TDD
@@ -37,6 +37,10 @@ GitHub Copilot CLI用の8つのSkillsと、決定的な検証CLIを提供しま�
 3. Go: URL Shortener
 4. Rust: Event-driven Inventory Processor
 5. Java 21: Multi-module Order Fulfillment Platform
+
+さらにv0.1.3開発では、Code Graph対応を23言語グループへ拡張し、
+全言語で中規模・大規模アプリケーションを順次開発して再検証しました。
+最終的な大規模検証は23/23アプリが`gate=pass`、`ready=true`です。
 
 小規模CLIから複数モジュールの業務システムまで段階的に規模を上げ、
 要求、設計、ADR、TDD、トレース、Code Graph、形式的整合性、
@@ -2309,6 +2313,197 @@ v0.1.2で緩めなかった点も重要です。
 
 ---
 
+# v0.1.3: C#/.NET 8の中規模アプリで追加検証
+
+既存の5アプリで使っていなかった言語としてC#を選び、
+`/tmp/work-v013`にFulfillment Hubを構築しました。
+hostへ.NET SDKを導入するsudo権限がなかったため、
+公式`mcr.microsoft.com/dotnet/sdk:8.0` containerを使用しています。
+
+solutionは次の5 projectです。
+
+| project | 責務 |
+|---|---|
+| `FulfillmentHub.Domain` | 注文aggregate、状態遷移、監査履歴 |
+| `FulfillmentHub.Application` | 冪等性、在庫予約、逆順compensation |
+| `FulfillmentHub.Infrastructure` | process-local repositoryとinventory adapter |
+| `FulfillmentHub.Api` | 注文、承認、拒否、出荷、health endpoint |
+| `FulfillmentHub.Tests` | xUnitによる7件の要求対応test |
+
+初回のv0.1.2相当engineでは、次の不足を実測しました。
+
+- 各`.csproj`配下の`obj/`生成C#がCode Graphへ入る
+- `bin/`と`obj/`更新がinput-stabilityを壊し得る
+- xUnitの標準TRXを読むbuilt-in adapterがない
+- `mutation doctor`がC#とStryker.NETを検出しない
+- Dockerをrunごとに破棄するとNuGet cacheが消え、`--no-restore`が失敗する
+
+v0.1.3では`dotnet` adapterを追加しました。
+
+```json
+{
+  "name": "test",
+  "command": "./scripts/dotnet.sh",
+  "args": ["test", "FulfillmentHub.sln", "--no-restore"],
+  "adapter": "dotnet",
+  "required": true,
+  "timeoutMs": 240000
+}
+```
+
+xUnit testはTRXへ残る`DisplayName`に正確なIDを置きます。
+
+```csharp
+[Fact(DisplayName = "TEST-FULFILLMENT-006 compensates partial inventory failure")]
+public void CompensatesInventoryFailure()
+{
+    // ...
+}
+```
+
+adapterは集約実行では7件の`UnitTestResult`を正規化し、
+対象実行では次のfilterを生成します。
+
+```text
+dotnet test FulfillmentHub.sln --no-restore \
+  --logger "trx;LogFilePrefix=results" \
+  --results-directory .musubix/evidence/native/test/TEST-FULFILLMENT-006 \
+  --filter "DisplayName~TEST-FULFILLMENT-006|Name~TEST-FULFILLMENT-006"
+```
+
+対象TRXは`TEST-FULFILLMENT-006`だけを`passed`として返しました。
+
+また、`.csproj`、`.fsproj`、`.vbproj`を持つproject directory直下の
+`bin/`と`obj/`だけをbuild outputとして除外します。
+任意のsource directory名`obj`は除外しません。
+Docker用NuGet packagesはproject-local `.nuget/packages/`へ永続化し、
+dependency cacheとしてsnapshotとCode Graphから除外しました。
+
+```bash
+docker run --rm \
+  --user "$(id -u):$(id -g)" \
+  -e HOME=/tmp \
+  -e NUGET_PACKAGES=/work/.nuget/packages \
+  -v "$PWD:/work" -w /work \
+  mcr.microsoft.com/dotnet/sdk:8.0 dotnet "$@"
+```
+
+`mutation doctor`は`.csproj`を検出すると、downloadを行わない
+次のlocal tool probeを実行します。
+
+```text
+dotnet tool run dotnet-stryker -- --version
+```
+
+実験環境のhostにはdotnet executableがないため、
+結果は`Stryker.NET: missing`でした。これは成功へ丸めず、
+pinned local tool manifestの導入を推奨します。
+
+v0.1.3ローカルtarballを再導入した最終結果は次のとおりです。
+
+```text
+dotnet build: pass
+xUnit: 7/7 passed
+Code Graph files: 5
+obj in graph: false
+bin in graph: false
+test identities: 7/7 passed
+gate: pass
+ready: true
+```
+
+## Code Graph対応言語の拡張と順次検証
+
+C#実験後、未実験言語を調査するとKotlin、Ruby、Swiftだけでなく、
+Dart、Scala、Elixir、Haskell、Lua、Zig、Solidity、Objective-C、
+F#、Visual Basic .NETもnative dependency graphを持っていませんでした。
+v0.1.3では各言語に、comment/stringを除外した保守的な解析を追加しました。
+
+| 順序 | 言語 | 主なdependency形式 | 検証結果 |
+|---:|---|---|---|
+| 1 | C/C++ | `#include` | pass |
+| 2 | Kotlin | `import`、script `@file:Import` | pass |
+| 3 | Swift | module `import` | pass |
+| 4 | Ruby | `require_relative`、`require`、`load` | pass |
+| 5 | PHP | `require`、`include`、namespace `use` | pass |
+| 6 | Dart | relative/self-package `import`、`export`、`part` | pass |
+| 7 | Scala | package `import` | pass |
+| 8 | Elixir | `alias`、`import`、`require`、`use`、file require | pass |
+| 9 | Haskell | module `import` | pass |
+| 10 | Lua | `require`、`dofile`、`loadfile` | pass |
+| 11 | R | `source`、`library`、`require` | pass |
+| 12 | Julia | `include`、`using`、`import` | pass |
+| 13 | Zig | `@import` | pass |
+| 14 | Solidity | relative/root source-unit `import` | pass |
+| 15 | Objective-C/C++ | `#import`とmessage send | pass |
+| 16 | F# | `#load`、`open` | pass |
+| 17 | Visual Basic .NET | `Imports` | pass |
+
+各fixtureは、source file一覧、local/external dependency、declaration symbol、
+direct call、`unsupportedFiles=[]`を独立して確認しました。
+さらに、存在しない明示的local dependencyは`GRAPH_UNRESOLVED`となり、
+commentまたはstring内の偽symbol/callはgraphへ入りません。
+
+Kotlin/Scalaのwildcard package、F#/VBのnamespace importは、
+一致するlocal fileを1件へ丸めず、該当するすべてのfileへedgeを作ります。
+Dartは`pubspec.yaml`の`name`を使ってself-package URIを`lib/`へ解決し、
+Elixirは`alias Demo.{Foo, Bar}`を展開します。
+Objective-Cの同名selectorはreceiver classで絞り込み、
+所有関係が曖昧ならtargetを`null`に保ちます。
+
+これらはcompilerやlanguage serverの完全なsemantic解析ではありません。
+reflection、macro展開、generated code、build tool固有のremappingは
+必要に応じて未解決またはexternalとして保持する、fail-closedなbest-effort解析です。
+
+## 23言語の大規模アプリケーション検証
+
+中規模実験で見つかったcache、trace、import、symbol、call解決の問題を修正後、
+全対応言語で共通の大規模合格基準を設定しました。
+
+- authored implementation sourceが20ファイル以上
+- 要求IDとnative test identityが15件以上
+- 複数module/layer間に実際のdependencyとcallがある
+- strict Code Graphで未解決local importと禁止cycleが0件
+- design、implementation、testのtrace coverageが100%
+- `evidence refresh --changed`と`gate --changed`が成功
+- `status.gate.ready=true`
+
+結果は次のとおりです。
+
+| 言語グループ | アプリ数 | 実装ファイル | 要求/テスト | ready |
+|---|---:|---:|---:|---:|
+| JavaScript/TypeScript、Rust、Python、Go、Java | 5 | 114 | 75 | 5/5 |
+| Kotlin、C/C++、Objective-C/C++、C#、F#、VB.NET | 6 | 120 | 90 | 6/6 |
+| Ruby、PHP、Swift、Dart、Scala | 5 | 100 | 75 | 5/5 |
+| Elixir、Haskell、Lua、Zig、Solidity、R、Julia | 7 | 141 | 105 | 7/7 |
+| **合計** | **23** | **475** | **345** | **23/23** |
+
+各アプリは業務workflowを持つ独立した構成で、テスト数を水増しするための
+反復stubは使っていません。native compiler/runtimeの成功を正本とし、
+musubix3はtrace、graph、structured identity、freshnessを検査しました。
+
+大規模実験では3件の製品欠陥を再現し、元のsource/configurationを変更せず
+修正版tarballで再検証しました。
+
+1. JUnit legacy XMLのtestcase属性にIDがなくても、
+   `system-out`の`display-name`からTEST IDを正規化する。
+2. F#のネスト可能な`(* ... *)`block commentからtrace annotationを抽出する。
+3. JUnit XMLで`classname`が`name`より先に並んでも、
+   属性順に依存せず`name`を優先してidentityを解決する。
+
+修正後は再現ケースと23アプリがすべて成功し、未修正の製品欠陥は残りませんでした。
+一方、次は意図的に維持した境界です。
+
+- 言語別Code Graphは決定的な静的best-effort解析であり、compilerの代替ではない
+- 今回のformal modeled fractionは任意で、trace 100%は定理証明を意味しない
+- 公式container tagはtoolchain再現に有用だが、長期保存ではdigest固定が必要
+
+大規模実験の一次証拠はsession workspaceの
+`language-experiments-large/all-languages-report.json`へ集約しました。
+アプリ本体とraw diagnosticsはmusubix3 repositoryへコミットしていません。
+
+---
+
 # 再現とクリーンアップ
 
 今回の実験directoryは次です。
@@ -2331,6 +2526,11 @@ v0.1.2で緩めなかった点も重要です。
 /tmp/work-v012-article/03-url-shortener
 /tmp/work-v012-article/04-inventory-events
 /tmp/work-v012-article/05-order-platform
+
+/tmp/work-v013
+
+~/.copilot/session-state/<session-id>/files/language-experiments
+~/.copilot/session-state/<session-id>/files/language-experiments-large
 ```
 
 各directoryの`EXPERIMENT.md`が実験時点の詳細な一次レポートです。
@@ -2367,7 +2567,7 @@ find /tmp/work-v012-article -maxdepth 2 -type f | sort
 
 # まとめ
 
-5つのアプリで確認できたのは、
+最初の5アプリと、v0.1.3の全23言語大規模アプリで確認できたのは、
 musubix3が「AIにコードを書かせるツール」ではなく、
 **AIが行った開発を、仕様と現在の実行証拠へ結び直すツール**
 だということです。
@@ -2379,6 +2579,9 @@ Inventory Processorでは、late change、mutation、Z3、Lean生成物、
 input-stability fail-closedが実際に働きました。
 Order Platformでは、multi-module依存、JUnit report、横断的な手動承認変更、
 local attestationの限界が明確になりました。
+さらに23言語の大規模検証では、同じ完了条件を異なるmodule/import/test文化へ
+適用できることと、JUnit identity、F# commentのような言語固有差分を
+再現ケースから製品修正へ戻せることを確認しました。
 
 musubix3を使っても、仕様の妥当性、テスト設計、security review、
 本番運用設計が自動的に正しくなるわけではありません。
@@ -2402,9 +2605,9 @@ musubix3は、その完了条件をrepository内へ残すための実践的な�
 
 # 関連リンク
 
-- [npm: musubix3 0.1.2](https://www.npmjs.com/package/musubix3/v/0.1.2)
+- [npm: musubix3 0.1.3](https://www.npmjs.com/package/musubix3/v/0.1.3)
 - [GitHub: nahisaho/musubix3](https://github.com/nahisaho/musubix3)
-- [GitHub Release: v0.1.2](https://github.com/nahisaho/musubix3/releases/tag/v0.1.2)
+- [GitHub Release: v0.1.3](https://github.com/nahisaho/musubix3/releases/tag/v0.1.3)
 - [README（日本語）](../README-ja.md)
 - [README（English）](../README.md)
 - [musubix2からmusubix3で変わったこと](../MUSUBIX2-TO-MUSUBIX3.md)

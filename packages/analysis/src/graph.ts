@@ -19,6 +19,7 @@ export interface CodeSymbol {
   path: string;
   line: number;
   kind: string;
+  container?: string;
 }
 
 export interface CodeGraph {
@@ -35,7 +36,7 @@ export interface CodeGraph {
 }
 
 export async function graphInputs(root: string): Promise<string[]> {
-  return (await files(root)).filter((p) => isTraceSource(p) || /(?:^|\/)(?:tsconfig[^/]*\.json|package\.json|go\.mod)$/.test(p));
+  return (await files(root)).filter((p) => isTraceSource(p) || /(?:^|\/)(?:tsconfig[^/]*\.json|package\.json|go\.mod|pubspec\.yaml)$/.test(p));
 }
 
 export async function indexGraph(root: string, persist = true): Promise<CodeGraph> {
@@ -45,14 +46,30 @@ export async function indexGraph(root: string, persist = true): Promise<CodeGrap
   const pythonSources = paths.filter((path) => path.endsWith('.py'));
   const goSources = paths.filter((path) => path.endsWith('.go'));
   const javaSources = paths.filter((path) => path.endsWith('.java'));
-  const cppSources = paths.filter((path) => /\.(?:c|cc|cpp|h|hh|hpp)$/.test(path));
+  const cppSources = paths.filter((path) => /\.(?:c|cc|cpp|h|hh|hpp|m|mm)$/.test(path));
   const csharpSources = paths.filter((path) => path.endsWith('.cs'));
   const phpSources = paths.filter((path) => path.endsWith('.php'));
   const rSources = paths.filter((path) => /\.(?:r|R)$/.test(path));
   const juliaSources = paths.filter((path) => path.endsWith('.jl'));
+  const kotlinSources = paths.filter((path) => /\.(?:kt|kts)$/.test(path));
+  const rubySources = paths.filter((path) => path.endsWith('.rb'));
+  const swiftSources = paths.filter((path) => path.endsWith('.swift'));
+  const dartSources = paths.filter((path) => path.endsWith('.dart'));
+  const scalaSources = paths.filter((path) => path.endsWith('.scala'));
+  const elixirSources = paths.filter((path) => /\.(?:ex|exs)$/.test(path));
+  const haskellSources = paths.filter((path) => path.endsWith('.hs'));
+  const luaSources = paths.filter((path) => path.endsWith('.lua'));
+  const zigSources = paths.filter((path) => path.endsWith('.zig'));
+  const soliditySources = paths.filter((path) => path.endsWith('.sol'));
+  const objectiveCSources = paths.filter((path) => /\.(?:m|mm)$/.test(path));
+  const fsharpSources = paths.filter((path) => /\.(?:fs|fsx)$/.test(path));
+  const vbSources = paths.filter((path) => path.endsWith('.vb'));
   const sources = [
     ...typedSources, ...rustSources, ...pythonSources, ...goSources, ...javaSources,
     ...cppSources, ...csharpSources, ...phpSources, ...rSources, ...juliaSources,
+    ...kotlinSources, ...rubySources, ...swiftSources, ...dartSources, ...scalaSources,
+    ...elixirSources, ...haskellSources, ...luaSources, ...zigSources, ...soliditySources,
+    ...fsharpSources, ...vbSources,
   ].sort();
   const supported = new Set(sources);
   const unsupportedFiles = paths.filter((path) => isTraceSource(path) && !supported.has(path));
@@ -262,6 +279,68 @@ export async function indexGraph(root: string, persist = true): Promise<CodeGrap
   const juliaModules = new Map<string, string>();
   for (const [path, text] of juliaTexts) indexJuliaSymbols(path, text, graph, juliaModules);
   for (const [path, text] of juliaTexts) indexJuliaRelations(path, text, known, graph, juliaModules);
+  const kotlinTexts = new Map(await Promise.all(kotlinSources.map(async (path) => [path, await readText(root, path)] as const)));
+  const kotlinDeclarations = new Map<string, string>();
+  for (const [path, text] of kotlinTexts) indexKotlinSymbols(path, text, graph, kotlinDeclarations);
+  for (const [path, text] of kotlinTexts) indexKotlinRelations(path, text, known, graph, kotlinDeclarations);
+  const rubyTexts = new Map(await Promise.all(rubySources.map(async (path) => [path, await readText(root, path)] as const)));
+  for (const [path, text] of rubyTexts) indexRubySymbols(path, text, graph);
+  for (const [path, text] of rubyTexts) indexRubyRelations(path, text, known, graph);
+  const swiftTexts = new Map(await Promise.all(swiftSources.map(async (path) => [path, await readText(root, path)] as const)));
+  for (const [path, text] of swiftTexts) indexSwiftSymbols(path, text, graph);
+  for (const [path, text] of swiftTexts) indexSwiftRelations(path, text, graph);
+  const dartTexts = new Map(await Promise.all(dartSources.map(async (path) => [path, await readText(root, path)] as const)));
+  const dartPackages = new Map<string, string>();
+  for (const manifest of paths.filter((path) => path.endsWith('pubspec.yaml'))) {
+    const name = /^\s*name\s*:\s*([A-Za-z_]\w*)\s*$/m.exec(await readText(root, manifest))?.[1];
+    if (name) dartPackages.set(dirname(manifest), name);
+  }
+  for (const [path, text] of dartTexts) indexDartSymbols(path, text, graph);
+  for (const [path, text] of dartTexts) {
+    let directory = dirname(path);
+    let packageInfo: { directory: string; name: string } | null = null;
+    while (true) {
+      const name = dartPackages.get(directory);
+      if (name) {
+        packageInfo = { directory, name };
+        break;
+      }
+      if (directory === '.') break;
+      directory = dirname(directory);
+    }
+    indexDartRelations(path, text, known, graph, packageInfo);
+  }
+  const scalaTexts = new Map(await Promise.all(scalaSources.map(async (path) => [path, await readText(root, path)] as const)));
+  const scalaDeclarations = new Map<string, string>();
+  for (const [path, text] of scalaTexts) indexScalaSymbols(path, text, graph, scalaDeclarations);
+  for (const [path, text] of scalaTexts) indexScalaRelations(path, text, graph, scalaDeclarations);
+  const elixirTexts = new Map(await Promise.all(elixirSources.map(async (path) => [path, await readText(root, path)] as const)));
+  const elixirModules = new Map<string, string>();
+  for (const [path, text] of elixirTexts) indexElixirSymbols(path, text, graph, elixirModules);
+  for (const [path, text] of elixirTexts) indexElixirRelations(path, text, known, graph, elixirModules);
+  const haskellTexts = new Map(await Promise.all(haskellSources.map(async (path) => [path, await readText(root, path)] as const)));
+  const haskellModules = new Map<string, string>();
+  for (const [path, text] of haskellTexts) indexHaskellSymbols(path, text, graph, haskellModules);
+  for (const [path, text] of haskellTexts) indexHaskellRelations(path, text, graph, haskellModules);
+  const luaTexts = new Map(await Promise.all(luaSources.map(async (path) => [path, await readText(root, path)] as const)));
+  for (const [path, text] of luaTexts) indexLuaSymbols(path, text, graph);
+  for (const [path, text] of luaTexts) indexLuaRelations(path, text, known, graph);
+  const zigTexts = new Map(await Promise.all(zigSources.map(async (path) => [path, await readText(root, path)] as const)));
+  for (const [path, text] of zigTexts) indexZigSymbols(path, text, graph);
+  for (const [path, text] of zigTexts) indexZigRelations(path, text, known, graph);
+  const solidityTexts = new Map(await Promise.all(soliditySources.map(async (path) => [path, await readText(root, path)] as const)));
+  for (const [path, text] of solidityTexts) indexSoliditySymbols(path, text, graph);
+  for (const [path, text] of solidityTexts) indexSolidityRelations(path, text, known, graph);
+  for (const [path, text] of cppTexts) indexObjectiveCSymbols(path, text, graph);
+  for (const [path, text] of objectiveCSources.map((path) => [path, cppTexts.get(path)!] as const)) indexObjectiveCRelations(path, text, graph);
+  const fsharpTexts = new Map(await Promise.all(fsharpSources.map(async (path) => [path, await readText(root, path)] as const)));
+  const fsharpDeclarations = new Map<string, string>();
+  for (const [path, text] of fsharpTexts) indexFsharpSymbols(path, text, graph, fsharpDeclarations);
+  for (const [path, text] of fsharpTexts) indexFsharpRelations(path, text, graph, fsharpDeclarations);
+  const vbTexts = new Map(await Promise.all(vbSources.map(async (path) => [path, await readText(root, path)] as const)));
+  const vbDeclarations = new Map<string, string>();
+  for (const [path, text] of vbTexts) indexVbSymbols(path, text, graph, vbDeclarations);
+  for (const [path, text] of vbTexts) indexVbRelations(path, text, graph, vbDeclarations);
   if (persist) await writeJson(root, '.musubix/cache/codegraph.json', graph);
   return graph;
 }
@@ -356,7 +435,7 @@ function addCalls(path: string, searchable: string, graph: CodeGraph, ignored: S
     const expression = match[1]!;
     const name = expression.split(/::|\./).at(-1)!;
     const prefix = searchable.slice(Math.max(0, match.index - 24), match.index);
-    if (ignored.has(name) || /\b(?:def|class|func|function|fn|new)\s+$/.test(prefix)) continue;
+    if (ignored.has(name) || /\b(?:def|class|func|function|fn|fun|let|sub|new)\s+$/i.test(prefix)) continue;
     const candidates = symbols.get(expression) ?? symbols.get(name) ?? [];
     graph.calls.push({ path, line: lineOf(searchable, match.index), expression, target: candidates.length === 1 ? candidates[0]!.id : null });
   }
@@ -482,7 +561,7 @@ function indexCppSymbols(path: string, text: string, graph: CodeGraph): void {
 
 function indexCppRelations(path: string, text: string, known: Set<string>, graph: CodeGraph): void {
   const commentsMasked = maskWithPatterns(text, [/\/\*[\s\S]*?\*\//g, /\/\/[^\r\n]*/g]);
-  for (const match of commentsMasked.matchAll(/^\s*#\s*include\s*([<"])([^>"]+)[>"]/gm)) {
+  for (const match of commentsMasked.matchAll(/^\s*#\s*(?:include|import)\s*([<"])([^>"]+)[>"]/gm)) {
     const specifier = match[2]!;
     const quoted = match[1] === '"';
     const target = quoted ? relativeTarget(path, specifier, known) : null;
@@ -537,19 +616,52 @@ function indexPhpSymbols(path: string, text: string, graph: CodeGraph, types: Ma
 
 function indexPhpRelations(path: string, text: string, known: Set<string>, graph: CodeGraph, types: Map<string, string>): void {
   const commentsMasked = maskWithPatterns(text, [/\/\*[\s\S]*?\*\//g, /\/\/[^\r\n]*|#[^\r\n]*/g]);
-  for (const match of commentsMasked.matchAll(/\b(?:require|require_once|include|include_once)\s*(?:\(\s*)?['"]([^'"]+)['"]/g)) {
-    const specifier = match[1]!;
+  const searchable = maskWithPatterns(commentsMasked, [/"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'/g]);
+  for (const match of searchable.matchAll(/\b(?:require_once|require|include_once|include)\b/g)) {
+    const remainder = commentsMasked.slice(match.index + match[0].length);
+    let expression = /^\s*(\([^;\r\n]*\)|[^;\r\n]*)/.exec(remainder)?.[1]?.trim() ?? '';
+    if (expression.startsWith('(') && expression.endsWith(')')) expression = expression.slice(1, -1).trim();
+    const quote = expression[0];
+    let end = -1;
+    if (quote === '"' || quote === "'") {
+      for (let index = 1; index < expression.length; index += 1) {
+        if (expression[index] === '\\') {
+          index += 1;
+          continue;
+        }
+        if (expression[index] === quote) {
+          end = index;
+          break;
+        }
+      }
+    }
+    const staticLiteral = end > 0 && expression.slice(end + 1).trim() === ''
+      && !(quote === '"' && /(^|[^\\])\$/.test(expression.slice(1, end)));
+    if (!staticLiteral) {
+      graph.diagnostics.push({
+        code: 'GRAPH_DYNAMIC',
+        severity: 'warning',
+        message: 'Nonliteral PHP module loading is not statically resolved.',
+        path,
+        line: lineOf(commentsMasked, match.index),
+      });
+      continue;
+    }
+    const specifier = expression.slice(1, end);
     const target = relativeTarget(path, specifier, known);
     if (!target) graph.diagnostics.push(error('GRAPH_UNRESOLVED', `Unresolved local PHP include ${specifier}.`, path, lineOf(commentsMasked, match.index)));
     graph.imports.push({ from: path, to: target ?? `php:${specifier}`, specifier, kind: 'include', line: lineOf(commentsMasked, match.index), external: !target });
   }
-  const searchable = maskWithPatterns(commentsMasked, [/"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'/g]);
   for (const match of searchable.matchAll(/^\s*use\s+([A-Za-z_][\w\\]*)(?:\s+as\s+\w+)?\s*;/gm)) {
     const specifier = match[1]!;
     const target = types.get(specifier) ?? null;
     graph.imports.push({ from: path, to: target ?? `php:${specifier}`, specifier, kind: 'use', line: lineOf(searchable, match.index), external: !target });
   }
-  addCalls(path, searchable, graph, new Set(['if', 'for', 'foreach', 'while', 'switch', 'catch', 'isset', 'empty', 'echo', 'include', 'require']));
+  addCalls(path, searchable, graph, new Set([
+    'if', 'for', 'foreach', 'while', 'switch', 'catch', 'isset', 'empty', 'echo',
+    'function', 'declare', 'fn', 'use', 'exit', 'die',
+    'include', 'include_once', 'require', 'require_once',
+  ]));
 }
 
 function indexRSymbols(path: string, text: string, graph: CodeGraph): void {
@@ -614,13 +726,552 @@ function indexJuliaRelations(path: string, text: string, known: Set<string>, gra
   }
   const searchable = maskWithPatterns(commentsMasked, [/"""[\s\S]*?"""|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'/g]);
   for (const match of searchable.matchAll(/^\s*(?:using|import)\s+([^\r\n]+)/gm)) {
-    for (const entry of match[1]!.split(',')) {
-      const specifier = entry.trim().replace(/^\.*/, '').split(':')[0]!.trim().split('.')[0]!;
+    const clause = match[1]!.trim();
+    const entries = clause.includes(':') ? [clause.split(':', 1)[0]!] : clause.split(',');
+    for (const entry of entries) {
+      const specifier = entry.trim().replace(/^\.+/, '').split('.')[0]!;
       const target = modules.get(specifier) ?? null;
       graph.imports.push({ from: path, to: target ?? `julia:${specifier}`, specifier, kind: 'import', line: lineOf(searchable, match.index), external: !target });
     }
   }
   addCalls(path, searchable, graph, new Set(['if', 'for', 'while', 'function', 'macro', 'include', 'using', 'import']));
+}
+
+function declarationTargets(specifier: string, declarations: Map<string, string>): string[] {
+  const exact = declarations.get(specifier);
+  if (exact) return [exact];
+  return [...new Set([...declarations]
+    .filter(([name]) => name.startsWith(`${specifier}.`))
+    .map(([, path]) => path))].sort();
+}
+
+function splitTopLevel(value: string): string[] {
+  const entries: string[] = [];
+  let start = 0;
+  let depth = 0;
+  for (let index = 0; index < value.length; index += 1) {
+    const character = value[index];
+    if ('{(['.includes(character!)) depth += 1;
+    else if ('})]'.includes(character!)) depth = Math.max(0, depth - 1);
+    else if (character === ',' && depth === 0) {
+      entries.push(value.slice(start, index).trim());
+      start = index + 1;
+    }
+  }
+  entries.push(value.slice(start).trim());
+  return entries.filter(Boolean);
+}
+
+function relativeFileTarget(from: string, specifier: string, known: Set<string>, suffixes: string[]): string | null {
+  const normalized = specifier.replaceAll('\\', '/');
+  const candidates = suffixes.map((suffix) => normalized.endsWith(suffix) ? normalized : `${normalized}${suffix}`);
+  for (const candidate of candidates) {
+    const target = relativeTarget(from, candidate, known);
+    if (target) return target;
+  }
+  return null;
+}
+
+function projectFileTarget(specifier: string, known: Set<string>, suffixes: string[]): string | null {
+  const normalized = posix.normalize(specifier.replaceAll('\\', '/')).replace(/^\.\//, '');
+  if (normalized === '..' || normalized.startsWith('../') || posix.isAbsolute(normalized)) return null;
+  return suffixes.map((suffix) => normalized.endsWith(suffix) ? normalized : `${normalized}${suffix}`)
+    .find((candidate) => known.has(candidate)) ?? null;
+}
+
+function indexKotlinSymbols(path: string, text: string, graph: CodeGraph, declarations: Map<string, string>): void {
+  const searchable = maskWithPatterns(text, [/\/\*[\s\S]*?\*\//g, /\/\/[^\r\n]*/g, /"""[\s\S]*?"""|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'/g]);
+  const packageName = /^\s*package\s+([\w.]+)/m.exec(searchable)?.[1] ?? '';
+  for (const match of searchable.matchAll(/\b(?:(?:data|sealed|enum|annotation|value)\s+)?(class|interface|object|typealias)\s+([A-Za-z_]\w*)/g)) {
+    const name = match[2]!;
+    const line = lineOf(searchable, match.index);
+    graph.symbols.push({ id: `${path}#${name}@${line}`, name, path, line, kind: `Kotlin${match[1]![0]!.toUpperCase()}${match[1]!.slice(1)}` });
+    declarations.set(packageName ? `${packageName}.${name}` : name, path);
+  }
+  for (const match of searchable.matchAll(/\bfun\s+(?:<[^>]+>\s*)?(?:[\w?.<>]+\.)?([A-Za-z_]\w*)\s*\(/g)) {
+    const name = match[1]!;
+    const line = lineOf(searchable, match.index);
+    graph.symbols.push({ id: `${path}#${name}@${line}`, name, path, line, kind: 'KotlinFunction' });
+    declarations.set(packageName ? `${packageName}.${name}` : name, path);
+  }
+}
+
+function indexKotlinRelations(path: string, text: string, known: Set<string>, graph: CodeGraph, declarations: Map<string, string>): void {
+  const commentsMasked = maskWithPatterns(text, [/\/\*[\s\S]*?\*\//g, /\/\/[^\r\n]*/g]);
+  for (const match of commentsMasked.matchAll(/@file:Import\s*\(\s*"([^"]+)"\s*\)/g)) {
+    const specifier = match[1]!;
+    const target = relativeFileTarget(path, specifier, known, ['', '.kt', '.kts']);
+    if (!target) graph.diagnostics.push(error('GRAPH_UNRESOLVED', `Unresolved local Kotlin script import ${specifier}.`, path, lineOf(commentsMasked, match.index)));
+    graph.imports.push({ from: path, to: target ?? `kotlin:${specifier}`, specifier, kind: 'import', line: lineOf(commentsMasked, match.index), external: !target });
+  }
+  const searchable = maskWithPatterns(commentsMasked, [/"""[\s\S]*?"""|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'/g]);
+  for (const match of searchable.matchAll(/^\s*import\s+([A-Za-z_]\w*(?:\.[A-Za-z_]\w*)*)(?:\.\*)?(?:\s+as\s+\w+)?/gm)) {
+    const specifier = match[1]!;
+    const allTargets = declarationTargets(specifier, declarations);
+    const targets = allTargets.filter((target) => target !== path);
+    if (allTargets.length && !targets.length) continue;
+    for (const target of targets.length ? targets : [null]) {
+      graph.imports.push({ from: path, to: target ?? `kotlin:${specifier}`, specifier, kind: 'import', line: lineOf(searchable, match.index), external: !target });
+    }
+  }
+  addCalls(path, searchable, graph, new Set(['if', 'for', 'while', 'when', 'catch', 'fun', 'class', 'interface', 'object']));
+}
+
+function indexRubySymbols(path: string, text: string, graph: CodeGraph): void {
+  const searchable = maskWithPatterns(text, [/^=begin\b[\s\S]*?^=end\b[^\r\n]*/gm, /#[^\r\n]*/g, /"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'/g]);
+  for (const match of searchable.matchAll(/^\s*(class|module)\s+([A-Z]\w*(?:::[A-Z]\w*)*)/gm)) {
+    const name = match[2]!.split('::').at(-1)!;
+    const line = lineOf(searchable, match.index);
+    graph.symbols.push({ id: `${path}#${name}@${line}`, name, path, line, kind: match[1] === 'class' ? 'RubyClass' : 'RubyModule' });
+  }
+  for (const match of searchable.matchAll(/^\s*def\s+(?:self\.)?([A-Za-z_]\w*[!?=]?)/gm)) {
+    const name = match[1]!;
+    const line = lineOf(searchable, match.index);
+    graph.symbols.push({ id: `${path}#${name}@${line}`, name, path, line, kind: 'RubyMethod' });
+  }
+}
+
+function indexRubyRelations(path: string, text: string, known: Set<string>, graph: CodeGraph): void {
+  const commentsMasked = maskWithPatterns(text, [/^=begin\b[\s\S]*?^=end\b[^\r\n]*/gm, /#[^\r\n]*/g]);
+  for (const match of commentsMasked.matchAll(/^\s*(require_relative|require|load)\s*(?:\(\s*)?["']([^"']+)["']/gm)) {
+    const directive = match[1]!;
+    const specifier = match[2]!;
+    const explicitlyLocal = directive === 'require_relative' || directive === 'load' || specifier.startsWith('.');
+    const target = directive === 'require_relative'
+      ? relativeFileTarget(path, specifier, known, ['', '.rb', '/init.rb'])
+      : explicitlyLocal ? projectFileTarget(specifier, known, ['', '.rb', '/init.rb']) : null;
+    if (explicitlyLocal && !target) graph.diagnostics.push(error('GRAPH_UNRESOLVED', `Unresolved local Ruby dependency ${specifier}.`, path, lineOf(commentsMasked, match.index)));
+    graph.imports.push({ from: path, to: target ?? `ruby:${specifier}`, specifier, kind: directive === 'load' ? 'include' : 'require', line: lineOf(commentsMasked, match.index), external: !target });
+  }
+  const searchable = maskWithPatterns(commentsMasked, [/"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'/g]);
+  addCalls(path, searchable, graph, new Set(['if', 'unless', 'while', 'until', 'for', 'def', 'class', 'module', 'require', 'require_relative', 'load']));
+}
+
+function indexSwiftSymbols(path: string, text: string, graph: CodeGraph): void {
+  const searchable = maskWithPatterns(text, [/\/\*[\s\S]*?\*\//g, /\/\/[^\r\n]*/g, /"""[\s\S]*?"""|"(?:\\.|[^"\\])*"/g]);
+  for (const match of searchable.matchAll(/\b(class|struct|enum|protocol|actor|typealias)\s+([A-Za-z_]\w*)/g)) {
+    const name = match[2]!;
+    const line = lineOf(searchable, match.index);
+    graph.symbols.push({ id: `${path}#${name}@${line}`, name, path, line, kind: `Swift${match[1]![0]!.toUpperCase()}${match[1]!.slice(1)}` });
+  }
+  for (const match of searchable.matchAll(/\bfunc\s+([A-Za-z_]\w*)\s*\(/g)) {
+    const name = match[1]!;
+    const line = lineOf(searchable, match.index);
+    graph.symbols.push({ id: `${path}#${name}@${line}`, name, path, line, kind: 'SwiftFunction' });
+  }
+}
+
+function indexSwiftRelations(path: string, text: string, graph: CodeGraph): void {
+  const searchable = maskWithPatterns(text, [/\/\*[\s\S]*?\*\//g, /\/\/[^\r\n]*/g, /"""[\s\S]*?"""|"(?:\\.|[^"\\])*"/g]);
+  for (const match of searchable.matchAll(/^\s*(?:@\w+(?:\([^)]*\))?\s+)?import\s+(?:(?:class|struct|enum|protocol|func|var|let|typealias)\s+)?([\w.]+)/gm)) {
+    const specifier = match[1]!;
+    graph.imports.push({ from: path, to: `swift:${specifier}`, specifier, kind: 'import', line: lineOf(searchable, match.index), external: true });
+  }
+  addCalls(path, searchable, graph, new Set([
+    'if', 'for', 'while', 'switch', 'catch', 'func', 'init', 'deinit',
+    'private', 'fileprivate', 'internal', 'package',
+  ]));
+}
+
+function indexDartSymbols(path: string, text: string, graph: CodeGraph): void {
+  const searchable = maskWithPatterns(text, [/\/\*[\s\S]*?\*\//g, /\/\/[^\r\n]*/g, /"""[\s\S]*?"""|'''[\s\S]*?'''|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'/g]);
+  const reserved = new Set([
+    'assert', 'break', 'case', 'catch', 'class', 'const', 'continue', 'default', 'do',
+    'else', 'enum', 'extends', 'false', 'final', 'finally', 'for', 'if', 'in', 'is',
+    'new', 'null', 'rethrow', 'return', 'super', 'switch', 'this', 'throw', 'true',
+    'try', 'var', 'void', 'while', 'with', 'yield',
+  ]);
+  for (const match of searchable.matchAll(/\b(class|enum|mixin|extension|typedef)\s+([A-Za-z_]\w*)/g)) {
+    const name = match[2]!;
+    const line = lineOf(searchable, match.index);
+    graph.symbols.push({ id: `${path}#${name}@${line}`, name, path, line, kind: `Dart${match[1]![0]!.toUpperCase()}${match[1]!.slice(1)}` });
+  }
+  for (const match of searchable.matchAll(/^\s*(?:[\w<>,?[\] ]+\s+)([A-Za-z_]\w*)\s*\([^;{}]*\)\s*(?:async\*?|sync\*)?\s*(?:=>|\{)/gm)) {
+    const name = match[1]!;
+    if (reserved.has(name)) continue;
+    const line = lineOf(searchable, match.index);
+    graph.symbols.push({ id: `${path}#${name}@${line}`, name, path, line, kind: 'DartFunction' });
+  }
+}
+
+function indexDartRelations(
+  path: string,
+  text: string,
+  known: Set<string>,
+  graph: CodeGraph,
+  packageInfo: { directory: string; name: string } | null,
+): void {
+  const commentsMasked = maskWithPatterns(text, [/\/\*[\s\S]*?\*\//g, /\/\/[^\r\n]*/g]);
+  for (const match of commentsMasked.matchAll(/^\s*(import|export|part)\s+([^;]+);/gm)) {
+    const directive = match[1]!;
+    for (const uri of match[2]!.matchAll(/["']([^"']+)["']/g)) {
+      const specifier = uri[1]!;
+      const packageMatch = /^package:([^/]+)\/(.+)$/.exec(specifier);
+      const ownPackage = Boolean(packageMatch && packageInfo && packageMatch[1] === packageInfo.name);
+      const ownPackagePath = ownPackage ? packageMatch![2]! : null;
+      const explicitlyLocal = ownPackage || !/^(?:dart|package):/.test(specifier);
+      const packageRoot = packageInfo?.directory === '.' ? '' : `${packageInfo?.directory}/`;
+      const target = ownPackage
+        ? [`${packageRoot}lib/${ownPackagePath}`, `${packageRoot}lib/${ownPackagePath}.dart`].find((candidate) => known.has(candidate)) ?? null
+        : explicitlyLocal ? relativeFileTarget(path, specifier, known, ['', '.dart']) : null;
+      if (explicitlyLocal && !target) graph.diagnostics.push(error('GRAPH_UNRESOLVED', `Unresolved local Dart ${directive} ${specifier}.`, path, lineOf(commentsMasked, match.index)));
+      graph.imports.push({ from: path, to: target ?? `dart:${specifier}`, specifier, kind: directive === 'part' ? 'include' : directive as 'import' | 'export', line: lineOf(commentsMasked, match.index), external: !target });
+    }
+  }
+  const searchable = maskWithPatterns(commentsMasked, [/"""[\s\S]*?"""|'''[\s\S]*?'''|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'/g]);
+  addCalls(path, searchable, graph, new Set(['if', 'for', 'while', 'switch', 'catch', 'assert', 'throw']));
+}
+
+function indexScalaSymbols(path: string, text: string, graph: CodeGraph, declarations: Map<string, string>): void {
+  const searchable = maskWithPatterns(text, [/\/\*[\s\S]*?\*\//g, /\/\/[^\r\n]*/g, /"""[\s\S]*?"""|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'/g]);
+  const packageName = /^\s*package\s+([\w.]+)/m.exec(searchable)?.[1] ?? '';
+  for (const match of searchable.matchAll(/\b(class|object|trait|enum|type)\s+([A-Za-z_]\w*)/g)) {
+    const name = match[2]!;
+    const line = lineOf(searchable, match.index);
+    graph.symbols.push({ id: `${path}#${name}@${line}`, name, path, line, kind: `Scala${match[1]![0]!.toUpperCase()}${match[1]!.slice(1)}` });
+    declarations.set(packageName ? `${packageName}.${name}` : name, path);
+  }
+  for (const match of searchable.matchAll(/\bdef\s+([A-Za-z_]\w*)\s*(?:\[|[(])/g)) {
+    const name = match[1]!;
+    const line = lineOf(searchable, match.index);
+    graph.symbols.push({ id: `${path}#${name}@${line}`, name, path, line, kind: 'ScalaMethod' });
+    declarations.set(packageName ? `${packageName}.${name}` : name, path);
+  }
+}
+
+function indexScalaRelations(path: string, text: string, graph: CodeGraph, declarations: Map<string, string>): void {
+  const searchable = maskWithPatterns(text, [/\/\*[\s\S]*?\*\//g, /\/\/[^\r\n]*/g, /"""[\s\S]*?"""|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'/g]);
+  for (const match of searchable.matchAll(/^\s*import\s+([^\r\n]+)/gm)) {
+    const addedTargets = new Set<string>();
+    for (const raw of splitTopLevel(match[1]!)) {
+      const grouped = /^([A-Za-z_]\w*(?:\.[A-Za-z_]\w*)*)\.\{([^}]+)\}/.exec(raw);
+      const wildcard = /^([A-Za-z_]\w*(?:\.[A-Za-z_]\w*)*)\.(?:_|\*)(?:\s|$)/.exec(raw);
+      const specifiers = grouped
+        ? grouped[2]!.split(',').map((entry) => entry.trim().split(/\s*(?:=>|\bas\b)\s*/)[0]!)
+          .map((entry) => entry === '_' || entry === '*' ? grouped[1]! : `${grouped[1]}.${entry}`)
+        : [wildcard?.[1] ?? /^([A-Za-z_]\w*(?:\.[A-Za-z_]\w*)*)/.exec(raw)?.[1]].filter((entry): entry is string => Boolean(entry));
+      for (const specifier of specifiers) {
+        const allTargets = declarationTargets(specifier, declarations);
+        const targets = allTargets.filter((target) => target !== path);
+        if (allTargets.length && !targets.length) continue;
+        for (const target of targets.length ? targets : [null]) {
+          if (target && addedTargets.has(target)) continue;
+          if (target) addedTargets.add(target);
+          graph.imports.push({ from: path, to: target ?? `scala:${specifier}`, specifier, kind: 'import', line: lineOf(searchable, match.index), external: !target });
+        }
+      }
+    }
+  }
+  addCalls(path, searchable, graph, new Set(['if', 'for', 'while', 'match', 'catch', 'def', 'class', 'object', 'trait']));
+}
+
+function indexElixirSymbols(path: string, text: string, graph: CodeGraph, modules: Map<string, string>): void {
+  const searchable = maskWithPatterns(text, [/~[A-Z]?[a-z]?(?:\/(?:\\.|[^\/\\])*\/|"(?:\\.|[^"\\])*")/g, /#[^\r\n]*/g, /"""[\s\S]*?"""|'''[\s\S]*?'''|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'/g]);
+  for (const match of searchable.matchAll(/^\s*defmodule\s+([A-Z]\w*(?:\.[A-Z]\w*)*)/gm)) {
+    const fullName = match[1]!;
+    const name = fullName.split('.').at(-1)!;
+    const line = lineOf(searchable, match.index);
+    graph.symbols.push({ id: `${path}#${name}@${line}`, name, path, line, kind: 'ElixirModule' });
+    modules.set(fullName, path);
+  }
+  for (const match of searchable.matchAll(/^\s*(def|defp|defmacro|defmacrop)\s+([a-z_]\w*[!?]?)/gm)) {
+    const name = match[2]!;
+    const line = lineOf(searchable, match.index);
+    const kind = match[1]!.includes('macro') ? 'ElixirMacro' : 'ElixirFunction';
+    graph.symbols.push({ id: `${path}#${name}@${line}`, name, path, line, kind });
+  }
+}
+
+function indexElixirRelations(path: string, text: string, known: Set<string>, graph: CodeGraph, modules: Map<string, string>): void {
+  const commentsMasked = maskWithPatterns(text, [/#[^\r\n]*/g]);
+  for (const match of commentsMasked.matchAll(/\bCode\.(?:require_file|compile_file)\s*\(\s*"([^"]+)"\s*(?:,\s*__DIR__\s*)?\)/g)) {
+    const specifier = match[1]!;
+    const target = match[0].includes('__DIR__') || /^[.]/.test(specifier)
+      ? relativeFileTarget(path, specifier, known, ['', '.ex', '.exs'])
+      : [specifier, `${specifier}.ex`, `${specifier}.exs`].find((candidate) => known.has(candidate)) ?? null;
+    if (!target) graph.diagnostics.push(error('GRAPH_UNRESOLVED', `Unresolved local Elixir file dependency ${specifier}.`, path, lineOf(commentsMasked, match.index)));
+    graph.imports.push({ from: path, to: target ?? `elixir:${specifier}`, specifier, kind: 'require', line: lineOf(commentsMasked, match.index), external: !target });
+  }
+  const searchable = maskWithPatterns(commentsMasked, [/~[A-Z]?[a-z]?(?:\/(?:\\.|[^\/\\])*\/|"(?:\\.|[^"\\])*")/g, /"""[\s\S]*?"""|'''[\s\S]*?'''|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'/g]);
+  for (const match of searchable.matchAll(/^\s*(alias|import|require|use)\s+([A-Z]\w*(?:\.[A-Z]\w*)*)(?:\.\{([^}]+)\})?/gm)) {
+    const directive = match[1]!;
+    const prefix = match[2]!;
+    const specifiers = match[3]
+      ? match[3].split(',').map((entry) => `${prefix}.${entry.trim()}`).filter((entry) => /(?:^|\.)[A-Z]\w*$/.test(entry))
+      : [prefix];
+    for (const specifier of specifiers) {
+      const target = modules.get(specifier) ?? null;
+      graph.imports.push({ from: path, to: target ?? `elixir:${specifier}`, specifier, kind: directive === 'use' ? 'use' : directive === 'require' ? 'require' : 'import', line: lineOf(searchable, match.index), external: !target });
+    }
+  }
+  addCalls(path, searchable, graph, new Set(['if', 'unless', 'case', 'cond', 'for', 'with', 'def', 'defp', 'defmodule', 'alias', 'import', 'require', 'use']));
+}
+
+function indexHaskellSymbols(path: string, text: string, graph: CodeGraph, modules: Map<string, string>): void {
+  const searchable = maskWithPatterns(text, [/\{-[\s\S]*?-\}/g, /--[^\r\n]*/g, /"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'/g]);
+  const reserved = new Set([
+    'as', 'case', 'class', 'data', 'default', 'deriving', 'do', 'else', 'foreign',
+    'hiding', 'if', 'import', 'in', 'infix', 'infixl', 'infixr', 'instance', 'let',
+    'module', 'newtype', 'of', 'qualified', 'then', 'type', 'where',
+  ]);
+  const moduleMatch = /^\s*module\s+([A-Z]\w*(?:\.[A-Z]\w*)*)/m.exec(searchable);
+  if (moduleMatch) {
+    const fullName = moduleMatch[1]!;
+    const name = fullName.split('.').at(-1)!;
+    const line = lineOf(searchable, moduleMatch.index);
+    graph.symbols.push({ id: `${path}#${name}@${line}`, name, path, line, kind: 'HaskellModule' });
+    modules.set(fullName, path);
+  }
+  for (const match of searchable.matchAll(/^\s*(data|newtype|type|class)\s+(?:\([^)]*\)\s*=>\s*)?([A-Z]\w*)/gm)) {
+    const name = match[2]!;
+    const line = lineOf(searchable, match.index);
+    graph.symbols.push({ id: `${path}#${name}@${line}`, name, path, line, kind: `Haskell${match[1]![0]!.toUpperCase()}${match[1]!.slice(1)}` });
+  }
+  for (const match of searchable.matchAll(/^\s*([a-z_]\w*)\s+[^:=\r\n]*=/gm)) {
+    const name = match[1]!;
+    if (reserved.has(name)) continue;
+    const line = lineOf(searchable, match.index);
+    graph.symbols.push({ id: `${path}#${name}@${line}`, name, path, line, kind: 'HaskellFunction' });
+  }
+}
+
+function indexHaskellRelations(path: string, text: string, graph: CodeGraph, modules: Map<string, string>): void {
+  const searchable = maskWithPatterns(text, [/\{-[\s\S]*?-\}/g, /--[^\r\n]*/g, /"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'/g]);
+  for (const match of searchable.matchAll(/^\s*import\s+(?:qualified\s+)?([A-Z]\w*(?:\.[A-Z]\w*)*)/gm)) {
+    const specifier = match[1]!;
+    const target = modules.get(specifier) ?? null;
+    graph.imports.push({ from: path, to: target ?? `haskell:${specifier}`, specifier, kind: 'import', line: lineOf(searchable, match.index), external: !target });
+  }
+  addCalls(path, searchable, graph, new Set(['if', 'then', 'else', 'case', 'of', 'let', 'where', 'module', 'import']));
+}
+
+function luaTarget(specifier: string, known: Set<string>): string | null {
+  const modulePath = specifier.replace(/\./g, '/');
+  return projectFileTarget(modulePath, known, ['.lua', '/init.lua']);
+}
+
+function indexLuaSymbols(path: string, text: string, graph: CodeGraph): void {
+  const searchable = maskWithPatterns(text, [/--\[(=*)\[[\s\S]*?\]\1\]/g, /--[^\r\n]*/g, /\[(=*)\[[\s\S]*?\]\1\]|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'/g]);
+  for (const match of searchable.matchAll(/^\s*(?:local\s+)?function\s+([A-Za-z_]\w*(?:[.:][A-Za-z_]\w*)*)\s*\(/gm)) {
+    const name = match[1]!.split(/[.:]/).at(-1)!;
+    const line = lineOf(searchable, match.index);
+    graph.symbols.push({ id: `${path}#${name}@${line}`, name, path, line, kind: 'LuaFunction' });
+  }
+  for (const match of searchable.matchAll(/^\s*(?:local\s+)?([A-Za-z_]\w*)\s*=\s*function\s*\(/gm)) {
+    const name = match[1]!;
+    const line = lineOf(searchable, match.index);
+    graph.symbols.push({ id: `${path}#${name}@${line}`, name, path, line, kind: 'LuaFunction' });
+  }
+}
+
+function indexLuaRelations(path: string, text: string, known: Set<string>, graph: CodeGraph): void {
+  const commentsMasked = maskWithPatterns(text, [/--\[(=*)\[[\s\S]*?\]\1\]/g, /--[^\r\n]*/g]);
+  for (const match of commentsMasked.matchAll(/\b(require|dofile|loadfile)\s*(?:\(\s*)?["']([^"']+)["']/g)) {
+    const directive = match[1]!;
+    const specifier = match[2]!;
+    const target = directive === 'require'
+      ? luaTarget(specifier, known)
+      : projectFileTarget(specifier, known, ['', '.lua']);
+    const explicitlyLocal = directive !== 'require' || /^[./]/.test(specifier) || specifier.endsWith('.lua');
+    if (explicitlyLocal && !target) graph.diagnostics.push(error('GRAPH_UNRESOLVED', `Unresolved local Lua dependency ${specifier}.`, path, lineOf(commentsMasked, match.index)));
+    graph.imports.push({ from: path, to: target ?? `lua:${specifier}`, specifier, kind: directive === 'require' ? 'require' : 'include', line: lineOf(commentsMasked, match.index), external: !target });
+  }
+  const searchable = maskWithPatterns(commentsMasked, [/\[(=*)\[[\s\S]*?\]\1\]|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'/g]);
+  addCalls(path, searchable, graph, new Set(['if', 'for', 'while', 'function', 'require', 'dofile', 'loadfile', 'type']));
+}
+
+function indexZigSymbols(path: string, text: string, graph: CodeGraph): void {
+  const searchable = maskWithPatterns(text, [/\/\*[\s\S]*?\*\//g, /\/\/[^\r\n]*/g, /"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'/g]);
+  for (const match of searchable.matchAll(/\b(?:pub\s+|export\s+|extern\s+|inline\s+|noinline\s+)*fn\s+([A-Za-z_]\w*)\s*\(/g)) {
+    const name = match[1]!;
+    const line = lineOf(searchable, match.index);
+    graph.symbols.push({ id: `${path}#${name}@${line}`, name, path, line, kind: 'ZigFunction' });
+  }
+  for (const match of searchable.matchAll(/\b(?:pub\s+)?const\s+([A-Za-z_]\w*)\s*=\s*(struct|enum|union|opaque)\b/g)) {
+    const name = match[1]!;
+    const line = lineOf(searchable, match.index);
+    graph.symbols.push({ id: `${path}#${name}@${line}`, name, path, line, kind: `Zig${match[2]![0]!.toUpperCase()}${match[2]!.slice(1)}` });
+  }
+}
+
+function indexZigRelations(path: string, text: string, known: Set<string>, graph: CodeGraph): void {
+  const commentsMasked = maskWithPatterns(text, [/\/\*[\s\S]*?\*\//g, /\/\/[^\r\n]*/g]);
+  for (const match of commentsMasked.matchAll(/@import\s*\(\s*"([^"]+)"\s*\)/g)) {
+    const specifier = match[1]!;
+    const explicitlyLocal = /^[./]/.test(specifier) || specifier.endsWith('.zig');
+    const target = explicitlyLocal ? relativeFileTarget(path, specifier, known, ['', '.zig']) : null;
+    if (explicitlyLocal && !target) graph.diagnostics.push(error('GRAPH_UNRESOLVED', `Unresolved local Zig import ${specifier}.`, path, lineOf(commentsMasked, match.index)));
+    graph.imports.push({ from: path, to: target ?? `zig:${specifier}`, specifier, kind: 'import', line: lineOf(commentsMasked, match.index), external: !target });
+  }
+  const searchable = maskWithPatterns(commentsMasked, [/"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'/g]);
+  addCalls(path, searchable, graph, new Set(['if', 'for', 'while', 'switch', 'catch', 'fn', 'asm', 'comptime']));
+}
+
+function indexSoliditySymbols(path: string, text: string, graph: CodeGraph): void {
+  const searchable = maskWithPatterns(text, [/\/\*[\s\S]*?\*\//g, /\/\/[^\r\n]*/g, /"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'/g]);
+  for (const match of searchable.matchAll(/\b(contract|library|interface|struct|enum)\s+([A-Za-z_]\w*)/g)) {
+    const name = match[2]!;
+    const line = lineOf(searchable, match.index);
+    graph.symbols.push({ id: `${path}#${name}@${line}`, name, path, line, kind: `Solidity${match[1]![0]!.toUpperCase()}${match[1]!.slice(1)}` });
+  }
+  for (const match of searchable.matchAll(/\bfunction\s+([A-Za-z_]\w*)\s*\(/g)) {
+    const name = match[1]!;
+    const line = lineOf(searchable, match.index);
+    graph.symbols.push({ id: `${path}#${name}@${line}`, name, path, line, kind: 'SolidityFunction' });
+  }
+}
+
+function indexSolidityRelations(path: string, text: string, known: Set<string>, graph: CodeGraph): void {
+  const commentsMasked = maskWithPatterns(text, [/\/\*[\s\S]*?\*\//g, /\/\/[^\r\n]*/g]);
+  for (const match of commentsMasked.matchAll(/\bimport\s+(?:[^"';]*?\s+from\s+)?["']([^"']+)["']\s*;/g)) {
+    const specifier = match[1]!;
+    const directProjectTarget = known.has(specifier) ? specifier : null;
+    const explicitlyLocal = /^[.]/.test(specifier) || directProjectTarget !== null;
+    const target = directProjectTarget ?? (explicitlyLocal ? relativeFileTarget(path, specifier, known, ['', '.sol']) : null);
+    if (explicitlyLocal && !target) graph.diagnostics.push(error('GRAPH_UNRESOLVED', `Unresolved local Solidity import ${specifier}.`, path, lineOf(commentsMasked, match.index)));
+    graph.imports.push({ from: path, to: target ?? `solidity:${specifier}`, specifier, kind: 'import', line: lineOf(commentsMasked, match.index), external: !target });
+  }
+  const searchable = maskWithPatterns(commentsMasked, [/"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'/g]);
+  addCalls(path, searchable, graph, new Set(['if', 'for', 'while', 'require', 'assert', 'revert', 'function', 'modifier', 'constructor']));
+}
+
+function indexObjectiveCSymbols(path: string, text: string, graph: CodeGraph): void {
+  const searchable = maskWithPatterns(text, [/\/\*[\s\S]*?\*\//g, /\/\/[^\r\n]*/g, /@"(?:\\.|[^"\\])*"|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'/g]);
+  for (const match of searchable.matchAll(/@(interface|implementation|protocol)\s+([A-Za-z_]\w*)/g)) {
+    const name = match[2]!;
+    const line = lineOf(searchable, match.index);
+    if (!graph.symbols.some((symbol) => symbol.path === path && symbol.name === name && symbol.line === line)) {
+      graph.symbols.push({ id: `${path}#${name}@${line}`, name, path, line, kind: `ObjectiveC${match[1]![0]!.toUpperCase()}${match[1]!.slice(1)}` });
+    }
+  }
+  for (const match of searchable.matchAll(/^\s*[-+]\s*\([^)]*\)\s*([^;{\r\n]+)/gm)) {
+    const signature = match[1]!;
+    const components = [...signature.matchAll(/\b([A-Za-z_]\w*)\s*:/g)].map((component) => component[1]!);
+    const name = components.length
+      ? `${components.join(':')}:`
+      : /^([A-Za-z_]\w*)/.exec(signature)?.[1];
+    if (!name) continue;
+    const line = lineOf(searchable, match.index);
+    const preceding = searchable.slice(0, match.index);
+    const ownerMatch = [...preceding.matchAll(/@(interface|implementation|protocol)\s+([A-Za-z_]\w*)|@end/g)].at(-1);
+    const container = ownerMatch?.[2];
+    graph.symbols.push({
+      id: `${path}#${name}@${line}`,
+      name,
+      path,
+      line,
+      kind: 'ObjectiveCMethod',
+      ...(container ? { container } : {}),
+    });
+  }
+}
+
+function indexObjectiveCRelations(path: string, text: string, graph: CodeGraph): void {
+  const searchable = maskWithPatterns(text, [/\/\*[\s\S]*?\*\//g, /\/\/[^\r\n]*/g, /@"(?:\\.|[^"\\])*"|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'/g]);
+  for (const match of searchable.matchAll(/\[\s*([A-Za-z_]\w*)\s+([^\]\r\n]+)\]/g)) {
+    const receiver = match[1]!;
+    const message = match[2]!;
+    const components = [...message.matchAll(/\b([A-Za-z_]\w*)\s*:/g)].map((component) => component[1]!);
+    const selector = components.length
+      ? `${components.join(':')}:`
+      : /^([A-Za-z_]\w*)/.exec(message)?.[1];
+    if (!selector) continue;
+    const candidates = graph.symbols.filter((symbol) =>
+      symbol.name === selector && symbol.kind === 'ObjectiveCMethod' && symbol.container === receiver);
+    const implementation = candidates.find((candidate) =>
+      graph.symbols.some((symbol) => symbol.path === candidate.path
+        && symbol.name === receiver && symbol.kind === 'ObjectiveCImplementation'));
+    const target = implementation?.id ?? (candidates.length === 1 ? candidates[0]!.id : null);
+    graph.calls.push({ path, line: lineOf(searchable, match.index), expression: `${receiver}.${selector}`, target });
+  }
+}
+
+function indexFsharpSymbols(path: string, text: string, graph: CodeGraph, declarations: Map<string, string>): void {
+  const searchable = maskWithPatterns(text, [/\(\*[\s\S]*?\*\)/g, /\/\/[^\r\n]*/g, /@"(?:""|[^"])*"|"""[\s\S]*?"""|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'/g]);
+  const namespaceName = /^\s*namespace\s+([\w.]+)/m.exec(searchable)?.[1] ?? '';
+  const moduleMatches = [...searchable.matchAll(/^\s*module\s+(?:rec\s+)?([\w.]+)/gm)];
+  for (const moduleMatch of moduleMatches) {
+    const declaredName = moduleMatch[1]!;
+    const fullName = namespaceName && !declaredName.includes('.') ? `${namespaceName}.${declaredName}` : declaredName;
+    const name = declaredName.split('.').at(-1)!;
+    const line = lineOf(searchable, moduleMatch.index);
+    graph.symbols.push({ id: `${path}#${name}@${line}`, name, path, line, kind: 'FsharpModule' });
+    declarations.set(fullName, path);
+  }
+  const firstModule = moduleMatches[0]?.[1];
+  const scope = firstModule
+    ? namespaceName && !firstModule.includes('.') ? `${namespaceName}.${firstModule}` : firstModule
+    : namespaceName;
+  for (const match of searchable.matchAll(/^\s*type\s+([A-Za-z_]\w*)/gm)) {
+    const name = match[1]!;
+    const line = lineOf(searchable, match.index);
+    graph.symbols.push({ id: `${path}#${name}@${line}`, name, path, line, kind: 'FsharpType' });
+    declarations.set(scope ? `${scope}.${name}` : name, path);
+  }
+  for (const match of searchable.matchAll(/^\s*let\s+(?:inline\s+|rec\s+|private\s+|internal\s+)*([A-Za-z_]\w*)\b/gm)) {
+    const name = match[1]!;
+    const line = lineOf(searchable, match.index);
+    graph.symbols.push({ id: `${path}#${name}@${line}`, name, path, line, kind: 'FsharpValue' });
+    declarations.set(scope ? `${scope}.${name}` : name, path);
+  }
+}
+
+function indexFsharpRelations(path: string, text: string, graph: CodeGraph, declarations: Map<string, string>): void {
+  const commentsMasked = maskWithPatterns(text, [/\(\*[\s\S]*?\*\)/g, /\/\/[^\r\n]*/g]);
+  for (const match of commentsMasked.matchAll(/^\s*#load\s+@"([^"]+)"|^\s*#load\s+"([^"]+)"/gm)) {
+    const specifier = match[1] ?? match[2]!;
+    const target = relativeFileTarget(path, specifier, new Set(graph.files), ['', '.fs', '.fsx']);
+    if (!target) graph.diagnostics.push(error('GRAPH_UNRESOLVED', `Unresolved local F# load ${specifier}.`, path, lineOf(commentsMasked, match.index)));
+    graph.imports.push({ from: path, to: target ?? `fsharp:${specifier}`, specifier, kind: 'include', line: lineOf(commentsMasked, match.index), external: !target });
+  }
+  const searchable = maskWithPatterns(commentsMasked, [/@"(?:""|[^"])*"|"""[\s\S]*?"""|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'/g]);
+  for (const match of searchable.matchAll(/^\s*open\s+(?:type\s+)?([\w.]+)/gm)) {
+    const specifier = match[1]!;
+    const allTargets = declarationTargets(specifier, declarations);
+    const targets = allTargets.filter((target) => target !== path);
+    if (allTargets.length && !targets.length) continue;
+    for (const target of targets.length ? targets : [null]) {
+      graph.imports.push({ from: path, to: target ?? `fsharp:${specifier}`, specifier, kind: 'using', line: lineOf(searchable, match.index), external: !target });
+    }
+  }
+  addCalls(path, searchable, graph, new Set(['if', 'for', 'while', 'match', 'function', 'fun', 'let', 'use', 'open', 'type']));
+}
+
+function indexVbSymbols(path: string, text: string, graph: CodeGraph, declarations: Map<string, string>): void {
+  const searchable = maskWithPatterns(text, [/'[^\r\n]*/g, /"(?:[^"]|"")*"/g]);
+  const namespaceName = /^\s*Namespace\s+([\w.]+)/im.exec(searchable)?.[1] ?? '';
+  for (const match of searchable.matchAll(/^\s*(?:(?:Public|Private|Friend|Protected|Partial|MustInherit|NotInheritable)\s+)*(Class|Module|Interface|Structure|Enum)\s+([A-Za-z_]\w*)/gim)) {
+    const name = match[2]!;
+    const line = lineOf(searchable, match.index);
+    graph.symbols.push({ id: `${path}#${name}@${line}`, name, path, line, kind: `Vb${match[1]![0]!.toUpperCase()}${match[1]!.slice(1).toLowerCase()}` });
+    declarations.set(namespaceName ? `${namespaceName}.${name}` : name, path);
+  }
+  for (const match of searchable.matchAll(/^\s*(?:(?:Public|Private|Friend|Protected|Shared|Overrides|Overridable|MustOverride|Async|Iterator|Partial)\s+)*(?:Sub|Function)\s+([A-Za-z_]\w*)\s*\(/gim)) {
+    const name = match[1]!;
+    const line = lineOf(searchable, match.index);
+    graph.symbols.push({ id: `${path}#${name}@${line}`, name, path, line, kind: 'VbMethod' });
+    declarations.set(namespaceName ? `${namespaceName}.${name}` : name, path);
+  }
+}
+
+function indexVbRelations(path: string, text: string, graph: CodeGraph, declarations: Map<string, string>): void {
+  const searchable = maskWithPatterns(text, [/'[^\r\n]*/g, /"(?:[^"]|"")*"/g]);
+  for (const match of searchable.matchAll(/^\s*Imports\s+([^\r\n]+)/gim)) {
+    for (const clause of splitTopLevel(match[1]!)) {
+      const parsed = /^(?:([A-Za-z_]\w*)\s*=\s*)?([A-Za-z_]\w*(?:\.[A-Za-z_]\w*)*)$/.exec(clause);
+      if (!parsed) continue;
+      const alias = parsed[1];
+      const targetSpecifier = parsed[2]!;
+      const specifier = alias ? `${alias}=${targetSpecifier}` : targetSpecifier;
+      const allTargets = declarationTargets(targetSpecifier, declarations);
+      const targets = allTargets.filter((target) => target !== path);
+      if (allTargets.length && !targets.length) continue;
+      for (const target of targets.length ? targets : [null]) {
+        graph.imports.push({ from: path, to: target ?? `vb:${targetSpecifier}`, specifier, kind: 'using', line: lineOf(searchable, match.index), external: !target });
+      }
+    }
+  }
+  addCalls(path, searchable, graph, new Set(['If', 'For', 'While', 'Select', 'Catch', 'SyncLock', 'Sub', 'Function', 'GetType', 'NameOf']));
 }
 
 export async function loadGraph(root: string): Promise<CodeGraph> {

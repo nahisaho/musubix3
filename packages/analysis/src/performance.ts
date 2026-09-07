@@ -1,5 +1,5 @@
 import { error, validateRequirements, type Diagnostic, type Requirement } from '../../domain/src/index.js';
-import { adapterInvocation, normalizeAdapterReport, readAdapterOutput } from './adapters.js';
+import { adapterInvocation, mergeAdapterArgs, normalizeAdapterReport, readAdapterOutput } from './adapters.js';
 import { loadConfig, type CommandConfig } from './config.js';
 import { digest, exists, files, readText, safePath, within, writeJson } from './files.js';
 import type { ProcessResult } from './process.js';
@@ -227,13 +227,11 @@ function configuredInvocation(command: CommandConfig): {
   }
   if (command.adapter) {
     const invocation = adapterInvocation(command.adapter, command.name);
+    const configuredArgs = command.args.map((arg) => arg.replaceAll('{reportPath}', invocation.reportPath));
     return {
       reportPath: invocation.reportPath,
       sourceKind: invocation.source,
-      args: [
-        ...command.args.map((arg) => arg.replaceAll('{reportPath}', invocation.reportPath)),
-        ...invocation.args,
-      ],
+      args: mergeAdapterArgs(command.adapter, configuredArgs, invocation.args),
     };
   }
   return null;

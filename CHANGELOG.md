@@ -2,6 +2,30 @@
 
 ## Unreleased
 
+## 0.1.3 - 2026-09-08
+
+- Add a built-in `dotnet` test adapter with xUnit `DisplayName` targeting and
+  recursive TRX result normalization.
+- Exclude manifest-scoped .NET `bin/` and `obj/` output plus the conventional
+  project-local `.nuget/packages/` cache from snapshots and Code Graph indexing.
+- Exclude Gradle `.gradle/`, Dart `.dart_tool/`, SwiftPM `.build/`, Zig
+  `.zig-cache/`/`zig-out/`, and .NET `.dotnet/` CLI homes only when a nearby
+  ecosystem manifest identifies them as generated project state.
+- Detect C#/.NET projects in `mutation doctor` and safely probe a pinned local
+  Stryker.NET tool manifest without installing or downloading tools.
+- Add conservative Code Graph adapters for Kotlin, Ruby, Swift, Dart, Scala,
+  Elixir, Haskell, Lua, Zig, Solidity, Objective-C/Objective-C++, F# and
+  Visual Basic .NET, including local dependencies, declarations and direct calls.
+- Add Haskell, Lua, and Visual Basic trace-comment extraction with string
+  masking, and expose annotated/executed test identity counts as constitution
+  metrics.
+- Reduce native Code Graph false positives and improve Scala, Visual Basic,
+  Julia, PHP, Swift, Dart, Haskell, and Objective-C resolution precision.
+- Normalize JUnit identities from `system-out` display names independently of
+  XML attribute order, and recognize nested F# `(* ... *)` trace comments.
+- Validate large applications across all 23 supported language groups: 475
+  authored implementation files and 345 traced native tests, all gate-ready.
+
 ## 0.1.2 - 2026-09-07
 
 - Exclude conventional `.venv` and `venv` Python environments identified by a

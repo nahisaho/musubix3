@@ -1,6 +1,6 @@
 # musubix3
 
-**Latest published v0.1.2 · GitHub Copilot CLI only · Node.js ≥20 · TypeScript · MIT**
+**Latest release v0.1.3 · GitHub Copilot CLI only · Node.js ≥20 · TypeScript · MIT**
 
 [日本語](README-ja.md)
 
@@ -21,16 +21,16 @@ or requirements are satisfiable.
 Run the published package from the target project:
 
 ```sh
-npx musubix3@0.1.2 --version
-npx musubix3@0.1.2 init --dry-run
-npx musubix3@0.1.2 init
+npx musubix3@0.1.3 --version
+npx musubix3@0.1.3 init --dry-run
+npx musubix3@0.1.3 init
 copilot
 ```
 
 For a reproducible project-local installation:
 
 ```sh
-npm install --save-dev --save-exact musubix3@0.1.2
+npm install --save-dev --save-exact musubix3@0.1.3
 npx --no-install musubix3 --version
 npx --no-install musubix3 init --dry-run
 npx --no-install musubix3 init
@@ -279,9 +279,11 @@ Where/While/When clauses. Japanese controlled forms are documented in
 [README-ja.md](README-ja.md). These are syntax checks, not natural-language
 understanding; arbitrary prose is deliberately rejected.
 
-Source/test trace annotations are read from comments in JS/TS, Rust, Python, Go,
-Java/Kotlin, C/C++, C#, Ruby, PHP and Swift. JS/TS parsing excludes string
-literals; other languages require line or block comments:
+Source/test trace annotations are read from language comments. JS/TS uses
+parser-aware comment locations; Haskell supports `--` and `{- ... -}`, Lua
+supports `--` and `--[[ ... ]]`, and Visual Basic supports apostrophe comments
+including `'''` XML documentation. These scanners exclude string literals;
+other languages require their supported line or block comments:
 
 ```ts
 /** @id CODE-AUTH-001
@@ -380,7 +382,10 @@ Use `tdd.redPreflightCommands` to reference plain configured formatter commands;
 they must pass before Red captures the authoritative test fingerprint.
 Conventional `.venv` and `venv` Python environments containing a regular
 `pyvenv.cfg` are excluded from source snapshots and Code Graph indexing.
-Arbitrary source directories containing that marker remain tracked.
+Gradle `.gradle/`, Dart `.dart_tool/`, SwiftPM `.build/`, Zig
+`.zig-cache/`/`zig-out/`, and .NET `.dotnet/` CLI homes are excluded only when
+their parent contains the corresponding project manifest. Arbitrary same-named
+source directories remain tracked.
 `codeGraph.mode` defaults to `compatible`, where unresolved computed
 `import()`/`require()` calls remain warnings. Set it to `strict` to make those
 diagnostics gate-blocking errors. A trusted strict policy baseline prevents
@@ -416,15 +421,18 @@ failure or skip blocks readiness regardless of `requiredChecks.commands`.
 Optional command failures are nonblocking unless a constitution rule rejects the
 measured count. No configured commands is skipped, not passed.
 TDD commands require either command-specific `tddArgs` plus a `tddReport`, or a
-built-in `vitest`, `jest`, `pytest`, `go-test`, `cargo`, or `junit` adapter.
+built-in `vitest`, `jest`, `pytest`, `go-test`, `cargo`, `junit`, or `dotnet` adapter.
 Explicit custom configuration takes precedence. Adapters derive targeted
 arguments and normalize native JSON/JSONL/XML into `musubix-json`. Vitest/Jest
 reports may contain unrelated skipped tests; targeted TDD selects only the
 requested ID. pytest requires the JSON-report plugin and underscore-form test
 names such as `test_TEST_APP_001`. Go uses a `TEST-*` subtest name, Cargo uses a
-Rust identifier such as `test_app_001`. JUnit methods must carry an exact
-`@Tag("TEST-APP-001")`; keep the underscore-form ID in the method name so it is
-recoverable from the launcher's XML report. Before each phase, musubix3 deletes
+Rust identifier such as `test_app_001`. JUnit methods should carry an exact
+`@Tag("TEST-APP-001")` and an ID-bearing method name or `@DisplayName`; the
+normalizer reads both testcase attributes and JUnit Platform display-name output.
+xUnit tests use
+`[Fact(DisplayName = "TEST-APP-001 ...")]` so TRX preserves the identity.
+Before each phase, musubix3 deletes
 the previous report, creates any required report parent directory, and requires a fresh
 `musubix-json` document containing exactly the selected test. Its status must be
 `failed` during Red and `passed` during Green/Refactor; `skipped`, `error`,
@@ -437,9 +445,10 @@ informational. Legacy chronology without order evidence fails with an explicit
 migration diagnostic. Missing, reordered, altered or orphaned records invalidate
 the evidence.
 
-CI executes isolated native contracts for all six adapters: Vitest, Jest,
+CI executes isolated native contracts for Vitest, Jest,
 pytest with `pytest-json-report`, Go test, Cargo test, and the pinned JUnit
-Platform Console. Each fixture contains an unrelated failing test, proving that
+Platform Console. The .NET adapter consumes standard TRX and is additionally
+validated by unit contracts and the C# application experiment. Each fixture contains an unrelated failing test, proving that
 the generated selector executes only the requested identity and that the real
 native report normalizes correctly. Jest is development-only; the Python,
 Go/Rust, and Java/JUnit tooling is provisioned only in CI and is not shipped as
@@ -510,8 +519,9 @@ Unrelated concurrent events may be emitted out of timestamp order, so strict mod
 checks causal tool/result ordering rather than imposing a global timestamp sort.
 If project inputs change while a gate is running, `input-stability` reports each
 added, modified, or deleted path with before/after SHA-256 values. Standard
-Cargo/Maven `target/` output is excluded, but source-like generated inputs remain
-fail-closed. Built-in adapters own their targeting and report arguments. A
+Cargo/Maven `target/`, manifest-scoped .NET `bin/` and `obj/`, and project-local
+`.nuget/packages/` output are excluded, but source-like generated inputs remain fail-closed.
+Built-in adapters own their targeting and report arguments. A
 legacy leading Cargo/Go `test` subcommand is merged safely; conflicting report
 flags such as `--json-report` are rejected.
 Changes during a gate fail input stability; later source/config changes make
@@ -608,14 +618,18 @@ transcript/session fields into the Ed25519 signature.
   best-effort; symbol impact conservatively expands at **file** level. Nonliteral
   loading is a compatibility warning unless `codeGraph.mode` is `strict`, when
   it blocks graph gates; unresolved external packages remain warnings and
-  unresolved local imports are errors. Bundler-specific resolution, reflection and other
-  Rust, Python, Go, Java, C/C++, C#, PHP, R and Julia have conservative native
-  adapters for local imports/modules/includes, declarations and direct calls.
-  Other languages are reported as unsupported. Ignored
-  build/cache/dependency directories and
+  unresolved local imports are errors. Bundler-specific resolution and
+  reflection remain out of scope. Rust, Python, Go, Java, Kotlin, C/C++,
+  Objective-C/Objective-C++, C#, F#, Visual Basic .NET, Ruby, PHP, Swift, Dart,
+  Scala, Elixir, Haskell, Lua, Zig, Solidity, R and Julia have conservative
+  native adapters for local imports/modules/includes, declarations and direct
+  calls. Other extensions are omitted from graph inputs. Ignored build/cache/dependency directories and
   symlinks are not indexed; custom `.gitignore` rules are not a scan filter.
-- Trace annotations support all languages listed above. Do not create JS/TS
-  proxy files for another language.
+- Remaining architectural work includes evidence-backed strict call-resolution
+  ratio policy and broader native test-runner adapter coverage. Neither is
+  enabled speculatively by this release.
+- Trace annotation comment syntax is documented above. Do not create JS/TS proxy
+  files for another language.
 - Knowledge ranking is **TF-IDF/cosine, not GraphRAG** or semantic reasoning.
   Japanese uses character bigrams. Git co-change and author-directory counts
   cover at most 100 commits/30 files per commit; they indicate correlation and

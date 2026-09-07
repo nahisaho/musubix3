@@ -3,7 +3,7 @@ import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import {
   buildTrace, checkTrace, cycles, defaultConfig, graphGate, graphImpact, indexGraph, loadGraph, loadTrace,
-  matchGlob, readText, traceImpact, writeText,
+  evidenceSnapshot, files, matchGlob, readText, traceImpact, writeText,
 } from '../packages/analysis/src/index.js';
 import { code, fixture, project } from './helpers.js';
 
@@ -96,6 +96,55 @@ describe('trace graph', () => {
     expect((await checkTrace(root, trace, true)).valid).toBe(true);
   });
 
+  it('reads Haskell, F#, Lua, and Visual Basic annotations without treating strings as comments', async () => {
+    const root = await project();
+    await writeText(root, 'src/native.hs', [
+      '-- @id CODE-HASKELL-001',
+      '-- @implements REQ-EXAMPLE-001',
+      '{-',
+      '@id CODE-HASKELL-002',
+      '@implements REQ-EXAMPLE-001',
+      '-}',
+      '{- outer {- nested -} @id CODE-HASKELL-003 @implements REQ-EXAMPLE-001 -}',
+      'fake = "-- @id CODE-FAKE-HASKELL-001 @implements REQ-EXAMPLE-001"',
+    ].join('\n'));
+    await writeText(root, 'src/native.lua', [
+      '-- @id CODE-LUA-001',
+      '-- @implements REQ-EXAMPLE-001',
+      '--[[',
+      '@id CODE-LUA-002',
+      '@implements REQ-EXAMPLE-001',
+      ']]',
+      'local fake = "-- @id CODE-FAKE-LUA-001 @implements REQ-EXAMPLE-001"',
+      'local long_fake = [[-- @id CODE-FAKE-LUA-002 @implements REQ-EXAMPLE-001]]',
+    ].join('\n'));
+    await writeText(root, 'src/Native.fs', [
+      "let identity (value: 'T) = value",
+      '(*',
+      '@id CODE-FSHARP-001',
+      '(* nested comment *)',
+      '@implements REQ-EXAMPLE-001',
+      '*)',
+      'let fake = "(* @id CODE-FAKE-FSHARP-001 @implements REQ-EXAMPLE-001 *)"',
+    ].join('\n'));
+    await writeText(root, 'src/Native.vb', [
+      "' @id CODE-VB-001",
+      "' @implements REQ-EXAMPLE-001",
+      'Dim separator = 1',
+      "''' @id CODE-VB-002",
+      "''' @implements REQ-EXAMPLE-001",
+      'Dim fake = "\' @id CODE-FAKE-VB-001 @implements REQ-EXAMPLE-001"',
+    ].join('\n'));
+    const trace = await buildTrace(root);
+    expect(trace.nodes.map((node) => node.id)).toEqual(expect.arrayContaining([
+      'CODE-HASKELL-001', 'CODE-HASKELL-002', 'CODE-HASKELL-003',
+      'CODE-FSHARP-001',
+      'CODE-LUA-001', 'CODE-LUA-002',
+      'CODE-VB-001', 'CODE-VB-002',
+    ]));
+    expect(trace.nodes.some((node) => node.id.includes('FAKE'))).toBe(false);
+  });
+
   it('does not fabricate coverage from template tails or JSX content', async () => {
     const root = await project();
     await writeText(root, 'src/template.ts', 'export const text = `prefix ${42} /** @id CODE-FAKE-001\n * @implements REQ-EXAMPLE-001\n */`;');
@@ -123,6 +172,58 @@ describe('trace graph', () => {
 });
 
 describe('compiler graph', () => {
+  it('excludes only manifest-scoped generated caches from stable inputs', async () => {
+    const root = await fixture({
+      'Root.sln': '',
+      '.dotnet/cache.ts': 'export const generated = 1;',
+      'gradle/build.gradle.kts': '',
+      'gradle/.gradle/cache.ts': 'export const generated = 1;',
+      'dart/pubspec.yaml': 'name: example\n',
+      'dart/.dart_tool/cache.dart': 'void generated() {}',
+      'swift/Package.swift': '// swift-tools-version: 6.0\n',
+      'swift/.build/cache.swift': 'func generated() {}',
+      'zig/build.zig.zon': '.{}',
+      'zig/.zig-cache/cache.zig': 'pub fn generated() void {}',
+      'zig/zig-out/cache.zig': 'pub fn generated() void {}',
+      'dotnet/App.vbproj': '<Project />',
+      'dotnet/.dotnet/cache.vb': 'Module Generated\nEnd Module',
+      'plain/.gradle/source.ts': 'export const gradle = 1;',
+      'plain/.dart_tool/source.dart': 'void dartSource() {}',
+      'plain/.build/source.swift': 'func swiftSource() {}',
+      'plain/.zig-cache/source.zig': 'pub fn zigCacheSource() void {}',
+      'plain/zig-out/source.zig': 'pub fn zigOutSource() void {}',
+      'plain/.dotnet/source.cs': 'class DotnetSource {}',
+    });
+    const tracked = await files(root);
+    expect(tracked).toEqual(expect.arrayContaining([
+      'plain/.gradle/source.ts',
+      'plain/.dart_tool/source.dart',
+      'plain/.build/source.swift',
+      'plain/.zig-cache/source.zig',
+      'plain/zig-out/source.zig',
+      'plain/.dotnet/source.cs',
+    ]));
+    expect(tracked).not.toEqual(expect.arrayContaining([
+      '.dotnet/cache.ts',
+      'gradle/.gradle/cache.ts',
+      'dart/.dart_tool/cache.dart',
+      'swift/.build/cache.swift',
+      'zig/.zig-cache/cache.zig',
+      'zig/zig-out/cache.zig',
+      'dotnet/.dotnet/cache.vb',
+    ]));
+    const before = await evidenceSnapshot(root);
+    await writeText(root, 'gradle/.gradle/cache.ts', 'export const generated = 2;');
+    await writeText(root, 'dart/.dart_tool/cache.dart', 'void generatedAgain() {}');
+    await writeText(root, 'swift/.build/cache.swift', 'func generatedAgain() {}');
+    await writeText(root, 'zig/.zig-cache/cache.zig', 'pub fn generatedAgain() void {}');
+    await writeText(root, 'zig/zig-out/cache.zig', 'pub fn generatedAgain() void {}');
+    await writeText(root, '.dotnet/cache.ts', 'export const generated = 2;');
+    expect(await evidenceSnapshot(root)).toEqual(before);
+    await writeText(root, 'plain/.gradle/source.ts', 'export const gradle = 2;');
+    expect(await evidenceSnapshot(root)).not.toEqual(before);
+  });
+
   it('indexes static, re-export, dynamic, require, symbols and call targets', async () => {
     const root = await fixture({
       'src/a.ts': 'export function work() { return 1; }',
@@ -273,7 +374,7 @@ describe('compiler graph', () => {
 
   it('indexes PHP includes, namespace uses, types, functions and calls', async () => {
     const root = await fixture({
-      'src/App.php': "<?php\nnamespace App;\nuse App\\Service\\Runner;\nrequire_once 'helpers.php';\nfunction main(): void { helper(); Runner::run(); }\n",
+      'src/App.php': "<?php\nnamespace App;\nuse App\\Service\\Runner;\nrequire_once 'helpers.php';\ninclude $dynamicPath;\ndeclare(strict_types=1);\n$closure = function () use ($dynamicPath) {};\n$arrow = fn($value) => $value;\nfunction main(): void { helper(); Runner::run(); exit(0); }\n",
       'src/Service/Runner.php': '<?php\nnamespace App\\Service;\nclass Runner { public static function run(): void {} }\n',
       'src/helpers.php': '<?php\nfunction helper(): void {}\n',
     });
@@ -284,6 +385,9 @@ describe('compiler graph', () => {
     expect(graph.symbols).toContainEqual(expect.objectContaining({ path: 'src/Service/Runner.php', name: 'Runner', kind: 'PhpClass' }));
     expect(graph.symbols).toContainEqual(expect.objectContaining({ path: 'src/helpers.php', name: 'helper', kind: 'PhpFunction' }));
     expect(graph.calls).toContainEqual(expect.objectContaining({ path: 'src/App.php', expression: 'helper', target: expect.stringContaining('src/helpers.php#helper@') }));
+    expect(graph.calls.map((call) => call.expression)).not.toEqual(expect.arrayContaining(['function', 'declare', 'fn', 'use', 'exit']));
+    expect(graph.diagnostics).toContainEqual(expect.objectContaining({ code: 'GRAPH_DYNAMIC', path: 'src/App.php' }));
+    expect(graphGate(graph, defaultConfig.architecture, { mode: 'strict' }).valid).toBe(false);
   });
 
   it('indexes R source dependencies, packages, functions and calls', async () => {
@@ -301,28 +405,317 @@ describe('compiler graph', () => {
 
   it('indexes Julia includes, modules, types, functions and calls', async () => {
     const root = await fixture({
-      'src/App.jl': 'module App\ninclude("Utils.jl")\nusing .Utils\nfunction main()\n  run!()\nend\nend\n',
+      'src/App.jl': 'module App\ninclude("Utils.jl")\ninclude("Domain.jl")\nusing .Utils\nusing .Domain: WorkflowError\nfunction main()\n  run!()\nend\nend\n',
+      'src/Domain.jl': 'module Domain\nstruct WorkflowError\n message::String\nend\nend\n',
       'src/Utils.jl': 'module Utils\nstruct Job\n id::Int\nend\nrun!() = true\nend\n',
     });
     const graph = await indexGraph(root);
-    expect(graph.files).toEqual(['src/App.jl', 'src/Utils.jl']);
+    expect(graph.files).toEqual(['src/App.jl', 'src/Domain.jl', 'src/Utils.jl']);
     expect(graph.imports).toContainEqual(expect.objectContaining({ from: 'src/App.jl', to: 'src/Utils.jl', kind: 'include', external: false }));
     expect(graph.imports).toContainEqual(expect.objectContaining({ from: 'src/App.jl', to: 'src/Utils.jl', kind: 'import', external: false }));
+    expect(graph.imports).toContainEqual(expect.objectContaining({
+      from: 'src/App.jl', to: 'src/Domain.jl', specifier: 'Domain', kind: 'import', external: false,
+    }));
+    expect(graph.imports).not.toContainEqual(expect.objectContaining({ to: 'julia:WorkflowError' }));
     expect(graph.symbols).toContainEqual(expect.objectContaining({ path: 'src/Utils.jl', name: 'Job', kind: 'JuliaType' }));
     expect(graph.symbols).toContainEqual(expect.objectContaining({ path: 'src/Utils.jl', name: 'run!', kind: 'JuliaFunction' }));
     expect(graph.calls).toContainEqual(expect.objectContaining({ path: 'src/App.jl', expression: 'run!', target: expect.stringContaining('src/Utils.jl#run!@') }));
   });
 
-  it('reports languages without graph adapters as unsupported inputs', async () => {
-    const root = await fixture({ 'src/service.kt': 'fun service() = true\n' });
+  it('indexes Kotlin imports, declarations and calls for source and script files', async () => {
+    const root = await fixture({
+      'src/App.kt': 'package demo\nimport demo.*\nimport kotlinx.coroutines.launch\nfun main() { run() }\n',
+      'src/Model.kt': 'package demo\nclass Model\n',
+      'src/Service.kt': 'package demo\nfun run() {}\n',
+      'scripts/check.kts': '@file:Import("../src/Service.kt")\nfun check() = run()\n',
+    });
+    const graph = await indexGraph(root);
+    expect(graph.files).toEqual(['scripts/check.kts', 'src/App.kt', 'src/Model.kt', 'src/Service.kt']);
+    expect(graph.unsupportedFiles).toEqual([]);
+    expect(graph.imports).toContainEqual(expect.objectContaining({ from: 'src/App.kt', to: 'src/Service.kt', external: false }));
+    expect(graph.imports).toContainEqual(expect.objectContaining({ from: 'src/App.kt', to: 'src/Model.kt', external: false }));
+    expect(graph.imports).toContainEqual(expect.objectContaining({ from: 'scripts/check.kts', to: 'src/Service.kt', external: false }));
+    expect(graph.imports).toContainEqual(expect.objectContaining({ to: 'kotlin:kotlinx.coroutines.launch', external: true }));
+    expect(graph.symbols).toContainEqual(expect.objectContaining({ path: 'src/Service.kt', name: 'run', kind: 'KotlinFunction' }));
+    expect(graph.calls).toContainEqual(expect.objectContaining({ path: 'src/App.kt', expression: 'run', target: expect.stringContaining('src/Service.kt#run@') }));
+  });
+
+  it('indexes Ruby requires, declarations and calls', async () => {
+    const root = await fixture({
+      'config/setup.rb': 'def setup()\n  true\nend\n',
+      'lib/app.rb': "require_relative 'helper'\nload 'config/setup.rb'\nrequire 'json'\ndef main()\n  helper()\nend\n",
+      'lib/helper.rb': 'def helper()\n  true\nend\n',
+    });
+    const graph = await indexGraph(root);
+    expect(graph.files).toEqual(['config/setup.rb', 'lib/app.rb', 'lib/helper.rb']);
+    expect(graph.unsupportedFiles).toEqual([]);
+    expect(graph.imports).toContainEqual(expect.objectContaining({ from: 'lib/app.rb', to: 'lib/helper.rb', kind: 'require', external: false }));
+    expect(graph.imports).toContainEqual(expect.objectContaining({ from: 'lib/app.rb', to: 'config/setup.rb', kind: 'include', external: false }));
+    expect(graph.imports).toContainEqual(expect.objectContaining({ to: 'ruby:json', external: true }));
+    expect(graph.symbols).toContainEqual(expect.objectContaining({ path: 'lib/helper.rb', name: 'helper', kind: 'RubyMethod' }));
+    expect(graph.calls).toContainEqual(expect.objectContaining({ path: 'lib/app.rb', expression: 'helper', target: expect.stringContaining('lib/helper.rb#helper@') }));
+  });
+
+  it('indexes Swift imports, declarations and calls', async () => {
+    const root = await fixture({
+      'Sources/App.swift': 'import Foundation\nprivate(set) var state = 0\nfileprivate(set) var localState = 0\ninternal(set) var moduleState = 0\npackage(set) var packageState = 0\nfunc helper() {}\nfunc main() { helper() }\n',
+    });
+    const graph = await indexGraph(root);
+    expect(graph.files).toEqual(['Sources/App.swift']);
+    expect(graph.unsupportedFiles).toEqual([]);
+    expect(graph.imports).toContainEqual(expect.objectContaining({ to: 'swift:Foundation', external: true }));
+    expect(graph.symbols).toContainEqual(expect.objectContaining({ name: 'helper', kind: 'SwiftFunction' }));
+    expect(graph.calls).toContainEqual(expect.objectContaining({ expression: 'helper', target: expect.stringContaining('Sources/App.swift#helper@') }));
+    expect(graph.calls.map((call) => call.expression)).not.toEqual(expect.arrayContaining(['private', 'fileprivate', 'internal', 'package']));
+  });
+
+  it('indexes Dart local imports, declarations and calls', async () => {
+    const root = await fixture({
+      'packages/example/pubspec.yaml': 'name: example\n',
+      'packages/example/lib/main.dart': "import 'package:example/service.dart' if (dart.library.io) 'native.dart';\nimport 'package:meta/meta.dart';\nvoid main() { run(); }\n",
+      'packages/example/lib/native.dart': 'void nativeRun() {}\n',
+      'packages/example/lib/service.dart': 'class Service {}\nvoid run() {}\n',
+    });
+    const graph = await indexGraph(root);
+    expect(graph.files).toEqual([
+      'packages/example/lib/main.dart',
+      'packages/example/lib/native.dart',
+      'packages/example/lib/service.dart',
+    ]);
+    expect(graph.unsupportedFiles).toEqual([]);
+    expect(graph.imports).toContainEqual(expect.objectContaining({ from: 'packages/example/lib/main.dart', to: 'packages/example/lib/service.dart', external: false }));
+    expect(graph.imports).toContainEqual(expect.objectContaining({ from: 'packages/example/lib/main.dart', to: 'packages/example/lib/native.dart', external: false }));
+    expect(graph.imports).toContainEqual(expect.objectContaining({ to: 'dart:package:meta/meta.dart', external: true }));
+    expect(graph.symbols).toContainEqual(expect.objectContaining({ path: 'packages/example/lib/service.dart', name: 'Service', kind: 'DartClass' }));
+    expect(graph.calls).toContainEqual(expect.objectContaining({ path: 'packages/example/lib/main.dart', expression: 'run', target: expect.stringContaining('packages/example/lib/service.dart#run@') }));
+  });
+
+  it('indexes Scala imports, declarations and calls', async () => {
+    const root = await fixture({
+      'src/App.scala': 'package demo\nimport demo.{RiskCase as CaseAlias, RiskService, *}\nimport demo.RiskCase, demo.RiskService\nimport scala.collection.mutable\ndef main(): Unit = run()\n',
+      'src/Extra.scala': 'package demo\nclass Extra\n',
+      'src/RiskCase.scala': 'package demo\nclass RiskCase\n',
+      'src/Service.scala': 'package demo\nobject RiskService\ndef run(): Unit = ()\n',
+    });
+    const graph = await indexGraph(root);
+    expect(graph.files).toEqual(['src/App.scala', 'src/Extra.scala', 'src/RiskCase.scala', 'src/Service.scala']);
+    expect(graph.unsupportedFiles).toEqual([]);
+    expect(graph.imports).toContainEqual(expect.objectContaining({ from: 'src/App.scala', to: 'src/Service.scala', external: false }));
+    expect(graph.imports).toContainEqual(expect.objectContaining({ from: 'src/App.scala', to: 'src/RiskCase.scala', specifier: 'demo.RiskCase', external: false }));
+    expect(graph.imports).toContainEqual(expect.objectContaining({ from: 'src/App.scala', to: 'src/Extra.scala', external: false }));
+    expect(graph.imports.filter((edge) => edge.from === 'src/App.scala' && edge.specifier.startsWith('demo') && edge.external)).toEqual([]);
+    expect(graph.imports).toContainEqual(expect.objectContaining({ to: 'scala:scala.collection.mutable', external: true }));
+    expect(graph.symbols).toContainEqual(expect.objectContaining({ path: 'src/Service.scala', name: 'run', kind: 'ScalaMethod' }));
+    expect(graph.calls).toContainEqual(expect.objectContaining({ path: 'src/App.scala', expression: 'run', target: expect.stringContaining('src/Service.scala#run@') }));
+  });
+
+  it('indexes Elixir module dependencies, declarations and calls for ex and exs', async () => {
+    const root = await fixture({
+      'lib/app.ex': 'defmodule Demo.App do\n  alias Demo.{Model, Service}\n  use GenServer\n  def main(), do: Service.run()\nend\n',
+      'lib/model.ex': 'defmodule Demo.Model do\nend\n',
+      'lib/service.ex': 'defmodule Demo.Service do\n  def run(), do: :ok\nend\n',
+      'test/app_test.exs': 'Code.require_file("../lib/service.ex", __DIR__)\ndefmodule Demo.AppTest do\n  alias Demo.App\nend\n',
+    });
+    const graph = await indexGraph(root);
+    expect(graph.files).toEqual(['lib/app.ex', 'lib/model.ex', 'lib/service.ex', 'test/app_test.exs']);
+    expect(graph.unsupportedFiles).toEqual([]);
+    expect(graph.imports).toContainEqual(expect.objectContaining({ from: 'lib/app.ex', to: 'lib/service.ex', external: false }));
+    expect(graph.imports).toContainEqual(expect.objectContaining({ from: 'lib/app.ex', to: 'lib/model.ex', external: false }));
+    expect(graph.imports).toContainEqual(expect.objectContaining({ from: 'test/app_test.exs', to: 'lib/service.ex', kind: 'require', external: false }));
+    expect(graph.imports).toContainEqual(expect.objectContaining({ to: 'elixir:GenServer', external: true }));
+    expect(graph.symbols).toContainEqual(expect.objectContaining({ path: 'lib/service.ex', name: 'run', kind: 'ElixirFunction' }));
+    expect(graph.calls).toContainEqual(expect.objectContaining({ path: 'lib/app.ex', expression: 'Service.run', target: expect.stringContaining('lib/service.ex#run@') }));
+  });
+
+  it('indexes Haskell modules, declarations and calls', async () => {
+    const root = await fixture({
+      'src/Main.hs': 'module Main where\nimport Service\nimport Data.Text\nmain = run ()\n',
+      'src/Service.hs': 'module Service where\nrun _ = True\n',
+    });
+    const graph = await indexGraph(root);
+    expect(graph.files).toEqual(['src/Main.hs', 'src/Service.hs']);
+    expect(graph.unsupportedFiles).toEqual([]);
+    expect(graph.imports).toContainEqual(expect.objectContaining({ from: 'src/Main.hs', to: 'src/Service.hs', external: false }));
+    expect(graph.imports).toContainEqual(expect.objectContaining({ to: 'haskell:Data.Text', external: true }));
+    expect(graph.symbols).toContainEqual(expect.objectContaining({ path: 'src/Service.hs', name: 'run', kind: 'HaskellFunction' }));
+    expect(graph.calls).toContainEqual(expect.objectContaining({ path: 'src/Main.hs', expression: 'run', target: expect.stringContaining('src/Service.hs#run@') }));
+  });
+
+  it('does not index Dart or Haskell reserved words as functions', async () => {
+    const graph = await indexGraph(await fixture({
+      'control.dart': [
+        'void main() {',
+        '  if (true) {}',
+        '  for (;;) {}',
+        '  while (false) {}',
+        '  switch (1) { default: break; }',
+        '}',
+      ].join('\n'),
+      'control.hs': [
+        'choose flag =',
+        '  let value = if flag then 1 else 0',
+        '  in value',
+        'if condition = True',
+        'then branch = branch',
+        'else branch = branch',
+      ].join('\n'),
+    }));
+    expect(graph.symbols.map((symbol) => symbol.name)).not.toEqual(expect.arrayContaining([
+      'if', 'for', 'while', 'switch', 'let', 'then', 'else',
+    ]));
+  });
+
+  it('indexes Lua requires, declarations and calls', async () => {
+    const root = await fixture({
+      'src/main.lua': 'local helper = require("helper")\nlocal socket = require("socket")\nhelper.run()\n',
+      'helper.lua': 'local M = {}\nfunction M.run() return true end\nreturn M\n',
+    });
+    const graph = await indexGraph(root);
+    expect(graph.files).toEqual(['helper.lua', 'src/main.lua']);
+    expect(graph.unsupportedFiles).toEqual([]);
+    expect(graph.imports).toContainEqual(expect.objectContaining({ from: 'src/main.lua', to: 'helper.lua', external: false }));
+    expect(graph.imports).toContainEqual(expect.objectContaining({ to: 'lua:socket', external: true }));
+    expect(graph.symbols).toContainEqual(expect.objectContaining({ path: 'helper.lua', name: 'run', kind: 'LuaFunction' }));
+    expect(graph.calls).toContainEqual(expect.objectContaining({ path: 'src/main.lua', expression: 'helper.run', target: expect.stringContaining('helper.lua#run@') }));
+  });
+
+  it('indexes Zig imports, declarations and calls', async () => {
+    const root = await fixture({
+      'src/main.zig': 'const std = @import("std");\nconst helper = @import("helper.zig");\npub fn main() void { helper.run(); }\n',
+      'src/helper.zig': 'pub const Job = struct {};\npub fn run() void {}\n',
+    });
+    const graph = await indexGraph(root);
+    expect(graph.files).toEqual(['src/helper.zig', 'src/main.zig']);
+    expect(graph.unsupportedFiles).toEqual([]);
+    expect(graph.imports).toContainEqual(expect.objectContaining({ from: 'src/main.zig', to: 'src/helper.zig', external: false }));
+    expect(graph.imports).toContainEqual(expect.objectContaining({ to: 'zig:std', external: true }));
+    expect(graph.symbols).toContainEqual(expect.objectContaining({ path: 'src/helper.zig', name: 'Job', kind: 'ZigStruct' }));
+    expect(graph.calls).toContainEqual(expect.objectContaining({ path: 'src/main.zig', expression: 'helper.run', target: expect.stringContaining('src/helper.zig#run@') }));
+  });
+
+  it('indexes Solidity imports, declarations and calls', async () => {
+    const root = await fixture({
+      'contracts/App.sol': 'pragma solidity ^0.8.0;\nimport "contracts/Lib.sol";\nimport "@openzeppelin/contracts/token/ERC20/ERC20.sol";\ncontract App { function main() public { Lib.run(); } }\n',
+      'contracts/Lib.sol': 'pragma solidity ^0.8.0;\nlibrary Lib { function run() internal {} }\n',
+    });
+    const graph = await indexGraph(root);
+    expect(graph.files).toEqual(['contracts/App.sol', 'contracts/Lib.sol']);
+    expect(graph.unsupportedFiles).toEqual([]);
+    expect(graph.imports).toContainEqual(expect.objectContaining({ from: 'contracts/App.sol', to: 'contracts/Lib.sol', external: false }));
+    expect(graph.imports).toContainEqual(expect.objectContaining({ to: 'solidity:@openzeppelin/contracts/token/ERC20/ERC20.sol', external: true }));
+    expect(graph.symbols).toContainEqual(expect.objectContaining({ path: 'contracts/Lib.sol', name: 'Lib', kind: 'SolidityLibrary' }));
+    expect(graph.calls).toContainEqual(expect.objectContaining({ path: 'contracts/App.sol', expression: 'Lib.run', target: expect.stringContaining('contracts/Lib.sol#run@') }));
+  });
+
+  it('indexes Objective-C imports, declarations and message calls while retaining Objective-C++', async () => {
+    const root = await fixture({
+      'src/App.m': '#import "Service.h"\n#import "Other.h"\n#import "Combined.h"\n#import <Foundation/Foundation.h>\nvoid start(void) { [Service run]; [A bar]; }\n',
+      'src/Combined.h': '@interface A\n+ (void)foo;\n@end\n@interface B\n+ (void)bar;\n@end\n',
+      'src/Combined.m': '@implementation A\n+ (void)foo {}\n@end\n@implementation B\n+ (void)bar {}\n@end\n',
+      'src/Other.h': '@interface Other\n+ (void)run;\n@end\n',
+      'src/Service.h': '@interface Service\n+ (void)run;\n+ (void)run:(id)value success:(BOOL)success;\n+ (void)run:(id)value failure:(BOOL)failure;\n@end\n',
+      'src/Service.mm': '#import "Service.h"\n@implementation Service\n+ (void)run {}\n+ (void)run:(id)value success:(BOOL)success {}\n+ (void)run:(id)value failure:(BOOL)failure {}\n@end\n',
+      'src/Targeted.m': '#import "Service.h"\nvoid targeted(void) { [Service run:value failure:NO]; }\n',
+    });
+    const graph = await indexGraph(root);
+    expect(graph.files).toEqual([
+      'src/App.m', 'src/Combined.h', 'src/Combined.m', 'src/Other.h',
+      'src/Service.h', 'src/Service.mm', 'src/Targeted.m',
+    ]);
+    expect(graph.unsupportedFiles).toEqual([]);
+    expect(graph.imports).toContainEqual(expect.objectContaining({ from: 'src/App.m', to: 'src/Service.h', kind: 'include', external: false }));
+    expect(graph.imports).toContainEqual(expect.objectContaining({ to: 'cpp:Foundation/Foundation.h', external: true }));
+    expect(graph.symbols).toContainEqual(expect.objectContaining({ path: 'src/Service.h', name: 'Service', kind: 'ObjectiveCInterface' }));
+    expect(graph.calls).toContainEqual(expect.objectContaining({
+      path: 'src/App.m',
+      expression: 'Service.run',
+      target: expect.stringMatching(/^src\/Service\.mm#run@/),
+    }));
+    expect(graph.calls).toContainEqual(expect.objectContaining({
+      path: 'src/Targeted.m',
+      expression: 'Service.run:failure:',
+      target: expect.stringMatching(/^src\/Service\.mm#run:failure:@/),
+    }));
+    expect(graph.calls.filter((call) => call.expression.startsWith('Service.')).every((call) => !call.target?.startsWith('src/Other.h#'))).toBe(true);
+    expect(graph.calls).toContainEqual(expect.objectContaining({ path: 'src/App.m', expression: 'A.bar', target: null }));
+  });
+
+  it('indexes F# loads, opens, declarations and calls for fs and fsx', async () => {
+    const root = await fixture({
+      'src/Service.fs': 'namespace Demo\nmodule Service =\n  let run () = ()\n',
+      'src/App.fsx': '#load "Service.fs"\nopen Demo.Service\nopen System\nrun()\n',
+    });
+    const graph = await indexGraph(root);
+    expect(graph.files).toEqual(['src/App.fsx', 'src/Service.fs']);
+    expect(graph.unsupportedFiles).toEqual([]);
+    expect(graph.imports).toContainEqual(expect.objectContaining({ from: 'src/App.fsx', to: 'src/Service.fs', kind: 'include', external: false }));
+    expect(graph.imports).toContainEqual(expect.objectContaining({ from: 'src/App.fsx', to: 'src/Service.fs', kind: 'using', external: false }));
+    expect(graph.imports).toContainEqual(expect.objectContaining({ to: 'fsharp:System', external: true }));
+    expect(graph.symbols).toContainEqual(expect.objectContaining({ path: 'src/Service.fs', name: 'run', kind: 'FsharpValue' }));
+    expect(graph.calls).toContainEqual(expect.objectContaining({ path: 'src/App.fsx', expression: 'run', target: expect.stringContaining('src/Service.fs#run@') }));
+  });
+
+  it('indexes Visual Basic namespaces, imports, declarations and calls', async () => {
+    const root = await fixture({
+      'src/App.vb': 'Imports Demo.Services, LimitsAlias = Demo.Limits, System\nModule App\n  Sub Main()\n    Service.Run()\n    LimitsAlias.Check()\n  End Sub\nEnd Module\n',
+      'src/Limits.vb': 'Namespace Demo.Limits\n  Public Module Limits\n    Public Sub Check()\n    End Sub\n  End Module\nEnd Namespace\n',
+      'src/Service.vb': 'Namespace Demo.Services\n  Public Class Service\n    Public Shared Sub Run()\n    End Sub\n  End Class\nEnd Namespace\n',
+    });
+    const graph = await indexGraph(root);
+    expect(graph.files).toEqual(['src/App.vb', 'src/Limits.vb', 'src/Service.vb']);
+    expect(graph.unsupportedFiles).toEqual([]);
+    expect(graph.imports).toContainEqual(expect.objectContaining({ from: 'src/App.vb', to: 'src/Service.vb', external: false }));
+    expect(graph.imports).toContainEqual(expect.objectContaining({
+      from: 'src/App.vb', to: 'src/Limits.vb', specifier: 'LimitsAlias=Demo.Limits', external: false,
+    }));
+    expect(graph.imports).toContainEqual(expect.objectContaining({ to: 'vb:System', external: true }));
+    expect(graph.symbols).toContainEqual(expect.objectContaining({ path: 'src/Service.vb', name: 'Service', kind: 'VbClass' }));
+    expect(graph.calls).toContainEqual(expect.objectContaining({ path: 'src/App.vb', expression: 'Service.Run', target: expect.stringContaining('src/Service.vb#Run@') }));
+  });
+
+  it.each([
+    ['Ruby', 'main.rb', "require_relative 'missing'\n"],
+    ['Kotlin', 'main.kts', '@file:Import("missing.kts")\n'],
+    ['Dart', 'main.dart', "import 'missing.dart';\n"],
+    ['Elixir', 'main.exs', 'Code.require_file("missing.ex", __DIR__)\n'],
+    ['Lua', 'main.lua', 'dofile("missing.lua")\n'],
+    ['Zig', 'main.zig', 'const missing = @import("missing.zig");\n'],
+    ['Solidity', 'main.sol', 'import "./Missing.sol";\n'],
+    ['Objective-C', 'main.m', '#import "Missing.h"\n'],
+    ['F#', 'main.fsx', '#load "Missing.fs"\n'],
+  ])('reports unresolved explicit local %s dependencies', async (_language, path, source) => {
+    const graph = await indexGraph(await fixture({ [path]: source }));
+    expect(graph.unsupportedFiles).toEqual([]);
+    expect(graph.diagnostics).toContainEqual(expect.objectContaining({ code: 'GRAPH_UNRESOLVED', path }));
+  });
+
+  it('masks comments and strings in every added language adapter', async () => {
+    const graph = await indexGraph(await fixture({
+      'mask.kt': '// fun Fake() {}\nval text = "Fake()"\n',
+      'mask.rb': '# def Fake()\ntext = "Fake()"\n',
+      'mask.swift': '// func Fake() {}\nlet text = "Fake()"\n',
+      'mask.dart': '// class Fake {}\nconst text = "Fake()";\n',
+      'mask.scala': '// object Fake\nval text = "Fake()"\n',
+      'mask.ex': '# def Fake(), do: :ok\ntext = "Fake()"\n',
+      'mask.hs': '-- Fake _ = True\ntext = "Fake()"\n',
+      'mask.lua': '-- function Fake() end\nlocal text = "Fake()"\n',
+      'mask.zig': '// pub fn Fake() void {}\nconst text = "Fake()";\n',
+      'mask.sol': '// contract Fake {}\nstring constant text = "Fake()";\n',
+      'mask.m': '// @interface Fake\nNSString *text = @"[Fake run]";\n',
+      'mask.fs': '// type Fake = class end\nlet text = "Fake()"\n',
+      'mask.vb': "' Class Fake\nDim text = \"Fake()\"\n",
+    }));
+    expect(graph.unsupportedFiles).toEqual([]);
+    expect(graph.symbols.some((symbol) => symbol.name === 'Fake')).toBe(false);
+    expect(graph.calls.some((call) => call.expression.includes('Fake'))).toBe(false);
+  });
+
+  it('ignores unrecognized extensions outside graph inputs', async () => {
+    const root = await fixture({ 'src/service.pl': 'sub service { 1 }\n' });
     const graph = await indexGraph(root);
     expect(graph.files).toEqual([]);
-    expect(graph.unsupportedFiles).toEqual(['src/service.kt']);
-    expect(graph.diagnostics).toContainEqual(expect.objectContaining({
-      code: 'GRAPH_UNSUPPORTED_LANGUAGE',
-      severity: 'warning',
-      path: 'src/service.kt',
-    }));
+    expect(graph.unsupportedFiles).toEqual([]);
+    expect(graph.diagnostics).not.toContainEqual(expect.objectContaining({ code: 'GRAPH_UNSUPPORTED_LANGUAGE' }));
   });
 
   it('refuses stale caches after source and config changes', async () => {

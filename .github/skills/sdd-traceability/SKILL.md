@@ -10,8 +10,12 @@ After the work, run `npx musubix3 workflow-record sdd-traceability complete
 --status completed` exactly once.
 
 1. Run `npx musubix3 trace build`. It scans `.musubix` artifacts and comment
-   annotations in JS/TS, Rust, Python, Go, Java/Kotlin, C/C++, C#, Ruby, PHP and
-   Swift, then generates feature `trace.json` files plus an ignored cache.
+   annotations in every Code Graph language, including JS/TS, Rust, Python, Go,
+   JVM, C/C++, .NET, Ruby, PHP, Swift, Dart, BEAM, Haskell, Lua, Zig, Solidity,
+   R and Julia, then generates feature `trace.json` files plus an ignored cache.
+   Haskell `--`/`{- ... -}`, Lua `--`/`--[[ ... ]]`, and Visual Basic
+   apostrophe/XML-documentation comments are scanned without accepting string
+   literals as trace annotations.
 2. Run `npx musubix3 trace check --strict --json`.
    Distinguish malformed IDs, dangling endpoints, stale inputs, and missing
    mandatory design/implementation/test coverage. Non-strict coverage warnings

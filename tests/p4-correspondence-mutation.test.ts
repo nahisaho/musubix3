@@ -68,6 +68,7 @@ describe('P4 model correspondence and mutation quality', () => {
     const root = await project();
     await writeText(root, 'package.json', '{"name":"fixture"}\n');
     await writeText(root, 'Cargo.toml', '[package]\nname = "fixture"\nversion = "0.1.0"\n');
+    await writeText(root, 'Fixture.csproj', '<Project Sdk="Microsoft.NET.Sdk" />\n');
     const runner: Runner = async (command) => command === 'cargo'
       ? processResult({ stdout: 'cargo-mutants 25.0.0' })
       : processResult({ status: 'missing', exitCode: null });
@@ -84,6 +85,12 @@ describe('P4 model correspondence and mutation quality', () => {
         ecosystem: 'rust',
         engine: 'cargo-mutants',
         status: 'available',
+      }),
+      expect.objectContaining({
+        ecosystem: 'dotnet',
+        engine: 'Stryker.NET',
+        status: 'missing',
+        attemptedCommands: ['dotnet tool run dotnet-stryker -- --version'],
       }),
     ]));
     expect(report.engines.every((entry) => entry.recommendation.length > 0)).toBe(true);
@@ -129,6 +136,37 @@ describe('P4 model correspondence and mutation quality', () => {
     expect((await validateModelCorrespondenceEvidence(root)).diagnostics)
       .toContainEqual(expect.objectContaining({ code: 'MODEL_CORRESPONDENCE_TEST_NOT_PASSED' }));
     expect((await projectStatus(root)).gate).toMatchObject({ status: 'stale', ready: false });
+  });
+
+  it('validates model correspondence against the exact merged .NET command', async () => {
+    const root = await project();
+    await writeText(root, '.musubix/features/example/requirements.md', explicitRequirement);
+    const config = await loadConfig(root);
+    config.commands = [{
+      name: 'test',
+      command: 'dotnet',
+      args: ['test', 'Example.sln', '--', 'MSTest.MapInconclusiveToFailed=True'],
+      adapter: 'dotnet',
+      required: true,
+      timeoutMs: 10_000,
+    }];
+    await writeJson(root, '.musubix/config.json', config);
+    const runner: Runner = async (_command, args) => {
+      expect(args).toEqual([
+        'test', 'Example.sln',
+        '--logger', 'trx;LogFilePrefix=results',
+        '--results-directory', '.musubix/evidence/native/test/aggregate',
+        '--', 'MSTest.MapInconclusiveToFailed=True',
+      ]);
+      await writeText(root, '.musubix/evidence/native/test/aggregate/results_net8.0.trx',
+        '<TestRun><Results><UnitTestResult testName="TEST-EXAMPLE-001 readiness" outcome="Passed" /></Results></TestRun>');
+      return processResult();
+    };
+    const gate = await runGate(root, { runner });
+    expect(gate.checks.find((check) => check.name === 'model-correspondence'))
+      .toMatchObject({ required: true, status: 'pass' });
+    expect(await validateModelCorrespondenceEvidence(root))
+      .toMatchObject({ valid: true, coveredRequirements: ['REQ-EXAMPLE-001'] });
   });
 
   it('fails closed when formal or generated trace evidence becomes stale', async () => {

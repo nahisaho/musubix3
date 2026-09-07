@@ -1,5 +1,5 @@
 import { error, validateRequirements, type Diagnostic, type FormalConstraint, type Requirement } from '../../domain/src/index.js';
-import { adapterInvocation, normalizeAdapterReport, readAdapterOutput } from './adapters.js';
+import { adapterInvocation, mergeAdapterArgs, normalizeAdapterReport, readAdapterOutput } from './adapters.js';
 import { loadConfig } from './config.js';
 import { digest, exists, files, readText, snapshot, within, writeJson } from './files.js';
 import type { FormalResult } from './formal.js';
@@ -197,10 +197,10 @@ async function currentReport(root: string, commandName: string, reportPath: stri
   const invocation = command.adapter ? adapterInvocation(command.adapter, command.name) : null;
   const configuredPath = command.testReport?.path ?? invocation!.reportPath;
   if (configuredPath !== reportPath) return null;
-  const args = [
-    ...command.args.map((arg) => arg.replaceAll('{reportPath}', configuredPath)),
-    ...invocation?.args ?? [],
-  ];
+  const configuredArgs = command.args.map((arg) => arg.replaceAll('{reportPath}', configuredPath));
+  const args = invocation
+    ? mergeAdapterArgs(command.adapter!, configuredArgs, invocation.args)
+    : configuredArgs;
   const absolute = within(root, reportPath);
   const text = invocation
     ? await readAdapterOutput(invocation, absolute, '')

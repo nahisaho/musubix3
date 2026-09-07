@@ -45,7 +45,7 @@ export interface MutationEvidence {
 }
 
 export interface MutationDoctorEntry {
-  ecosystem: 'javascript' | 'python' | 'go' | 'rust' | 'java';
+  ecosystem: 'javascript' | 'python' | 'go' | 'rust' | 'java' | 'dotnet';
   engine: string;
   status: 'configured' | 'available' | 'missing';
   attemptedCommands: string[];
@@ -196,6 +196,7 @@ export async function mutationDoctor(
         ecosystem: projectFiles.has('Cargo.toml') ? 'rust'
           : projectFiles.has('go.mod') ? 'go'
             : projectFiles.has('pom.xml') ? 'java'
+              : [...projectFiles].some((path) => /\.(?:cs|fs|vb)proj$/i.test(path)) ? 'dotnet'
               : [...projectFiles].some((path) => path.endsWith('.py')) ? 'python'
                 : 'javascript',
         engine: command.name,
@@ -253,6 +254,14 @@ export async function mutationDoctor(
       args: ['--version'],
       present: projectFiles.has('pom.xml') || projectFiles.has('build.gradle') || projectFiles.has('build.gradle.kts'),
       recommendation: 'Configure the PIT Maven or Gradle plugin and convert its report to the musubix mutation schema.',
+    },
+    {
+      ecosystem: 'dotnet',
+      engine: 'Stryker.NET',
+      command: 'dotnet',
+      args: ['tool', 'run', 'dotnet-stryker', '--', '--version'],
+      present: [...projectFiles].some((path) => /\.(?:cs|fs|vb)proj$/i.test(path)),
+      recommendation: 'Install dotnet-stryker through a pinned local tool manifest and convert its report to the musubix mutation schema.',
     },
   ];
   const engines: MutationDoctorEntry[] = [];

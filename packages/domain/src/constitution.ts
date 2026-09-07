@@ -4,6 +4,7 @@ import { error, validation, type Constitution, type ConstitutionRule, type Valid
 export const constitutionMetrics = [
   'requirements.errors', 'design.errors', 'trace.errors', 'graph.violations',
   'commands.failures', 'commands.skipped',
+  'tests.annotatedIds', 'tests.executedIds',
 ] as const;
 
 export function validateConstitution(text: string, path = '<input>'): Validation<Constitution> {

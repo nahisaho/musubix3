@@ -96,11 +96,22 @@ export function mergeAdapterArgs(
       ...(configured.passthrough.length ? ['-args', ...configured.passthrough] : []),
     ];
   }
+  if (adapter === 'dotnet' && configuredArgs[0] === 'test' && invocationArgs[0] === 'test') {
+    const separator = configuredArgs.indexOf('--');
+    const commandArgs = separator < 0 ? configuredArgs.slice(1) : configuredArgs.slice(1, separator);
+    const runSettings = separator < 0 ? [] : configuredArgs.slice(separator + 1);
+    return [
+      'test',
+      ...commandArgs,
+      ...invocationArgs.slice(1),
+      ...(separator < 0 ? [] : ['--', ...runSettings]),
+    ];
+  }
   return [...configuredArgs, ...invocationArgs];
 }
 
 function reportPath(commandName: string, testId?: string, adapter?: TestAdapter): string {
-  const suffix = adapter === 'junit' ? '' : '.json';
+  const suffix = adapter === 'junit' || adapter === 'dotnet' ? '' : '.json';
   return testId
     ? `.musubix/evidence/native/${commandName}/${testId}${suffix}`
     : `.musubix/evidence/native/${commandName}/aggregate${suffix}`;
@@ -145,6 +156,18 @@ export function adapterInvocation(
   if (adapter === 'cargo') {
     return { args: ['test', ...testId ? [identifier(testId)] : [], '--', '--format', 'pretty'], reportPath: path, source: 'stdout' };
   }
+  if (adapter === 'dotnet') {
+    return {
+      args: [
+        'test',
+        '--logger', 'trx;LogFilePrefix=results',
+        '--results-directory', path,
+        ...testId ? ['--filter', `DisplayName~${testId}|Name~${testId}`] : [],
+      ],
+      reportPath: path,
+      source: 'directory',
+    };
+  }
   return {
     args: [
       '--scan-class-path',
@@ -180,7 +203,7 @@ export async function readAdapterOutput(invocation: AdapterInvocation, absoluteP
     for (const entry of (await readdir(directory, { withFileTypes: true })).sort((a, b) => a.name.localeCompare(b.name))) {
       const path = `${directory}/${entry.name}`;
       if (entry.isDirectory()) found.push(...await xmlFiles(path));
-      else if (entry.isFile() && entry.name.endsWith('.xml')) found.push(path);
+      else if (entry.isFile() && (entry.name.endsWith('.xml') || entry.name.endsWith('.trx'))) found.push(path);
     }
     return found;
   }
@@ -198,7 +221,7 @@ function idOf(value: unknown): string | null {
 function status(value: unknown): MusubixTestReport['tests'][number]['status'] {
   const normalized = String(value).toLowerCase();
   if (['pass', 'passed', 'success', 'ok'].includes(normalized)) return 'passed';
-  if (['skip', 'skipped', 'pending', 'todo', 'ignored'].includes(normalized)) return 'skipped';
+  if (['skip', 'skipped', 'pending', 'todo', 'ignored', 'notexecuted'].includes(normalized)) return 'skipped';
   if (['error', 'errored'].includes(normalized)) return 'error';
   return 'failed';
 }
@@ -210,6 +233,86 @@ function unique(tests: MusubixTestReport['tests']): MusubixTestReport {
     if (!previous || previous.status === 'skipped' || test.status === 'error' || test.status === 'failed') byId.set(test.id, test);
   }
   return { schemaVersion: 1, tests: [...byId.values()].sort((a, b) => a.id.localeCompare(b.id)) };
+}
+
+function xmlAttribute(attributes: string, name: string): string | undefined {
+  const match = new RegExp(`(?:^|\\s)${name}\\s*=\\s*("[^"]*"|'[^']*')`, 'i').exec(attributes);
+  if (!match?.[1]) return undefined;
+  return match[1].slice(1, -1)
+    .replaceAll('&quot;', '"')
+    .replaceAll('&apos;', "'")
+    .replaceAll('&lt;', '<')
+    .replaceAll('&gt;', '>')
+    .replaceAll('&amp;', '&');
+}
+
+function dotnetResults(text: string): MusubixTestReport['tests'] {
+  const tests: MusubixTestReport['tests'] = [];
+  const stack: string[] = [];
+  let cursor = 0;
+  while (cursor < text.length) {
+    const start = text.indexOf('<', cursor);
+    if (start < 0) break;
+    if (text.startsWith('<!--', start)) {
+      const end = text.indexOf('-->', start + 4);
+      if (end < 0) throw new Error('Malformed dotnet TRX: unterminated XML comment.');
+      cursor = end + 3;
+      continue;
+    }
+    if (text.startsWith('<![CDATA[', start)) {
+      const end = text.indexOf(']]>', start + 9);
+      if (end < 0) throw new Error('Malformed dotnet TRX: unterminated CDATA section.');
+      cursor = end + 3;
+      continue;
+    }
+    if (text.startsWith('<?', start)) {
+      const end = text.indexOf('?>', start + 2);
+      if (end < 0) throw new Error('Malformed dotnet TRX: unterminated processing instruction.');
+      cursor = end + 2;
+      continue;
+    }
+    if (text.startsWith('<!', start)) throw new Error('Malformed dotnet TRX: unsupported declaration.');
+    let end = start + 1;
+    let quote = '';
+    for (; end < text.length; end++) {
+      const character = text[end]!;
+      if (quote) {
+        if (character === quote) quote = '';
+      } else if (character === '"' || character === "'") {
+        quote = character;
+      } else if (character === '>') {
+        break;
+      }
+    }
+    if (end >= text.length) throw new Error('Malformed dotnet TRX: unterminated XML element.');
+    const token = text.slice(start + 1, end).trim();
+    cursor = end + 1;
+    if (!token) throw new Error('Malformed dotnet TRX: empty XML element.');
+    if (token.startsWith('/')) {
+      const name = token.slice(1).trim().split(/\s/, 1)[0]?.split(':').at(-1);
+      if (!name || stack.pop()?.toLowerCase() !== name.toLowerCase()) {
+        throw new Error('Malformed dotnet TRX: mismatched XML element.');
+      }
+      continue;
+    }
+    const selfClosing = token.endsWith('/');
+    const element = selfClosing ? token.slice(0, -1).trim() : token;
+    const qualifiedName = element.split(/\s/, 1)[0];
+    if (!qualifiedName) throw new Error('Malformed dotnet TRX: missing XML element name.');
+    const name = qualifiedName?.split(':').at(-1);
+    if (!name) throw new Error('Malformed dotnet TRX: missing XML element name.');
+    const attributes = element.slice(qualifiedName.length);
+    const hierarchy = [...stack, name].map((part) => part.toLowerCase());
+    if (name.toLowerCase() === 'unittestresult'
+      && hierarchy.at(-2) === 'results'
+      && hierarchy.includes('testrun')) {
+      const id = idOf(xmlAttribute(attributes, 'testName'));
+      if (id) tests.push({ id, status: status(xmlAttribute(attributes, 'outcome')) });
+    }
+    if (!selfClosing) stack.push(name);
+  }
+  if (stack.length) throw new Error('Malformed dotnet TRX: unclosed XML element.');
+  return tests;
 }
 
 export function normalizeAdapterReport(adapter: TestAdapter, text: string, targetTestId?: string): MusubixTestReport {
@@ -244,12 +347,17 @@ export function normalizeAdapterReport(adapter: TestAdapter, text: string, targe
       const id = idOf(match?.[1]);
       if (id) tests.push({ id, status: status(match?.[2]) });
     }
+  } else if (adapter === 'dotnet') {
+    tests.push(...dotnetResults(text));
   } else {
     for (const match of text.matchAll(/<testcase\b([^>]*)>([\s\S]*?)<\/testcase>|<testcase\b([^>]*)\/>/g)) {
       const attributes = match[1] ?? match[3] ?? '';
-      const id = idOf(/\b(?:name|classname)="([^"]*)"/.exec(attributes)?.[1]);
-      if (!id) continue;
       const body = match[2] ?? '';
+      const identityText = /\bname="([^"]*)"/.exec(attributes)?.[1]
+        ?? /\bclassname="([^"]*)"/.exec(attributes)?.[1];
+      const displayName = /<system-out\b[^>]*>[\s\S]*?(?:^|\r?\n)\s*display-name:\s*([^\r\n<]+)/m.exec(body)?.[1];
+      const id = idOf(identityText) ?? idOf(displayName);
+      if (!id) continue;
       tests.push({ id, status: /<(?:error)\b/.test(body) ? 'error' : /<failure\b/.test(body) ? 'failed' : /<skipped\b/.test(body) ? 'skipped' : 'passed' });
     }
   }
