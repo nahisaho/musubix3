@@ -6,13 +6,47 @@
 
 [musubix2 から musubix3 で変わったこと](MUSUBIX2-TO-MUSUBIX3.md)
 
-要求 → 憲章 → 設計・ADR → 実装 → 追跡可能性 → 品質根拠、という
-仕様駆動開発（SDD）を、8つの Skills と決定的な検証エンジンで支援します。
-形式的整合性検査、コンパイラによる依存解析、ローカル知識検索も含みます。
+GitHub Copilotは、計画、コード生成、編集、テスト、レビューを実行できます。
+musubix3は、その作業を本当に完了と判断するためのrepository-localな仕様と
+決定的な証拠を追加します。
+要求 → 憲章 → 設計・ADR → 実装 → 追跡可能性 → 品質根拠を、
+8つのSkillsと検証CLIで接続します。
 
 [musubix2](https://github.com/nahisaho/musubix2) の考え方を学び、3つの
 ワークスペースで新規実装しています。成果物の互換性・移行機能はありません。
 ID の接続や SAT 判定だけで、実装の正しさを保証するものではありません。
+
+## GitHub Copilotだけでは足りない理由
+
+Copilotは実装を担うエンジンです。要求を理解し、repositoryを調査し、計画を立て、
+ファイルを編集し、toolを実行して結果を説明します。これは不可欠ですが、
+会話が成功したことだけでは、次を継続的に証明できません。
+
+- 実装した振る舞いが、明示的で測定可能な要求と一致しているか
+- すべての要求が設計、コード、正本テストまで接続されているか
+- テストを書き換えず、本当にRedが先に失敗してGreenが成功したか
+- test、graph、formal、qualityの結果が現在のsourceに対して新鮮か
+- 要求変更が影響する成果物へ正しい順序で伝播したか
+- 最終gateを通すためにpolicyを弱めていないか
+
+「テストは成功しました」「実装は完了しました」という会話上の報告は、
+古くなる、範囲が不足する、repository外で失われる可能性があります。
+推論と開発はCopilotへ任せたまま、musubix3が完了条件を永続化し、
+機械検証できる形へ変換します。
+
+| GitHub Copilotが提供するもの | musubix3が補完するもの |
+|---|---|
+| 計画、実装、refactor、tool実行 | 明示的な要求、設計判断、実装link、完了条件を要求するrepository-local SDD Skills |
+| テスト生成とtest runner実行 | 構造化TEST ID、native report正規化、検証可能なRed/Green/Refactor証拠 |
+| 変更内容の説明 | 要求 → 設計 → コード → テストの型付きtraceと双方向impact解析 |
+| repository調査 | 決定的なCode Graph、未解決local dependency診断、architecture gate |
+| 制約・不変条件の提案 | 任意のZ3/Lean整合性検査と、形式モデルから成功テストまでの対応検査 |
+| session単位の完了報告 | freshness、fingerprint、input stability、保護されたpolicy baseline、attestation、fail-closedなready判定 |
+
+musubix3はCopilotを置き換えず、別のcoding agentも追加しません。
+SATだから実装が正しいとも主張しません。開発はCopilotが実行し、
+musubix3は仕様を残し、証拠を検査し、古い・不完全な完了宣言を拒否して、
+「なぜこの変更をreadyと判断できるのか」をreview可能な形でrepositoryへ残します。
 
 ## クイックスタート
 

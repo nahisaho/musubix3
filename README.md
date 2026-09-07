@@ -6,15 +6,49 @@
 
 [What changed from musubix2 to musubix3 (Japanese)](MUSUBIX2-TO-MUSUBIX3.md)
 
-Specification-driven development (SDD) skills backed by deterministic checks:
+GitHub Copilot can plan, generate, edit, test, and review software. musubix3
+adds the repository-local specifications and deterministic evidence needed to
+decide whether that work is actually complete:
 requirements → constitution → design/ADRs → implementation → traceability →
-quality evidence. Optional formal consistency, compiler dependency analysis and
-local knowledge retrieval support the workflow.
+quality evidence.
 
 Learned from [musubix2](https://github.com/nahisaho/musubix2)'s concepts, rebuilt
 cleanly in three workspaces. No artifact compatibility or migration is promised.
 This repository does **not** guarantee correctness simply because IDs are linked
 or requirements are satisfiable.
+
+## Why GitHub Copilot alone is not enough
+
+Copilot is the implementation engine. It understands a request, explores the
+repository, proposes a plan, edits files, runs tools, and explains the result.
+That is necessary, but a successful conversation is not durable proof that:
+
+- the implemented behavior matches an explicit, measurable requirement;
+- every requirement is connected to design, code, and an authoritative test;
+- Red really failed before Green passed without the test being rewritten;
+- test, graph, formal, and quality results still match the current source;
+- a requirement change propagated through all affected artifacts in order;
+- a policy was not weakened merely to make the final gate pass.
+
+Conversation text such as “tests passed” or “implementation complete” is not
+enough because it can become stale, omit scope, or disappear outside the
+repository. Copilot should remain responsible for reasoning and development;
+musubix3 makes the completion criteria persistent and machine-checkable.
+
+| GitHub Copilot provides | musubix3 complements it with |
+|---|---|
+| Planning, coding, refactoring, and tool execution | Repository-local SDD Skills that require explicit requirements, design decisions, implementation links, and completion conditions |
+| Test generation and runner execution | Structured TEST identities, native-report normalization, and verified Red/Green/Refactor evidence |
+| Explanations of what changed | Typed requirement → design → code → test traceability and bidirectional impact analysis |
+| Repository exploration | Deterministic Code Graph indexing, unresolved-local dependency diagnostics, and architecture gates |
+| Suggestions for constraints and invariants | Optional Z3/Lean consistency checks and model-to-passing-test correspondence |
+| A session-level completion report | Freshness, fingerprints, input-stability checks, protected policy baselines, attestations, and a fail-closed readiness gate |
+
+musubix3 does **not** replace Copilot, add another coding agent, or claim that
+formal satisfiability proves implementation correctness. Copilot performs the
+development; musubix3 records the specification, checks the evidence, rejects
+stale or incomplete claims, and leaves a reviewable answer to “why is this
+change ready?”
 
 ## Quick start
 
