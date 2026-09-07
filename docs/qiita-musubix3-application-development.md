@@ -151,7 +151,7 @@ GitHub Copilot CLIのネイティブ機能へ委譲します。
 musubix3は、その作業を仕様と証拠で制約します。
 
 musubix2との違いは
-[musubix2からmusubix3で変わったこと](../MUSUBIX2-TO-MUSUBIX3.md)
+[musubix2からmusubix3で変わったこと](MUSUBIX2-TO-MUSUBIX3.md)
 に詳しくまとまっています。
 
 ---
@@ -2610,5 +2610,5 @@ musubix3は、その完了条件をrepository内へ残すための実践的な�
 - [GitHub Release: v0.1.3](https://github.com/nahisaho/musubix3/releases/tag/v0.1.3)
 - [README（日本語）](../README-ja.md)
 - [README（English）](../README.md)
-- [musubix2からmusubix3で変わったこと](../MUSUBIX2-TO-MUSUBIX3.md)
+- [musubix2からmusubix3で変わったこと](MUSUBIX2-TO-MUSUBIX3.md)
 - [設計判断 ADR-0001](../assets/ADR-0001.md)

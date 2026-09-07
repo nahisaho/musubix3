@@ -4,7 +4,7 @@
 
 [日本語](README-ja.md)
 
-[What changed from musubix2 to musubix3 (Japanese)](MUSUBIX2-TO-MUSUBIX3.md)
+[What changed from musubix2 to musubix3 (Japanese)](docs/MUSUBIX2-TO-MUSUBIX3.md)
 
 GitHub Copilot can plan, generate, edit, test, and review software. musubix3
 adds repository-local specifications plus deterministic, fail-closed checks

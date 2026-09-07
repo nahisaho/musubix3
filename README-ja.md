@@ -4,7 +4,7 @@
 
 [English](README.md)
 
-[musubix2 から musubix3 で変わったこと](MUSUBIX2-TO-MUSUBIX3.md)
+[musubix2 から musubix3 で変わったこと](docs/MUSUBIX2-TO-MUSUBIX3.md)
 
 GitHub Copilotは、計画、コード生成、編集、テスト、レビューを実行できます。
 musubix3は、repository-localな仕様と、設定した品質プロファイルが要求する
