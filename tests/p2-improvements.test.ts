@@ -3,7 +3,8 @@ import { describe, expect, it } from 'vitest';
 import { validateRequirements } from '../packages/domain/src/index.js';
 import {
   adapterInvocation, attestationSigningPayload, createPerformanceExecution, createUnsignedAttestation, formalCheck, generateLean,
-  generateSmt2, indexGraph, normalizeAdapterReport, parseConfig, performanceEvidence, recordWorkflow,
+  generateSmt2, indexGraph, normalizeAdapterReport, parseConfig, parsePolicyBaseline, performanceEvidence, policyDiagnostics,
+  recordWorkflow,
   readAdapterOutput, readText, mergeAdapterArgs,
   validateWorkflow, verifyEvidenceAttestation, verifyWorkflowLog,
   writeJson, writeText, type AttestationConfig, type Runner,
@@ -68,6 +69,90 @@ ${explicit('When a feature is disabled, the system shall deny access.', 'REQ-FOR
 });
 
 describe('P2 built-in test adapters', () => {
+  it('enforces explicit minimal, recommended, and release quality profiles', () => {
+    expect(parseConfig({
+      schemaVersion: 1,
+      qualityProfile: 'minimal',
+    }).qualityProfile).toBe('minimal');
+    expect(() => parseConfig({
+      schemaVersion: 1,
+      qualityProfile: 'recommended',
+    })).toThrow('requires checks');
+    expect(() => parseConfig({
+      schemaVersion: 1,
+      qualityProfile: 'recommended',
+      requiredChecks: [
+        'requirements', 'design', 'constitution', 'trace', 'graph', 'commands',
+        'test-identities', 'tdd',
+      ],
+    })).toThrow('codeGraph.mode strict');
+    expect(() => parseConfig({
+      schemaVersion: 1,
+      qualityProfile: 'release',
+      requiredChecks: [
+        'requirements', 'design', 'constitution', 'trace', 'graph', 'formal',
+        'model-correspondence', 'mutation', 'workflow', 'tdd', 'change-history',
+        'change-completeness', 'performance', 'attestation', 'test-identities', 'commands',
+      ],
+      codeGraph: { mode: 'strict' },
+      formal: { solver: 'z3', minModeledFraction: 0.5 },
+      mutation: { mode: 'strict' },
+      workflow: { mode: 'strict' },
+      attestation: { mode: 'local' },
+    })).toThrow('attestation.mode ci-required');
+    expect(parseConfig({
+      schemaVersion: 1,
+      qualityProfile: 'release',
+      requiredChecks: [
+        'requirements', 'design', 'constitution', 'trace', 'graph', 'formal',
+        'model-correspondence', 'mutation', 'workflow', 'tdd', 'change-history',
+        'change-completeness', 'performance', 'attestation', 'test-identities', 'commands',
+      ],
+      codeGraph: { mode: 'strict' },
+      formal: { solver: 'z3', minModeledFraction: 0.5 },
+      mutation: { mode: 'strict' },
+      workflow: { mode: 'strict' },
+      attestation: { mode: 'ci-required' },
+    }).qualityProfile).toBe('release');
+    expect(parsePolicyBaseline({
+      schemaVersion: 1,
+      commands: [{ name: 'format', command: 'cargo', args: ['fmt'], required: false }],
+      tdd: { redPreflightCommands: ['format'] },
+    }).tdd.redPreflightCommands).toEqual(['format']);
+  });
+
+  it('protects quality profile, Red preflight, and workflow event skew baselines', () => {
+    const baseline = parsePolicyBaseline({
+      schemaVersion: 1,
+      qualityProfile: 'release',
+      commands: [{ name: 'format', command: 'cargo', args: ['fmt', '--all'], required: false }],
+      requiredChecks: [
+        'requirements', 'design', 'constitution', 'trace', 'graph', 'formal',
+        'model-correspondence', 'mutation', 'workflow', 'tdd', 'change-history',
+        'change-completeness', 'performance', 'attestation', 'test-identities', 'commands',
+      ],
+      codeGraph: { mode: 'strict' },
+      formal: { solver: 'z3', minModeledFraction: 0.5 },
+      mutation: { mode: 'strict' },
+      tdd: { redPreflightCommands: ['format'] },
+      workflow: { mode: 'strict', maxEventSkewMs: 1000 },
+      attestation: { mode: 'ci-required' },
+    });
+    const weakened = parseConfig({
+      schemaVersion: 1,
+      qualityProfile: 'minimal',
+      commands: [{ name: 'format', command: 'true', required: false }],
+      tdd: { redPreflightCommands: ['format'] },
+      workflow: { mode: 'strict', maxEventSkewMs: 2000 },
+    });
+    expect(policyDiagnostics(weakened, baseline).map((diagnostic) => diagnostic.code))
+      .toEqual(expect.arrayContaining([
+        'POLICY_QUALITY_PROFILE',
+        'POLICY_TDD_PREFLIGHT',
+        'POLICY_WORKFLOW_EVENT_SKEW',
+      ]));
+  });
+
   it('derives targeted arguments and normalizes common native reports', () => {
     expect(parseConfig({
       schemaVersion: 1,

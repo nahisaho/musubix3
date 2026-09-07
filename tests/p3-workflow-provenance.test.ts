@@ -38,6 +38,7 @@ describe('P3 strict workflow transcript provenance', () => {
       mode: 'compatible',
       maxAgeSeconds: 3600,
       maxFutureSkewSeconds: 60,
+      maxEventSkewMs: 1000,
     });
     expect(parseConfig({ schemaVersion: 1 }).workflow).toEqual(defaultConfig.workflow);
     expect(parseConfig({
@@ -53,6 +54,7 @@ describe('P3 strict workflow transcript provenance', () => {
       expectedSessionId: sessionId,
       maxAgeSeconds: 300,
       maxFutureSkewSeconds: 10,
+      maxEventSkewMs: 1000,
     });
     expect(() => parseConfig({ schemaVersion: 1, workflow: { mode: 'strict', expectedSessionId: 'not-a-uuid' } }))
       .toThrow('workflow.expectedSessionId');
@@ -148,7 +150,10 @@ describe('P3 strict workflow transcript provenance', () => {
     await recordWorkflow(root, { skill: 'sdd-change', phase: 'complete', status: 'completed' });
     await expect(verifyWorkflowLog(root, `${strictTranscript()}\nnot-json\n`, { mode: 'strict' }))
       .rejects.toThrow('valid JSON');
-    await expect(verifyWorkflowLog(root, strictTranscript({ reverseCompletion: true }), { mode: 'strict' }))
+    await expect(verifyWorkflowLog(root, strictTranscript({ reverseCompletion: true }), {
+      mode: 'strict',
+      maxEventSkewMs: 0,
+    }))
       .rejects.toThrow('timestamp order');
     const orphan = strictTranscript().replace(
       '"tool.execution_start"',
@@ -157,6 +162,37 @@ describe('P3 strict workflow transcript provenance', () => {
     await expect(verifyWorkflowLog(root, orphan, { mode: 'strict' })).rejects.toThrow('without a matching start');
     const incomplete = strictTranscript().split('\n').filter((line) => !line.includes('tool.execution_complete')).join('\n');
     await expect(verifyWorkflowLog(root, incomplete, { mode: 'strict' })).rejects.toThrow('without a completion');
+  });
+
+  it('accepts bounded timestamp skew for causally ordered concurrent events', async () => {
+    const root = await fixture();
+    await recordWorkflow(root, { skill: 'sdd-change', phase: 'complete', status: 'completed' });
+    const transcript = [
+      {
+        type: 'tool.execution_start',
+        timestamp: '2020-01-01T00:00:01.500Z',
+        data: { toolCallId: 'call-concurrent', toolName: 'skill', arguments: { skill: 'sdd-change' } },
+      },
+      {
+        type: 'tool.execution_complete',
+        timestamp: '2020-01-01T00:00:01.000Z',
+        data: { toolCallId: 'call-concurrent', success: true },
+      },
+      {
+        type: 'result',
+        timestamp: '2020-01-01T00:00:01.250Z',
+        sessionId,
+        exitCode: 0,
+      },
+    ].map((event) => JSON.stringify(event)).join('\n');
+    await expect(verifyWorkflowLog(root, transcript, {
+      mode: 'strict',
+      maxEventSkewMs: 500,
+    })).resolves.toMatchObject({ verification: { mode: 'strict', exitCode: 0 } });
+    await expect(verifyWorkflowLog(root, transcript, {
+      mode: 'strict',
+      maxEventSkewMs: 100,
+    })).rejects.toThrow('timestamp order');
   });
 
   it('binds strict transcript identity into the workflow attestation head', async () => {

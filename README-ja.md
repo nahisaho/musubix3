@@ -1,6 +1,6 @@
 # musubix3
 
-**v0.1.1 · GitHub Copilot CLI 専用 · Node.js ≥20 · TypeScript · MIT**
+**最新公開版 v0.1.2 · GitHub Copilot CLI 専用 · Node.js ≥20 · TypeScript · MIT**
 
 [English](README.md)
 
@@ -19,16 +19,16 @@ ID の接続や SAT 判定だけで、実装の正しさを保証するもので
 対象プロジェクトで、公開済みパッケージを実行します。
 
 ```sh
-npx musubix3@0.1.1 --version
-npx musubix3@0.1.1 init --dry-run
-npx musubix3@0.1.1 init
+npx musubix3@0.1.2 --version
+npx musubix3@0.1.2 init --dry-run
+npx musubix3@0.1.2 init
 copilot
 ```
 
 バージョンを固定してプロジェクトへインストールする場合は、次を実行します。
 
 ```sh
-npm install --save-dev --save-exact musubix3@0.1.1
+npm install --save-dev --save-exact musubix3@0.1.2
 npx --no-install musubix3 --version
 npx --no-install musubix3 init --dry-run
 npx --no-install musubix3 init
@@ -176,6 +176,7 @@ npx musubix3 status --json
 | `knowledge query <text> [--limit 10]` | TF-IDF/cosine のランキングと陳腐化情報 |
 | `formal generate <file> [--format both\|smt2\|lean]` | SHA-256付きの再現可能なsolver入力生成 |
 | `formal doctor` | Z3、Lean、`lake env lean` の存在とバージョン確認 |
+| `mutation doctor` | 言語別のローカルmutation engine確認と導入推奨 |
 | `formal check <file> [--solver auto\|none\|z3\|lean]` | 明示的なBoolean・条件・数値・時間・状態遷移モデルを検査 |
 | `model-correspondence validate` | Formal JSON→生成trace→正本passing testの証拠を再検証 |
 | `evidence refresh [--changed]` | 同じfail-closed gate pipelineで派生証拠を再生成 |
@@ -327,6 +328,7 @@ version: 1.0.0
 {
   "schemaVersion": 1,
   "language": "auto",
+  "qualityProfile": "custom",
   "commands": [
     { "name": "typecheck", "command": "npm", "args": ["run", "typecheck"], "required": true, "timeoutMs": 120000 },
     {
@@ -342,10 +344,12 @@ version: 1.0.0
   "thresholds": { "design": 1, "implementation": 1, "tests": 1 },
   "formal": { "solver": "none", "minModeledFraction": 0, "timeoutMs": 12000 },
   "mutation": { "mode": "compatible" },
+  "tdd": { "redPreflightCommands": [] },
   "workflow": {
     "mode": "compatible",
     "maxAgeSeconds": 3600,
-    "maxFutureSkewSeconds": 60
+    "maxFutureSkewSeconds": 60,
+    "maxEventSkewMs": 1000
   },
   "attestation": {
     "mode": "local",
@@ -366,6 +370,15 @@ version: 1.0.0
 
 未知の設定キー、不正な閾値、重複コマンドはエラーです。
 glob は `*` / `**` / `?` に対応し、外部依存は `npm:` 接頭辞で表現します。
+`qualityProfile`の既定値は`custom`です。`minimal`はSDDの基本gate、
+`recommended`はstrict Code Graph、TDD、構造化test identityも要求し、
+`release`はformal、mutation、workflow、変更、performance、CI attestationを
+含む完全なrelease checkを要求します。不足設定や弱い設定を証拠で補ったことにはしません。
+`tdd.redPreflightCommands`にはformatter等のplain command名を指定でき、
+Redのtest fingerprintを取得する前に成功が必須です。
+通常ファイルの`pyvenv.cfg`を含む`.venv`と`venv`はsnapshotと
+Code Graphから除外されますが、任意のsource directoryにmarkerを置いても
+除外されません。
 `codeGraph.mode` の既定値は `compatible` で、未解決の計算された
 `import()` / `require()` は警告です。`strict` にするとグラフゲートを阻止する
 エラーになります。信頼済みbaselineが `strict` の場合、`compatible` への
@@ -386,7 +399,9 @@ command reportでpassしたことを要求します。欠落・改変・stale・
 
 `.musubix/policy-baseline.json` は必須チェック、閾値、アーキテクチャ、
 Formalポリシー、mutation mode、workflow strict/session/freshness、CI必須attestation、
-strict OIDC identity/key binding、必須コマンド名の最低条件です。弱体化は拒否され、
+strict OIDC identity/key binding、必須コマンド名の最低条件です。Red preflightを
+要求するbaselineは正規化済み`commands`定義も保持し、同名formatterへの
+すり替えを拒否します。弱体化は拒否され、
 変更ゲート中のbaseline変更には独立承認が必要です。CODEOWNERS等で保護してください。
 
 **信頼した設定だけを実行してください。** ゲートは環境変数を継承し、シェルを

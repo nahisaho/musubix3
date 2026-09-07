@@ -1,6 +1,6 @@
 # musubix3
 
-**v0.1.1 · GitHub Copilot CLI only · Node.js ≥20 · TypeScript · MIT**
+**Latest published v0.1.2 · GitHub Copilot CLI only · Node.js ≥20 · TypeScript · MIT**
 
 [日本語](README-ja.md)
 
@@ -21,16 +21,16 @@ or requirements are satisfiable.
 Run the published package from the target project:
 
 ```sh
-npx musubix3@0.1.1 --version
-npx musubix3@0.1.1 init --dry-run
-npx musubix3@0.1.1 init
+npx musubix3@0.1.2 --version
+npx musubix3@0.1.2 init --dry-run
+npx musubix3@0.1.2 init
 copilot
 ```
 
 For a reproducible project-local installation:
 
 ```sh
-npm install --save-dev --save-exact musubix3@0.1.1
+npm install --save-dev --save-exact musubix3@0.1.2
 npx --no-install musubix3 --version
 npx --no-install musubix3 init --dry-run
 npx --no-install musubix3 init
@@ -184,6 +184,7 @@ validation/gate or requested solver failure, **2** usage, I/O or malformed confi
 | `knowledge query <text> [--limit 10]` | Deterministic TF-IDF/cosine results and staleness flag |
 | `formal generate <file> [--format both\|smt2\|lean]` | Reproducible solver inputs with SHA-256 evidence |
 | `formal doctor` | Probe Z3, Lean, and `lake env lean` availability and versions |
+| `mutation doctor` | Probe language-aware local mutation engines and show setup recommendations |
 | `formal check <file> [--solver auto\|none\|z3\|lean]` | Check the explicit Boolean/conditional/numeric/temporal/transition model |
 | `model-correspondence validate` | Revalidate Formal JSON → generated trace → authoritative passing test evidence |
 | `evidence refresh [--changed]` | Regenerate derived evidence through the same fail-closed gate pipeline |
@@ -328,6 +329,7 @@ Example `.musubix/config.json` (adapt command arguments to your own project):
 {
   "schemaVersion": 1,
   "language": "auto",
+  "qualityProfile": "custom",
   "commands": [
     { "name": "typecheck", "command": "npm", "args": ["run", "typecheck"], "required": true, "timeoutMs": 120000 },
     {
@@ -343,10 +345,12 @@ Example `.musubix/config.json` (adapt command arguments to your own project):
   "thresholds": { "design": 1, "implementation": 1, "tests": 1 },
   "formal": { "solver": "none", "minModeledFraction": 0, "timeoutMs": 12000 },
   "mutation": { "mode": "compatible" },
+  "tdd": { "redPreflightCommands": [] },
   "workflow": {
     "mode": "compatible",
     "maxAgeSeconds": 3600,
-    "maxFutureSkewSeconds": 60
+    "maxFutureSkewSeconds": 60,
+    "maxEventSkewMs": 1000
   },
   "attestation": {
     "mode": "local",
@@ -367,6 +371,16 @@ Example `.musubix/config.json` (adapt command arguments to your own project):
 
 Config is validated strictly; misspelled keys, invalid bounds and duplicate
 commands fail closed. Globs support `*`, `**`, `?`; external imports use `npm:`.
+`qualityProfile` is `custom` by default. `minimal` preserves the core SDD gate,
+`recommended` also requires strict Code Graph, TDD and structured test
+identities, and `release` requires the complete formal, mutation, workflow,
+change, performance and CI-attestation checks. Stronger profiles reject missing
+or weakened settings rather than silently filling in evidence.
+Use `tdd.redPreflightCommands` to reference plain configured formatter commands;
+they must pass before Red captures the authoritative test fingerprint.
+Conventional `.venv` and `venv` Python environments containing a regular
+`pyvenv.cfg` are excluded from source snapshots and Code Graph indexing.
+Arbitrary source directories containing that marker remain tracked.
 `codeGraph.mode` defaults to `compatible`, where unresolved computed
 `import()`/`require()` calls remain warnings. Set it to `strict` to make those
 diagnostics gate-blocking errors. A trusted strict policy baseline prevents
@@ -391,7 +405,9 @@ diagnostic codes are stable English; human status labels include Japanese.
 `.musubix/policy-baseline.json` records minimum required checks, coverage,
 architecture, formal policy, mutation mode, workflow strict/session/freshness settings,
 CI-required attestation and strict OIDC identity/key binding, and required
-command names. Weakening is rejected; changing the baseline in `gate --changed`
+command names. A baseline that requires TDD Red preflights must also include
+their normalized `commands` definitions, which prevents replacing a trusted
+formatter while retaining its name. Weakening is rejected; changing the baseline in `gate --changed`
 requires independent approval. Protect the baseline with review/CODEOWNERS.
 
 **Only run trusted configuration**: gates execute its commands with inherited

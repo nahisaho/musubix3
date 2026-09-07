@@ -162,6 +162,18 @@ export async function runTddPhase(
   if ((!command.tddArgs?.length || !command.tddReport) && !command.adapter) {
     throw new Error(`Configured command ${commandName} needs tddArgs and a structured tddReport.`);
   }
+  if (phase === 'red') {
+    for (const name of config.tdd.redPreflightCommands) {
+      const preflight = config.commands.find((entry) => entry.name === name)!;
+      const execution = await runner(preflight.command, preflight.args, {
+        cwd: root,
+        timeoutMs: preflight.timeoutMs,
+      });
+      if (execution.status !== 'completed' || execution.exitCode !== 0) {
+        throw new Error(`TDD Red preflight command ${name} failed with status ${execution.status} and exit code ${execution.exitCode ?? 'none'}.`);
+      }
+    }
+  }
   const trace = await buildTrace(root);
   const test = trace.nodes.find((node) => node.kind === 'test' && node.id === testId);
   if (!test) throw new Error(`Annotated test ID not found: ${testId}`);

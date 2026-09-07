@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import {
-  collectEvidenceHeads, defaultConfig, digest, loadConfig, mutationIdentity, policyDiagnostics,
+  collectEvidenceHeads, defaultConfig, digest, loadConfig, mutationDoctor, mutationIdentity, policyDiagnostics,
   projectStatus, readText, runGate, validateModelCorrespondenceEvidence, validateMutationEvidence,
-  writeJson, writeText, type MutationRecord,
+  writeJson, writeText, type MutationRecord, type Runner,
 } from '../packages/analysis/src/index.js';
-import { project } from './helpers.js';
+import { processResult, project } from './helpers.js';
 
 const explicitRequirement = `---
 schemaVersion: 1
@@ -64,6 +64,54 @@ async function configureMutation(
 }
 
 describe('P4 model correspondence and mutation quality', () => {
+  it('reports language-aware mutation engine probes and actionable recommendations', async () => {
+    const root = await project();
+    await writeText(root, 'package.json', '{"name":"fixture"}\n');
+    await writeText(root, 'Cargo.toml', '[package]\nname = "fixture"\nversion = "0.1.0"\n');
+    const runner: Runner = async (command) => command === 'cargo'
+      ? processResult({ stdout: 'cargo-mutants 25.0.0' })
+      : processResult({ status: 'missing', exitCode: null });
+    const report = await mutationDoctor(root, runner);
+    expect(report).toMatchObject({ available: true, configured: false });
+    expect(report.engines).toEqual(expect.arrayContaining([
+      expect.objectContaining({
+        ecosystem: 'javascript',
+        engine: 'StrykerJS',
+        status: 'missing',
+        attemptedCommands: ['npx --no-install stryker --version'],
+      }),
+      expect.objectContaining({
+        ecosystem: 'rust',
+        engine: 'cargo-mutants',
+        status: 'available',
+      }),
+    ]));
+    expect(report.engines.every((entry) => entry.recommendation.length > 0)).toBe(true);
+
+    const config = await loadConfig(root);
+    config.commands.push({
+      name: 'mutation',
+      command: 'missing-engine',
+      args: ['--report', '{reportPath}'],
+      mutationReport: {
+        format: 'musubix-mutation-json',
+        path: '.musubix/evidence/mutation-report.json',
+      },
+      required: true,
+      timeoutMs: 10_000,
+    });
+    await writeJson(root, '.musubix/config.json', config);
+    expect(await mutationDoctor(root, runner)).toMatchObject({
+      available: false,
+      configured: true,
+      engines: [expect.objectContaining({
+        engine: 'mutation',
+        status: 'configured',
+        recommendation: expect.stringContaining('run the gate'),
+      })],
+    });
+  });
+
   it('proves explicit formal requirements through fresh trace and passing test reports', async () => {
     const root = await project();
     await writeText(root, '.musubix/features/example/requirements.md', explicitRequirement);

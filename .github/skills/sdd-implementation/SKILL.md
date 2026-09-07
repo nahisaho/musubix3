@@ -46,11 +46,15 @@ After the work, run `npx musubix3 workflow-record sdd-implementation complete
    Put annotations in the authoritative source and test files, including
    supported non-JS/TS files; never add a proxy file just to increase coverage.
    An annotation establishes a link, not proof that code or tests are correct.
-5. Run the project's actual focused tests/typecheck/build; fix failures.
+5. Before recording Red, run every configured `tdd.redPreflightCommands`
+   formatter/check and let musubix3 enforce that preflight. Then run the
+   project's actual focused tests/typecheck/build; fix failures.
    When mutation evidence is required, use the project's existing lightweight
    mutation mechanism to emit schema-v1 deterministic identities, requirement/
    test linkage, source/test SHA-256, operator/location, and killed status.
-   Never fabricate results or add a large mutation dependency.
+   Never fabricate results or add a large mutation dependency. Use
+   `npx musubix3 mutation doctor --json` to inspect locally available engines
+   and configuration recommendations.
 6. Regenerate `npx musubix3 trace build`, check `trace check --strict`, then
    `npx musubix3 gate --changed`. Configure real command/argument arrays first.
 7. Use Copilot's native review and security-review capabilities when appropriate.

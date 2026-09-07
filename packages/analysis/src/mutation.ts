@@ -2,7 +2,7 @@ import { error, validateRequirements, type Diagnostic, type Requirement } from '
 import type { CommandConfig, MutationConfig } from './config.js';
 import { loadConfig } from './config.js';
 import { digest, exists, files, readText, within, writeJson } from './files.js';
-import type { ProcessResult } from './process.js';
+import { runProcess, type ProcessResult, type Runner } from './process.js';
 import { checkTrace, loadTrace, type TraceGraph } from './trace.js';
 
 export type MutationStatus = 'killed' | 'survived' | 'skipped' | 'error';
@@ -42,6 +42,21 @@ export interface MutationEvidence {
   runId: string;
   generatedAt: string;
   executions: MutationExecution[];
+}
+
+export interface MutationDoctorEntry {
+  ecosystem: 'javascript' | 'python' | 'go' | 'rust' | 'java';
+  engine: string;
+  status: 'configured' | 'available' | 'missing';
+  attemptedCommands: string[];
+  output?: string;
+  recommendation: string;
+}
+
+export interface MutationDoctorReport {
+  available: boolean;
+  configured: boolean;
+  engines: MutationDoctorEntry[];
 }
 
 function canonical(value: unknown): string {
@@ -164,6 +179,102 @@ function sourceImplements(trace: TraceGraph, sourceId: string, requirementId: st
     edge.to === requirementId && edge.relation === 'satisfies').map((edge) => edge.from);
   return trace.edges.some((edge) =>
     edge.from === sourceId && designs.includes(edge.to) && edge.relation === 'implements');
+}
+
+export async function mutationDoctor(
+  root: string,
+  runner: Runner = runProcess,
+): Promise<MutationDoctorReport> {
+  const projectFiles = new Set(await files(root));
+  const config = await exists(within(root, '.musubix/config.json')) ? await loadConfig(root) : null;
+  const configured = config?.commands.filter((command) => command.mutationReport) ?? [];
+  if (configured.length) {
+    return {
+      available: false,
+      configured: true,
+      engines: configured.map((command) => ({
+        ecosystem: projectFiles.has('Cargo.toml') ? 'rust'
+          : projectFiles.has('go.mod') ? 'go'
+            : projectFiles.has('pom.xml') ? 'java'
+              : [...projectFiles].some((path) => path.endsWith('.py')) ? 'python'
+                : 'javascript',
+        engine: command.name,
+        status: 'configured',
+        attemptedCommands: [`${command.command} ${command.args.join(' ')}`.trim()],
+        recommendation: `Mutation command ${command.name} is configured; run the gate to verify executable availability and report generation.`,
+      })),
+    };
+  }
+  const candidates: Array<{
+    ecosystem: MutationDoctorEntry['ecosystem'];
+    engine: string;
+    command: string;
+    args: string[];
+    present: boolean;
+    recommendation: string;
+  }> = [
+    {
+      ecosystem: 'javascript',
+      engine: 'StrykerJS',
+      command: 'npx',
+      args: ['--no-install', 'stryker', '--version'],
+      present: projectFiles.has('package.json'),
+      recommendation: 'Install @stryker-mutator/core locally and configure a command.mutationReport adapter script.',
+    },
+    {
+      ecosystem: 'python',
+      engine: 'mutmut',
+      command: 'mutmut',
+      args: ['--version'],
+      present: projectFiles.has('pyproject.toml') || projectFiles.has('requirements.txt')
+        || [...projectFiles].some((path) => path.endsWith('.py')),
+      recommendation: 'Install mutmut in the project virtual environment and convert its results to the musubix mutation schema.',
+    },
+    {
+      ecosystem: 'go',
+      engine: 'go-mutesting',
+      command: 'go-mutesting',
+      args: ['--version'],
+      present: projectFiles.has('go.mod'),
+      recommendation: 'Install go-mutesting or an equivalent pinned Go mutation engine and emit a musubix mutation report.',
+    },
+    {
+      ecosystem: 'rust',
+      engine: 'cargo-mutants',
+      command: 'cargo',
+      args: ['mutants', '--version'],
+      present: projectFiles.has('Cargo.toml'),
+      recommendation: 'Install cargo-mutants with a pinned version and configure a deterministic mutation report converter.',
+    },
+    {
+      ecosystem: 'java',
+      engine: 'PIT',
+      command: 'pitest',
+      args: ['--version'],
+      present: projectFiles.has('pom.xml') || projectFiles.has('build.gradle') || projectFiles.has('build.gradle.kts'),
+      recommendation: 'Configure the PIT Maven or Gradle plugin and convert its report to the musubix mutation schema.',
+    },
+  ];
+  const engines: MutationDoctorEntry[] = [];
+  for (const candidate of candidates.filter((entry) => entry.present)) {
+    const result = await runner(candidate.command, candidate.args, { cwd: root, timeoutMs: 5000 });
+    const available = result.status === 'completed' && result.exitCode === 0;
+    engines.push({
+      ecosystem: candidate.ecosystem,
+      engine: candidate.engine,
+      status: available ? 'available' : 'missing',
+      attemptedCommands: [`${candidate.command} ${candidate.args.join(' ')}`],
+      ...((result.stdout || result.stderr) ? { output: `${result.stdout}\n${result.stderr}`.trim() } : {}),
+      recommendation: available
+        ? `${candidate.engine} is available; configure a command with mutationReport before requiring strict mutation evidence.`
+        : candidate.recommendation,
+    });
+  }
+  return {
+    available: engines.some((entry) => entry.status === 'available'),
+    configured: false,
+    engines,
+  };
 }
 
 export async function validateMutationEvidence(

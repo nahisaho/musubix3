@@ -17,7 +17,7 @@ async function invoke(root: string, args: string[]): Promise<Awaited<ReturnType<
 describe('CLI contracts', () => {
   it('prints version/help and JSON validation with nonzero failure', async () => {
     const root = await fixture({ 'requirements.md': req() });
-    expect((await invoke(root, ['--version'])).stdout.trim()).toBe('0.1.1');
+    expect((await invoke(root, ['--version'])).stdout.trim()).toBe('0.1.2');
     expect((await invoke(root, ['--help'])).stdout).toContain('trace');
     const valid = await invoke(root, ['requirements', 'validate', 'requirements.md', '--json']);
     expect(valid.exitCode).toBe(0);
@@ -52,7 +52,7 @@ describe('CLI contracts', () => {
     expect(status.gate.ready).toBe(false);
     await symlink(cli, resolve(root, 'musubix3-bin'));
     const linked = await runProcess(process.execPath, [resolve(root, 'musubix3-bin'), '--version'], { cwd: root, timeoutMs: 10_000 });
-    expect(linked.stdout.trim()).toBe('0.1.1');
+    expect(linked.stdout.trim()).toBe('0.1.2');
   });
 
   it('runs full workflow and reports JSON evidence', async () => {
@@ -152,6 +152,25 @@ describe('CLI contracts', () => {
     ]);
     expect(mismatch.exitCode).toBe(2);
     expect(JSON.parse(mismatch.stdout).error.message).toContain('does not match');
+
+    config.workflow.maxEventSkewMs = 0;
+    await writeJson(root, '.musubix/config.json', config);
+    await writeText(root, 'copilot.jsonl', [
+      {
+        type: 'tool.execution_start',
+        timestamp: new Date(terminalTime - 1_000).toISOString(),
+        data: { toolCallId: 'call-1', toolName: 'skill', arguments: { skill: 'sdd-change' } },
+      },
+      {
+        type: 'tool.execution_complete',
+        timestamp: new Date(terminalTime - 1_500).toISOString(),
+        data: { toolCallId: 'call-1', success: true },
+      },
+      { type: 'result', timestamp: new Date(terminalTime).toISOString(), sessionId, exitCode: 0 },
+    ].map((event) => JSON.stringify(event)).join('\n'));
+    const skewed = await invoke(root, ['workflow-verify', 'copilot.jsonl', '--json']);
+    expect(skewed.exitCode).toBe(2);
+    expect(JSON.parse(skewed.stdout).error.message).toContain('timestamp order');
   });
 
   it('derives the configured GitHub OIDC audience without reading a private key', async () => {

@@ -2,6 +2,21 @@
 
 ## Unreleased
 
+## 0.1.2 - 2026-09-07
+
+- Exclude conventional `.venv` and `venv` Python environments identified by a
+  regular `pyvenv.cfg` file from project snapshots and Code Graph indexing,
+  without allowing the marker to hide arbitrary source directories.
+- Add configurable `tdd.redPreflightCommands` so formatters and other plain
+  preflight commands complete before a Red test fingerprint is captured.
+- Add explicit `custom`, `minimal`, `recommended`, and `release` quality
+  profiles with fail-closed requirements for stronger profiles.
+- Accept bounded timestamp skew for causally ordered concurrent Copilot tool
+  events in strict workflow verification, with a policy-protected
+  `workflow.maxEventSkewMs` limit.
+- Add `mutation doctor` with language-aware local engine probes, attempted
+  commands, and actionable configuration recommendations.
+
 ## 0.1.1 - 2026-09-07
 
 - Preserve fail-closed input-stability checks while reporting every added,

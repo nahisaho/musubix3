@@ -161,6 +161,43 @@ export function anotherTest() { return true; }
     expect(await validateTddEvidence(root)).toMatchObject({ valid: false });
   });
 
+  it('runs configured formatter preflights before capturing the Red test fingerprint', async () => {
+    const root = await project();
+    const config = await loadConfig(root);
+    config.commands.unshift({
+      name: 'format',
+      command: 'formatter',
+      args: ['--write'],
+      required: true,
+      timeoutMs: 10_000,
+    });
+    config.tdd.redPreflightCommands = ['format'];
+    await writeJson(root, '.musubix/config.json', config);
+    const calls: string[] = [];
+    const runner: Runner = async (command, args) => {
+      calls.push(command);
+      if (command === 'formatter') {
+        await writeText(root, 'src/service.test.ts', testCode.replace('export function testReadiness()', 'export function testReadiness() '));
+        return processResult();
+      }
+      return tddResultRunner(root, 'failed', { exitCode: 1 })(command, args, {
+        cwd: root,
+        timeoutMs: 10_000,
+      });
+    };
+    const red = await runTddPhase(root, 'red', 'TEST-EXAMPLE-001', 'REQ-EXAMPLE-001', 'test', runner);
+    expect(red.valid).toBe(true);
+    expect(calls).toEqual(['formatter', process.execPath]);
+
+    config.commands[0]!.command = 'missing-formatter';
+    await writeJson(root, '.musubix/config.json', config);
+    await expect(runTddPhase(root, 'red', 'TEST-EXAMPLE-001', 'REQ-EXAMPLE-001', 'test',
+      async (command, args, options) => command === 'missing-formatter'
+        ? processResult({ status: 'missing', exitCode: null })
+        : tddResultRunner(root, 'failed', { exitCode: 1 })(command, args, options)))
+      .rejects.toThrow('preflight command format failed');
+  });
+
   it('chains immutable TDD phase records and detects mutation, deletion and reordering', async () => {
     const root = await project();
     await runTddPhase(root, 'red', 'TEST-EXAMPLE-001', 'REQ-EXAMPLE-001', 'test',
@@ -523,6 +560,45 @@ export const unrelated = false;
     const report = await runGate(root, { runner });
     expect(report.checks.find((c) => c.name === 'input-stability')?.diagnostics)
       .toContainEqual(expect.objectContaining({ code: 'INPUT_MODIFIED', path: 'src/target/tracked.ts' }));
+  });
+
+  it('ignores Python virtual environments identified by pyvenv.cfg without hiding similarly named source', async () => {
+    const root = await project();
+    await writeText(root, '.venv/pyvenv.cfg', 'home = /usr/bin\n');
+    await writeText(root, '.venv/lib/python3.12/site-packages/dependency.py', 'VALUE = 1\n');
+    await writeText(root, 'src/venv/service.py', 'VALUE = 1\n');
+    const runner: Runner = async () => {
+      await writeText(root, '.venv/lib/python3.12/site-packages/dependency.py', 'VALUE = 2\n');
+      await writeText(root, 'src/venv/service.py', 'VALUE = 2\n');
+      return processResult();
+    };
+    const report = await runGate(root, { runner });
+    expect(report.checks.find((c) => c.name === 'input-stability')?.diagnostics)
+      .toEqual([expect.objectContaining({ code: 'INPUT_MODIFIED', path: 'src/venv/service.py' })]);
+  });
+
+  it('does not exclude a source tree when pyvenv.cfg is not a regular file', async () => {
+    const root = await project();
+    await mkdir(resolve(root, 'src/application/pyvenv.cfg'), { recursive: true });
+    await writeText(root, 'src/application/service.py', 'VALUE = 1\n');
+    const runner: Runner = async () => {
+      await writeText(root, 'src/application/service.py', 'VALUE = 2\n');
+      return processResult();
+    };
+    expect((await runGate(root, { runner })).checks.find((c) => c.name === 'input-stability')?.diagnostics)
+      .toContainEqual(expect.objectContaining({ code: 'INPUT_MODIFIED', path: 'src/application/service.py' }));
+  });
+
+  it('does not exclude an arbitrary source tree with a regular pyvenv.cfg marker', async () => {
+    const root = await project();
+    await writeText(root, 'src/application/pyvenv.cfg', 'home = /usr/bin\n');
+    await writeText(root, 'src/application/service.py', 'VALUE = 1\n');
+    const runner: Runner = async () => {
+      await writeText(root, 'src/application/service.py', 'VALUE = 2\n');
+      return processResult();
+    };
+    expect((await runGate(root, { runner })).checks.find((c) => c.name === 'input-stability')?.diagnostics)
+      .toContainEqual(expect.objectContaining({ code: 'INPUT_MODIFIED', path: 'src/application/service.py' }));
   });
 
   it('changed mode captures changes and still runs actual commands', async () => {

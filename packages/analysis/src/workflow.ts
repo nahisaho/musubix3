@@ -111,7 +111,7 @@ export async function recordWorkflow(
   delete current.verification;
   current.events.push({
     skill: event.skill,
-    version: '0.1.1',
+    version: '0.1.2',
     provenance: 'self-reported',
     phase: event.phase,
     status: event.status,
@@ -248,7 +248,8 @@ async function verifyWorkflowChunks(
       if (options.mode === 'strict') {
         if (!start) throw new Error(`Tool call ${toolCallId} completed without a matching start.`);
         if (toolCompletions.has(toolCallId)) throw new Error(`Tool call ${toolCallId} has more than one completion event.`);
-        if (start.index >= parsedCount - 1 || Date.parse(start.timestamp) > time) {
+        if (start.index >= parsedCount - 1
+          || Date.parse(start.timestamp) - time > (options.maxEventSkewMs ?? 1000)) {
           throw new Error(`Tool call ${toolCallId} violates event timestamp order.`);
         }
       }
@@ -301,7 +302,8 @@ async function verifyWorkflowChunks(
     const timestamp = terminalRecord!.timestamp;
     const sessionId = terminalRecord!.sessionId;
     const exitCode = terminalRecord!.exitCode;
-    if (typeof timestamp !== 'string' || Number.isNaN(Date.parse(timestamp)) || Date.parse(timestamp) < lastToolTimestamp) {
+    if (typeof timestamp !== 'string' || Number.isNaN(Date.parse(timestamp))
+      || lastToolTimestamp - Date.parse(timestamp) > (options.maxEventSkewMs ?? 1000)) {
       throw new Error('The terminal result event violates event timestamp order.');
     }
     if (typeof sessionId !== 'string' || !uuid.test(sessionId)) {

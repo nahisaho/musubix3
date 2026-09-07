@@ -3,6 +3,7 @@ import { lstat, mkdir, readdir, readFile, rename, unlink, writeFile } from 'node
 import { dirname, isAbsolute, relative, resolve, sep } from 'node:path';
 
 const excluded = new Set(['.git', 'node_modules', 'dist', 'build', 'coverage', '.test-work', '.next', 'vendor']);
+const pythonVirtualEnvironmentRoots = new Set(['.venv', 'venv']);
 
 export function portable(path: string): string {
   return path.split(sep).join('/');
@@ -19,6 +20,15 @@ export async function exists(path: string): Promise<boolean> {
   try {
     await lstat(path);
     return true;
+  } catch (cause) {
+    if ((cause as NodeJS.ErrnoException).code === 'ENOENT') return false;
+    throw cause;
+  }
+}
+
+async function isRegularFile(path: string): Promise<boolean> {
+  try {
+    return (await lstat(path)).isFile();
   } catch (cause) {
     if ((cause as NodeJS.ErrnoException).code === 'ENOENT') return false;
     throw cause;
@@ -51,8 +61,11 @@ export async function files(root: string): Promise<string[]> {
       const absolute = resolve(directory, entry.name);
       const path = portable(relative(root, absolute));
       if (entry.isDirectory()) {
+        const isPythonVirtualEnvironment = pythonVirtualEnvironmentRoots.has(entry.name)
+          && await isRegularFile(resolve(absolute, 'pyvenv.cfg'));
         if (!excluded.has(entry.name)
           && !(entry.name === 'target' && hasCargoOrMavenManifest)
+          && !isPythonVirtualEnvironment
           && path !== '.musubix/cache'
           && path !== '.musubix/evidence') await walk(absolute);
       } else if (entry.isFile()) {

@@ -7,7 +7,7 @@ tags:
   - Rust
   - Java
 private: false
-updated_at: ""
+updated_at: "2026-09-07"
 id: null
 organization_url_name: null
 slide: false
@@ -43,11 +43,15 @@ GitHub Copilot CLI用の8つのSkillsと、決定的な検証CLIを提供しま�
 mutation evidence、performance counter、workflow transcript、
 attestationまで試しています。
 
-> 実験日は2026年9月7日です。
+> 初回実験、公開版v0.1.1での再実験、リリース前v0.1.2での改善確認は
+> 2026年9月7日に実施しました。
 > 実験レポートは
-> `/tmp/work/01-task-timer/EXPERIMENT.md` から
-> `/tmp/work/05-order-platform/EXPERIMENT.md` に生成しました。
-> `/tmp/work` は一時領域であり、このmusubix3リポジトリへコミットした成果物ではありません。
+> `/tmp/work-v011/01-task-timer/EXPERIMENT.md` から
+> `/tmp/work-v011/05-order-platform/EXPERIMENT.md` に生成しました。
+> v0.1.2の比較環境は`/tmp/work-v012`です。
+> 記事の手順を読み直して行った最終再実験は
+> `/tmp/work-v012-article`へ分離しました。
+> どちらも一時領域であり、このmusubix3リポジトリへコミットした成果物ではありません。
 > 再起動やクリーンアップで消える前提です。
 
 ---
@@ -68,6 +72,10 @@ musubix3を一言で表すと、
 - Z3/Leanの不在やエラーを「成功したこと」にしない
 - 形式モデルと、実際に成功したテストの対応を別に確認できる
 - 大規模なCopilot JSONL transcriptを上限付きstreamingで検証できる
+- `evidence refresh`で証拠再生成と品質ゲートを明示的に再実行できる
+- Cargo/Goの既存引数、multi-module JUnit XML、Cargo/Mavenの`target/`を
+  実プロジェクト構成のまま扱える
+- input-stability違反時にpathと変更前後のSHA-256を確認できる
 
 一方、コストもあります。
 
@@ -167,18 +175,52 @@ musubix2との違いは
 
 | 段階 | アプリ | 規模 | 言語・主要技術 | 目的 | テスト | 主に試したmusubix3機能 | 最終判定 |
 |---:|---|---|---|---|---|---|---|
-| 1 | Task Timer | 小 | TypeScript / Node.js / Vitest | 時刻・永続化境界を持つCLI | 7件成功 | EARS、Vitest TDD、trace、graph、単一タイマー形式モデル | 実用範囲のgate成功 |
-| 2 | Reservation API | 小〜中 | Python 3.12 / FastAPI / Pydantic / pytest / httpx | 容量・時間重複・冪等性 | 9件成功 | pytest adapter、時間制約、Z3、knowledge | 実用範囲のgate成功 |
-| 3 | URL Shortener | 中 | Go 1.22 / net/http | 期限、統計、rate limit、原子的JSON保存 | 8要求対応subtestを含む11件成功 | Go adapter、変更履歴、決定的performance counter | 実用範囲のgate成功 |
-| 4 | Inventory Processor | 中〜大 | Rust / clap / serde | event log、replay、snapshot、在庫不変条件 | 13件成功 | Cargo adapter、strict graph、Z3、Lean生成物、mutation、変更chronology | 再実行後pass |
-| 5 | Order Fulfillment Platform | 大 | Java 21 / Maven / JUnit 5 / HttpServer | 複数境界・補償・監査・運用指標 | 24件成功 | multi-module graph、JUnit adapter、P4証拠、late change | ローカルで実施可能なgate成功 |
+| 1 | Task Timer | 小 | TypeScript / Node.js / Vitest | 時刻・永続化境界を持つCLI | 7件成功 | EARS、Vitest TDD、trace、graph、単一タイマー形式モデル | gate成功、ready=true |
+| 2 | Reservation API | 小〜中 | Python 3.12 / FastAPI / Pydantic / pytest / httpx | 容量・時間重複・冪等性 | 9件成功 | pytest adapter、時間制約、Z3、knowledge | gate成功、ready=true |
+| 3 | URL Shortener | 中 | Go 1.22 / net/http | 期限、統計、rate limit、原子的JSON保存 | 要求対応9件成功 | Go adapter、変更履歴、決定的performance counter | gate成功、ready=true |
+| 4 | Inventory Processor | 中〜大 | Rust / serde | event log、replay、snapshot、在庫不変条件 | 17件成功、構造化ID 13/13 | Cargo adapter、strict graph、Z3、Lean生成物、変更chronology | gate成功、ready=true |
+| 5 | Order Fulfillment Platform | 大 | Java 21 / Maven / JUnit 5 / HttpServer | 複数境界・補償・監査・運用指標 | 9件成功 | multi-module graph、再帰JUnit adapter、late change | gate成功、ready=true |
 
 ここで「実用範囲」と書いたのは、ローカル環境では
 GitHub Actions OIDCによるCI identityを完全には再現していないためです。
 テスト件数は各runnerの最終結果から取得しました。
-Goの11件には要求へ直接対応する8 subtestに加え、
-補助テストが含まれます。数を増やすことより、要求に結び付いたauthoritative testと
+数を増やすことより、要求に結び付いたauthoritative testと
 実際の成功reportが新鮮であることを優先しました。
+
+## 公開版v0.1.1での再実験
+
+初回記事作成後、ローカルtarballではなくnpmへ公開されたexact versionを
+5リポジトリへ導入し直しました。
+
+```bash
+npm install --save-dev --save-exact musubix3@0.1.1
+npx --no-install musubix3 --version
+# 0.1.1
+```
+
+各`package-lock.json`の`resolved`が
+`https://registry.npmjs.org/musubix3/-/musubix3-0.1.1.tgz`
+であることも確認しました。その後、各言語のtest/buildと次を実行しました。
+
+```bash
+npx --no-install musubix3 evidence refresh --changed --json
+npx --no-install musubix3 gate --changed --json
+npx --no-install musubix3 status --json
+```
+
+5件すべてでgateは`pass`、`status.gate.ready`は`true`でした。
+この再実験では、v0.1.1で追加・修正した次の動作も確認しました。
+
+- Cargoの先頭`test`と`--`を重複させず、harness引数を維持する
+- Goのvalue-bearing flag、package selector、`-args`を壊さない
+- pytestのadapter所有report flagを重複指定すると早期に拒否する
+- Cargo/Maven project直下の`target/`だけをbuild outputとして除外する
+- multi-module配下のJUnit XMLを再帰的に探索する
+- input-stability違反をpathと変更前後SHA-256付きで報告する
+- `formal doctor`に試行したcommandと具体的な推奨対応を表示する
+
+stale evidence、Green後に変更したtest、未導入Lean、
+未承認policy baseline変更を成功扱いしないことも維持されました。
 
 ---
 
@@ -312,8 +354,9 @@ tokenを自動化で渡す場合は、CLIが対応する
 sudo apt install -y python3.12 python3.12-venv python3-pip
 python3.12 --version
 
-python3.12 -m venv .venv
-source .venv/bin/activate
+python3.12 -m venv ../.venv-my-app
+ln -s ../.venv-my-app .venv
+source ../.venv-my-app/bin/activate
 python -m pip install --upgrade pip
 ```
 
@@ -323,6 +366,12 @@ Ubuntuのreleaseによっては`python3.12`が標準repositoryにありません
 
 Reservation APIでは、venv内にFastAPI、Pydantic、pytest、httpxと、
 musubix3のpytest adapterが要求する`pytest-json-report`を導入しました。
+
+再実験では、repository直下へ通常directoryの`.venv/`を作ると、
+Python Code Graphがsite-packagesまでindexし、依存package内部のcycleを
+projectのcycleとして報告しました。`.gitignore`だけに依存せず、
+virtualenv本体をrepository外へ置くか、無視対象directory内に置いて
+`.venv`をsymlinkにする構成が安全です。
 
 ```bash
 python -m pip install \
@@ -429,16 +478,16 @@ npx --no-install musubix3 formal doctor --json
 
 ---
 
-# musubix3 0.1.0の導入
+# musubix3 0.1.2の導入
 
 ## npxで一度試す
 
 対象プロジェクトのrootで実行します。
 
 ```bash
-npx musubix3@0.1.0 --version
-npx musubix3@0.1.0 init --dry-run
-npx musubix3@0.1.0 init
+npx musubix3@0.1.2 --version
+npx musubix3@0.1.2 init --dry-run
+npx musubix3@0.1.2 init
 ```
 
 `init --dry-run`を先に実行するのが重要です。
@@ -449,13 +498,13 @@ npx musubix3@0.1.0 init
 再現性を優先するなら、こちらを推奨します。
 
 ```bash
-npm install --save-dev --save-exact musubix3@0.1.0
+npm install --save-dev --save-exact musubix3@0.1.2
 npx --no-install musubix3 --version
 npx --no-install musubix3 init --dry-run
 npx --no-install musubix3 init
 ```
 
-`--save-exact`により`package.json`へ`0.1.0`を固定します。
+`--save-exact`により`package.json`へ`0.1.2`を固定します。
 以降の例では、意図しないnetwork取得を避けるため
 `npx --no-install musubix3`を使います。
 
@@ -531,7 +580,7 @@ copilot \
   --allow-all \
   --autopilot \
   --max-autopilot-continues 20 \
-  --output-format json \
+  --output-format=json \
   -p "<実験プロンプト>" \
   | tee copilot.jsonl
 ```
@@ -541,13 +590,13 @@ copilot \
 1. `-p`で非対話promptを渡す
 2. `--autopilot`で継続実行させる
 3. `--max-autopilot-continues`で無制限継続を避ける
-4. `--output-format json`でJSONL transcriptを得る
+4. `--output-format=json`でJSONL transcriptを得る
 5. `pipefail`で、`tee`が成功してもCopilot側の失敗を見逃さない
 
 今回の起動では継続上限を20に固定しました。
 これは「必ず20回継続する」という意味ではなく、autopilotが自律継続できる上限です。
 
-`--output-format json`は単一JSONではありません。
+`--output-format=json`は単一JSONではありません。
 **1行1JSON objectのJSONL**です。
 全文を記事へ貼らず、必要なSkill invocation metadataとterminal resultを
 `workflow-verify`へ渡します。
@@ -835,7 +884,7 @@ Vitest report adapterでは、対象TEST IDだけを選べるtest名が必要で
 - JSON repositoryを実ファイル境界として分離
 - strict traceとCode Graphを実行
 - 単一active timerの抽象モデルをZ3で整合性確認
-- 最終的に実用範囲のgateを通過
+- 公開版v0.1.1でgate `pass`、ready `true`
 
 ただし、SATは排他制御実装の完全証明ではありません。
 実装上のraceやfilesystem障害は、テストとreviewで別に扱う必要があります。
@@ -955,7 +1004,7 @@ npx --no-install musubix3 gate --changed --json
 - idempotency keyの再送で重複作成しないことを確認
 - trace/graph/knowledge/formalを実行
 - Z3でモデル化した部分の整合性を確認
-- 実用範囲のgateを通過
+- 公開版v0.1.1でgate `pass`、ready `true`
 
 in-memory repositoryなので、
 複数process、分散transaction、database isolationは対象外です。
@@ -1088,7 +1137,7 @@ structured report側:
 - Go native adapterでTDD証拠を記録
 - trace、graph、knowledge、Z3形式検査を実行
 - operation counterを使うperformance evidenceを作成
-- 実用範囲のgateを通過
+- 公開版v0.1.1でgate `pass`、ready `true`
 
 単一process内のrate limiterとJSON storeであり、
 分散rate limitやmulti-node storageは対象外です。
@@ -1225,21 +1274,32 @@ strict modeではmust functional requirementにcurrentなkilled mutantが必要�
 cargo test
 npx --no-install musubix3 trace build
 npx --no-install musubix3 graph index
+npx --no-install musubix3 evidence refresh --changed --json
 npx --no-install musubix3 gate --changed --json
 ```
 
+v0.1.1では通常のCargo project rootにある`target/`を入力snapshotから
+除外します。一方、単に名前が`target`というsource directoryまで
+一律除外しません。source-like fileの追加・変更を試すと、
+`INPUT_ADDED` / `INPUT_MODIFIED`とpath、変更前後のSHA-256を確認できました。
+
+また、公開版で`cargo fmt --check`を後から実行すると未整形箇所を検出しました。
+ここでtestも含めてformatすると、記録済みRed/Greenのtest fingerprintが変わります。
+v0.1.1のSkill guidanceどおり、**formatはRedを記録する前**に完了させる必要があります。
+
 ## 実測結果
 
-- Cargo test: **13 tests成功**
+- Cargo test: **17 tests成功**、構造化TEST IDは13/13成功
 - 予約期限のlate changeを要求からqualityまで伝播
 - strict Code Graph成功
 - Z3成功
 - Leanソース生成成功、Lean実行は環境不足で`missing`
-- mutation evidence成功
+- mutation engineは未導入で、compatible validationは0 mutants
 - TDD evidence成功
 - change history成功
 - 初回gateはinput-stabilityで拒否
-- 入力安定後の再実行でpass
+- 実Copilot CLIの`sdd-change` / `sdd-quality` invocationを2/2照合
+- 入力安定後の再実行でgate `pass`、ready `true`
 
 ## 限界
 
@@ -1349,6 +1409,14 @@ npx --no-install musubix3 \
 JUnit XMLを構造化reportとして扱うため、
 Surefireの出力directoryとmodule pathを正しく設定する必要があります。
 
+v0.1.1ではreport pathがdirectoryの場合にXMLを再帰探索します。
+再実験では次の深いpathにある9ファイルをすべて認識しました。
+
+```text
+.musubix/evidence/native/test-junit-adapter/aggregate/
+└── modules/api/surefire-reports/TEST-*.xml
+```
+
 ## late change: 高額注文の手動承認
 
 完成後、次の要求を追加しました。
@@ -1400,8 +1468,11 @@ TDD証拠を取り直す前に、古い`target/`とJUnit XMLを消し、
 ### report path
 
 multi-moduleでは`target/surefire-reports`が複数あります。
-rootだけを見て「reportなし」と判断しないよう、
-adapter設定と実際のmodule report pathを一致させました。
+v0.1.1の再帰探索を使う場合も、集約先directoryと実際のmodule report pathが
+対応していることを確認します。
+
+各moduleの`target/`は、親に`pom.xml`があるMaven build outputとして
+input-stability snapshotから除外されました。
 
 ## attestation
 
@@ -1418,17 +1489,18 @@ unsigned local evidenceはunsignedとして報告し、
 ## 結果と限界
 
 - Java 21 Maven multi-module build/testが成功
-- 要求は21件、JUnitテストは24件成功
+- JUnitテストは9件成功、test identityは9/9
 - ADRは5件
 - domain/application/infrastructure/apiの依存方向を検査
 - idempotency、credit、inventory、payment、fulfillment、compensationを実装
 - late manual approval requirementを横断的に反映
-- JUnit structured reportをTDDとgateへ接続
-- 8件の要求をFormal modelへ変換し、8/8のmodel correspondenceを確認
-- must functional要求に対する18/18のmutation evidenceを確認
-- performance counterは`orderLineVisits=20`で、要求上限100以下
+- ネストしたJUnit XML 9件を再帰的に発見し、TDDとgateへ接続
+- 9件の要求をFormal modelへ変換し、9/9のmodel correspondenceを確認
+- TDDは16 cycles、late changeは1/1 complete
+- performance budgetは1件成功
 - trace、Code Graph、workflow evidenceを検証
-- ローカルで実施可能な最終gateを通過
+- mutation engine未導入とunsigned local attestationはoptional `skipped`
+- 最終gate `pass`、ready `true`
 - GitHub OIDC attestationはローカル実験の限界として残した
 
 外部DB、message broker、実payment provider、multi-node concurrencyは対象外です。
@@ -1655,6 +1727,29 @@ npx --no-install musubix3 formal generate <file> --format both --json
 - command rootとreport pathを揃える
 - stale reportを削除してfreshに生成
 
+v0.1.1ではadapter自身が追加するreport/selector flagを
+`.musubix/config.json`へ重複指定すると、実行前に設定エラーになります。
+pytestの`--json-report`、Goの`-json`/`-run`などはadapterへ任せます。
+
+## Python virtualenvがCode Graphへ入る
+
+症状:
+
+- `.venv/lib/python*/site-packages`がgraph nodeになる
+- anyio、httpx、pydanticなど依存package内部のcycleでgraph gateが失敗する
+
+対処:
+
+```bash
+python3.12 -m venv ../.venv-my-app
+ln -s ../.venv-my-app .venv
+source ../.venv-my-app/bin/activate
+```
+
+virtualenvのdependency treeをrepositoryの解析rootへ置かない構成にします。
+`.venv`は`.gitignore`へ追加し、実体ではなくローカルsymlinkとして使います。
+依存packageのcycleを無視するためにarchitecture policyを弱めるのは誤りです。
+
 ## stale evidence
 
 症状:
@@ -1668,6 +1763,7 @@ trace/formal/model-correspondence/mutation/performance が stale
 ```bash
 npx --no-install musubix3 trace build
 npx --no-install musubix3 graph index
+npx --no-install musubix3 evidence refresh --changed --json
 npx --no-install musubix3 gate --changed --json
 npx --no-install musubix3 status --json
 ```
@@ -1681,6 +1777,12 @@ gateの途中で入力や生成物が変わった場合、
 一見すべてgreenでも、同じsnapshotを検査したとは言えません。
 
 生成処理を止め、入力が安定した後にgate全体を再実行します。
+v0.1.1ではdiagnosticに対象pathとbefore/after SHA-256が出るため、
+どのprocessが入力を書き換えたかを追いやすくなりました。
+
+Cargo/Mavenの通常の`target/`はmanifest単位で除外されます。
+それでも失敗する場合、source-like generated fileや別build directoryを
+無条件にignoreせず、生成タイミングと管理方針を確認します。
 
 ## Maven timestamp / stale bytecode
 
@@ -1716,6 +1818,8 @@ formal doctorでlean missing
 
 明示的に`--solver lean`を要求した場合、
 missingを成功扱いしないのが正しい挙動です。
+v0.1.1の`formal doctor`は、`lean`と`lake env lean`など
+実際に試したcommand一覧と、install/configurationの推奨対応も表示します。
 
 ## unsigned local attestation
 
@@ -1754,7 +1858,7 @@ musubix3 CLIをproject-localに固定するため`package.json`を置く方法�
 ## Step 2: musubix3を固定
 
 ```bash
-npm install --save-dev --save-exact musubix3@0.1.0
+npm install --save-dev --save-exact musubix3@0.1.2
 npx --no-install musubix3 init --dry-run --feature my-feature
 npx --no-install musubix3 init --feature my-feature
 ```
@@ -1801,6 +1905,17 @@ TypeScript例:
 信頼していない`.musubix/config.json`を実行しないでください。
 
 ## Step 6: Red
+
+Redを記録する前にformatterを実行し、test sourceを確定します。
+
+```bash
+# 例
+npm run format
+cargo fmt
+```
+
+Red後にtestをformatするとfingerprintが変わり、
+Greenが同じtestによるものだと証明できません。
 
 ```bash
 npx --no-install musubix3 trace build
@@ -1865,6 +1980,7 @@ npx --no-install musubix3 formal check \
 ## Step 12: 最終gate
 
 ```bash
+npx --no-install musubix3 evidence refresh --changed --json
 npx --no-install musubix3 gate --changed --json
 npx --no-install musubix3 status --json
 ```
@@ -1924,6 +2040,10 @@ EARS、Formal JSON、design field、annotation IDは、
 小さな編集でもtrace、formal、mutation、performance、gateを
 順序よく再生成する手間があります。
 
+v0.1.1では`evidence refresh [--changed]`が同じfail-closed gate pipelineを
+明示的に起動するため、「どのcommandで証拠を更新するか」は分かりやすくなりました。
+ただし、証拠要件そのものを弱めるcommandではありません。
+
 ### strict P4は小規模アプリには重い
 
 mutation、workflow strict、CI attestationをすべて小さなCLIへ要求すると、
@@ -1934,16 +2054,283 @@ release-criticalなrepositoryでstrictへ上げる段階導入が現実的です
 
 ---
 
+# v0.1.2リリース候補で5アプリを再検証
+
+実験で見つかった問題を修正した**v0.1.2リリース候補**を
+公開前にローカルtarballへpackし、5アプリを
+`/tmp/work-v012`へ複製して再検証しました。
+
+```bash
+cd /path/to/musubix3
+npm pack
+
+cd /tmp/work-v012/01-task-timer
+npm install --save-dev --save-exact ../musubix3-0.1.2.tgz
+npx --no-install musubix3 --version
+# 0.1.2
+```
+
+5件すべてのlockfileがローカル`musubix3-0.1.2.tgz`を参照する状態で、
+言語固有テスト、`evidence refresh --changed`、`gate --changed`、
+`status`を再実行しました。
+
+| アプリ | 言語検証 | profile | 最終結果 |
+|---|---|---|---|
+| Task Timer | Vitest 7/7、typecheck、build | `recommended` | gate pass、ready true |
+| Reservation API | pytest 9/9 | `minimal` | gate pass、ready true |
+| URL Shortener | Go test、vet、build | `minimal` | gate pass、ready true |
+| Inventory Events | Cargo 17 tests、fmt、build | `minimal` | gate pass、ready true |
+| Order Platform | JUnit 9/9、Maven package | `minimal` | gate pass、ready true |
+
+## 記事の手順を参照した最終再実験
+
+上記の改修確認後、記事に書いた導入・言語検証・最終gateの順序に
+抜けや古い記述がないか確認するため、別のfresh workspace
+`/tmp/work-v012-article`でもう一度実行しました。
+
+アプリケーションのsourceと仕様成果物は比較条件を固定するため
+検証済みv0.1.2実験から複製し、`node_modules`だけを削除しました。
+その後、最新sourceから再packしたtarballを各アプリへ再インストールしています。
+同じ`0.1.2`を内容の異なる開発tarballへ置き換える実験環境なので、
+npm cacheに旧tarballを残さないため、この再実験だけは
+`npm install --force`を使用しました。公開versionや通常の新規installでは不要です。
+
+```bash
+cd /path/to/musubix3
+npm pack
+
+mkdir -p /tmp/work-v012-article
+cp musubix3-0.1.2.tgz /tmp/work-v012-article/
+
+cd /tmp/work-v012-article/01-task-timer
+rm -rf node_modules
+npm install --force --ignore-scripts --no-audit --no-fund
+npx --no-install musubix3 --version
+# 0.1.2
+```
+
+5件すべてで`npm ls musubix3 --depth=0`は`0.1.2`を返し、
+各`package-lock.json`は次のローカルtarballを参照しました。
+
+```text
+file:../musubix3-0.1.2.tgz
+```
+
+実行順序は次のとおりです。
+
+```text
+1. 言語固有のtest / typecheck / build / vet / fmt
+2. mutation doctor
+3. evidence refresh --changed
+4. gate --changed
+5. status
+```
+
+最終再実験の結果も5件すべて同じでした。
+
+| アプリ | 再実行した主要command | 実測結果 |
+|---|---|---|
+| Task Timer | `npm run typecheck`, `npm run build`, `npm test` | 7/7 passed、recommended、gate pass、ready true |
+| Reservation API | `.venv/bin/python -m pytest tests -q`, `graph index` | 9/9 passed、minimal、gate pass、ready true |
+| URL Shortener | `go test -count=1 ./...`, `go vet ./...`, `go build ./cmd/...` | pass、minimal、gate pass、ready true |
+| Inventory Events | `cargo fmt --all -- --check`, `cargo test --quiet`, `cargo build --quiet` | 17 tests passed、minimal、gate pass、ready true |
+| Order Platform | `mvn -q test`, `mvn -q -DskipTests package` | 9/9 passed、minimal、gate pass、ready true |
+
+Pythonはsymlinkではない実体`.venv`を維持したまま、
+再生成したCode Graphに`.venv/`と`site-packages`が含まれないことを
+再確認しました。Rustでは`redPreflightCommands`に`format`が残り、
+最終状態も`cargo fmt --check`を通過しています。
+
+`mutation doctor`は各アプリのJavaScriptと対象言語を検出しましたが、
+mutation engineを導入していないため全件`available=false`でした。
+これはdoctorの失敗ではなく、「engineを確認できていない」という
+非成功状態をJSONとexit codeで明示した結果です。
+
+今回の再実験で、新しいmusubix3本体の修正事項は見つかりませんでした。
+PythonではFastAPI TestClientとanyio aliasのdeprecation warningが2件出ましたが、
+アプリ側dependencyの将来対応事項であり、pytest 9件とmusubix3 gateは成功しています。
+
+## Python仮想環境をリポジトリ内へ戻せた
+
+v0.1.1では`.venv`内のFastAPI、Pydantic、httpxなどがCode Graphへ入り、
+第三者packageの依存関係をプロジェクトの循環として扱う問題がありました。
+記事の旧手順では、外部venvを`node_modules`配下へ置き、
+リポジトリ直下の`.venv`をsymlinkにする回避策を使っていました。
+
+v0.1.2では、直下に通常ファイルの`pyvenv.cfg`を持つ
+`.venv`または`venv`をPython virtual environmentとして
+入力snapshot、trace、Code Graphから除外します。
+任意のsource directoryへmarkerを置いても除外されず、
+`pyvenv.cfg`というdirectoryもmarkerとして扱いません。
+
+今回の再実験では`.venv`をsymlinkではない実directoryとして
+Reservation API repository内へ配置しました。
+
+```text
+localVenvRegularFile=true
+venvIsSymlink=false
+graph mentions ".venv/"=false
+graph mentions "site-packages"=false
+project files indexed=7
+pytest=9 passed
+gate=pass
+```
+
+これにより、標準的な`python -m venv .venv`手順を記事でそのまま使えます。
+
+## Redのfingerprintより前にformatterを実行
+
+Rustアプリへ通常commandとしてformatterを追加し、
+`tdd.redPreflightCommands`から参照しました。
+
+```json
+{
+  "commands": [
+    {
+      "name": "format",
+      "command": "cargo",
+      "args": ["fmt", "--all"],
+      "required": false
+    }
+  ],
+  "tdd": {
+    "redPreflightCommands": ["format"]
+  }
+}
+```
+
+`TEST-INVENTORY-RESERVATIONS-003`の実装だけを意図的に壊し、
+さらに`return   total;`という未整形状態でRedを実行しました。
+Red証拠は`valid=true`、`testStatus=failed`となり、
+保存されたsourceは先に`return total;`へ整形されていました。
+その後、同じテストを変更せず実装を戻し、Greenは
+`valid=true`、`testStatus=passed`になりました。
+
+formatter commandを存在しない
+`missing-rust-formatter-v012`へ一時変更した制御実験では、
+Redはexit 2で停止しました。
+
+```text
+TDD Red preflight command format failed with status missing and exit code none.
+```
+
+失敗したformatterを無視して、未整形sourceのfingerprintを
+成功したRed証拠として残すことはありません。
+部分的な1要求だけのTDD証拠は全要求TDD policyを満たさないため、
+比較用JSONを`.musubix/evidence/experiment/`へ保存した後、
+最終gateの正本`.musubix/evidence/tdd.json`からは除外しました。
+
+## quality profileを明示
+
+v0.1.2は`custom`、`minimal`、`recommended`、`release`を追加しました。
+profileは設定を自動的に弱めたり、証拠を生成したりしません。
+必要なcheckとstrict設定が明示されているかを検査します。
+
+- `minimal`: requirements、design、constitution、trace、graph、commands
+- `recommended`: minimalに加え、strict Code Graph、TDD、test identity
+- `release`: 全証拠check、solver付きFormal、strict mutation/workflow、
+  `ci-required` attestation
+
+Task Timerは既存の7 Red-Green cycleと7 test identityを使い、
+Code Graphをstrictへ上げて`recommended`で通過しました。
+残る4アプリは`minimal`で通過しました。
+musubix3自身のtestでは、不完全な`recommended`と`release`が拒否され、
+全必須設定を持つ`release`が受理されることも確認しています。
+
+trusted baselineがある場合は、profileのdowngrade、
+Red preflightの削除や同名commandへのすり替え、workflow event skew許容値の増加を
+それぞれ`POLICY_QUALITY_PROFILE`、`POLICY_TDD_PREFLIGHT`、
+`POLICY_WORKFLOW_EVENT_SKEW`として拒否します。
+
+## concurrent workflow timestampとfail-closedの境界
+
+strict workflowではJSONLの行順を因果順序として維持しながら、
+並行producerによる小さなtimestamp逆転だけを
+`workflow.maxEventSkewMs`の範囲内で許容します。
+
+Rustの未加工Copilot transcriptには、tool startが
+`02:47:34.931Z`、その直後の行にあるcompleteが
+`02:47:29.280Z`という約5.651秒の逆転がありました。
+v0.1.1はここで直ちにtimestamp order違反となりました。
+v0.1.2へ`maxEventSkewMs: 6000`を設定するとこの検査を通過し、
+次の独立した厳密条件である「terminal resultが正確に1件必要」まで進みました。
+
+このRust transcript自体にはterminal resultがないため、
+v0.1.2も最終的には次の理由で正しく拒否しました。
+
+```text
+Strict workflow verification requires exactly one terminal result event.
+```
+
+つまり、並行実行の時計ずれを許容しても、
+欠落したsession終端を成功扱いにはしません。
+unit/integration testでは、terminal resultを含む因果順序どおりのJSONLが
+許容範囲内でpassし、より小さい許容値ではfailすることを確認しました。
+
+## mutation doctorは「未導入」を成功にしない
+
+全5アプリで次を実行しました。
+
+```bash
+npx --no-install musubix3 mutation doctor --json
+```
+
+検出したecosystemに応じて、次の安全なprobeを試行します。
+
+| ecosystem | probe | 今回の結果 |
+|---|---|---|
+| JavaScript | `npx --no-install stryker --version` | missing |
+| Python | `mutmut --version` | missing |
+| Go | `go-mutesting --version` | missing |
+| Rust | `cargo mutants --version` | missing |
+| Java | `pitest --version` | missing |
+
+5アプリにはmutation engineを追加していないため、
+`available=false`かつ各engineは`missing`でした。
+doctorはinstallを実行せず、`npx`にも`--no-install`を付けます。
+設定済みの任意commandは安全のため勝手に実行せず、
+`configured`と「実行可能性を確認済み」を区別します。
+実際のreport freshnessとmutant結果の正本は、引き続きgateです。
+
+## 維持したfail-closed特性
+
+v0.1.2で緩めなかった点も重要です。
+
+- stale evidenceはreadyにならない
+- Red/Green間で正本testが変われば拒否する
+- gate中に入力が変化すれば拒否する
+- Z3/Lean missingを成功扱いしない
+- unsigned local attestationをCI provenanceにしない
+- SATを実装正当性の証明と表現しない
+- trusted policy baselineを無断で弱めない
+
+改善は、誤検知や導入時の摩擦を減らすためのものです。
+証拠が欠落した状態を成功へ丸める変更ではありません。
+
+---
+
 # 再現とクリーンアップ
 
 今回の実験directoryは次です。
 
 ```text
-/tmp/work/01-task-timer
-/tmp/work/02-reservation-api
-/tmp/work/03-url-shortener
-/tmp/work/04-inventory-events
-/tmp/work/05-order-platform
+/tmp/work-v011/01-task-timer
+/tmp/work-v011/02-reservation-api
+/tmp/work-v011/03-url-shortener
+/tmp/work-v011/04-inventory-events
+/tmp/work-v011/05-order-platform
+
+/tmp/work-v012/01-task-timer
+/tmp/work-v012/02-reservation-api
+/tmp/work-v012/03-url-shortener
+/tmp/work-v012/04-inventory-events
+/tmp/work-v012/05-order-platform
+
+/tmp/work-v012-article/01-task-timer
+/tmp/work-v012-article/02-reservation-api
+/tmp/work-v012-article/03-url-shortener
+/tmp/work-v012-article/04-inventory-events
+/tmp/work-v012-article/05-order-platform
 ```
 
 各directoryの`EXPERIMENT.md`が実験時点の詳細な一次レポートです。
@@ -1956,17 +2343,24 @@ raw Copilot transcriptには、prompt、path、tool metadataが含まれ得ま�
 個別削除:
 
 ```bash
-rm -rf /tmp/work/01-task-timer
-rm -rf /tmp/work/02-reservation-api
-rm -rf /tmp/work/03-url-shortener
-rm -rf /tmp/work/04-inventory-events
-rm -rf /tmp/work/05-order-platform
+rm -rf /tmp/work-v011/01-task-timer
+rm -rf /tmp/work-v011/02-reservation-api
+rm -rf /tmp/work-v011/03-url-shortener
+rm -rf /tmp/work-v011/04-inventory-events
+rm -rf /tmp/work-v011/05-order-platform
+
+rm -rf /tmp/work-v012-article/01-task-timer
+rm -rf /tmp/work-v012-article/02-reservation-api
+rm -rf /tmp/work-v012-article/03-url-shortener
+rm -rf /tmp/work-v012-article/04-inventory-events
+rm -rf /tmp/work-v012-article/05-order-platform
 ```
 
 `rm -rf`の実行前に、対象pathを`pwd`と`find`で確認してください。
 
 ```bash
-find /tmp/work -maxdepth 2 -type f | sort
+find /tmp/work-v011 -maxdepth 2 -type f | sort
+find /tmp/work-v012-article -maxdepth 2 -type f | sort
 ```
 
 ---
@@ -2008,9 +2402,9 @@ musubix3は、その完了条件をrepository内へ残すための実践的な�
 
 # 関連リンク
 
-- [npm: musubix3 0.1.0](https://www.npmjs.com/package/musubix3/v/0.1.0)
+- [npm: musubix3 0.1.2](https://www.npmjs.com/package/musubix3/v/0.1.2)
 - [GitHub: nahisaho/musubix3](https://github.com/nahisaho/musubix3)
-- [GitHub Release: v0.1.0](https://github.com/nahisaho/musubix3/releases/tag/v0.1.0)
+- [GitHub Release: v0.1.2](https://github.com/nahisaho/musubix3/releases/tag/v0.1.2)
 - [README（日本語）](../README-ja.md)
 - [README（English）](../README.md)
 - [musubix2からmusubix3で変わったこと](../MUSUBIX2-TO-MUSUBIX3.md)
