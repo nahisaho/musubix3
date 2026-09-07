@@ -9,7 +9,8 @@ import {
   buildKnowledge, buildTrace, changedFiles, checkTrace, cycles, files, formalCheck, graphGate,
   graphImpact, indexGraph, loadConfig, loadGraph, loadTrace, portable, projectStatus, queryKnowledge,
   formalDoctor, generateFormalArtifacts, readText, runGate, traceImpact, type Solver,
-  changePhases, recordChangePhase, recordWorkflow, runTddPhase, verifyWorkflowLogFile, type ChangePhase, type TddPhase,
+  changePhases, recordChangePhase, recordWorkflow, runTddPhase, sanitizeWorkflowLogFile,
+  validateTddEvidence, verifyWorkflowLogFile, type ChangePhase, type TddPhase,
   attestationSigningPayload, createUnsignedAttestation, githubOidcAudience, verifyEvidenceAttestation,
   mutationDoctor, validateMutationEvidence, validateModelCorrespondenceEvidence,
 } from '../../analysis/src/index.js';
@@ -36,7 +37,7 @@ function pathQuery(root: string, query: string): string {
 }
 
 export function createProgram(): Command {
-  const program = new Command().name('musubix3').description('Evidence-driven SDD for GitHub Copilot CLI / 根拠に基づく仕様駆動開発').version('0.1.3');
+  const program = new Command().name('musubix3').description('Evidence-driven SDD for GitHub Copilot CLI / 根拠に基づく仕様駆動開発').version('0.1.4');
   program.exitOverride();
   common(program.command('init').alias('install').description('Install repository skills and SDD artifacts (preserves existing files)'))
     .option('--dry-run', 'Preview without writing').option('--force', 'Replace bundled, managed paths only')
@@ -275,6 +276,22 @@ export function createProgram(): Command {
           + `${manifest.verification?.sessionId ? ` in session ${manifest.verification.sessionId}` : ''}.`,
       );
     });
+  common(program.command('workflow-sanitize <log> <output-file>').description('Write a privacy-minimized Skill lifecycle transcript'))
+    .option('--session-id <uuid>', 'Replace the terminal session ID with a review-safe UUID')
+    .action(async (log: string, outputFile: string, options: {
+      root: string; json?: boolean; sessionId?: string;
+    }) => {
+      const root = resolve(options.root);
+      const path = resolve(log);
+      const info = await stat(path);
+      if (!info.isFile()) throw new Error('Workflow log must be a file.');
+      const report = await sanitizeWorkflowLogFile(root, path, outputFile, options.sessionId);
+      output(
+        report,
+        !!options.json,
+        `Sanitized ${report.inputEvents} event(s) to ${report.outputEvents}; retained ${report.skillInvocations} Skill invocation(s).`,
+      );
+    });
   const attestation = program.command('attestation').description('Create and verify static-key or GitHub OIDC-authorized Ed25519 attestations');
   common(attestation.command('oidc-audience'))
     .requiredOption('--key-id <id>', 'Attestation signing-key identity')
@@ -360,6 +377,10 @@ export function createProgram(): Command {
       output(evidence, !!options.json, `Recorded ${changeId}:${phase}.`);
     });
   const tdd = program.command('tdd').description('Verified Red-Green-Refactor execution evidence');
+  common(tdd.command('validate')).action(async (options: { root: string; json?: boolean }) => {
+    const report = await validateTddEvidence(resolve(options.root));
+    result(report, !!options.json);
+  });
   for (const phase of ['red', 'green', 'refactor'] as const) {
     common(tdd.command(`${phase} <test-id>`))
       .requiredOption('--requirement <id>', 'Requirement ID verified by the test')

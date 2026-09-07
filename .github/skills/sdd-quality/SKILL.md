@@ -3,7 +3,6 @@ name: sdd-quality
 description: "Use when deciding release readiness from actual checks, measurable policy, architecture and trace evidence, including incremental change checks. 品質ゲート・リリース判定時に使用。"
 ---
 # Quality / 品質
-
 Follow the user's input language (日本語 / English). Use native Copilot review and
 security review for their specialist reasoning; this skill does not replace them.
 After the work, run `npx musubix3 workflow-record sdd-quality complete --status
@@ -40,6 +39,7 @@ completed` exactly once.
    fingerprints. Inspect `formal.json` and `workflow.json` when configured.
    Treat workflow records as declarations until `workflow-verify` binds each
    completed declaration to one distinct completed Copilot Skill tool call.
+   Use `workflow-sanitize` before review; it validates before filtering.
    In strict mode require one final successful result, matching session UUID,
    causal transcript order, policy-bounded concurrent-event clock skew, bounded
    freshness, complete tool lifecycles and canonical transcript hash. Ensure the

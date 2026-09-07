@@ -2,6 +2,21 @@
 
 ## Unreleased
 
+## 0.1.4 - 2026-09-08
+
+- Measure subprocess durations with a monotonic clock and reject negative or
+  non-integer TDD execution durations with `TDD_DURATION_INVALID`.
+- Add `tdd validate` for direct persisted-evidence diagnostics and provide
+  safer regeneration guidance for invalid legacy order or duration records.
+- Add `workflow-sanitize` to reduce Copilot JSONL logs to privacy-minimized
+  Skill lifecycle and terminal events before strict verification.
+- Accept explicit Japanese EARS subjects such as API/service names plus common
+  `時` and `中` control markers, and report bilingual corrective examples.
+- Explain pytest TEST ID naming/project-runner recovery and make policy baseline
+  approval diagnostics actionable for new repositories.
+- Document the natural-language-only TypeScript/Python/PostgreSQL experiment
+  and its fail-closed repair workflow.
+
 ## 0.1.3 - 2026-09-08
 
 - Add a built-in `dotnet` test adapter with xUnit `DisplayName` targeting and

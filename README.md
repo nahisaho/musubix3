@@ -1,6 +1,6 @@
 # musubix3
 
-**Latest release v0.1.3 · GitHub Copilot CLI only · Node.js ≥20 · TypeScript · MIT**
+**Latest release v0.1.4 · GitHub Copilot CLI only · Node.js ≥20 · TypeScript · MIT**
 
 [日本語](README-ja.md)
 
@@ -228,8 +228,10 @@ validation/gate or requested solver failure, **2** usage, I/O or malformed confi
 | `model-correspondence validate` | Revalidate Formal JSON → generated trace → authoritative passing test evidence |
 | `evidence refresh [--changed]` | Regenerate derived evidence through the same fail-closed gate pipeline |
 | `mutation validate` | Revalidate requirement-scoped schema-v1 killed-mutant evidence |
+| `tdd validate` | Validate persisted Red/Green/Refactor order, fingerprints, durations, and hash-chain evidence |
 | `tdd red\|green\|refactor <TEST-ID> --requirement <REQ-ID> --command <name>` | Execute and record a verified TDD phase |
 | `workflow-record <skill> <phase> --status <status>` | Record a compact self-reported workflow declaration |
+| `workflow-sanitize <copilot.jsonl> <output-file> [--session-id <uuid>]` | Remove messages and non-Skill tool data before review or strict verification |
 | `workflow-verify <copilot.jsonl> [--strict] [--session-id <uuid>]` | Reconcile Skill events; optionally require a complete successful session transcript |
 | `attestation oidc-audience --key-id <id> [--public-key-file <pem>]` | Derive the GitHub custom audience that authorizes a signing key |
 | `attestation payload --provider <name> --run-id <id> --key-id <id> [--public-key-file <pem>] [--github-oidc-token-file <jwt>]` | Emit canonical unsigned CI payload for external signing |
@@ -543,6 +545,8 @@ later full gate. `workflow-record` stores a self-reported Skill/phase/status and
 optional command SHA-256 without storing command text. `workflow-verify` imports
 only Skill invocation metadata from a Copilot JSONL log and binds every completed
 declaration one-to-one, in order, to a distinct completed successful tool call.
+Use `workflow-sanitize` first when the source transcript contains messages,
+non-Skill tool arguments, or output that should not enter review evidence.
 Each Skill invocation must therefore record exactly one final workflow outcome;
 multi-phase chronology belongs in `change-record`, not duplicate workflow events.
 Incomplete, failed, reused, out-of-order and stale bindings fail.

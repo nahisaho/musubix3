@@ -183,6 +183,9 @@ describe('P2 built-in test adapters', () => {
     expect(normalizeAdapterReport('pytest', JSON.stringify({
       tests: [{ nodeid: 'tests/test_app.py::test_TEST_APP_002', outcome: 'failed' }],
     })).tests[0]).toEqual({ id: 'TEST-APP-002', status: 'failed' });
+    expect(() => normalizeAdapterReport('pytest', JSON.stringify({
+      tests: [{ nodeid: 'tests/test_app.py::test_descriptive_name', outcome: 'passed' }],
+    }), 'TEST-APP-002')).toThrow('test_TEST_APP_001');
     expect(normalizeAdapterReport('go-test', '{"Action":"pass","Test":"Test_TEST-APP-003"}\n').tests[0]?.status).toBe('passed');
     expect(normalizeAdapterReport('cargo', 'test tests::test_app_004 ... ok\n').tests[0]?.id).toBe('TEST-APP-004');
     expect(normalizeAdapterReport('junit', '<testsuite><testcase name="TEST-APP-005"><failure/></testcase></testsuite>').tests[0]?.status).toBe('failed');

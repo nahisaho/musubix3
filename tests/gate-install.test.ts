@@ -94,6 +94,18 @@ describe('quality semantics', () => {
     expect((await projectStatus(root)).gate).toMatchObject({ ready: false, status: 'stale' });
   });
 
+  it('uses a monotonic clock for process durations', async () => {
+    const wallClock = vi.spyOn(Date, 'now').mockReturnValueOnce(5_000).mockReturnValue(1_000);
+    try {
+      const result = await runProcess(process.execPath, ['-e', ''], { cwd: repository, timeoutMs: 10_000 });
+      expect(result).toMatchObject({ status: 'completed', exitCode: 0 });
+      expect(result.durationMs).toBeGreaterThanOrEqual(0);
+      expect(wallClock).not.toHaveBeenCalled();
+    } finally {
+      wallClock.mockRestore();
+    }
+  });
+
   it('supports a required formal gate with persisted modeled coverage', async () => {
     const root = await project();
     const config = await loadConfig(root);
@@ -243,6 +255,16 @@ export function anotherTest() { return true; }
       tddResultRunner(root, 'passed', { exitCode: 1 }));
     expect(red.valid).toBe(false);
     expect(red.diagnostics).toContainEqual(expect.objectContaining({ code: 'TDD_TARGET_RESULT' }));
+  });
+
+  it('rejects negative TDD execution durations', async () => {
+    const root = await project();
+    const red = await runTddPhase(root, 'red', 'TEST-EXAMPLE-001', 'REQ-EXAMPLE-001', 'test',
+      tddResultRunner(root, 'failed', { exitCode: 1, durationMs: -1 }));
+    expect(red.valid).toBe(false);
+    expect(red.diagnostics).toContainEqual(expect.objectContaining({ code: 'TDD_DURATION_INVALID' }));
+    expect((await validateTddEvidence(root)).diagnostics)
+      .toContainEqual(expect.objectContaining({ code: 'TDD_DURATION_INVALID' }));
   });
 
   it('requires a Red-Green cycle for every mandatory requirement', async () => {

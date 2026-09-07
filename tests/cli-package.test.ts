@@ -17,7 +17,7 @@ async function invoke(root: string, args: string[]): Promise<Awaited<ReturnType<
 describe('CLI contracts', () => {
   it('prints version/help and JSON validation with nonzero failure', async () => {
     const root = await fixture({ 'requirements.md': req() });
-    expect((await invoke(root, ['--version'])).stdout.trim()).toBe('0.1.3');
+    expect((await invoke(root, ['--version'])).stdout.trim()).toBe('0.1.4');
     expect((await invoke(root, ['--help'])).stdout).toContain('trace');
     const valid = await invoke(root, ['requirements', 'validate', 'requirements.md', '--json']);
     expect(valid.exitCode).toBe(0);
@@ -52,7 +52,7 @@ describe('CLI contracts', () => {
     expect(status.gate.ready).toBe(false);
     await symlink(cli, resolve(root, 'musubix3-bin'));
     const linked = await runProcess(process.execPath, [resolve(root, 'musubix3-bin'), '--version'], { cwd: root, timeoutMs: 10_000 });
-    expect(linked.stdout.trim()).toBe('0.1.3');
+    expect(linked.stdout.trim()).toBe('0.1.4');
   });
 
   it('runs full workflow and reports JSON evidence', async () => {
@@ -147,6 +147,14 @@ describe('CLI contracts', () => {
     const verified = await invoke(root, ['workflow-verify', 'copilot.jsonl', '--json']);
     expect(verified.exitCode, verified.stderr).toBe(0);
     expect(JSON.parse(verified.stdout).verification).toMatchObject({ mode: 'strict', sessionId, exitCode: 0 });
+    const sanitized = await invoke(root, [
+      'workflow-sanitize', 'copilot.jsonl', 'evidence/workflow.sanitized.jsonl', '--json',
+    ]);
+    expect(sanitized.exitCode, sanitized.stderr).toBe(0);
+    expect(JSON.parse(sanitized.stdout)).toMatchObject({ outputEvents: 3, skillInvocations: 1, sessionId });
+    expect((await invoke(root, [
+      'workflow-verify', 'evidence/workflow.sanitized.jsonl', '--strict', '--session-id', sessionId, '--json',
+    ])).exitCode).toBe(0);
     const mismatch = await invoke(root, [
       'workflow-verify', 'copilot.jsonl', '--session-id', '123e4567-e89b-42d3-a456-426614174001', '--json',
     ]);
@@ -249,6 +257,7 @@ describe('CLI contracts', () => {
     await writeText(root, 'implemented.flag', 'green\n');
     expect((await invoke(root, ['tdd', 'green', 'TEST-EXAMPLE-001', '--requirement', 'REQ-EXAMPLE-001', '--command', 'test', '--json'])).exitCode).toBe(0);
     expect((await invoke(root, ['tdd', 'refactor', 'TEST-EXAMPLE-001', '--requirement', 'REQ-EXAMPLE-001', '--command', 'test', '--json'])).exitCode).toBe(0);
+    expect((await invoke(root, ['tdd', 'validate', '--json'])).exitCode).toBe(0);
     const gate = JSON.parse((await invoke(root, ['gate', '--json'])).stdout);
     expect(gate.checks.find((check: { name: string }) => check.name === 'tdd')).toMatchObject({ required: true, status: 'pass' });
   });

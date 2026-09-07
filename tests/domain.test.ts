@@ -16,7 +16,9 @@ describe('controlled EARS', () => {
     ['システムは準備状況を表示しなければならない。', 'ubiquitous'],
     ['システムは秘密を記録してはならない。', 'ubiquitous'],
     ['要求が到着したとき、システムは応答しなければならない。', 'event-driven'],
+    ['要求が到着した時、APIは応答しなければならない。', 'event-driven'],
     ['処理が実行中の間、システムは状態を表示しなければならない。', 'state-driven'],
+    ['処理中、在庫サービスは状態を表示しなければならない。', 'state-driven'],
     ['もし異常が発生したならば、システムは停止しなければならない。', 'unwanted-behavior'],
     ['機能が有効な場合、システムは結果を表示しなければならない。', 'optional-feature'],
     ['準備ができている間、要求が到着したとき、システムは応答しなければならない。', 'complex'],
@@ -34,6 +36,12 @@ describe('controlled EARS', () => {
     'システムは便利です。', '何か、システムは応答しなければならない。',
   ])('rejects malformed EARS %s', (statement) => {
     expect(classifyEars(statement)).toBeNull();
+  });
+
+  it('provides actionable English and Japanese EARS examples', () => {
+    const report = validateRequirements(req('システムは便利です。'));
+    expect(report.diagnostics.find((diagnostic) => diagnostic.code === 'REQ_EARS')?.message)
+      .toContain('イベントが発生したとき、APIは応答しなければならない。');
   });
 
   it('validates IDs, priorities, declarations, duplicates and frontmatter', () => {

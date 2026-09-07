@@ -1,4 +1,5 @@
 import { spawn } from 'node:child_process';
+import { performance } from 'node:perf_hooks';
 
 export interface ProcessResult {
   status: 'completed' | 'missing' | 'timeout' | 'error';
@@ -11,7 +12,7 @@ export interface ProcessResult {
 export type Runner = (command: string, args: string[], options: { cwd: string; timeoutMs: number; input?: string }) => Promise<ProcessResult>;
 
 export const runProcess: Runner = async (command, args, options) => new Promise((resolve) => {
-  const start = Date.now();
+  const start = performance.now();
   const child = spawn(command, args, { cwd: options.cwd, shell: false, stdio: ['pipe', 'pipe', 'pipe'], detached: process.platform !== 'win32' });
   let stdout = '';
   let stderr = '';
@@ -23,7 +24,7 @@ export const runProcess: Runner = async (command, args, options) => new Promise(
     settled = true;
     clearTimeout(timer);
     if (killFallback) clearTimeout(killFallback);
-    resolve({ status, exitCode, stdout, stderr, durationMs: Date.now() - start });
+    resolve({ status, exitCode, stdout, stderr, durationMs: Math.max(0, Math.round(performance.now() - start)) });
   };
   const timer = setTimeout(() => {
     status = 'timeout';

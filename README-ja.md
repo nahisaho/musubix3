@@ -1,6 +1,6 @@
 # musubix3
 
-**最新リリース v0.1.3 · GitHub Copilot CLI 専用 · Node.js ≥20 · TypeScript · MIT**
+**最新リリース v0.1.4 · GitHub Copilot CLI 専用 · Node.js ≥20 · TypeScript · MIT**
 
 [English](README.md)
 
@@ -221,8 +221,10 @@ npx musubix3 status --json
 | `model-correspondence validate` | Formal JSON→生成trace→正本passing testの証拠を再検証 |
 | `evidence refresh [--changed]` | 同じfail-closed gate pipelineで派生証拠を再生成 |
 | `mutation validate` | 要求scopeのschema-v1 killed-mutant証拠を再検証 |
+| `tdd validate` | 保存済みRed/Green/Refactorの順序、指紋、実行時間、hash-chainを検証 |
 | `tdd red\|green\|refactor <TEST-ID> --requirement <REQ-ID> --command <name>` | 検証可能なTDDフェーズを実行・記録 |
 | `workflow-record <skill> <phase> --status <status>` | 自己申告のworkflow宣言を記録 |
+| `workflow-sanitize <copilot.jsonl> <output-file> [--session-id <uuid>]` | reviewやstrict検証前にmessageとSkill以外のtool dataを除去 |
 | `workflow-verify <copilot.jsonl> [--strict] [--session-id <uuid>]` | Skillイベントを照合し、任意で完全な成功session transcriptを要求 |
 | `attestation oidc-audience --key-id <id> [--public-key-file <pem>]` | 署名鍵を許可するGitHub custom audienceを導出 |
 | `attestation payload --provider <name> --run-id <id> --key-id <id> [--public-key-file <pem>] [--github-oidc-token-file <jwt>]` | 外部署名用の正規化CI payloadを出力 |
@@ -517,6 +519,8 @@ mutation/model-correspondenceのsemantic headはattestationに含まれ、元の
 `workflow-verify` はCopilot JSONLからSkill発火メタデータだけを取り込み、完了宣言ごとに
 異なる成功完了tool callを順序付きで1対1対応させます。未完了、失敗、再利用、順序違反、
 後からの宣言変更は失敗です。
+元transcriptにmessage、Skill以外のtool引数、outputが含まれる場合は、
+review evidenceへ入れる前に`workflow-sanitize`で必要最小限へ変換します。
 したがって各Skill発火は最終workflow outcomeを1件だけ記録し、複数phaseのchronologyは
 重複workflow eventではなく`change-record`に記録します。
 `"workflow":{"mode":"strict"}`または`--strict`では、全非空行のJSON、

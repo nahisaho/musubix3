@@ -1,8 +1,9 @@
 import { createHash } from 'node:crypto';
 import { createReadStream } from 'node:fs';
+import { createInterface } from 'node:readline';
 import { error, type Diagnostic } from '../../domain/src/index.js';
 import type { WorkflowConfig } from './config.js';
-import { digest, exists, readText, within, writeJson } from './files.js';
+import { digest, exists, readText, within, writeJson, writeText } from './files.js';
 
 export interface WorkflowEvent {
   skill: string;
@@ -43,6 +44,15 @@ export interface WorkflowVerificationOptions extends WorkflowConfig {
   maxBytes?: number;
   maxLineBytes?: number;
   maxEvents?: number;
+}
+
+export interface WorkflowSanitizationResult {
+  inputEvents: number;
+  outputEvents: number;
+  skillInvocations: number;
+  sessionId: string;
+  sessionReplaced: boolean;
+  outputPath: string;
 }
 
 export const workflowVerificationLimits = {
@@ -111,7 +121,7 @@ export async function recordWorkflow(
   delete current.verification;
   current.events.push({
     skill: event.skill,
-    version: '0.1.3',
+    version: '0.1.4',
     provenance: 'self-reported',
     phase: event.phase,
     status: event.status,
@@ -139,6 +149,100 @@ export async function verifyWorkflowLogFile(
   options: WorkflowVerificationOptions = { mode: 'compatible' },
 ): Promise<WorkflowManifest> {
   return verifyWorkflowChunks(root, createReadStream(path), options);
+}
+
+export async function sanitizeWorkflowLogFile(
+  root: string,
+  inputPath: string,
+  outputPath: string,
+  replacementSessionId?: string,
+): Promise<WorkflowSanitizationResult> {
+  if (replacementSessionId && !uuid.test(replacementSessionId)) {
+    throw new Error('Replacement workflow session ID must be a UUID.');
+  }
+  // Fail closed on the complete source before removing privacy-sensitive non-Skill events.
+  const validated = await verifyWorkflowLogFile(root, inputPath, { mode: 'strict' });
+  const expectedSourceSha256 = validated.verification!.sourceSha256;
+  const skillCalls = new Set<string>();
+  const sanitized: Record<string, unknown>[] = [];
+  let inputEvents = 0;
+  let terminalSessionId = '';
+  const sourceHash = createHash('sha256');
+  const source = createReadStream(inputPath);
+  source.on('data', (chunk) => { sourceHash.update(chunk); });
+  const lines = createInterface({ input: source, crlfDelay: Infinity });
+  for await (const line of lines) {
+    if (!line.trim()) continue;
+    inputEvents += 1;
+    let event: unknown;
+    try {
+      event = JSON.parse(line) as unknown;
+    } catch {
+      throw new Error(`Workflow transcript line ${inputEvents} must contain valid JSON before sanitization.`);
+    }
+    if (!event || typeof event !== 'object' || Array.isArray(event)) continue;
+    const record = event as Record<string, unknown>;
+    const data = record.data && typeof record.data === 'object'
+      ? record.data as Record<string, unknown>
+      : record;
+    const type = String(record.type ?? '');
+    const timestamp = typeof (record.timestamp ?? data.timestamp) === 'string'
+      ? String(record.timestamp ?? data.timestamp)
+      : '';
+    const toolCallId = data.toolCallId ?? data.callId ?? record.toolCallId;
+    if (starts.has(type)) {
+      let args: Record<string, unknown> = {};
+      if (data.arguments && typeof data.arguments === 'object') args = data.arguments as Record<string, unknown>;
+      else if (typeof data.arguments === 'string') {
+        try { args = JSON.parse(data.arguments) as Record<string, unknown>; } catch { args = {}; }
+      } else if (data.input && typeof data.input === 'object') args = data.input as Record<string, unknown>;
+      const toolName = data.toolName ?? data.name ?? record.toolName;
+      if (toolName === 'skill' && typeof toolCallId === 'string' && typeof args.skill === 'string') {
+        skillCalls.add(toolCallId);
+        sanitized.push({
+          type: 'tool.execution_start',
+          timestamp,
+          data: { toolCallId, toolName: 'skill', arguments: { skill: args.skill } },
+        });
+      }
+    } else if (completes.has(type) && typeof toolCallId === 'string' && skillCalls.has(toolCallId)) {
+      const success = data.success ?? record.success;
+      if (typeof success !== 'boolean') {
+        throw new Error(`Skill tool completion ${toolCallId} must declare boolean success before sanitization.`);
+      }
+      sanitized.push({
+        type: 'tool.execution_complete',
+        timestamp,
+        data: { toolCallId, success },
+      });
+    } else if (type === 'result') {
+      const sessionId = record.sessionId;
+      if (typeof sessionId !== 'string' || !uuid.test(sessionId)) {
+        throw new Error('The terminal workflow result must declare a UUID sessionId before sanitization.');
+      }
+      terminalSessionId = replacementSessionId ?? sessionId;
+      sanitized.push({
+        type: 'result',
+        timestamp,
+        sessionId: terminalSessionId,
+        exitCode: record.exitCode,
+      });
+    }
+  }
+  if (sourceHash.digest('hex') !== expectedSourceSha256) {
+    throw new Error('Workflow transcript changed after strict validation; retry sanitization with a stable source file.');
+  }
+  if (!skillCalls.size) throw new Error('No Copilot Skill invocation events were found in the workflow transcript.');
+  if (!terminalSessionId) throw new Error('No terminal workflow result event was found in the transcript.');
+  await writeText(root, outputPath, `${sanitized.map((event) => JSON.stringify(event)).join('\n')}\n`);
+  return {
+    inputEvents,
+    outputEvents: sanitized.length,
+    skillInvocations: skillCalls.size,
+    sessionId: terminalSessionId,
+    sessionReplaced: replacementSessionId !== undefined,
+    outputPath,
+  };
 }
 
 async function verifyWorkflowChunks(

@@ -3,13 +3,13 @@ name: sdd-change
 description: "Use for feature additions, behavior changes, bug fixes, refactoring with observable impact, or any request that must propagate through requirements, design, code, tests, traceability, and quality evidence. 機能追加・仕様変更・バグ修正を一貫して反映するときに使用。"
 ---
 # Integrated change workflow / 統合変更ワークフロー
-
 Follow the user's input language (日本語 / English). Use Copilot's native
 planning, editing, research, review, security review and subagents where useful.
 This skill coordinates SDD artifacts and checks; it is not another agent runtime.
 Record exactly one final invocation outcome with `npx musubix3 workflow-record
 sdd-change complete --status <status>`; `change-record` separately proves phases.
-Run `workflow-verify <copilot.jsonl>` to bind this declaration to one Skill call.
+Run `workflow-sanitize <copilot.jsonl> <safe.jsonl>` before review when needed,
+then `workflow-verify <safe.jsonl>`; sanitization strictly validates the source.
 For strict evidence, set an expected UUID or pass `--strict --session-id <uuid>`;
 this checks lifecycles; GitHub origin needs strict OIDC with key-bound claims.
 Never record multiple declarations per invocation; use only the configured CLI.

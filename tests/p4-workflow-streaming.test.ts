@@ -3,7 +3,7 @@ import { writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import {
-  recordWorkflow, verifyWorkflowLog, verifyWorkflowLogFile,
+  readText, recordWorkflow, sanitizeWorkflowLogFile, verifyWorkflowLog, verifyWorkflowLogFile,
 } from '../packages/analysis/src/index.js';
 import { fixture } from './helpers.js';
 
@@ -104,5 +104,54 @@ describe('P4 bounded streaming workflow verification', () => {
     expect(streamed.verification?.transcriptSha256).toBe(fromString.verification?.transcriptSha256);
     expect(streamed.verification?.sourceSha256)
       .toBe(createHash('sha256').update(text).digest('hex'));
+  });
+
+  it('creates a privacy-minimized transcript that remains strictly verifiable', async () => {
+    const root = await preparedRoot();
+    const raw = resolve(root, 'raw.jsonl');
+    await writeFile(raw, [
+      { type: 'assistant.message', timestamp: '2020-01-01T00:00:00.000Z', data: { content: 'secret-value' } },
+      start,
+      {
+        type: 'tool.execution_start',
+        timestamp: '2020-01-01T00:00:01.500Z',
+        data: { toolCallId: 'other-call', toolName: 'bash', arguments: { command: 'echo secret-value' } },
+      },
+      completion,
+      {
+        type: 'tool.execution_complete',
+        timestamp: '2020-01-01T00:00:02.500Z',
+        data: { toolCallId: 'other-call', success: true, output: 'secret-value' },
+      },
+      result,
+    ].map((event) => JSON.stringify(event)).join('\n'));
+    const replacement = '123e4567-e89b-42d3-a456-426614174099';
+    const report = await sanitizeWorkflowLogFile(root, raw, 'evidence/workflow.jsonl', replacement);
+    const sanitized = await readText(root, 'evidence/workflow.jsonl');
+
+    expect(report).toMatchObject({
+      inputEvents: 6,
+      outputEvents: 3,
+      skillInvocations: 1,
+      sessionId: replacement,
+      sessionReplaced: true,
+    });
+    expect(sanitized).not.toContain('secret-value');
+    expect((await verifyWorkflowLog(root, sanitized, { mode: 'strict', expectedSessionId: replacement })).verification)
+      .toMatchObject({ eventCount: 3, sessionId: replacement });
+  });
+
+  it('refuses to sanitize a source transcript that fails strict verification', async () => {
+    const root = await preparedRoot();
+    const raw = resolve(root, 'invalid-raw.jsonl');
+    await writeFile(raw, [
+      start,
+      completion,
+      result,
+      { type: 'assistant.message', timestamp: '2020-01-01T00:00:04.000Z', data: { content: 'dropped' } },
+    ].map((event) => JSON.stringify(event)).join('\n'));
+
+    await expect(sanitizeWorkflowLogFile(root, raw, 'evidence/workflow.jsonl'))
+      .rejects.toThrow('terminal result event must be the final');
   });
 });

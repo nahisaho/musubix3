@@ -365,6 +365,11 @@ export function normalizeAdapterReport(adapter: TestAdapter, text: string, targe
   const selected = targetTestId
     ? { ...normalized, tests: normalized.tests.filter((test) => test.id === targetTestId) }
     : normalized;
-  if (!selected.tests.length) throw new Error(`No annotated TEST-* identities were found in the ${adapter} report.`);
+  if (!selected.tests.length) {
+    const guidance = adapter === 'pytest'
+      ? ' Pytest node IDs must include the normalized TEST ID (for example test_TEST_APP_001), or configure a project-local musubix-json runner.'
+      : '';
+    throw new Error(`No annotated TEST-* identities were found in the ${adapter} report.${guidance}`);
+  }
   return selected;
 }

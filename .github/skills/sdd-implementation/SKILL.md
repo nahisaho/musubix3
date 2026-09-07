@@ -29,6 +29,8 @@ After the work, run `npx musubix3 workflow-record sdd-implementation complete
    `npx musubix3 tdd red <TEST-ID> --requirement <REQ-ID> --command <name>`.
 3. Implement only enough code to pass, preserving the test unchanged, then run
    `tdd green`. Refactor only after Green and record `tdd refactor`.
+   Use `tdd validate` to inspect persisted order, fingerprints, durations and
+   hash-chain evidence before claiming the cycle is complete.
 4. Add one block comment per trace entity:
    ```ts
    /** @id CODE-FEATURE-001

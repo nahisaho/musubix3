@@ -655,7 +655,11 @@ export function policyDiagnostics(config: Config, baseline: PolicyBaseline, chan
     }
   }
   if (changed?.includes('.musubix/policy-baseline.json')) {
-    diagnostics.push(error('POLICY_APPROVAL_REQUIRED', 'The trusted policy baseline changed; independent approval is required before readiness can pass.'));
+    diagnostics.push(error(
+      'POLICY_APPROVAL_REQUIRED',
+      'The trusted policy baseline changed; commit the baseline in reviewable history and obtain approval from a reviewer other than the author before readiness can pass.',
+      '.musubix/policy-baseline.json',
+    ));
   }
   return diagnostics;
 }

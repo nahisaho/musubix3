@@ -240,6 +240,9 @@ export async function runTddPhase(
   const expectedExit = phase === 'red' ? 'nonzero' : 'zero';
   const exitValid = execution.status === 'completed' && (phase === 'red' ? execution.exitCode !== 0 : execution.exitCode === 0);
   if (!exitValid) diagnostics.push(error('TDD_PHASE_RESULT', `${phase} requires a completed command with ${expectedExit} exit status.`));
+  if (!Number.isSafeInteger(execution.durationMs) || execution.durationMs < 0) {
+    diagnostics.push(error('TDD_DURATION_INVALID', `${phase} produced an invalid execution duration; archive the invalid evidence and regenerate this cycle from a clean Red baseline.`));
+  }
   const currentSourceFingerprint = await sourceFingerprint(root, test.path, [reportPath]);
   if (phase === 'green' && previous?.red.sourceFingerprint === currentSourceFingerprint) {
     diagnostics.push(error('TDD_GREEN_WITHOUT_SOURCE_CHANGE', `${testId} has no non-test project change between Red and Green.`, test.path));
@@ -359,8 +362,11 @@ export async function validateTddEvidence(root: string): Promise<{ present: bool
     for (const phase of ['red', 'green', 'refactor'] as const) {
       const item = cycle[phase];
       if (!item) continue;
+      if (!Number.isSafeInteger(item.durationMs) || item.durationMs < 0) {
+        diagnostics.push(error('TDD_DURATION_INVALID', `${cycle.testId}:${phase} has an invalid execution duration; archive the invalid evidence and regenerate this cycle from a clean Red baseline.`, cycle.testPath));
+      }
       if (!cycle.cycleId || !Number.isInteger(item.order)) {
-        diagnostics.push(error('TDD_ORDER_MIGRATION_REQUIRED', `${cycle.testId}:${phase} lacks monotonic order evidence; regenerate this TDD cycle.`, cycle.testPath));
+        diagnostics.push(error('TDD_ORDER_MIGRATION_REQUIRED', `${cycle.testId}:${phase} lacks monotonic order evidence; archive legacy evidence and regenerate the complete cycle instead of editing append-only records.`, cycle.testPath));
         continue;
       }
       const record = evidenceOrderRecord(order.records, 'tdd', cycle.cycleId, phase);

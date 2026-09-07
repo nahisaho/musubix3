@@ -109,14 +109,14 @@ export function classifyEars(statement: string): EarsPattern | null {
     }
     return null;
   }
-  // Japanese uses explicit control markers; free prose is deliberately not inferred.
-  const japanese = /^(.*?)システムは(.+?)(?:しなければならない|してはならない|してはいけない|すること)[。.]?$/.exec(s);
-  if (!japanese || !japanese[2]?.trim()) return null;
+  // Japanese uses an explicit topic subject and obligation marker; free prose is deliberately not inferred.
+  const japanese = /^(?:(.*)[、,]\s*)?([^、,]+?)は(.+?)(?:しなければならない|してはならない|してはいけない|すること)[。.]?$/.exec(s);
+  if (!japanese || !japanese[2]?.trim() || !japanese[3]?.trim()) return null;
   const prefix = japanese[1]?.trim() ?? '';
   if (!prefix) return 'ubiquitous';
-  if (/^もし.+ならば[、,]\s*$/.test(prefix)) return 'unwanted-behavior';
+  if (/^もし.+ならば$/.test(prefix)) return 'unwanted-behavior';
   const clauses = prefix.split(/[、,]\s*/).filter(Boolean);
-  const kinds = clauses.map((c) => /.+とき$/.test(c) ? 'event-driven' : /.+間$/.test(c) ? 'state-driven' : /.+場合$/.test(c) ? 'optional-feature' : null);
+  const kinds = clauses.map((c) => /.+(?:とき|時)$/.test(c) ? 'event-driven' : /.+(?:間|中)$/.test(c) ? 'state-driven' : /.+場合$/.test(c) ? 'optional-feature' : null);
   if (kinds.some((k) => !k)) return null;
   if (kinds.length > 1 && new Set(kinds).size > 1) return 'complex';
   return kinds.length === 1 ? kinds[0] as EarsPattern : null;
@@ -141,7 +141,12 @@ export function validateRequirements(text: string, path = '<input>'): Validation
       .filter((line) => !/^\s*(?:[-*]\s+)?(?:\*\*)?(Priority|Type|Pattern|Acceptance|Formal|Performance|優先度|種別|パターン|受入条件|形式制約|性能予算)(?:\*\*)?\s*[:：]/i.test(line))
       .join(' ').trim();
     const pattern = classifyEars(statement);
-    if (!pattern) diagnostics.push(error('REQ_EARS', 'Use one complete controlled EARS statement with a subject, shall, response, and valid trigger/state/feature clause.', path, section.line));
+    if (!pattern) diagnostics.push(error(
+      'REQ_EARS',
+      'Use one complete controlled EARS statement. English example: "When an event occurs, the system shall respond." Japanese example: "イベントが発生したとき、APIは応答しなければならない。"',
+      path,
+      section.line,
+    ));
     const declared = field(section.body, 'Pattern|パターン').toLowerCase();
     if (declared && declared !== pattern) diagnostics.push(error('REQ_PATTERN', `Declared pattern ${declared} does not match detected pattern ${pattern ?? 'invalid'}.`, path, section.line));
     const acceptance = field(section.body, 'Acceptance|受入条件');
