@@ -155,6 +155,22 @@ function optional(value: unknown, fallback: unknown): unknown {
   return value === undefined ? fallback : value;
 }
 
+function validateAdapterArgs(adapter: CommandConfig['adapter'], args: string[], name: string): void {
+  if (!adapter) return;
+  const owned = {
+    vitest: ['--reporter', '--outputFile'],
+    jest: ['--json', '--outputFile'],
+    pytest: ['--json-report', '--json-report-file'],
+    'go-test': ['-json', '-run'],
+    cargo: ['--format'],
+    junit: ['--scan-class-path', '--include-tag', '--reports-dir', '--fail-if-no-tests'],
+  }[adapter];
+  const conflict = args.find((arg) => owned.some((value) => arg === value || arg.startsWith(`${value}=`)));
+  if (conflict) {
+    throw new Error(`command ${name} args contain adapter-owned argument ${conflict}; remove it because the ${adapter} adapter adds targeted test/report arguments.`);
+  }
+}
+
 export function parseConfig(input: unknown): Config {
   const value = object(input, 'config');
   keys(value, ['schemaVersion', 'language', 'commands', 'requiredChecks', 'thresholds', 'architecture', 'codeGraph', 'formal', 'mutation', 'workflow', 'attestation'], 'config');
@@ -231,15 +247,18 @@ export function parseConfig(input: unknown): Config {
     if (mutationReport && (testReport || c.adapter)) {
       throw new Error('command.mutationReport cannot be combined with testReport or adapter.');
     }
+    const args = strings(optional(c.args, []), 'command.args', true);
+    const adapter = c.adapter as CommandConfig['adapter'];
+    validateAdapterArgs(adapter, args, c.name);
     return {
       name: c.name,
       command: c.command,
-      args: strings(optional(c.args, []), 'command.args', true),
+      args,
       ...(tddArgs ? { tddArgs } : {}),
       ...(tddReport ? { tddReport } : {}),
       ...(testReport ? { testReport } : {}),
       ...(mutationReport ? { mutationReport } : {}),
-      ...(c.adapter ? { adapter: c.adapter as NonNullable<CommandConfig['adapter']> } : {}),
+      ...(adapter ? { adapter } : {}),
       required: c.required !== false,
       timeoutMs,
     };

@@ -69,9 +69,11 @@ export interface SolverDoctorEntry {
   name: 'z3' | 'lean';
   available: boolean;
   command: string;
+  attemptedCommands: string[];
   version: string;
   status: 'available' | 'missing' | 'timeout' | 'error';
   output: string;
+  recommendation: string;
 }
 
 export interface SolverDoctorResult {
@@ -545,13 +547,15 @@ async function findSolver(
   timeoutMs: number,
   options: FormalCheckOptions,
   runner: Runner,
-): Promise<{ invocation?: SolverInvocation; probe: ProcessResult }> {
+): Promise<{ invocation?: SolverInvocation; probe: ProcessResult; attempts: SolverInvocation[] }> {
   let last: ProcessResult = { status: 'missing', exitCode: null, stdout: '', stderr: '', durationMs: 0 };
+  const attempts: SolverInvocation[] = [];
   for (const invocation of commandFor(name, options)) {
+    attempts.push(invocation);
     last = await probe(invocation, root, timeoutMs, runner);
-    if (last.status !== 'missing') return { invocation, probe: last };
+    if (last.status !== 'missing') return { invocation, probe: last, attempts };
   }
-  return { probe: last };
+  return { probe: last, attempts };
 }
 
 function probeStatus(result: ProcessResult): SolverDoctorEntry['status'] {
@@ -577,9 +581,19 @@ export async function formalDoctor(
       name,
       available: status === 'available',
       command: [invocation.command, ...invocation.prefixArgs].join(' '),
+      attemptedCommands: found.attempts.map((attempt) => [attempt.command, ...attempt.prefixArgs].join(' ')),
       version: status === 'available' ? output.split(/\r?\n/, 1)[0] ?? '' : '',
       status,
       output,
+      recommendation: status === 'available'
+        ? 'Ready.'
+        : status === 'missing'
+          ? name === 'z3'
+            ? 'Install Z3 or configure --z3-command / MUSUBIX3_Z3.'
+            : 'Install Lean with elan and ensure lean or lake is available, or configure --lean-command / MUSUBIX3_LEAN.'
+          : status === 'timeout'
+            ? `Increase --timeout or verify that ${name} starts without interactive prompts.`
+            : `Run the reported command directly and inspect its nonzero output before retrying ${name}.`,
     });
   }
   return { available: solvers.some((entry) => entry.available), solvers };

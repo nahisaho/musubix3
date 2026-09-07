@@ -4,7 +4,7 @@ import { validateRequirements } from '../packages/domain/src/index.js';
 import {
   adapterInvocation, attestationSigningPayload, createPerformanceExecution, createUnsignedAttestation, formalCheck, generateLean,
   generateSmt2, indexGraph, normalizeAdapterReport, parseConfig, performanceEvidence, recordWorkflow,
-  readAdapterOutput, readText,
+  readAdapterOutput, readText, mergeAdapterArgs,
   validateWorkflow, verifyEvidenceAttestation, verifyWorkflowLog,
   writeJson, writeText, type AttestationConfig, type Runner,
 } from '../packages/analysis/src/index.js';
@@ -97,6 +97,43 @@ describe('P2 built-in test adapters', () => {
     expect(normalizeAdapterReport('junit', '<testsuite><testcase name="TEST-APP-005"><failure/></testcase></testsuite>').tests[0]?.status).toBe('failed');
   });
 
+  it('merges legacy test subcommands and rejects conflicting adapter-owned arguments', () => {
+    const cargo = parseConfig({
+      schemaVersion: 1,
+      commands: [{ name: 'cargo-tests', command: 'cargo', args: ['test', '--quiet'], adapter: 'cargo' }],
+    }).commands[0]!;
+    expect(mergeAdapterArgs(cargo.adapter!, cargo.args, adapterInvocation('cargo', cargo.name).args))
+      .toEqual(['test', '--quiet', '--', '--format', 'pretty']);
+    expect(mergeAdapterArgs('cargo', ['test', '--quiet', '--', '--nocapture'],
+      adapterInvocation('cargo', 'cargo-tests', 'TEST-APP-004').args))
+      .toEqual(['test', '--quiet', 'test_app_004', '--', '--nocapture', '--format', 'pretty']);
+    expect(mergeAdapterArgs('go-test', ['test', '-count=1', './...'],
+      adapterInvocation('go-test', 'go-tests', 'TEST-APP-003', 'service/app_test.go').args))
+      .toEqual(['test', '-count=1', '-json', './service', '-run', '/TEST-APP-003']);
+    expect(mergeAdapterArgs('go-test', ['test', '-count=1', './pkg'],
+      adapterInvocation('go-test', 'go-tests').args))
+      .toEqual(['test', '-count=1', '-json', './pkg']);
+    expect(mergeAdapterArgs('go-test', ['test', '-exec', './wrapper', './...'],
+      adapterInvocation('go-test', 'go-tests', 'TEST-APP-003', 'service/app_test.go').args))
+      .toEqual(['test', '-exec', './wrapper', '-json', './service', '-run', '/TEST-APP-003']);
+    expect(mergeAdapterArgs('go-test', ['test', '-o', 'out.test', '-covermode', 'atomic', '-skip', 'Slow', './...', '-args', 'fixture'],
+      adapterInvocation('go-test', 'go-tests', 'TEST-APP-003', 'service/app_test.go').args))
+      .toEqual([
+        'test', '-o', 'out.test', '-covermode', 'atomic', '-skip', 'Slow',
+        '-json', './service', '-run', '/TEST-APP-003', '-args', 'fixture',
+      ]);
+    expect(mergeAdapterArgs('go-test', ['test', '-C', 'sub', '-buildmode', 'pie', '-compiler', 'gc', '-pgo', 'auto', './...'],
+      adapterInvocation('go-test', 'go-tests', 'TEST-APP-003', 'service/app_test.go').args))
+      .toEqual([
+        'test', '-C', 'sub', '-buildmode', 'pie', '-compiler', 'gc', '-pgo', 'auto',
+        '-json', '../service', '-run', '/TEST-APP-003',
+      ]);
+    expect(() => parseConfig({
+      schemaVersion: 1,
+      commands: [{ name: 'pytest-tests', command: 'python', args: ['-m', 'pytest', '--json-report'], adapter: 'pytest' }],
+    })).toThrow('adapter-owned argument --json-report');
+  });
+
   it('loads JUnit XML from the native report directory', async () => {
     const root = await fixture();
     const invocation = adapterInvocation('junit', 'test', 'TEST-APP-005');
@@ -105,6 +142,16 @@ describe('P2 built-in test adapters', () => {
     const text = await readAdapterOutput(invocation, `${root}/${invocation.reportPath}`, '');
     expect(normalizeAdapterReport('junit', text ?? '', 'TEST-APP-005').tests)
       .toEqual([{ id: 'TEST-APP-005', status: 'passed' }]);
+  });
+
+  it('loads nested JUnit XML from multi-module report directories', async () => {
+    const root = await fixture();
+    const invocation = adapterInvocation('junit', 'test', 'TEST-APP-006');
+    await writeText(root, `${invocation.reportPath}/application/target/TEST-application.xml`,
+      '<testsuite><testcase name="test_app_006"/></testsuite>');
+    const text = await readAdapterOutput(invocation, `${root}/${invocation.reportPath}`, '');
+    expect(normalizeAdapterReport('junit', text ?? '', 'TEST-APP-006').tests)
+      .toEqual([{ id: 'TEST-APP-006', status: 'passed' }]);
   });
 });
 

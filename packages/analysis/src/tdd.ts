@@ -5,7 +5,7 @@ import { loadConfig } from './config.js';
 import { digest, exists, files, isSource, readText, safePath, snapshot, within, writeJson } from './files.js';
 import { runProcess, type Runner } from './process.js';
 import { buildTrace, type TraceNode } from './trace.js';
-import { adapterInvocation, clearAdapterOutput, normalizeAdapterReport, readAdapterOutput } from './adapters.js';
+import { adapterInvocation, clearAdapterOutput, mergeAdapterArgs, normalizeAdapterReport, readAdapterOutput } from './adapters.js';
 import { appendEvidenceOrder, evidenceOrderRecord, inspectEvidenceOrder } from './order.js';
 
 export type TddPhase = 'red' | 'green' | 'refactor';
@@ -190,10 +190,10 @@ export async function runTddPhase(
   const targetedArgs = command.tddArgs
     ? command.tddArgs.map((arg) => render(arg, testId, test.path, reportPath))
     : adapter!.args;
-  const args = [
-    ...command.args.map((arg) => render(arg, testId, test.path, reportPath)),
-    ...targetedArgs,
-  ];
+  const configuredArgs = command.args.map((arg) => render(arg, testId, test.path, reportPath));
+  const args = command.adapter
+    ? mergeAdapterArgs(command.adapter, configuredArgs, targetedArgs)
+    : [...configuredArgs, ...targetedArgs];
   const execution = await runner(command.command, args, { cwd: root, timeoutMs: command.timeoutMs });
   const output = `${execution.stdout}\n${execution.stderr}`;
   const diagnostics: Diagnostic[] = [];

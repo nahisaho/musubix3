@@ -44,12 +44,17 @@ export async function files(root: string): Promise<string[]> {
   const result: string[] = [];
   async function walk(directory: string): Promise<void> {
     const entries = await readdir(directory, { withFileTypes: true });
+    const hasCargoOrMavenManifest = entries.some((entry) =>
+      entry.isFile() && (entry.name === 'Cargo.toml' || entry.name === 'pom.xml'));
     for (const entry of entries.sort((a, b) => a.name.localeCompare(b.name))) {
       if (entry.isSymbolicLink()) continue;
       const absolute = resolve(directory, entry.name);
       const path = portable(relative(root, absolute));
       if (entry.isDirectory()) {
-        if (!excluded.has(entry.name) && path !== '.musubix/cache' && path !== '.musubix/evidence') await walk(absolute);
+        if (!excluded.has(entry.name)
+          && !(entry.name === 'target' && hasCargoOrMavenManifest)
+          && path !== '.musubix/cache'
+          && path !== '.musubix/evidence') await walk(absolute);
       } else if (entry.isFile()) {
         result.push(path);
       }

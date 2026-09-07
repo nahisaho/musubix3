@@ -1,6 +1,6 @@
 # musubix3
 
-**Stable v0.1.0 · GitHub Copilot CLI only · Node.js ≥20 · TypeScript · MIT**
+**Development v0.1.1 · Latest published v0.1.0 · GitHub Copilot CLI only · Node.js ≥20 · TypeScript · MIT**
 
 [日本語](README-ja.md)
 
@@ -186,6 +186,7 @@ validation/gate or requested solver failure, **2** usage, I/O or malformed confi
 | `formal doctor` | Probe Z3, Lean, and `lake env lean` availability and versions |
 | `formal check <file> [--solver auto\|none\|z3\|lean]` | Check the explicit Boolean/conditional/numeric/temporal/transition model |
 | `model-correspondence validate` | Revalidate Formal JSON → generated trace → authoritative passing test evidence |
+| `evidence refresh [--changed]` | Regenerate derived evidence through the same fail-closed gate pipeline |
 | `mutation validate` | Revalidate requirement-scoped schema-v1 killed-mutant evidence |
 | `tdd red\|green\|refactor <TEST-ID> --requirement <REQ-ID> --command <name>` | Execute and record a verified TDD phase |
 | `workflow-record <skill> <phase> --status <status>` | Record a compact self-reported workflow declaration |
@@ -491,6 +492,12 @@ Strict verification also bounds terminal transcript age and future clock skew
 with `workflow.maxAgeSeconds` and `workflow.maxFutureSkewSeconds`.
 Unrelated concurrent events may be emitted out of timestamp order, so strict mode
 checks causal tool/result ordering rather than imposing a global timestamp sort.
+If project inputs change while a gate is running, `input-stability` reports each
+added, modified, or deleted path with before/after SHA-256 values. Standard
+Cargo/Maven `target/` output is excluded, but source-like generated inputs remain
+fail-closed. Built-in adapters own their targeting and report arguments. A
+legacy leading Cargo/Go `test` subcommand is merged safely; conflicting report
+flags such as `--json-report` are rejected.
 Changes during a gate fail input stability; later source/config changes make
 `status` stale. Attestations older than `maxAgeSeconds`, or issued farther in the
 future than `maxFutureSkewSeconds`, fail. Local mode explicitly reports unsigned

@@ -489,7 +489,40 @@ export const unrelated = false;
       return processResult();
     };
     const report = await runGate(root, { runner });
-    expect(report.checks.find((c) => c.name === 'input-stability')?.status).toBe('fail');
+    expect(report.checks.find((c) => c.name === 'input-stability')).toMatchObject({
+      status: 'fail',
+      diagnostics: [
+        expect.objectContaining({
+          code: 'INPUT_ADDED',
+          path: 'generated.md',
+          message: expect.stringContaining('after='),
+        }),
+      ],
+    });
+  });
+
+  it('ignores standard Cargo and Maven target output without weakening source stability', async () => {
+    const root = await project();
+    await writeText(root, 'Cargo.toml', '[package]\nname = "fixture"\nversion = "0.1.0"\n');
+    const runner: Runner = async () => {
+      await writeText(root, 'target/generated/report.txt', 'build output');
+      return processResult();
+    };
+    const report = await runGate(root, { runner });
+    expect(report.checks.find((c) => c.name === 'input-stability')).toBeUndefined();
+    expect(report.status).toBe('pass');
+  });
+
+  it('keeps source directories named target inside the stability snapshot', async () => {
+    const root = await project();
+    await writeText(root, 'src/target/tracked.ts', 'export const value = 1;');
+    const runner: Runner = async () => {
+      await writeText(root, 'src/target/tracked.ts', 'export const value = 2;');
+      return processResult();
+    };
+    const report = await runGate(root, { runner });
+    expect(report.checks.find((c) => c.name === 'input-stability')?.diagnostics)
+      .toContainEqual(expect.objectContaining({ code: 'INPUT_MODIFIED', path: 'src/target/tracked.ts' }));
   });
 
   it('changed mode captures changes and still runs actual commands', async () => {

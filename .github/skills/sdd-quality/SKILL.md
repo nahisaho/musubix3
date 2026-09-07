@@ -23,6 +23,12 @@ completed` exactly once.
    and ensure the trusted baseline prevents downgrading it. Configure a
    fresh structured `testReport` for `test-identities`. Do not weaken policy.
 3. Run `npx musubix3 gate --json` or `npx musubix3 gate --changed --json`.
+   `npx musubix3 evidence refresh --json` is the explicit evidence-regeneration
+   form of the same fail-closed gate pipeline. If `input-stability` fails,
+   inspect its per-path added/modified/deleted diagnostics and stop generators
+   or formatters before rerunning. Standard dependency/build directories,
+   including Cargo and Maven `target/`, are excluded; source-like generated
+   inputs are not silently ignored.
    Changed mode reports Git changes and dependent files but conservatively runs
    all checks, including commands. It never treats unrun checks as successful.
    When `tdd` is required, confirm every command has test-scoped `tddArgs`, every

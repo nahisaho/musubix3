@@ -1,4 +1,4 @@
-import { dirname } from 'node:path';
+import { dirname, posix } from 'node:path';
 import { mkdir, readdir, readFile, rm, unlink, writeFile } from 'node:fs/promises';
 import { exists } from './files.js';
 import type { CommandConfig } from './config.js';
@@ -10,6 +10,93 @@ export interface AdapterInvocation {
   args: string[];
   reportPath: string;
   source: 'file' | 'directory' | 'stdout';
+}
+
+const goValueFlags = new Set([
+  '-C', '-asmflags', '-bench', '-benchtime', '-blockprofile', '-blockprofilerate',
+  '-buildmode', '-compiler',
+  '-count', '-covermode', '-coverpkg', '-coverprofile', '-cpu', '-cpuprofile', '-exec',
+  '-fuzz', '-fuzzminimizetime', '-fuzztime', '-gccgoflags', '-gcflags',
+  '-installsuffix', '-ldflags', '-list', '-memprofile', '-memprofilerate',
+  '-mod', '-modfile', '-mutexprofile',
+  '-mutexprofilefraction', '-o', '-outputdir', '-overlay', '-p', '-parallel',
+  '-pgo', '-pkgdir', '-run', '-shuffle', '-skip', '-tags', '-timeout', '-toolexec', '-trace',
+  '-vet',
+]);
+
+function partitionGoArgs(args: string[]): {
+  flags: string[];
+  packages: string[];
+  passthrough: string[];
+  directory?: string;
+} {
+  const flags: string[] = [];
+  const packages: string[] = [];
+  let directory: string | undefined;
+  for (let index = 0; index < args.length; index++) {
+    const arg = args[index]!;
+    if (arg === '-args') {
+      return { flags, packages, passthrough: args.slice(index + 1), ...(directory ? { directory } : {}) };
+    }
+    if (arg.startsWith('-')) {
+      flags.push(arg);
+      const flag = arg.split('=', 1)[0]!;
+      if (!arg.includes('=') && goValueFlags.has(flag) && args[index + 1] !== undefined) {
+        const value = args[++index]!;
+        flags.push(value);
+        if (flag === '-C') directory = value;
+      } else if (flag === '-C' && arg.includes('=')) {
+        directory = arg.slice(arg.indexOf('=') + 1);
+      }
+    } else {
+      packages.push(arg);
+    }
+  }
+  return { flags, packages, passthrough: [], ...(directory ? { directory } : {}) };
+}
+
+export function mergeAdapterArgs(
+  adapter: TestAdapter,
+  configuredArgs: string[],
+  invocationArgs: string[],
+): string[] {
+  if (adapter === 'cargo' && configuredArgs[0] === 'test' && invocationArgs[0] === 'test') {
+    const configuredSeparator = configuredArgs.indexOf('--');
+    const invocationSeparator = invocationArgs.indexOf('--');
+    const configuredCommandArgs = configuredSeparator < 0 ? configuredArgs.slice(1) : configuredArgs.slice(1, configuredSeparator);
+    const configuredHarnessArgs = configuredSeparator < 0 ? [] : configuredArgs.slice(configuredSeparator + 1);
+    const invocationCommandArgs = invocationSeparator < 0 ? invocationArgs.slice(1) : invocationArgs.slice(1, invocationSeparator);
+    const invocationHarnessArgs = invocationSeparator < 0 ? [] : invocationArgs.slice(invocationSeparator + 1);
+    return [
+      'test',
+      ...configuredCommandArgs,
+      ...invocationCommandArgs,
+      ...(configuredHarnessArgs.length || invocationHarnessArgs.length
+        ? ['--', ...configuredHarnessArgs, ...invocationHarnessArgs]
+        : []),
+    ];
+  }
+  if (adapter === 'go-test' && configuredArgs[0] === 'test' && invocationArgs[0] === 'test') {
+    const configured = partitionGoArgs(configuredArgs.slice(1));
+    const generatedPackage = invocationArgs[2]!;
+    const targeted = invocationArgs.includes('-run');
+    if (configured.directory && posix.isAbsolute(configured.directory)) {
+      throw new Error('The go-test adapter requires a relative -C directory so it can preserve targeted package scope.');
+    }
+    const targetedPackage = configured.directory && generatedPackage.startsWith('./')
+      ? posix.relative(configured.directory, generatedPackage.slice(2)) || '.'
+      : generatedPackage;
+    const packages = !targeted && configured.packages.length ? configured.packages : [targetedPackage];
+    return [
+      'test',
+      ...configured.flags,
+      '-json',
+      ...packages,
+      ...invocationArgs.slice(3),
+      ...(configured.passthrough.length ? ['-args', ...configured.passthrough] : []),
+    ];
+  }
+  return [...configuredArgs, ...invocationArgs];
 }
 
 function reportPath(commandName: string, testId?: string, adapter?: TestAdapter): string {
@@ -88,11 +175,18 @@ export async function readAdapterOutput(invocation: AdapterInvocation, absoluteP
   }
   if (!await exists(absolutePath)) return null;
   if (invocation.source === 'file') return readFile(absolutePath, 'utf8');
-  const entries = (await readdir(absolutePath, { withFileTypes: true }))
-    .filter((entry) => entry.isFile() && entry.name.endsWith('.xml'))
-    .sort((a, b) => a.name.localeCompare(b.name));
+  async function xmlFiles(directory: string): Promise<string[]> {
+    const found: string[] = [];
+    for (const entry of (await readdir(directory, { withFileTypes: true })).sort((a, b) => a.name.localeCompare(b.name))) {
+      const path = `${directory}/${entry.name}`;
+      if (entry.isDirectory()) found.push(...await xmlFiles(path));
+      else if (entry.isFile() && entry.name.endsWith('.xml')) found.push(path);
+    }
+    return found;
+  }
+  const entries = await xmlFiles(absolutePath);
   if (!entries.length) return null;
-  return (await Promise.all(entries.map((entry) => readFile(`${absolutePath}/${entry.name}`, 'utf8')))).join('\n');
+  return (await Promise.all(entries.map((entry) => readFile(entry, 'utf8')))).join('\n');
 }
 
 function idOf(value: unknown): string | null {

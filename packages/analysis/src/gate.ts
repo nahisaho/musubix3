@@ -10,7 +10,7 @@ import { parseMusubixTestReport, validateTddEvidence, type MusubixTestReport } f
 import { validateChangeCompleteness, validateChangeEvidence } from './change.js';
 import { changedFiles, runProcess, type Runner } from './process.js';
 import { buildTrace, checkTrace } from './trace.js';
-import { adapterInvocation, clearAdapterOutput, normalizeAdapterReport, readAdapterOutput } from './adapters.js';
+import { adapterInvocation, clearAdapterOutput, mergeAdapterArgs, normalizeAdapterReport, readAdapterOutput } from './adapters.js';
 import {
   createPerformanceExecution, performanceCommandSha256, validatePerformanceEvidence,
   writePerformanceEvidence, type PerformanceExecution,
@@ -60,6 +60,23 @@ export async function evidenceSnapshot(root: string): Promise<Record<string, str
     && !/^\.github\/skills\//.test(path)
     && !/(?:^|\/)(?:logs?|session-logs)\//.test(path)
     && !/\.jsonl$/.test(path)));
+}
+
+export function snapshotChanges(
+  before: Record<string, string>,
+  after: Record<string, string>,
+): Array<{ path: string; change: 'added' | 'modified' | 'deleted'; beforeSha256?: string; afterSha256?: string }> {
+  return [...new Set([...Object.keys(before), ...Object.keys(after)])].sort().flatMap((path) => {
+    const beforeSha256 = before[path];
+    const afterSha256 = after[path];
+    if (beforeSha256 === afterSha256) return [];
+    return [{
+      path,
+      change: beforeSha256 === undefined ? 'added' as const : afterSha256 === undefined ? 'deleted' as const : 'modified' as const,
+      ...(beforeSha256 === undefined ? {} : { beforeSha256 }),
+      ...(afterSha256 === undefined ? {} : { afterSha256 }),
+    }];
+  });
 }
 
 export function aggregateStatus(checks: Evidence[]): 'pass' | 'fail' {
@@ -232,9 +249,12 @@ export async function runGate(root: string, options: {
       const absolute = await safePath(root, reportPath);
       if (await exists(absolute)) await unlink(absolute);
     }
-    const args = reportPath
-      ? [...command.args.map((arg) => arg.replaceAll('{reportPath}', reportPath)), ...adapterArgs]
+    const configuredArgs = reportPath
+      ? command.args.map((arg) => arg.replaceAll('{reportPath}', reportPath))
       : command.args;
+    const args = command.adapter
+      ? mergeAdapterArgs(command.adapter, configuredArgs, adapterArgs)
+      : configuredArgs;
     const result = await runner(command.command, args, { cwd: root, timeoutMs: command.timeoutMs });
     commandChecks.push({
       name: `command:${command.name}`, required: command.required,
@@ -453,8 +473,22 @@ export async function runGate(root: string, options: {
     }
   }
   const after = await evidenceSnapshot(root);
-  if (JSON.stringify(before) !== JSON.stringify(after)) {
-    checks.push({ name: 'input-stability', required: true, status: 'fail', summary: 'Project inputs changed during gate execution. Re-run after generators/formatters finish.' });
+  const inputChanges = snapshotChanges(before, after);
+  if (inputChanges.length) {
+    checks.push({
+      name: 'input-stability',
+      required: true,
+      status: 'fail',
+      summary: `Project inputs changed during gate execution (${inputChanges.length} path(s)). Re-run after generators/formatters finish.`,
+      diagnostics: inputChanges.map((change) => ({
+        code: `INPUT_${change.change.toUpperCase()}`,
+        severity: 'error',
+        path: change.path,
+        message: `${change.path} was ${change.change} during gate execution`
+          + `${change.beforeSha256 ? `; before=${change.beforeSha256}` : ''}`
+          + `${change.afterSha256 ? `; after=${change.afterSha256}` : ''}.`,
+      })),
+    });
   }
   const impacted = new Set<string>();
   for (const path of changed ?? []) {

@@ -36,7 +36,7 @@ function pathQuery(root: string, query: string): string {
 }
 
 export function createProgram(): Command {
-  const program = new Command().name('musubix3').description('Evidence-driven SDD for GitHub Copilot CLI / 根拠に基づく仕様駆動開発').version('0.1.0');
+  const program = new Command().name('musubix3').description('Evidence-driven SDD for GitHub Copilot CLI / 根拠に基づく仕様駆動開発').version('0.1.1');
   program.exitOverride();
   common(program.command('init').alias('install').description('Install repository skills and SDD artifacts (preserves existing files)'))
     .option('--dry-run', 'Preview without writing').option('--force', 'Replace bundled, managed paths only')
@@ -194,15 +194,23 @@ export function createProgram(): Command {
         ...(options.z3Command ? { z3Command: options.z3Command } : {}),
         ...(options.leanCommand ? { leanCommand: options.leanCommand } : {}),
       });
-      output(report, !!options.json, report.solvers.map((entry) => `${entry.name}: ${entry.status}${entry.version ? ` (${entry.version})` : ''}`).join('\n'));
+      output(report, !!options.json, report.solvers.map((entry) =>
+        `${entry.name}: ${entry.status}${entry.version ? ` (${entry.version})` : ''}`
+        + `\n  attempted: ${entry.attemptedCommands.join(', ')}`
+        + `\n  ${entry.recommendation}`).join('\n'));
     });
+  async function executeGate(options: { root: string; json?: boolean; changed?: boolean }): Promise<void> {
+    const report = await runGate(resolve(options.root), options);
+    output(report, !!options.json, `${report.status.toUpperCase()}\n${report.checks.map((c) => `${c.status.padEnd(7)} ${c.name}${c.required ? ' [required]' : ' [optional]'}: ${c.summary}`).join('\n')}`);
+    if (report.status !== 'pass') process.exitCode = 1;
+  }
   common(program.command('gate').description('Run actual configured commands and deterministic SDD checks'))
     .option('--changed', 'Report changed/impacted files; keep all checks to avoid unsafe skips')
-    .action(async (options: { root: string; json?: boolean; changed?: boolean }) => {
-      const report = await runGate(resolve(options.root), options);
-      output(report, !!options.json, `${report.status.toUpperCase()}\n${report.checks.map((c) => `${c.status.padEnd(7)} ${c.name}${c.required ? ' [required]' : ' [optional]'}: ${c.summary}`).join('\n')}`);
-      if (report.status !== 'pass') process.exitCode = 1;
-    });
+    .action(executeGate);
+  const evidence = program.command('evidence').description('Refresh derived evidence in deterministic gate order');
+  common(evidence.command('refresh'))
+    .option('--changed', 'Preserve changed-file impact context while refreshing all checks')
+    .action(executeGate);
   const mutation = program.command('mutation').description('Validate requirement-scoped schema-v1 mutation evidence');
   common(mutation.command('validate')).action(async (options: { root: string; json?: boolean }) => {
     const report = await validateMutationEvidence(resolve(options.root));

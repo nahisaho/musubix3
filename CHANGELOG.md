@@ -2,6 +2,23 @@
 
 ## Unreleased
 
+## 0.1.1 - Unreleased
+
+- Preserve fail-closed input-stability checks while reporting every added,
+  modified, or deleted path with before/after SHA-256 fingerprints.
+- Exclude standard Cargo and Maven `target/` build output from project input
+  snapshots without ignoring source-like generated inputs.
+- Merge legacy Cargo/Go `test` subcommands without producing duplicated commands
+  such as `cargo test test`, and reject conflicting adapter-owned report flags.
+- Discover JUnit XML recursively so nested multi-module report directories can
+  be normalized.
+- Add `evidence refresh` as an explicit entry point for the deterministic
+  evidence and quality-gate pipeline.
+- Extend `formal doctor` with every attempted solver command and actionable
+  installation/configuration recommendations.
+- Clarify Skill guidance to format tests before recording Red and to investigate
+  per-path input-stability diagnostics without weakening quality policy.
+
 ## 0.1.0 - 2026-09-07
 
 - Add SHA-pinned cross-platform CI, reproducible native/formal toolchains, and

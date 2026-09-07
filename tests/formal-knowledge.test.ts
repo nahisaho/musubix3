@@ -146,8 +146,20 @@ Statement: システムは操作を公開 API として提供しなければな�
     const doctor = await formalDoctor(await fixture(), {}, runner);
     expect(doctor.available).toBe(true);
     expect(doctor.solvers).toEqual([
-      expect.objectContaining({ name: 'z3', status: 'missing' }),
-      expect.objectContaining({ name: 'lean', status: 'available', command: 'lake env lean', version: 'Lean 4.20.0' }),
+      expect.objectContaining({
+        name: 'z3',
+        status: 'missing',
+        attemptedCommands: ['z3'],
+        recommendation: expect.stringContaining('MUSUBIX3_Z3'),
+      }),
+      expect.objectContaining({
+        name: 'lean',
+        status: 'available',
+        command: 'lake env lean',
+        attemptedCommands: ['lean', 'lake env lean'],
+        version: 'Lean 4.20.0',
+        recommendation: 'Ready.',
+      }),
     ]);
   });
 

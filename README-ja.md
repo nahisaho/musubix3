@@ -1,6 +1,6 @@
 # musubix3
 
-**安定版 v0.1.0 · GitHub Copilot CLI 専用 · Node.js ≥20 · TypeScript · MIT**
+**開発版 v0.1.1 · 最新公開版 v0.1.0 · GitHub Copilot CLI 専用 · Node.js ≥20 · TypeScript · MIT**
 
 [English](README.md)
 
@@ -178,6 +178,7 @@ npx musubix3 status --json
 | `formal doctor` | Z3、Lean、`lake env lean` の存在とバージョン確認 |
 | `formal check <file> [--solver auto\|none\|z3\|lean]` | 明示的なBoolean・条件・数値・時間・状態遷移モデルを検査 |
 | `model-correspondence validate` | Formal JSON→生成trace→正本passing testの証拠を再検証 |
+| `evidence refresh [--changed]` | 同じfail-closed gate pipelineで派生証拠を再生成 |
 | `mutation validate` | 要求scopeのschema-v1 killed-mutant証拠を再検証 |
 | `tdd red\|green\|refactor <TEST-ID> --requirement <REQ-ID> --command <name>` | 検証可能なTDDフェーズを実行・記録 |
 | `workflow-record <skill> <phase> --status <status>` | 自己申告のworkflow宣言を記録 |
@@ -465,6 +466,11 @@ strict検証は`workflow.maxAgeSeconds`と`workflow.maxFutureSkewSeconds`で
 terminal transcriptの古さと未来方向clock skewも制限します。
 並行eventはtimestamp順で出力されない場合があるため、全体sortではなくtool/resultの
 因果順序を検査します。
+gate実行中に入力が変わった場合、`input-stability`は追加・変更・削除された各pathと
+前後のSHA-256を報告します。Cargo/Mavenの標準`target/`は除外しますが、
+source相当の生成入力はfail-closedのままです。組込みadapterは対象test選択とreport引数を
+所有します。Cargo/Goの既存設定にある先頭`test`は安全に統合し、
+`--json-report`など競合するreport引数は早期拒否します。
 実行中の入力変更は失敗、その後の変更は `status` で stale になります。
 `maxAgeSeconds`より古いattestation、または`maxFutureSkewSeconds`を超えて未来の
 `issuedAt`は失敗します。local modeは未署名を明示します。
