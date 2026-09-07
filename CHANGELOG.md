@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-## 0.1.1 - Unreleased
+## 0.1.1 - 2026-09-07
 
 - Preserve fail-closed input-stability checks while reporting every added,
   modified, or deleted path with before/after SHA-256 fingerprints.

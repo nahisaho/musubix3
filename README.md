@@ -1,6 +1,6 @@
 # musubix3
 
-**Development v0.1.1 · Latest published v0.1.0 · GitHub Copilot CLI only · Node.js ≥20 · TypeScript · MIT**
+**v0.1.1 · GitHub Copilot CLI only · Node.js ≥20 · TypeScript · MIT**
 
 [日本語](README-ja.md)
 
@@ -21,16 +21,16 @@ or requirements are satisfiable.
 Run the published package from the target project:
 
 ```sh
-npx musubix3@0.1.0 --version
-npx musubix3@0.1.0 init --dry-run
-npx musubix3@0.1.0 init
+npx musubix3@0.1.1 --version
+npx musubix3@0.1.1 init --dry-run
+npx musubix3@0.1.1 init
 copilot
 ```
 
 For a reproducible project-local installation:
 
 ```sh
-npm install --save-dev --save-exact musubix3@0.1.0
+npm install --save-dev --save-exact musubix3@0.1.1
 npx --no-install musubix3 --version
 npx --no-install musubix3 init --dry-run
 npx --no-install musubix3 init

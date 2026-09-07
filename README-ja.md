@@ -1,6 +1,6 @@
 # musubix3
 
-**開発版 v0.1.1 · 最新公開版 v0.1.0 · GitHub Copilot CLI 専用 · Node.js ≥20 · TypeScript · MIT**
+**v0.1.1 · GitHub Copilot CLI 専用 · Node.js ≥20 · TypeScript · MIT**
 
 [English](README.md)
 
@@ -19,16 +19,16 @@ ID の接続や SAT 判定だけで、実装の正しさを保証するもので
 対象プロジェクトで、公開済みパッケージを実行します。
 
 ```sh
-npx musubix3@0.1.0 --version
-npx musubix3@0.1.0 init --dry-run
-npx musubix3@0.1.0 init
+npx musubix3@0.1.1 --version
+npx musubix3@0.1.1 init --dry-run
+npx musubix3@0.1.1 init
 copilot
 ```
 
 バージョンを固定してプロジェクトへインストールする場合は、次を実行します。
 
 ```sh
-npm install --save-dev --save-exact musubix3@0.1.0
+npm install --save-dev --save-exact musubix3@0.1.1
 npx --no-install musubix3 --version
 npx --no-install musubix3 init --dry-run
 npx --no-install musubix3 init
