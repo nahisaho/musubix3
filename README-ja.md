@@ -7,8 +7,8 @@
 [musubix2 から musubix3 で変わったこと](MUSUBIX2-TO-MUSUBIX3.md)
 
 GitHub Copilotは、計画、コード生成、編集、テスト、レビューを実行できます。
-musubix3は、その作業を本当に完了と判断するためのrepository-localな仕様と
-決定的な証拠を追加します。
+musubix3は、repository-localな仕様と、設定した品質プロファイルが要求する
+根拠を決定的かつfail-closedに検査する仕組みを追加します。
 要求 → 憲章 → 設計・ADR → 実装 → 追跡可能性 → 品質根拠を、
 8つのSkillsと検証CLIで接続します。
 
@@ -45,28 +45,31 @@ Copilotは実装を担うエンジンです。要求を理解し、repositoryを
 
 musubix3はCopilotを置き換えず、別のcoding agentも追加しません。
 SATだから実装が正しいとも主張しません。開発はCopilotが実行し、
-musubix3は仕様を残し、証拠を検査し、古い・不完全な完了宣言を拒否して、
-「なぜこの変更をreadyと判断できるのか」をreview可能な形でrepositoryへ残します。
+musubix3は仕様を残し、必須証拠を検査し、古い・不完全な必須証拠を拒否して、
+「なぜ設定したpolicyがこの変更をreadyと判断したのか」をreview可能な形で
+repositoryへ残します。
 
 ## クイックスタート
 
-対象プロジェクトで、公開済みパッケージを実行します。
-
-```sh
-npx musubix3@0.1.3 --version
-npx musubix3@0.1.3 init --dry-run
-npx musubix3@0.1.3 init
-copilot
-```
-
-バージョンを固定してプロジェクトへインストールする場合は、次を実行します。
+再現可能なproject-local環境として、exact versionを導入します。
 
 ```sh
 npm install --save-dev --save-exact musubix3@0.1.3
 npx --no-install musubix3 --version
 npx --no-install musubix3 init --dry-run
 npx --no-install musubix3 init
+copilot
 ```
+
+継続利用するSkill内CLIのversionを固定しない、単発評価だけなら次を使えます。
+
+```sh
+npx musubix3@0.1.3 --version
+npx musubix3@0.1.3 init --dry-run
+```
+
+生成されたSkillsを継続開発で使う前にexact local dependencyを導入してください。
+Skillsのコマンドはrepository-localな`npx --no-install musubix3`を使用します。
 
 リポジトリ自体をビルドする場合は、次を実行します。
 
@@ -78,7 +81,8 @@ npm run build
 node dist/packages/cli/src/main.js --help
 ```
 
-Copilot に「sdd-requirements でこの機能の要求を定義し、設計を計画して」と依頼します。
+Copilot に「sdd-changeを使ってこの機能を追加し、仕様、実装、追跡可能性、
+品質ゲートまで一貫して反映して」と依頼します。
 すべての Skills は入力言語（日本語・英語）に合わせてガイダンスを生成します。
 
 `init`（別名 `install`）は Skills と雛形を配置し、既存ファイルを保持します。
@@ -107,7 +111,8 @@ copilot plugin install nahisaho/musubix3
 
 `npx musubix3 plugin-install` は `copilot plugin install <package-root>` を実行する
 だけで、Copilot 内部を編集しません。永続的なローカルパスには
-`npm install --save-dev musubix3` と `npx --no-install musubix3 plugin-install` を推奨します。
+`npm install --save-dev --save-exact musubix3@0.1.3` と
+`npx --no-install musubix3 plugin-install` を推奨します。
 一時的な npx キャッシュのパスに依存しないでください。
 
 ### ネイティブマーケットプレイス
@@ -125,7 +130,8 @@ copilot plugin marketplace add ./musubix3
 
 ### リポジトリ内 Skills / npm インストーラー
 
-対象リポジトリで `npx musubix3 init` を実行するか、
+exact local dependencyの導入後に対象リポジトリで
+`npx --no-install musubix3 init`を実行するか、
 `.github/skills/sdd-*` をコピーし、その信頼済みプロジェクトで Copilot を起動します。
 `--root <dir>` で対象を指定でき、`--feature <slug>` は雛形のディレクトリ名と
 ID 接頭辞を変えます。別機能の追加でも既存設定はリセットしません。
@@ -251,7 +257,7 @@ workflow証拠があれば`workflow`、TDD証拠があれば`tdd`が自動的に
     changes.json                # 変更checkpoint
     order.json                  # TDD/change共通の単調chronology ledger
     performance.json            # 決定的operation budget観測
-    model-correspondence.json   # Formal model→trace→fresh passing test証明
+    model-correspondence.json   # Formal model→trace→fresh passing testの対応証拠
     mutation.json               # freshな要求scope mutation実行証拠
     attestation.json            # 任意の外部署名済みCI provenance
   cache/                       # Git除外。索引とsolver入力
@@ -568,10 +574,13 @@ skipped/unsigned-localではなくfailed/missingとして報告します。
 }
 ```
 
-Ed25519鍵はmusubix3外で生成し、公開PEMだけを`attestation oidc-audience`へ渡します。
+通常のCLI利用ではEd25519鍵をmusubix3外で生成し、公開PEMだけを
+`attestation oidc-audience`へ渡します。
 その完全一致audienceでGitHub Actions OIDC tokenを要求し、公開PEMとJWT fileを
-`attestation payload`へ渡して、出力payloadを外部で署名します。musubix3は秘密鍵を
-読み取りも保存もしません。短命JWTは署名済みattestationに含まれ、現在時刻で期限を
+`attestation payload`へ渡して、出力payloadを外部で署名します。`musubix3` CLIは
+秘密鍵を受け取らず、読み取りも保存もしません。このrepositoryのrelease専用automationは
+別途ephemeral private keyを無視対象の`.test-work`内に生成して署名へ使用し、
+CLI検証を呼び出す前に削除します。短命JWTは署名済みattestationに含まれ、現在時刻で期限を
 検査するため、有効期間内に検証する必要があります。これはGitHub OIDC identityが
 署名鍵と記載claimを認可したことを示しますが、runnerの任意動作やworkflowの意味的正しさ
 までは証明しません。workflow evidence headは別途transcript/sessionを署名へ束縛します。
@@ -622,8 +631,10 @@ Ed25519鍵はmusubix3外で生成し、公開PEMだけを`attestation oidc-audie
   日本語は文字 bigram。Git 根拠は最大100コミット・各30ファイルで、共変更は相関、
   著者別ディレクトリ件数は貢献の記録であって因果や専門性ではありません。
   履歴がない場合は明示的に skipped。外部サービスへは送信しません。
-- Node 20 と Node 24（現行LTS）をCI対象とし、Linuxで検証します。
-  Windowsの実行ラッパー・プロセスツリー停止はRC保証対象外です。
+- Core CIはNode 22をLinux、Windows、macOSで実行し、LinuxではNode 20と
+  Node 24の互換性も追加確認します。native adapterとformal solverの統合は、
+  固定toolchainを使ってLinuxで実行します。
+  Windowsの実行ラッパーとprocess tree停止にはplatform固有の差があります。
   ESLintは追加せず、strict TypeScript と既存テストで検証します。
 
 ## 開発・リリース検査
@@ -641,9 +652,29 @@ npm run pack:smoke
 `packages/domain` は純粋な検証、`packages/analysis` は根拠・コンパイラ・
 ファイルシステム、`packages/cli` はコマンドと配置を担当します。
 ビルド出力は `dist/packages/**`。npm パッケージには隠しSkills、プラグイン定義、
-CLI、モジュール、雛形が明示的に含まれます。CI は Node 20/24 を検証します。
+CLI、モジュール、雛形が明示的に含まれます。Core CIはNode 22をLinux、Windows、
+macOSで実行し、LinuxではNode 20/24の互換性も検証します。native adapterと
+formal solverは固定toolchainを使ってLinuxで統合検証します。
 `pack:smoke` は実際のtarballを `.test-work/` 内の独立した利用側プロジェクトへ
 導入し、実行ファイル・ESM export・配置を確認してから削除します。
 attestation APIは`musubix3/analysis`と専用`musubix3/attestation` exportの
 両方から利用できます。
+
+`v*` tagは`.github/workflows/release.yml`を起動します。workflowはtagと
+package/plugin versionの一致を検証し、Linux上のnative/formal suiteを実行して、
+npm tarball、CycloneDX SBOM、SHA256SUMS、GitHub Releaseを生成します。
+`npm publish --provenance --access public`は保護された`npm-publish` environmentで
+別途承認されます。npm Trusted Publishingを優先し、任意の`NPM_TOKEN` environment
+secretも利用できます。npm publishがpendingまたは失敗してもGitHub Release作成結果を
+成功に見せかけず、各jobの状態を独立して確認できます。手動実行ではrelease tagを
+workflow refとして選び、同じ値を`release_tag`へ指定します。tagがOIDCに束縛された
+`GITHUB_SHA`を指していなければworkflowは拒否します。
+
+release attestationは、ephemeral Ed25519公開鍵をcustom audienceへ束縛した
+GitHub Actions OIDC tokenを使用します。署名対象にはrepository、Git commit、
+run ID、workflow/ref identity、workspace snapshot、存在するmusubix evidence headが
+含まれます。release automationは`.test-work`内のprivate keyで署名した後、
+CLI検証前に削除し、署名済みattestationだけをuploadします。署名だけでtest semanticsが
+正しいとは主張せず、testとsolverは先行するrelease validation jobで検査します。
+
 [CONTRIBUTING.md](CONTRIBUTING.md) と [CHANGELOG.md](CHANGELOG.md) も参照してください。

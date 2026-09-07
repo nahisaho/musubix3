@@ -7,8 +7,8 @@
 [What changed from musubix2 to musubix3 (Japanese)](MUSUBIX2-TO-MUSUBIX3.md)
 
 GitHub Copilot can plan, generate, edit, test, and review software. musubix3
-adds the repository-local specifications and deterministic evidence needed to
-decide whether that work is actually complete:
+adds repository-local specifications plus deterministic, fail-closed checks
+over the evidence required by the repository's configured quality profile:
 requirements → constitution → design/ADRs → implementation → traceability →
 quality evidence.
 
@@ -47,19 +47,10 @@ musubix3 makes the completion criteria persistent and machine-checkable.
 musubix3 does **not** replace Copilot, add another coding agent, or claim that
 formal satisfiability proves implementation correctness. Copilot performs the
 development; musubix3 records the specification, checks the evidence, rejects
-stale or incomplete claims, and leaves a reviewable answer to “why is this
-change ready?”
+stale or incomplete required evidence, and leaves a reviewable answer to “why
+does this repository's configured policy consider the change ready?”
 
 ## Quick start
-
-Run the published package from the target project:
-
-```sh
-npx musubix3@0.1.3 --version
-npx musubix3@0.1.3 init --dry-run
-npx musubix3@0.1.3 init
-copilot
-```
 
 For a reproducible project-local installation:
 
@@ -68,7 +59,19 @@ npm install --save-dev --save-exact musubix3@0.1.3
 npx --no-install musubix3 --version
 npx --no-install musubix3 init --dry-run
 npx --no-install musubix3 init
+copilot
 ```
+
+For a one-time evaluation without pinning subsequent Skill-driven CLI runs:
+
+```sh
+npx musubix3@0.1.3 --version
+npx musubix3@0.1.3 init --dry-run
+```
+
+Install the exact local dependency before relying on generated Skills in
+continued development; their commands intentionally use the repository-local
+`npx --no-install musubix3` executable.
 
 To build the repository itself:
 
@@ -112,7 +115,8 @@ install the npm package separately when running `npx musubix3` commands.
 
 From an installed npm package, `npx musubix3 plugin-install` delegates directly to
 `copilot plugin install <absolute-package-root>`. It does not edit Copilot
-internals. For a durable local plugin path, prefer `npm install --save-dev musubix3`
+internals. For a durable local plugin path, prefer
+`npm install --save-dev --save-exact musubix3@0.1.3`
 and `npx --no-install musubix3 plugin-install` over an ephemeral npx cache.
 
 ### Native marketplace
@@ -129,8 +133,9 @@ These flows use the [native plugin interface](https://docs.github.com/en/copilot
 
 ### Repository-local skills / npm installer
 
-Run `npx musubix3 init` in the target repository, or copy `.github/skills/sdd-*`
-there yourself. Start Copilot in that trusted project. `init --root <dir>` targets
+Run `npx --no-install musubix3 init` after installing the exact local dependency,
+or copy `.github/skills/sdd-*` there yourself. Start Copilot in that trusted project.
+`init --root <dir>` targets
 another project; `--feature <slug>` changes the starter directory and ID prefix.
 Installing another feature does not reset existing configuration.
 
@@ -261,7 +266,7 @@ requires `tdd`; a `.musubix/changes/CHANGE-*.md` document additionally requires
     changes.json                # staged change checkpoints
     order.json                  # shared monotonic TDD/change chronology ledger
     performance.json            # deterministic operation-budget observations
-    model-correspondence.json   # Formal model → trace → fresh passing test proof
+    model-correspondence.json   # Formal model → trace → fresh passing-test correspondence evidence
     mutation.json               # fresh requirement-scoped mutation executions
     attestation.json            # optional externally signed CI provenance
   cache/                       # ignored; generated indexes and solver inputs
@@ -604,10 +609,13 @@ Example strict configuration:
 }
 ```
 
-Generate an Ed25519 key outside musubix3, pass only its public PEM to
+For normal CLI use, generate an Ed25519 key outside musubix3 and pass only its public PEM to
 `attestation oidc-audience`, request the GitHub Actions OIDC token with that exact
 audience, then pass the public PEM and JWT files to `attestation payload` and sign
-the emitted payload externally. musubix3 never reads or stores a private key.
+the emitted payload externally. The `musubix3` CLI never accepts, reads, or stores
+a private key. This repository's release-only automation separately generates an
+ephemeral private key under the ignored `.test-work` directory, uses it for signing,
+and deletes it before invoking CLI verification.
 The short-lived JWT is included in the signed attestation and is intentionally
 checked for current expiration, so verification must occur within its validity
 window. This establishes that GitHub's OIDC identity authorized the signing key
@@ -689,8 +697,11 @@ npm run pack:smoke
 Workspaces: `packages/domain` (pure validators), `packages/analysis` (evidence,
 compiler and filesystem services), `packages/cli` (thin command/installation layer).
 One build emits `dist/packages/**`. Published contents explicitly include hidden
-skills, native manifests, built CLI/modules and assets. CI checks Node 20/24;
-tests cover unit behavior, CLI exits, installer preservation and packaging.
+skills, native manifests, built CLI/modules and assets. Core CI runs on Node 22
+across Linux, Windows, and macOS, with additional Node 20 and Node 24 compatibility
+checks on Linux. Native adapter and formal-solver integrations run on Linux with
+pinned toolchains. Tests cover unit behavior, CLI exits, installer preservation,
+and packaging.
 `pack:smoke` installs the real tarball into an isolated `.test-work/` consumer,
 checks its executable, ESM exports and installer, then removes the fixture.
 Attestation APIs are available from both `musubix3/analysis` and the focused
