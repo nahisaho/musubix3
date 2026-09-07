@@ -54,7 +54,7 @@ repositoryへ残します。
 再現可能なproject-local環境として、exact versionを導入します。
 
 ```sh
-npm install --save-dev --save-exact musubix3@0.1.3
+npm install --save-dev --save-exact musubix3@latest
 npx --no-install musubix3 --version
 npx --no-install musubix3 init --dry-run
 npx --no-install musubix3 init
@@ -64,8 +64,8 @@ copilot
 継続利用するSkill内CLIのversionを固定しない、単発評価だけなら次を使えます。
 
 ```sh
-npx musubix3@0.1.3 --version
-npx musubix3@0.1.3 init --dry-run
+npx musubix3@latest --version
+npx musubix3@latest init --dry-run
 ```
 
 生成されたSkillsを継続開発で使う前にexact local dependencyを導入してください。
@@ -111,7 +111,7 @@ copilot plugin install nahisaho/musubix3
 
 `npx musubix3 plugin-install` は `copilot plugin install <package-root>` を実行する
 だけで、Copilot 内部を編集しません。永続的なローカルパスには
-`npm install --save-dev --save-exact musubix3@0.1.3` と
+`npm install --save-dev --save-exact musubix3@latest` と
 `npx --no-install musubix3 plugin-install` を推奨します。
 一時的な npx キャッシュのパスに依存しないでください。
 

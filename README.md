@@ -55,7 +55,7 @@ does this repository's configured policy consider the change ready?”
 For a reproducible project-local installation:
 
 ```sh
-npm install --save-dev --save-exact musubix3@0.1.3
+npm install --save-dev --save-exact musubix3@latest
 npx --no-install musubix3 --version
 npx --no-install musubix3 init --dry-run
 npx --no-install musubix3 init
@@ -65,8 +65,8 @@ copilot
 For a one-time evaluation without pinning subsequent Skill-driven CLI runs:
 
 ```sh
-npx musubix3@0.1.3 --version
-npx musubix3@0.1.3 init --dry-run
+npx musubix3@latest --version
+npx musubix3@latest init --dry-run
 ```
 
 Install the exact local dependency before relying on generated Skills in
@@ -116,7 +116,7 @@ install the npm package separately when running `npx musubix3` commands.
 From an installed npm package, `npx musubix3 plugin-install` delegates directly to
 `copilot plugin install <absolute-package-root>`. It does not edit Copilot
 internals. For a durable local plugin path, prefer
-`npm install --save-dev --save-exact musubix3@0.1.3`
+`npm install --save-dev --save-exact musubix3@latest`
 and `npx --no-install musubix3 plugin-install` over an ephemeral npx cache.
 
 ### Native marketplace
