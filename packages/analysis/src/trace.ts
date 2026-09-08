@@ -186,6 +186,19 @@ export async function buildTrace(root: string, persist = true): Promise<TraceGra
     } else if (path.startsWith('.musubix/decisions/')) {
       add({ id: basename(path, '.md'), kind: 'adr', path, line: 1 });
     } else if (isTraceSource(path)) {
+      if (path.endsWith('.py')) {
+        for (const match of text.matchAll(/("""|''')[\s\S]*?\1/g)) {
+          if (match.index !== undefined && /@(id|implements|verifies|design)\b/.test(match[0])) {
+            graph.diagnostics.push({
+              code: 'TRACE_ANNOTATION_IN_PYTHON_DOCSTRING',
+              severity: 'warning',
+              message: 'Python trace annotations in docstrings are ignored; move them to consecutive # comment lines.',
+              path,
+              line: text.slice(0, match.index).split(/\r?\n/).length,
+            });
+          }
+        }
+      }
       for (const block of commentBlocks(text, path)) {
         const annotations = [...block.text.matchAll(/@(implements|verifies|design)\s+([^\r\n*]+)/g)];
         if (!annotations.length) continue;

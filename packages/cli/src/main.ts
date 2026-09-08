@@ -268,6 +268,8 @@ export function createProgram(): Command {
           ? {}
           : { maxFutureSkewSeconds: configured.maxFutureSkewSeconds }),
         ...(configured.maxEventSkewMs === undefined ? {} : { maxEventSkewMs: configured.maxEventSkewMs }),
+        ...(configured.maxTranscriptBytes === undefined ? {} : { maxBytes: configured.maxTranscriptBytes }),
+        ...(configured.maxTranscriptLineBytes === undefined ? {} : { maxLineBytes: configured.maxTranscriptLineBytes }),
       });
       output(
         manifest,
@@ -285,7 +287,16 @@ export function createProgram(): Command {
       const path = resolve(log);
       const info = await stat(path);
       if (!info.isFile()) throw new Error('Workflow log must be a file.');
-      const report = await sanitizeWorkflowLogFile(root, path, outputFile, options.sessionId);
+      const configured = (await loadConfig(root)).workflow;
+      const report = await sanitizeWorkflowLogFile(
+        root,
+        path,
+        outputFile,
+        options.sessionId,
+        configured.maxEventSkewMs,
+        configured.maxTranscriptBytes,
+        configured.maxTranscriptLineBytes,
+      );
       output(
         report,
         !!options.json,

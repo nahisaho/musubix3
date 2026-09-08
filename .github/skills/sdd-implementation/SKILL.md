@@ -46,7 +46,8 @@ After the work, run `npx musubix3 workflow-record sdd-implementation complete
    ```
    IDs are globally unique. Multiple targets are comma/space-separated.
    Put annotations in the authoritative source and test files, including
-   supported non-JS/TS files; never add a proxy file just to increase coverage.
+   supported non-JS/TS files. In Python, use consecutive `#` comment lines;
+   annotations inside docstrings are ignored and diagnosed. Never add a proxy file just to increase coverage.
    An annotation establishes a link, not proof that code or tests are correct.
 5. Before recording Red, run every configured `tdd.redPreflightCommands`
    formatter/check and let musubix3 enforce that preflight. Then run the
@@ -56,7 +57,9 @@ After the work, run `npx musubix3 workflow-record sdd-implementation complete
    test linkage, source/test SHA-256, operator/location, and killed status.
    Never fabricate results or add a large mutation dependency. Use
    `npx musubix3 mutation doctor --json` to inspect locally available engines
-   and configuration recommendations.
+   and configuration recommendations. Before Python mutation runs, remove
+   existing `__pycache__` directories, then use `-B` for mutation and test
+   commands so stale bytecode is absent and no new `.pyc` files are created.
 6. Regenerate `npx musubix3 trace build`, check `trace check --strict`, then
    `npx musubix3 gate --changed`. Configure real command/argument arrays first.
 7. Use Copilot's native review and security-review capabilities when appropriate.

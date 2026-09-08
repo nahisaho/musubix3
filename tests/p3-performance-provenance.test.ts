@@ -74,7 +74,7 @@ describe('P3 deterministic performance provenance', () => {
     expect((await projectStatus(root)).gate).toMatchObject({ status: 'stale', ready: false });
   });
 
-  it('rejects duplicate counter reports and counters from failed or skipped tests', async () => {
+  it('rejects duplicate counter reports and withholds provenance from rejected test reports', async () => {
     const duplicateRoot = await project();
     await configurePerformance(duplicateRoot);
     const duplicateConfig = await loadConfig(duplicateRoot);
@@ -93,7 +93,7 @@ describe('P3 deterministic performance provenance', () => {
       await configurePerformance(root, status);
       const gate = await runGate(root);
       expect(gate.checks.find((check) => check.name === 'performance')?.diagnostics)
-        .toContainEqual(expect.objectContaining({ code: 'PERFORMANCE_COUNTER_TEST_STATUS' }));
+        .toContainEqual(expect.objectContaining({ code: 'PERFORMANCE_PROVENANCE_MISSING' }));
     }
   });
 

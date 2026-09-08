@@ -324,7 +324,9 @@ Source/test trace annotations are read from language comments. JS/TS uses
 parser-aware comment locations; Haskell supports `--` and `{- ... -}`, Lua
 supports `--` and `--[[ ... ]]`, and Visual Basic supports apostrophe comments
 including `'''` XML documentation. These scanners exclude string literals;
-other languages require their supported line or block comments:
+other languages require their supported line or block comments. Python annotations
+must use consecutive `#` comments; annotation-like text in docstrings is ignored
+with `TRACE_ANNOTATION_IN_PYTHON_DOCSTRING` guidance:
 
 ```ts
 /** @id CODE-AUTH-001
@@ -393,7 +395,9 @@ Example `.musubix/config.json` (adapt command arguments to your own project):
     "mode": "compatible",
     "maxAgeSeconds": 3600,
     "maxFutureSkewSeconds": 60,
-    "maxEventSkewMs": 1000
+    "maxEventSkewMs": 1000,
+    "maxTranscriptBytes": 250000000,
+    "maxTranscriptLineBytes": 2000000
   },
   "attestation": {
     "mode": "local",
@@ -422,7 +426,9 @@ or weakened settings rather than silently filling in evidence.
 Use `tdd.redPreflightCommands` to reference plain configured formatter commands;
 they must pass before Red captures the authoritative test fingerprint.
 Conventional `.venv` and `venv` Python environments containing a regular
-`pyvenv.cfg` are excluded from source snapshots and Code Graph indexing.
+`pyvenv.cfg`, plus generated `__pycache__/` directories, are excluded from
+source snapshots and Code Graph indexing. Standalone `.pyc`/`.pyo` files remain
+tracked because Python can execute source-less bytecode modules.
 Gradle `.gradle/`, Dart `.dart_tool/`, SwiftPM `.build/`, Zig
 `.zig-cache/`/`zig-out/`, and .NET `.dotnet/` CLI homes are excluded only when
 their parent contains the corresponding project manifest. Arbitrary same-named
@@ -459,8 +465,11 @@ requires independent approval. Protect the baseline with review/CODEOWNERS.
 **Only run trusted configuration**: gates execute its commands with inherited
 environment, no shell interpretation and bounded time/output. Required command
 failure or skip blocks readiness regardless of `requiredChecks.commands`.
-Optional command failures are nonblocking unless a constitution rule rejects the
-measured count. No configured commands is skipped, not passed.
+A structured test command also fails if it reports no executed tests or any
+skipped, failed, or errored test, even when its process exits zero; this prevents integration suites
+from silently passing without their dependencies. Optional command failures are
+nonblocking unless a constitution rule rejects the measured count. No configured
+commands is skipped, not passed.
 TDD commands require either command-specific `tddArgs` plus a `tddReport`, or a
 built-in `vitest`, `jest`, `pytest`, `go-test`, `cargo`, `junit`, or `dotnet` adapter.
 Explicit custom configuration takes precedence. Adapters derive targeted
@@ -535,9 +544,11 @@ with a current linked killed mutant. Duplicate/conflicting, non-killed, stale,
 unlinked, altered-report, and configuration-drift evidence is rejected.
 `mutation.mode` defaults to `compatible` (absence is allowed); set it to
 `strict` and protect it plus the mutation command in the policy baseline for
-release. No mutation engine dependency is bundled. Mutation and model-
-correspondence semantic heads are included in attestations and their underlying
-provenance is revalidated.
+release. No mutation engine dependency is bundled. For Python, `mutation doctor`
+recommends removing existing `__pycache__` directories before each run, then
+using `python -B -m mutmut` and `python -B -m pytest` to avoid new bytecode. Mutation and model-correspondence
+semantic heads are included in attestations and their underlying provenance is
+revalidated.
 
 Quality evidence records required flags, actual exits/output, metrics,
 timestamps and input fingerprints. Changed-run paths, HEAD and impacts survive a
@@ -558,8 +569,16 @@ hash and canonical transcript hash are persisted. `workflow.expectedSessionId`
 or `--session-id` rejects substitution with a different caller-declared session.
 Strict verification also bounds terminal transcript age and future clock skew
 with `workflow.maxAgeSeconds` and `workflow.maxFutureSkewSeconds`.
-Unrelated concurrent events may be emitted out of timestamp order, so strict mode
-checks causal tool/result ordering rather than imposing a global timestamp sort.
+Unrelated concurrent events—and even timestamps produced by different execution
+clocks—may be non-monotonic, so strict mode uses JSONL source order for causal
+tool/result lifecycles rather than imposing a timestamp sort. Pair/terminal clock
+skew is enforced only when `maxEventSkewMs` is explicitly supplied; terminal age
+and future-skew policies remain independently enforced. Verification remains
+streaming and resource-bounded: transcripts default to 100,000,000 bytes, while
+`workflow.maxTranscriptBytes` can explicitly raise the limit up to 1,000,000,000
+bytes. Individual JSONL records default to 1,000,000 bytes and can be bounded up
+to 10,000,000 with `workflow.maxTranscriptLineBytes`. Protect both chosen bounds
+in the policy baseline so they cannot be widened silently.
 If project inputs change while a gate is running, `input-stability` reports each
 added, modified, or deleted path with before/after SHA-256 values. Standard
 Cargo/Maven `target/`, manifest-scoped .NET `bin/` and `obj/`, and project-local

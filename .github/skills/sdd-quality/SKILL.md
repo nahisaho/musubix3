@@ -61,7 +61,7 @@ completed` exactly once.
    identities bound to must functional requirements, current source/test
    fingerprints, operator/location, authoritative tests, and killed results.
    Reject survived, skipped, duplicate, conflicting, stale, or unlinked mutants.
-   Run `mutation doctor` for language-aware local probes and remediation;
+   Treat zero executed or non-passing tests as incomplete evidence after exit zero; run `mutation doctor`;
    musubix3 validates evidence and does not bundle a mutation engine.
    Missing required tools, commands, artifacts or evidence block readiness.
 5. Use native review/security-review as needed, recording their findings

@@ -64,6 +64,14 @@ async function configureMutation(
 }
 
 describe('P4 model correspondence and mutation quality', () => {
+  it('recommends bytecode-free Python mutation execution', async () => {
+    const root = await project();
+    await writeText(root, 'service.py', 'def ready(): return True\n');
+    const report = await mutationDoctor(root, async () => processResult({ status: 'missing', exitCode: null }));
+    expect(report.engines.find((entry) => entry.ecosystem === 'python')?.recommendation)
+      .toContain('python -B -m mutmut');
+  });
+
   it('reports language-aware mutation engine probes and actionable recommendations', async () => {
     const root = await project();
     await writeText(root, 'package.json', '{"name":"fixture"}\n');

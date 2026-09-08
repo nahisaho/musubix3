@@ -94,6 +94,107 @@ describe('quality semantics', () => {
     expect((await projectStatus(root)).gate).toMatchObject({ ready: false, status: 'stale' });
   });
 
+  it('fails a structured test command that reports only skipped tests', async () => {
+    const root = await project();
+    const config = await loadConfig(root);
+    config.commands[0]!.args = [
+      '-e',
+      "const fs=require('fs'),p=process.argv[1];fs.mkdirSync(require('path').dirname(p),{recursive:true});fs.writeFileSync(p,JSON.stringify({schemaVersion:1,tests:[{id:'TEST-EXAMPLE-001',status:'skipped'}]}))",
+      '{reportPath}',
+    ];
+    await writeJson(root, '.musubix/config.json', config);
+
+    const report = await runGate(root);
+    const commandCheck = report.checks.find((check) => check.name === 'command:test');
+    expect(commandCheck?.status).toBe('fail');
+    expect(commandCheck?.diagnostics).toContainEqual(expect.objectContaining({ code: 'TEST_REPORT_ALL_SKIPPED' }));
+    expect(report.checks.find((check) => check.name === 'test-identities')?.diagnostics)
+      .toContainEqual(expect.objectContaining({ code: 'TEST_ID_SKIPPED' }));
+  });
+
+  it.each(['failed', 'error'] as const)('fails an exit-zero command whose structured test reports %s', async (status) => {
+    const root = await project();
+    const config = await loadConfig(root);
+    config.commands[0]!.args = [
+      '-e',
+      `const fs=require('fs'),p=process.argv[1];fs.mkdirSync(require('path').dirname(p),{recursive:true});fs.writeFileSync(p,JSON.stringify({schemaVersion:1,tests:[{id:'TEST-EXAMPLE-001',status:'${status}'}]}))`,
+      '{reportPath}',
+    ];
+    await writeJson(root, '.musubix/config.json', config);
+
+    const report = await runGate(root);
+    const commandCheck = report.checks.find((check) => check.name === 'command:test');
+    expect(commandCheck?.status).toBe('fail');
+    expect(commandCheck?.diagnostics).toContainEqual(expect.objectContaining({ code: 'TEST_ID_NOT_PASSED' }));
+  });
+
+  it('keeps optional structured-test failures out of identity diagnostics', async () => {
+    const root = await project();
+    const config = await loadConfig(root);
+    config.requiredChecks.push('test-identities');
+    config.commands.push({
+      name: 'optional-integration',
+      command: process.execPath,
+      args: [
+        '-e',
+        "const fs=require('fs'),p=process.argv[1];fs.mkdirSync(require('path').dirname(p),{recursive:true});fs.writeFileSync(p,JSON.stringify({schemaVersion:1,tests:[{id:'TEST-OPTIONAL-001',status:'skipped'}]}))",
+        '{reportPath}',
+      ],
+      testReport: { format: 'musubix-json', path: '.musubix/evidence/optional-tests.json' },
+      required: false,
+      timeoutMs: 10_000,
+    });
+    await writeJson(root, '.musubix/config.json', config);
+
+    const report = await runGate(root);
+    expect(report.checks.find((check) => check.name === 'command:optional-integration')?.status).toBe('fail');
+    expect(report.checks.find((check) => check.name === 'test-identities')?.status).toBe('pass');
+    expect(report.checks.find((check) => check.name === 'constitution:RULE-002')?.status).toBe('fail');
+    expect(report.status).toBe('fail');
+  });
+
+  it('does not accept passing entries from a rejected optional report as test identity evidence', async () => {
+    const root = await project();
+    const config = await loadConfig(root);
+    config.requiredChecks.push('test-identities');
+    delete config.commands[0]!.testReport;
+    config.commands[0]!.args = ['-e', "console.log('real-check')"];
+    config.commands.push({
+      name: 'optional-mixed',
+      command: process.execPath,
+      args: [
+        '-e',
+        "const fs=require('fs'),p=process.argv[1];fs.mkdirSync(require('path').dirname(p),{recursive:true});fs.writeFileSync(p,JSON.stringify({schemaVersion:1,tests:[{id:'TEST-EXAMPLE-001',status:'passed'},{id:'TEST-OPTIONAL-001',status:'skipped'}]}))",
+        '{reportPath}',
+      ],
+      testReport: { format: 'musubix-json', path: '.musubix/evidence/optional-mixed-tests.json' },
+      required: false,
+      timeoutMs: 10_000,
+    });
+    await writeJson(root, '.musubix/config.json', config);
+
+    const report = await runGate(root);
+    expect(report.checks.find((check) => check.name === 'command:optional-mixed')?.status).toBe('fail');
+    expect(report.checks.find((check) => check.name === 'test-identities')?.diagnostics)
+      .toContainEqual(expect.objectContaining({ code: 'TEST_ID_NOT_PASSED' }));
+  });
+
+  it('fails a structured test command that reports zero tests', async () => {
+    const root = await project();
+    const config = await loadConfig(root);
+    config.commands[0]!.args = [
+      '-e',
+      "const fs=require('fs'),p=process.argv[1];fs.mkdirSync(require('path').dirname(p),{recursive:true});fs.writeFileSync(p,JSON.stringify({schemaVersion:1,tests:[]}))",
+      '{reportPath}',
+    ];
+    await writeJson(root, '.musubix/config.json', config);
+
+    const report = await runGate(root);
+    const commandCheck = report.checks.find((check) => check.name === 'command:test');
+    expect(commandCheck?.status).toBe('fail');
+    expect(commandCheck?.diagnostics).toContainEqual(expect.objectContaining({ code: 'TEST_REPORT_NO_EXECUTED_TESTS' }));
+  });
+
   it('uses a monotonic clock for process durations', async () => {
     const wallClock = vi.spyOn(Date, 'now').mockReturnValueOnce(5_000).mockReturnValue(1_000);
     try {
@@ -563,8 +664,10 @@ export const unrelated = false;
   it('ignores standard Cargo and Maven target output without weakening source stability', async () => {
     const root = await project();
     await writeText(root, 'Cargo.toml', '[package]\nname = "fixture"\nversion = "0.1.0"\n');
-    const runner: Runner = async () => {
+    const runner: Runner = async (_command, args) => {
       await writeText(root, 'target/generated/report.txt', 'build output');
+      const reportPath = args.find((arg) => arg.includes('test-results.json'));
+      if (reportPath) await writeJson(root, reportPath, { schemaVersion: 1, tests: [{ id: 'TEST-EXAMPLE-001', status: 'passed' }] });
       return processResult();
     };
     const report = await runGate(root, { runner });
@@ -632,6 +735,22 @@ export const unrelated = false;
     expect(diagnostics?.map((diagnostic) => diagnostic.path).sort()).toEqual(tracked.sort());
   });
 
+  it('ignores Python bytecode caches without hiding Python source', async () => {
+    const root = await project();
+    await writeText(root, 'python/service.py', 'VALUE = 1\n');
+    await writeText(root, 'python/__pycache__/service.cpython-313.pyc', 'before\n');
+    await writeText(root, 'python/generated.pyc', 'before\n');
+    const runner: Runner = async () => {
+      await writeText(root, 'python/__pycache__/service.cpython-313.pyc', 'after\n');
+      await writeText(root, 'python/generated.pyc', 'after\n');
+      return processResult();
+    };
+    const report = await runGate(root, { runner });
+    expect(report.checks.find((check) => check.name === 'input-stability')?.diagnostics)
+      .toEqual([expect.objectContaining({ code: 'INPUT_MODIFIED', path: 'python/generated.pyc' })]);
+    expect(report.status).toBe('fail');
+  });
+
   it('ignores the conventional project-local NuGet package cache', async () => {
     const root = await project();
     await writeText(root, '.nuget/packages/example/1.0.0/library.dll', 'before');
@@ -686,7 +805,12 @@ export const unrelated = false;
 
   it('changed mode captures changes and still runs actual commands', async () => {
     const root = await project();
-    const runner = vi.fn<Runner>(async (command, args) => command === 'git' && args[0] === 'status' ? processResult({ stdout: ' M src/service.ts\0' }) : processResult());
+    const runner = vi.fn<Runner>(async (command, args) => {
+      if (command === 'git' && args[0] === 'status') return processResult({ stdout: ' M src/service.ts\0' });
+      const reportPath = args.find((arg) => arg.includes('test-results.json'));
+      if (reportPath) await writeJson(root, reportPath, { schemaVersion: 1, tests: [{ id: 'TEST-EXAMPLE-001', status: 'passed' }] });
+      return processResult();
+    });
     const report = await runGate(root, { changed: true, runner });
     expect(report.changed).toEqual(['src/service.ts']);
     expect(report.impacted).toEqual(['src/service.test.ts', 'src/service.ts']);

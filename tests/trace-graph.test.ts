@@ -69,6 +69,26 @@ describe('trace graph', () => {
     expect((await buildTrace(root)).diagnostics.some((d) => d.code === 'TRACE_ANNOTATION_ID')).toBe(true);
   });
 
+  it('warns when Python trace annotations are hidden in docstrings', async () => {
+    const root = await project();
+    await writeText(root, 'src/docstring.py', [
+      '\"\"\"',
+      '@id CODE-DOCSTRING-001',
+      '@implements REQ-EXAMPLE-001',
+      '\"\"\"',
+      'def service():',
+      '    return True',
+    ].join('\n'));
+    const trace = await buildTrace(root);
+    expect(trace.nodes.some((node) => node.id === 'CODE-DOCSTRING-001')).toBe(false);
+    expect(trace.diagnostics).toContainEqual(expect.objectContaining({
+      code: 'TRACE_ANNOTATION_IN_PYTHON_DOCSTRING',
+      path: 'src/docstring.py',
+      line: 1,
+      severity: 'warning',
+    }));
+  });
+
   it('reads annotations from authoritative Rust and Python comments', async () => {
     const root = await project();
     await writeText(root, 'src/service.ts', 'export {};');

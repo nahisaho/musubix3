@@ -60,6 +60,8 @@ export interface WorkflowConfig {
   maxAgeSeconds?: number;
   maxFutureSkewSeconds?: number;
   maxEventSkewMs?: number;
+  maxTranscriptBytes?: number;
+  maxTranscriptLineBytes?: number;
 }
 
 export interface CodeGraphConfig {
@@ -122,7 +124,7 @@ export const defaultConfig: Config = {
   formal: { solver: 'none', minModeledFraction: 0, timeoutMs: 12_000 },
   mutation: { mode: 'compatible' },
   tdd: { redPreflightCommands: [] },
-  workflow: { mode: 'compatible', maxAgeSeconds: 3600, maxFutureSkewSeconds: 60, maxEventSkewMs: 1000 },
+  workflow: { mode: 'compatible', maxAgeSeconds: 3600, maxFutureSkewSeconds: 60 },
   attestation: {
     mode: 'local',
     maxAgeSeconds: 3600,
@@ -370,7 +372,7 @@ export function parseConfig(input: unknown): Config {
     throw new Error('mutation.mode must be compatible or strict.');
   }
   const rawWorkflow = object(optional(value.workflow, {}), 'workflow');
-  keys(rawWorkflow, ['mode', 'expectedSessionId', 'maxAgeSeconds', 'maxFutureSkewSeconds', 'maxEventSkewMs'], 'workflow');
+  keys(rawWorkflow, ['mode', 'expectedSessionId', 'maxAgeSeconds', 'maxFutureSkewSeconds', 'maxEventSkewMs', 'maxTranscriptBytes', 'maxTranscriptLineBytes'], 'workflow');
   const workflowMode = optional(rawWorkflow.mode, defaultConfig.workflow.mode);
   if (!['compatible', 'strict'].includes(String(workflowMode))) {
     throw new Error('workflow.mode must be compatible or strict.');
@@ -397,9 +399,22 @@ export function parseConfig(input: unknown): Config {
     throw new Error('workflow.maxFutureSkewSeconds must be 0..600.');
   }
   const workflowMaxEventSkewMs = optional(rawWorkflow.maxEventSkewMs, defaultConfig.workflow.maxEventSkewMs);
-  if (typeof workflowMaxEventSkewMs !== 'number' || !Number.isInteger(workflowMaxEventSkewMs)
-    || workflowMaxEventSkewMs < 0 || workflowMaxEventSkewMs > 60_000) {
+  if (workflowMaxEventSkewMs !== undefined
+    && (typeof workflowMaxEventSkewMs !== 'number' || !Number.isInteger(workflowMaxEventSkewMs)
+      || workflowMaxEventSkewMs < 0 || workflowMaxEventSkewMs > 60_000)) {
     throw new Error('workflow.maxEventSkewMs must be 0..60000.');
+  }
+  const workflowMaxTranscriptBytes = optional(rawWorkflow.maxTranscriptBytes, defaultConfig.workflow.maxTranscriptBytes);
+  if (workflowMaxTranscriptBytes !== undefined
+    && (typeof workflowMaxTranscriptBytes !== 'number' || !Number.isSafeInteger(workflowMaxTranscriptBytes)
+      || workflowMaxTranscriptBytes < 1 || workflowMaxTranscriptBytes > 1_000_000_000)) {
+    throw new Error('workflow.maxTranscriptBytes must be 1..1000000000.');
+  }
+  const workflowMaxTranscriptLineBytes = optional(rawWorkflow.maxTranscriptLineBytes, defaultConfig.workflow.maxTranscriptLineBytes);
+  if (workflowMaxTranscriptLineBytes !== undefined
+    && (typeof workflowMaxTranscriptLineBytes !== 'number' || !Number.isSafeInteger(workflowMaxTranscriptLineBytes)
+      || workflowMaxTranscriptLineBytes < 1 || workflowMaxTranscriptLineBytes > 10_000_000)) {
+    throw new Error('workflow.maxTranscriptLineBytes must be 1..10000000.');
   }
   const rawAttestation = object(optional(value.attestation, {}), 'attestation');
   keys(rawAttestation, [
@@ -481,7 +496,9 @@ export function parseConfig(input: unknown): Config {
       ...(typeof rawWorkflow.expectedSessionId === 'string' ? { expectedSessionId: rawWorkflow.expectedSessionId } : {}),
       maxAgeSeconds: workflowMaxAgeSeconds,
       maxFutureSkewSeconds: workflowMaxFutureSkewSeconds,
-      maxEventSkewMs: workflowMaxEventSkewMs,
+      ...(workflowMaxEventSkewMs === undefined ? {} : { maxEventSkewMs: workflowMaxEventSkewMs }),
+      ...(workflowMaxTranscriptBytes === undefined ? {} : { maxTranscriptBytes: workflowMaxTranscriptBytes }),
+      ...(workflowMaxTranscriptLineBytes === undefined ? {} : { maxTranscriptLineBytes: workflowMaxTranscriptLineBytes }),
     },
     attestation: {
       mode: mode as AttestationConfig['mode'],
@@ -596,6 +613,16 @@ export function policyDiagnostics(config: Config, baseline: PolicyBaseline, chan
       diagnostics.push(error('POLICY_TDD_PREFLIGHT', `TDD Red preflight command ${command} differs from the trusted baseline definition.`));
     }
   }
+  const configuredTranscriptBytes = config.workflow.maxTranscriptBytes ?? 100_000_000;
+  const baselineTranscriptBytes = baseline.workflow.maxTranscriptBytes ?? 100_000_000;
+  if (configuredTranscriptBytes > baselineTranscriptBytes) {
+    diagnostics.push(error('POLICY_WORKFLOW_TRANSCRIPT_SIZE', 'workflow.maxTranscriptBytes is weaker than the trusted baseline.'));
+  }
+  const configuredTranscriptLineBytes = config.workflow.maxTranscriptLineBytes ?? 1_000_000;
+  const baselineTranscriptLineBytes = baseline.workflow.maxTranscriptLineBytes ?? 1_000_000;
+  if (configuredTranscriptLineBytes > baselineTranscriptLineBytes) {
+    diagnostics.push(error('POLICY_WORKFLOW_TRANSCRIPT_LINE_SIZE', 'workflow.maxTranscriptLineBytes is weaker than the trusted baseline.'));
+  }
   if (baseline.workflow.mode === 'strict') {
     if (config.workflow.mode !== 'strict') {
       diagnostics.push(error('POLICY_WORKFLOW_MODE', 'workflow.mode cannot be weakened below strict as required by the trusted baseline.'));
@@ -610,7 +637,9 @@ export function policyDiagnostics(config: Config, baseline: PolicyBaseline, chan
     if ((config.workflow.maxFutureSkewSeconds ?? 60) > (baseline.workflow.maxFutureSkewSeconds ?? 60)) {
       diagnostics.push(error('POLICY_WORKFLOW_FUTURE_SKEW', 'workflow.maxFutureSkewSeconds is weaker than the trusted baseline.'));
     }
-    if ((config.workflow.maxEventSkewMs ?? 1000) > (baseline.workflow.maxEventSkewMs ?? 1000)) {
+    const configuredEventSkew = config.workflow.maxEventSkewMs ?? Number.POSITIVE_INFINITY;
+    const baselineEventSkew = baseline.workflow.maxEventSkewMs ?? Number.POSITIVE_INFINITY;
+    if (configuredEventSkew > baselineEventSkew) {
       diagnostics.push(error('POLICY_WORKFLOW_EVENT_SKEW', 'workflow.maxEventSkewMs is weaker than the trusted baseline.'));
     }
   }

@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+- Accept causally ordered concurrent workflow events whose clocks are not
+  monotonic by default, while preserving optional policy-bound timestamp skew.
+- Add policy-protected `workflow.maxTranscriptBytes` and
+  `workflow.maxTranscriptLineBytes` so streaming sanitization and verification
+  can process large real Copilot transcripts without removing resource bounds.
+- Fail structured required test commands that report zero executed tests or
+  skipped tests even when the process exits successfully.
+- Diagnose Python trace annotations hidden in docstrings and recommend
+  bytecode-free Python mutation/test execution to prevent stale `.pyc` results.
+- Guide broad SDD changes through short reviewable stages rather than requiring
+  a single all-inclusive prompt.
+
 ## 0.1.4 - 2026-09-08
 
 - Measure subprocess durations with a monotonic clock and reject negative or

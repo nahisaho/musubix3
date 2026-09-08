@@ -3,16 +3,18 @@ name: sdd-change
 description: "Use for feature additions, behavior changes, bug fixes, refactoring with observable impact, or any request that must propagate through requirements, design, code, tests, traceability, and quality evidence. 機能追加・仕様変更・バグ修正を一貫して反映するときに使用。"
 ---
 # Integrated change workflow / 統合変更ワークフロー
-Follow the user's input language (日本語 / English). Use Copilot's native
-planning, editing, research, review, security review and subagents where useful.
+Follow the user's input language. Use native Copilot planning, editing, research, review, security review and subagents.
 This skill coordinates SDD artifacts and checks; it is not another agent runtime.
 Record exactly one final invocation outcome with `npx musubix3 workflow-record
 sdd-change complete --status <status>`; `change-record` separately proves phases.
-Run `workflow-sanitize <copilot.jsonl> <safe.jsonl>` before review when needed,
-then `workflow-verify <safe.jsonl>`; sanitization strictly validates the source.
-For strict evidence, set an expected UUID or pass `--strict --session-id <uuid>`;
-this checks lifecycles; GitHub origin needs strict OIDC with key-bound claims.
+Run `workflow-sanitize <copilot.jsonl> <safe.jsonl>` before review, then
+`workflow-verify <safe.jsonl>`; it validates source-order lifecycles without
+assuming globally monotonic clocks unless `maxEventSkewMs` is explicitly set.
+For large logs, baseline-protect transcript total/line byte limits; never truncate or edit to bypass them.
+For strict evidence, bind an expected UUID; GitHub origin needs strict OIDC.
 Never record multiple declarations per invocation; use only the configured CLI.
+For broad work, use short stages: initialize, requirements, design, real Red,
+Green, integration, trace/formal, quality. Report each result before the next prompt.
 For a staged change, run `change-record <CHANGE-ID> <phase> --requirement
 <REQ-ID...>` after each phase in this exact order: `impact`, `requirements`,
 `design`, `red`, `implementation`, `green`, `quality`.
@@ -60,10 +62,8 @@ Persisted monotonic order, not wall-clock time, proves these phase boundaries.
    `@verifies` annotations in the authoritative implementation and test files.
    Never create proxy or placeholder source files solely to satisfy trace coverage.
    Links are evidence locations, not proof by themselves.
-5. Run focused tests during implementation, then the configured typecheck,
-   build and complete test commands.
-Documentation, formatting and prototypes may omit TDD unless policy requires it;
-record the reason and never exempt observable behavior changes.
+5. Run focused tests, then configured typecheck, build and complete test commands.
+Documentation/prototypes may omit TDD only when policy allows; record the reason.
 ## 4. Rebuild evidence and finish / 根拠更新と完了
 1. Run `trace build`, `trace check --strict`, `graph index`, and `graph gate`.
 2. Run `formal check` when changed requirements fit its documented abstraction;

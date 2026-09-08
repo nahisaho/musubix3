@@ -256,23 +256,29 @@ export async function runGate(root: string, options: {
       ? mergeAdapterArgs(command.adapter, configuredArgs, adapterArgs)
       : configuredArgs;
     const result = await runner(command.command, args, { cwd: root, timeoutMs: command.timeoutMs });
-    commandChecks.push({
+    const commandCheck: Evidence = {
       name: `command:${command.name}`, required: command.required,
       status: result.status === 'missing' ? 'skipped' : result.status !== 'completed' || result.exitCode !== 0 ? 'fail' : 'pass',
       summary: `${command.command}: ${result.status}, exit ${result.exitCode ?? 'none'}.`,
       durationMs: result.durationMs, exitCode: result.exitCode, stdout: result.stdout, stderr: result.stderr,
-    });
+    };
+    commandChecks.push(commandCheck);
     if (reportPath && result.status === 'completed' && result.exitCode === 0) {
       const reportText = adapterOutput
         ? await readAdapterOutput(adapterOutput, await safePath(root, reportPath), result.stdout)
         : await exists(within(root, reportPath)) ? await readText(root, reportPath) : null;
       if (reportText === null) {
-        (command.mutationReport ? mutationReportDiagnostics : testReportDiagnostics).push({
+        const diagnostic: Diagnostic = {
           code: command.mutationReport ? 'MUTATION_REPORT_MISSING' : 'TEST_REPORT_MISSING',
           severity: 'error',
           message: `${command.name} did not produce its configured structured ${command.mutationReport ? 'mutation' : 'test'} report.`,
           path: reportPath,
-        });
+        };
+        if (command.mutationReport) mutationReportDiagnostics.push(diagnostic);
+        else if (command.required) testReportDiagnostics.push(diagnostic);
+        commandCheck.status = 'fail';
+        commandCheck.diagnostics = [...commandCheck.diagnostics ?? [], diagnostic];
+        commandCheck.summary = `${commandCheck.summary} Structured evidence is missing.`;
       } else {
         try {
           if (command.mutationReport) {
@@ -292,23 +298,43 @@ export async function runGate(root: string, options: {
           const report = command.testReport
             ? parseMusubixTestReport(reportText)
             : normalizeAdapterReport(command.adapter!, reportText);
-          const sourceKind = adapterOutput?.source ?? 'file';
-          performanceExecutions.push(createPerformanceExecution({
-            runId: gateRunId,
-            executionId: digest(JSON.stringify({ runId: gateRunId, commandIndex, commandName: command.name })),
-            commandName: command.name,
-            commandSha256: performanceCommandSha256(command.command, args),
-            reportPath,
-            sourceKind,
-            reportSha256: digest(reportText),
-            processStatus: result.status,
-            exitCode: result.exitCode,
-            tests: report.tests,
-          }));
+          const skippedTests = report.tests.filter((test) => test.status === 'skipped');
+          const unsuccessfulTests = report.tests.filter((test) => test.status === 'failed' || test.status === 'error');
+          const executedTests = report.tests.filter((test) => test.status !== 'skipped');
+          const executionDiagnostics: Diagnostic[] = [];
+          if (!executedTests.length) {
+            executionDiagnostics.push({
+              code: skippedTests.length ? 'TEST_REPORT_ALL_SKIPPED' : 'TEST_REPORT_NO_EXECUTED_TESTS',
+              severity: 'error',
+              message: skippedTests.length
+                ? `${command.name} reported ${skippedTests.length} skipped test(s) and no executed tests.`
+                : `${command.name} reported no executed tests.`,
+              path: reportPath,
+            });
+          } else if (skippedTests.length) {
+            executionDiagnostics.push({
+              code: 'TEST_REPORT_SKIPPED',
+              severity: 'error',
+              message: `${command.name} reported ${skippedTests.length} skipped test(s); required test commands must execute every reported test.`,
+              path: reportPath,
+            });
+          }
+          executionDiagnostics.push(...skippedTests.map((test) => ({
+            code: 'TEST_ID_SKIPPED',
+            severity: 'error' as const,
+            message: `${test.id} was reported as skipped, not executed.`,
+            path: reportPath,
+          })));
+          executionDiagnostics.push(...unsuccessfulTests.map((test) => ({
+            code: 'TEST_ID_NOT_PASSED',
+            severity: 'error' as const,
+            message: `${test.id} reported ${test.status} despite a successful command exit.`,
+            path: reportPath,
+          })));
           const seen = new Set<string>();
           for (const test of report.tests) {
             if (seen.has(test.id)) {
-              testReportDiagnostics.push({
+              executionDiagnostics.push({
                 code: 'TEST_REPORT_DUPLICATE_ID',
                 severity: 'error',
                 message: `${command.name} reported ${test.id} more than once.`,
@@ -316,15 +342,42 @@ export async function runGate(root: string, options: {
               });
             }
             seen.add(test.id);
-            structuredTests.set(test.id, [...structuredTests.get(test.id) ?? [], test]);
+          }
+          if (executionDiagnostics.length) {
+            commandCheck.status = 'fail';
+            commandCheck.summary = `${commandCheck.summary} Structured test evidence is incomplete.`;
+            commandCheck.diagnostics = executionDiagnostics;
+            if (command.required) testReportDiagnostics.push(...executionDiagnostics);
+          } else {
+            const sourceKind = adapterOutput?.source ?? 'file';
+            performanceExecutions.push(createPerformanceExecution({
+              runId: gateRunId,
+              executionId: digest(JSON.stringify({ runId: gateRunId, commandIndex, commandName: command.name })),
+              commandName: command.name,
+              commandSha256: performanceCommandSha256(command.command, args),
+              reportPath,
+              sourceKind,
+              reportSha256: digest(reportText),
+              processStatus: result.status,
+              exitCode: result.exitCode,
+              tests: report.tests,
+            }));
+            for (const test of report.tests) {
+              structuredTests.set(test.id, [...structuredTests.get(test.id) ?? [], test]);
+            }
           }
         } catch (cause) {
-          testReportDiagnostics.push({
-            code: 'TEST_REPORT_INVALID',
+          const diagnostic: Diagnostic = {
+            code: command.mutationReport ? 'MUTATION_REPORT_INVALID' : 'TEST_REPORT_INVALID',
             severity: 'error',
             message: cause instanceof Error ? cause.message : String(cause),
             path: reportPath,
-          });
+          };
+          if (command.mutationReport) mutationReportDiagnostics.push(diagnostic);
+          else if (command.required) testReportDiagnostics.push(diagnostic);
+          commandCheck.status = 'fail';
+          commandCheck.diagnostics = [...commandCheck.diagnostics ?? [], diagnostic];
+          commandCheck.summary = `${commandCheck.summary} Structured ${command.mutationReport ? 'mutation' : 'test'} evidence is invalid.`;
         }
       }
     }

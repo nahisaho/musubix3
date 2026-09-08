@@ -227,10 +227,11 @@ function status(value: unknown): MusubixTestReport['tests'][number]['status'] {
 }
 
 function unique(tests: MusubixTestReport['tests']): MusubixTestReport {
+  const severity = { passed: 0, skipped: 1, failed: 2, error: 3 } as const;
   const byId = new Map<string, MusubixTestReport['tests'][number]>();
   for (const test of tests) {
     const previous = byId.get(test.id);
-    if (!previous || previous.status === 'skipped' || test.status === 'error' || test.status === 'failed') byId.set(test.id, test);
+    if (!previous || severity[test.status] > severity[previous.status]) byId.set(test.id, test);
   }
   return { schemaVersion: 1, tests: [...byId.values()].sort((a, b) => a.id.localeCompare(b.id)) };
 }

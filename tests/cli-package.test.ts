@@ -161,6 +161,17 @@ describe('CLI contracts', () => {
     expect(mismatch.exitCode).toBe(2);
     expect(JSON.parse(mismatch.stdout).error.message).toContain('does not match');
 
+    config.workflow.maxTranscriptBytes = 1;
+    config.workflow.maxTranscriptLineBytes = 1;
+    await writeJson(root, '.musubix/config.json', config);
+    const sizeLimited = await invoke(root, [
+      'workflow-sanitize', 'copilot.jsonl', 'evidence/workflow.too-small.jsonl', '--json',
+    ]);
+    expect(sizeLimited.exitCode).toBe(2);
+    expect(JSON.parse(sizeLimited.stdout).error.message).toContain('maximum total size');
+
+    config.workflow.maxTranscriptBytes = 200_000_000;
+    config.workflow.maxTranscriptLineBytes = 2_000_000;
     config.workflow.maxEventSkewMs = 0;
     await writeJson(root, '.musubix/config.json', config);
     await writeText(root, 'copilot.jsonl', [

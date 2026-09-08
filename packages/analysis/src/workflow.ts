@@ -1,9 +1,10 @@
 import { createHash } from 'node:crypto';
 import { createReadStream } from 'node:fs';
-import { createInterface } from 'node:readline';
+import { mkdir, open, rename, unlink } from 'node:fs/promises';
+import { dirname } from 'node:path';
 import { error, type Diagnostic } from '../../domain/src/index.js';
 import type { WorkflowConfig } from './config.js';
-import { digest, exists, readText, within, writeJson, writeText } from './files.js';
+import { digest, exists, readText, safePath, within, writeJson } from './files.js';
 
 export interface WorkflowEvent {
   skill: string;
@@ -29,6 +30,10 @@ export interface WorkflowManifest {
     exitCode?: number;
     terminalAt?: string;
     eventCount?: number;
+    sourceBytes?: number;
+    maxTranscriptBytes?: number;
+    maximumLineBytes?: number;
+    maxTranscriptLineBytes?: number;
     invocations: Array<{
       skill: string;
       toolCallId: string;
@@ -99,6 +104,10 @@ export function workflowEvidenceHead(workflow: WorkflowManifest | null | undefin
     exitCode: verification.exitCode ?? null,
     terminalAt: verification.terminalAt ?? null,
     eventCount: verification.eventCount ?? null,
+    sourceBytes: verification.sourceBytes ?? null,
+    maxTranscriptBytes: verification.maxTranscriptBytes ?? null,
+    maximumLineBytes: verification.maximumLineBytes ?? null,
+    maxTranscriptLineBytes: verification.maxTranscriptLineBytes ?? null,
     invocations: verification.invocations,
   }));
 }
@@ -156,88 +165,162 @@ export async function sanitizeWorkflowLogFile(
   inputPath: string,
   outputPath: string,
   replacementSessionId?: string,
+  maxEventSkewMs?: number,
+  maxTranscriptBytes?: number,
+  maxTranscriptLineBytes?: number,
 ): Promise<WorkflowSanitizationResult> {
   if (replacementSessionId && !uuid.test(replacementSessionId)) {
     throw new Error('Replacement workflow session ID must be a UUID.');
   }
   // Fail closed on the complete source before removing privacy-sensitive non-Skill events.
-  const validated = await verifyWorkflowLogFile(root, inputPath, { mode: 'strict' });
+  const validated = await verifyWorkflowLogFile(root, inputPath, {
+    mode: 'strict',
+    ...(maxEventSkewMs === undefined ? {} : { maxEventSkewMs }),
+    ...(maxTranscriptBytes === undefined ? {} : { maxBytes: maxTranscriptBytes }),
+    ...(maxTranscriptLineBytes === undefined ? {} : { maxLineBytes: maxTranscriptLineBytes }),
+  });
   const expectedSourceSha256 = validated.verification!.sourceSha256;
+  const maxBytes = maxTranscriptBytes ?? workflowVerificationLimits.maxBytes;
+  const maxLineBytes = maxTranscriptLineBytes ?? workflowVerificationLimits.maxLineBytes;
+  const target = await safePath(root, outputPath);
+  await mkdir(dirname(target), { recursive: true });
+  const staging = `${target}.${process.pid}.${crypto.randomUUID()}.writing`;
+  const output = await open(staging, 'wx');
   const skillCalls = new Set<string>();
-  const sanitized: Record<string, unknown>[] = [];
   let inputEvents = 0;
+  let outputEvents = 0;
+  let outputBytes = 0;
   let terminalSessionId = '';
+  let sourceBytes = 0;
   const sourceHash = createHash('sha256');
-  const source = createReadStream(inputPath);
-  source.on('data', (chunk) => { sourceHash.update(chunk); });
-  const lines = createInterface({ input: source, crlfDelay: Infinity });
-  for await (const line of lines) {
-    if (!line.trim()) continue;
-    inputEvents += 1;
-    let event: unknown;
-    try {
-      event = JSON.parse(line) as unknown;
-    } catch {
-      throw new Error(`Workflow transcript line ${inputEvents} must contain valid JSON before sanitization.`);
+  const emit = async (event: Record<string, unknown>): Promise<void> => {
+    const line = JSON.stringify(event);
+    const lineBytes = Buffer.byteLength(line);
+    const recordBytes = lineBytes + 1;
+    if (lineBytes > maxLineBytes) {
+      throw new Error(`Sanitized workflow event exceeds the maximum line size of ${maxLineBytes} bytes.`);
     }
-    if (!event || typeof event !== 'object' || Array.isArray(event)) continue;
-    const record = event as Record<string, unknown>;
-    const data = record.data && typeof record.data === 'object'
-      ? record.data as Record<string, unknown>
-      : record;
-    const type = String(record.type ?? '');
-    const timestamp = typeof (record.timestamp ?? data.timestamp) === 'string'
-      ? String(record.timestamp ?? data.timestamp)
-      : '';
-    const toolCallId = data.toolCallId ?? data.callId ?? record.toolCallId;
-    if (starts.has(type)) {
-      let args: Record<string, unknown> = {};
-      if (data.arguments && typeof data.arguments === 'object') args = data.arguments as Record<string, unknown>;
-      else if (typeof data.arguments === 'string') {
-        try { args = JSON.parse(data.arguments) as Record<string, unknown>; } catch { args = {}; }
-      } else if (data.input && typeof data.input === 'object') args = data.input as Record<string, unknown>;
-      const toolName = data.toolName ?? data.name ?? record.toolName;
-      if (toolName === 'skill' && typeof toolCallId === 'string' && typeof args.skill === 'string') {
-        skillCalls.add(toolCallId);
-        sanitized.push({
-          type: 'tool.execution_start',
+    if (outputBytes + recordBytes > maxBytes) {
+      throw new Error(`Sanitized workflow transcript exceeds the maximum total size of ${maxBytes} bytes.`);
+    }
+    await output.write(`${line}\n`);
+    outputBytes += recordBytes;
+    outputEvents += 1;
+  };
+  const processSanitizedLine = async (bytes: Buffer): Promise<void> => {
+      if (bytes.at(-1) === 0x0d) bytes = bytes.subarray(0, -1);
+      let line: string;
+      try {
+        line = new TextDecoder('utf-8', { fatal: true }).decode(bytes);
+      } catch {
+        throw new Error(`Workflow transcript line ${inputEvents + 1} must contain valid UTF-8 before sanitization.`);
+      }
+      if (!line.trim()) return;
+      inputEvents += 1;
+      if (inputEvents > workflowVerificationLimits.maxEvents) {
+        throw new Error(`Workflow transcript exceeds the maximum event count of ${workflowVerificationLimits.maxEvents}.`);
+      }
+      if (Buffer.byteLength(line) > maxLineBytes) {
+        throw new Error(`Workflow transcript line ${inputEvents} exceeds the maximum size of ${maxLineBytes} bytes.`);
+      }
+      let event: unknown;
+      try {
+        event = JSON.parse(line) as unknown;
+      } catch {
+        throw new Error(`Workflow transcript line ${inputEvents} must contain valid JSON before sanitization.`);
+      }
+      if (!event || typeof event !== 'object' || Array.isArray(event)) return;
+      const record = event as Record<string, unknown>;
+      const data = record.data && typeof record.data === 'object'
+        ? record.data as Record<string, unknown>
+        : record;
+      const type = String(record.type ?? '');
+      const timestamp = typeof (record.timestamp ?? data.timestamp) === 'string'
+        ? String(record.timestamp ?? data.timestamp)
+        : '';
+      const toolCallId = data.toolCallId ?? data.callId ?? record.toolCallId;
+      if (starts.has(type)) {
+        let args: Record<string, unknown> = {};
+        if (data.arguments && typeof data.arguments === 'object') args = data.arguments as Record<string, unknown>;
+        else if (typeof data.arguments === 'string') {
+          try { args = JSON.parse(data.arguments) as Record<string, unknown>; } catch { args = {}; }
+        } else if (data.input && typeof data.input === 'object') args = data.input as Record<string, unknown>;
+        const toolName = data.toolName ?? data.name ?? record.toolName;
+        if (toolName === 'skill' && typeof toolCallId === 'string' && typeof args.skill === 'string') {
+          skillCalls.add(toolCallId);
+          await emit({
+            type: 'tool.execution_start',
+            timestamp,
+            data: { toolCallId, toolName: 'skill', arguments: { skill: args.skill } },
+          });
+        }
+      } else if (completes.has(type) && typeof toolCallId === 'string' && skillCalls.has(toolCallId)) {
+        const success = data.success ?? record.success;
+        if (typeof success !== 'boolean') {
+          throw new Error(`Skill tool completion ${toolCallId} must declare boolean success before sanitization.`);
+        }
+        await emit({
+          type: 'tool.execution_complete',
           timestamp,
-          data: { toolCallId, toolName: 'skill', arguments: { skill: args.skill } },
+          data: { toolCallId, success },
+        });
+      } else if (type === 'result') {
+        const sessionId = record.sessionId;
+        if (typeof sessionId !== 'string' || !uuid.test(sessionId)) {
+          throw new Error('The terminal workflow result must declare a UUID sessionId before sanitization.');
+        }
+        terminalSessionId = replacementSessionId ?? sessionId;
+        await emit({
+          type: 'result',
+          timestamp,
+          sessionId: terminalSessionId,
+          exitCode: record.exitCode,
         });
       }
-    } else if (completes.has(type) && typeof toolCallId === 'string' && skillCalls.has(toolCallId)) {
-      const success = data.success ?? record.success;
-      if (typeof success !== 'boolean') {
-        throw new Error(`Skill tool completion ${toolCallId} must declare boolean success before sanitization.`);
+  };
+  try {
+    let lineParts: Buffer[] = [];
+    let lineBytes = 0;
+    for await (const value of createReadStream(inputPath)) {
+      const chunk = Buffer.from(value);
+      sourceBytes += chunk.byteLength;
+      if (sourceBytes > maxBytes) throw new Error(`Workflow transcript exceeds the maximum total size of ${maxBytes} bytes.`);
+      sourceHash.update(chunk);
+      let start = 0;
+      for (let index = chunk.indexOf(0x0a); index !== -1; index = chunk.indexOf(0x0a, start)) {
+        const part = chunk.subarray(start, index);
+        lineBytes += part.byteLength;
+        if (lineBytes > maxLineBytes) {
+          throw new Error(`Workflow transcript line ${inputEvents + 1} exceeds the maximum size of ${maxLineBytes} bytes.`);
+        }
+        if (part.byteLength) lineParts.push(part);
+        await processSanitizedLine(Buffer.concat(lineParts, lineBytes));
+        lineParts = [];
+        lineBytes = 0;
+        start = index + 1;
       }
-      sanitized.push({
-        type: 'tool.execution_complete',
-        timestamp,
-        data: { toolCallId, success },
-      });
-    } else if (type === 'result') {
-      const sessionId = record.sessionId;
-      if (typeof sessionId !== 'string' || !uuid.test(sessionId)) {
-        throw new Error('The terminal workflow result must declare a UUID sessionId before sanitization.');
+      const remainder = chunk.subarray(start);
+      lineBytes += remainder.byteLength;
+      if (lineBytes > maxLineBytes) {
+        throw new Error(`Workflow transcript line ${inputEvents + 1} exceeds the maximum size of ${maxLineBytes} bytes.`);
       }
-      terminalSessionId = replacementSessionId ?? sessionId;
-      sanitized.push({
-        type: 'result',
-        timestamp,
-        sessionId: terminalSessionId,
-        exitCode: record.exitCode,
-      });
+      if (remainder.byteLength) lineParts.push(remainder);
     }
+    await processSanitizedLine(Buffer.concat(lineParts, lineBytes));
+    if (sourceHash.digest('hex') !== expectedSourceSha256) {
+      throw new Error('Workflow transcript changed after strict validation; retry sanitization with a stable source file.');
+    }
+    if (!skillCalls.size) throw new Error('No Copilot Skill invocation events were found in the workflow transcript.');
+    if (!terminalSessionId) throw new Error('No terminal workflow result event was found in the transcript.');
+    await output.close();
+    await rename(staging, target);
+  } finally {
+    await output.close().catch(() => undefined);
+    if (await exists(staging)) await unlink(staging);
   }
-  if (sourceHash.digest('hex') !== expectedSourceSha256) {
-    throw new Error('Workflow transcript changed after strict validation; retry sanitization with a stable source file.');
-  }
-  if (!skillCalls.size) throw new Error('No Copilot Skill invocation events were found in the workflow transcript.');
-  if (!terminalSessionId) throw new Error('No terminal workflow result event was found in the transcript.');
-  await writeText(root, outputPath, `${sanitized.map((event) => JSON.stringify(event)).join('\n')}\n`);
   return {
     inputEvents,
-    outputEvents: sanitized.length,
+    outputEvents,
     skillInvocations: skillCalls.size,
     sessionId: terminalSessionId,
     sessionReplaced: replacementSessionId !== undefined,
@@ -254,8 +337,8 @@ async function verifyWorkflowChunks(
   if (!current?.events.length) throw new Error('No workflow declarations are available to verify.');
   if (!['compatible', 'strict'].includes(options.mode)) throw new Error('Workflow verification mode must be compatible or strict.');
   if (options.expectedSessionId && !uuid.test(options.expectedSessionId)) throw new Error('Expected workflow session ID must be a UUID.');
-  const maxBytes = options.maxBytes ?? workflowVerificationLimits.maxBytes;
-  const maxLineBytes = options.maxLineBytes ?? workflowVerificationLimits.maxLineBytes;
+  const maxBytes = options.maxTranscriptBytes ?? options.maxBytes ?? workflowVerificationLimits.maxBytes;
+  const maxLineBytes = options.maxTranscriptLineBytes ?? options.maxLineBytes ?? workflowVerificationLimits.maxLineBytes;
   const maxEvents = options.maxEvents ?? workflowVerificationLimits.maxEvents;
   if (!Number.isSafeInteger(maxBytes) || maxBytes < 1) throw new Error('Workflow maximum byte limit must be a positive integer.');
   if (!Number.isSafeInteger(maxLineBytes) || maxLineBytes < 1) throw new Error('Workflow maximum line byte limit must be a positive integer.');
@@ -268,6 +351,7 @@ async function verifyWorkflowChunks(
   let lineNumber = 1;
   let lineParts: Buffer[] = [];
   let lineBytes = 0;
+  let maximumLineBytes = 0;
   let parsedCount = 0;
   let resultCount = 0;
   let lastParsedWasResult = false;
@@ -353,7 +437,8 @@ async function verifyWorkflowChunks(
         if (!start) throw new Error(`Tool call ${toolCallId} completed without a matching start.`);
         if (toolCompletions.has(toolCallId)) throw new Error(`Tool call ${toolCallId} has more than one completion event.`);
         if (start.index >= parsedCount - 1
-          || Date.parse(start.timestamp) - time > (options.maxEventSkewMs ?? 1000)) {
+          || (options.maxEventSkewMs !== undefined
+            && Date.parse(start.timestamp) - time > options.maxEventSkewMs)) {
           throw new Error(`Tool call ${toolCallId} violates event timestamp order.`);
         }
       }
@@ -381,6 +466,7 @@ async function verifyWorkflowChunks(
       if (lineBytes > maxLineBytes) {
         throw new Error(`Workflow transcript line ${lineNumber} exceeds the maximum size of ${maxLineBytes} bytes.`);
       }
+      maximumLineBytes = Math.max(maximumLineBytes, lineBytes);
       if (part.byteLength) lineParts.push(part);
       processLine(Buffer.concat(lineParts, lineBytes), lineNumber);
       lineNumber += 1;
@@ -395,6 +481,7 @@ async function verifyWorkflowChunks(
     }
     if (remainder.byteLength) lineParts.push(remainder);
   }
+  maximumLineBytes = Math.max(maximumLineBytes, lineBytes);
   processLine(Buffer.concat(lineParts, lineBytes), lineNumber);
   transcriptHash.update(']');
   if (options.mode === 'strict' && !parsedCount) throw new Error('Strict workflow verification requires a complete Copilot JSONL transcript.');
@@ -407,7 +494,8 @@ async function verifyWorkflowChunks(
     const sessionId = terminalRecord!.sessionId;
     const exitCode = terminalRecord!.exitCode;
     if (typeof timestamp !== 'string' || Number.isNaN(Date.parse(timestamp))
-      || lastToolTimestamp - Date.parse(timestamp) > (options.maxEventSkewMs ?? 1000)) {
+      || (options.maxEventSkewMs !== undefined
+        && lastToolTimestamp - Date.parse(timestamp) > options.maxEventSkewMs)) {
       throw new Error('The terminal result event violates event timestamp order.');
     }
     if (typeof sessionId !== 'string' || !uuid.test(sessionId)) {
@@ -431,8 +519,7 @@ async function verifyWorkflowChunks(
     terminal = { timestamp, sessionId, exitCode };
   }
   const invocations: NonNullable<WorkflowManifest['verification']>['invocations'] = [...invocationsById.values()]
-    .map((start) => ({ ...start, ...(completions.get(start.toolCallId) ?? { status: 'incomplete' as const }) }))
-    .sort((a, b) => timestampMs(a.invokedAt) - timestampMs(b.invokedAt) || a.toolCallId.localeCompare(b.toolCallId));
+    .map((start) => ({ ...start, ...(completions.get(start.toolCallId) ?? { status: 'incomplete' as const }) }));
   if (!invocations.length) throw new Error('No Copilot Skill invocation events were found in the log.');
   current.verification = {
     mode: options.mode,
@@ -443,6 +530,10 @@ async function verifyWorkflowChunks(
       exitCode: terminal!.exitCode,
       terminalAt: terminal!.timestamp,
       eventCount: parsedCount,
+      sourceBytes: totalBytes,
+      maxTranscriptBytes: maxBytes,
+      maximumLineBytes,
+      maxTranscriptLineBytes: maxLineBytes,
     } : {}),
     eventsSha256: eventsSha256(current.events),
     verifiedAt: (options.now ?? (() => new Date()))().toISOString(),
@@ -475,8 +566,19 @@ export async function validateWorkflow(
         || !verification.sessionId || !uuid.test(verification.sessionId)
         || verification.exitCode !== 0
         || !verification.terminalAt || Number.isNaN(Date.parse(verification.terminalAt))
-        || !Number.isInteger(verification.eventCount) || verification.eventCount! < 1) {
+        || !Number.isInteger(verification.eventCount) || verification.eventCount! < 1
+        || !Number.isSafeInteger(verification.sourceBytes) || verification.sourceBytes! < 1
+        || !Number.isSafeInteger(verification.maxTranscriptBytes) || verification.maxTranscriptBytes! < 1
+        || !Number.isSafeInteger(verification.maximumLineBytes) || verification.maximumLineBytes! < 1
+        || !Number.isSafeInteger(verification.maxTranscriptLineBytes) || verification.maxTranscriptLineBytes! < 1) {
         diagnostics.push(error('WORKFLOW_TRANSCRIPT_INCOMPLETE', 'Strict workflow verification requires complete terminal transcript evidence.'));
+      } else if (verification.sourceBytes! > verification.maxTranscriptBytes!
+        || verification.sourceBytes! > (options.maxTranscriptBytes ?? workflowVerificationLimits.maxBytes)
+        || verification.maxTranscriptBytes! > (options.maxTranscriptBytes ?? workflowVerificationLimits.maxBytes)
+        || verification.maximumLineBytes! > verification.maxTranscriptLineBytes!
+        || verification.maximumLineBytes! > (options.maxTranscriptLineBytes ?? options.maxLineBytes ?? workflowVerificationLimits.maxLineBytes)
+        || verification.maxTranscriptLineBytes! > (options.maxTranscriptLineBytes ?? options.maxLineBytes ?? workflowVerificationLimits.maxLineBytes)) {
+        diagnostics.push(error('WORKFLOW_TRANSCRIPT_SIZE', 'Verified workflow transcript exceeds the configured maximum transcript size.'));
       } else if (options.expectedSessionId
         && verification.sessionId.toLowerCase() !== options.expectedSessionId.toLowerCase()) {
         diagnostics.push(error('WORKFLOW_SESSION_MISMATCH', `Verified session ${verification.sessionId} does not match configured session ${options.expectedSessionId}.`));

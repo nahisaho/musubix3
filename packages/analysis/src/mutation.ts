@@ -229,7 +229,7 @@ export async function mutationDoctor(
       args: ['--version'],
       present: projectFiles.has('pyproject.toml') || projectFiles.has('requirements.txt')
         || [...projectFiles].some((path) => path.endsWith('.py')),
-      recommendation: 'Install mutmut in the project virtual environment and convert its results to the musubix mutation schema.',
+      recommendation: 'Install mutmut in the project virtual environment; remove existing __pycache__ directories before each mutation run, then use python -B -m mutmut and python -B -m pytest to prevent new .pyc files before converting results to the musubix mutation schema.',
     },
     {
       ecosystem: 'go',

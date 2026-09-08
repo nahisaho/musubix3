@@ -326,6 +326,8 @@ JS/TSはparser-awareなcomment位置を使い、Haskellは`--`と`{- ... -}`、
 Luaは`--`と`--[[ ... ]]`、Visual Basicは`'''` XML documentを含む
 apostrophe commentを扱います。これらは文字列中の記載をリンクとして扱いません。
 その他の言語では対応する行commentまたはblock commentを使用します。
+Pythonは連続した`#` commentを使用してください。docstring内のannotationは無視され、
+`TRACE_ANNOTATION_IN_PYTHON_DOCSTRING`で配置変更を案内します。
 網羅率だけを満たす代理JS/TSファイルは作成しません。
 
 ```ts
@@ -393,7 +395,9 @@ version: 1.0.0
     "mode": "compatible",
     "maxAgeSeconds": 3600,
     "maxFutureSkewSeconds": 60,
-    "maxEventSkewMs": 1000
+    "maxEventSkewMs": 1000,
+    "maxTranscriptBytes": 250000000,
+    "maxTranscriptLineBytes": 2000000
   },
   "attestation": {
     "mode": "local",
@@ -420,8 +424,9 @@ glob は `*` / `**` / `?` に対応し、外部依存は `npm:` 接頭辞で表�
 含む完全なrelease checkを要求します。不足設定や弱い設定を証拠で補ったことにはしません。
 `tdd.redPreflightCommands`にはformatter等のplain command名を指定でき、
 Redのtest fingerprintを取得する前に成功が必須です。
-通常ファイルの`pyvenv.cfg`を含む`.venv`と`venv`はsnapshotと
-Code Graphから除外されます。Gradle `.gradle/`、Dart `.dart_tool/`、
+通常ファイルの`pyvenv.cfg`を含む`.venv`と`venv`に加え、生成された
+`__pycache__/` directoryはsnapshotとCode Graphから除外されます。
+sourceなしで実行可能な`.pyc`/`.pyo`単体fileは追跡対象のままです。Gradle `.gradle/`、Dart `.dart_tool/`、
 SwiftPM `.build/`、Zig `.zig-cache/`/`zig-out/`、.NET `.dotnet/`は、
 親directoryに対応manifestがある場合だけ除外されます。同名の任意source
 directoryは追跡対象のままです。
@@ -454,7 +459,9 @@ strict OIDC identity/key binding、必須コマンド名の最低条件です。
 介さず、時間と出力サイズを制限して実コマンドを動かします。個別の必須コマンドは
 集約 `commands` の設定に関係なく失敗・未実行で準備不可になります。
 任意コマンドの失敗は非阻止ですが、憲章が失敗件数を制限していれば不合格です。
-コマンド未設定は skipped です。
+コマンド未設定は skipped です。構造化test commandはprocessがexit 0でも、
+実行testが0件、またはskipped・failed・error testを1件でも報告した場合は
+失敗します。integration suiteが依存service不在のまま暗黙に通ることを防ぎます。
 
 TDD用コマンドには明示的な`tddArgs`と`tddReport`、または組込みの
 `vitest`、`jest`、`pytest`、`go-test`、`cargo`、`junit`、`dotnet` adapterが必要です。
@@ -512,6 +519,9 @@ freshなschema-v1 mutantは、決定的`MUT-<hash>` identity、must functional r
 設定driftを拒否します。既定の`compatible`は証拠なしを許容し、releaseでは`strict`と
 mutation commandをpolicy baselineで保護します。大規模mutation engineは同梱しません。
 mutation/model-correspondenceのsemantic headはattestationに含まれ、元のprovenanceも再検査されます。
+Pythonではstaleな`.pyc`によるfalse survivorを防ぐため、`mutation doctor`は
+各run前の`__pycache__`削除と、その後の`python -B -m mutmut`および
+`python -B -m pytest`を推奨します。
 
 品質根拠は状態、必須フラグ、終了コード・出力、実測値、日時、入力の指紋を保存します。
 変更ゲートのパス、HEAD、影響範囲は後続の通常ゲートでも保持します。
@@ -530,8 +540,14 @@ event数、terminal時刻、raw source hash、canonical transcript hashを保存
 `workflow.expectedSessionId`または`--session-id`でcaller申告sessionの置換を拒否します。
 strict検証は`workflow.maxAgeSeconds`と`workflow.maxFutureSkewSeconds`で
 terminal transcriptの古さと未来方向clock skewも制限します。
-並行eventはtimestamp順で出力されない場合があるため、全体sortではなくtool/resultの
-因果順序を検査します。
+並行eventや異なる実行clockのtimestampは単調にならない場合があるため、JSONLの
+source順でtool/resultの因果関係を検査し、timestamp sortは行いません。
+pair/terminalのclock skewは`maxEventSkewMs`を明示した場合だけ制限し、
+terminalの古さ・未来skew policyは独立して検査します。検証はstreamingかつresource-boundで、
+既定上限は100,000,000 bytesです。大きな実transcriptには`workflow.maxTranscriptBytes`を
+最大1,000,000,000 bytesまで明示設定できます。1 JSONL行は既定1,000,000 bytesで、
+`workflow.maxTranscriptLineBytes`により最大10,000,000 bytesまで設定できます。
+選択した両上限はpolicy baselineで保護できます。
 gate実行中に入力が変わった場合、`input-stability`は追加・変更・削除された各pathと
 前後のSHA-256を報告します。Cargo/Mavenの標準`target/`、manifest直下の
 .NET `bin/`と`obj/`、project-local `.nuget/packages/`は除外しますが、

@@ -121,6 +121,42 @@ describe('P2 built-in test adapters', () => {
     }).tdd.redPreflightCommands).toEqual(['format']);
   });
 
+  it('protects the historical transcript bound when a legacy baseline omits it', () => {
+    const baseline = parsePolicyBaseline({ schemaVersion: 1, workflow: { mode: 'compatible' } });
+    const widened = parseConfig({
+      schemaVersion: 1,
+      workflow: { mode: 'compatible', maxTranscriptBytes: 200_000_000 },
+    });
+    expect(policyDiagnostics(widened, baseline))
+      .toContainEqual(expect.objectContaining({ code: 'POLICY_WORKFLOW_TRANSCRIPT_SIZE' }));
+  });
+
+  it('protects workflow transcript bounds even in compatible mode', () => {
+    const baseline = parsePolicyBaseline({
+      schemaVersion: 1,
+      workflow: { mode: 'compatible', maxTranscriptBytes: 100_000_000 },
+    });
+    const widened = parseConfig({
+      schemaVersion: 1,
+      workflow: { mode: 'compatible', maxTranscriptBytes: 200_000_000 },
+    });
+    expect(policyDiagnostics(widened, baseline))
+      .toContainEqual(expect.objectContaining({ code: 'POLICY_WORKFLOW_TRANSCRIPT_SIZE' }));
+  });
+
+  it('protects workflow transcript line bounds in compatible mode', () => {
+    const baseline = parsePolicyBaseline({
+      schemaVersion: 1,
+      workflow: { mode: 'compatible', maxTranscriptLineBytes: 1_000_000 },
+    });
+    const widened = parseConfig({
+      schemaVersion: 1,
+      workflow: { mode: 'compatible', maxTranscriptLineBytes: 2_000_000 },
+    });
+    expect(policyDiagnostics(widened, baseline))
+      .toContainEqual(expect.objectContaining({ code: 'POLICY_WORKFLOW_TRANSCRIPT_LINE_SIZE' }));
+  });
+
   it('protects quality profile, Red preflight, and workflow event skew baselines', () => {
     const baseline = parsePolicyBaseline({
       schemaVersion: 1,
@@ -135,7 +171,7 @@ describe('P2 built-in test adapters', () => {
       formal: { solver: 'z3', minModeledFraction: 0.5 },
       mutation: { mode: 'strict' },
       tdd: { redPreflightCommands: ['format'] },
-      workflow: { mode: 'strict', maxEventSkewMs: 1000 },
+      workflow: { mode: 'strict', maxEventSkewMs: 1000, maxTranscriptBytes: 100_000_000 },
       attestation: { mode: 'ci-required' },
     });
     const weakened = parseConfig({
@@ -143,13 +179,14 @@ describe('P2 built-in test adapters', () => {
       qualityProfile: 'minimal',
       commands: [{ name: 'format', command: 'true', required: false }],
       tdd: { redPreflightCommands: ['format'] },
-      workflow: { mode: 'strict', maxEventSkewMs: 2000 },
+      workflow: { mode: 'strict', maxEventSkewMs: 2000, maxTranscriptBytes: 200_000_000 },
     });
     expect(policyDiagnostics(weakened, baseline).map((diagnostic) => diagnostic.code))
       .toEqual(expect.arrayContaining([
         'POLICY_QUALITY_PROFILE',
         'POLICY_TDD_PREFLIGHT',
         'POLICY_WORKFLOW_EVENT_SKEW',
+        'POLICY_WORKFLOW_TRANSCRIPT_SIZE',
       ]));
   });
 
@@ -183,6 +220,10 @@ describe('P2 built-in test adapters', () => {
     expect(normalizeAdapterReport('pytest', JSON.stringify({
       tests: [{ nodeid: 'tests/test_app.py::test_TEST_APP_002', outcome: 'failed' }],
     })).tests[0]).toEqual({ id: 'TEST-APP-002', status: 'failed' });
+    expect(normalizeAdapterReport('pytest', JSON.stringify({ tests: [
+      { nodeid: 'tests/test_app.py::test_TEST_APP_009[param-a]', outcome: 'passed' },
+      { nodeid: 'tests/test_app.py::test_TEST_APP_009[param-b]', outcome: 'skipped' },
+    ] })).tests).toEqual([{ id: 'TEST-APP-009', status: 'skipped' }]);
     expect(() => normalizeAdapterReport('pytest', JSON.stringify({
       tests: [{ nodeid: 'tests/test_app.py::test_descriptive_name', outcome: 'passed' }],
     }), 'TEST-APP-002')).toThrow('test_TEST_APP_001');

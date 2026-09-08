@@ -38,7 +38,6 @@ describe('P3 strict workflow transcript provenance', () => {
       mode: 'compatible',
       maxAgeSeconds: 3600,
       maxFutureSkewSeconds: 60,
-      maxEventSkewMs: 1000,
     });
     expect(parseConfig({ schemaVersion: 1 }).workflow).toEqual(defaultConfig.workflow);
     expect(parseConfig({
@@ -54,7 +53,6 @@ describe('P3 strict workflow transcript provenance', () => {
       expectedSessionId: sessionId,
       maxAgeSeconds: 300,
       maxFutureSkewSeconds: 10,
-      maxEventSkewMs: 1000,
     });
     expect(() => parseConfig({ schemaVersion: 1, workflow: { mode: 'strict', expectedSessionId: 'not-a-uuid' } }))
       .toThrow('workflow.expectedSessionId');
@@ -193,6 +191,41 @@ describe('P3 strict workflow transcript provenance', () => {
       mode: 'strict',
       maxEventSkewMs: 100,
     })).rejects.toThrow('timestamp order');
+    await expect(verifyWorkflowLog(root, transcript, { mode: 'strict' }))
+      .resolves.toMatchObject({ verification: { mode: 'strict', exitCode: 0 } });
+  });
+
+  it('preserves Skill invocation source order when concurrent timestamps run backward', async () => {
+    const root = await fixture();
+    await recordWorkflow(root, { skill: 'sdd-change', phase: 'complete', status: 'completed' });
+    await recordWorkflow(root, { skill: 'sdd-requirements', phase: 'complete', status: 'completed' });
+    const transcript = [
+      {
+        type: 'tool.execution_start',
+        timestamp: '2020-01-01T00:00:10.000Z',
+        data: { toolCallId: 'call-change', toolName: 'skill', arguments: { skill: 'sdd-change' } },
+      },
+      {
+        type: 'tool.execution_complete',
+        timestamp: '2020-01-01T00:00:11.000Z',
+        data: { toolCallId: 'call-change', success: true },
+      },
+      {
+        type: 'tool.execution_start',
+        timestamp: '2020-01-01T00:00:01.000Z',
+        data: { toolCallId: 'call-requirements', toolName: 'skill', arguments: { skill: 'sdd-requirements' } },
+      },
+      {
+        type: 'tool.execution_complete',
+        timestamp: '2020-01-01T00:00:02.000Z',
+        data: { toolCallId: 'call-requirements', success: true },
+      },
+      { type: 'result', timestamp: '2020-01-01T00:00:12.000Z', sessionId, exitCode: 0 },
+    ].map((event) => JSON.stringify(event)).join('\n');
+
+    const manifest = await verifyWorkflowLog(root, transcript, { mode: 'strict' });
+    expect(manifest.verification?.invocations.map((invocation) => invocation.skill))
+      .toEqual(['sdd-change', 'sdd-requirements']);
   });
 
   it('binds strict transcript identity into the workflow attestation head', async () => {

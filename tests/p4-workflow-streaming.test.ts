@@ -3,7 +3,7 @@ import { writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import {
-  readText, recordWorkflow, sanitizeWorkflowLogFile, verifyWorkflowLog, verifyWorkflowLogFile,
+  readText, recordWorkflow, sanitizeWorkflowLogFile, validateWorkflow, verifyWorkflowLog, verifyWorkflowLogFile,
 } from '../packages/analysis/src/index.js';
 import { fixture } from './helpers.js';
 
@@ -51,7 +51,21 @@ describe('P4 bounded streaming workflow verification', () => {
     const manifest = await verifyWorkflowLogFile(root, path, { mode: 'strict' });
 
     expect(Buffer.byteLength(text)).toBeGreaterThan(2_000_000);
-    expect(manifest.verification).toMatchObject({ eventCount: events.length, sessionId });
+    expect(manifest.verification).toMatchObject({
+      eventCount: events.length,
+      sessionId,
+      sourceBytes: Buffer.byteLength(text),
+      maxTranscriptBytes: 100_000_000,
+      maximumLineBytes: expect.any(Number),
+      maxTranscriptLineBytes: 1_000_000,
+    });
+    expect((await validateWorkflow(root, { mode: 'strict', maxTranscriptBytes: Buffer.byteLength(text) - 1 })).diagnostics)
+      .toContainEqual(expect.objectContaining({ code: 'WORKFLOW_TRANSCRIPT_SIZE' }));
+
+    manifest.verification!.maxTranscriptBytes = manifest.verification!.sourceBytes! - 1;
+    await writeFile(resolve(root, '.musubix/evidence/workflow.json'), `${JSON.stringify(manifest, null, 2)}\n`);
+    expect((await validateWorkflow(root, { mode: 'strict', maxTranscriptBytes: 100_000_000 })).diagnostics)
+      .toContainEqual(expect.objectContaining({ code: 'WORKFLOW_TRANSCRIPT_SIZE' }));
   });
 
   it('handles UTF-8 and CRLF split across file stream chunks', async () => {
@@ -139,6 +153,71 @@ describe('P4 bounded streaming workflow verification', () => {
     expect(sanitized).not.toContain('secret-value');
     expect((await verifyWorkflowLog(root, sanitized, { mode: 'strict', expectedSessionId: replacement })).verification)
       .toMatchObject({ eventCount: 3, sessionId: replacement });
+  });
+
+  it('sanitizes causally ordered events when concurrent clocks are not monotonic', async () => {
+    const root = await preparedRoot();
+    const raw = resolve(root, 'concurrent-clock.jsonl');
+    await writeFile(raw, [
+      { ...start, timestamp: '2020-01-01T00:00:10.000Z' },
+      { ...completion, timestamp: '2020-01-01T00:00:01.000Z' },
+      { ...result, timestamp: '2020-01-01T00:00:02.000Z' },
+    ].map((event) => JSON.stringify(event)).join('\n'));
+
+    await expect(sanitizeWorkflowLogFile(root, raw, 'evidence/workflow.jsonl')).resolves.toMatchObject({
+      inputEvents: 3,
+      outputEvents: 3,
+      skillInvocations: 1,
+    });
+    await expect(verifyWorkflowLog(root, await readText(root, 'evidence/workflow.jsonl'), { mode: 'strict' }))
+      .resolves.toMatchObject({ verification: { eventCount: 3, sessionId } });
+  });
+
+  it('supports an explicit bounded size override for large real transcripts', async () => {
+    const root = await preparedRoot();
+    const raw = resolve(root, 'size-override.jsonl');
+    await writeFile(raw, [start, completion, result].map((event) => JSON.stringify(event)).join('\n'));
+    const bytes = Buffer.byteLength(await readText(root, 'size-override.jsonl'));
+
+    await expect(sanitizeWorkflowLogFile(root, raw, 'evidence/workflow.jsonl', undefined, undefined, bytes - 1))
+      .rejects.toThrow('maximum total size');
+    await expect(sanitizeWorkflowLogFile(root, raw, 'evidence/workflow.jsonl', undefined, undefined, bytes * 2))
+      .resolves.toMatchObject({ inputEvents: 3, outputEvents: 3 });
+    const maxLineBytes = Math.max(...(await readText(root, 'size-override.jsonl')).split('\n').map((line) => Buffer.byteLength(line)));
+    await expect(sanitizeWorkflowLogFile(root, raw, 'evidence/workflow.jsonl', undefined, undefined, bytes * 2, maxLineBytes - 1))
+      .rejects.toThrow('maximum size');
+    await expect(sanitizeWorkflowLogFile(root, raw, 'evidence/workflow.jsonl', undefined, undefined, bytes * 2, maxLineBytes * 2))
+      .resolves.toMatchObject({ inputEvents: 3, outputEvents: 3 });
+    await expect(verifyWorkflowLogFile(root, raw, { mode: 'strict', maxTranscriptBytes: bytes - 1 }))
+      .rejects.toThrow('maximum total size');
+  });
+
+  it('does not install sanitized output that expands beyond the source bounds', async () => {
+    const root = await preparedRoot();
+    const raw = resolve(root, 'compact-aliases.jsonl');
+    const compact = [
+      { type: 'tool_use', timestamp: start.timestamp, data: { callId: 'call-1', name: 'skill', input: { skill: 'sdd-change' } } },
+      { type: 'tool_result', timestamp: completion.timestamp, data: { callId: 'call-1', success: true } },
+      result,
+    ].map((event) => JSON.stringify(event)).join('\n');
+    await writeFile(raw, compact);
+    const sourceBytes = Buffer.byteLength(compact);
+
+    await expect(sanitizeWorkflowLogFile(root, raw, 'evidence/workflow.jsonl', undefined, undefined, sourceBytes, 1_000_000))
+      .rejects.toThrow('Sanitized workflow transcript exceeds');
+  });
+
+  it('applies an explicitly configured event-skew policy during sanitization', async () => {
+    const root = await preparedRoot();
+    const raw = resolve(root, 'bounded-clock.jsonl');
+    await writeFile(raw, [
+      { ...start, timestamp: '2020-01-01T00:00:02.000Z' },
+      { ...completion, timestamp: '2020-01-01T00:00:01.000Z' },
+      result,
+    ].map((event) => JSON.stringify(event)).join('\n'));
+
+    await expect(sanitizeWorkflowLogFile(root, raw, 'evidence/workflow.jsonl', undefined, 100))
+      .rejects.toThrow('timestamp order');
   });
 
   it('refuses to sanitize a source transcript that fails strict verification', async () => {
