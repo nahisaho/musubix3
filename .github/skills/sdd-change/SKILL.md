@@ -1,10 +1,10 @@
 ---
 name: sdd-change
-description: "Use for feature additions, behavior changes, bug fixes, refactoring with observable impact, or any request that must propagate through requirements, design, code, tests, traceability, and quality evidence. 機能追加・仕様変更・バグ修正を一貫して反映するときに使用。"
+description: "Use as the MANDATORY first Skill for requests to develop, build, create, implement, add, change, or fix software, including 「開発」「作成」「実装」. Start requirements and design before code, then propagate through tests, traceability, and quality evidence. ソフトウェア開発依頼では実装前に必ず要求定義・設計から開始。"
 ---
 # Integrated change workflow / 統合変更ワークフロー
+Mandatory entrypoint: never start implementation for a natural-language development request before eliciting and validating requirements and design; skip only for explicitly requested implementation of verified, approved artifacts.
 Follow the user's input language. Use native Copilot planning, editing, research, review, security review and subagents.
-This skill coordinates SDD artifacts and checks; it is not another agent runtime.
 Record exactly one final invocation outcome with `npx musubix3 workflow-record
 sdd-change complete --status <status>`; `change-record` separately proves phases.
 Run `workflow-sanitize <copilot.jsonl> <safe.jsonl>` before review, then
@@ -29,8 +29,7 @@ Persisted monotonic order, not wall-clock time, proves these phase boundaries.
 2. Read the constitution and relevant requirements, designs, ADRs, code and tests.
 3. Run `npx musubix3 trace impact <id-or-path> --json` and, when code exists,
    `graph index` plus `graph impact <symbol-or-path> --json`.
-4. Separate confirmed intent, assumptions and open questions. Ask only questions
-   that materially affect observable behavior, safety or compatibility.
+4. Separate confirmed intent, assumptions and open questions. When material context is missing, ask exactly one highest-priority question, wait for its answer, then repeat; never batch questions or finalize requirements, design or code while blockers remain.
 
 ## 2. Update specifications first / 仕様を先に更新
 1. For new or changed observable behavior, add or revise EARS requirements and

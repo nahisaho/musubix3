@@ -17,7 +17,7 @@ async function invoke(root: string, args: string[]): Promise<Awaited<ReturnType<
 describe('CLI contracts', () => {
   it('prints version/help and JSON validation with nonzero failure', async () => {
     const root = await fixture({ 'requirements.md': req() });
-    expect((await invoke(root, ['--version'])).stdout.trim()).toBe('0.1.5');
+    expect((await invoke(root, ['--version'])).stdout.trim()).toBe('0.1.6');
     expect((await invoke(root, ['--help'])).stdout).toContain('trace');
     const valid = await invoke(root, ['requirements', 'validate', 'requirements.md', '--json']);
     expect(valid.exitCode).toBe(0);
@@ -52,7 +52,7 @@ describe('CLI contracts', () => {
     expect(status.gate.ready).toBe(false);
     await symlink(cli, resolve(root, 'musubix3-bin'));
     const linked = await runProcess(process.execPath, [resolve(root, 'musubix3-bin'), '--version'], { cwd: root, timeoutMs: 10_000 });
-    expect(linked.stdout.trim()).toBe('0.1.5');
+    expect(linked.stdout.trim()).toBe('0.1.6');
   });
 
   it('runs full workflow and reports JSON evidence', async () => {
@@ -289,6 +289,16 @@ describe('distribution contracts', () => {
       expect(text).toContain('native');
       expect(text.split(/\r?\n/).length).toBeLessThan(80);
     }
+    const change = await readText(repository, '.github/skills/sdd-change/SKILL.md');
+    expect(change).toContain('MANDATORY first Skill');
+    expect(change).toContain('never start implementation');
+    expect(change).toContain('ask exactly one highest-priority question');
+    const requirements = await readText(repository, '.github/skills/sdd-requirements/SKILL.md');
+    expect(requirements).toContain('Never batch questions');
+    expect(requirements).toContain('wait for the answer before asking the next');
+    const implementation = await readText(repository, '.github/skills/sdd-implementation/SKILL.md');
+    expect(implementation).toContain('verify that approved requirements and');
+    expect(implementation).toContain('stop and return to `sdd-change`');
   });
 
   it('validates native manifests and packed hidden skills/built engine/assets', async () => {

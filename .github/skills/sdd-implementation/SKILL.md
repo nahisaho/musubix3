@@ -12,8 +12,11 @@ named npm packages; report a blocker if the executable is unavailable.
 After the work, run `npx musubix3 workflow-record sdd-implementation complete
 --status completed` exactly once.
 
-1. Read the approved requirement/design IDs and constitution. Use native planning
-   for small verifiable changes. Use native subagents only for independent work.
+1. Before editing implementation code, verify that approved requirements and
+   design artifacts exist and both validators pass. If either is absent or invalid,
+   stop and return to `sdd-change`, invoking `sdd-requirements` and `sdd-design`
+   as needed. Do not infer approval from a natural-language request such as
+   "develop", "build", 「開発」, 「作成」, or 「実装」.
 2. For behavior changes and bug fixes, write a meaningful failing test before
    implementation. Configure the selected command with `tddArgs` containing
    `{testId}` or `{testPath}` and a `tddReport`, or use a built-in runner adapter.

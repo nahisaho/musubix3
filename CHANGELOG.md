@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+## 0.1.6 - 2026-09-08
+
+- Make `sdd-change` the mandatory first Skill for natural-language software
+  development requests, elicit missing context one question at a time, and
+  require validated requirements and design before implementation may edit code.
 - Parse Surefire/Failsafe `<testcase>` elements correctly when a self-closing
   entry precedes one with `<system-out>`/`<system-err>` children, so JUnit
   identities are no longer dropped or given a neighbouring test's status.

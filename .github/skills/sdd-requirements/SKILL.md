@@ -13,7 +13,10 @@ After the work, run `npx musubix3 workflow-record sdd-requirements complete
 1. Inspect `.musubix/constitution.md` and the feature's existing requirements.
    If absent, preview `npx musubix3 init --dry-run` before installing.
 2. Use native planning to clarify scope, stakeholders, measurable acceptance and
-   failure behavior. Separate assumptions from confirmed requirements.
+   failure behavior. Separate assumptions from confirmed requirements. If required
+   context is missing, use native elicitation to ask exactly one highest-priority
+   question and wait for the answer before asking the next. Never batch questions.
+   Repeat until no material blocker remains; do not finalize requirements earlier.
 3. Edit `.musubix/features/<slug>/requirements.md` with headings
    `## REQ-FEATURE-001: Title`, `Priority: must|should|may`,
    `Type: functional|non-functional`, and `Statement: ...`. IDs are globally

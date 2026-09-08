@@ -162,9 +162,14 @@ no separate “neurosymbolic AI” model or claims of learned verification.
 
 ## Workflow
 
-For normal feature additions, behavior changes and bug fixes, use `sdd-change`.
-It coordinates the complete workflow below and refuses to call an
-implementation-only change complete while required artifacts remain stale.
+Natural-language requests such as “develop/build/create/implement X” activate
+`sdd-change` as the mandatory first Skill. It elicits and validates requirements
+and design before implementation; only an explicit request to implement existing
+approved artifacts may enter `sdd-implementation` directly. The implementation
+Skill fails closed when those validated artifacts are absent or invalid. When
+material context is missing, requirements elicitation asks one highest-priority
+question at a time and waits for the answer; it does not batch questions or
+finalize requirements while blockers remain.
 
 1. Use native planning/research to establish intent and measurable acceptance.
 2. Record `change-record CHANGE-ID impact`, then edit/validate requirements and
