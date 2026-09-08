@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.1.5 - 2026-09-08
+
 - Accept causally ordered concurrent workflow events whose clocks are not
   monotonic by default, while preserving optional policy-bound timestamp skew.
 - Add policy-protected `workflow.maxTranscriptBytes` and

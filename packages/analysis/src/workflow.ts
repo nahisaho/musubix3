@@ -130,7 +130,7 @@ export async function recordWorkflow(
   delete current.verification;
   current.events.push({
     skill: event.skill,
-    version: '0.1.4',
+    version: '0.1.5',
     provenance: 'self-reported',
     phase: event.phase,
     status: event.status,
