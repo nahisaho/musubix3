@@ -413,7 +413,7 @@ export function createProgram(): Command {
   common(program.command('status').description('One-shot artifact and gate readiness summary'))
     .action(async (options: { root: string; json?: boolean }) => {
       const status = await projectStatus(resolve(options.root));
-      output(status, !!options.json, `SDD: ${status.initialized ? 'initialized / 初期化済み' : 'not initialized / 未初期化'}\nRequirements: ${status.artifacts.requirements}; designs: ${status.artifacts.designs}; ADRs: ${status.artifacts.decisions}\nCode Graph: ${status.codeGraph?.mode ?? 'unconfigured'}\nGate: ${status.gate.status}; ready: ${status.gate.ready}\n${status.next.join('\n')}`);
+      output(status, !!options.json, `SDD: ${status.initialized ? 'initialized / 初期化済み' : 'not initialized / 未初期化'}\nRequirement files: ${status.artifacts.requirements}; design files: ${status.artifacts.designs}; ADRs: ${status.artifacts.decisions}\nCode Graph: ${status.codeGraph?.mode ?? 'unconfigured'}\nGate: ${status.gate.status}; ready: ${status.gate.ready}\n${status.next.join('\n')}`);
     });
   return program;
 }

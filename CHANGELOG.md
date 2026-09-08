@@ -2,6 +2,20 @@
 
 ## Unreleased
 
+- Parse Surefire/Failsafe `<testcase>` elements correctly when a self-closing
+  entry precedes one with `<system-out>`/`<system-err>` children, so JUnit
+  identities are no longer dropped or given a neighbouring test's status.
+- Stop counting Java, Kotlin and Scala annotations as calls in Code Graph.
+- Report the offending field and mutant index for invalid schema-v1 mutation
+  reports instead of a single opaque message.
+- Explain that superseded TDD cycles are still validated and must be archived
+  and regenerated rather than replaced by a newer recording.
+- Label `status` artifact counts as requirement and design files, and document
+  the `musubix3/analysis` entry point for `mutationIdentity` plus the
+  `.musubix/evidence/native/` location for command-generated reports.
+- Name the configuration key that raises a rejected workflow transcript total or
+  line size limit instead of only reporting the exceeded bound.
+
 ## 0.1.5 - 2026-09-08
 
 - Accept causally ordered concurrent workflow events whose clocks are not

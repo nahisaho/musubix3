@@ -221,7 +221,7 @@ export async function sanitizeWorkflowLogFile(
         throw new Error(`Workflow transcript exceeds the maximum event count of ${workflowVerificationLimits.maxEvents}.`);
       }
       if (Buffer.byteLength(line) > maxLineBytes) {
-        throw new Error(`Workflow transcript line ${inputEvents} exceeds the maximum size of ${maxLineBytes} bytes.`);
+        throw new Error(`Workflow transcript line ${inputEvents} exceeds the maximum size of ${maxLineBytes} bytes; raise workflow.maxTranscriptLineBytes in .musubix/config.json and protect it in the policy baseline.`);
       }
       let event: unknown;
       try {
@@ -284,14 +284,14 @@ export async function sanitizeWorkflowLogFile(
     for await (const value of createReadStream(inputPath)) {
       const chunk = Buffer.from(value);
       sourceBytes += chunk.byteLength;
-      if (sourceBytes > maxBytes) throw new Error(`Workflow transcript exceeds the maximum total size of ${maxBytes} bytes.`);
+      if (sourceBytes > maxBytes) throw new Error(`Workflow transcript exceeds the maximum total size of ${maxBytes} bytes; raise workflow.maxTranscriptBytes in .musubix/config.json and protect it in the policy baseline.`);
       sourceHash.update(chunk);
       let start = 0;
       for (let index = chunk.indexOf(0x0a); index !== -1; index = chunk.indexOf(0x0a, start)) {
         const part = chunk.subarray(start, index);
         lineBytes += part.byteLength;
         if (lineBytes > maxLineBytes) {
-          throw new Error(`Workflow transcript line ${inputEvents + 1} exceeds the maximum size of ${maxLineBytes} bytes.`);
+          throw new Error(`Workflow transcript line ${inputEvents + 1} exceeds the maximum size of ${maxLineBytes} bytes; raise workflow.maxTranscriptLineBytes in .musubix/config.json and protect it in the policy baseline.`);
         }
         if (part.byteLength) lineParts.push(part);
         await processSanitizedLine(Buffer.concat(lineParts, lineBytes));
@@ -302,7 +302,7 @@ export async function sanitizeWorkflowLogFile(
       const remainder = chunk.subarray(start);
       lineBytes += remainder.byteLength;
       if (lineBytes > maxLineBytes) {
-        throw new Error(`Workflow transcript line ${inputEvents + 1} exceeds the maximum size of ${maxLineBytes} bytes.`);
+        throw new Error(`Workflow transcript line ${inputEvents + 1} exceeds the maximum size of ${maxLineBytes} bytes; raise workflow.maxTranscriptLineBytes in .musubix/config.json and protect it in the policy baseline.`);
       }
       if (remainder.byteLength) lineParts.push(remainder);
     }
@@ -456,7 +456,7 @@ async function verifyWorkflowChunks(
     const chunk = Buffer.from(value);
     totalBytes += chunk.byteLength;
     if (totalBytes > maxBytes) {
-      throw new Error(`Workflow transcript exceeds the maximum total size of ${maxBytes} bytes.`);
+      throw new Error(`Workflow transcript exceeds the maximum total size of ${maxBytes} bytes; raise workflow.maxTranscriptBytes in .musubix/config.json and protect it in the policy baseline.`);
     }
     sourceHash.update(chunk);
     let start = 0;
@@ -464,7 +464,7 @@ async function verifyWorkflowChunks(
       const part = chunk.subarray(start, index);
       lineBytes += part.byteLength;
       if (lineBytes > maxLineBytes) {
-        throw new Error(`Workflow transcript line ${lineNumber} exceeds the maximum size of ${maxLineBytes} bytes.`);
+        throw new Error(`Workflow transcript line ${lineNumber} exceeds the maximum size of ${maxLineBytes} bytes; raise workflow.maxTranscriptLineBytes in .musubix/config.json and protect it in the policy baseline.`);
       }
       maximumLineBytes = Math.max(maximumLineBytes, lineBytes);
       if (part.byteLength) lineParts.push(part);
@@ -477,7 +477,7 @@ async function verifyWorkflowChunks(
     const remainder = chunk.subarray(start);
     lineBytes += remainder.byteLength;
     if (lineBytes > maxLineBytes) {
-      throw new Error(`Workflow transcript line ${lineNumber} exceeds the maximum size of ${maxLineBytes} bytes.`);
+      throw new Error(`Workflow transcript line ${lineNumber} exceeds the maximum size of ${maxLineBytes} bytes; raise workflow.maxTranscriptLineBytes in .musubix/config.json and protect it in the policy baseline.`);
     }
     if (remainder.byteLength) lineParts.push(remainder);
   }

@@ -239,6 +239,15 @@ unique-id: [engine:junit-jupiter]/[class:example.TaggedTest]/[method:works()]
 display-name: TEST-APP-005 tagged behavior
 ]]></system-out>
     </testcase></testsuite>`).tests).toEqual([{ id: 'TEST-APP-005', status: 'passed' }]);
+    expect(normalizeAdapterReport('junit', `<testsuite>
+      <testcase name="TEST-APP-005" classname="example.Suite" time="0.1"/>
+      <testcase name="TEST-APP-006" classname="example.Suite"><failure message="boom"/><system-out>banner</system-out></testcase>
+      <testcase name="TEST-APP-007" classname="example.Suite" time="0.3"/>
+    </testsuite>`).tests).toEqual([
+      { id: 'TEST-APP-005', status: 'passed' },
+      { id: 'TEST-APP-006', status: 'failed' },
+      { id: 'TEST-APP-007', status: 'passed' },
+    ]);
     expect(normalizeAdapterReport('dotnet',
       '<TestRun><Results><UnitTestResult testName="TEST-APP-006 works" outcome="Passed" /></Results></TestRun>',
     ).tests).toEqual([{ id: 'TEST-APP-006', status: 'passed' }]);

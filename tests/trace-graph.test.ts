@@ -366,6 +366,28 @@ describe('compiler graph', () => {
     expect(graph.calls).toContainEqual(expect.objectContaining({ path: 'src/com/example/App.java', expression: 'Service.run', target: expect.stringContaining('src/com/example/Service.java#run@') }));
   });
 
+  it('does not count Java annotations as calls', async () => {
+    const root = await fixture({
+      'src/com/example/Order.java': [
+        'package com.example;',
+        'import jakarta.persistence.Column;',
+        'public class Order {',
+        '  @Column(name = "total")',
+        '  private long total;',
+        '  @Override',
+        '  @jakarta.annotation.Nonnull',
+        '  public String toString() { return helper(); }',
+        '  private String helper() { return ""; }',
+        '}',
+      ].join('\n'),
+    });
+    const graph = await indexGraph(root);
+    const expressions = graph.calls.filter((call) => call.path === 'src/com/example/Order.java').map((call) => call.expression);
+    expect(expressions).toContain('helper');
+    expect(expressions).not.toContain('Column');
+    expect(expressions).not.toContain('jakarta.annotation.Nonnull');
+  });
+
   it('indexes C and C++ includes, types, functions and direct calls', async () => {
     const root = await fixture({
       'include/service.hpp': '#pragma once\nstruct Service { int run(); };\n',

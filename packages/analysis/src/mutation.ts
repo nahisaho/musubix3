@@ -94,21 +94,43 @@ function validRelativePath(value: unknown): value is string {
     && !value.split(/[\\/]/).includes('..');
 }
 
+function recordDiagnosis(record: MutationRecord): string | null {
+  if (!record || typeof record !== 'object') return 'record must be an object';
+  if (typeof record.id !== 'string') return 'id must be a string';
+  if (typeof record.requirementId !== 'string') return 'requirementId must be a string';
+  if (typeof record.testId !== 'string') return 'testId must be a string';
+  if (!validRelativePath(record.sourcePath)) return 'sourcePath must be a relative path inside the project';
+  if (!validHash(record.sourceSha256)) return 'sourceSha256 must be a lowercase 64-character SHA-256 hex digest';
+  if (!validRelativePath(record.testPath)) return 'testPath must be a relative path inside the project';
+  if (!validHash(record.testSha256)) return 'testSha256 must be a lowercase 64-character SHA-256 hex digest';
+  if (typeof record.operator !== 'string' || !/^[\p{L}_][\p{L}\p{N}_.:-]{0,127}$/u.test(record.operator)) {
+    return 'operator must be a short identifier-like string';
+  }
+  if (!record.location || !Number.isInteger(record.location.line) || record.location.line <= 0
+    || !Number.isInteger(record.location.column) || record.location.column <= 0) {
+    return 'location.line and location.column must be one-based positive integers';
+  }
+  if (!['killed', 'survived', 'skipped', 'error'].includes(record.status)) {
+    return 'status must be killed, survived, skipped or error';
+  }
+  return null;
+}
+
 function validRecord(record: MutationRecord): boolean {
-  return !!record && typeof record.id === 'string'
-    && typeof record.requirementId === 'string' && typeof record.testId === 'string'
-    && validRelativePath(record.sourcePath) && validHash(record.sourceSha256)
-    && validRelativePath(record.testPath) && validHash(record.testSha256)
-    && typeof record.operator === 'string' && /^[\p{L}_][\p{L}\p{N}_.:-]{0,127}$/u.test(record.operator)
-    && !!record.location && Number.isInteger(record.location.line) && record.location.line > 0
-    && Number.isInteger(record.location.column) && record.location.column > 0
-    && ['killed', 'survived', 'skipped', 'error'].includes(record.status);
+  return recordDiagnosis(record) === null;
 }
 
 export function parseMutationReport(text: string): MutationReport {
   const value = JSON.parse(text) as MutationReport;
-  if (value.schemaVersion !== 1 || !Array.isArray(value.mutants) || !value.mutants.every(validRecord)) {
-    throw new Error('Invalid schema-v1 mutation report.');
+  if (value.schemaVersion !== 1) {
+    throw new Error('Invalid schema-v1 mutation report: schemaVersion must be the number 1.');
+  }
+  if (!Array.isArray(value.mutants)) {
+    throw new Error('Invalid schema-v1 mutation report: mutants must be an array.');
+  }
+  for (const [index, record] of value.mutants.entries()) {
+    const reason = recordDiagnosis(record);
+    if (reason) throw new Error(`Invalid schema-v1 mutation report: mutants[${index}] ${reason}.`);
   }
   return value;
 }

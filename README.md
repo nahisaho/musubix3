@@ -480,6 +480,9 @@ names such as `test_TEST_APP_001`. Go uses a `TEST-*` subtest name, Cargo uses a
 Rust identifier such as `test_app_001`. JUnit methods should carry an exact
 `@Tag("TEST-APP-001")` and an ID-bearing method name or `@DisplayName`; the
 normalizer reads both testcase attributes and JUnit Platform display-name output.
+Surefire/Failsafe testcase elements are parsed whether they are self-closing or
+carry `<system-out>`/`<system-err>` children, so framework logging such as the
+Spring Boot banner does not hide passing identities.
 xUnit tests use
 `[Fact(DisplayName = "TEST-APP-001 ...")]` so TRX preserves the identity.
 Before each phase, musubix3 deletes
@@ -535,7 +538,7 @@ actually emits the named operation counter can prove the performance budget.
 Mutation evidence uses a configured command with
 `"mutationReport":{"format":"musubix-mutation-json","path":"..."}`. Each fresh
 schema-v1 mutant record carries a deterministic `MUT-<hash>` identity (derivable
-with the exported `mutationIdentity` helper), must-functional requirement ID,
+with the `mutationIdentity` helper exported from `musubix3/analysis`), must-functional requirement ID,
 authoritative test ID, source/test paths and SHA-256 fingerprints, operator,
 one-based line/column, and `killed|survived|skipped|error` status. The gate adds
 command, rendered-argument, report, process, and exit provenance to
@@ -583,6 +586,9 @@ If project inputs change while a gate is running, `input-stability` reports each
 added, modified, or deleted path with before/after SHA-256 values. Standard
 Cargo/Maven `target/`, manifest-scoped .NET `bin/` and `obj/`, and project-local
 `.nuget/packages/` output are excluded, but source-like generated inputs remain fail-closed.
+Write command-generated reports under `.musubix/evidence/native/` rather than the
+tracked source tree, otherwise a command that writes its own report during the
+gate invalidates input stability.
 Built-in adapters own their targeting and report arguments. A
 legacy leading Cargo/Go `test` subcommand is merged safely; conflicting report
 flags such as `--json-report` are rejected.

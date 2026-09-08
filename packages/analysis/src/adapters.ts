@@ -351,8 +351,10 @@ export function normalizeAdapterReport(adapter: TestAdapter, text: string, targe
   } else if (adapter === 'dotnet') {
     tests.push(...dotnetResults(text));
   } else {
-    for (const match of text.matchAll(/<testcase\b([^>]*)>([\s\S]*?)<\/testcase>|<testcase\b([^>]*)\/>/g)) {
-      const attributes = match[1] ?? match[3] ?? '';
+    const attributeText = '(?:[^>"\']|"[^"]*"|\'[^\']*\')*?';
+    const testcase = new RegExp(`<testcase\\b(${attributeText})(?:/>|>([\\s\\S]*?)</testcase>)`, 'g');
+    for (const match of text.matchAll(testcase)) {
+      const attributes = match[1] ?? '';
       const body = match[2] ?? '';
       const identityText = /\bname="([^"]*)"/.exec(attributes)?.[1]
         ?? /\bclassname="([^"]*)"/.exec(attributes)?.[1];

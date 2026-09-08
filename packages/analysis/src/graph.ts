@@ -424,7 +424,7 @@ function maskWithPatterns(text: string, patterns: RegExp[]): string {
   return masked;
 }
 
-function addCalls(path: string, searchable: string, graph: CodeGraph, ignored: Set<string>): void {
+function addCalls(path: string, searchable: string, graph: CodeGraph, ignored: Set<string>, skipAnnotations = false): void {
   const symbols = new Map<string, CodeSymbol[]>();
   for (const symbol of graph.symbols) {
     const values = symbols.get(symbol.name) ?? [];
@@ -436,6 +436,7 @@ function addCalls(path: string, searchable: string, graph: CodeGraph, ignored: S
     const name = expression.split(/::|\./).at(-1)!;
     const prefix = searchable.slice(Math.max(0, match.index - 24), match.index);
     if (ignored.has(name) || /\b(?:def|class|func|function|fn|fun|let|sub|new)\s+$/i.test(prefix)) continue;
+    if (skipAnnotations && prefix.endsWith('@')) continue;
     const candidates = symbols.get(expression) ?? symbols.get(name) ?? [];
     graph.calls.push({ path, line: lineOf(searchable, match.index), expression, target: candidates.length === 1 ? candidates[0]!.id : null });
   }
@@ -537,7 +538,7 @@ function indexJavaRelations(path: string, text: string, graph: CodeGraph, types:
     const target = types.get(specifier) ?? null;
     graph.imports.push({ from: path, to: target ?? `java:${specifier}`, specifier, kind: 'import', line: lineOf(searchable, match.index), external: !target });
   }
-  addCalls(path, searchable, graph, new Set(['if', 'for', 'while', 'switch', 'catch', 'synchronized', 'return', 'new']));
+  addCalls(path, searchable, graph, new Set(['if', 'for', 'while', 'switch', 'catch', 'synchronized', 'return', 'new']), true);
 }
 
 function relativeTarget(from: string, specifier: string, known: Set<string>): string | null {
@@ -814,7 +815,7 @@ function indexKotlinRelations(path: string, text: string, known: Set<string>, gr
       graph.imports.push({ from: path, to: target ?? `kotlin:${specifier}`, specifier, kind: 'import', line: lineOf(searchable, match.index), external: !target });
     }
   }
-  addCalls(path, searchable, graph, new Set(['if', 'for', 'while', 'when', 'catch', 'fun', 'class', 'interface', 'object']));
+  addCalls(path, searchable, graph, new Set(['if', 'for', 'while', 'when', 'catch', 'fun', 'class', 'interface', 'object']), true);
 }
 
 function indexRubySymbols(path: string, text: string, graph: CodeGraph): void {
@@ -962,7 +963,7 @@ function indexScalaRelations(path: string, text: string, graph: CodeGraph, decla
       }
     }
   }
-  addCalls(path, searchable, graph, new Set(['if', 'for', 'while', 'match', 'catch', 'def', 'class', 'object', 'trait']));
+  addCalls(path, searchable, graph, new Set(['if', 'for', 'while', 'match', 'catch', 'def', 'class', 'object', 'trait']), true);
 }
 
 function indexElixirSymbols(path: string, text: string, graph: CodeGraph, modules: Map<string, string>): void {
