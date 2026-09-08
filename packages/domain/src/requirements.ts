@@ -24,6 +24,37 @@ function atom(value: unknown): value is string {
   return typeof value === 'string' && /^[\p{L}_][\p{L}\p{N}_.:-]{0,127}$/u.test(value);
 }
 
+const FORMAL_KEYS: Record<string, string[]> = {
+  conditional: ['kind', 'condition', 'consequence', 'conditionValue', 'consequenceValue'],
+  numeric: ['kind', 'metric', 'operator', 'value', 'unit'],
+  temporal: ['kind', 'trigger', 'response', 'withinMs', 'afterMs'],
+  transition: ['kind', 'from', 'event', 'to'],
+};
+
+const FORMAL_FIELDS: Record<string, string> = {
+  condition: 'required identifier', consequence: 'required identifier',
+  conditionValue: 'optional boolean', consequenceValue: 'optional boolean',
+  metric: 'required identifier', operator: 'required one of <, <=, =, >=, >',
+  value: 'required safe integer', unit: 'optional identifier',
+  trigger: 'required identifier', response: 'required identifier',
+  withinMs: 'required positive integer', afterMs: 'optional nonnegative integer',
+  from: 'required identifier', event: 'required identifier', to: 'required identifier',
+};
+
+function formalReason(value: Record<string, unknown>): string {
+  const kind = typeof value.kind === 'string' ? value.kind : '';
+  const allowed = FORMAL_KEYS[kind];
+  if (!allowed) {
+    return `kind must be one of conditional, numeric, temporal, transition (received ${kind ? JSON.stringify(kind) : 'no kind'})`;
+  }
+  const unexpected = Object.keys(value).filter((key) => !allowed.includes(key));
+  if (unexpected.length) return `kind ${kind} rejects unexpected key(s) ${unexpected.join(', ')}; allowed keys are ${allowed.join(', ')}`;
+  const missing = allowed.filter((key) => key !== 'kind' && value[key] === undefined && !FORMAL_FIELDS[key]?.startsWith('optional'));
+  if (missing.length) return `kind ${kind} is missing required key(s) ${missing.map((key) => `${key} (${FORMAL_FIELDS[key]})`).join(', ')}`;
+  const invalid = allowed.filter((key) => key !== 'kind' && value[key] !== undefined);
+  return `kind ${kind} has an invalid value for one of ${invalid.map((key) => `${key} (${FORMAL_FIELDS[key]})`).join(', ')}`;
+}
+
 function parseFormal(text: string, path: string, line: number, diagnostics: ReturnType<typeof error>[]): FormalConstraint | null {
   const value = explicitObject(text, 'formal', path, line, diagnostics);
   if (!value) return null;
@@ -70,7 +101,7 @@ function parseFormal(text: string, path: string, line: number, diagnostics: Retu
     && atom(value.from) && atom(value.event) && atom(value.to)) {
     constraint = { kind: 'transition', from: value.from, event: value.event, to: value.to };
   }
-  if (!constraint) diagnostics.push(error('REQ_FORMAL_SCHEMA', 'Formal must match the conditional, numeric, temporal, or transition constraint schema.', path, line));
+  if (!constraint) diagnostics.push(error('REQ_FORMAL_SCHEMA', `Formal must match the conditional, numeric, temporal, or transition constraint schema: ${formalReason(value)}.`, path, line));
   return constraint;
 }
 
@@ -141,14 +172,24 @@ export function validateRequirements(text: string, path = '<input>'): Validation
       .filter((line) => !/^\s*(?:[-*]\s+)?(?:\*\*)?(Priority|Type|Pattern|Acceptance|Formal|Performance|優先度|種別|パターン|受入条件|形式制約|性能予算)(?:\*\*)?\s*[:：]/i.test(line))
       .join(' ').trim();
     const pattern = classifyEars(statement);
-    if (!pattern) diagnostics.push(error(
-      'REQ_EARS',
-      'Use one complete controlled EARS statement. English example: "When an event occurs, the system shall respond." Japanese example: "イベントが発生したとき、APIは応答しなければならない。"',
-      path,
-      section.line,
-    ));
+    if (!pattern) {
+      const normalized = statement.trim().replace(/\s+/g, ' ');
+      const obligations = (normalized.match(/\bshall\b/gi) ?? []).length
+        + (normalized.match(/しなければならない|してはならない|してはいけない|すること/g) ?? []).length;
+      const reason = obligations > 1
+        ? ` This statement declares ${obligations} obligations; split it so exactly one "shall"/obligation remains per requirement.`
+        : '';
+      diagnostics.push(error(
+        'REQ_EARS',
+        `Use one complete controlled EARS statement.${reason} English example: "When an event occurs, the system shall respond." Japanese example: "イベントが発生したとき、APIは応答しなければならない。"`,
+        path,
+        section.line,
+      ));
+    }
     const declared = field(section.body, 'Pattern|パターン').toLowerCase();
-    if (declared && declared !== pattern) diagnostics.push(error('REQ_PATTERN', `Declared pattern ${declared} does not match detected pattern ${pattern ?? 'invalid'}.`, path, section.line));
+    if (declared && declared !== pattern) {
+      diagnostics.push(error('REQ_PATTERN', `Declared pattern ${declared} does not match detected pattern ${pattern ?? 'invalid'}. Valid patterns are ubiquitous, event-driven, state-driven, unwanted-behavior, optional-feature, complex.`, path, section.line));
+    }
     const acceptance = field(section.body, 'Acceptance|受入条件');
     const formal = parseFormal(field(section.body, 'Formal|形式制約'), path, section.line, diagnostics);
     const performance = parsePerformance(field(section.body, 'Performance|性能予算'), path, section.line, diagnostics);

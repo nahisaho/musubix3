@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "stage": "design",
+  "artifacts": {
+    ".musubix/constitution.md": "f8b47fdc486f395bab05223a94821b145cf8df70ffde2c838a28f8d71fe0fa92",
+    ".musubix/decisions/ADR-0002.md": "da556c6ef7efcee366a8c6497179bad96c093145366b6422548b0e3df2cba348",
+    ".musubix/features/human-approval-gates/design.md": "ce1e316afee28082001ddedbce734a7766562889bd28f3eea610909c8d736206",
+    ".musubix/features/human-approval-gates/requirements.md": "f2ae2380935831bb102cd6a7726f2a208ab1719e035157302ef51ed28f624fb0"
+  },
+  "artifactSha256": "f5d062bb806fa9a801eff03343d2e8ef8a4f370eebe00d5d56dfd930109e0965",
+  "approver": "@nahisaho",
+  "approvedAt": "2026-09-08T22:06:29.885Z"
+}

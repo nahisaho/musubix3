@@ -4,7 +4,7 @@ import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { parseDocument } from 'yaml';
 import {
-  githubOidcAudience, loadConfig, readText, runProcess, writeJson, writeText,
+  exists, githubOidcAudience, loadConfig, readText, runProcess, writeJson, writeText,
 } from '../packages/analysis/src/index.js';
 import { skillNames } from '../packages/cli/src/install.js';
 import { fixture, project, repository, req } from './helpers.js';
@@ -17,7 +17,7 @@ async function invoke(root: string, args: string[]): Promise<Awaited<ReturnType<
 describe('CLI contracts', () => {
   it('prints version/help and JSON validation with nonzero failure', async () => {
     const root = await fixture({ 'requirements.md': req() });
-    expect((await invoke(root, ['--version'])).stdout.trim()).toBe('0.1.6');
+    expect((await invoke(root, ['--version'])).stdout.trim()).toBe('0.1.7');
     expect((await invoke(root, ['--help'])).stdout).toContain('trace');
     const valid = await invoke(root, ['requirements', 'validate', 'requirements.md', '--json']);
     expect(valid.exitCode).toBe(0);
@@ -52,7 +52,36 @@ describe('CLI contracts', () => {
     expect(status.gate.ready).toBe(false);
     await symlink(cli, resolve(root, 'musubix3-bin'));
     const linked = await runProcess(process.execPath, [resolve(root, 'musubix3-bin'), '--version'], { cwd: root, timeoutMs: 10_000 });
-    expect(linked.stdout.trim()).toBe('0.1.6');
+    expect(linked.stdout.trim()).toBe('0.1.7');
+  });
+
+  it('requires explicit confirmation before recording human approval', async () => {
+    const root = await fixture();
+    expect((await invoke(root, ['init', '--json'])).exitCode).toBe(0);
+    const prepared = JSON.parse((await invoke(root, ['approval', 'prepare', 'requirements', '--json'])).stdout);
+    const missingConfirm = await invoke(root, [
+      'approval', 'record', 'requirements', '--approver', 'Human Reviewer',
+      '--artifact-sha256', prepared.artifactSha256, '--json',
+    ]);
+    expect(missingConfirm.exitCode).toBe(2);
+    expect(await exists(resolve(root, '.musubix/evidence/approvals/requirements.json'))).toBe(false);
+    const wrongManifest = await invoke(root, [
+      'approval', 'record', 'requirements', '--approver', 'Human Reviewer',
+      '--artifact-sha256', '0'.repeat(64), '--confirm', '--json',
+    ]);
+    expect(wrongManifest.exitCode).toBe(2);
+
+    const recorded = await invoke(root, [
+      'approval', 'record', 'requirements', '--approver', 'Human Reviewer',
+      '--artifact-sha256', prepared.artifactSha256, '--confirm', '--json',
+    ]);
+    expect(recorded.exitCode, recorded.stderr).toBe(0);
+    expect(JSON.parse(recorded.stdout)).toMatchObject({
+      stage: 'requirements',
+      approver: 'Human Reviewer',
+      artifactSha256: expect.stringMatching(/^[a-f0-9]{64}$/),
+    });
+    expect((await invoke(root, ['approval', 'validate', '--json'])).exitCode).toBe(1);
   });
 
   it('runs full workflow and reports JSON evidence', async () => {

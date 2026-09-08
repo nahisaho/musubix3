@@ -1,6 +1,6 @@
 # musubix3
 
-**Latest release v0.1.4 · GitHub Copilot CLI only · Node.js ≥20 · TypeScript · MIT**
+**Latest release v0.1.7 · GitHub Copilot CLI only · Node.js ≥20 · TypeScript · MIT**
 
 [日本語](README-ja.md)
 
@@ -172,22 +172,29 @@ question at a time and waits for the answer; it does not batch questions or
 finalize requirements while blockers remain.
 
 1. Use native planning/research to establish intent and measurable acceptance.
-2. Record `change-record CHANGE-ID impact`, then edit/validate requirements and
-   record the `requirements` checkpoint.
-3. Design explicit components, record trade-offs in ADRs, then record `design`.
+2. Record `change-record CHANGE-ID impact`, edit/validate requirements, record
+   the `requirements` checkpoint, then obtain explicit artifact-bound human
+   `requirements` approval before design.
+3. Design explicit components, record trade-offs in ADRs, record `design`, then
+   obtain explicit artifact-bound human `design` approval before implementation.
 4. Write an annotated behavior test, record a structured failing `tdd red`, then
    record the change `red` checkpoint.
 5. Implement the minimum change, record `implementation`, run passing `tdd green`,
    then record `green` and refactor.
 6. Add trace annotations, build graphs, inspect impact and fix missing coverage.
-7. Configure real checks, run `gate --changed`, use native review/security review,
-   and inspect status before release. Do not weaken policy simply to pass.
+7. Configure real checks and run the candidate `gate --changed`. After every
+   required non-approval check passes, obtain explicit human `release` approval,
+   rerun the gate/status, and only then commit, push, publish, or deploy.
 
 ```sh
 npx musubix3 requirements validate .musubix/features/example/requirements.md --json
 npx musubix3 constitution validate --json
+npx musubix3 approval prepare requirements --json
+npx musubix3 approval record requirements --approver "Requirements Owner" --artifact-sha256 "$REVIEWED_HASH" --confirm
 npx musubix3 design validate .musubix/features/example/design.md --json
 npx musubix3 design c4 .musubix/features/example/design.md
+npx musubix3 approval prepare design --json
+npx musubix3 approval record design --approver "Design Owner" --artifact-sha256 "$REVIEWED_HASH" --confirm
 npx musubix3 change-record CHANGE-0001 design --requirement REQ-EXAMPLE-001
 npx musubix3 tdd red TEST-EXAMPLE-001 --requirement REQ-EXAMPLE-001 --command test
 # Implement the minimum behavior without changing the test.
@@ -198,6 +205,10 @@ npx musubix3 trace check --strict --json
 npx musubix3 graph index
 npx musubix3 graph impact src/service.ts
 npx musubix3 gate --changed --json
+npx musubix3 approval prepare release --json
+npx musubix3 approval record release --approver "Release Owner" --artifact-sha256 "$REVIEWED_HASH" --confirm
+npx musubix3 gate --changed --json
+npx musubix3 approval validate --json
 npx musubix3 status --json
 ```
 
@@ -217,6 +228,9 @@ validation/gate or requested solver failure, **2** usage, I/O or malformed confi
 | `constitution validate [file]` | Versioned principles and measurable rule definitions |
 | `design validate <file>` | Fields, global requirement IDs, existing ADR references |
 | `design c4 <file>` | Mermaid component/dependency diagram from explicit fields |
+| `approval prepare <requirements\|design\|release>` | Display the exact deterministic manifest and hash for human review |
+| `approval record <stage> --approver <name> --artifact-sha256 <hash> --confirm` | Record approval only if the reviewed hash is still current |
+| `approval validate` | Report each approval as approved, missing, or stale; never infer approval from validation |
 | `trace build` | Generate global trace snapshot and feature copies |
 | `trace check [--strict]` | Dangling IDs, stale inputs/paths, mandatory coverage |
 | `trace impact <id-or-path>` | Bidirectional breadth-first traversal with explanation paths |
@@ -233,6 +247,7 @@ validation/gate or requested solver failure, **2** usage, I/O or malformed confi
 | `model-correspondence validate` | Revalidate Formal JSON → generated trace → authoritative passing test evidence |
 | `evidence refresh [--changed]` | Regenerate derived evidence through the same fail-closed gate pipeline |
 | `mutation validate` | Revalidate requirement-scoped schema-v1 killed-mutant evidence |
+| `mutation identity <REQ-ID> <TEST-ID> <sourcePath> <operator> <line> <column>` | Print the deterministic `MUT-*` identity a mutation report must declare |
 | `tdd validate` | Validate persisted Red/Green/Refactor order, fingerprints, durations, and hash-chain evidence |
 | `tdd red\|green\|refactor <TEST-ID> --requirement <REQ-ID> --command <name>` | Execute and record a verified TDD phase |
 | `workflow-record <skill> <phase> --status <status>` | Record a compact self-reported workflow declaration |
@@ -347,6 +362,9 @@ export function guard() { /* actual implementation */ }
 ```
 
 One block comment per entity; comma/space-separated targets. `@design` is optional.
+In PHP, use plain `/* ... */` blocks rather than `/** ... */` PHPDoc: PHPDoc reserves
+`@implements` for generic type declarations, so PHPStan/Psalm report `phpDoc.parseError`
+on requirement-ID lists inside doc comments. musubix3 reads either form.
 Mandatory implementation coverage may be direct or through a linked design;
 tests must directly verify a requirement. Links alone are not semantic proof.
 Each feature's `trace.json` holds the complete repository snapshot, including
@@ -396,6 +414,7 @@ Example `.musubix/config.json` (adapt command arguments to your own project):
   "formal": { "solver": "none", "minModeledFraction": 0, "timeoutMs": 12000 },
   "mutation": { "mode": "compatible" },
   "tdd": { "redPreflightCommands": [] },
+  "approval": { "mode": "required" },
   "workflow": {
     "mode": "compatible",
     "maxAgeSeconds": 3600,
@@ -428,6 +447,20 @@ commands fail closed. Globs support `*`, `**`, `?`; external imports use `npm:`.
 identities, and `release` requires the complete formal, mutation, workflow,
 change, performance and CI-attestation checks. Stronger profiles reject missing
 or weakened settings rather than silently filling in evidence.
+`approval.mode` is `required` in newly initialized projects and requires current
+requirements, design, and release approvals. Existing schema-v1 configs that
+omit `approval` load in `compatible` mode. Approval files store the stage,
+approver, `approvedAt`, per-artifact SHA-256 values, and a deterministic manifest
+SHA-256. Run `approval prepare` before review and pass that exact hash to
+`approval record`; an intervening change is rejected and later changes become
+stale. Release recording recomputes the gate and requires every required
+non-approval check to pass rather than trusting cached quality evidence.
+The approver string is explicit local evidence, not authenticated identity;
+repositories that require independent identity must also use protected review,
+CODEOWNERS, or CI/OIDC controls.
+Local approval evidence records explicit intent but does not cryptographically
+authenticate the approver; protect release authorization with repository review,
+CODEOWNERS/branch protection, or CI/OIDC attestation.
 Use `tdd.redPreflightCommands` to reference plain configured formatter commands;
 they must pass before Red captures the authoritative test fingerprint.
 Conventional `.venv` and `venv` Python environments containing a regular
@@ -460,7 +493,7 @@ unchanged test file. Test names/output must contain their `TEST-*` ID.
 diagnostic codes are stable English; human status labels include Japanese.
 
 `.musubix/policy-baseline.json` records minimum required checks, coverage,
-architecture, formal policy, mutation mode, workflow strict/session/freshness settings,
+architecture, formal policy, mutation and approval modes, workflow strict/session/freshness settings,
 CI-required attestation and strict OIDC identity/key binding, and required
 command names. A baseline that requires TDD Red preflights must also include
 their normalized `commands` definitions, which prevents replacing a trusted
@@ -477,6 +510,13 @@ nonblocking unless a constitution rule rejects the measured count. No configured
 commands is skipped, not passed.
 TDD commands require either command-specific `tddArgs` plus a `tddReport`, or a
 built-in `vitest`, `jest`, `pytest`, `go-test`, `cargo`, `junit`, or `dotnet` adapter.
+The `junit` adapter drives the Java JUnit Platform Console launcher, not arbitrary
+JUnit-XML producers; runners such as PHPUnit that only emit JUnit XML need explicit
+`tddArgs`/`tddReport` (or `testReport`) configuration instead. A custom
+`musubix-json` report is a single-line-safe JSON document
+`{"schemaVersion":1,"tests":[{"id":"TEST-APP-001","status":"passed"}]}` where
+`status` is `passed`, `failed`, `skipped` or `error`, and an optional
+`"operations":{"counter":12}` map carries deterministic performance counters.
 Explicit custom configuration takes precedence. Adapters derive targeted
 arguments and normalize native JSON/JSONL/XML into `musubix-json`. Vitest/Jest
 reports may contain unrelated skipped tests; targeted TDD selects only the
@@ -501,7 +541,18 @@ change checkpoints additionally share a persisted monotonic order ledger, which
 is authoritative for Red/Green boundaries; wall-clock timestamps are
 informational. Legacy chronology without order evidence fails with an explicit
 migration diagnostic. Missing, reordered, altered or orphaned records invalidate
-the evidence.
+the evidence. Superseded cycles are never replaced by a newer recording: if any
+cycle lacks test-scoped provenance or a valid Red/Green, move
+`.musubix/evidence/tdd.json` aside and re-record every cycle from a clean Red
+baseline. There is deliberately no partial prune command, and hand-editing the
+evidence is unsupported.
+
+Deterministic mutant identities come from `musubix3 mutation identity
+<REQ-ID> <TEST-ID> <sourcePath> <operator> <line> <column>`, which prints the
+exact `MUT-*` value a schema-v1 mutation report must declare. `mutation
+validate` reads `.musubix/evidence/mutation.json`; a configured `mutationReport`
+is converted into that file by the gate, so validating before a gate run reports
+absent rather than passing evidence.
 
 CI executes isolated native contracts for Vitest, Jest,
 pytest with `pytest-json-report`, Go test, Cargo test, and the pinned JUnit

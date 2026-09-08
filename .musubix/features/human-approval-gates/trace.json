@@ -1,0 +1,406 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-09-08T22:15:30.422Z",
+  "nodes": [
+    {
+      "id": "ADR-0002",
+      "kind": "adr",
+      "path": ".musubix/decisions/ADR-0002.md",
+      "line": 1
+    },
+    {
+      "id": "DES-APPROVAL-001",
+      "kind": "design",
+      "path": ".musubix/features/human-approval-gates/design.md",
+      "line": 7
+    },
+    {
+      "id": "DES-APPROVAL-002",
+      "kind": "design",
+      "path": ".musubix/features/human-approval-gates/design.md",
+      "line": 15
+    },
+    {
+      "id": "DES-APPROVAL-003",
+      "kind": "design",
+      "path": ".musubix/features/human-approval-gates/design.md",
+      "line": 23
+    },
+    {
+      "id": "REQ-HUMAN-APPROVAL-GATES-001",
+      "kind": "requirement",
+      "path": ".musubix/features/human-approval-gates/requirements.md",
+      "line": 7,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-HUMAN-APPROVAL-GATES-002",
+      "kind": "requirement",
+      "path": ".musubix/features/human-approval-gates/requirements.md",
+      "line": 14,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-HUMAN-APPROVAL-GATES-003",
+      "kind": "requirement",
+      "path": ".musubix/features/human-approval-gates/requirements.md",
+      "line": 21,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-HUMAN-APPROVAL-GATES-004",
+      "kind": "requirement",
+      "path": ".musubix/features/human-approval-gates/requirements.md",
+      "line": 28,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-HUMAN-APPROVAL-GATES-005",
+      "kind": "requirement",
+      "path": ".musubix/features/human-approval-gates/requirements.md",
+      "line": 35,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-HUMAN-APPROVAL-GATES-006",
+      "kind": "requirement",
+      "path": ".musubix/features/human-approval-gates/requirements.md",
+      "line": 42,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-HUMAN-APPROVAL-GATES-007",
+      "kind": "requirement",
+      "path": ".musubix/features/human-approval-gates/requirements.md",
+      "line": 49,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-HUMAN-APPROVAL-GATES-008",
+      "kind": "requirement",
+      "path": ".musubix/features/human-approval-gates/requirements.md",
+      "line": 56,
+      "mandatory": true
+    },
+    {
+      "id": "CODE-HUMAN-APPROVAL-GATES-002",
+      "kind": "code",
+      "path": "packages/analysis/src/approval-record.ts",
+      "line": 9
+    },
+    {
+      "id": "CODE-HUMAN-APPROVAL-GATES-001",
+      "kind": "code",
+      "path": "packages/analysis/src/approval.ts",
+      "line": 63
+    },
+    {
+      "id": "TEST-HUMAN-APPROVAL-GATES-001",
+      "kind": "test",
+      "path": "tests/approval.test.ts",
+      "line": 17
+    },
+    {
+      "id": "TEST-HUMAN-APPROVAL-GATES-006",
+      "kind": "test",
+      "path": "tests/approval.test.ts",
+      "line": 46
+    },
+    {
+      "id": "TEST-HUMAN-APPROVAL-GATES-002",
+      "kind": "test",
+      "path": "tests/approval.test.ts",
+      "line": 82
+    },
+    {
+      "id": "TEST-HUMAN-APPROVAL-GATES-003",
+      "kind": "test",
+      "path": "tests/approval.test.ts",
+      "line": 94
+    },
+    {
+      "id": "TEST-HUMAN-APPROVAL-GATES-004",
+      "kind": "test",
+      "path": "tests/approval.test.ts",
+      "line": 110
+    },
+    {
+      "id": "TEST-HUMAN-APPROVAL-GATES-007",
+      "kind": "test",
+      "path": "tests/approval.test.ts",
+      "line": 120
+    },
+    {
+      "id": "TEST-HUMAN-APPROVAL-GATES-005",
+      "kind": "test",
+      "path": "tests/approval.test.ts",
+      "line": 148
+    },
+    {
+      "id": "TEST-HUMAN-APPROVAL-GATES-008",
+      "kind": "test",
+      "path": "tests/approval.test.ts",
+      "line": 170
+    }
+  ],
+  "edges": [
+    {
+      "from": "DES-APPROVAL-001",
+      "to": "REQ-HUMAN-APPROVAL-GATES-002",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-APPROVAL-001",
+      "to": "REQ-HUMAN-APPROVAL-GATES-003",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0002",
+      "to": "DES-APPROVAL-001",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-APPROVAL-002",
+      "to": "REQ-HUMAN-APPROVAL-GATES-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-APPROVAL-002",
+      "to": "REQ-HUMAN-APPROVAL-GATES-002",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-APPROVAL-002",
+      "to": "REQ-HUMAN-APPROVAL-GATES-003",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-APPROVAL-002",
+      "to": "REQ-HUMAN-APPROVAL-GATES-006",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-APPROVAL-002",
+      "to": "REQ-HUMAN-APPROVAL-GATES-007",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0002",
+      "to": "DES-APPROVAL-002",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-APPROVAL-002",
+      "to": "DES-APPROVAL-001",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-APPROVAL-003",
+      "to": "REQ-HUMAN-APPROVAL-GATES-004",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-APPROVAL-003",
+      "to": "REQ-HUMAN-APPROVAL-GATES-005",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-APPROVAL-003",
+      "to": "REQ-HUMAN-APPROVAL-GATES-006",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-APPROVAL-003",
+      "to": "REQ-HUMAN-APPROVAL-GATES-007",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-APPROVAL-003",
+      "to": "REQ-HUMAN-APPROVAL-GATES-008",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0002",
+      "to": "DES-APPROVAL-003",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-APPROVAL-003",
+      "to": "DES-APPROVAL-002",
+      "relation": "depends-on"
+    },
+    {
+      "from": "CODE-HUMAN-APPROVAL-GATES-002",
+      "to": "REQ-HUMAN-APPROVAL-GATES-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-HUMAN-APPROVAL-GATES-002",
+      "to": "REQ-HUMAN-APPROVAL-GATES-006",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-HUMAN-APPROVAL-GATES-002",
+      "to": "DES-APPROVAL-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-HUMAN-APPROVAL-GATES-002",
+      "to": "DES-APPROVAL-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-HUMAN-APPROVAL-GATES-001",
+      "to": "REQ-HUMAN-APPROVAL-GATES-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-HUMAN-APPROVAL-GATES-001",
+      "to": "REQ-HUMAN-APPROVAL-GATES-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-HUMAN-APPROVAL-GATES-001",
+      "to": "REQ-HUMAN-APPROVAL-GATES-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-HUMAN-APPROVAL-GATES-001",
+      "to": "REQ-HUMAN-APPROVAL-GATES-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-HUMAN-APPROVAL-GATES-001",
+      "to": "REQ-HUMAN-APPROVAL-GATES-005",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-HUMAN-APPROVAL-GATES-001",
+      "to": "REQ-HUMAN-APPROVAL-GATES-006",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-HUMAN-APPROVAL-GATES-001",
+      "to": "REQ-HUMAN-APPROVAL-GATES-007",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-HUMAN-APPROVAL-GATES-001",
+      "to": "REQ-HUMAN-APPROVAL-GATES-008",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-HUMAN-APPROVAL-GATES-001",
+      "to": "DES-APPROVAL-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-HUMAN-APPROVAL-GATES-001",
+      "to": "DES-APPROVAL-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-HUMAN-APPROVAL-GATES-001",
+      "to": "DES-APPROVAL-003",
+      "relation": "implements"
+    },
+    {
+      "from": "TEST-HUMAN-APPROVAL-GATES-001",
+      "to": "REQ-HUMAN-APPROVAL-GATES-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-HUMAN-APPROVAL-GATES-006",
+      "to": "REQ-HUMAN-APPROVAL-GATES-006",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-HUMAN-APPROVAL-GATES-002",
+      "to": "REQ-HUMAN-APPROVAL-GATES-002",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-HUMAN-APPROVAL-GATES-003",
+      "to": "REQ-HUMAN-APPROVAL-GATES-003",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-HUMAN-APPROVAL-GATES-004",
+      "to": "REQ-HUMAN-APPROVAL-GATES-004",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-HUMAN-APPROVAL-GATES-007",
+      "to": "REQ-HUMAN-APPROVAL-GATES-007",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-HUMAN-APPROVAL-GATES-005",
+      "to": "REQ-HUMAN-APPROVAL-GATES-005",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-HUMAN-APPROVAL-GATES-008",
+      "to": "REQ-HUMAN-APPROVAL-GATES-008",
+      "relation": "verifies"
+    }
+  ],
+  "diagnostics": [],
+  "fingerprints": {
+    ".musubix/decisions/ADR-0002.md": "da556c6ef7efcee366a8c6497179bad96c093145366b6422548b0e3df2cba348",
+    ".musubix/features/human-approval-gates/design.md": "ce1e316afee28082001ddedbce734a7766562889bd28f3eea610909c8d736206",
+    ".musubix/features/human-approval-gates/requirements.md": "f2ae2380935831bb102cd6a7726f2a208ab1719e035157302ef51ed28f624fb0",
+    "packages/analysis/src/adapters.ts": "0a25be996bea276efbaff6b63a97513d6c894be90d34a9137da3db76506b3f7c",
+    "packages/analysis/src/approval-record.ts": "200392853887ccedc03abd770922d91b14f762118f57bab697827133c2251000",
+    "packages/analysis/src/approval.ts": "e1843bcd4a97f1df92951f056ca168a101544a46c89567fe04e4e0250faf5d61",
+    "packages/analysis/src/attestation.ts": "2d273d2ed5aaa8521938a247492bbe54ee9b195d7902510365d6576e098b17f3",
+    "packages/analysis/src/change.ts": "03792744dddd8d1ce464d0ebcc8d3dbcd4ae45bf1f55df0897e009391fba55c1",
+    "packages/analysis/src/config.ts": "f857a75654cd79ee4cff1a952df386bf5d85c66e63bc69fb2ff86b1e5e0eec7e",
+    "packages/analysis/src/files.ts": "2cfa7b3010d7dcaee795140fb466bc178b217b6b40aff927b8a2ca8f692f896c",
+    "packages/analysis/src/formal.ts": "9f5622983fed80c1e7c141cc7c7dcd217447e5c2edd39e64877db052a57b730b",
+    "packages/analysis/src/gate.ts": "160765597e2f7176670872141e82615510493e4a9c0a01ba16315057a897d9a2",
+    "packages/analysis/src/graph.ts": "7517703a96dc487771c8b3eb1aade2d676998f82246b5dd091930059fc43685b",
+    "packages/analysis/src/index.ts": "6df5a623a9281511a963583e648d8fea7affdf5bc9404e261a60adcabc1cac89",
+    "packages/analysis/src/knowledge.ts": "072a403f89f9cdc6b79adaae7ea22821487358b8d86d37fd5145031f74d6b9cc",
+    "packages/analysis/src/model-correspondence.ts": "86839170b4d2e139bc2d3b739aab3cea2a7aec4dd9cab1afaa3d21fb8e14c617",
+    "packages/analysis/src/mutation.ts": "bb0582b042c973226c74b719d12e8dea05f954a68ce4dbc3c2076c31183d5a88",
+    "packages/analysis/src/order.ts": "7030a2f57ab2a2c00668d92e142a9d8cfe852aff6d237695dc94cb14a6341130",
+    "packages/analysis/src/performance.ts": "1145c285582ff188e90263b4d9d9f28ca49104e79b8299b2ecd3e278d8ef80ac",
+    "packages/analysis/src/process.ts": "8184c7f7c4c58cdc6987fd9d2ec2c02ce8557f94b6aa30853a0c6056ba79cf4a",
+    "packages/analysis/src/tdd.ts": "2af1827cb01f3087f757eac9284523a80932be87b1a0dddb35425d4c4cc2555c",
+    "packages/analysis/src/test-report.ts": "41c76811bfcb5e286bf097bf2f6aaf6cd5a414202efe8108f28219ecca063a01",
+    "packages/analysis/src/trace.ts": "8ef2dbeaa6595bcc37bc442fa218e3591d827c5a178476228a19a19990e6056c",
+    "packages/analysis/src/workflow.ts": "de94c1c5b53a8730d1e2b3e295caf6cc6b889581b4835536dbbd7798d99c8ac1",
+    "packages/cli/src/install.ts": "092a316d7a9731605e874e86f10d4287bf4aa82d87b0a342e545736bdd9626a3",
+    "packages/cli/src/main.ts": "b397412688d88734cee9be22befd3b62fcfbdfe8c4199d7be1071ccaaa87fc29",
+    "packages/domain/src/constitution.ts": "514278499642ff46ed902864b9192f566b116b4f92eb3fafa6b62588335e170a",
+    "packages/domain/src/design.ts": "5eddae3eec9a2fb662406bc3f7e307c11ccd87ef94d7f87363c725a74d2abb59",
+    "packages/domain/src/index.ts": "43243e9279e3826b23cd8d8b4365854974112ce4cf17cfb0f0ee32e6b28e9cc6",
+    "packages/domain/src/markdown.ts": "5c6b96486a2e31944d7d128d241f1772d0926f34464fa2b59c20748a6754487a",
+    "packages/domain/src/requirements.ts": "c070ced5f8c5b143d6197639016c2f31921b8e032386de74a9b0832ac5f42498",
+    "packages/domain/src/types.ts": "0c2666bcf18678e56eafcd3fae7e5163e4505bb4115c737b39a4b0b581656f18",
+    "scripts/check-package.mjs": "aa59ac6b57fc9d935244a0e12ce7ac0f39540379d854f97e62ea58d74fc10a7d",
+    "scripts/release-attestation.mjs": "b15842f6f83eb768c361a5e054a984af0da846f3b6e789bc0c91127415576d15",
+    "scripts/release-prepare.mjs": "f868e935c6d6d6e04fc486d56f5cfb2af7c3c4de493c1b2f8620447399ff0d6b",
+    "scripts/release-publish.mjs": "be05292662e6f3a169f238231574c97dc70d41fc7a036bfe86b284e43eadaff4",
+    "scripts/smoke-package.mjs": "aecca89d02c2f7222567b8f86a6f6c7a8d3599d9c3539c38023012eee620a8d1",
+    "tests/adapter-integration.test.ts": "42c350b4c3498d2dca32943731521ae8c2d52921f560039c0f7719b060bd4972",
+    "tests/approval.test.ts": "9c5bc5dd99223cfd423507ec2e71e181cc92c7d37e50026b9e2196bf16bd87f0",
+    "tests/cli-package.test.ts": "f258f06dbfa72feaa4e75dbaeba2a27c5b8aaec943dc477013c89f48a74fe781",
+    "tests/domain.test.ts": "be79af0613fe35d70659d15155efc859721d764a0ea40c9764c2e4d7f89ea16d",
+    "tests/formal-knowledge.test.ts": "325ff2567b72708b83d3eab7b2986e7ceb7beb252ed21276b0db7436ffa367a4",
+    "tests/gate-install.test.ts": "da8b1f9480160be6fd05e934e3a522d94475e2c67ccac52d5ff72b166ac27a98",
+    "tests/helpers.ts": "b610396037be2e9b77839952a3ceb91e63173ea8b89a78e4ac021be2b4e88928",
+    "tests/p2-improvements.test.ts": "8b4ec18632bd5899755d0b41f2659b61fa156b11ea45970ac9c24bafe248bf95",
+    "tests/p3-attestation-oidc.test.ts": "6b7080699b02670e1575cdfda24dcbd301b5bd98c5df3f45a03d2fc80cc3ba05",
+    "tests/p3-codegraph-policy.test.ts": "51382d96b162341a47f77643caa3d40641218c34a6106cf32c3d112defd701a6",
+    "tests/p3-formal.test.ts": "19d7b40f4c5f92391debbc0e8f1353d93023e0774a57c5390e1b0dcfed2b3aab",
+    "tests/p3-performance-provenance.test.ts": "a71e222cca5217e210c2b623b09c9e9d9c37c7999eb70ea058ab780c59fabe83",
+    "tests/p3-workflow-provenance.test.ts": "d86522786f556f5a5a3d719ff605c8b7ca20176deac0e701b9939e7af84ed4e5",
+    "tests/p4-correspondence-mutation.test.ts": "d8ab95e6cfcd01518bc130e190913e172c6eb7519cd98e37bac1525391ce43fa",
+    "tests/p4-workflow-streaming.test.ts": "6389d083b5bca81f88bbed2f54228a17d711cb8fa16a30a68614eb59bfb1d8bf",
+    "tests/php-verification.test.ts": "bc70946615f3faa3cb3b5467e552140ba2ec8e25fb4d5276f72f65393ed04315",
+    "tests/trace-graph.test.ts": "23e9ee2fa9ac2f37307cdcf2f5b088007295d76379d384e9d65b380cb6ef6c7b",
+    "vitest.config.ts": "2338c9c1fc7792c2c04fb596d182829c7259f1c60617f86751169d35c914ae54"
+  }
+}

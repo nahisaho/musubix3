@@ -2,11 +2,14 @@ import { unlink } from 'node:fs/promises';
 import ts from 'typescript';
 import { error, type Diagnostic } from '../../domain/src/index.js';
 import { loadConfig } from './config.js';
-import { digest, exists, files, isSource, readText, safePath, snapshot, within, writeJson } from './files.js';
+import { digest, evidenceInputPaths, exists, files, isSource, readText, safePath, snapshot, within, writeJson } from './files.js';
 import { runProcess, type Runner } from './process.js';
 import { buildTrace, type TraceNode } from './trace.js';
 import { adapterInvocation, clearAdapterOutput, mergeAdapterArgs, normalizeAdapterReport, readAdapterOutput } from './adapters.js';
 import { appendEvidenceOrder, evidenceOrderRecord, inspectEvidenceOrder } from './order.js';
+import { requireApproval } from './approval.js';
+import type { MusubixTestReport } from './test-report.js';
+export type { MusubixTestReport } from './test-report.js';
 
 export type TddPhase = 'red' | 'green' | 'refactor';
 
@@ -59,15 +62,6 @@ export interface TddEvidence {
   chain?: TddChainRecord[];
 }
 
-export interface MusubixTestReport {
-  schemaVersion: 1;
-  tests: Array<{
-    id: string;
-    status: 'passed' | 'failed' | 'skipped' | 'error';
-    operations?: Record<string, number>;
-  }>;
-}
-
 function render(value: string, testId: string, testPath: string, reportPath: string): string {
   return value.replaceAll('{testId}', testId).replaceAll('{testPath}', testPath).replaceAll('{reportPath}', reportPath);
 }
@@ -117,13 +111,8 @@ function appendChainRecord(evidence: TddEvidence, cycle: TddCycle, phase: TddPha
 
 async function sourceFingerprint(root: string, testPath: string, excludedPaths: string[] = []): Promise<string> {
   const excluded = new Set(excludedPaths);
-  const paths = (await files(root)).filter((path) =>
-    path !== testPath
-    && !excluded.has(path)
-    && !/^\.musubix\/features\/[^/]+\/trace\.json$/.test(path)
-    && !path.endsWith('.tgz')
-    && !/(?:^|\/)(?:logs?|session-logs)\//.test(path)
-    && !/\.jsonl$/.test(path));
+  const paths = evidenceInputPaths(await files(root)).filter((path) =>
+    path !== testPath && !excluded.has(path));
   return digest(JSON.stringify(await snapshot(root, paths)));
 }
 
@@ -136,8 +125,10 @@ async function testFingerprint(root: string, test: TraceNode): Promise<string> {
     const declaration = source.statements.find((statement) => statement.getStart(source) >= start);
     if (declaration) return digest(text.slice(start, declaration.end).trim());
   }
-  const next = text.slice(start + 1).search(/^[ \t]*(?:\/\*+|\/\/|#).*?@id\s+TEST-/m);
-  return digest(text.slice(start, next < 0 ? text.length : start + 1 + next).trim());
+  const lineEnd = text.indexOf('\n', start);
+  const searchFrom = lineEnd < 0 ? text.length : lineEnd + 1;
+  const next = text.slice(searchFrom).search(/^[ \t]*(?:\/\*+|\/\/|#).*?@id\s+TEST-/m);
+  return digest(text.slice(start, next < 0 ? text.length : searchFrom + next).trim());
 }
 
 export async function loadTddEvidence(root: string): Promise<TddEvidence | null> {
@@ -157,6 +148,7 @@ export async function runTddPhase(
   runner: Runner = runProcess,
 ): Promise<TddPhaseEvidence> {
   const config = await loadConfig(root);
+  if (phase === 'red') await requireApproval(root, 'design', config.approval);
   const command = config.commands.find((entry) => entry.name === commandName);
   if (!command) throw new Error(`Configured command not found: ${commandName}`);
   if ((!command.tddArgs?.length || !command.tddReport) && !command.adapter) {
@@ -381,10 +373,10 @@ export async function validateTddEvidence(root: string): Promise<{ present: bool
       diagnostics.push(error('TDD_ORDER_SEQUENCE', `${cycle.testId}:refactor is not after Green in monotonic evidence order.`, cycle.testPath));
     }
     if (!cycle.red.scoped || !cycle.red.resultObserved || cycle.red.testStatus !== 'failed' || !cycle.red.reportSha256 || !cycle.red.sourceFingerprint || !cycle.red.executionId) {
-      diagnostics.push(error('TDD_LEGACY_OR_UNSCOPED_EVIDENCE', `${cycle.testId} lacks test-scoped execution provenance; superseded cycles are still validated, so archive the legacy cycle and regenerate it from a clean Red baseline.`, cycle.testPath));
+      diagnostics.push(error('TDD_LEGACY_OR_UNSCOPED_EVIDENCE', `${cycle.testId} lacks test-scoped execution provenance; superseded cycles are still validated, so archive the legacy cycle and regenerate it from a clean Red baseline: move .musubix/evidence/tdd.json aside and re-record every cycle with tdd red/green/refactor. There is no partial prune command; hand-editing the evidence is not supported.`, cycle.testPath));
     }
-    if (!cycle.red.valid) diagnostics.push(error('TDD_RED_MISSING', `${cycle.testId} has no valid failing Red phase; recording a later cycle does not supersede this one, so archive it and regenerate the complete cycle.`, cycle.testPath));
-    if (!cycle.green?.valid) diagnostics.push(error('TDD_GREEN_MISSING', `${cycle.testId} has no valid passing Green phase; recording a later cycle does not supersede this one, so archive it and regenerate the complete cycle.`, cycle.testPath));
+    if (!cycle.red.valid) diagnostics.push(error('TDD_RED_MISSING', `${cycle.testId} has no valid failing Red phase; recording a later cycle does not supersede this one, so archive it and regenerate the complete cycle by moving .musubix/evidence/tdd.json aside and re-recording every cycle.`, cycle.testPath));
+    if (!cycle.green?.valid) diagnostics.push(error('TDD_GREEN_MISSING', `${cycle.testId} has no valid passing Green phase; recording a later cycle does not supersede this one, so archive it and regenerate the complete cycle by moving .musubix/evidence/tdd.json aside and re-recording every cycle.`, cycle.testPath));
     if (cycle.green?.valid) {
       if (!cycle.green.scoped || !cycle.green.resultObserved || cycle.green.testStatus !== 'passed' || !cycle.green.reportSha256 || !cycle.green.sourceFingerprint || !cycle.green.executionId) {
         diagnostics.push(error('TDD_LEGACY_OR_UNSCOPED_EVIDENCE', `${cycle.testId} Green lacks test-scoped execution provenance.`, cycle.testPath));
@@ -414,14 +406,17 @@ export async function validateTddEvidence(root: string): Promise<{ present: bool
     for (const cycle of evidence.cycles) {
       const item = cycle[phase];
       if (!item) continue;
-      const previous = hashes.get(item.outputSha256);
+      // The structured report names the selected test, so it is the authoritative
+      // reuse signal; console output alone collides for quiet runners.
+      const key = item.reportSha256 ? `report:${item.reportSha256}` : `output:${item.outputSha256}`;
+      const previous = hashes.get(key);
       if (previous && previous.testId !== cycle.testId) {
         diagnostics.push(error(
           'TDD_EVIDENCE_REUSED',
-          `${previous.testId} and ${cycle.testId} reuse identical ${phase} output evidence.`,
+          `${previous.testId} and ${cycle.testId} reuse identical ${phase} ${item.reportSha256 ? 'report' : 'output'} evidence.`,
           cycle.testPath,
         ));
-      } else hashes.set(item.outputSha256, cycle);
+      } else hashes.set(key, cycle);
     }
   }
   return { present: true, valid: !diagnostics.length, diagnostics, cycles: evidence.cycles.length };

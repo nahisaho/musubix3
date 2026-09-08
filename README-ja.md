@@ -1,6 +1,6 @@
 # musubix3
 
-**最新リリース v0.1.4 · GitHub Copilot CLI 専用 · Node.js ≥20 · TypeScript · MIT**
+**最新リリース v0.1.7 · GitHub Copilot CLI 専用 · Node.js ≥20 · TypeScript · MIT**
 
 [English](README.md)
 
@@ -168,20 +168,27 @@ Copilot の提案を記号的検査で制約する構成であり、独自の「
 要求を確定しません。
 
 1. ネイティブ計画・調査で意図と測定可能な受入条件を明確化。
-2. `change-record CHANGE-ID impact` を記録してから要求を編集・検証し、
-   `requirements` checkpointを記録。
-3. コンポーネントとADRを更新して `design` checkpointを記録。
+2. `change-record CHANGE-ID impact` を記録して要求を編集・検証し、
+   `requirements` checkpoint後、設計前にartifact-boundな人間の
+   `requirements`承認を明示的に記録。
+3. コンポーネントとADRを更新して `design` checkpointを記録し、
+   実装前にartifact-boundな人間の`design`承認を明示的に記録。
 4. 注釈付きテストを作成し、構造化結果を伴う `tdd red` と変更の `red` を記録。
 5. 最小実装後に `implementation`、成功する `tdd green`、変更の `green` を記録。
 6. 注釈とグラフを更新して変更影響・網羅性を確認。
-7. 実コマンドを設定して品質ゲートを実行。必要なレビューとセキュリティレビューは
-   別途ネイティブ機能で行い、未実施を成功扱いしない。
+7. 実コマンドで候補品質ゲートを実行。承認以外の必須checkがすべて合格した後、
+   人間が`release`承認を記録してgate/statusを再実行し、その後だけ
+   commit・push・publish・deployへ進む。検証結果や自然言語から承認を推測しない。
 
 ```sh
 npx musubix3 requirements validate .musubix/features/example/requirements.md --json
 npx musubix3 constitution validate --json
+npx musubix3 approval prepare requirements --json
+npx musubix3 approval record requirements --approver "要求責任者" --artifact-sha256 "$REVIEWED_HASH" --confirm
 npx musubix3 design validate .musubix/features/example/design.md --json
 npx musubix3 design c4 .musubix/features/example/design.md
+npx musubix3 approval prepare design --json
+npx musubix3 approval record design --approver "設計責任者" --artifact-sha256 "$REVIEWED_HASH" --confirm
 npx musubix3 change-record CHANGE-0001 design --requirement REQ-EXAMPLE-001
 npx musubix3 tdd red TEST-EXAMPLE-001 --requirement REQ-EXAMPLE-001 --command test
 # テストを変更せず、最小限の振る舞いを実装
@@ -192,6 +199,10 @@ npx musubix3 trace check --strict --json
 npx musubix3 graph index
 npx musubix3 graph impact src/service.ts
 npx musubix3 gate --changed --json
+npx musubix3 approval prepare release --json
+npx musubix3 approval record release --approver "リリース責任者" --artifact-sha256 "$REVIEWED_HASH" --confirm
+npx musubix3 gate --changed --json
+npx musubix3 approval validate --json
 npx musubix3 status --json
 ```
 
@@ -210,6 +221,9 @@ npx musubix3 status --json
 | `constitution validate [file]` | 版・原則・測定可能な規則の定義検査 |
 | `design validate <file>` | 必須項目・要求ID・既存ADRの参照検査 |
 | `design c4 <file>` | 明示的なコンポーネントと依存から Mermaid 図 |
+| `approval prepare <requirements\|design\|release>` | 人間が確認する決定的manifestとhashを表示 |
+| `approval record <stage> --approver <name> --artifact-sha256 <hash> --confirm` | 確認済みhashが現在も一致するときだけ承認を記録 |
+| `approval validate` | 各承認をapproved・missing・staleとして表示し、検証結果から承認を推測しない |
 | `trace build` | リポジトリ全体のグラフと機能別コピーを生成 |
 | `trace check [--strict]` | 未解決ID、陳腐化、必須要求の網羅性 |
 | `trace impact <id-or-path>` | 説明経路付きの双方向探索 |
@@ -226,6 +240,7 @@ npx musubix3 status --json
 | `model-correspondence validate` | Formal JSON→生成trace→正本passing testの証拠を再検証 |
 | `evidence refresh [--changed]` | 同じfail-closed gate pipelineで派生証拠を再生成 |
 | `mutation validate` | 要求scopeのschema-v1 killed-mutant証拠を再検証 |
+| `mutation identity <REQ-ID> <TEST-ID> <sourcePath> <operator> <line> <column>` | mutation reportが宣言すべき決定的な`MUT-*`識別子を出力 |
 | `tdd validate` | 保存済みRed/Green/Refactorの順序、指紋、実行時間、hash-chainを検証 |
 | `tdd red\|green\|refactor <TEST-ID> --requirement <REQ-ID> --command <name>` | 検証可能なTDDフェーズを実行・記録 |
 | `workflow-record <skill> <phase> --status <status>` | 自己申告のworkflow宣言を記録 |
@@ -333,6 +348,9 @@ apostrophe commentを扱います。これらは文字列中の記載をリン�
 その他の言語では対応する行commentまたはblock commentを使用します。
 Pythonは連続した`#` commentを使用してください。docstring内のannotationは無視され、
 `TRACE_ANNOTATION_IN_PYTHON_DOCSTRING`で配置変更を案内します。
+PHPでは`/** ... */`のPHPDocではなく素の`/* ... */`を使用してください。PHPDocは
+`@implements`をgeneric型宣言に予約しているため、要求IDの列挙はPHPStan/Psalmで
+`phpDoc.parseError`になります。musubix3はどちらの形式も読み取ります。
 網羅率だけを満たす代理JS/TSファイルは作成しません。
 
 ```ts
@@ -396,6 +414,7 @@ version: 1.0.0
   "formal": { "solver": "none", "minModeledFraction": 0, "timeoutMs": 12000 },
   "mutation": { "mode": "compatible" },
   "tdd": { "redPreflightCommands": [] },
+  "approval": { "mode": "required" },
   "workflow": {
     "mode": "compatible",
     "maxAgeSeconds": 3600,
@@ -427,6 +446,18 @@ glob は `*` / `**` / `?` に対応し、外部依存は `npm:` 接頭辞で表�
 `recommended`はstrict Code Graph、TDD、構造化test identityも要求し、
 `release`はformal、mutation、workflow、変更、performance、CI attestationを
 含む完全なrelease checkを要求します。不足設定や弱い設定を証拠で補ったことにはしません。
+新規初期化projectの`approval.mode`は`required`で、requirements・design・releaseの
+現在の承認を要求します。`approval`を省略した既存schema-v1 configは`compatible`として
+読み込みます。`approval prepare`で確認対象のmanifest/hashを表示し、その同じhashを
+`approval record`へ渡します。途中変更は拒否され、記録後の対象artifact変更はstaleに
+なります。承認fileはstage、approver、`approvedAt`、artifactごとのSHA-256、決定的
+manifest SHA-256を保持します。release記録はcache済みquality evidenceを信頼せずgateを
+再計算し、承認以外の必須checkがすべてpassした場合だけ成功します。
+approver文字列は明示的なlocal証拠であり、認証済みidentityではありません。
+独立identityが必要なrepositoryではprotected review、CODEOWNERS、CI/OIDCも併用します。
+local承認証拠は明示的な意思を記録しますが、承認者の暗号学的な本人確認ではありません。
+release権限はrepository review、CODEOWNERS/branch protection、またはCI/OIDC attestationで
+保護してください。
 `tdd.redPreflightCommands`にはformatter等のplain command名を指定でき、
 Redのtest fingerprintを取得する前に成功が必須です。
 通常ファイルの`pyvenv.cfg`を含む`.venv`と`venv`に加え、生成された
@@ -454,7 +485,7 @@ command reportでpassしたことを要求します。欠落・改変・stale・
 機械診断コードと詳細は英語、主要な状態表示は日英併記です。
 
 `.musubix/policy-baseline.json` は必須チェック、閾値、アーキテクチャ、
-Formalポリシー、mutation mode、workflow strict/session/freshness、CI必須attestation、
+Formalポリシー、mutation/approval mode、workflow strict/session/freshness、CI必須attestation、
 strict OIDC identity/key binding、必須コマンド名の最低条件です。Red preflightを
 要求するbaselineは正規化済み`commands`定義も保持し、同名formatterへの
 すり替えを拒否します。弱体化は拒否され、
@@ -471,6 +502,13 @@ strict OIDC identity/key binding、必須コマンド名の最低条件です。
 TDD用コマンドには明示的な`tddArgs`と`tddReport`、または組込みの
 `vitest`、`jest`、`pytest`、`go-test`、`cargo`、`junit`、`dotnet` adapterが必要です。
 明示設定を優先し、adapterは対象引数を導出してnative JSON/JSONL/XMLを正規化します。
+`junit` adapterはJava JUnit Platform Console launcherを駆動するものであり、
+JUnit XMLを出力するだけのrunner（PHPUnit等）には使えません。その場合は
+`tddArgs`/`tddReport`（および`testReport`）を明示設定してください。
+custom `musubix-json` reportは
+`{"schemaVersion":1,"tests":[{"id":"TEST-APP-001","status":"passed"}]}`形式で、
+`status`は`passed`/`failed`/`skipped`/`error`、任意の`"operations":{"counter":12}`が
+決定的な性能counterを保持します。
 Vitest/Jestの無関係なskipped結果は対象TDDから除外します。pytestにはJSON pluginと
 `test_TEST_APP_001`形式、Goには`TEST-*`名のsubtest、Cargoには`test_app_001`形式、
 JUnitには正確な`@Tag("TEST-APP-001")`と、IDを含むmethod名または`@DisplayName`を推奨します。
@@ -487,7 +525,15 @@ Green前にはテスト以外のプロジェクト入力が変更されている
 TDDと変更checkpointは共通の単調order ledgerを持ち、Red/Green境界ではこれを
 正本とし、wall-clock時刻は情報用途に限定します。orderを持たない旧chronologyは
 明示的なmigration診断で失敗します。欠落・並べ替え・改変・孤立レコードは
-証拠を無効にします。
+証拠を無効にします。旧cycleは新しい記録では置き換えられません。test scope付き
+provenanceや有効なRed/Greenを欠くcycleがある場合は、`.musubix/evidence/tdd.json`を
+退避し、全cycleをclean Red baselineから再記録してください。部分的なprune commandは
+意図的に提供せず、証拠の手編集は未対応です。
+
+決定的なmutant識別子は`musubix3 mutation identity <REQ-ID> <TEST-ID> <sourcePath>
+<operator> <line> <column>`で取得できます。`mutation validate`は
+`.musubix/evidence/mutation.json`を読み取り、設定した`mutationReport`はgateがこの
+ファイルへ変換するため、gate実行前の検証は「証拠なし」を報告します。
 
 CIではVitest、Jest、
 `pytest-json-report`付きpytest、Go test、Cargo test、固定版JUnit Platform Consoleの

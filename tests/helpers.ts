@@ -1,7 +1,7 @@
 import { mkdir, rm } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { afterEach } from 'vitest';
-import { defaultConfig, writeJson, writeText, type Config, type ProcessResult, type Runner } from '../packages/analysis/src/index.js';
+import { defaultConfig, readText, writeJson, writeText, type Config, type ProcessResult, type Runner } from '../packages/analysis/src/index.js';
 import { install } from '../packages/cli/src/install.js';
 
 export const repository = resolve('.');
@@ -41,6 +41,7 @@ export async function project(): Promise<string> {
   await writeText(root, 'src/service.test.ts', testCode);
   const config: Config = {
     ...defaultConfig,
+    approval: { mode: 'compatible' },
     commands: [{
       name: 'test',
       command: process.execPath,
@@ -57,6 +58,9 @@ export async function project(): Promise<string> {
     }],
   };
   await writeJson(root, '.musubix/config.json', config);
+  const baseline = JSON.parse(await readText(root, '.musubix/policy-baseline.json')) as Config & { requiredCommands: string[] };
+  baseline.approval = { mode: 'compatible' };
+  await writeJson(root, '.musubix/policy-baseline.json', baseline);
   return root;
 }
 

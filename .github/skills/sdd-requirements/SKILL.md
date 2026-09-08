@@ -23,12 +23,14 @@ After the work, run `npx musubix3 workflow-record sdd-requirements complete
    unique. Keep one obligation per entry; add `Acceptance: ...`.
    Acceptance must be non-placeholder and measurably testable. For semantics
    that must enter formal coverage, add strict one-line `Formal:` JSON using
-   branch-scoped `conditional`, integer `numeric`, `temporal` with required
-   `withinMs` and optional nonnegative `afterMs`, or deterministic `transition`.
+   branch-scoped `conditional` (`condition`/`consequence`), integer `numeric`
+   (`metric`/`operator` one of `<`,`<=`,`=`,`>=`,`>`/`value`), `temporal`
+   (`trigger`/`response`/required `withinMs`/optional nonnegative `afterMs`), or
+   deterministic `transition` (`from`/`event`/`to`).
    For numeric constraints, use compatible duration (`ms`/`s`/`min`) or size
    (`bytes`/`kib`/`mib`) units when conversion is intended; never translate
    arbitrary prose or incompatible dimensions by guesswork. A non-functional deterministic
-   budget uses `Performance:` with `counter`, integer `max`, and `testId`.
+   budget uses strict one-line `Performance:` JSON with `counter`, integer `max`, and `testId`.
 4. Use all six controlled EARS forms as appropriate:
    - The system shall respond.
    - When an event occurs, the system shall respond.
@@ -41,5 +43,10 @@ After the work, run `npx musubix3 workflow-record sdd-requirements complete
 5. Validate with `npx musubix3 requirements validate <file> --json` and
    `npx musubix3 constitution validate --json`. Rules use `PRINC-001`, `RULE-001`,
    a supported `Metric:` and numeric `Limit:`. Validation is not execution evidence.
-6. Hand off confirmed IDs and unresolved assumptions to `sdd-design`; use native
+6. Validation is not human approval. Before design, run `approval prepare
+   requirements`, show its exact artifacts/hash, ask one explicit approve/reject
+   question, then wait. On approval only, record that hash with `approval record
+   requirements --approver <name> --artifact-sha256 <hash> --confirm`; rejection
+   or any intervening artifact change stops and requires renewed review.
+7. Hand off confirmed IDs and unresolved assumptions to `sdd-design`; use native
    review for semantic completeness, not merely syntactic conformance.

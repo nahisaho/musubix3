@@ -6,13 +6,14 @@ import {
   c4Diagram, validateConstitution, validateDesign, validateRequirements, type Diagnostic,
 } from '../../domain/src/index.js';
 import {
-  buildKnowledge, buildTrace, changedFiles, checkTrace, cycles, files, formalCheck, graphGate,
+  buildKnowledge, buildTrace, changedFiles, checkTrace, cycles, exists, files, formalCheck, graphGate,
   graphImpact, indexGraph, loadConfig, loadGraph, loadTrace, portable, projectStatus, queryKnowledge,
   formalDoctor, generateFormalArtifacts, readText, runGate, traceImpact, type Solver,
   changePhases, recordChangePhase, recordWorkflow, runTddPhase, sanitizeWorkflowLogFile,
   validateTddEvidence, verifyWorkflowLogFile, type ChangePhase, type TddPhase,
   attestationSigningPayload, createUnsignedAttestation, githubOidcAudience, verifyEvidenceAttestation,
-  mutationDoctor, validateMutationEvidence, validateModelCorrespondenceEvidence,
+  mutationDoctor, mutationIdentity, validateMutationEvidence, validateModelCorrespondenceEvidence, within,
+  approvalManifest, approvalStages, recordApproval, requireApproval, validateApprovals, type ApprovalStage,
 } from '../../analysis/src/index.js';
 import { install, pluginInstall } from './install.js';
 
@@ -37,7 +38,7 @@ function pathQuery(root: string, query: string): string {
 }
 
 export function createProgram(): Command {
-  const program = new Command().name('musubix3').description('Evidence-driven SDD for GitHub Copilot CLI / 根拠に基づく仕様駆動開発').version('0.1.6');
+  const program = new Command().name('musubix3').description('Evidence-driven SDD for GitHub Copilot CLI / 根拠に基づく仕様駆動開発').version('0.1.7');
   program.exitOverride();
   common(program.command('init').alias('install').description('Install repository skills and SDD artifacts (preserves existing files)'))
     .option('--dry-run', 'Preview without writing').option('--force', 'Replace bundled, managed paths only')
@@ -83,10 +84,20 @@ export function createProgram(): Command {
     });
   }
   common(design.command('validate <file>')).action(async (file: string, options: { root: string; json?: boolean }) => {
-    result(await designResult(file, resolve(options.root)), !!options.json);
+    const root = resolve(options.root);
+    if (await exists(within(root, '.musubix/config.json'))) {
+      const config = await loadConfig(root);
+      await requireApproval(root, 'requirements', config.approval);
+    }
+    result(await designResult(file, root), !!options.json);
   });
   common(design.command('c4 <file>')).action(async (file: string, options: { root: string; json?: boolean }) => {
-    const report = await designResult(file, resolve(options.root));
+    const root = resolve(options.root);
+    if (await exists(within(root, '.musubix/config.json'))) {
+      const config = await loadConfig(root);
+      await requireApproval(root, 'requirements', config.approval);
+    }
+    const report = await designResult(file, root);
     if (!report.valid) { result(report, !!options.json); return; }
     const diagram = c4Diagram(report.value);
     output({ diagram }, !!options.json, diagram);
@@ -224,8 +235,21 @@ export function createProgram(): Command {
   });
   common(mutation.command('validate')).action(async (options: { root: string; json?: boolean }) => {
     const report = await validateMutationEvidence(resolve(options.root));
+    if (!options.json && !report.present) {
+      console.log('No mutation evidence at .musubix/evidence/mutation.json; the gate converts a configured mutationReport into that file. Compatible mode does not require it.');
+    }
     result(report, !!options.json);
   });
+  common(mutation.command('identity <requirementId> <testId> <sourcePath> <operator> <line> <column>')
+    .description('Compute the deterministic MUT-* identity a mutation report must declare'))
+    .action((requirementId: string, testId: string, sourcePath: string, operator: string, line: string, column: string, options: { json?: boolean }) => {
+      const location = { line: Number(line), column: Number(column) };
+      if (!Number.isInteger(location.line) || location.line < 1 || !Number.isInteger(location.column) || location.column < 1) {
+        throw new Error('line and column must be one-based positive integers.');
+      }
+      const id = mutationIdentity({ requirementId, testId, sourcePath, operator, location });
+      output({ id, requirementId, testId, sourcePath, operator, location }, !!options.json, id);
+    });
   const correspondence = program.command('model-correspondence')
     .description('Validate formal-model to authoritative passing-test correspondence');
   common(correspondence.command('validate')).action(async (options: { root: string; json?: boolean }) => {
@@ -387,6 +411,39 @@ export function createProgram(): Command {
       const evidence = await recordChangePhase(resolve(options.root), changeId, phase as ChangePhase, options.requirement);
       output(evidence, !!options.json, `Recorded ${changeId}:${phase}.`);
     });
+  const approval = program.command('approval').description('Prepare, record and validate explicit artifact-bound human approvals');
+  common(approval.command('prepare <stage>').description('Show the exact artifact manifest a human must review'))
+    .action(async (stage: string, options: { root: string; json?: boolean }) => {
+      if (!approvalStages.includes(stage as ApprovalStage)) throw new Error(`stage must be one of: ${approvalStages.join(', ')}`);
+      const manifest = await approvalManifest(resolve(options.root), stage as ApprovalStage);
+      output(manifest, !!options.json, `${stage} artifact manifest: ${manifest.artifactSha256}\n${Object.keys(manifest.artifacts).join('\n')}`);
+    });
+  common(approval.command('record <stage>'))
+    .requiredOption('--approver <name>', 'Human approver name')
+    .requiredOption('--artifact-sha256 <hash>', 'Exact manifest SHA-256 shown to and approved by the human')
+    .requiredOption('--confirm', 'Explicitly confirm this human approval')
+    .action(async (stage: string, options: {
+      root: string; json?: boolean; approver: string; artifactSha256: string; confirm: boolean;
+    }) => {
+      if (!approvalStages.includes(stage as ApprovalStage)) {
+        throw new Error(`stage must be one of: ${approvalStages.join(', ')}`);
+      }
+      if (options.confirm !== true) throw new Error('--confirm is required to record human approval.');
+      const root = resolve(options.root);
+      await loadConfig(root);
+      const evidence = await recordApproval(root, stage as ApprovalStage, options.approver, options.artifactSha256);
+      output(evidence, !!options.json, `Recorded explicit ${stage} approval by ${evidence.approver} for ${evidence.artifactSha256}.`);
+    });
+  common(approval.command('validate')).action(async (options: { root: string; json?: boolean }) => {
+    const root = resolve(options.root);
+    const report = await validateApprovals(root, (await loadConfig(root)).approval);
+    output(
+      report,
+      !!options.json,
+      report.stages.map((stage) => `${stage.status.toUpperCase()} ${stage.stage}${stage.required ? ' [required]' : ''}`).join('\n'),
+    );
+    if (!report.valid) process.exitCode = 1;
+  });
   const tdd = program.command('tdd').description('Verified Red-Green-Refactor execution evidence');
   common(tdd.command('validate')).action(async (options: { root: string; json?: boolean }) => {
     const report = await validateTddEvidence(resolve(options.root));
@@ -413,7 +470,10 @@ export function createProgram(): Command {
   common(program.command('status').description('One-shot artifact and gate readiness summary'))
     .action(async (options: { root: string; json?: boolean }) => {
       const status = await projectStatus(resolve(options.root));
-      output(status, !!options.json, `SDD: ${status.initialized ? 'initialized / 初期化済み' : 'not initialized / 未初期化'}\nRequirement files: ${status.artifacts.requirements}; design files: ${status.artifacts.designs}; ADRs: ${status.artifacts.decisions}\nCode Graph: ${status.codeGraph?.mode ?? 'unconfigured'}\nGate: ${status.gate.status}; ready: ${status.gate.ready}\n${status.next.join('\n')}`);
+      const approvalSummary = status.approvals
+        ? status.approvals.stages.map((stage) => `${stage.stage}=${stage.status}`).join(', ')
+        : 'unconfigured';
+      output(status, !!options.json, `SDD: ${status.initialized ? 'initialized / 初期化済み' : 'not initialized / 未初期化'}\nRequirement files: ${status.artifacts.requirements}; design files: ${status.artifacts.designs}; ADRs: ${status.artifacts.decisions}\nCode Graph: ${status.codeGraph?.mode ?? 'unconfigured'}\nApprovals: ${approvalSummary}\nGate: ${status.gate.status}; ready: ${status.gate.ready}\n${status.next.join('\n')}`);
     });
   return program;
 }

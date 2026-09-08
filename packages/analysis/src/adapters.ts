@@ -2,7 +2,7 @@ import { dirname, posix } from 'node:path';
 import { mkdir, readdir, readFile, rm, unlink, writeFile } from 'node:fs/promises';
 import { exists } from './files.js';
 import type { CommandConfig } from './config.js';
-import type { MusubixTestReport } from './tdd.js';
+import type { MusubixTestReport } from './test-report.js';
 
 export type TestAdapter = NonNullable<CommandConfig['adapter']>;
 

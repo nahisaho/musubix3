@@ -2,6 +2,47 @@
 
 ## Unreleased
 
+## 0.1.7 - 2026-09-08
+
+- Add artifact-bound human approval gates for requirements, design, and release.
+  `approval prepare` displays the exact review manifest/hash and `approval record`
+  requires that still-current hash plus explicit confirmation. Requirements
+  approval gates design validation, design approval gates TDD Red, and release
+  recording recomputes all required non-approval checks instead of trusting cached
+  quality evidence. Ordinary JSONL project inputs remain bound while recognized
+  logs are excluded. Status exposes every stage, Skills stop for one native human
+  decision, legacy configs remain compatible, and local approver text is documented
+  as non-authenticated.
+- Fix TDD test fingerprints for non-TypeScript sources: an indented single-line
+  block annotation such as `  /* @id TEST-APP-001 */` hashed an empty slice, so
+  test mutation after Red and `TDD_TEST_STALE` went undetected in PHP, Java, Go,
+  Rust, Python and every other generic-comment language.
+- Report the concrete cause of `REQ_FORMAL_SCHEMA` failures (unknown kind,
+  unexpected keys, missing keys, or the invalid field with its expected type)
+  instead of one opaque sentence.
+- Explain in `REQ_EARS` when a statement declares more than one obligation, and
+  list the valid pattern vocabulary in `REQ_PATTERN`.
+- List the known keys when configuration rejects an unknown key.
+- Add `mutation identity` so deterministic `MUT-*` values no longer require a
+  two-pass gate-and-scrape workflow, and say where `mutation validate` looks for
+  evidence instead of silently passing when none is present.
+- Report `TDD_EVIDENCE_REUSED` from the structured report hash rather than console
+  output, so quiet runners such as PHPUnit no longer produce false positives while
+  genuinely duplicated reports are still rejected.
+- Detect Composer projects in `mutation doctor` and recommend Infection together
+  with the coverage driver it requires.
+- Resolve PHP same-namespace trait composition and grouped `use A, B;` lists as
+  internal imports instead of reporting external dependencies, and drop
+  self-referencing trait edges.
+- Name the concrete remedy in TDD legacy/Red/Green diagnostics: move
+  `.musubix/evidence/tdd.json` aside and re-record every cycle; there is no
+  partial prune and hand-editing is unsupported.
+- Document the `musubix-json` report schema, that the `junit` adapter drives the
+  Java JUnit Platform Console launcher and not JUnit-XML producers such as
+  PHPUnit, and that PHP annotations must use `/* */` rather than PHPDoc because
+  PHPDoc reserves `@implements`. Align the `sdd-requirements` Skill with the
+  strict JSON `Formal:`/`Performance:` formats and their exact keys.
+
 ## 0.1.6 - 2026-09-08
 
 - Make `sdd-change` the mandatory first Skill for natural-language software

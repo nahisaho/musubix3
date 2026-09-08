@@ -3,15 +3,11 @@ name: sdd-quality
 description: "Use when deciding release readiness from actual checks, measurable policy, architecture and trace evidence, including incremental change checks. 品質ゲート・リリース判定時に使用。"
 ---
 # Quality / 品質
-Follow the user's input language (日本語 / English). Use native Copilot review and
-security review for their specialist reasoning; this skill does not replace them.
+Follow the user's input language. Native review/security review remain separate.
 After the work, run `npx musubix3 workflow-record sdd-quality complete --status
 completed` exactly once.
-1. Inspect `.musubix/config.json` and `.musubix/policy-baseline.json` before
-   running commands. Only execute trusted project configuration. Commands are
-   executable/argument arrays, not shell text. Never edit the baseline without
-   explicit independent approval. Use only the exact `musubix3` CLI; never
-   substitute similarly named npm packages.
+1. Inspect config/baseline first. Execute only trusted argument-array commands;
+   never edit baseline without independent approval or substitute another CLI.
 2. Configure real tests/build/typecheck commands and timeouts. Use an explicit
    custom report or a built-in Vitest/Jest, pytest, Go test, Cargo, JUnit or .NET
    adapter. Require executable native adapter contracts in CI; JUnit targets use
@@ -64,8 +60,9 @@ completed` exactly once.
    Treat zero executed or non-passing tests as incomplete evidence after exit zero; run `mutation doctor`;
    musubix3 validates evidence and does not bundle a mutation engine.
    Missing required tools, commands, artifacts or evidence block readiness.
-5. Use native review/security-review as needed, recording their findings
-   separately from machine evidence. Never fabricate review or test results.
+   A candidate gate may fail only because release approval is missing; that is
+   not final readiness and must not be described as pass.
+5. Record native review/security findings separately; never fabricate evidence.
 6. For static CI provenance, configure trusted Ed25519 public keys, freshness
    bounds and `ci-required`; sign `attestation payload` outside musubix3. For
    GitHub Actions identity, opt into strict `githubOidc`, derive the key-bound
@@ -74,5 +71,8 @@ completed` exactly once.
    check all configured claims; offline strict verification fails closed.
    Ensure the baseline protects CI-required mode, strict OIDC and key binding.
    Never store a private key or overstate OIDC as proof of arbitrary runner work.
-7. Run `npx musubix3 status --json`; stale evidence must be refreshed. Report
-   limitations and residual risks before handoff; no resident watcher or REPL.
+7. After required non-approval checks pass, run `approval prepare release`, show
+   its exact hash and residual risks, ask one approve/reject question, then wait.
+   On approval only record that hash with `approval record release --approver
+   <name> --artifact-sha256 <hash> --confirm`; rejection stops. Rerun gate/status;
+   stale approval blocks commit/push/publish/deploy; no resident watcher or REPL.

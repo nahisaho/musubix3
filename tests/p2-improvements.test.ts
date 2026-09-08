@@ -92,14 +92,30 @@ describe('P2 built-in test adapters', () => {
       requiredChecks: [
         'requirements', 'design', 'constitution', 'trace', 'graph', 'formal',
         'model-correspondence', 'mutation', 'workflow', 'tdd', 'change-history',
-        'change-completeness', 'performance', 'attestation', 'test-identities', 'commands',
+        'change-completeness', 'performance', 'attestation', 'approval', 'test-identities', 'commands',
       ],
       codeGraph: { mode: 'strict' },
       formal: { solver: 'z3', minModeledFraction: 0.5 },
       mutation: { mode: 'strict' },
+      approval: { mode: 'required' },
       workflow: { mode: 'strict' },
       attestation: { mode: 'local' },
     })).toThrow('attestation.mode ci-required');
+    expect(parseConfig({
+      schemaVersion: 1,
+      qualityProfile: 'release',
+      requiredChecks: [
+        'requirements', 'design', 'constitution', 'trace', 'graph', 'formal',
+        'model-correspondence', 'mutation', 'workflow', 'tdd', 'change-history',
+        'change-completeness', 'performance', 'attestation', 'approval', 'test-identities', 'commands',
+      ],
+      codeGraph: { mode: 'strict' },
+      formal: { solver: 'z3', minModeledFraction: 0.5 },
+      mutation: { mode: 'strict' },
+      approval: { mode: 'required' },
+      workflow: { mode: 'strict' },
+      attestation: { mode: 'ci-required' },
+    }).qualityProfile).toBe('release');
     expect(parseConfig({
       schemaVersion: 1,
       qualityProfile: 'release',
@@ -113,7 +129,7 @@ describe('P2 built-in test adapters', () => {
       mutation: { mode: 'strict' },
       workflow: { mode: 'strict' },
       attestation: { mode: 'ci-required' },
-    }).qualityProfile).toBe('release');
+    }).approval).toEqual({ mode: 'compatible' });
     expect(parsePolicyBaseline({
       schemaVersion: 1,
       commands: [{ name: 'format', command: 'cargo', args: ['fmt'], required: false }],
@@ -165,11 +181,12 @@ describe('P2 built-in test adapters', () => {
       requiredChecks: [
         'requirements', 'design', 'constitution', 'trace', 'graph', 'formal',
         'model-correspondence', 'mutation', 'workflow', 'tdd', 'change-history',
-        'change-completeness', 'performance', 'attestation', 'test-identities', 'commands',
+        'change-completeness', 'performance', 'attestation', 'approval', 'test-identities', 'commands',
       ],
       codeGraph: { mode: 'strict' },
       formal: { solver: 'z3', minModeledFraction: 0.5 },
       mutation: { mode: 'strict' },
+      approval: { mode: 'required' },
       tdd: { redPreflightCommands: ['format'] },
       workflow: { mode: 'strict', maxEventSkewMs: 1000, maxTranscriptBytes: 100_000_000 },
       attestation: { mode: 'ci-required' },

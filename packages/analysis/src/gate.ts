@@ -2,7 +2,7 @@ import { randomUUID } from 'node:crypto';
 import { unlink } from 'node:fs/promises';
 import { validateConstitution, validateDesign, validateRequirements, type Diagnostic, type Evidence } from '../../domain/src/index.js';
 import { loadConfig, loadPolicyBaseline, policyDiagnostics, type Config } from './config.js';
-import { digest, exists, files, readText, safePath, snapshot, within, writeJson } from './files.js';
+import { digest, evidenceInputPaths, exists, files, readText, safePath, snapshot, within, writeJson } from './files.js';
 import { graphGate, graphImpact, indexGraph } from './graph.js';
 import { formalCheck, type FormalResult } from './formal.js';
 import { validateWorkflow } from './workflow.js';
@@ -23,6 +23,7 @@ import {
   validateModelCorrespondenceEvidence, writeModelCorrespondenceEvidence,
 } from './model-correspondence.js';
 import { verifyEvidenceAttestation, type AttestationVerificationOptions } from './attestation.js';
+import { validateApprovals, type ApprovalValidation } from './approval.js';
 
 export interface GateReport {
   schemaVersion: 1;
@@ -54,12 +55,7 @@ export interface FormalEvidence {
 }
 
 export async function evidenceSnapshot(root: string): Promise<Record<string, string>> {
-  return snapshot(root, (await files(root)).filter((path) =>
-    !/^\.musubix\/features\/[^/]+\/trace\.json$/.test(path)
-    && !path.endsWith('.tgz')
-    && !/^\.github\/skills\//.test(path)
-    && !/(?:^|\/)(?:logs?|session-logs)\//.test(path)
-    && !/\.jsonl$/.test(path)));
+  return snapshot(root, evidenceInputPaths(await files(root)));
 }
 
 export function snapshotChanges(
@@ -476,6 +472,16 @@ export async function runGate(root: string, options: {
         : `Attestation status: ${attestation.status}.`,
     diagnostics: attestation.diagnostics,
   });
+  const approvals = await validateApprovals(root, config.approval);
+  checks.push({
+    name: 'approval',
+    required: required('approval') || config.approval.mode === 'required' || approvals.present,
+    status: !approvals.present && config.approval.mode === 'compatible'
+      ? 'skipped'
+      : approvals.valid ? 'pass' : 'fail',
+    summary: `${approvals.stages.filter((stage) => stage.status === 'approved').length}/${approvals.stages.length} approval stage(s) are current.`,
+    diagnostics: approvals.diagnostics,
+  });
   checks.push({
     name: 'commands', required: required('commands'),
     status: !commandChecks.length ? 'skipped' : aggregateStatus(commandChecks) === 'fail' ? 'fail' : 'pass',
@@ -509,6 +515,7 @@ export async function runGate(root: string, options: {
     'modelCorrespondence.coveredRequirements': correspondence.coveredRequirements.length,
     'modelCorrespondence.errors': countErrors(correspondence.diagnostics),
     'attestation.errors': countErrors(attestation.diagnostics),
+    'approval.errors': countErrors(approvals.diagnostics),
     ...(traceResult.coverage.design === null ? {} : { 'coverage.design': traceResult.coverage.design }),
     ...(traceResult.coverage.implementation === null ? {} : { 'coverage.implementation': traceResult.coverage.implementation }),
     ...(traceResult.coverage.tests === null ? {} : { 'coverage.tests': traceResult.coverage.tests }),
@@ -580,12 +587,15 @@ export async function projectStatus(root: string): Promise<{
   initialized: boolean;
   artifacts: { requirements: number; designs: number; decisions: number };
   codeGraph: Config['codeGraph'] | null;
+  approvals: ApprovalValidation | null;
   gate: { status: 'pass' | 'fail' | 'skipped' | 'stale'; generatedAt: string | null; ready: boolean };
   next: string[];
 }> {
   const paths = await files(root);
   const initialized = paths.includes('.musubix/config.json');
-  const codeGraph = initialized ? (await loadConfig(root)).codeGraph : null;
+  const config = initialized ? await loadConfig(root) : null;
+  const codeGraph = config?.codeGraph ?? null;
+  const approvals = config ? await validateApprovals(root, config.approval) : null;
   const artifacts = {
     requirements: paths.filter((p) => /^\.musubix\/features\/[^/]+\/requirements\.md$/.test(p)).length,
     designs: paths.filter((p) => /^\.musubix\/features\/[^/]+\/design\.md$/.test(p)).length,
@@ -611,8 +621,22 @@ export async function projectStatus(root: string): Promise<{
     }
     generatedAt = evidence.generatedAt ?? null;
   }
+  if (status === 'pass' && approvals?.valid === false) status = 'stale';
   return {
-    initialized, artifacts, codeGraph, gate: { status, generatedAt, ready: initialized && status === 'pass' },
-    next: !initialized ? ['musubix3 init'] : status !== 'pass' ? ['musubix3 trace build', 'musubix3 gate'] : [],
+    initialized,
+    artifacts,
+    codeGraph,
+    approvals,
+    gate: { status, generatedAt, ready: initialized && status === 'pass' && approvals?.valid === true },
+    next: !initialized
+      ? ['musubix3 init']
+      : approvals && !approvals.valid
+        ? approvals.stages.filter((stage) =>
+          stage.status !== 'approved' && (stage.required || stage.present))
+          .flatMap((stage) => [
+            `musubix3 approval prepare ${stage.stage}`,
+            `musubix3 approval record ${stage.stage} --approver <name> --artifact-sha256 <approved-hash> --confirm`,
+          ])
+        : status !== 'pass' ? ['musubix3 trace build', 'musubix3 gate'] : [],
   };
 }

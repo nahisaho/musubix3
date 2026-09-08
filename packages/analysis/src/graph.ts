@@ -653,10 +653,17 @@ function indexPhpRelations(path: string, text: string, known: Set<string>, graph
     if (!target) graph.diagnostics.push(error('GRAPH_UNRESOLVED', `Unresolved local PHP include ${specifier}.`, path, lineOf(commentsMasked, match.index)));
     graph.imports.push({ from: path, to: target ?? `php:${specifier}`, specifier, kind: 'include', line: lineOf(commentsMasked, match.index), external: !target });
   }
-  for (const match of searchable.matchAll(/^\s*use\s+([A-Za-z_][\w\\]*)(?:\s+as\s+\w+)?\s*;/gm)) {
-    const specifier = match[1]!;
-    const target = types.get(specifier) ?? null;
-    graph.imports.push({ from: path, to: target ?? `php:${specifier}`, specifier, kind: 'use', line: lineOf(searchable, match.index), external: !target });
+  const namespace = /^\s*namespace\s+([A-Za-z_][\w\\]*)\s*;/m.exec(searchable)?.[1] ?? '';
+  for (const match of searchable.matchAll(/^[ \t]*use\s+([A-Za-z_][\w\\]*(?:\s+as\s+\w+)?(?:\s*,\s*[A-Za-z_][\w\\]*(?:\s+as\s+\w+)?)*)\s*;/gm)) {
+    const line = lineOf(searchable, match.index);
+    for (const entry of match[1]!.split(',')) {
+      const specifier = entry.trim().split(/\s+as\s+/i)[0]!.trim();
+      if (!specifier) continue;
+      const target = types.get(specifier)
+        ?? (namespace ? types.get(`${namespace}\\${specifier}`) ?? null : null);
+      if (target === path) continue;
+      graph.imports.push({ from: path, to: target ?? `php:${specifier}`, specifier, kind: 'use', line, external: !target });
+    }
   }
   addCalls(path, searchable, graph, new Set([
     'if', 'for', 'foreach', 'while', 'switch', 'catch', 'isset', 'empty', 'echo',

@@ -13,9 +13,11 @@ After the work, run `npx musubix3 workflow-record sdd-implementation complete
 --status completed` exactly once.
 
 1. Before editing implementation code, verify that approved requirements and
-   design artifacts exist and both validators pass. If either is absent or invalid,
+   design artifacts exist, both validators pass, and `approval validate` reports
+   current requirements and design approval. If either is absent, stale, or invalid,
    stop and return to `sdd-change`, invoking `sdd-requirements` and `sdd-design`
-   as needed. Do not infer approval from a natural-language request such as
+   as needed. `tdd red` also enforces design approval. Do not infer approval from
+   validation or a natural-language request such as
    "develop", "build", 「開発」, 「作成」, or 「実装」.
 2. For behavior changes and bug fixes, write a meaningful failing test before
    implementation. Configure the selected command with `tddArgs` containing

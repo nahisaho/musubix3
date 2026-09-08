@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "stage": "requirements",
+  "artifacts": {
+    ".musubix/constitution.md": "f8b47fdc486f395bab05223a94821b145cf8df70ffde2c838a28f8d71fe0fa92",
+    ".musubix/features/human-approval-gates/requirements.md": "f2ae2380935831bb102cd6a7726f2a208ab1719e035157302ef51ed28f624fb0"
+  },
+  "artifactSha256": "2b3cfcbb4d0b7214196c1fbde169e53538410bc8dd437635baac894e6740c5b2",
+  "approver": "@nahisaho",
+  "approvedAt": "2026-09-08T22:06:26.868Z"
+}

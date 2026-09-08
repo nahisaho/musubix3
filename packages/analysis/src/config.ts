@@ -76,6 +76,10 @@ export interface TddConfig {
   redPreflightCommands: string[];
 }
 
+export interface ApprovalConfig {
+  mode: 'compatible' | 'required';
+}
+
 export type QualityProfile = 'custom' | 'minimal' | 'recommended' | 'release';
 
 export interface Config {
@@ -90,6 +94,7 @@ export interface Config {
   formal: FormalConfig;
   mutation: MutationConfig;
   tdd: TddConfig;
+  approval: ApprovalConfig;
   workflow: WorkflowConfig;
   attestation: AttestationConfig;
 }
@@ -105,12 +110,13 @@ export interface PolicyBaseline {
   formal: Pick<FormalConfig, 'solver' | 'minModeledFraction'>;
   mutation: MutationConfig;
   tdd: TddConfig;
+  approval: ApprovalConfig;
   workflow: WorkflowConfig;
   attestation: AttestationConfig;
   requiredCommands: string[];
 }
 
-export const checkNames = ['requirements', 'design', 'constitution', 'trace', 'graph', 'formal', 'model-correspondence', 'mutation', 'workflow', 'tdd', 'change-history', 'change-completeness', 'performance', 'attestation', 'test-identities', 'commands'] as const;
+export const checkNames = ['requirements', 'design', 'constitution', 'trace', 'graph', 'formal', 'model-correspondence', 'mutation', 'workflow', 'tdd', 'change-history', 'change-completeness', 'performance', 'attestation', 'approval', 'test-identities', 'commands'] as const;
 
 export const defaultConfig: Config = {
   schemaVersion: 1,
@@ -124,6 +130,7 @@ export const defaultConfig: Config = {
   formal: { solver: 'none', minModeledFraction: 0, timeoutMs: 12_000 },
   mutation: { mode: 'compatible' },
   tdd: { redPreflightCommands: [] },
+  approval: { mode: 'required' },
   workflow: { mode: 'compatible', maxAgeSeconds: 3600, maxFutureSkewSeconds: 60 },
   attestation: {
     mode: 'local',
@@ -145,6 +152,7 @@ export const defaultPolicyBaseline: PolicyBaseline = {
   formal: { solver: defaultConfig.formal.solver, minModeledFraction: defaultConfig.formal.minModeledFraction },
   mutation: { ...defaultConfig.mutation },
   tdd: { redPreflightCommands: [...defaultConfig.tdd.redPreflightCommands] },
+  approval: { ...defaultConfig.approval },
   workflow: { ...defaultConfig.workflow },
   attestation: {
     ...defaultConfig.attestation,
@@ -161,7 +169,7 @@ function object(value: unknown, location: string): Record<string, unknown> {
 
 function keys(value: Record<string, unknown>, allowed: string[], location: string): void {
   for (const key of Object.keys(value)) {
-    if (!allowed.includes(key)) throw new Error(`Unknown config key ${location}.${key}.`);
+    if (!allowed.includes(key)) throw new Error(`Unknown config key ${location}.${key}. Known keys at ${location} are ${allowed.join(', ')}.`);
   }
 }
 
@@ -197,14 +205,16 @@ const profileRequiredChecks: Record<Exclude<QualityProfile, 'custom'>, string[]>
   release: [
     'requirements', 'design', 'constitution', 'trace', 'graph', 'formal', 'model-correspondence',
     'mutation', 'workflow', 'tdd', 'change-history', 'change-completeness', 'performance',
-    'attestation', 'test-identities', 'commands',
+    'attestation', 'approval', 'test-identities', 'commands',
   ],
 };
 
-function validateQualityProfile(config: Config): void {
+function validateQualityProfile(config: Config, approvalDeclared: boolean): void {
   if (config.qualityProfile === 'custom') return;
-  const missing = profileRequiredChecks[config.qualityProfile]
-    .filter((check) => !config.requiredChecks.includes(check));
+  const expectedChecks = approvalDeclared
+    ? profileRequiredChecks[config.qualityProfile]
+    : profileRequiredChecks[config.qualityProfile].filter((check) => check !== 'approval');
+  const missing = expectedChecks.filter((check) => !config.requiredChecks.includes(check));
   if (missing.length) {
     throw new Error(`qualityProfile ${config.qualityProfile} requires checks: ${missing.join(', ')}.`);
   }
@@ -217,6 +227,7 @@ function validateQualityProfile(config: Config): void {
     }
     if (config.mutation.mode !== 'strict') throw new Error('qualityProfile release requires mutation.mode strict.');
     if (config.workflow.mode !== 'strict') throw new Error('qualityProfile release requires workflow.mode strict.');
+    if (approvalDeclared && config.approval.mode !== 'required') throw new Error('qualityProfile release requires approval.mode required.');
     if (config.attestation.mode !== 'ci-required') {
       throw new Error('qualityProfile release requires attestation.mode ci-required.');
     }
@@ -225,7 +236,7 @@ function validateQualityProfile(config: Config): void {
 
 export function parseConfig(input: unknown): Config {
   const value = object(input, 'config');
-  keys(value, ['schemaVersion', 'language', 'qualityProfile', 'commands', 'requiredChecks', 'thresholds', 'architecture', 'codeGraph', 'formal', 'mutation', 'tdd', 'workflow', 'attestation'], 'config');
+  keys(value, ['schemaVersion', 'language', 'qualityProfile', 'commands', 'requiredChecks', 'thresholds', 'architecture', 'codeGraph', 'formal', 'mutation', 'tdd', 'approval', 'workflow', 'attestation'], 'config');
   if (value.schemaVersion !== 1) throw new Error('Unsupported config schemaVersion; expected 1.');
   const language = optional(value.language, 'auto');
   if (!['auto', 'en', 'ja'].includes(String(language))) throw new Error('language must be auto, en, or ja.');
@@ -335,6 +346,12 @@ export function parseConfig(input: unknown): Config {
     if (command.adapter || command.testReport || command.tddReport || command.mutationReport) {
       throw new Error(`TDD Red preflight command ${name} must be a plain command without test or mutation reports.`);
     }
+  }
+  const rawApproval = object(optional(value.approval, {}), 'approval');
+  keys(rawApproval, ['mode'], 'approval');
+  const approvalMode = optional(rawApproval.mode, value.approval === undefined ? 'compatible' : defaultConfig.approval.mode);
+  if (!['compatible', 'required'].includes(String(approvalMode))) {
+    throw new Error('approval.mode must be compatible or required.');
   }
   const architecture = object(optional(value.architecture, {}), 'architecture');
   keys(architecture, ['forbidCycles', 'rules'], 'architecture');
@@ -491,6 +508,7 @@ export function parseConfig(input: unknown): Config {
     formal: { solver: solver as FormalConfig['solver'], minModeledFraction, timeoutMs: formalTimeoutMs },
     mutation: { mode: mutationMode as MutationConfig['mode'] },
     tdd: { redPreflightCommands },
+    approval: { mode: approvalMode as ApprovalConfig['mode'] },
     workflow: {
       mode: workflowMode as WorkflowConfig['mode'],
       ...(typeof rawWorkflow.expectedSessionId === 'string' ? { expectedSessionId: rawWorkflow.expectedSessionId } : {}),
@@ -519,7 +537,7 @@ export function parseConfig(input: unknown): Config {
         : { mode: 'off' },
     },
   };
-  validateQualityProfile(config);
+  validateQualityProfile(config, value.approval !== undefined);
   return config;
 }
 
@@ -533,7 +551,7 @@ export function parsePolicyBaseline(input: unknown): PolicyBaseline {
   const value = object(input, 'policy baseline');
   keys(value, [
     'schemaVersion', 'qualityProfile', 'commands', 'requiredChecks', 'thresholds', 'architecture', 'codeGraph', 'formal',
-    'mutation', 'tdd', 'workflow', 'attestation', 'requiredCommands',
+    'mutation', 'tdd', 'approval', 'workflow', 'attestation', 'requiredCommands',
   ], 'policy baseline');
   if (value.schemaVersion !== 1) throw new Error('Unsupported policy baseline schemaVersion; expected 1.');
   const parsed = parseConfig({
@@ -546,6 +564,7 @@ export function parsePolicyBaseline(input: unknown): PolicyBaseline {
     formal: value.formal,
     mutation: value.mutation,
     tdd: value.tdd,
+    approval: value.approval,
     workflow: value.workflow,
     attestation: value.attestation,
     commands: value.commands,
@@ -561,6 +580,7 @@ export function parsePolicyBaseline(input: unknown): PolicyBaseline {
     formal: { solver: parsed.formal.solver, minModeledFraction: parsed.formal.minModeledFraction },
     mutation: parsed.mutation,
     tdd: parsed.tdd,
+    approval: parsed.approval,
     workflow: parsed.workflow,
     attestation: parsed.attestation,
     requiredCommands: strings(optional(value.requiredCommands, []), 'requiredCommands'),
@@ -603,6 +623,9 @@ export function policyDiagnostics(config: Config, baseline: PolicyBaseline, chan
   }
   if (baseline.mutation.mode === 'strict' && config.mutation.mode !== 'strict') {
     diagnostics.push(error('POLICY_MUTATION_MODE', 'mutation.mode cannot be weakened below strict as required by the trusted baseline.'));
+  }
+  if (baseline.approval.mode === 'required' && config.approval.mode !== 'required') {
+    diagnostics.push(error('POLICY_APPROVAL_MODE', 'approval.mode cannot be weakened below required as required by the trusted baseline.'));
   }
   for (const command of baseline.tdd.redPreflightCommands) {
     const baselineCommand = baseline.commands.find((candidate) => candidate.name === command);

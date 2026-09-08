@@ -25,6 +25,8 @@ describe('installer', () => {
     expect(await readdir(resolve(root, '.github/skills'))).toEqual([...skillNames].sort());
     const trace = await readText(root, '.musubix/features/example/trace.json');
     expect(JSON.parse(trace).nodes).toHaveLength(3);
+    expect((await loadConfig(root)).approval).toEqual({ mode: 'required' });
+    expect(JSON.parse(await readText(root, '.musubix/policy-baseline.json')).approval).toEqual({ mode: 'required' });
     const again = await install(root, repository);
     expect(again.actions.every((a) => ['unchanged', 'preserve'].includes(a.action))).toBe(true);
     expect(await readText(root, '.musubix/features/example/trace.json')).toBe(trace);

@@ -1,7 +1,7 @@
 import { createHash, createPublicKey, verify, type JsonWebKey, type KeyObject } from 'node:crypto';
 import { error, type Diagnostic } from '../../domain/src/index.js';
 import type { AttestationConfig } from './config.js';
-import { digest, exists, files, readText, snapshot, within } from './files.js';
+import { digest, evidenceInputPaths, exists, files, readText, snapshot, within } from './files.js';
 import { performanceEvidenceHead, validatePerformanceEvidence } from './performance.js';
 import { mutationEvidenceHead, validateMutationEvidence } from './mutation.js';
 import { modelCorrespondenceEvidenceHead, validateModelCorrespondenceEvidence } from './model-correspondence.js';
@@ -127,12 +127,7 @@ export async function collectEvidenceHeads(root: string): Promise<Record<string,
       metrics,
     }));
   }
-  const workspace = await snapshot(root, (await files(root)).filter((path) =>
-    !/^\.musubix\/features\/[^/]+\/trace\.json$/.test(path)
-    && !path.endsWith('.tgz')
-    && !/^\.github\/skills\//.test(path)
-    && !/(?:^|\/)(?:logs?|session-logs)\//.test(path)
-    && !/\.jsonl$/.test(path)));
+  const workspace = await snapshot(root, evidenceInputPaths(await files(root)));
   heads.workspace = digest(canonical(workspace));
   return Object.fromEntries(Object.entries(heads).sort(([a], [b]) => a < b ? -1 : a > b ? 1 : 0));
 }

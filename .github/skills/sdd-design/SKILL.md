@@ -11,6 +11,8 @@ After the work, run `npx musubix3 workflow-record sdd-design complete --status
 completed` exactly once.
 
 1. Read requirements and constitution; identify requirement IDs before designing.
+   Run `approval validate` and stop unless current `requirements` approval is
+   explicitly recorded when required. A passing validator is not approval.
 2. Edit `.musubix/features/<slug>/design.md` with `## DES-FEATURE-001: Title`.
    Each component needs `Responsibilities:`, `Interfaces:`, `Constraints:`,
    `Requirements: REQ-FEATURE-001`, and `ADRs: ADR-0001`. Use `Depends-On:` for
@@ -23,4 +25,8 @@ completed` exactly once.
 5. Run `npx musubix3 trace build` then `npx musubix3 trace check`.
    Do not hand-edit `trace.json`. Ask native review to inspect coupling and
    coverage; use `sdd-formal-codegraph` for compiler-based impact checks.
-6. Hand off responsibilities, interfaces, constraints and IDs to implementation.
+6. Before implementation or Red, run `approval prepare design`, show its exact
+   artifacts/hash, ask one explicit approve/reject question, then wait. On approval
+   only, record that hash with `approval record design --approver <name>
+   --artifact-sha256 <hash> --confirm`; rejection or changes require renewed review.
+7. Hand off responsibilities, interfaces, constraints and IDs to implementation.

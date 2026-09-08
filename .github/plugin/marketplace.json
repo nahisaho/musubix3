@@ -3,13 +3,13 @@
   "owner": { "name": "nahisaho" },
   "metadata": {
     "description": "GitHub Copilot CLI specification-driven development skills",
-    "version": "0.1.6"
+    "version": "0.1.7"
   },
   "plugins": [
     {
       "name": "musubix3",
       "source": ".",
-      "version": "0.1.6",
+      "version": "0.1.7",
       "description": "Evidence-driven SDD without duplicating native Copilot capabilities."
     }
   ]

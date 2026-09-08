@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "qualityProfile": "custom",
+  "commands": [
+    {
+      "name": "approval-tests",
+      "command": "npx",
+      "args": [
+        "vitest",
+        "run",
+        "tests/approval.test.ts"
+      ],
+      "adapter": "vitest",
+      "required": true
+    },
+    {
+      "name": "typecheck",
+      "command": "npm",
+      "args": [
+        "run",
+        "typecheck"
+      ],
+      "required": true
+    },
+    {
+      "name": "build",
+      "command": "npm",
+      "args": [
+        "run",
+        "build"
+      ],
+      "required": true
+    },
+    {
+      "name": "test",
+      "command": "npm",
+      "args": [
+        "test"
+      ],
+      "required": true
+    },
+    {
+      "name": "pack-check",
+      "command": "npm",
+      "args": [
+        "run",
+        "pack:check"
+      ],
+      "required": true
+    }
+  ],
+  "requiredChecks": [
+    "requirements",
+    "design",
+    "constitution",
+    "trace",
+    "graph",
+    "commands"
+  ],
+  "thresholds": {
+    "design": 1,
+    "implementation": 1,
+    "tests": 1
+  },
+  "architecture": {
+    "forbidCycles": true,
+    "rules": []
+  },
+  "codeGraph": {
+    "mode": "compatible"
+  },
+  "formal": {
+    "solver": "none",
+    "minModeledFraction": 0,
+    "timeoutMs": 12000
+  },
+  "mutation": {
+    "mode": "compatible"
+  },
+  "tdd": {
+    "redPreflightCommands": []
+  },
+  "approval": {
+    "mode": "required"
+  },
+  "workflow": {
+    "mode": "compatible",
+    "maxAgeSeconds": 3600,
+    "maxFutureSkewSeconds": 60
+  },
+  "attestation": {
+    "mode": "local",
+    "maxAgeSeconds": 3600,
+    "maxFutureSkewSeconds": 60,
+    "trustedPublicKeys": [],
+    "githubOidc": {
+      "mode": "off"
+    }
+  },
+  "requiredCommands": [
+    "approval-tests",
+    "typecheck",
+    "build",
+    "test",
+    "pack-check"
+  ]
+}

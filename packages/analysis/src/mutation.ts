@@ -45,7 +45,7 @@ export interface MutationEvidence {
 }
 
 export interface MutationDoctorEntry {
-  ecosystem: 'javascript' | 'python' | 'go' | 'rust' | 'java' | 'dotnet';
+  ecosystem: 'javascript' | 'python' | 'go' | 'rust' | 'java' | 'dotnet' | 'php';
   engine: string;
   status: 'configured' | 'available' | 'missing';
   attemptedCommands: string[];
@@ -220,7 +220,8 @@ export async function mutationDoctor(
             : projectFiles.has('pom.xml') ? 'java'
               : [...projectFiles].some((path) => /\.(?:cs|fs|vb)proj$/i.test(path)) ? 'dotnet'
               : [...projectFiles].some((path) => path.endsWith('.py')) ? 'python'
-                : 'javascript',
+                : projectFiles.has('composer.json') ? 'php'
+                  : 'javascript',
         engine: command.name,
         status: 'configured',
         attemptedCommands: [`${command.command} ${command.args.join(' ')}`.trim()],
@@ -276,6 +277,14 @@ export async function mutationDoctor(
       args: ['--version'],
       present: projectFiles.has('pom.xml') || projectFiles.has('build.gradle') || projectFiles.has('build.gradle.kts'),
       recommendation: 'Configure the PIT Maven or Gradle plugin and convert its report to the musubix mutation schema.',
+    },
+    {
+      ecosystem: 'php',
+      engine: 'Infection',
+      command: 'vendor/bin/infection',
+      args: ['--version'],
+      present: projectFiles.has('composer.json'),
+      recommendation: 'Install infection/infection with Composer and enable a coverage driver (Xdebug, PCOV or phpdbg); Infection cannot run without one. Convert its report to the musubix mutation schema, or drive PHPUnit directly with a deterministic mutation runner that emits that schema.',
     },
     {
       ecosystem: 'dotnet',

@@ -131,6 +131,14 @@ export function isArtifact(path: string): boolean {
     /^\.musubix\/decisions\/ADR-\d+\.md$/.test(path);
 }
 
+export function evidenceInputPaths(paths: string[]): string[] {
+  return paths.filter((path) =>
+    !/^\.musubix\/features\/[^/]+\/trace\.json$/.test(path)
+    && !path.endsWith('.tgz')
+    && !/^\.github\/skills\//.test(path)
+    && !/(?:^|\/)(?:logs?|session-logs)\//.test(path));
+}
+
 export async function snapshot(root: string, paths: string[]): Promise<Record<string, string>> {
   const entries = await Promise.all(paths.map(async (path) => [path, digest(await readFile(await safePath(root, path)))] as const));
   return Object.fromEntries(entries);
