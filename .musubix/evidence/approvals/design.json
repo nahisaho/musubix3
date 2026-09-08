@@ -4,10 +4,13 @@
   "artifacts": {
     ".musubix/constitution.md": "f8b47fdc486f395bab05223a94821b145cf8df70ffde2c838a28f8d71fe0fa92",
     ".musubix/decisions/ADR-0002.md": "da556c6ef7efcee366a8c6497179bad96c093145366b6422548b0e3df2cba348",
+    ".musubix/decisions/ADR-0003.md": "79bac3818dc9708a24999a4d45008d90ee278c28d4d5af183d14a40b4215cd5c",
     ".musubix/features/human-approval-gates/design.md": "ce1e316afee28082001ddedbce734a7766562889bd28f3eea610909c8d736206",
-    ".musubix/features/human-approval-gates/requirements.md": "f2ae2380935831bb102cd6a7726f2a208ab1719e035157302ef51ed28f624fb0"
+    ".musubix/features/human-approval-gates/requirements.md": "f2ae2380935831bb102cd6a7726f2a208ab1719e035157302ef51ed28f624fb0",
+    ".musubix/features/session-scoped-development/design.md": "66a65a3fdc1747569f42b42798a88377ae2ff93e32ff2cc5e0bae5c62c2e9a42",
+    ".musubix/features/session-scoped-development/requirements.md": "640aece168b4e6848c0d1e6371f0bfeb433fa8addfd064a77d050891d69d9a4f"
   },
-  "artifactSha256": "f5d062bb806fa9a801eff03343d2e8ef8a4f370eebe00d5d56dfd930109e0965",
+  "artifactSha256": "14a13e68d4fec5fb4f9c0f64335eb83055c3e0f37011e3669fe01cd1970fa998",
   "approver": "@nahisaho",
-  "approvedAt": "2026-09-08T22:06:29.885Z"
+  "approvedAt": "2026-09-08T23:06:40.283Z"
 }

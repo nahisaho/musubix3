@@ -344,6 +344,92 @@
         "diagnostics": [],
         "order": 21
       }
+    },
+    {
+      "cycleId": "953562d8-4b6a-4fed-a6b1-df94fbbbb256",
+      "requirementId": "REQ-SESSION-SCOPED-DEVELOPMENT-001",
+      "testId": "TEST-SESSION-SCOPED-DEVELOPMENT-001",
+      "testPath": "tests/cli-package.test.ts",
+      "commandName": "session-tests",
+      "red": {
+        "phase": "red",
+        "valid": true,
+        "scoped": true,
+        "resultObserved": true,
+        "testStatus": "failed",
+        "reportSha256": "4e754ca39ddac7a788cb3d9cd47b15328a08b689f55ff7af140bf7c900b298e9",
+        "commandSha256": "3a034d0c0f8d96b1d0f9034044c27c0fe44bca40b60802da7d97771a100c732c",
+        "outputSha256": "369c829b7a6f6a1e977013e5e4d02b0e28a993b5c8f115e620f3773caf8e9583",
+        "exitCode": 1,
+        "durationMs": 1452,
+        "testFingerprint": "e0a47cae9008234789901ed17db423644f1c9f97ee29961633fc2fb676b1eb2c",
+        "sourceFingerprint": "774ae1fca6b84ba6fe9ef0154c477523007bf05010c3ac6bea388c7f360fee90",
+        "executionId": "1329fa4c-edae-40d0-8730-12927ad42cf3",
+        "recordedAt": "2026-09-08T23:06:42.445Z",
+        "diagnostics": [],
+        "order": 27
+      },
+      "green": {
+        "phase": "green",
+        "valid": true,
+        "scoped": true,
+        "resultObserved": true,
+        "testStatus": "passed",
+        "reportSha256": "2e7c4064fa1ccf9ac70e78b9bdb9507f70dd4f886d61bf9661bd29867dd0ad03",
+        "commandSha256": "3a034d0c0f8d96b1d0f9034044c27c0fe44bca40b60802da7d97771a100c732c",
+        "outputSha256": "369c829b7a6f6a1e977013e5e4d02b0e28a993b5c8f115e620f3773caf8e9583",
+        "exitCode": 0,
+        "durationMs": 1426,
+        "testFingerprint": "e0a47cae9008234789901ed17db423644f1c9f97ee29961633fc2fb676b1eb2c",
+        "sourceFingerprint": "8376f377e7d368cc4e0758de10dab57d7be3d18943426373547839a71e7c7fa3",
+        "executionId": "6610df3d-3cc4-4f6c-9038-e2a4d914f7cc",
+        "recordedAt": "2026-09-08T23:06:48.908Z",
+        "diagnostics": [],
+        "order": 31
+      }
+    },
+    {
+      "cycleId": "a4e0bf00-5ec0-456e-8982-3c51f16c3ab1",
+      "requirementId": "REQ-SESSION-SCOPED-DEVELOPMENT-002",
+      "testId": "TEST-SESSION-SCOPED-DEVELOPMENT-002",
+      "testPath": "tests/cli-package.test.ts",
+      "commandName": "session-tests",
+      "red": {
+        "phase": "red",
+        "valid": true,
+        "scoped": true,
+        "resultObserved": true,
+        "testStatus": "failed",
+        "reportSha256": "fb5a022f72652f5181a8ee47e09f09e2e884a9cbac22459ab96b41e86bc2d308",
+        "commandSha256": "945a08a57c75e1fa9b4778715ee9be523e584071cf1c59983f7ac21ca6334fb7",
+        "outputSha256": "609cbb72439b4f2e65d4402929952a2dd209521ece35a6991b145f6467494b83",
+        "exitCode": 1,
+        "durationMs": 1428,
+        "testFingerprint": "df97993bfd09ce1b064151e0542e3c67d32d03385a70a3a87bfadfab5a23a49f",
+        "sourceFingerprint": "774ae1fca6b84ba6fe9ef0154c477523007bf05010c3ac6bea388c7f360fee90",
+        "executionId": "c7b3206e-58f6-47ea-ab9c-fc72c2c0d7d4",
+        "recordedAt": "2026-09-08T23:06:44.646Z",
+        "diagnostics": [],
+        "order": 28
+      },
+      "green": {
+        "phase": "green",
+        "valid": true,
+        "scoped": true,
+        "resultObserved": true,
+        "testStatus": "passed",
+        "reportSha256": "a27a79aee19ee055ccbbb73ad64360d76571b0acbe81e1738d577b55c5d7609d",
+        "commandSha256": "945a08a57c75e1fa9b4778715ee9be523e584071cf1c59983f7ac21ca6334fb7",
+        "outputSha256": "609cbb72439b4f2e65d4402929952a2dd209521ece35a6991b145f6467494b83",
+        "exitCode": 0,
+        "durationMs": 1915,
+        "testFingerprint": "df97993bfd09ce1b064151e0542e3c67d32d03385a70a3a87bfadfab5a23a49f",
+        "sourceFingerprint": "8376f377e7d368cc4e0758de10dab57d7be3d18943426373547839a71e7c7fa3",
+        "executionId": "5c26074c-d2dc-4c9d-8230-2fd7d689ef40",
+        "recordedAt": "2026-09-08T23:06:51.522Z",
+        "diagnostics": [],
+        "order": 32
+      }
     }
   ],
   "chain": [
@@ -538,6 +624,54 @@
       "phaseEvidenceSha256": "0cdbe1f260e56ccfbda8c7c4c2fa3e5974d52d9b0f6d9a4f6fb347852d9668b3",
       "previousSha256": "56f6a451059763f3e6dbdaaaf3aede8c5614b99f7a7b7b186bd01eccf3e439f2",
       "recordSha256": "e14b38ee2c8d48fee38a39cd8c771654d7c7e0f154feda87a301282056b45901"
+    },
+    {
+      "sequence": 17,
+      "cycleId": "953562d8-4b6a-4fed-a6b1-df94fbbbb256",
+      "requirementId": "REQ-SESSION-SCOPED-DEVELOPMENT-001",
+      "testId": "TEST-SESSION-SCOPED-DEVELOPMENT-001",
+      "testPath": "tests/cli-package.test.ts",
+      "commandName": "session-tests",
+      "phase": "red",
+      "phaseEvidenceSha256": "1cf0a3adbc663d136bf27bd426ef917bc5096ad3771f0a992006abc586b9278b",
+      "previousSha256": "e14b38ee2c8d48fee38a39cd8c771654d7c7e0f154feda87a301282056b45901",
+      "recordSha256": "3af2c7332025b4012723b555ae679c44015e0d8410af0edb32f013f34aee88ad"
+    },
+    {
+      "sequence": 18,
+      "cycleId": "a4e0bf00-5ec0-456e-8982-3c51f16c3ab1",
+      "requirementId": "REQ-SESSION-SCOPED-DEVELOPMENT-002",
+      "testId": "TEST-SESSION-SCOPED-DEVELOPMENT-002",
+      "testPath": "tests/cli-package.test.ts",
+      "commandName": "session-tests",
+      "phase": "red",
+      "phaseEvidenceSha256": "0f17b020cf4f907a9babf0f7f8c000a31d903fc71598515f00619e310772b71b",
+      "previousSha256": "3af2c7332025b4012723b555ae679c44015e0d8410af0edb32f013f34aee88ad",
+      "recordSha256": "e12c3bc517445fb351ddd95276f4448f4bbdc0387bb480a0d3c4eae5752b634a"
+    },
+    {
+      "sequence": 19,
+      "cycleId": "953562d8-4b6a-4fed-a6b1-df94fbbbb256",
+      "requirementId": "REQ-SESSION-SCOPED-DEVELOPMENT-001",
+      "testId": "TEST-SESSION-SCOPED-DEVELOPMENT-001",
+      "testPath": "tests/cli-package.test.ts",
+      "commandName": "session-tests",
+      "phase": "green",
+      "phaseEvidenceSha256": "55c2e200d2ca2a15ba6c784fcfcc251c4f1564e3dbd4d2fe0a7bbdfbb49020de",
+      "previousSha256": "e12c3bc517445fb351ddd95276f4448f4bbdc0387bb480a0d3c4eae5752b634a",
+      "recordSha256": "9356aa2d198c2633b066453b7af0ba0bbfaf3861d79566f7b2e1750c26249e99"
+    },
+    {
+      "sequence": 20,
+      "cycleId": "a4e0bf00-5ec0-456e-8982-3c51f16c3ab1",
+      "requirementId": "REQ-SESSION-SCOPED-DEVELOPMENT-002",
+      "testId": "TEST-SESSION-SCOPED-DEVELOPMENT-002",
+      "testPath": "tests/cli-package.test.ts",
+      "commandName": "session-tests",
+      "phase": "green",
+      "phaseEvidenceSha256": "2206ca187f92effbdd1915a41c502877169dba6eb0857940c3e460e82a2a8d46",
+      "previousSha256": "9356aa2d198c2633b066453b7af0ba0bbfaf3861d79566f7b2e1750c26249e99",
+      "recordSha256": "64c702f3c40145a489e1aa3f30a7154455104ea248282b8e5a380de3b98099bb"
     }
   ]
 }

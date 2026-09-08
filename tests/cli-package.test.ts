@@ -4,7 +4,7 @@ import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { parseDocument } from 'yaml';
 import {
-  exists, githubOidcAudience, loadConfig, readText, runProcess, writeJson, writeText,
+  buildTrace, exists, githubOidcAudience, loadConfig, readText, runProcess, writeJson, writeText,
 } from '../packages/analysis/src/index.js';
 import { skillNames } from '../packages/cli/src/install.js';
 import { fixture, project, repository, req } from './helpers.js';
@@ -17,7 +17,7 @@ async function invoke(root: string, args: string[]): Promise<Awaited<ReturnType<
 describe('CLI contracts', () => {
   it('prints version/help and JSON validation with nonzero failure', async () => {
     const root = await fixture({ 'requirements.md': req() });
-    expect((await invoke(root, ['--version'])).stdout.trim()).toBe('0.1.7');
+    expect((await invoke(root, ['--version'])).stdout.trim()).toBe('0.1.8');
     expect((await invoke(root, ['--help'])).stdout).toContain('trace');
     const valid = await invoke(root, ['requirements', 'validate', 'requirements.md', '--json']);
     expect(valid.exitCode).toBe(0);
@@ -52,7 +52,7 @@ describe('CLI contracts', () => {
     expect(status.gate.ready).toBe(false);
     await symlink(cli, resolve(root, 'musubix3-bin'));
     const linked = await runProcess(process.execPath, [resolve(root, 'musubix3-bin'), '--version'], { cwd: root, timeoutMs: 10_000 });
-    expect(linked.stdout.trim()).toBe('0.1.7');
+    expect(linked.stdout.trim()).toBe('0.1.8');
   });
 
   it('requires explicit confirmation before recording human approval', async () => {
@@ -304,7 +304,10 @@ describe('CLI contracts', () => {
 });
 
 describe('distribution contracts', () => {
-  it('validates all eight concise bilingual skill frontmatters', async () => {
+  /** @id TEST-SESSION-SCOPED-DEVELOPMENT-001
+   * @verifies REQ-SESSION-SCOPED-DEVELOPMENT-001
+   */
+  it('TEST-SESSION-SCOPED-DEVELOPMENT-001 starts every new request as a fresh change', async () => {
     expect((await readdir(resolve(repository, '.github/skills'))).sort()).toEqual([...skillNames].sort());
     for (const name of skillNames) {
       const text = await readText(repository, `.github/skills/${name}/SKILL.md`);
@@ -322,9 +325,26 @@ describe('distribution contracts', () => {
     expect(change).toContain('MANDATORY first Skill');
     expect(change).toContain('never start implementation');
     expect(change).toContain('ask exactly one highest-priority question');
+    expect(change).toContain('every new natural-language development request is a new change');
+  });
+
+  /** @id TEST-SESSION-SCOPED-DEVELOPMENT-002
+   * @verifies REQ-SESSION-SCOPED-DEVELOPMENT-002
+   */
+  it('TEST-SESSION-SCOPED-DEVELOPMENT-002 reuses evidence only for an explicit change ID', async () => {
+    const change = await readText(repository, '.github/skills/sdd-change/SKILL.md');
+    expect(change).toContain('unless the user explicitly names the existing change ID');
     const requirements = await readText(repository, '.github/skills/sdd-requirements/SKILL.md');
+    expect(requirements).toContain('fresh');
+    expect(requirements).toContain('not permission to start coding');
     expect(requirements).toContain('Never batch questions');
-    expect(requirements).toContain('wait for the answer before asking the next');
+    const trace = await buildTrace(repository, false);
+    expect(trace.nodes).toContainEqual(expect.objectContaining({ id: 'CODE-SESSION-SCOPED-DEVELOPMENT-001' }));
+    expect(trace.nodes).toContainEqual(expect.objectContaining({ id: 'CODE-SESSION-SCOPED-DEVELOPMENT-002' }));
+    expect(trace.nodes).toContainEqual(expect.objectContaining({ id: 'CODE-SESSION-SCOPED-DEVELOPMENT-003' }));
+    expect(trace.edges).toContainEqual(expect.objectContaining({
+      from: 'CODE-SESSION-SCOPED-DEVELOPMENT-002', to: 'REQ-SESSION-SCOPED-DEVELOPMENT-002', relation: 'implements',
+    }));
     const implementation = await readText(repository, '.github/skills/sdd-implementation/SKILL.md');
     expect(implementation).toContain('verify that approved requirements and');
     expect(implementation).toContain('stop and return to `sdd-change`');

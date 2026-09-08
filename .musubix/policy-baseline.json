@@ -11,7 +11,8 @@
         "tests/approval.test.ts"
       ],
       "adapter": "vitest",
-      "required": true
+      "required": true,
+      "timeoutMs": 120000
     },
     {
       "name": "typecheck",
@@ -20,7 +21,8 @@
         "run",
         "typecheck"
       ],
-      "required": true
+      "required": true,
+      "timeoutMs": 120000
     },
     {
       "name": "build",
@@ -29,7 +31,20 @@
         "run",
         "build"
       ],
-      "required": true
+      "required": true,
+      "timeoutMs": 120000
+    },
+    {
+      "name": "session-tests",
+      "command": "npx",
+      "args": [
+        "vitest",
+        "run",
+        "tests/cli-package.test.ts"
+      ],
+      "adapter": "vitest",
+      "required": true,
+      "timeoutMs": 120000
     },
     {
       "name": "test",
@@ -37,7 +52,8 @@
       "args": [
         "test"
       ],
-      "required": true
+      "required": true,
+      "timeoutMs": 120000
     },
     {
       "name": "pack-check",
@@ -46,7 +62,8 @@
         "run",
         "pack:check"
       ],
-      "required": true
+      "required": true,
+      "timeoutMs": 120000
     }
   ],
   "requiredChecks": [
@@ -101,6 +118,7 @@
     "approval-tests",
     "typecheck",
     "build",
+    "session-tests",
     "test",
     "pack-check"
   ]

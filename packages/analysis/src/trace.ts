@@ -1,7 +1,7 @@
 import ts from 'typescript';
 import { dirname, basename } from 'node:path';
 import { error, ids, validateDesign, validateRequirements, type Diagnostic } from '../../domain/src/index.js';
-import { exists, files, isArtifact, isSource, isTraceSource, readText, snapshot, within, writeJson } from './files.js';
+import { exists, files, isArtifact, isSkillSource, isSource, isTraceSource, readText, snapshot, within, writeJson } from './files.js';
 
 export interface TraceNode {
   id: string;
@@ -26,8 +26,20 @@ export interface TraceGraph {
   fingerprints: Record<string, string>;
 }
 
+/** @id CODE-SESSION-SCOPED-DEVELOPMENT-003
+ * @implements REQ-SESSION-SCOPED-DEVELOPMENT-001 REQ-SESSION-SCOPED-DEVELOPMENT-002
+ * @design DES-SESSION-SCOPED-DEVELOPMENT-002
+ */
 export async function traceInputs(root: string): Promise<string[]> {
-  return (await files(root)).filter((path) => isArtifact(path) || isTraceSource(path));
+  const projectFiles = await files(root);
+  let isMusubixRepository = false;
+  try {
+    const packageManifest = JSON.parse(await readText(root, 'package.json')) as { name?: string };
+    isMusubixRepository = packageManifest.name === 'musubix3';
+  } catch {
+    // Consumer projects do not need to trace musubix3's own Skill definitions.
+  }
+  return projectFiles.filter((path) => isArtifact(path) || isTraceSource(path) || (isMusubixRepository && isSkillSource(path)));
 }
 
 function typedCommentBlocks(text: string, path: string): { text: string; line: number }[] {
@@ -185,7 +197,7 @@ export async function buildTrace(root: string, persist = true): Promise<TraceGra
       }
     } else if (path.startsWith('.musubix/decisions/')) {
       add({ id: basename(path, '.md'), kind: 'adr', path, line: 1 });
-    } else if (isTraceSource(path)) {
+    } else if (isTraceSource(path) || isSkillSource(path)) {
       if (path.endsWith('.py')) {
         for (const match of text.matchAll(/("""|''')[\s\S]*?\1/g)) {
           if (match.index !== undefined && /@(id|implements|verifies|design)\b/.test(match[0])) {

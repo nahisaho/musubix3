@@ -3,34 +3,33 @@ name: sdd-change
 description: "Use as the MANDATORY first Skill for requests to develop, build, create, implement, add, change, or fix software, including 「開発」「作成」「実装」. Start requirements and design before code, then propagate through tests, traceability, and quality evidence. ソフトウェア開発依頼では実装前に必ず要求定義・設計から開始。"
 ---
 # Integrated change workflow / 統合変更ワークフロー
-Mandatory entrypoint: never start implementation before validating requirements/design; skip only for verified approved artifacts.
-Never infer approval; show `approval prepare <stage>` and record only its reviewed hash with
-`approval record <stage> --approver <name> --artifact-sha256 <hash> --confirm`.
+/* @id CODE-SESSION-SCOPED-DEVELOPMENT-001
+ * @implements REQ-SESSION-SCOPED-DEVELOPMENT-001 REQ-SESSION-SCOPED-DEVELOPMENT-002
+ * @design DES-SESSION-SCOPED-DEVELOPMENT-001
+ */
+Mandatory entrypoint: every new natural-language development request is a new change, even in an existing Copilot session; never reuse prior requirements, approvals, TDD, or change evidence unless the user explicitly names the existing change ID and asks to continue it. never start implementation before validating requirements/design; skip only for verified approved artifacts of that explicitly continued change.
+Never infer approval; show `approval prepare <stage>` and record only its reviewed hash with `approval record <stage> --approver <name> --artifact-sha256 <hash> --confirm`.
 Follow the user's input language. Use native Copilot planning, editing, research, review, security review and subagents.
-Record exactly one final invocation outcome with `npx musubix3 workflow-record
-sdd-change complete --status <status>`; `change-record` separately proves phases.
+Record exactly one final invocation outcome with `npx musubix3 workflow-record sdd-change complete --status <status>`; `change-record` separately proves phases.
 Run `workflow-sanitize <copilot.jsonl> <safe.jsonl>` before review, then
 `workflow-verify <safe.jsonl>`; it validates source-order lifecycles without
 assuming globally monotonic clocks unless `maxEventSkewMs` is explicitly set.
 Baseline-protect transcript byte limits; never truncate/edit to bypass them.
 For strict evidence, bind an expected UUID; GitHub origin needs strict OIDC.
 Never record multiple declarations per invocation; use only the configured CLI.
-For broad work, use short stages: initialize, requirements, requirements approval,
-design, design approval, real Red, Green, integration, trace/formal, quality,
-release approval. Report each result before the next prompt.
-For a staged change, run `change-record <CHANGE-ID> <phase> --requirement
-<REQ-ID...>` after each phase in this exact order: `impact`, `requirements`,
-`design`, `red`, `implementation`, `green`, `quality`.
+For broad work, use short stages: initialize, requirements, requirements approval, design, design approval, real Red, Green, integration, trace/formal, quality, release approval. Report each result before the next prompt.
+For a staged change, run `change-record <CHANGE-ID> <phase> --requirement <REQ-ID...>` after each phase in this exact order: `impact`, `requirements`, `design`, `red`, `implementation`, `green`, `quality`.
 List only requirements whose statement/acceptance changes, classify each, and
 document other impacts separately. Each needs fresh Red and Green.
 The CHANGE document must contain `Requirements:` with exactly those normative IDs.
 Persisted monotonic order, not wall-clock time, proves these phase boundaries.
 ## 1. Classify and inspect / 分類と事前確認
 1. Classify the request as a feature, behavior change, defect correction,
-   refactoring, or documentation-only change.
-2. Read the constitution and relevant requirements, designs, ADRs, code and tests.
+   refactoring, or documentation-only change. For a new program/feature, create
+   a fresh feature slug and CHANGE artifact; prior session context is not approval.
+2. Read the constitution and relevant requirements, designs, ADRs, code and tests, but treat prior-session artifacts as historical context unless continuation is explicit.
 3. Run `trace impact`; when code exists run `graph index` and `graph impact`.
-4. Separate confirmed intent, assumptions and open questions. When material context is missing, ask exactly one highest-priority question, wait for its answer, then repeat; never batch questions or finalize requirements, design or code while blockers remain.
+4. Separate confirmed intent, assumptions and open questions. When material context is missing, ask exactly one highest-priority question, wait, then repeat; never batch questions or finalize requirements, design or code while blockers remain.
 ## 2. Update specifications first / 仕様を先に更新
 1. For new or changed observable behavior, add or revise EARS requirements and
    measurable acceptance criteria before implementation. Preserve stable IDs

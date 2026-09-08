@@ -3,16 +3,23 @@ name: sdd-requirements
 description: "Use when eliciting, refining, or validating EARS requirements and measurable constitution rules for specification-driven development. 要求定義・EARS検証・憲章策定に使用。"
 ---
 # Requirements / 要求
-
+/* @id CODE-SESSION-SCOPED-DEVELOPMENT-002
+ * @implements REQ-SESSION-SCOPED-DEVELOPMENT-001 REQ-SESSION-SCOPED-DEVELOPMENT-002
+ * @design DES-SESSION-SCOPED-DEVELOPMENT-002
+ */
 Respond and generate guidance in the user's input language (日本語 / English).
 Use Copilot's native planning, questions, research and editing; do not create an
 interview engine or research agent framework.
 After the work, run `npx musubix3 workflow-record sdd-requirements complete
 --status completed` exactly once.
 
-1. Inspect `.musubix/constitution.md` and the feature's existing requirements.
-   If absent, preview `npx musubix3 init --dry-run` before installing.
-2. Use native planning to clarify scope, stakeholders, measurable acceptance and
+1. For every new natural-language development request, create/use a fresh
+   `.musubix/features/<new-slug>/requirements.md`; do not edit or reuse a prior
+   session's feature, approval, or change evidence unless continuation is explicit.
+   Inspect `.musubix/constitution.md` and relevant existing requirements only as
+   context. If absent, preview `npx musubix3 init --dry-run` before installing.
+2. Treat a request such as 「○○を開発」/"develop ○○" as requirements elicitation,
+   not permission to start coding. Use native planning to clarify scope, stakeholders, measurable acceptance and
    failure behavior. Separate assumptions from confirmed requirements. If required
    context is missing, use native elicitation to ask exactly one highest-priority
    question and wait for the answer before asking the next. Never batch questions.

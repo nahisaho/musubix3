@@ -126,6 +126,10 @@ export function isTraceSource(path: string): boolean {
     && !/\.d\.[cm]?ts$/.test(path);
 }
 
+export function isSkillSource(path: string): boolean {
+  return /^\.github\/skills\/[^/]+\/SKILL\.md$/.test(path);
+}
+
 export function isArtifact(path: string): boolean {
   return /^\.musubix\/features\/[^/]+\/(?:requirements|design)\.md$/.test(path) ||
     /^\.musubix\/decisions\/ADR-\d+\.md$/.test(path);

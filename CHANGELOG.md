@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+## 0.1.8 - 2026-09-09
+
+- Treat every new natural-language development request as a fresh change, even within an existing Copilot session.
+- Reuse requirements, approvals, TDD, and change evidence only when the user explicitly names the existing CHANGE ID and asks to continue it.
+- Trace musubix3 Skill contracts without leaking installed Skill annotations into consumer project trace graphs.
+- Add regression coverage for fresh-change routing and explicit continuation.
+
 ## 0.1.7 - 2026-09-08
 
 - Add artifact-bound human approval gates for requirements, design, and release.

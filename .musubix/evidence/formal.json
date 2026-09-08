@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-08T22:15:33.161Z",
-  "totalRequirements": 8,
+  "generatedAt": "2026-09-08T23:31:23.620Z",
+  "totalRequirements": 10,
   "modeledRequirements": 0,
   "modeledFraction": 0,
   "result": {
@@ -25,7 +25,9 @@
       "REQ-HUMAN-APPROVAL-GATES-005",
       "REQ-HUMAN-APPROVAL-GATES-006",
       "REQ-HUMAN-APPROVAL-GATES-007",
-      "REQ-HUMAN-APPROVAL-GATES-008"
+      "REQ-HUMAN-APPROVAL-GATES-008",
+      "REQ-SESSION-SCOPED-DEVELOPMENT-001",
+      "REQ-SESSION-SCOPED-DEVELOPMENT-002"
     ],
     "diagnostics": [
       {
@@ -67,6 +69,16 @@
         "code": "FORMAL_UNSUPPORTED",
         "severity": "warning",
         "message": "REQ-HUMAN-APPROVAL-GATES-008 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-SESSION-SCOPED-DEVELOPMENT-001 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-SESSION-SCOPED-DEVELOPMENT-002 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
       }
     ],
     "consistency": "unknown",
@@ -81,6 +93,7 @@
     }
   },
   "fingerprints": {
-    ".musubix/features/human-approval-gates/requirements.md": "f2ae2380935831bb102cd6a7726f2a208ab1719e035157302ef51ed28f624fb0"
+    ".musubix/features/human-approval-gates/requirements.md": "f2ae2380935831bb102cd6a7726f2a208ab1719e035157302ef51ed28f624fb0",
+    ".musubix/features/session-scoped-development/requirements.md": "640aece168b4e6848c0d1e6371f0bfeb433fa8addfd064a77d050891d69d9a4f"
   }
 }

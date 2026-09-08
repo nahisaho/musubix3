@@ -1,6 +1,6 @@
 {
   "name": "musubix3",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Evidence-driven SDD skills for GitHub Copilot CLI: requirements, design, traceability, implementation, quality, knowledge, formal checks and codegraph.",
   "author": { "name": "nahisaho" },
   "repository": "https://github.com/nahisaho/musubix3",

@@ -3,9 +3,10 @@
   "stage": "requirements",
   "artifacts": {
     ".musubix/constitution.md": "f8b47fdc486f395bab05223a94821b145cf8df70ffde2c838a28f8d71fe0fa92",
-    ".musubix/features/human-approval-gates/requirements.md": "f2ae2380935831bb102cd6a7726f2a208ab1719e035157302ef51ed28f624fb0"
+    ".musubix/features/human-approval-gates/requirements.md": "f2ae2380935831bb102cd6a7726f2a208ab1719e035157302ef51ed28f624fb0",
+    ".musubix/features/session-scoped-development/requirements.md": "640aece168b4e6848c0d1e6371f0bfeb433fa8addfd064a77d050891d69d9a4f"
   },
-  "artifactSha256": "2b3cfcbb4d0b7214196c1fbde169e53538410bc8dd437635baac894e6740c5b2",
+  "artifactSha256": "60b4ef726ecef17db6552dadd6fb9909e5046e89a7de7c4ebc5372c73e810ae1",
   "approver": "@nahisaho",
-  "approvedAt": "2026-09-08T22:06:26.868Z"
+  "approvedAt": "2026-09-08T23:06:37.380Z"
 }
