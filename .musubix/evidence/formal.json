@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-08T23:42:05.867Z",
-  "totalRequirements": 10,
-  "modeledRequirements": 0,
-  "modeledFraction": 0,
+  "generatedAt": "2026-09-09T12:16:01.000Z",
+  "totalRequirements": 17,
+  "modeledRequirements": 2,
+  "modeledFraction": 0.11764705882352941,
   "result": {
-    "valid": false,
+    "valid": true,
     "abstraction": "Consistency of explicit branch-scoped conditional, exact unit-normalized integer numeric, bounded temporal interval, deterministic state-transition, and controlled unconditional Boolean constraints; not implementation correctness.",
     "assumptions": [
       "Exact normalized subject/response pairs denote the same Boolean proposition.",
@@ -15,9 +15,24 @@
       "State transitions require one target for each declared from-state/event pair; undeclared transitions are unconstrained.",
       "Copilot supplies candidate requirements; deterministic checks do not establish their truth."
     ],
-    "literals": [],
+    "literals": [
+      {
+        "requirement": "REQ-CLI-WORKFLOW-UX-002",
+        "atom": "[\"system\",\"state, in `trace impact`'s non-json output, that returned nodes are a bidirectional candidate-review range reachable from the query, not a list of artifacts that must change\"]",
+        "positive": true
+      },
+      {
+        "requirement": "REQ-CLI-WORKFLOW-UX-004",
+        "atom": "[\"system\",\"provide a `config lint` command that reports, for the loaded `.musubix/config.json`, any configured command whose `args` contains a repository-relative file path that does not exist under the project root\"]",
+        "positive": true
+      }
+    ],
     "constraints": [],
     "unsupported": [
+      "REQ-CLI-WORKFLOW-UX-001",
+      "REQ-CLI-WORKFLOW-UX-003",
+      "REQ-CLI-WORKFLOW-UX-005",
+      "REQ-CLI-WORKFLOW-UX-006",
       "REQ-HUMAN-APPROVAL-GATES-001",
       "REQ-HUMAN-APPROVAL-GATES-002",
       "REQ-HUMAN-APPROVAL-GATES-003",
@@ -27,9 +42,30 @@
       "REQ-HUMAN-APPROVAL-GATES-007",
       "REQ-HUMAN-APPROVAL-GATES-008",
       "REQ-SESSION-SCOPED-DEVELOPMENT-001",
-      "REQ-SESSION-SCOPED-DEVELOPMENT-002"
+      "REQ-SESSION-SCOPED-DEVELOPMENT-002",
+      "REQ-WORKFLOW-SHUTDOWN-001"
     ],
     "diagnostics": [
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-CLI-WORKFLOW-UX-001 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-CLI-WORKFLOW-UX-003 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-CLI-WORKFLOW-UX-005 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-CLI-WORKFLOW-UX-006 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
       {
         "code": "FORMAL_UNSUPPORTED",
         "severity": "warning",
@@ -79,9 +115,14 @@
         "code": "FORMAL_UNSUPPORTED",
         "severity": "warning",
         "message": "REQ-SESSION-SCOPED-DEVELOPMENT-002 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-WORKFLOW-SHUTDOWN-001 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
       }
     ],
-    "consistency": "unknown",
+    "consistency": "consistent",
     "solver": {
       "requested": "none",
       "name": "none",
@@ -89,11 +130,13 @@
       "version": "",
       "status": "not-requested",
       "durationMs": 0,
-      "output": "No supported obligations; solver not run."
+      "output": "Solver execution disabled."
     }
   },
   "fingerprints": {
+    ".musubix/features/cli-workflow-ux-v019/requirements.md": "8ac7b7e793009d95a03b53de1e3aca043d4433a7b6de9511d8547ebc33b5e7b2",
     ".musubix/features/human-approval-gates/requirements.md": "f2ae2380935831bb102cd6a7726f2a208ab1719e035157302ef51ed28f624fb0",
-    ".musubix/features/session-scoped-development/requirements.md": "640aece168b4e6848c0d1e6371f0bfeb433fa8addfd064a77d050891d69d9a4f"
+    ".musubix/features/session-scoped-development/requirements.md": "640aece168b4e6848c0d1e6371f0bfeb433fa8addfd064a77d050891d69d9a4f",
+    ".musubix/features/workflow-session-shutdown/requirements.md": "2b8d72e2fcb1dbf5bc24ee733182cf2b692e33c50550ce7a8de2e9c5a8c32c0d"
   }
 }

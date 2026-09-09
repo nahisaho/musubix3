@@ -1,5 +1,5 @@
 import { error, type Diagnostic } from '../../domain/src/index.js';
-import { exists, readText, within } from './files.js';
+import { exists, files, readText, within } from './files.js';
 
 export interface CommandConfig {
   name: string;
@@ -545,6 +545,85 @@ export async function loadConfig(root: string): Promise<Config> {
   const path = '.musubix/config.json';
   if (!await exists(within(root, path))) throw new Error('Missing .musubix/config.json; run musubix3 init.');
   return parseConfig(JSON.parse(await readText(root, path)) as unknown);
+}
+
+export interface CommandScaffoldProposal {
+  toolchain: 'go' | 'cargo' | 'maven' | 'python' | 'node';
+  directory: string;
+  manifest: string;
+  name: string;
+  command: string;
+  args: string[];
+  adapter?: CommandConfig['adapter'];
+}
+
+const scaffoldRules: Array<{ manifest: string; toolchain: CommandScaffoldProposal['toolchain']; command: string; args: string[]; adapter?: CommandConfig['adapter'] }> = [
+  { manifest: 'go.mod', toolchain: 'go', command: 'go', args: ['test', './...'], adapter: 'go-test' },
+  { manifest: 'Cargo.toml', toolchain: 'cargo', command: 'cargo', args: ['test'], adapter: 'cargo' },
+  { manifest: 'pom.xml', toolchain: 'maven', command: 'mvn', args: ['test'], adapter: 'junit' },
+  { manifest: 'pyproject.toml', toolchain: 'python', command: 'pytest', args: [], adapter: 'pytest' },
+  { manifest: 'package.json', toolchain: 'node', command: 'npm', args: ['test'] },
+];
+
+/**
+ * REQ-CLI-WORKFLOW-UX-006: scan the project tree (respecting the same
+ * directory exclusions as `files()`) for known toolchain manifests and
+ * propose one illustrative native test-command entry per detection.
+ * Read-only; never writes `.musubix/config.json`.
+ */
+/** @id CODE-CLI-WORKFLOW-UX-006
+ * @implements REQ-CLI-WORKFLOW-UX-006
+ * @design DES-CLI-WORKFLOW-UX-006
+ */
+export async function scaffoldCommands(root: string): Promise<CommandScaffoldProposal[]> {
+  const paths = await files(root);
+  const proposals: CommandScaffoldProposal[] = [];
+  for (const rule of scaffoldRules) {
+    for (const path of paths) {
+      if (path.split('/').at(-1) !== rule.manifest) continue;
+      const directory = path.includes('/') ? path.slice(0, path.lastIndexOf('/')) : '.';
+      const slug = directory === '.' ? rule.toolchain : `${rule.toolchain}-${directory.replaceAll('/', '-')}`;
+      proposals.push({
+        toolchain: rule.toolchain,
+        directory,
+        manifest: path,
+        name: `${slug}-tests`,
+        command: rule.command,
+        args: rule.args,
+        ...(rule.adapter ? { adapter: rule.adapter } : {}),
+      });
+    }
+  }
+  return proposals;
+}
+
+function looksLikeRepoRelativePath(arg: string): boolean {
+  if (arg.startsWith('-')) return false;
+  if (arg.includes('{') || arg.includes('}')) return false;
+  return arg.includes('/');
+}
+
+/**
+ * REQ-CLI-WORKFLOW-UX-004: scan every configured command's `args` for tokens
+ * that look like repository-relative file paths and report any that do not
+ * exist under the project root. Read-only; never modifies the config file.
+ */
+/** @id CODE-CLI-WORKFLOW-UX-004
+ * @implements REQ-CLI-WORKFLOW-UX-004
+ * @design DES-CLI-WORKFLOW-UX-004
+ */
+export async function configLint(root: string): Promise<{ valid: boolean; diagnostics: Diagnostic[] }> {
+  const config = await loadConfig(root);
+  const diagnostics: Diagnostic[] = [];
+  for (const command of config.commands) {
+    for (const arg of command.args) {
+      if (!looksLikeRepoRelativePath(arg)) continue;
+      if (!await exists(within(root, arg))) {
+        diagnostics.push(error('CONFIG_ORPHANED_PATH', `Command "${command.name}" references a path that does not exist: ${arg}`));
+      }
+    }
+  }
+  return { valid: diagnostics.length === 0, diagnostics };
 }
 
 export function parsePolicyBaseline(input: unknown): PolicyBaseline {

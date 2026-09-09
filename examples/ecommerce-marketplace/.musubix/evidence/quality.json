@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-09T09:35:08.399Z",
+  "generatedAt": "2026-09-09T11:57:00.145Z",
   "status": "pass",
   "checks": [
     {
@@ -112,7 +112,7 @@
       "required": true,
       "status": "pass",
       "summary": "go: completed, exit 0.",
-      "durationMs": 273,
+      "durationMs": 418,
       "exitCode": 0,
       "stdout": "?   \tinventory-service\t[no test files]\nok  \tinventory-service/inventory\t(cached)\n",
       "stderr": ""
@@ -122,17 +122,17 @@
       "required": true,
       "status": "pass",
       "summary": "cargo: completed, exit 0.",
-      "durationMs": 130,
+      "durationMs": 466,
       "exitCode": 0,
       "stdout": "\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 1 test\ntest tests::test_marketplace_002_classifies_risk_by_amount_and_history ... ok\n\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n",
-      "stderr": "    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.01s\n     Running unittests src/lib.rs (risk-service/target/debug/deps/risk_service-e00a9aa43f75a154)\n     Running unittests src/main.rs (risk-service/target/debug/deps/risk_service-8aaf8ca86b153d8c)\n     Running tests/risk_test.rs (risk-service/target/debug/deps/risk_test-95bafe8289616b7d)\n   Doc-tests risk_service\n"
+      "stderr": "    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.06s\n     Running unittests src/lib.rs (risk-service/target/debug/deps/risk_service-e00a9aa43f75a154)\n     Running unittests src/main.rs (risk-service/target/debug/deps/risk_service-8aaf8ca86b153d8c)\n     Running tests/risk_test.rs (risk-service/target/debug/deps/risk_test-95bafe8289616b7d)\n   Doc-tests risk_service\n"
     },
     {
       "name": "command:order-test",
       "required": true,
       "status": "pass",
       "summary": "mvn: completed, exit 0.",
-      "durationMs": 2401,
+      "durationMs": 2761,
       "exitCode": 0,
       "stdout": "",
       "stderr": ""
@@ -142,7 +142,7 @@
       "required": true,
       "status": "pass",
       "summary": "python3: completed, exit 0.",
-      "durationMs": 2262,
+      "durationMs": 3259,
       "exitCode": 0,
       "stdout": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-8.4.2, pluggy-1.6.0\nrootdir: /home/nahisaho/GitHub/musubix3/examples/ecommerce-marketplace\nplugins: json-report-1.5.0, fast-array-utils-1.3.1, cov-7.1.0, Faker-40.8.0, typeguard-4.5.2, jaxtyping-0.3.9, metadata-3.1.1, devtools-0.12.2, anyio-4.12.1, zarr-3.1.5\ncollected 1 item\n\nrecommendation-service/tests/test_recommendations.py .                   [100%]\n\n============================== 1 passed in 0.03s ===============================\n",
       "stderr": ""
@@ -152,7 +152,7 @@
       "required": true,
       "status": "pass",
       "summary": "npm: completed, exit 0.",
-      "durationMs": 803,
+      "durationMs": 936,
       "exitCode": 0,
       "stdout": "\n> bff@0.1.0 typecheck\n> tsc --noEmit\n\n",
       "stderr": ""
@@ -162,9 +162,9 @@
       "required": true,
       "status": "pass",
       "summary": "npm: completed, exit 0.",
-      "durationMs": 892,
+      "durationMs": 1070,
       "exitCode": 0,
-      "stdout": "\n> bff@0.1.0 test\n> vitest run\n\n\n RUN  v3.2.7 /home/nahisaho/GitHub/musubix3/examples/ecommerce-marketplace/bff\n\n ✓ src/submitOrder.test.ts (2 tests) 2ms\n\n Test Files  1 passed (1)\n      Tests  2 passed (2)\n   Start at  18:35:05\n   Duration  502ms (transform 42ms, setup 0ms, collect 26ms, tests 2ms, environment 0ms, prepare 133ms)\n\n",
+      "stdout": "\n> bff@0.1.0 test\n> vitest run\n\n\n RUN  v3.2.7 /home/nahisaho/GitHub/musubix3/examples/ecommerce-marketplace/bff\n\n ✓ src/submitOrder.test.ts (2 tests) 2ms\n\n Test Files  1 passed (1)\n      Tests  2 passed (2)\n   Start at  20:56:57\n   Duration  571ms (transform 53ms, setup 0ms, collect 41ms, tests 2ms, environment 0ms, prepare 117ms)\n\n",
       "stderr": ""
     },
     {
@@ -172,7 +172,7 @@
       "required": true,
       "status": "pass",
       "summary": "npm: completed, exit 0.",
-      "durationMs": 926,
+      "durationMs": 1049,
       "exitCode": 0,
       "stdout": "\n> frontend@0.1.0 typecheck\n> tsc --noEmit\n\n",
       "stderr": ""
@@ -182,9 +182,9 @@
       "required": true,
       "status": "pass",
       "summary": "npm: completed, exit 0.",
-      "durationMs": 913,
+      "durationMs": 1053,
       "exitCode": 0,
-      "stdout": "\n> frontend@0.1.0 test\n> vitest run\n\n\n RUN  v3.2.7 /home/nahisaho/GitHub/musubix3/examples/ecommerce-marketplace/frontend\n\n ✓ src/renderOrderSummary.test.ts (1 test) 2ms\n\n Test Files  1 passed (1)\n      Tests  1 passed (1)\n   Start at  18:35:07\n   Duration  496ms (transform 44ms, setup 0ms, collect 33ms, tests 2ms, environment 0ms, prepare 106ms)\n\n",
+      "stdout": "\n> frontend@0.1.0 test\n> vitest run\n\n\n RUN  v3.2.7 /home/nahisaho/GitHub/musubix3/examples/ecommerce-marketplace/frontend\n\n ✓ src/renderOrderSummary.test.ts (1 test) 2ms\n\n Test Files  1 passed (1)\n      Tests  1 passed (1)\n   Start at  20:56:59\n   Duration  513ms (transform 59ms, setup 0ms, collect 38ms, tests 2ms, environment 0ms, prepare 119ms)\n\n",
       "stderr": ""
     },
     {
@@ -324,6 +324,7 @@
     "coverage.tests": 1
   },
   "mode": "full",
+  "feature": null,
   "changed": null,
   "impacted": [],
   "lastChangeAnalysis": null,

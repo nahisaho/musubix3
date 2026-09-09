@@ -6,7 +6,7 @@ import {
   c4Diagram, validateConstitution, validateDesign, validateRequirements, type Diagnostic,
 } from '../../domain/src/index.js';
 import {
-  buildKnowledge, buildTrace, changedFiles, checkTrace, cycles, exists, files, formalCheck, graphGate,
+  buildKnowledge, buildTrace, changedFiles, checkTrace, configLint, cycles, exists, files, formalCheck, graphGate,
   graphImpact, indexGraph, loadConfig, loadGraph, loadTrace, portable, projectStatus, queryKnowledge,
   formalDoctor, generateFormalArtifacts, readText, runGate, traceImpact, type Solver,
   changePhases, recordChangePhase, recordWorkflow, runTddPhase, sanitizeWorkflowLogFile,
@@ -14,6 +14,7 @@ import {
   attestationSigningPayload, createUnsignedAttestation, githubOidcAudience, verifyEvidenceAttestation,
   mutationDoctor, mutationIdentity, validateMutationEvidence, validateModelCorrespondenceEvidence, within,
   approvalManifest, approvalStages, recordApproval, requireApproval, validateApprovals, type ApprovalStage,
+  scaffoldCommands,
 } from '../../analysis/src/index.js';
 import { install, pluginInstall } from './install.js';
 
@@ -38,7 +39,7 @@ function pathQuery(root: string, query: string): string {
 }
 
 export function createProgram(): Command {
-  const program = new Command().name('musubix3').description('Evidence-driven SDD for GitHub Copilot CLI / 根拠に基づく仕様駆動開発').version('0.1.8');
+  const program = new Command().name('musubix3').description('Evidence-driven SDD for GitHub Copilot CLI / 根拠に基づく仕様駆動開発').version('0.1.9');
   program.exitOverride();
   common(program.command('init').alias('install').description('Install repository skills and SDD artifacts (preserves existing files)'))
     .option('--dry-run', 'Preview without writing').option('--force', 'Replace bundled, managed paths only')
@@ -120,7 +121,15 @@ export function createProgram(): Command {
     const freshness = await checkTrace(root, graph);
     const stale = freshness.diagnostics.some((d) => d.code.startsWith('TRACE_STALE'));
     if (stale) throw new Error('Trace graph is stale; run trace build before impact analysis.');
-    output(traceImpact(graph, graph.nodes.some((n) => n.id === query) ? query : pathQuery(root, query)), !!options.json);
+    const resolvedQuery = graph.nodes.some((n) => n.id === query) ? query : pathQuery(root, query);
+    const impact = traceImpact(graph, resolvedQuery);
+    /** @id CODE-CLI-WORKFLOW-UX-002
+     * @implements REQ-CLI-WORKFLOW-UX-002
+     * @design DES-CLI-WORKFLOW-UX-002
+     */
+    const summary = `bidirectional candidate-review range from ${resolvedQuery} (${impact.length} node(s)); not a list of required changes:\n`
+      + impact.map((i) => `${i.id}`).join('\n');
+    output(impact, !!options.json, summary);
   });
 
   const graph = program.command('graph').description('Compiler-based imports, symbols, calls and architecture');
@@ -211,14 +220,32 @@ export function createProgram(): Command {
         + `\n  attempted: ${entry.attemptedCommands.join(', ')}`
         + `\n  ${entry.recommendation}`).join('\n'));
     });
-  async function executeGate(options: { root: string; json?: boolean; changed?: boolean }): Promise<void> {
+  async function executeGate(options: { root: string; json?: boolean; changed?: boolean; feature?: string }): Promise<void> {
     const report = await runGate(resolve(options.root), options);
-    output(report, !!options.json, `${report.status.toUpperCase()}\n${report.checks.map((c) => `${c.status.padEnd(7)} ${c.name}${c.required ? ' [required]' : ' [optional]'}: ${c.summary}`).join('\n')}`);
+    const scopeNote = report.mode === 'feature' ? ` [feature-scoped: ${report.feature}; not the repository-wide gate]` : '';
+    output(report, !!options.json, `${report.status.toUpperCase()}${scopeNote}\n${report.checks.map((c) => `${c.status.padEnd(7)} ${c.name}${c.required ? ' [required]' : ' [optional]'}: ${c.summary}`).join('\n')}`);
     if (report.status !== 'pass') process.exitCode = 1;
   }
   common(program.command('gate').description('Run actual configured commands and deterministic SDD checks'))
     .option('--changed', 'Report changed/impacted files; keep all checks to avoid unsafe skips')
+    .option('--feature <name>', 'Restrict requirements/design/trace/tdd/change checks to one feature; diagnostic view only, not a substitute for the repository-wide gate')
     .action(executeGate);
+  const config = program.command('config').description('Inspect and validate .musubix/config.json');
+  common(config.command('lint')).description('Report configured commands whose args reference nonexistent repository paths')
+    .action(async (options: { root: string; json?: boolean }) => {
+      result(await configLint(resolve(options.root)), !!options.json);
+    });
+  common(config.command('scaffold')).description('Propose native test-command entries for detected toolchains; never writes config.json')
+    .action(async (options: { root: string; json?: boolean }) => {
+      const proposals = await scaffoldCommands(resolve(options.root));
+      output(
+        proposals,
+        !!options.json,
+        proposals.length
+          ? proposals.map((p) => `${p.toolchain} (${p.manifest}): ${p.name} -> ${p.command} ${p.args.join(' ')}`.trim()).join('\n')
+          : 'No supported toolchain manifests detected.',
+      );
+    });
   const evidence = program.command('evidence').description('Refresh derived evidence in deterministic gate order');
   common(evidence.command('refresh'))
     .option('--changed', 'Preserve changed-file impact context while refreshing all checks')

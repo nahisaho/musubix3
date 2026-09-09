@@ -31,7 +31,8 @@ export interface GateReport {
   status: 'pass' | 'fail';
   checks: Evidence[];
   metrics: Record<string, number>;
-  mode: 'full' | 'changed';
+  mode: 'full' | 'changed' | 'feature';
+  feature: string | null;
   changed: string[] | null;
   impacted: string[];
   lastChangeAnalysis: {
@@ -79,8 +80,13 @@ export function aggregateStatus(checks: Evidence[]): 'pass' | 'fail' {
   return checks.every((check) => !check.required || check.status === 'pass') ? 'pass' : 'fail';
 }
 
+/** @id CODE-CLI-WORKFLOW-UX-005
+ * @implements REQ-CLI-WORKFLOW-UX-005
+ * @design DES-CLI-WORKFLOW-UX-005
+ */
 export async function runGate(root: string, options: {
   changed?: boolean;
+  feature?: string;
   runner?: Runner;
   config?: Config;
   environment?: NodeJS.ProcessEnv;
@@ -97,6 +103,10 @@ export async function runGate(root: string, options: {
   const before = await evidenceSnapshot(root);
   const paths = await files(root);
   const hasChangeDocuments = paths.some((path) => /^\.musubix\/changes\/CHANGE-\d+\.md$/.test(path));
+  const featureDir = options.feature ? `.musubix/features/${options.feature}/` : null;
+  if (featureDir && !paths.some((p) => p.startsWith(featureDir))) {
+    throw new Error(`Unknown feature "${options.feature}"; no artifacts found under ${featureDir}.`);
+  }
   const checks: Evidence[] = [];
   const required = (name: string): boolean => config.requiredChecks.includes(name);
   const countErrors = (diagnostics: Diagnostic[]): number => diagnostics.filter((d) => d.severity === 'error').length;
@@ -118,6 +128,18 @@ export async function runGate(root: string, options: {
   const designs = designTexts.map(({ path, text }) => validateDesign(text, path, { requirementIds, adrIds, designIds }));
   const reqDiagnostics = requirements.flatMap((r) => r.diagnostics);
   const designDiagnostics = designs.flatMap((d) => d.diagnostics);
+  const featureRequirementIds = featureDir
+    ? new Set(requirements.filter((_, i) => requirementPaths[i]!.startsWith(featureDir)).flatMap((r) => r.value.map((req) => req.id)))
+    : null;
+  const featureDesignIds = featureDir
+    ? new Set(designs.filter((_, i) => designPaths[i]!.startsWith(featureDir)).flatMap((d) => d.value.map((c) => c.id)))
+    : null;
+  function scopedToFeature(diagnostic: Diagnostic): boolean {
+    if (!featureDir) return true;
+    if (diagnostic.path?.startsWith(featureDir)) return true;
+    const ids = [...featureRequirementIds!, ...featureDesignIds!];
+    return ids.some((id) => diagnostic.message.includes(id));
+  }
   const policyBaseline = await loadPolicyBaseline(root);
   const policy = policyBaseline ? policyDiagnostics(config, policyBaseline, changed) : [];
   checks.push({
@@ -127,14 +149,14 @@ export async function runGate(root: string, options: {
     summary: policyBaseline === null ? 'No trusted policy baseline is configured.' : `${policy.length} policy violation(s).`,
     diagnostics: policy,
   });
-  add('requirements', requirementPaths.length > 0, reqDiagnostics);
-  add('design', designPaths.length > 0, designDiagnostics);
+  add('requirements', requirementPaths.length > 0, reqDiagnostics.filter(scopedToFeature));
+  add('design', designPaths.length > 0, designDiagnostics.filter(scopedToFeature));
   const constitutionPath = '.musubix/constitution.md';
   const constitution = await exists(within(root, constitutionPath)) ? validateConstitution(await readText(root, constitutionPath), constitutionPath) : null;
   add('constitution', constitution !== null, constitution?.diagnostics ?? []);
   const trace = await buildTrace(root);
   const traceResult = await checkTrace(root, trace, true, config.thresholds);
-  add('trace', requirementPaths.length > 0, traceResult.diagnostics);
+  add('trace', requirementPaths.length > 0, traceResult.diagnostics.filter(scopedToFeature));
   const graph = await indexGraph(root);
   const graphResult = graphGate(graph, config.architecture, config.codeGraph);
   add('graph', graph.files.length > 0, graphResult.diagnostics);
@@ -181,30 +203,33 @@ export async function runGate(root: string, options: {
     diagnostics: workflow.diagnostics,
   });
   const tdd = await validateTddEvidence(root);
+  const tddDiagnostics = tdd.diagnostics.filter(scopedToFeature);
   checks.push({
     name: 'tdd',
     required: required('tdd') || tdd.present || hasChangeDocuments,
-    status: !tdd.present ? 'skipped' : tdd.valid ? 'pass' : 'fail',
+    status: !tdd.present ? 'skipped' : (featureDir ? countErrors(tddDiagnostics) === 0 : tdd.valid) ? 'pass' : 'fail',
     summary: tdd.present ? `${tdd.cycles} Red-Green TDD cycle(s) recorded.` : 'No TDD cycle evidence is available.',
-    diagnostics: tdd.diagnostics,
+    diagnostics: tddDiagnostics,
   });
   const changes = await validateChangeEvidence(root);
+  const changeDiagnostics = changes.diagnostics.filter(scopedToFeature);
   checks.push({
     name: 'change-history',
     required: required('change-history') || hasChangeDocuments,
-    status: !changes.present ? 'skipped' : changes.valid ? 'pass' : 'fail',
+    status: !changes.present ? 'skipped' : (featureDir ? countErrors(changeDiagnostics) === 0 : changes.valid) ? 'pass' : 'fail',
     summary: changes.present ? `${changes.changes} staged change(s) checked for ordered artifact and TDD evidence.` : 'No staged change chronology evidence is available.',
-    diagnostics: changes.diagnostics,
+    diagnostics: changeDiagnostics,
   });
   const completeness = await validateChangeCompleteness(root);
+  const completenessDiagnostics = completeness.diagnostics.filter(scopedToFeature);
   const completenessCheck: Evidence = {
     name: 'change-completeness',
     required: required('change-completeness') || hasChangeDocuments,
-    status: !completeness.present ? 'skipped' : completeness.valid ? 'pass' : 'fail',
+    status: !completeness.present ? 'skipped' : (featureDir ? countErrors(completenessDiagnostics) === 0 : completeness.valid) ? 'pass' : 'fail',
     summary: completeness.present
       ? `${completeness.changes.filter((change) => change.valid).length}/${completeness.changes.length} staged change(s) have complete requirement, design, ADR, code, test, TDD and trace evidence.`
       : 'No staged change evidence is available.',
-    diagnostics: completeness.diagnostics,
+    diagnostics: completenessDiagnostics,
   };
   checks.push(completenessCheck);
   const formalEvidence: FormalEvidence = {
@@ -443,11 +468,12 @@ export async function runGate(root: string, options: {
     diagnostics: correspondence.diagnostics,
   });
   const refreshedCompleteness = await validateChangeCompleteness(root);
-  completenessCheck.status = !refreshedCompleteness.present ? 'skipped' : refreshedCompleteness.valid ? 'pass' : 'fail';
+  const refreshedCompletenessDiagnostics = refreshedCompleteness.diagnostics.filter(scopedToFeature);
+  completenessCheck.status = !refreshedCompleteness.present ? 'skipped' : (featureDir ? countErrors(refreshedCompletenessDiagnostics) === 0 : refreshedCompleteness.valid) ? 'pass' : 'fail';
   completenessCheck.summary = refreshedCompleteness.present
     ? `${refreshedCompleteness.changes.filter((change) => change.valid).length}/${refreshedCompleteness.changes.length} staged change(s) have semantically complete evidence.`
     : 'No staged change evidence is available.';
-  completenessCheck.diagnostics = refreshedCompleteness.diagnostics;
+  completenessCheck.diagnostics = refreshedCompletenessDiagnostics;
   const attestation = await verifyEvidenceAttestation(
     root,
     config.attestation,
@@ -567,19 +593,21 @@ export async function runGate(root: string, options: {
       generatedAt,
     };
   }
+  const featureScopedCheckNames = new Set(['requirements', 'design', 'trace', 'tdd', 'change-history', 'change-completeness']);
   const report: GateReport = {
     schemaVersion: 1,
     generatedAt,
-    status: aggregateStatus(checks),
+    status: aggregateStatus(featureDir ? checks.filter((c) => featureScopedCheckNames.has(c.name)) : checks),
     checks,
     metrics,
-    mode: options.changed ? 'changed' : 'full',
+    mode: featureDir ? 'feature' : options.changed ? 'changed' : 'full',
+    feature: options.feature ?? null,
     changed: options.changed ? changed : lastChangeAnalysis?.changed ?? null,
     impacted: options.changed ? currentImpacted : lastChangeAnalysis?.impacted ?? [],
     lastChangeAnalysis,
     fingerprints: after,
   };
-  await writeJson(root, evidencePath, report);
+  if (!featureDir) await writeJson(root, evidencePath, report);
   return report;
 }
 

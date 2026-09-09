@@ -1870,6 +1870,722 @@
           }
         }
       }
+    },
+    {
+      "changeId": "CHANGE-0003",
+      "requirementIds": [
+        "REQ-MUSUBIX3-QIITA-001",
+        "REQ-MUSUBIX3-QIITA-002",
+        "REQ-MUSUBIX3-QIITA-003",
+        "REQ-MUSUBIX3-QIITA-004",
+        "REQ-MUSUBIX3-QIITA-005"
+      ],
+      "phases": {
+        "impact": {
+          "phase": "impact",
+          "order": 35,
+          "recordedAt": "2026-09-09T08:08:44.177Z",
+          "fingerprints": {
+            "impact": "c40fb549df2c15a388b1f1b7edaf934a636fec3e57b2dd9d3ce4877ed59c780c",
+            "requirements": "599da4490800723934dfd4d06b83a679a2e65fb9457f68bdc81c9e5e29cf43bd",
+            "design": "83ba37a47d1b6bdea7d46315370367628e80f7084d2bc237a221bcd0768d5fc6",
+            "implementation": "6a8933ccc6af888c418c9830c2c12d14d4ca42efc0831195ef0a9220a1d70ea9",
+            "tests": "4ef95c739d9260af9ac73cdab4d06fd32a9d04c1f2baf8baf6bfd8c2c646e6d9",
+            "tdd": "f68514769ef81e56caf348f2b39b1dc18befd9bc9c7d03fb3bfe02e62d967c91",
+            "requirementImplementations": {
+              "REQ-MUSUBIX3-QIITA-001": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-MUSUBIX3-QIITA-002": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-MUSUBIX3-QIITA-003": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-MUSUBIX3-QIITA-004": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-MUSUBIX3-QIITA-005": {
+                "paths": [],
+                "fingerprints": {}
+              }
+            }
+          }
+        },
+        "requirements": {
+          "phase": "requirements",
+          "order": 36,
+          "recordedAt": "2026-09-09T08:08:52.559Z",
+          "fingerprints": {
+            "impact": "c40fb549df2c15a388b1f1b7edaf934a636fec3e57b2dd9d3ce4877ed59c780c",
+            "requirements": "9dd9b80de53c6c80f680fffd2a5d29d01d431aa2a03c5834dbe5d9fbd625a0fa",
+            "design": "83ba37a47d1b6bdea7d46315370367628e80f7084d2bc237a221bcd0768d5fc6",
+            "implementation": "6a8933ccc6af888c418c9830c2c12d14d4ca42efc0831195ef0a9220a1d70ea9",
+            "tests": "4ef95c739d9260af9ac73cdab4d06fd32a9d04c1f2baf8baf6bfd8c2c646e6d9",
+            "tdd": "f68514769ef81e56caf348f2b39b1dc18befd9bc9c7d03fb3bfe02e62d967c91",
+            "requirementImplementations": {
+              "REQ-MUSUBIX3-QIITA-001": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-MUSUBIX3-QIITA-002": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-MUSUBIX3-QIITA-003": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-MUSUBIX3-QIITA-004": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-MUSUBIX3-QIITA-005": {
+                "paths": [],
+                "fingerprints": {}
+              }
+            }
+          }
+        },
+        "design": {
+          "phase": "design",
+          "order": 37,
+          "recordedAt": "2026-09-09T08:08:58.105Z",
+          "fingerprints": {
+            "impact": "c40fb549df2c15a388b1f1b7edaf934a636fec3e57b2dd9d3ce4877ed59c780c",
+            "requirements": "9dd9b80de53c6c80f680fffd2a5d29d01d431aa2a03c5834dbe5d9fbd625a0fa",
+            "design": "20798dc2b7f9e2da3cc7830d5b16db0d12b644ef231f8279bf89b0fc351e0b56",
+            "implementation": "6a8933ccc6af888c418c9830c2c12d14d4ca42efc0831195ef0a9220a1d70ea9",
+            "tests": "4ef95c739d9260af9ac73cdab4d06fd32a9d04c1f2baf8baf6bfd8c2c646e6d9",
+            "tdd": "f68514769ef81e56caf348f2b39b1dc18befd9bc9c7d03fb3bfe02e62d967c91",
+            "requirementImplementations": {
+              "REQ-MUSUBIX3-QIITA-001": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-MUSUBIX3-QIITA-002": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-MUSUBIX3-QIITA-003": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-MUSUBIX3-QIITA-004": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-MUSUBIX3-QIITA-005": {
+                "paths": [],
+                "fingerprints": {}
+              }
+            }
+          }
+        },
+        "red": {
+          "phase": "red",
+          "order": 44,
+          "recordedAt": "2026-09-09T08:09:12.204Z",
+          "fingerprints": {
+            "impact": "c40fb549df2c15a388b1f1b7edaf934a636fec3e57b2dd9d3ce4877ed59c780c",
+            "requirements": "9dd9b80de53c6c80f680fffd2a5d29d01d431aa2a03c5834dbe5d9fbd625a0fa",
+            "design": "20798dc2b7f9e2da3cc7830d5b16db0d12b644ef231f8279bf89b0fc351e0b56",
+            "implementation": "6a8933ccc6af888c418c9830c2c12d14d4ca42efc0831195ef0a9220a1d70ea9",
+            "tests": "1ee4d6221ab56faa5597a3d9d368563a8b988673e73253d4824df77b3d654aec",
+            "tdd": "0e96c95e167e7b96528545c4ff891f53a4e7062134d3f29a94916724e20c2ff1",
+            "requirementImplementations": {
+              "REQ-MUSUBIX3-QIITA-001": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-MUSUBIX3-QIITA-002": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-MUSUBIX3-QIITA-003": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-MUSUBIX3-QIITA-004": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-MUSUBIX3-QIITA-005": {
+                "paths": [],
+                "fingerprints": {}
+              }
+            }
+          }
+        },
+        "implementation": {
+          "phase": "implementation",
+          "order": 45,
+          "recordedAt": "2026-09-09T08:09:15.256Z",
+          "fingerprints": {
+            "impact": "c40fb549df2c15a388b1f1b7edaf934a636fec3e57b2dd9d3ce4877ed59c780c",
+            "requirements": "9dd9b80de53c6c80f680fffd2a5d29d01d431aa2a03c5834dbe5d9fbd625a0fa",
+            "design": "20798dc2b7f9e2da3cc7830d5b16db0d12b644ef231f8279bf89b0fc351e0b56",
+            "implementation": "b0ee8c0df88a4362efed9c0e025e48030689d2ed529f8b1f2592c916a7999405",
+            "tests": "1ee4d6221ab56faa5597a3d9d368563a8b988673e73253d4824df77b3d654aec",
+            "tdd": "0e96c95e167e7b96528545c4ff891f53a4e7062134d3f29a94916724e20c2ff1",
+            "requirementImplementations": {
+              "REQ-MUSUBIX3-QIITA-001": {
+                "paths": [
+                  "scripts/check-marketplace-article.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-marketplace-article.mjs": "431bb700217361cfd6ff24e266742554659098362d0c84bedee56a7e9831b5f8"
+                }
+              },
+              "REQ-MUSUBIX3-QIITA-002": {
+                "paths": [
+                  "scripts/check-marketplace-article.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-marketplace-article.mjs": "431bb700217361cfd6ff24e266742554659098362d0c84bedee56a7e9831b5f8"
+                }
+              },
+              "REQ-MUSUBIX3-QIITA-003": {
+                "paths": [
+                  "examples/marketplace-platform/apps/storefront/app/layout.tsx",
+                  "examples/marketplace-platform/apps/storefront/app/marketplace.tsx",
+                  "examples/marketplace-platform/apps/storefront/app/page.tsx",
+                  "examples/marketplace-platform/services/bff/src/domain.ts",
+                  "examples/marketplace-platform/services/bff/src/server.ts",
+                  "examples/marketplace-platform/services/inventory/http.go",
+                  "examples/marketplace-platform/services/inventory/inventory.go",
+                  "examples/marketplace-platform/services/inventory/main.go",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/Order.java",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/OrderApplication.java",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/OrderController.java",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/OrderService.java",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/OrderState.java",
+                  "examples/marketplace-platform/services/recommendation/src/recommendation/domain.py",
+                  "examples/marketplace-platform/services/recommendation/src/recommendation/http.py",
+                  "examples/marketplace-platform/services/risk/src/lib.rs",
+                  "examples/marketplace-platform/services/risk/src/main.rs"
+                ],
+                "fingerprints": {
+                  "examples/marketplace-platform/apps/storefront/app/layout.tsx": "200c5954a68e912552079b9e79fab1f26966720950d08138b98718155839e2cb",
+                  "examples/marketplace-platform/apps/storefront/app/marketplace.tsx": "389ed89cc25a67681e7316881732a2f6570795ec4e137976a10a687570dc1303",
+                  "examples/marketplace-platform/apps/storefront/app/page.tsx": "b02fcd5cd63663b3d2728a257ed04fd23a780410562f89fafa8e292ac6018abc",
+                  "examples/marketplace-platform/services/bff/src/domain.ts": "c8eda0202399b76a83316b145139092de8452efda8c2c4ea59e8c01ee17e5d62",
+                  "examples/marketplace-platform/services/bff/src/server.ts": "6a15f11231b3ab7d9928874d1063b03b1952c03ce0108048f06a1d6e38c758f6",
+                  "examples/marketplace-platform/services/inventory/http.go": "0253d039cfa301986f407a274c0c8e4f12a4a4aaa6f8bfeed2c65465b8250e92",
+                  "examples/marketplace-platform/services/inventory/inventory.go": "392532c2b728a1e838c6a4905abb3e27461a77a826eb42394de3793df9b77c86",
+                  "examples/marketplace-platform/services/inventory/main.go": "d5ada098f9834138d94f36a08474ecf2a331052209faa39c75fc61fe718d06c2",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/Order.java": "c35afe812e695d9eef7f73e6f36ae5bd6eb51b0107f096f89d50df3095a1131d",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/OrderApplication.java": "84b00553af59b52759b24fec07447e390f229c7ae92bea48470bcbdd50046834",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/OrderController.java": "0f0f568f55353b2d506b6fe460709ecc20bf2edfe1786956fca4eae951fced69",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/OrderService.java": "1ce36d513a6c8f5bc9a23c24d9a6a90de387ed8745d6dd829dfd83497b662501",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/OrderState.java": "47eac90057b4454a90852b84d4528eca067603ef8b4d5dc1f2c96f4aa8c3ec19",
+                  "examples/marketplace-platform/services/recommendation/src/recommendation/domain.py": "8a7022f671965544915b1f40021fa5a14f73143219af63f94faa61920f6b7490",
+                  "examples/marketplace-platform/services/recommendation/src/recommendation/http.py": "b1506442d10c19baee2b70d079386c4f5a2b47f4f6dee874fd5eebc24623ec65",
+                  "examples/marketplace-platform/services/risk/src/lib.rs": "1377089be2acf15da3ed1544d44ebc7061393b717e46bc6d9625f8f8635ed404",
+                  "examples/marketplace-platform/services/risk/src/main.rs": "4fbb550cecbad6230f443660172e87cf6ca6e6c3b05cea8716cc26202e335b37"
+                }
+              },
+              "REQ-MUSUBIX3-QIITA-004": {
+                "paths": [
+                  "examples/marketplace-platform/apps/storefront/app/layout.tsx",
+                  "examples/marketplace-platform/apps/storefront/app/marketplace.tsx",
+                  "examples/marketplace-platform/apps/storefront/app/page.tsx",
+                  "examples/marketplace-platform/services/bff/src/domain.ts",
+                  "examples/marketplace-platform/services/bff/src/server.ts",
+                  "examples/marketplace-platform/services/inventory/http.go",
+                  "examples/marketplace-platform/services/inventory/inventory.go",
+                  "examples/marketplace-platform/services/inventory/main.go",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/Order.java",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/OrderApplication.java",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/OrderController.java",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/OrderService.java",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/OrderState.java",
+                  "examples/marketplace-platform/services/recommendation/src/recommendation/domain.py",
+                  "examples/marketplace-platform/services/recommendation/src/recommendation/http.py",
+                  "examples/marketplace-platform/services/risk/src/lib.rs",
+                  "examples/marketplace-platform/services/risk/src/main.rs",
+                  "scripts/check-marketplace-article.mjs"
+                ],
+                "fingerprints": {
+                  "examples/marketplace-platform/apps/storefront/app/layout.tsx": "200c5954a68e912552079b9e79fab1f26966720950d08138b98718155839e2cb",
+                  "examples/marketplace-platform/apps/storefront/app/marketplace.tsx": "389ed89cc25a67681e7316881732a2f6570795ec4e137976a10a687570dc1303",
+                  "examples/marketplace-platform/apps/storefront/app/page.tsx": "b02fcd5cd63663b3d2728a257ed04fd23a780410562f89fafa8e292ac6018abc",
+                  "examples/marketplace-platform/services/bff/src/domain.ts": "c8eda0202399b76a83316b145139092de8452efda8c2c4ea59e8c01ee17e5d62",
+                  "examples/marketplace-platform/services/bff/src/server.ts": "6a15f11231b3ab7d9928874d1063b03b1952c03ce0108048f06a1d6e38c758f6",
+                  "examples/marketplace-platform/services/inventory/http.go": "0253d039cfa301986f407a274c0c8e4f12a4a4aaa6f8bfeed2c65465b8250e92",
+                  "examples/marketplace-platform/services/inventory/inventory.go": "392532c2b728a1e838c6a4905abb3e27461a77a826eb42394de3793df9b77c86",
+                  "examples/marketplace-platform/services/inventory/main.go": "d5ada098f9834138d94f36a08474ecf2a331052209faa39c75fc61fe718d06c2",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/Order.java": "c35afe812e695d9eef7f73e6f36ae5bd6eb51b0107f096f89d50df3095a1131d",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/OrderApplication.java": "84b00553af59b52759b24fec07447e390f229c7ae92bea48470bcbdd50046834",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/OrderController.java": "0f0f568f55353b2d506b6fe460709ecc20bf2edfe1786956fca4eae951fced69",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/OrderService.java": "1ce36d513a6c8f5bc9a23c24d9a6a90de387ed8745d6dd829dfd83497b662501",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/OrderState.java": "47eac90057b4454a90852b84d4528eca067603ef8b4d5dc1f2c96f4aa8c3ec19",
+                  "examples/marketplace-platform/services/recommendation/src/recommendation/domain.py": "8a7022f671965544915b1f40021fa5a14f73143219af63f94faa61920f6b7490",
+                  "examples/marketplace-platform/services/recommendation/src/recommendation/http.py": "b1506442d10c19baee2b70d079386c4f5a2b47f4f6dee874fd5eebc24623ec65",
+                  "examples/marketplace-platform/services/risk/src/lib.rs": "1377089be2acf15da3ed1544d44ebc7061393b717e46bc6d9625f8f8635ed404",
+                  "examples/marketplace-platform/services/risk/src/main.rs": "4fbb550cecbad6230f443660172e87cf6ca6e6c3b05cea8716cc26202e335b37",
+                  "scripts/check-marketplace-article.mjs": "431bb700217361cfd6ff24e266742554659098362d0c84bedee56a7e9831b5f8"
+                }
+              },
+              "REQ-MUSUBIX3-QIITA-005": {
+                "paths": [
+                  "scripts/check-marketplace-article.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-marketplace-article.mjs": "431bb700217361cfd6ff24e266742554659098362d0c84bedee56a7e9831b5f8"
+                }
+              }
+            }
+          }
+        },
+        "green": {
+          "phase": "green",
+          "order": 52,
+          "recordedAt": "2026-09-09T08:09:27.868Z",
+          "fingerprints": {
+            "impact": "c40fb549df2c15a388b1f1b7edaf934a636fec3e57b2dd9d3ce4877ed59c780c",
+            "requirements": "9dd9b80de53c6c80f680fffd2a5d29d01d431aa2a03c5834dbe5d9fbd625a0fa",
+            "design": "20798dc2b7f9e2da3cc7830d5b16db0d12b644ef231f8279bf89b0fc351e0b56",
+            "implementation": "b0ee8c0df88a4362efed9c0e025e48030689d2ed529f8b1f2592c916a7999405",
+            "tests": "1ee4d6221ab56faa5597a3d9d368563a8b988673e73253d4824df77b3d654aec",
+            "tdd": "c15f66d672761d9dd344b1dd2b0e296448a51dede98e840c7911214d2d4c134d",
+            "requirementImplementations": {
+              "REQ-MUSUBIX3-QIITA-001": {
+                "paths": [
+                  "scripts/check-marketplace-article.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-marketplace-article.mjs": "431bb700217361cfd6ff24e266742554659098362d0c84bedee56a7e9831b5f8"
+                }
+              },
+              "REQ-MUSUBIX3-QIITA-002": {
+                "paths": [
+                  "scripts/check-marketplace-article.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-marketplace-article.mjs": "431bb700217361cfd6ff24e266742554659098362d0c84bedee56a7e9831b5f8"
+                }
+              },
+              "REQ-MUSUBIX3-QIITA-003": {
+                "paths": [
+                  "examples/marketplace-platform/apps/storefront/app/layout.tsx",
+                  "examples/marketplace-platform/apps/storefront/app/marketplace.tsx",
+                  "examples/marketplace-platform/apps/storefront/app/page.tsx",
+                  "examples/marketplace-platform/services/bff/src/domain.ts",
+                  "examples/marketplace-platform/services/bff/src/server.ts",
+                  "examples/marketplace-platform/services/inventory/http.go",
+                  "examples/marketplace-platform/services/inventory/inventory.go",
+                  "examples/marketplace-platform/services/inventory/main.go",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/Order.java",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/OrderApplication.java",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/OrderController.java",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/OrderService.java",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/OrderState.java",
+                  "examples/marketplace-platform/services/recommendation/src/recommendation/domain.py",
+                  "examples/marketplace-platform/services/recommendation/src/recommendation/http.py",
+                  "examples/marketplace-platform/services/risk/src/lib.rs",
+                  "examples/marketplace-platform/services/risk/src/main.rs"
+                ],
+                "fingerprints": {
+                  "examples/marketplace-platform/apps/storefront/app/layout.tsx": "200c5954a68e912552079b9e79fab1f26966720950d08138b98718155839e2cb",
+                  "examples/marketplace-platform/apps/storefront/app/marketplace.tsx": "389ed89cc25a67681e7316881732a2f6570795ec4e137976a10a687570dc1303",
+                  "examples/marketplace-platform/apps/storefront/app/page.tsx": "b02fcd5cd63663b3d2728a257ed04fd23a780410562f89fafa8e292ac6018abc",
+                  "examples/marketplace-platform/services/bff/src/domain.ts": "c8eda0202399b76a83316b145139092de8452efda8c2c4ea59e8c01ee17e5d62",
+                  "examples/marketplace-platform/services/bff/src/server.ts": "6a15f11231b3ab7d9928874d1063b03b1952c03ce0108048f06a1d6e38c758f6",
+                  "examples/marketplace-platform/services/inventory/http.go": "0253d039cfa301986f407a274c0c8e4f12a4a4aaa6f8bfeed2c65465b8250e92",
+                  "examples/marketplace-platform/services/inventory/inventory.go": "392532c2b728a1e838c6a4905abb3e27461a77a826eb42394de3793df9b77c86",
+                  "examples/marketplace-platform/services/inventory/main.go": "d5ada098f9834138d94f36a08474ecf2a331052209faa39c75fc61fe718d06c2",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/Order.java": "c35afe812e695d9eef7f73e6f36ae5bd6eb51b0107f096f89d50df3095a1131d",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/OrderApplication.java": "84b00553af59b52759b24fec07447e390f229c7ae92bea48470bcbdd50046834",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/OrderController.java": "0f0f568f55353b2d506b6fe460709ecc20bf2edfe1786956fca4eae951fced69",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/OrderService.java": "1ce36d513a6c8f5bc9a23c24d9a6a90de387ed8745d6dd829dfd83497b662501",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/OrderState.java": "47eac90057b4454a90852b84d4528eca067603ef8b4d5dc1f2c96f4aa8c3ec19",
+                  "examples/marketplace-platform/services/recommendation/src/recommendation/domain.py": "8a7022f671965544915b1f40021fa5a14f73143219af63f94faa61920f6b7490",
+                  "examples/marketplace-platform/services/recommendation/src/recommendation/http.py": "b1506442d10c19baee2b70d079386c4f5a2b47f4f6dee874fd5eebc24623ec65",
+                  "examples/marketplace-platform/services/risk/src/lib.rs": "1377089be2acf15da3ed1544d44ebc7061393b717e46bc6d9625f8f8635ed404",
+                  "examples/marketplace-platform/services/risk/src/main.rs": "4fbb550cecbad6230f443660172e87cf6ca6e6c3b05cea8716cc26202e335b37"
+                }
+              },
+              "REQ-MUSUBIX3-QIITA-004": {
+                "paths": [
+                  "examples/marketplace-platform/apps/storefront/app/layout.tsx",
+                  "examples/marketplace-platform/apps/storefront/app/marketplace.tsx",
+                  "examples/marketplace-platform/apps/storefront/app/page.tsx",
+                  "examples/marketplace-platform/services/bff/src/domain.ts",
+                  "examples/marketplace-platform/services/bff/src/server.ts",
+                  "examples/marketplace-platform/services/inventory/http.go",
+                  "examples/marketplace-platform/services/inventory/inventory.go",
+                  "examples/marketplace-platform/services/inventory/main.go",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/Order.java",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/OrderApplication.java",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/OrderController.java",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/OrderService.java",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/OrderState.java",
+                  "examples/marketplace-platform/services/recommendation/src/recommendation/domain.py",
+                  "examples/marketplace-platform/services/recommendation/src/recommendation/http.py",
+                  "examples/marketplace-platform/services/risk/src/lib.rs",
+                  "examples/marketplace-platform/services/risk/src/main.rs",
+                  "scripts/check-marketplace-article.mjs"
+                ],
+                "fingerprints": {
+                  "examples/marketplace-platform/apps/storefront/app/layout.tsx": "200c5954a68e912552079b9e79fab1f26966720950d08138b98718155839e2cb",
+                  "examples/marketplace-platform/apps/storefront/app/marketplace.tsx": "389ed89cc25a67681e7316881732a2f6570795ec4e137976a10a687570dc1303",
+                  "examples/marketplace-platform/apps/storefront/app/page.tsx": "b02fcd5cd63663b3d2728a257ed04fd23a780410562f89fafa8e292ac6018abc",
+                  "examples/marketplace-platform/services/bff/src/domain.ts": "c8eda0202399b76a83316b145139092de8452efda8c2c4ea59e8c01ee17e5d62",
+                  "examples/marketplace-platform/services/bff/src/server.ts": "6a15f11231b3ab7d9928874d1063b03b1952c03ce0108048f06a1d6e38c758f6",
+                  "examples/marketplace-platform/services/inventory/http.go": "0253d039cfa301986f407a274c0c8e4f12a4a4aaa6f8bfeed2c65465b8250e92",
+                  "examples/marketplace-platform/services/inventory/inventory.go": "392532c2b728a1e838c6a4905abb3e27461a77a826eb42394de3793df9b77c86",
+                  "examples/marketplace-platform/services/inventory/main.go": "d5ada098f9834138d94f36a08474ecf2a331052209faa39c75fc61fe718d06c2",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/Order.java": "c35afe812e695d9eef7f73e6f36ae5bd6eb51b0107f096f89d50df3095a1131d",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/OrderApplication.java": "84b00553af59b52759b24fec07447e390f229c7ae92bea48470bcbdd50046834",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/OrderController.java": "0f0f568f55353b2d506b6fe460709ecc20bf2edfe1786956fca4eae951fced69",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/OrderService.java": "1ce36d513a6c8f5bc9a23c24d9a6a90de387ed8745d6dd829dfd83497b662501",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/OrderState.java": "47eac90057b4454a90852b84d4528eca067603ef8b4d5dc1f2c96f4aa8c3ec19",
+                  "examples/marketplace-platform/services/recommendation/src/recommendation/domain.py": "8a7022f671965544915b1f40021fa5a14f73143219af63f94faa61920f6b7490",
+                  "examples/marketplace-platform/services/recommendation/src/recommendation/http.py": "b1506442d10c19baee2b70d079386c4f5a2b47f4f6dee874fd5eebc24623ec65",
+                  "examples/marketplace-platform/services/risk/src/lib.rs": "1377089be2acf15da3ed1544d44ebc7061393b717e46bc6d9625f8f8635ed404",
+                  "examples/marketplace-platform/services/risk/src/main.rs": "4fbb550cecbad6230f443660172e87cf6ca6e6c3b05cea8716cc26202e335b37",
+                  "scripts/check-marketplace-article.mjs": "431bb700217361cfd6ff24e266742554659098362d0c84bedee56a7e9831b5f8"
+                }
+              },
+              "REQ-MUSUBIX3-QIITA-005": {
+                "paths": [
+                  "scripts/check-marketplace-article.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-marketplace-article.mjs": "431bb700217361cfd6ff24e266742554659098362d0c84bedee56a7e9831b5f8"
+                }
+              }
+            }
+          }
+        },
+        "quality": {
+          "phase": "quality",
+          "order": 53,
+          "recordedAt": "2026-09-09T08:09:38.901Z",
+          "fingerprints": {
+            "impact": "c40fb549df2c15a388b1f1b7edaf934a636fec3e57b2dd9d3ce4877ed59c780c",
+            "requirements": "9dd9b80de53c6c80f680fffd2a5d29d01d431aa2a03c5834dbe5d9fbd625a0fa",
+            "design": "20798dc2b7f9e2da3cc7830d5b16db0d12b644ef231f8279bf89b0fc351e0b56",
+            "implementation": "b0ee8c0df88a4362efed9c0e025e48030689d2ed529f8b1f2592c916a7999405",
+            "tests": "1ee4d6221ab56faa5597a3d9d368563a8b988673e73253d4824df77b3d654aec",
+            "tdd": "c15f66d672761d9dd344b1dd2b0e296448a51dede98e840c7911214d2d4c134d",
+            "requirementImplementations": {
+              "REQ-MUSUBIX3-QIITA-001": {
+                "paths": [
+                  "scripts/check-marketplace-article.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-marketplace-article.mjs": "431bb700217361cfd6ff24e266742554659098362d0c84bedee56a7e9831b5f8"
+                }
+              },
+              "REQ-MUSUBIX3-QIITA-002": {
+                "paths": [
+                  "scripts/check-marketplace-article.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-marketplace-article.mjs": "431bb700217361cfd6ff24e266742554659098362d0c84bedee56a7e9831b5f8"
+                }
+              },
+              "REQ-MUSUBIX3-QIITA-003": {
+                "paths": [
+                  "examples/marketplace-platform/apps/storefront/app/layout.tsx",
+                  "examples/marketplace-platform/apps/storefront/app/marketplace.tsx",
+                  "examples/marketplace-platform/apps/storefront/app/page.tsx",
+                  "examples/marketplace-platform/services/bff/src/domain.ts",
+                  "examples/marketplace-platform/services/bff/src/server.ts",
+                  "examples/marketplace-platform/services/inventory/http.go",
+                  "examples/marketplace-platform/services/inventory/inventory.go",
+                  "examples/marketplace-platform/services/inventory/main.go",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/Order.java",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/OrderApplication.java",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/OrderController.java",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/OrderService.java",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/OrderState.java",
+                  "examples/marketplace-platform/services/recommendation/src/recommendation/domain.py",
+                  "examples/marketplace-platform/services/recommendation/src/recommendation/http.py",
+                  "examples/marketplace-platform/services/risk/src/lib.rs",
+                  "examples/marketplace-platform/services/risk/src/main.rs"
+                ],
+                "fingerprints": {
+                  "examples/marketplace-platform/apps/storefront/app/layout.tsx": "200c5954a68e912552079b9e79fab1f26966720950d08138b98718155839e2cb",
+                  "examples/marketplace-platform/apps/storefront/app/marketplace.tsx": "389ed89cc25a67681e7316881732a2f6570795ec4e137976a10a687570dc1303",
+                  "examples/marketplace-platform/apps/storefront/app/page.tsx": "b02fcd5cd63663b3d2728a257ed04fd23a780410562f89fafa8e292ac6018abc",
+                  "examples/marketplace-platform/services/bff/src/domain.ts": "c8eda0202399b76a83316b145139092de8452efda8c2c4ea59e8c01ee17e5d62",
+                  "examples/marketplace-platform/services/bff/src/server.ts": "6a15f11231b3ab7d9928874d1063b03b1952c03ce0108048f06a1d6e38c758f6",
+                  "examples/marketplace-platform/services/inventory/http.go": "0253d039cfa301986f407a274c0c8e4f12a4a4aaa6f8bfeed2c65465b8250e92",
+                  "examples/marketplace-platform/services/inventory/inventory.go": "392532c2b728a1e838c6a4905abb3e27461a77a826eb42394de3793df9b77c86",
+                  "examples/marketplace-platform/services/inventory/main.go": "d5ada098f9834138d94f36a08474ecf2a331052209faa39c75fc61fe718d06c2",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/Order.java": "c35afe812e695d9eef7f73e6f36ae5bd6eb51b0107f096f89d50df3095a1131d",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/OrderApplication.java": "84b00553af59b52759b24fec07447e390f229c7ae92bea48470bcbdd50046834",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/OrderController.java": "0f0f568f55353b2d506b6fe460709ecc20bf2edfe1786956fca4eae951fced69",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/OrderService.java": "1ce36d513a6c8f5bc9a23c24d9a6a90de387ed8745d6dd829dfd83497b662501",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/OrderState.java": "47eac90057b4454a90852b84d4528eca067603ef8b4d5dc1f2c96f4aa8c3ec19",
+                  "examples/marketplace-platform/services/recommendation/src/recommendation/domain.py": "8a7022f671965544915b1f40021fa5a14f73143219af63f94faa61920f6b7490",
+                  "examples/marketplace-platform/services/recommendation/src/recommendation/http.py": "b1506442d10c19baee2b70d079386c4f5a2b47f4f6dee874fd5eebc24623ec65",
+                  "examples/marketplace-platform/services/risk/src/lib.rs": "1377089be2acf15da3ed1544d44ebc7061393b717e46bc6d9625f8f8635ed404",
+                  "examples/marketplace-platform/services/risk/src/main.rs": "4fbb550cecbad6230f443660172e87cf6ca6e6c3b05cea8716cc26202e335b37"
+                }
+              },
+              "REQ-MUSUBIX3-QIITA-004": {
+                "paths": [
+                  "examples/marketplace-platform/apps/storefront/app/layout.tsx",
+                  "examples/marketplace-platform/apps/storefront/app/marketplace.tsx",
+                  "examples/marketplace-platform/apps/storefront/app/page.tsx",
+                  "examples/marketplace-platform/services/bff/src/domain.ts",
+                  "examples/marketplace-platform/services/bff/src/server.ts",
+                  "examples/marketplace-platform/services/inventory/http.go",
+                  "examples/marketplace-platform/services/inventory/inventory.go",
+                  "examples/marketplace-platform/services/inventory/main.go",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/Order.java",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/OrderApplication.java",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/OrderController.java",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/OrderService.java",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/OrderState.java",
+                  "examples/marketplace-platform/services/recommendation/src/recommendation/domain.py",
+                  "examples/marketplace-platform/services/recommendation/src/recommendation/http.py",
+                  "examples/marketplace-platform/services/risk/src/lib.rs",
+                  "examples/marketplace-platform/services/risk/src/main.rs",
+                  "scripts/check-marketplace-article.mjs"
+                ],
+                "fingerprints": {
+                  "examples/marketplace-platform/apps/storefront/app/layout.tsx": "200c5954a68e912552079b9e79fab1f26966720950d08138b98718155839e2cb",
+                  "examples/marketplace-platform/apps/storefront/app/marketplace.tsx": "389ed89cc25a67681e7316881732a2f6570795ec4e137976a10a687570dc1303",
+                  "examples/marketplace-platform/apps/storefront/app/page.tsx": "b02fcd5cd63663b3d2728a257ed04fd23a780410562f89fafa8e292ac6018abc",
+                  "examples/marketplace-platform/services/bff/src/domain.ts": "c8eda0202399b76a83316b145139092de8452efda8c2c4ea59e8c01ee17e5d62",
+                  "examples/marketplace-platform/services/bff/src/server.ts": "6a15f11231b3ab7d9928874d1063b03b1952c03ce0108048f06a1d6e38c758f6",
+                  "examples/marketplace-platform/services/inventory/http.go": "0253d039cfa301986f407a274c0c8e4f12a4a4aaa6f8bfeed2c65465b8250e92",
+                  "examples/marketplace-platform/services/inventory/inventory.go": "392532c2b728a1e838c6a4905abb3e27461a77a826eb42394de3793df9b77c86",
+                  "examples/marketplace-platform/services/inventory/main.go": "d5ada098f9834138d94f36a08474ecf2a331052209faa39c75fc61fe718d06c2",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/Order.java": "c35afe812e695d9eef7f73e6f36ae5bd6eb51b0107f096f89d50df3095a1131d",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/OrderApplication.java": "84b00553af59b52759b24fec07447e390f229c7ae92bea48470bcbdd50046834",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/OrderController.java": "0f0f568f55353b2d506b6fe460709ecc20bf2edfe1786956fca4eae951fced69",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/OrderService.java": "1ce36d513a6c8f5bc9a23c24d9a6a90de387ed8745d6dd829dfd83497b662501",
+                  "examples/marketplace-platform/services/order/src/main/java/dev/musubix/marketplace/order/OrderState.java": "47eac90057b4454a90852b84d4528eca067603ef8b4d5dc1f2c96f4aa8c3ec19",
+                  "examples/marketplace-platform/services/recommendation/src/recommendation/domain.py": "8a7022f671965544915b1f40021fa5a14f73143219af63f94faa61920f6b7490",
+                  "examples/marketplace-platform/services/recommendation/src/recommendation/http.py": "b1506442d10c19baee2b70d079386c4f5a2b47f4f6dee874fd5eebc24623ec65",
+                  "examples/marketplace-platform/services/risk/src/lib.rs": "1377089be2acf15da3ed1544d44ebc7061393b717e46bc6d9625f8f8635ed404",
+                  "examples/marketplace-platform/services/risk/src/main.rs": "4fbb550cecbad6230f443660172e87cf6ca6e6c3b05cea8716cc26202e335b37",
+                  "scripts/check-marketplace-article.mjs": "431bb700217361cfd6ff24e266742554659098362d0c84bedee56a7e9831b5f8"
+                }
+              },
+              "REQ-MUSUBIX3-QIITA-005": {
+                "paths": [
+                  "scripts/check-marketplace-article.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-marketplace-article.mjs": "431bb700217361cfd6ff24e266742554659098362d0c84bedee56a7e9831b5f8"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "changeId": "CHANGE-0004",
+      "requirementIds": [
+        "REQ-WORKFLOW-SHUTDOWN-001"
+      ],
+      "phases": {
+        "impact": {
+          "phase": "impact",
+          "order": 54,
+          "recordedAt": "2026-09-09T08:09:52.026Z",
+          "fingerprints": {
+            "impact": "09b370a21be01748586b2a6e1557f4345fcae5d8dd398d4a1340ff24de6918d6",
+            "requirements": "9dd9b80de53c6c80f680fffd2a5d29d01d431aa2a03c5834dbe5d9fbd625a0fa",
+            "design": "20798dc2b7f9e2da3cc7830d5b16db0d12b644ef231f8279bf89b0fc351e0b56",
+            "implementation": "b0ee8c0df88a4362efed9c0e025e48030689d2ed529f8b1f2592c916a7999405",
+            "tests": "1ee4d6221ab56faa5597a3d9d368563a8b988673e73253d4824df77b3d654aec",
+            "tdd": "c15f66d672761d9dd344b1dd2b0e296448a51dede98e840c7911214d2d4c134d",
+            "requirementImplementations": {
+              "REQ-WORKFLOW-SHUTDOWN-001": {
+                "paths": [],
+                "fingerprints": {}
+              }
+            }
+          }
+        },
+        "requirements": {
+          "phase": "requirements",
+          "order": 55,
+          "recordedAt": "2026-09-09T08:09:59.547Z",
+          "fingerprints": {
+            "impact": "09b370a21be01748586b2a6e1557f4345fcae5d8dd398d4a1340ff24de6918d6",
+            "requirements": "c268d6c37eff48554da75315fc5ddb2c945bc38f2d2e9b54ba0565b03fa0cc1b",
+            "design": "20798dc2b7f9e2da3cc7830d5b16db0d12b644ef231f8279bf89b0fc351e0b56",
+            "implementation": "b0ee8c0df88a4362efed9c0e025e48030689d2ed529f8b1f2592c916a7999405",
+            "tests": "1ee4d6221ab56faa5597a3d9d368563a8b988673e73253d4824df77b3d654aec",
+            "tdd": "c15f66d672761d9dd344b1dd2b0e296448a51dede98e840c7911214d2d4c134d",
+            "requirementImplementations": {
+              "REQ-WORKFLOW-SHUTDOWN-001": {
+                "paths": [],
+                "fingerprints": {}
+              }
+            }
+          }
+        },
+        "design": {
+          "phase": "design",
+          "order": 56,
+          "recordedAt": "2026-09-09T08:10:05.180Z",
+          "fingerprints": {
+            "impact": "09b370a21be01748586b2a6e1557f4345fcae5d8dd398d4a1340ff24de6918d6",
+            "requirements": "c268d6c37eff48554da75315fc5ddb2c945bc38f2d2e9b54ba0565b03fa0cc1b",
+            "design": "c58e0241ad7c18e870c4a723ab672c0dde4447478035d6f7e5604941aa696644",
+            "implementation": "b0ee8c0df88a4362efed9c0e025e48030689d2ed529f8b1f2592c916a7999405",
+            "tests": "1ee4d6221ab56faa5597a3d9d368563a8b988673e73253d4824df77b3d654aec",
+            "tdd": "c15f66d672761d9dd344b1dd2b0e296448a51dede98e840c7911214d2d4c134d",
+            "requirementImplementations": {
+              "REQ-WORKFLOW-SHUTDOWN-001": {
+                "paths": [],
+                "fingerprints": {}
+              }
+            }
+          }
+        },
+        "red": {
+          "phase": "red",
+          "order": 58,
+          "recordedAt": "2026-09-09T08:10:11.220Z",
+          "fingerprints": {
+            "impact": "09b370a21be01748586b2a6e1557f4345fcae5d8dd398d4a1340ff24de6918d6",
+            "requirements": "c268d6c37eff48554da75315fc5ddb2c945bc38f2d2e9b54ba0565b03fa0cc1b",
+            "design": "c58e0241ad7c18e870c4a723ab672c0dde4447478035d6f7e5604941aa696644",
+            "implementation": "b0ee8c0df88a4362efed9c0e025e48030689d2ed529f8b1f2592c916a7999405",
+            "tests": "e399aee04f05e8cf3263c0369b7c07eb631aba2112083122e29b34ade0c8b096",
+            "tdd": "cf19deb2356abed1efccb351b14a84693ec6e7f79428994595042459f54f38e5",
+            "requirementImplementations": {
+              "REQ-WORKFLOW-SHUTDOWN-001": {
+                "paths": [],
+                "fingerprints": {}
+              }
+            }
+          }
+        },
+        "implementation": {
+          "phase": "implementation",
+          "order": 59,
+          "recordedAt": "2026-09-09T08:10:14.402Z",
+          "fingerprints": {
+            "impact": "09b370a21be01748586b2a6e1557f4345fcae5d8dd398d4a1340ff24de6918d6",
+            "requirements": "c268d6c37eff48554da75315fc5ddb2c945bc38f2d2e9b54ba0565b03fa0cc1b",
+            "design": "c58e0241ad7c18e870c4a723ab672c0dde4447478035d6f7e5604941aa696644",
+            "implementation": "98b2d0e7213683a1015e287e6cb565017b13b210025f57d98ce9775f6ceb795a",
+            "tests": "e399aee04f05e8cf3263c0369b7c07eb631aba2112083122e29b34ade0c8b096",
+            "tdd": "cf19deb2356abed1efccb351b14a84693ec6e7f79428994595042459f54f38e5",
+            "requirementImplementations": {
+              "REQ-WORKFLOW-SHUTDOWN-001": {
+                "paths": [
+                  "packages/analysis/src/config.ts",
+                  "packages/analysis/src/files.ts",
+                  "packages/analysis/src/workflow.ts",
+                  "packages/domain/src/constitution.ts",
+                  "packages/domain/src/design.ts",
+                  "packages/domain/src/index.ts",
+                  "packages/domain/src/markdown.ts",
+                  "packages/domain/src/requirements.ts",
+                  "packages/domain/src/types.ts"
+                ],
+                "fingerprints": {
+                  "packages/analysis/src/config.ts": "f857a75654cd79ee4cff1a952df386bf5d85c66e63bc69fb2ff86b1e5e0eec7e",
+                  "packages/analysis/src/files.ts": "cb69bc61afccaefe32386678d5d4ddf0f6a65add0ff081974959c0168411e0e8",
+                  "packages/analysis/src/workflow.ts": "f0532f3c4519a0fb8f7f6d7381d77f12f684f16fc24cdf2a88eca18c50666447",
+                  "packages/domain/src/constitution.ts": "514278499642ff46ed902864b9192f566b116b4f92eb3fafa6b62588335e170a",
+                  "packages/domain/src/design.ts": "5eddae3eec9a2fb662406bc3f7e307c11ccd87ef94d7f87363c725a74d2abb59",
+                  "packages/domain/src/index.ts": "43243e9279e3826b23cd8d8b4365854974112ce4cf17cfb0f0ee32e6b28e9cc6",
+                  "packages/domain/src/markdown.ts": "5c6b96486a2e31944d7d128d241f1772d0926f34464fa2b59c20748a6754487a",
+                  "packages/domain/src/requirements.ts": "c070ced5f8c5b143d6197639016c2f31921b8e032386de74a9b0832ac5f42498",
+                  "packages/domain/src/types.ts": "0c2666bcf18678e56eafcd3fae7e5163e4505bb4115c737b39a4b0b581656f18"
+                }
+              }
+            }
+          }
+        },
+        "green": {
+          "phase": "green",
+          "order": 61,
+          "recordedAt": "2026-09-09T08:10:17.676Z",
+          "fingerprints": {
+            "impact": "09b370a21be01748586b2a6e1557f4345fcae5d8dd398d4a1340ff24de6918d6",
+            "requirements": "c268d6c37eff48554da75315fc5ddb2c945bc38f2d2e9b54ba0565b03fa0cc1b",
+            "design": "c58e0241ad7c18e870c4a723ab672c0dde4447478035d6f7e5604941aa696644",
+            "implementation": "98b2d0e7213683a1015e287e6cb565017b13b210025f57d98ce9775f6ceb795a",
+            "tests": "e399aee04f05e8cf3263c0369b7c07eb631aba2112083122e29b34ade0c8b096",
+            "tdd": "116bdb95c7f593ef84a34ef8a9cafb9d468e11395d9f4875d911b53dd961940d",
+            "requirementImplementations": {
+              "REQ-WORKFLOW-SHUTDOWN-001": {
+                "paths": [
+                  "packages/analysis/src/config.ts",
+                  "packages/analysis/src/files.ts",
+                  "packages/analysis/src/workflow.ts",
+                  "packages/domain/src/constitution.ts",
+                  "packages/domain/src/design.ts",
+                  "packages/domain/src/index.ts",
+                  "packages/domain/src/markdown.ts",
+                  "packages/domain/src/requirements.ts",
+                  "packages/domain/src/types.ts"
+                ],
+                "fingerprints": {
+                  "packages/analysis/src/config.ts": "f857a75654cd79ee4cff1a952df386bf5d85c66e63bc69fb2ff86b1e5e0eec7e",
+                  "packages/analysis/src/files.ts": "cb69bc61afccaefe32386678d5d4ddf0f6a65add0ff081974959c0168411e0e8",
+                  "packages/analysis/src/workflow.ts": "f0532f3c4519a0fb8f7f6d7381d77f12f684f16fc24cdf2a88eca18c50666447",
+                  "packages/domain/src/constitution.ts": "514278499642ff46ed902864b9192f566b116b4f92eb3fafa6b62588335e170a",
+                  "packages/domain/src/design.ts": "5eddae3eec9a2fb662406bc3f7e307c11ccd87ef94d7f87363c725a74d2abb59",
+                  "packages/domain/src/index.ts": "43243e9279e3826b23cd8d8b4365854974112ce4cf17cfb0f0ee32e6b28e9cc6",
+                  "packages/domain/src/markdown.ts": "5c6b96486a2e31944d7d128d241f1772d0926f34464fa2b59c20748a6754487a",
+                  "packages/domain/src/requirements.ts": "c070ced5f8c5b143d6197639016c2f31921b8e032386de74a9b0832ac5f42498",
+                  "packages/domain/src/types.ts": "0c2666bcf18678e56eafcd3fae7e5163e4505bb4115c737b39a4b0b581656f18"
+                }
+              }
+            }
+          }
+        },
+        "quality": {
+          "phase": "quality",
+          "order": 62,
+          "recordedAt": "2026-09-09T08:10:37.642Z",
+          "fingerprints": {
+            "impact": "09b370a21be01748586b2a6e1557f4345fcae5d8dd398d4a1340ff24de6918d6",
+            "requirements": "c268d6c37eff48554da75315fc5ddb2c945bc38f2d2e9b54ba0565b03fa0cc1b",
+            "design": "c58e0241ad7c18e870c4a723ab672c0dde4447478035d6f7e5604941aa696644",
+            "implementation": "98b2d0e7213683a1015e287e6cb565017b13b210025f57d98ce9775f6ceb795a",
+            "tests": "e399aee04f05e8cf3263c0369b7c07eb631aba2112083122e29b34ade0c8b096",
+            "tdd": "116bdb95c7f593ef84a34ef8a9cafb9d468e11395d9f4875d911b53dd961940d",
+            "requirementImplementations": {
+              "REQ-WORKFLOW-SHUTDOWN-001": {
+                "paths": [
+                  "packages/analysis/src/config.ts",
+                  "packages/analysis/src/files.ts",
+                  "packages/analysis/src/workflow.ts",
+                  "packages/domain/src/constitution.ts",
+                  "packages/domain/src/design.ts",
+                  "packages/domain/src/index.ts",
+                  "packages/domain/src/markdown.ts",
+                  "packages/domain/src/requirements.ts",
+                  "packages/domain/src/types.ts"
+                ],
+                "fingerprints": {
+                  "packages/analysis/src/config.ts": "f857a75654cd79ee4cff1a952df386bf5d85c66e63bc69fb2ff86b1e5e0eec7e",
+                  "packages/analysis/src/files.ts": "cb69bc61afccaefe32386678d5d4ddf0f6a65add0ff081974959c0168411e0e8",
+                  "packages/analysis/src/workflow.ts": "f0532f3c4519a0fb8f7f6d7381d77f12f684f16fc24cdf2a88eca18c50666447",
+                  "packages/domain/src/constitution.ts": "514278499642ff46ed902864b9192f566b116b4f92eb3fafa6b62588335e170a",
+                  "packages/domain/src/design.ts": "5eddae3eec9a2fb662406bc3f7e307c11ccd87ef94d7f87363c725a74d2abb59",
+                  "packages/domain/src/index.ts": "43243e9279e3826b23cd8d8b4365854974112ce4cf17cfb0f0ee32e6b28e9cc6",
+                  "packages/domain/src/markdown.ts": "5c6b96486a2e31944d7d128d241f1772d0926f34464fa2b59c20748a6754487a",
+                  "packages/domain/src/requirements.ts": "c070ced5f8c5b143d6197639016c2f31921b8e032386de74a9b0832ac5f42498",
+                  "packages/domain/src/types.ts": "0c2666bcf18678e56eafcd3fae7e5163e4505bb4115c737b39a4b0b581656f18"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   ]
 }

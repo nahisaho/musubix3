@@ -50,6 +50,19 @@ export async function safePath(root: string, path: string): Promise<string> {
   return absolute;
 }
 
+async function isDirectory(path: string): Promise<boolean> {
+  try {
+    return (await lstat(path)).isDirectory();
+  } catch (cause) {
+    if ((cause as NodeJS.ErrnoException).code === 'ENOENT') return false;
+    throw cause;
+  }
+}
+
+/** @id CODE-CLI-WORKFLOW-UX-001
+ * @implements REQ-CLI-WORKFLOW-UX-001
+ * @design DES-CLI-WORKFLOW-UX-001
+ */
 export async function files(root: string): Promise<string[]> {
   const result: string[] = [];
   async function walk(directory: string): Promise<void> {
@@ -71,7 +84,11 @@ export async function files(root: string): Promise<string[]> {
       if (entry.isDirectory()) {
         const isPythonVirtualEnvironment = pythonVirtualEnvironmentRoots.has(entry.name)
           && await isRegularFile(resolve(absolute, 'pyvenv.cfg'));
+        // A descendant directory containing its own `.musubix` is an independent
+        // MUSUBIX3 workspace's scan boundary (ADR-0006); never applies to the scan root.
+        const isNestedWorkspaceRoot = path !== '' && await isDirectory(resolve(absolute, '.musubix'));
         if (!excluded.has(entry.name)
+          && !isNestedWorkspaceRoot
           && !(entry.name === 'target' && hasCargoOrMavenManifest)
           && !(entry.name === '.gradle' && hasGradleManifest)
           && !(entry.name === '.dart_tool' && hasDartManifest)

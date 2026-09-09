@@ -65,6 +65,18 @@
       ],
       "required": true,
       "timeoutMs": 120000
+    },
+    {
+      "name": "cli-workflow-ux-tests",
+      "command": "npx",
+      "args": [
+        "vitest",
+        "run",
+        "tests/cli-workflow-ux.test.ts"
+      ],
+      "adapter": "vitest",
+      "required": true,
+      "timeoutMs": 120000
     }
   ],
   "requiredChecks": [

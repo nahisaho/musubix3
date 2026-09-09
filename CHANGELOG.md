@@ -2,6 +2,24 @@
 
 ## Unreleased
 
+## 0.1.9 - 2026-09-10
+
+- Exclude nested MUSUBIX3 workspaces (any descendant directory containing its
+  own `.musubix`) from an ancestor repository's file scan, trace, and Code
+  Graph, so a workspace nested inside another never pollutes the outer
+  workspace's own gate.
+- State in `trace impact` text output that the reported range is a
+  bidirectional candidate-review set, not a list of required changes.
+- Point stale/missing approval errors at `musubix3 approval validate` for a
+  full per-stage status.
+- Add `config lint` to report configured commands whose `args` reference
+  repository-relative paths that do not exist.
+- Add `gate --feature <name>` to scope requirements/design/trace/tdd/
+  change-history/change-completeness checks to one feature; a diagnostic view
+  only, never a substitute for the repository-wide gate.
+- Add `config scaffold` to propose native test-command entries for detected
+  Go/Rust/Maven/Python/Node toolchains without writing `.musubix/config.json`.
+
 ## 0.1.8 - 2026-09-09
 
 - Treat every new natural-language development request as a fresh change, even within an existing Copilot session.

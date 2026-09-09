@@ -142,11 +142,15 @@ export async function validateApprovals(root: string, config: ApprovalConfig): P
   };
 }
 
+/** @id CODE-CLI-WORKFLOW-UX-003
+ * @implements REQ-CLI-WORKFLOW-UX-003
+ * @design DES-CLI-WORKFLOW-UX-003
+ */
 export async function requireApproval(root: string, stage: ApprovalStage, config: ApprovalConfig): Promise<void> {
   if (config.mode !== 'required') return;
   const result = await validateApprovalStage(root, stage, config);
   if (result.status !== 'approved') {
-    throw new Error(`${stage} approval is ${result.status}; record explicit current approval before continuing.`);
+    throw new Error(`${stage} approval is ${result.status}; record explicit current approval before continuing. Run \`musubix3 approval validate\` for a full per-stage status.`);
   }
 }
 

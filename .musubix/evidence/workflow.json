@@ -7,7 +7,15 @@
       "provenance": "self-reported",
       "phase": "complete",
       "status": "completed",
-      "recordedAt": "2026-09-08T23:43:43.693Z"
+      "recordedAt": "2026-09-09T08:13:50.542Z"
+    },
+    {
+      "skill": "sdd-knowledge",
+      "version": "0.1.8",
+      "provenance": "self-reported",
+      "phase": "complete",
+      "status": "completed",
+      "recordedAt": "2026-09-09T08:34:15.566Z"
     }
   ]
 }
