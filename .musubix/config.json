@@ -113,6 +113,18 @@
       "adapter": "vitest",
       "required": true,
       "timeoutMs": 120000
+    },
+    {
+      "name": "workflow-session-shutdown-tests",
+      "command": "npx",
+      "args": [
+        "vitest",
+        "run",
+        "tests/p3-workflow-provenance.test.ts"
+      ],
+      "adapter": "vitest",
+      "required": true,
+      "timeoutMs": 120000
     }
   ],
   "requiredChecks": [
