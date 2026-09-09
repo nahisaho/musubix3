@@ -101,6 +101,18 @@
       "adapter": "vitest",
       "required": true,
       "timeoutMs": 120000
+    },
+    {
+      "name": "workflow-multi-session-verification-tests",
+      "command": "npx",
+      "args": [
+        "vitest",
+        "run",
+        "tests/workflow-multi-session-verification.test.ts"
+      ],
+      "adapter": "vitest",
+      "required": true,
+      "timeoutMs": 120000
     }
   ],
   "requiredChecks": [

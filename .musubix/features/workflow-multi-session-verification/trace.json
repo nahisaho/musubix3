@@ -1,0 +1,1127 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-09-09T21:55:55.548Z",
+  "nodes": [
+    {
+      "id": "CODE-SESSION-SCOPED-DEVELOPMENT-001",
+      "kind": "code",
+      "path": ".github/skills/sdd-change/SKILL.md",
+      "line": 6
+    },
+    {
+      "id": "CODE-SESSION-SCOPED-DEVELOPMENT-002",
+      "kind": "code",
+      "path": ".github/skills/sdd-requirements/SKILL.md",
+      "line": 6
+    },
+    {
+      "id": "ADR-0002",
+      "kind": "adr",
+      "path": ".musubix/decisions/ADR-0002.md",
+      "line": 1
+    },
+    {
+      "id": "ADR-0003",
+      "kind": "adr",
+      "path": ".musubix/decisions/ADR-0003.md",
+      "line": 1
+    },
+    {
+      "id": "ADR-0004",
+      "kind": "adr",
+      "path": ".musubix/decisions/ADR-0004.md",
+      "line": 1
+    },
+    {
+      "id": "ADR-0005",
+      "kind": "adr",
+      "path": ".musubix/decisions/ADR-0005.md",
+      "line": 1
+    },
+    {
+      "id": "ADR-0006",
+      "kind": "adr",
+      "path": ".musubix/decisions/ADR-0006.md",
+      "line": 1
+    },
+    {
+      "id": "ADR-0007",
+      "kind": "adr",
+      "path": ".musubix/decisions/ADR-0007.md",
+      "line": 1
+    },
+    {
+      "id": "ADR-0008",
+      "kind": "adr",
+      "path": ".musubix/decisions/ADR-0008.md",
+      "line": 1
+    },
+    {
+      "id": "ADR-0009",
+      "kind": "adr",
+      "path": ".musubix/decisions/ADR-0009.md",
+      "line": 1
+    },
+    {
+      "id": "ADR-0010",
+      "kind": "adr",
+      "path": ".musubix/decisions/ADR-0010.md",
+      "line": 1
+    },
+    {
+      "id": "DES-CLI-WORKFLOW-UX-001",
+      "kind": "design",
+      "path": ".musubix/features/cli-workflow-ux-v019/design.md",
+      "line": 7
+    },
+    {
+      "id": "DES-CLI-WORKFLOW-UX-002",
+      "kind": "design",
+      "path": ".musubix/features/cli-workflow-ux-v019/design.md",
+      "line": 15
+    },
+    {
+      "id": "DES-CLI-WORKFLOW-UX-003",
+      "kind": "design",
+      "path": ".musubix/features/cli-workflow-ux-v019/design.md",
+      "line": 23
+    },
+    {
+      "id": "DES-CLI-WORKFLOW-UX-004",
+      "kind": "design",
+      "path": ".musubix/features/cli-workflow-ux-v019/design.md",
+      "line": 31
+    },
+    {
+      "id": "DES-CLI-WORKFLOW-UX-005",
+      "kind": "design",
+      "path": ".musubix/features/cli-workflow-ux-v019/design.md",
+      "line": 39
+    },
+    {
+      "id": "DES-CLI-WORKFLOW-UX-006",
+      "kind": "design",
+      "path": ".musubix/features/cli-workflow-ux-v019/design.md",
+      "line": 47
+    },
+    {
+      "id": "REQ-CLI-WORKFLOW-UX-001",
+      "kind": "requirement",
+      "path": ".musubix/features/cli-workflow-ux-v019/requirements.md",
+      "line": 11,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-CLI-WORKFLOW-UX-002",
+      "kind": "requirement",
+      "path": ".musubix/features/cli-workflow-ux-v019/requirements.md",
+      "line": 18,
+      "mandatory": false
+    },
+    {
+      "id": "REQ-CLI-WORKFLOW-UX-003",
+      "kind": "requirement",
+      "path": ".musubix/features/cli-workflow-ux-v019/requirements.md",
+      "line": 25,
+      "mandatory": false
+    },
+    {
+      "id": "REQ-CLI-WORKFLOW-UX-004",
+      "kind": "requirement",
+      "path": ".musubix/features/cli-workflow-ux-v019/requirements.md",
+      "line": 32,
+      "mandatory": false
+    },
+    {
+      "id": "REQ-CLI-WORKFLOW-UX-005",
+      "kind": "requirement",
+      "path": ".musubix/features/cli-workflow-ux-v019/requirements.md",
+      "line": 39,
+      "mandatory": false
+    },
+    {
+      "id": "REQ-CLI-WORKFLOW-UX-006",
+      "kind": "requirement",
+      "path": ".musubix/features/cli-workflow-ux-v019/requirements.md",
+      "line": 46,
+      "mandatory": false
+    },
+    {
+      "id": "DES-APPROVAL-001",
+      "kind": "design",
+      "path": ".musubix/features/human-approval-gates/design.md",
+      "line": 7
+    },
+    {
+      "id": "DES-APPROVAL-002",
+      "kind": "design",
+      "path": ".musubix/features/human-approval-gates/design.md",
+      "line": 15
+    },
+    {
+      "id": "DES-APPROVAL-003",
+      "kind": "design",
+      "path": ".musubix/features/human-approval-gates/design.md",
+      "line": 23
+    },
+    {
+      "id": "REQ-HUMAN-APPROVAL-GATES-001",
+      "kind": "requirement",
+      "path": ".musubix/features/human-approval-gates/requirements.md",
+      "line": 7,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-HUMAN-APPROVAL-GATES-002",
+      "kind": "requirement",
+      "path": ".musubix/features/human-approval-gates/requirements.md",
+      "line": 14,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-HUMAN-APPROVAL-GATES-003",
+      "kind": "requirement",
+      "path": ".musubix/features/human-approval-gates/requirements.md",
+      "line": 21,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-HUMAN-APPROVAL-GATES-004",
+      "kind": "requirement",
+      "path": ".musubix/features/human-approval-gates/requirements.md",
+      "line": 28,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-HUMAN-APPROVAL-GATES-005",
+      "kind": "requirement",
+      "path": ".musubix/features/human-approval-gates/requirements.md",
+      "line": 35,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-HUMAN-APPROVAL-GATES-006",
+      "kind": "requirement",
+      "path": ".musubix/features/human-approval-gates/requirements.md",
+      "line": 42,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-HUMAN-APPROVAL-GATES-007",
+      "kind": "requirement",
+      "path": ".musubix/features/human-approval-gates/requirements.md",
+      "line": 49,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-HUMAN-APPROVAL-GATES-008",
+      "kind": "requirement",
+      "path": ".musubix/features/human-approval-gates/requirements.md",
+      "line": 56,
+      "mandatory": true
+    },
+    {
+      "id": "DES-SESSION-SCOPED-DEVELOPMENT-001",
+      "kind": "design",
+      "path": ".musubix/features/session-scoped-development/design.md",
+      "line": 7
+    },
+    {
+      "id": "DES-SESSION-SCOPED-DEVELOPMENT-002",
+      "kind": "design",
+      "path": ".musubix/features/session-scoped-development/design.md",
+      "line": 15
+    },
+    {
+      "id": "REQ-SESSION-SCOPED-DEVELOPMENT-001",
+      "kind": "requirement",
+      "path": ".musubix/features/session-scoped-development/requirements.md",
+      "line": 7,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-SESSION-SCOPED-DEVELOPMENT-002",
+      "kind": "requirement",
+      "path": ".musubix/features/session-scoped-development/requirements.md",
+      "line": 14,
+      "mandatory": true
+    },
+    {
+      "id": "DES-TDD-FINGERPRINT-MIGRATION-001",
+      "kind": "design",
+      "path": ".musubix/features/tdd-fingerprint-migration/design.md",
+      "line": 3
+    },
+    {
+      "id": "REQ-TDD-FINGERPRINT-MIGRATION-001",
+      "kind": "requirement",
+      "path": ".musubix/features/tdd-fingerprint-migration/requirements.md",
+      "line": 19,
+      "mandatory": true
+    },
+    {
+      "id": "DES-TDD-FINGERPRINT-SCOPING-001",
+      "kind": "design",
+      "path": ".musubix/features/tdd-fingerprint-scoping/design.md",
+      "line": 3
+    },
+    {
+      "id": "REQ-TDD-FINGERPRINT-SCOPING-001",
+      "kind": "requirement",
+      "path": ".musubix/features/tdd-fingerprint-scoping/requirements.md",
+      "line": 17,
+      "mandatory": true
+    },
+    {
+      "id": "DES-WORKFLOW-MULTI-SESSION-001",
+      "kind": "design",
+      "path": ".musubix/features/workflow-multi-session-verification/design.md",
+      "line": 3
+    },
+    {
+      "id": "REQ-WORKFLOW-MULTI-SESSION-001",
+      "kind": "requirement",
+      "path": ".musubix/features/workflow-multi-session-verification/requirements.md",
+      "line": 3,
+      "mandatory": true
+    },
+    {
+      "id": "DES-WORKFLOW-SHUTDOWN-001",
+      "kind": "design",
+      "path": ".musubix/features/workflow-session-shutdown/design.md",
+      "line": 3
+    },
+    {
+      "id": "REQ-WORKFLOW-SHUTDOWN-001",
+      "kind": "requirement",
+      "path": ".musubix/features/workflow-session-shutdown/requirements.md",
+      "line": 3,
+      "mandatory": true
+    },
+    {
+      "id": "CODE-HUMAN-APPROVAL-GATES-002",
+      "kind": "code",
+      "path": "packages/analysis/src/approval-record.ts",
+      "line": 9
+    },
+    {
+      "id": "CODE-HUMAN-APPROVAL-GATES-001",
+      "kind": "code",
+      "path": "packages/analysis/src/approval.ts",
+      "line": 63
+    },
+    {
+      "id": "CODE-CLI-WORKFLOW-UX-003",
+      "kind": "code",
+      "path": "packages/analysis/src/approval.ts",
+      "line": 145
+    },
+    {
+      "id": "CODE-CLI-WORKFLOW-UX-006",
+      "kind": "code",
+      "path": "packages/analysis/src/config.ts",
+      "line": 574
+    },
+    {
+      "id": "CODE-CLI-WORKFLOW-UX-004",
+      "kind": "code",
+      "path": "packages/analysis/src/config.ts",
+      "line": 611
+    },
+    {
+      "id": "CODE-CLI-WORKFLOW-UX-001",
+      "kind": "code",
+      "path": "packages/analysis/src/files.ts",
+      "line": 62
+    },
+    {
+      "id": "CODE-CLI-WORKFLOW-UX-005",
+      "kind": "code",
+      "path": "packages/analysis/src/gate.ts",
+      "line": 83
+    },
+    {
+      "id": "CODE-TDD-FINGERPRINT-SCOPING-001",
+      "kind": "code",
+      "path": "packages/analysis/src/tdd.ts",
+      "line": 138
+    },
+    {
+      "id": "CODE-TDD-FINGERPRINT-MIGRATION-001",
+      "kind": "code",
+      "path": "packages/analysis/src/tdd.ts",
+      "line": 169
+    },
+    {
+      "id": "CODE-SESSION-SCOPED-DEVELOPMENT-003",
+      "kind": "code",
+      "path": "packages/analysis/src/trace.ts",
+      "line": 29
+    },
+    {
+      "id": "CODE-WORKFLOW-MULTI-SESSION-001",
+      "kind": "code",
+      "path": "packages/analysis/src/workflow.ts",
+      "line": 155
+    },
+    {
+      "id": "CODE-WORKFLOW-SHUTDOWN-001",
+      "kind": "code",
+      "path": "packages/analysis/src/workflow.ts",
+      "line": 416
+    },
+    {
+      "id": "CODE-CLI-WORKFLOW-UX-002",
+      "kind": "code",
+      "path": "packages/cli/src/main.ts",
+      "line": 126
+    },
+    {
+      "id": "TEST-HUMAN-APPROVAL-GATES-001",
+      "kind": "test",
+      "path": "tests/approval.test.ts",
+      "line": 17
+    },
+    {
+      "id": "TEST-HUMAN-APPROVAL-GATES-006",
+      "kind": "test",
+      "path": "tests/approval.test.ts",
+      "line": 46
+    },
+    {
+      "id": "TEST-HUMAN-APPROVAL-GATES-002",
+      "kind": "test",
+      "path": "tests/approval.test.ts",
+      "line": 82
+    },
+    {
+      "id": "TEST-HUMAN-APPROVAL-GATES-003",
+      "kind": "test",
+      "path": "tests/approval.test.ts",
+      "line": 94
+    },
+    {
+      "id": "TEST-HUMAN-APPROVAL-GATES-004",
+      "kind": "test",
+      "path": "tests/approval.test.ts",
+      "line": 110
+    },
+    {
+      "id": "TEST-HUMAN-APPROVAL-GATES-007",
+      "kind": "test",
+      "path": "tests/approval.test.ts",
+      "line": 120
+    },
+    {
+      "id": "TEST-HUMAN-APPROVAL-GATES-005",
+      "kind": "test",
+      "path": "tests/approval.test.ts",
+      "line": 148
+    },
+    {
+      "id": "TEST-HUMAN-APPROVAL-GATES-008",
+      "kind": "test",
+      "path": "tests/approval.test.ts",
+      "line": 170
+    },
+    {
+      "id": "TEST-SESSION-SCOPED-DEVELOPMENT-001",
+      "kind": "test",
+      "path": "tests/cli-package.test.ts",
+      "line": 307
+    },
+    {
+      "id": "TEST-SESSION-SCOPED-DEVELOPMENT-002",
+      "kind": "test",
+      "path": "tests/cli-package.test.ts",
+      "line": 331
+    },
+    {
+      "id": "TEST-CLI-WORKFLOW-UX-001",
+      "kind": "test",
+      "path": "tests/cli-workflow-ux.test.ts",
+      "line": 12
+    },
+    {
+      "id": "TEST-CLI-WORKFLOW-UX-002",
+      "kind": "test",
+      "path": "tests/cli-workflow-ux.test.ts",
+      "line": 28
+    },
+    {
+      "id": "TEST-CLI-WORKFLOW-UX-003",
+      "kind": "test",
+      "path": "tests/cli-workflow-ux.test.ts",
+      "line": 42
+    },
+    {
+      "id": "TEST-CLI-WORKFLOW-UX-004",
+      "kind": "test",
+      "path": "tests/cli-workflow-ux.test.ts",
+      "line": 50
+    },
+    {
+      "id": "TEST-CLI-WORKFLOW-UX-005",
+      "kind": "test",
+      "path": "tests/cli-workflow-ux.test.ts",
+      "line": 75
+    },
+    {
+      "id": "TEST-CLI-WORKFLOW-UX-006",
+      "kind": "test",
+      "path": "tests/cli-workflow-ux.test.ts",
+      "line": 102
+    },
+    {
+      "id": "TEST-WORKFLOW-SHUTDOWN-001",
+      "kind": "test",
+      "path": "tests/p3-workflow-provenance.test.ts",
+      "line": 181
+    },
+    {
+      "id": "TEST-TDD-FINGERPRINT-MIGRATION-001",
+      "kind": "test",
+      "path": "tests/tdd-fingerprint-migration.test.ts",
+      "line": 41
+    },
+    {
+      "id": "TEST-TDD-FINGERPRINT-SCOPING-001",
+      "kind": "test",
+      "path": "tests/tdd-fingerprint-scoping.test.ts",
+      "line": 21
+    },
+    {
+      "id": "TEST-WORKFLOW-MULTI-SESSION-001",
+      "kind": "test",
+      "path": "tests/workflow-multi-session-verification.test.ts",
+      "line": 24
+    }
+  ],
+  "edges": [
+    {
+      "from": "CODE-SESSION-SCOPED-DEVELOPMENT-001",
+      "to": "REQ-SESSION-SCOPED-DEVELOPMENT-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-SESSION-SCOPED-DEVELOPMENT-001",
+      "to": "REQ-SESSION-SCOPED-DEVELOPMENT-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-SESSION-SCOPED-DEVELOPMENT-001",
+      "to": "DES-SESSION-SCOPED-DEVELOPMENT-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-SESSION-SCOPED-DEVELOPMENT-002",
+      "to": "REQ-SESSION-SCOPED-DEVELOPMENT-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-SESSION-SCOPED-DEVELOPMENT-002",
+      "to": "REQ-SESSION-SCOPED-DEVELOPMENT-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-SESSION-SCOPED-DEVELOPMENT-002",
+      "to": "DES-SESSION-SCOPED-DEVELOPMENT-002",
+      "relation": "implements"
+    },
+    {
+      "from": "DES-CLI-WORKFLOW-UX-001",
+      "to": "REQ-CLI-WORKFLOW-UX-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0006",
+      "to": "DES-CLI-WORKFLOW-UX-001",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-CLI-WORKFLOW-UX-002",
+      "to": "REQ-CLI-WORKFLOW-UX-002",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0007",
+      "to": "DES-CLI-WORKFLOW-UX-002",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-CLI-WORKFLOW-UX-003",
+      "to": "REQ-CLI-WORKFLOW-UX-003",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0007",
+      "to": "DES-CLI-WORKFLOW-UX-003",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-CLI-WORKFLOW-UX-004",
+      "to": "REQ-CLI-WORKFLOW-UX-004",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0007",
+      "to": "DES-CLI-WORKFLOW-UX-004",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-CLI-WORKFLOW-UX-005",
+      "to": "REQ-CLI-WORKFLOW-UX-005",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0007",
+      "to": "DES-CLI-WORKFLOW-UX-005",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-CLI-WORKFLOW-UX-006",
+      "to": "REQ-CLI-WORKFLOW-UX-006",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0007",
+      "to": "DES-CLI-WORKFLOW-UX-006",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-APPROVAL-001",
+      "to": "REQ-HUMAN-APPROVAL-GATES-002",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-APPROVAL-001",
+      "to": "REQ-HUMAN-APPROVAL-GATES-003",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0002",
+      "to": "DES-APPROVAL-001",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-APPROVAL-002",
+      "to": "REQ-HUMAN-APPROVAL-GATES-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-APPROVAL-002",
+      "to": "REQ-HUMAN-APPROVAL-GATES-002",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-APPROVAL-002",
+      "to": "REQ-HUMAN-APPROVAL-GATES-003",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-APPROVAL-002",
+      "to": "REQ-HUMAN-APPROVAL-GATES-006",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-APPROVAL-002",
+      "to": "REQ-HUMAN-APPROVAL-GATES-007",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0002",
+      "to": "DES-APPROVAL-002",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-APPROVAL-002",
+      "to": "DES-APPROVAL-001",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-APPROVAL-003",
+      "to": "REQ-HUMAN-APPROVAL-GATES-004",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-APPROVAL-003",
+      "to": "REQ-HUMAN-APPROVAL-GATES-005",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-APPROVAL-003",
+      "to": "REQ-HUMAN-APPROVAL-GATES-006",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-APPROVAL-003",
+      "to": "REQ-HUMAN-APPROVAL-GATES-007",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-APPROVAL-003",
+      "to": "REQ-HUMAN-APPROVAL-GATES-008",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0002",
+      "to": "DES-APPROVAL-003",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-APPROVAL-003",
+      "to": "DES-APPROVAL-002",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-SESSION-SCOPED-DEVELOPMENT-001",
+      "to": "REQ-SESSION-SCOPED-DEVELOPMENT-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-SESSION-SCOPED-DEVELOPMENT-001",
+      "to": "REQ-SESSION-SCOPED-DEVELOPMENT-002",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0003",
+      "to": "DES-SESSION-SCOPED-DEVELOPMENT-001",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-SESSION-SCOPED-DEVELOPMENT-002",
+      "to": "REQ-SESSION-SCOPED-DEVELOPMENT-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-SESSION-SCOPED-DEVELOPMENT-002",
+      "to": "REQ-SESSION-SCOPED-DEVELOPMENT-002",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0003",
+      "to": "DES-SESSION-SCOPED-DEVELOPMENT-002",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-SESSION-SCOPED-DEVELOPMENT-002",
+      "to": "DES-SESSION-SCOPED-DEVELOPMENT-001",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-TDD-FINGERPRINT-MIGRATION-001",
+      "to": "REQ-TDD-FINGERPRINT-MIGRATION-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0009",
+      "to": "DES-TDD-FINGERPRINT-MIGRATION-001",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-TDD-FINGERPRINT-SCOPING-001",
+      "to": "REQ-TDD-FINGERPRINT-SCOPING-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0008",
+      "to": "DES-TDD-FINGERPRINT-SCOPING-001",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-WORKFLOW-MULTI-SESSION-001",
+      "to": "REQ-WORKFLOW-MULTI-SESSION-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0010",
+      "to": "DES-WORKFLOW-MULTI-SESSION-001",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-WORKFLOW-SHUTDOWN-001",
+      "to": "REQ-WORKFLOW-SHUTDOWN-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0005",
+      "to": "DES-WORKFLOW-SHUTDOWN-001",
+      "relation": "decides"
+    },
+    {
+      "from": "CODE-HUMAN-APPROVAL-GATES-002",
+      "to": "REQ-HUMAN-APPROVAL-GATES-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-HUMAN-APPROVAL-GATES-002",
+      "to": "REQ-HUMAN-APPROVAL-GATES-006",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-HUMAN-APPROVAL-GATES-002",
+      "to": "DES-APPROVAL-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-HUMAN-APPROVAL-GATES-002",
+      "to": "DES-APPROVAL-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-HUMAN-APPROVAL-GATES-001",
+      "to": "REQ-HUMAN-APPROVAL-GATES-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-HUMAN-APPROVAL-GATES-001",
+      "to": "REQ-HUMAN-APPROVAL-GATES-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-HUMAN-APPROVAL-GATES-001",
+      "to": "REQ-HUMAN-APPROVAL-GATES-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-HUMAN-APPROVAL-GATES-001",
+      "to": "REQ-HUMAN-APPROVAL-GATES-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-HUMAN-APPROVAL-GATES-001",
+      "to": "REQ-HUMAN-APPROVAL-GATES-005",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-HUMAN-APPROVAL-GATES-001",
+      "to": "REQ-HUMAN-APPROVAL-GATES-006",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-HUMAN-APPROVAL-GATES-001",
+      "to": "REQ-HUMAN-APPROVAL-GATES-007",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-HUMAN-APPROVAL-GATES-001",
+      "to": "REQ-HUMAN-APPROVAL-GATES-008",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-HUMAN-APPROVAL-GATES-001",
+      "to": "DES-APPROVAL-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-HUMAN-APPROVAL-GATES-001",
+      "to": "DES-APPROVAL-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-HUMAN-APPROVAL-GATES-001",
+      "to": "DES-APPROVAL-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CLI-WORKFLOW-UX-003",
+      "to": "REQ-CLI-WORKFLOW-UX-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CLI-WORKFLOW-UX-003",
+      "to": "DES-CLI-WORKFLOW-UX-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CLI-WORKFLOW-UX-006",
+      "to": "REQ-CLI-WORKFLOW-UX-006",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CLI-WORKFLOW-UX-006",
+      "to": "DES-CLI-WORKFLOW-UX-006",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CLI-WORKFLOW-UX-004",
+      "to": "REQ-CLI-WORKFLOW-UX-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CLI-WORKFLOW-UX-004",
+      "to": "DES-CLI-WORKFLOW-UX-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CLI-WORKFLOW-UX-001",
+      "to": "REQ-CLI-WORKFLOW-UX-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CLI-WORKFLOW-UX-001",
+      "to": "DES-CLI-WORKFLOW-UX-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CLI-WORKFLOW-UX-005",
+      "to": "REQ-CLI-WORKFLOW-UX-005",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CLI-WORKFLOW-UX-005",
+      "to": "DES-CLI-WORKFLOW-UX-005",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-TDD-FINGERPRINT-SCOPING-001",
+      "to": "REQ-TDD-FINGERPRINT-SCOPING-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-TDD-FINGERPRINT-SCOPING-001",
+      "to": "DES-TDD-FINGERPRINT-SCOPING-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-TDD-FINGERPRINT-MIGRATION-001",
+      "to": "REQ-TDD-FINGERPRINT-MIGRATION-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-TDD-FINGERPRINT-MIGRATION-001",
+      "to": "DES-TDD-FINGERPRINT-MIGRATION-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-SESSION-SCOPED-DEVELOPMENT-003",
+      "to": "REQ-SESSION-SCOPED-DEVELOPMENT-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-SESSION-SCOPED-DEVELOPMENT-003",
+      "to": "REQ-SESSION-SCOPED-DEVELOPMENT-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-SESSION-SCOPED-DEVELOPMENT-003",
+      "to": "DES-SESSION-SCOPED-DEVELOPMENT-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-MULTI-SESSION-001",
+      "to": "REQ-WORKFLOW-MULTI-SESSION-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-MULTI-SESSION-001",
+      "to": "DES-WORKFLOW-MULTI-SESSION-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-SHUTDOWN-001",
+      "to": "REQ-WORKFLOW-SHUTDOWN-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CLI-WORKFLOW-UX-002",
+      "to": "REQ-CLI-WORKFLOW-UX-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CLI-WORKFLOW-UX-002",
+      "to": "DES-CLI-WORKFLOW-UX-002",
+      "relation": "implements"
+    },
+    {
+      "from": "TEST-HUMAN-APPROVAL-GATES-001",
+      "to": "REQ-HUMAN-APPROVAL-GATES-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-HUMAN-APPROVAL-GATES-006",
+      "to": "REQ-HUMAN-APPROVAL-GATES-006",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-HUMAN-APPROVAL-GATES-002",
+      "to": "REQ-HUMAN-APPROVAL-GATES-002",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-HUMAN-APPROVAL-GATES-003",
+      "to": "REQ-HUMAN-APPROVAL-GATES-003",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-HUMAN-APPROVAL-GATES-004",
+      "to": "REQ-HUMAN-APPROVAL-GATES-004",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-HUMAN-APPROVAL-GATES-007",
+      "to": "REQ-HUMAN-APPROVAL-GATES-007",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-HUMAN-APPROVAL-GATES-005",
+      "to": "REQ-HUMAN-APPROVAL-GATES-005",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-HUMAN-APPROVAL-GATES-008",
+      "to": "REQ-HUMAN-APPROVAL-GATES-008",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-SESSION-SCOPED-DEVELOPMENT-001",
+      "to": "REQ-SESSION-SCOPED-DEVELOPMENT-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-SESSION-SCOPED-DEVELOPMENT-002",
+      "to": "REQ-SESSION-SCOPED-DEVELOPMENT-002",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-CLI-WORKFLOW-UX-001",
+      "to": "REQ-CLI-WORKFLOW-UX-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-CLI-WORKFLOW-UX-002",
+      "to": "REQ-CLI-WORKFLOW-UX-002",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-CLI-WORKFLOW-UX-003",
+      "to": "REQ-CLI-WORKFLOW-UX-003",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-CLI-WORKFLOW-UX-004",
+      "to": "REQ-CLI-WORKFLOW-UX-004",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-CLI-WORKFLOW-UX-005",
+      "to": "REQ-CLI-WORKFLOW-UX-005",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-CLI-WORKFLOW-UX-006",
+      "to": "REQ-CLI-WORKFLOW-UX-006",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-WORKFLOW-SHUTDOWN-001",
+      "to": "REQ-WORKFLOW-SHUTDOWN-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-TDD-FINGERPRINT-MIGRATION-001",
+      "to": "REQ-TDD-FINGERPRINT-MIGRATION-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-TDD-FINGERPRINT-SCOPING-001",
+      "to": "REQ-TDD-FINGERPRINT-SCOPING-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-WORKFLOW-MULTI-SESSION-001",
+      "to": "REQ-WORKFLOW-MULTI-SESSION-001",
+      "relation": "verifies"
+    }
+  ],
+  "diagnostics": [],
+  "fingerprints": {
+    ".github/skills/sdd-change/SKILL.md": "fb42726ed860259ee16a7d4fd762dcb23e47e601bb71d9e2fe77b61eecbb1f02",
+    ".github/skills/sdd-design/SKILL.md": "8a476e3fe44c42ef5f188e73ecee619a79635d25a93b67d899138eb8b5208513",
+    ".github/skills/sdd-formal-codegraph/SKILL.md": "67944f2599609922f4957a1d99fa0f2139a21c1eb08e7264b5d72e45c2204721",
+    ".github/skills/sdd-implementation/SKILL.md": "5d0465684458547ea65a4502dcfbf842115f188af5a9b054fa440932ee8362ee",
+    ".github/skills/sdd-knowledge/SKILL.md": "162be3e509c58216f27fe0e270b847aaa09cdc1f3aae8f46e32e9a2e6b00af69",
+    ".github/skills/sdd-quality/SKILL.md": "8dff237f6bed7125ca8d324493d609294424f9e1ab27137115822d1815f260ad",
+    ".github/skills/sdd-requirements/SKILL.md": "c2da273b796fbc7d32bbd9162816fab001dca7e6add23b15c1d92e03c4268eff",
+    ".github/skills/sdd-traceability/SKILL.md": "ec1321579a91a9b6bc71e67c67e6d172b93aba652b7d6d8c2fc4c23b3e9987af",
+    ".musubix/decisions/ADR-0002.md": "da556c6ef7efcee366a8c6497179bad96c093145366b6422548b0e3df2cba348",
+    ".musubix/decisions/ADR-0003.md": "79bac3818dc9708a24999a4d45008d90ee278c28d4d5af183d14a40b4215cd5c",
+    ".musubix/decisions/ADR-0004.md": "9646c30f95575ca7500ef219fb0d078d21827d2d22f5b5b6b873f16ca4a17efc",
+    ".musubix/decisions/ADR-0005.md": "d140b67fafaec59681623f962e4f3bb279ea2104ba12232c9b17ff677e1a5b44",
+    ".musubix/decisions/ADR-0006.md": "5242adbfcf7c527398b4f0b25e742001c624f612b7cd42d434b16c25d141e2b7",
+    ".musubix/decisions/ADR-0007.md": "5c6a93287e4bbd6aa947f171dd5bd0017b7ca263a23077054101e7df8fc360f2",
+    ".musubix/decisions/ADR-0008.md": "ed668b4e69b832890fe0644b18b602cfa5224dd85c8a58af3e188b609659a276",
+    ".musubix/decisions/ADR-0009.md": "b81438c27d6710e45e9493ba831a8e5d0be89430183e3f581dd68c3c80fa38c1",
+    ".musubix/decisions/ADR-0010.md": "b2e65434cc9c2ec8947e49bf60858784ab30e6f0c3dacd434f2e9d3f93154fa7",
+    ".musubix/features/cli-workflow-ux-v019/design.md": "bdb13e2b903123c32e54787599220ea5444a0922532b60d38fef528991116cf8",
+    ".musubix/features/cli-workflow-ux-v019/requirements.md": "8ac7b7e793009d95a03b53de1e3aca043d4433a7b6de9511d8547ebc33b5e7b2",
+    ".musubix/features/human-approval-gates/design.md": "ce1e316afee28082001ddedbce734a7766562889bd28f3eea610909c8d736206",
+    ".musubix/features/human-approval-gates/requirements.md": "f2ae2380935831bb102cd6a7726f2a208ab1719e035157302ef51ed28f624fb0",
+    ".musubix/features/session-scoped-development/design.md": "66a65a3fdc1747569f42b42798a88377ae2ff93e32ff2cc5e0bae5c62c2e9a42",
+    ".musubix/features/session-scoped-development/requirements.md": "640aece168b4e6848c0d1e6371f0bfeb433fa8addfd064a77d050891d69d9a4f",
+    ".musubix/features/tdd-fingerprint-migration/design.md": "3ce067571633c34991aeeb30067a5f76b1569b7fe017717d3f04d94ead17b5ac",
+    ".musubix/features/tdd-fingerprint-migration/requirements.md": "e8ac10f4367e8b43e427d2a27616debbd836194854a86da4850773b9cde9e1ae",
+    ".musubix/features/tdd-fingerprint-scoping/design.md": "5a52655e1555ca194116d973accbfbd5a1eb384cfcf2bcf0a36893ff0783a662",
+    ".musubix/features/tdd-fingerprint-scoping/requirements.md": "d3e480fc0ef92edb87f2c22d1d67a00fc177fde913c68d0187aa45375b14d4c9",
+    ".musubix/features/workflow-multi-session-verification/design.md": "16a916ca279ddfddb7b18a59bef7c9bee5c4608d751187208da3a6c3b46e0d55",
+    ".musubix/features/workflow-multi-session-verification/requirements.md": "2ae290a162d6318ff2567a0fe6f44aa38f40e38b0b9344fd1c1c36bfc3937aa1",
+    ".musubix/features/workflow-session-shutdown/design.md": "225d1718c0ea1628dae251f06b1c5ddafda9a7ae92a15e3d961efbea51c0e0ac",
+    ".musubix/features/workflow-session-shutdown/requirements.md": "2b8d72e2fcb1dbf5bc24ee733182cf2b692e33c50550ce7a8de2e9c5a8c32c0d",
+    "packages/analysis/src/adapters.ts": "0a25be996bea276efbaff6b63a97513d6c894be90d34a9137da3db76506b3f7c",
+    "packages/analysis/src/approval-record.ts": "200392853887ccedc03abd770922d91b14f762118f57bab697827133c2251000",
+    "packages/analysis/src/approval.ts": "29eb6e36e11a963471569dcefa78294849b3bb817a291aedb258912c307c50f2",
+    "packages/analysis/src/attestation.ts": "2d273d2ed5aaa8521938a247492bbe54ee9b195d7902510365d6576e098b17f3",
+    "packages/analysis/src/change.ts": "03792744dddd8d1ce464d0ebcc8d3dbcd4ae45bf1f55df0897e009391fba55c1",
+    "packages/analysis/src/config.ts": "49d66f89feec14efd0df132e910fac1b195432866743d287be2d2a5a3eb1024b",
+    "packages/analysis/src/files.ts": "8363e1090ba66314726cd2f1ebcc51fa440e427999ec299c9a62190c34a63e95",
+    "packages/analysis/src/formal.ts": "9f5622983fed80c1e7c141cc7c7dcd217447e5c2edd39e64877db052a57b730b",
+    "packages/analysis/src/gate.ts": "c9140a8647dd74d9b4dcfec46587af62460d3c7fa50f8879c5a8581af1beb67b",
+    "packages/analysis/src/graph.ts": "7517703a96dc487771c8b3eb1aade2d676998f82246b5dd091930059fc43685b",
+    "packages/analysis/src/index.ts": "6df5a623a9281511a963583e648d8fea7affdf5bc9404e261a60adcabc1cac89",
+    "packages/analysis/src/knowledge.ts": "072a403f89f9cdc6b79adaae7ea22821487358b8d86d37fd5145031f74d6b9cc",
+    "packages/analysis/src/model-correspondence.ts": "86839170b4d2e139bc2d3b739aab3cea2a7aec4dd9cab1afaa3d21fb8e14c617",
+    "packages/analysis/src/mutation.ts": "bb0582b042c973226c74b719d12e8dea05f954a68ce4dbc3c2076c31183d5a88",
+    "packages/analysis/src/order.ts": "7030a2f57ab2a2c00668d92e142a9d8cfe852aff6d237695dc94cb14a6341130",
+    "packages/analysis/src/performance.ts": "1145c285582ff188e90263b4d9d9f28ca49104e79b8299b2ecd3e278d8ef80ac",
+    "packages/analysis/src/process.ts": "8184c7f7c4c58cdc6987fd9d2ec2c02ce8557f94b6aa30853a0c6056ba79cf4a",
+    "packages/analysis/src/tdd.ts": "cc9ef0353818ffe972a0f9d281d18d503532e414a6931bb4d4714e585b9b4072",
+    "packages/analysis/src/test-report.ts": "41c76811bfcb5e286bf097bf2f6aaf6cd5a414202efe8108f28219ecca063a01",
+    "packages/analysis/src/trace.ts": "efede75c79c7dc4828a0259c46ca870a7e15042c35edd94a107349a83eb56ec9",
+    "packages/analysis/src/workflow.ts": "95c93b380d2bda976f341c138edcbdd4d7fc0516ef3aca18a3329436a1c7b494",
+    "packages/cli/src/install.ts": "092a316d7a9731605e874e86f10d4287bf4aa82d87b0a342e545736bdd9626a3",
+    "packages/cli/src/main.ts": "f2c4b0d97e47ceb8c0bd7b8900e2af85888c59c2978c34cf564d5a4202494f4a",
+    "packages/domain/src/constitution.ts": "514278499642ff46ed902864b9192f566b116b4f92eb3fafa6b62588335e170a",
+    "packages/domain/src/design.ts": "5eddae3eec9a2fb662406bc3f7e307c11ccd87ef94d7f87363c725a74d2abb59",
+    "packages/domain/src/index.ts": "43243e9279e3826b23cd8d8b4365854974112ce4cf17cfb0f0ee32e6b28e9cc6",
+    "packages/domain/src/markdown.ts": "5c6b96486a2e31944d7d128d241f1772d0926f34464fa2b59c20748a6754487a",
+    "packages/domain/src/requirements.ts": "c070ced5f8c5b143d6197639016c2f31921b8e032386de74a9b0832ac5f42498",
+    "packages/domain/src/types.ts": "0c2666bcf18678e56eafcd3fae7e5163e4505bb4115c737b39a4b0b581656f18",
+    "scripts/check-package.mjs": "aa59ac6b57fc9d935244a0e12ce7ac0f39540379d854f97e62ea58d74fc10a7d",
+    "scripts/release-attestation.mjs": "b15842f6f83eb768c361a5e054a984af0da846f3b6e789bc0c91127415576d15",
+    "scripts/release-prepare.mjs": "f868e935c6d6d6e04fc486d56f5cfb2af7c3c4de493c1b2f8620447399ff0d6b",
+    "scripts/release-publish.mjs": "be05292662e6f3a169f238231574c97dc70d41fc7a036bfe86b284e43eadaff4",
+    "scripts/smoke-package.mjs": "aecca89d02c2f7222567b8f86a6f6c7a8d3599d9c3539c38023012eee620a8d1",
+    "tests/adapter-integration.test.ts": "42c350b4c3498d2dca32943731521ae8c2d52921f560039c0f7719b060bd4972",
+    "tests/approval.test.ts": "9c5bc5dd99223cfd423507ec2e71e181cc92c7d37e50026b9e2196bf16bd87f0",
+    "tests/cli-package.test.ts": "5d741c8fde1b02c865a0661abc744d1a1ad175ee340bfa96ba54d9cd81dc3b2e",
+    "tests/cli-workflow-ux.test.ts": "d2b41c098b4953f547d6acf4ae91bb507c865ce1685d4f5948ed3ac6accd0376",
+    "tests/domain.test.ts": "be79af0613fe35d70659d15155efc859721d764a0ea40c9764c2e4d7f89ea16d",
+    "tests/formal-knowledge.test.ts": "325ff2567b72708b83d3eab7b2986e7ceb7beb252ed21276b0db7436ffa367a4",
+    "tests/gate-install.test.ts": "da8b1f9480160be6fd05e934e3a522d94475e2c67ccac52d5ff72b166ac27a98",
+    "tests/helpers.ts": "0dbf9a36ddc8da6a8371ae3b48f8e6d92a66d09b43c3a3b24ebc6fdf9b5e4f2a",
+    "tests/p2-improvements.test.ts": "8b4ec18632bd5899755d0b41f2659b61fa156b11ea45970ac9c24bafe248bf95",
+    "tests/p3-attestation-oidc.test.ts": "6b7080699b02670e1575cdfda24dcbd301b5bd98c5df3f45a03d2fc80cc3ba05",
+    "tests/p3-codegraph-policy.test.ts": "51382d96b162341a47f77643caa3d40641218c34a6106cf32c3d112defd701a6",
+    "tests/p3-formal.test.ts": "19d7b40f4c5f92391debbc0e8f1353d93023e0774a57c5390e1b0dcfed2b3aab",
+    "tests/p3-performance-provenance.test.ts": "a71e222cca5217e210c2b623b09c9e9d9c37c7999eb70ea058ab780c59fabe83",
+    "tests/p3-workflow-provenance.test.ts": "75a885b88e16602194d39711a07fd33748bc2264195d3445452ea84b95772605",
+    "tests/p4-correspondence-mutation.test.ts": "d8ab95e6cfcd01518bc130e190913e172c6eb7519cd98e37bac1525391ce43fa",
+    "tests/p4-workflow-streaming.test.ts": "6389d083b5bca81f88bbed2f54228a17d711cb8fa16a30a68614eb59bfb1d8bf",
+    "tests/php-verification.test.ts": "bc70946615f3faa3cb3b5467e552140ba2ec8e25fb4d5276f72f65393ed04315",
+    "tests/tdd-fingerprint-migration.test.ts": "f5263df29b0987e4b7480c40b79fe686b317520e98fe0a6e6f3bcc68c7eca1da",
+    "tests/tdd-fingerprint-scoping.test.ts": "e10a3ee1d4a6d50d69051a84884ef61d6ecff5d9c47b37b25240a95821e0608e",
+    "tests/trace-graph.test.ts": "23e9ee2fa9ac2f37307cdcf2f5b088007295d76379d384e9d65b380cb6ef6c7b",
+    "tests/workflow-multi-session-verification.test.ts": "e5134e981431d14c8f1c1ea7f25a0e78a391ead86e3b83ed3ffc0dc91f46d58a",
+    "vitest.config.ts": "2338c9c1fc7792c2c04fb596d182829c7259f1c60617f86751169d35c914ae54"
+  }
+}

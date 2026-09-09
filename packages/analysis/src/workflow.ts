@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto';
 import { createReadStream } from 'node:fs';
-import { mkdir, open, rename, unlink } from 'node:fs/promises';
+import { mkdir, open, readFile, rename, unlink } from 'node:fs/promises';
 import { dirname } from 'node:path';
 import { error, type Diagnostic } from '../../domain/src/index.js';
 import type { WorkflowConfig } from './config.js';
@@ -152,12 +152,80 @@ export async function verifyWorkflowLog(
   })(), options);
 }
 
+/* @id CODE-WORKFLOW-MULTI-SESSION-001
+ * @implements REQ-WORKFLOW-MULTI-SESSION-001
+ * @design DES-WORKFLOW-MULTI-SESSION-001
+ */
 export async function verifyWorkflowLogFile(
   root: string,
-  path: string,
+  path: string | string[],
   options: WorkflowVerificationOptions = { mode: 'compatible' },
 ): Promise<WorkflowManifest> {
-  return verifyWorkflowChunks(root, createReadStream(path), options);
+  const paths = Array.isArray(path) ? path : [path];
+  if (!paths.length) throw new Error('Workflow verification requires at least one transcript file.');
+  if (paths.length > 1 && options.mode === 'strict') {
+    throw new Error('Strict workflow verification requires exactly one transcript file.');
+  }
+  let orderedPaths = paths;
+  if (paths.length > 1) {
+    // Multiple transcripts are concatenated into one logical stream below; a
+    // toolCallId genuinely belongs to a single Copilot session, so seeing it
+    // start in more than one supplied file indicates the files do not
+    // represent disjoint sessions and must be rejected rather than silently
+    // merged (REQ-WORKFLOW-MULTI-SESSION-001). While scanning for that, also
+    // record each file's earliest event timestamp so files can be
+    // concatenated in chronological session order regardless of how the
+    // caller listed them, while still preserving each file's own internal
+    // (possibly clock-skewed) source order untouched.
+    const seenInFile = new Map<string, string>();
+    const earliestTimestamp = new Map<string, number>();
+    for (const filePath of paths) {
+      const text = await readFile(filePath, 'utf-8');
+      for (const line of text.split('\n')) {
+        if (!line.trim()) continue;
+        let event: unknown;
+        try { event = JSON.parse(line) as unknown; } catch { continue; }
+        if (!event || typeof event !== 'object' || Array.isArray(event)) continue;
+        const record = event as Record<string, unknown>;
+        const data = record.data && typeof record.data === 'object'
+          ? record.data as Record<string, unknown>
+          : record;
+        const type = String(record.type ?? '');
+        const timestampValue = record.timestamp ?? data.timestamp;
+        const time = typeof timestampValue === 'string' ? Date.parse(timestampValue) : NaN;
+        if (!Number.isNaN(time)) {
+          const current = earliestTimestamp.get(filePath);
+          if (current === undefined || time < current) earliestTimestamp.set(filePath, time);
+        }
+        const toolCallId = data.toolCallId ?? data.callId ?? record.toolCallId;
+        if (starts.has(type) && typeof toolCallId === 'string') {
+          const previousFile = seenInFile.get(toolCallId);
+          if (previousFile !== undefined && previousFile !== filePath) {
+            throw new Error(`Tool call ${toolCallId} appears in more than one workflow transcript file.`);
+          }
+          seenInFile.set(toolCallId, filePath);
+        }
+      }
+    }
+    orderedPaths = paths
+      .map((filePath, index) => ({ filePath, index, time: earliestTimestamp.get(filePath) ?? Number.POSITIVE_INFINITY }))
+      .sort((a, b) => (a.time - b.time) || (a.index - b.index))
+      .map(({ filePath }) => filePath);
+  }
+  return verifyWorkflowChunks(root, (async function* () {
+    for (let index = 0; index < orderedPaths.length; index += 1) {
+      let endedWithNewline = true;
+      for await (const chunk of createReadStream(orderedPaths[index]!)) {
+        endedWithNewline = chunk.at(-1) === 0x0a;
+        yield chunk;
+      }
+      // Guarantee a line boundary between concatenated files even when a
+      // transcript file does not end with a trailing newline. Only inserted
+      // between files (never after the last) so a single-path call's byte
+      // stream, and therefore its sourceSha256, is unchanged.
+      if (index < orderedPaths.length - 1 && !endedWithNewline) yield Buffer.from('\n');
+    }
+  })(), options);
 }
 
 export async function sanitizeWorkflowLogFile(

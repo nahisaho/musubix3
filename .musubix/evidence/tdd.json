@@ -905,6 +905,49 @@
         "diagnostics": [],
         "order": 82
       }
+    },
+    {
+      "cycleId": "ca9c42be-511d-4240-a9bb-ec766080f123",
+      "requirementId": "REQ-WORKFLOW-MULTI-SESSION-001",
+      "testId": "TEST-WORKFLOW-MULTI-SESSION-001",
+      "testPath": "tests/workflow-multi-session-verification.test.ts",
+      "commandName": "workflow-multi-session-verification-tests",
+      "red": {
+        "phase": "red",
+        "valid": true,
+        "scoped": true,
+        "resultObserved": true,
+        "testStatus": "failed",
+        "reportSha256": "ffde3bf746666072d87b3a50c3ea70111a768e3e0cc93823d9824dfde2d13076",
+        "commandSha256": "41ce45d8562246c0dace1a22456456ded5d97354529ab88b35bc5cb4484abffb",
+        "outputSha256": "166527da958edac7e313f2d131483c88e28aa29a5fb7456aabf74c6a8cbcd5c0",
+        "exitCode": 1,
+        "durationMs": 1562,
+        "testFingerprint": "5643422913a82d9422e0662881af51b6ccdcfdfb07aa923eede7898a0ecd2e73",
+        "sourceFingerprint": "65712273e10e6bbf03ab9b48af9e4f558744835b9765860418b88fba0de8b056",
+        "executionId": "d46b381b-77d1-42c9-9e31-db1721d6cb10",
+        "recordedAt": "2026-09-09T21:29:11.515Z",
+        "diagnostics": [],
+        "order": 101
+      },
+      "green": {
+        "phase": "green",
+        "valid": true,
+        "scoped": true,
+        "resultObserved": true,
+        "testStatus": "passed",
+        "reportSha256": "09367bdebf22f9ed558d3924cfb92eaa5009a867eb811ff7f2f80aa3ccd5022d",
+        "commandSha256": "41ce45d8562246c0dace1a22456456ded5d97354529ab88b35bc5cb4484abffb",
+        "outputSha256": "166527da958edac7e313f2d131483c88e28aa29a5fb7456aabf74c6a8cbcd5c0",
+        "exitCode": 0,
+        "durationMs": 1419,
+        "testFingerprint": "5643422913a82d9422e0662881af51b6ccdcfdfb07aa923eede7898a0ecd2e73",
+        "sourceFingerprint": "66e128b30e84a531865b7812382b0c359fbe7faf6be7b63ceada3ce787dfd5f4",
+        "executionId": "28ceb403-b229-4821-ad09-d977e66465d6",
+        "recordedAt": "2026-09-09T21:32:55.204Z",
+        "diagnostics": [],
+        "order": 102
+      }
     }
   ],
   "chain": [
@@ -1495,6 +1538,30 @@
       "phaseEvidenceSha256": "09183f98a83cbb0f5516e371e873573517089fd95e1162f195b710ac0f6d0ebc",
       "previousSha256": "d2d838cc0ca72b357caa06c3aa6007fcf9f7867865d93ae69780a1b9ba9225e0",
       "recordSha256": "884863359a1b3e2e57209396ced30855a6d9c22d4362f6ee7145402ddf006167"
+    },
+    {
+      "sequence": 50,
+      "cycleId": "ca9c42be-511d-4240-a9bb-ec766080f123",
+      "requirementId": "REQ-WORKFLOW-MULTI-SESSION-001",
+      "testId": "TEST-WORKFLOW-MULTI-SESSION-001",
+      "testPath": "tests/workflow-multi-session-verification.test.ts",
+      "commandName": "workflow-multi-session-verification-tests",
+      "phase": "red",
+      "phaseEvidenceSha256": "8fe8a2127778e620772ae1c37978817a3bb301ecbbe065bd54651eb3173fca09",
+      "previousSha256": "884863359a1b3e2e57209396ced30855a6d9c22d4362f6ee7145402ddf006167",
+      "recordSha256": "6d463fff7bba9c5518bb2e36e96e67aef1254df27fbc059fa67a9d0083d787aa"
+    },
+    {
+      "sequence": 51,
+      "cycleId": "ca9c42be-511d-4240-a9bb-ec766080f123",
+      "requirementId": "REQ-WORKFLOW-MULTI-SESSION-001",
+      "testId": "TEST-WORKFLOW-MULTI-SESSION-001",
+      "testPath": "tests/workflow-multi-session-verification.test.ts",
+      "commandName": "workflow-multi-session-verification-tests",
+      "phase": "green",
+      "phaseEvidenceSha256": "62400eb83a7a0cc57c2d364e8c071552a0ad221d7ab40beb6878d9b0979d7f7c",
+      "previousSha256": "6d463fff7bba9c5518bb2e36e96e67aef1254df27fbc059fa67a9d0083d787aa",
+      "recordSha256": "879281958e2125b1169a0a6a7b89e2568ac91a9daffe903e8fabb44746c354ff"
     }
   ]
 }

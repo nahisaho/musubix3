@@ -252,7 +252,7 @@ validation/gate or requested solver failure, **2** usage, I/O or malformed confi
 | `tdd red\|green\|refactor <TEST-ID> --requirement <REQ-ID> --command <name>` | Execute and record a verified TDD phase |
 | `workflow-record <skill> <phase> --status <status>` | Record a compact self-reported workflow declaration |
 | `workflow-sanitize <copilot.jsonl> <output-file> [--session-id <uuid>]` | Remove messages and non-Skill tool data before review or strict verification |
-| `workflow-verify <copilot.jsonl> [--strict] [--session-id <uuid>]` | Reconcile Skill events; optionally require a complete successful session transcript |
+| `workflow-verify <copilot.jsonl...> [--strict] [--session-id <uuid>]` | Reconcile Skill events; compatible mode accepts multiple transcript files (concatenated in chronological session order) so declarations whose invocation occurred in an earlier Copilot CLI session can be reconciled; `--strict`/`--session-id` still require exactly one file |
 | `attestation oidc-audience --key-id <id> [--public-key-file <pem>]` | Derive the GitHub custom audience that authorizes a signing key |
 | `attestation payload --provider <name> --run-id <id> --key-id <id> [--public-key-file <pem>] [--github-oidc-token-file <jwt>]` | Emit canonical unsigned CI payload for external signing |
 | `attestation verify` | Verify static-key or GitHub OIDC-authorized Ed25519 provenance |
@@ -629,7 +629,18 @@ event. Supported terminal formats are `result` with `exitCode: 0`, or the curren
 Copilot CLI lifecycle format with one session UUID and a final
 `session.shutdown` whose `data.shutdownType` is `routine`. Mixed terminal
 formats, multiple session identities, abnormal shutdowns, and trailing events
-fail closed.
+fail closed. Compatible mode alone accepts more than one transcript path;
+supplied files are concatenated in ascending order of each file's earliest
+event timestamp (not command-line order), while each file's own internal
+event order is preserved untouched — this lets declarations whose invocation
+occurred in an earlier Copilot CLI session be reconciled by additionally
+supplying that session's transcript file. A `toolCallId` that appears as a
+tool start in more than one supplied file is rejected. Copilot CLI writes each
+session's JSONL transcript to
+`~/.copilot/session-state/<sessionId>/events.jsonl`; this path is an internal
+detail of the installed Copilot CLI version, not a musubix3-owned contract, so
+confirm it against your installed version rather than assuming it is stable
+across releases.
 The terminal `sessionId`, exit code, event count, terminal timestamp, raw source
 hash and canonical transcript hash are persisted. `workflow.expectedSessionId`
 or `--session-id` rejects substitution with a different caller-declared session.

@@ -300,18 +300,20 @@ export function createProgram(): Command {
       });
       output(manifest, !!options.json, `Recorded ${skill}:${phase} as ${options.status}.`);
     });
-  common(program.command('workflow-verify <log>').description('Reconcile workflow declarations with Copilot JSONL Skill events'))
+  common(program.command('workflow-verify <log...>').description('Reconcile workflow declarations with Copilot JSONL Skill events'))
     .option('--strict', 'Require a complete Copilot JSONL transcript and successful terminal result')
     .option('--session-id <uuid>', 'Require the terminal result to identify this Copilot session')
-    .action(async (log: string, options: { root: string; json?: boolean; strict?: boolean; sessionId?: string }) => {
+    .action(async (logs: string[], options: { root: string; json?: boolean; strict?: boolean; sessionId?: string }) => {
       const root = resolve(options.root);
-      const path = resolve(log);
-      const info = await stat(path);
-      if (!info.isFile()) throw new Error('Workflow log must be a file.');
+      const paths = logs.map((log) => resolve(log));
+      for (const path of paths) {
+        const info = await stat(path);
+        if (!info.isFile()) throw new Error('Workflow log must be a file.');
+      }
       const configured = (await loadConfig(root)).workflow;
       const mode = options.strict || options.sessionId ? 'strict' : configured.mode;
       const expectedSessionId = options.sessionId ?? configured.expectedSessionId;
-      const manifest = await verifyWorkflowLogFile(root, path, {
+      const manifest = await verifyWorkflowLogFile(root, paths.length === 1 ? paths[0]! : paths, {
         mode,
         ...(expectedSessionId ? { expectedSessionId } : {}),
         ...(configured.maxAgeSeconds === undefined ? {} : { maxAgeSeconds: configured.maxAgeSeconds }),
