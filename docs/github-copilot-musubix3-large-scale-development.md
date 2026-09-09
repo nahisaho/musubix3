@@ -1,5 +1,5 @@
 ---
-title: "GitHub Copilot + MUSUBIX3 によるAI Codingによる大規模アプリケーション開発"
+title: "AI Codingの限界を突破する ―― GitHub Copilot + MUSUBIX3で挑む、Vibe Codingの先にある大規模アプリケーション開発"
 tags:
   - GitHubCopilot
   - AI
