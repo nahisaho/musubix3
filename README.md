@@ -1,6 +1,6 @@
 # musubix3
 
-**Latest release v0.1.8 · GitHub Copilot CLI only · Node.js ≥20 · TypeScript · MIT**
+**Latest release v0.1.9 · GitHub Copilot CLI only · Node.js ≥20 · TypeScript · MIT**
 
 [日本語](README-ja.md)
 
@@ -257,7 +257,9 @@ validation/gate or requested solver failure, **2** usage, I/O or malformed confi
 | `attestation payload --provider <name> --run-id <id> --key-id <id> [--public-key-file <pem>] [--github-oidc-token-file <jwt>]` | Emit canonical unsigned CI payload for external signing |
 | `attestation verify` | Verify static-key or GitHub OIDC-authorized Ed25519 provenance |
 | `change-record <CHANGE-ID> <phase> --requirement <REQ-ID...>` | Record ordered artifact/TDD fingerprints for a staged change |
-| `gate [--changed]` | Fresh full checks plus actual configured commands; persist evidence |
+| `config lint` | Report configured commands whose `args` reference repository-relative paths that do not exist |
+| `config scaffold` | Propose native test-command entries for detected Go/Rust/Maven/Python/Node toolchains without writing `.musubix/config.json` |
+| `gate [--changed] [--feature <name>]` | Fresh full checks plus actual configured commands; persist evidence. `--feature` scopes requirements/design/trace/tdd/change-history/change-completeness checks to one feature as a diagnostic view; never a substitute for the repository-wide gate |
 | `status` | Artifact counts and readiness/staleness summary |
 
 `--changed` reads staged, unstaged, untracked and renamed/deleted paths from Git.

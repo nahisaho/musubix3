@@ -1,6 +1,6 @@
 # musubix3
 
-**最新リリース v0.1.8 · GitHub Copilot CLI 専用 · Node.js ≥20 · TypeScript · MIT**
+**最新リリース v0.1.9 · GitHub Copilot CLI 専用 · Node.js ≥20 · TypeScript · MIT**
 
 [English](README.md)
 
@@ -250,7 +250,9 @@ npx musubix3 status --json
 | `attestation payload --provider <name> --run-id <id> --key-id <id> [--public-key-file <pem>] [--github-oidc-token-file <jwt>]` | 外部署名用の正規化CI payloadを出力 |
 | `attestation verify` | 静的鍵またはGitHub OIDC認可済みEd25519 provenanceを検証 |
 | `change-record <CHANGE-ID> <phase> --requirement <REQ-ID...>` | 段階的変更の成果物・TDD指紋を順序付きで記録 |
-| `gate [--changed]` | 検証・実コマンドを集約し品質根拠を保存 |
+| `config lint` | `args`が存在しないrepository相対パスを参照する設定済みコマンドを報告 |
+| `config scaffold` | 検出したGo/Rust/Maven/Python/Nodeツールチェーン向けのnative test-command候補を`.musubix/config.json`へ書き込まずに提案 |
+| `gate [--changed] [--feature <name>]` | 検証・実コマンドを集約し品質根拠を保存。`--feature`は requirements/design/trace/tdd/change-history/change-completeness の検査を1機能へ限定する診断用途で、repository全体のgateの代替ではない |
 | `status` | 成果物数と準備状況・陳腐化を表示 |
 
 `--changed` は Git の staged/unstaged/untracked/rename/delete を収集し、
