@@ -17,5 +17,62 @@
       "status": "completed",
       "recordedAt": "2026-09-09T08:34:15.566Z"
     }
-  ]
+  ],
+  "verification": {
+    "mode": "compatible",
+    "sourceSha256": "20c709f570766fe17285f092e19a72888135bb6aa2d786aeb6751419c1d82f91",
+    "eventsSha256": "668efe300de4debb2df1ad6ffb55e341691bc9f0fbeda14ad1aae035b12e1e3a",
+    "verifiedAt": "2026-09-09T22:01:01.325Z",
+    "invocations": [
+      {
+        "skill": "sdd-change",
+        "toolCallId": "call_l9LG79OHKSghbCVMys9JjHrw",
+        "invokedAt": "2026-09-09T03:52:02.913Z",
+        "completedAt": "2026-09-09T03:52:02.932Z",
+        "status": "completed"
+      },
+      {
+        "skill": "sdd-change",
+        "toolCallId": "call_qoFxJ1UQvI7HbPML8fKDuyZF",
+        "invokedAt": "2026-09-09T05:36:27.516Z",
+        "completedAt": "2026-09-09T05:36:27.520Z",
+        "status": "completed"
+      },
+      {
+        "skill": "sdd-change",
+        "toolCallId": "call_lX5jMEj7BqQhpXKoEb93T4kw",
+        "invokedAt": "2026-09-09T05:57:59.613Z",
+        "completedAt": "2026-09-09T05:57:59.620Z",
+        "status": "completed"
+      },
+      {
+        "skill": "sdd-change",
+        "toolCallId": "call_Konpss3T2m6ufmnUphODdUON",
+        "invokedAt": "2026-09-09T06:46:31.495Z",
+        "completedAt": "2026-09-09T06:46:31.498Z",
+        "status": "completed"
+      },
+      {
+        "skill": "sdd-knowledge",
+        "toolCallId": "call_kvK9Mjcy9Y8h0vqJ5SXe0GU7",
+        "invokedAt": "2026-09-09T08:33:37.382Z",
+        "completedAt": "2026-09-09T08:33:37.386Z",
+        "status": "completed"
+      },
+      {
+        "skill": "sdd-change",
+        "toolCallId": "toolu_012JoCAtNuMVbCFKj3VENiko",
+        "invokedAt": "2026-09-09T10:49:54.755Z",
+        "completedAt": "2026-09-09T10:49:54.771Z",
+        "status": "completed"
+      },
+      {
+        "skill": "sdd-change",
+        "toolCallId": "toolu_01XUX3GJV9oABFs5wnJwwQhd",
+        "invokedAt": "2026-09-09T19:49:16.148Z",
+        "completedAt": "2026-09-09T19:49:16.170Z",
+        "status": "completed"
+      }
+    ]
+  }
 }
