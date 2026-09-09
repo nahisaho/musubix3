@@ -20,7 +20,7 @@ ignorePublish: false
 
 GitHub Copilot CLIは、要件の相談、コードの生成・編集、テストの実行、レビューまでを一つの対話で進められます。実際、この記事に登場する6言語構成のECマーケットプレイスも、Copilotが対話的に生成しました。単一の小さなツールを1セッションで作り切るなら、これで十分なことがほとんどです。
 
-問題は、これが**大規模・多言語・長期保守**のプロジェクトになった瞬間に姿を現します。Copilotだけで開発を進めているチームでは、次のようなことが繰り返し起こりがちです。
+問題は、これが**大規模・多言語・長期保守**のプロジェクトになった瞬間に姿を現します。Copilotだけで開発を進めているチームでは、次のようなことが繰り返し起こりがちです（以下は本記事の実験で実際に観測した特定の出来事ではなく、会話主体のAI Codingで一般的に生じやすい失敗を代表例として一般化したものです）。
 
 - ある日のセッションで「完了しました」と報告されたコードが、実は元の要求のごく一部しか満たしていなかった。しかし会話ログはすでに流れてしまい、どの要求のどの部分が対象だったのかを後から機械的に確認できない。
 - 要求を1行直しただけのつもりが、実際には設計・複数言語の実装・テストのどこまで波及したのかを誰も追跡しておらず、影響範囲の洗い出しは結局人力のgrepと記憶に頼ることになる。
@@ -195,7 +195,19 @@ MUSUBIX3を使うと、「Copilotとの会話で完了したと感じた」状�
 
 **この実験で実測した範囲を先に明確にします。** 実測したのは、各境界のネイティブテスト（言語ごとの単体テスト、`order-service`では`InventoryClient`/`RiskClient`をインメモリのフェイクに差し替えた注文フローのロジック）、要求からテストまでの静的トレース、そして品質ゲートです。Docker Composeによるサービス間の実際のネットワーク通信・分散トランザクション・E2Eの往復は、6.5節のとおりこの実験の対象外です。
 
-再現・確認可能性のため、実験の条件を明記します。MUSUBIX3 v0.1.8、実行日2026-09-09、コミット[`e3498c2`](https://github.com/nahisaho/musubix3/commit/e3498c2e613d80ff19d4cdf8468229cb0e273939)、実行ディレクトリ`examples/ecommerce-marketplace/`（`.musubix/config.json`にゲート設定を含む）。同一コミットを`git clone`し、当該ディレクトリで`npx musubix3 gate`を実行すれば、以下と同じ結果を再現できます。
+再現・確認可能性のため、実験の条件を明記します。MUSUBIX3 v0.1.8、実行日2026-09-09、コミット[`e3498c2`](https://github.com/nahisaho/musubix3/commit/e3498c2e613d80ff19d4cdf8468229cb0e273939)、実行ディレクトリ`examples/ecommerce-marketplace/`（`.musubix/config.json`にゲート設定を含む）。以下の手順で同じ結果を再現できます。
+
+```sh
+git clone https://github.com/nahisaho/musubix3.git
+cd musubix3
+git checkout e3498c2e613d80ff19d4cdf8468229cb0e273939
+npm ci
+npm run build
+cd examples/ecommerce-marketplace
+npx --no-install musubix3 gate
+```
+
+`npm run build`を挟むのは、リポジトリ本体を`npx`経由で実行する際に、ローカルのビルド成果物（`dist/`）を使わせるためです。加えて、Go/Cargo/Maven/Python3/Node.jsの各ツールチェーンと、`bff`/`frontend`の`npm install`が事前に必要です。
 
 ## 6.2 要求・設計・承認
 
@@ -356,6 +368,8 @@ Copilotへの依頼はこの一言から始まります。
 GitHub Copilotは実装のエンジンとして強力ですが、「完了」をチームの資産として残すには、要求・設計・トレース・品質ゲート・人間承認という、機械的に検証可能な証拠が別途必要です。MUSUBIX3はこの証拠を、Copilotの会話とは独立にリポジトリへ永続化し、fail-closedに検査します。
 
 本記事では、Go/Rust/Java/Python/TypeScriptにまたがる実際のECマーケットプレイスの一部を開発し、要求6件・設計6コンポーネント・8件のテストケースすべて成功、`trace check --strict`診断0件という結果とともに、**リリース承認前はゲートが実際にFAILした**という、うまくいかなかった実例も含めて報告しました。この「止められる」という性質こそが、大規模・多言語・長期保守を前提とするAI Coding開発にMUSUBIX3が提供する価値だと考えます。
+
+すべてのSkill・ゲートを一度に導入する必要はありません。まずは既存プロジェクトの小さな変更1件に要求ID・テストIDを付け、`npx musubix3 requirements validate`と`npx musubix3 trace check`だけを実行してみることから始められます。
 
 ---
 
