@@ -10,7 +10,7 @@ import {
   graphImpact, indexGraph, loadConfig, loadGraph, loadTrace, portable, projectStatus, queryKnowledge,
   formalDoctor, generateFormalArtifacts, readText, runGate, traceImpact, type Solver,
   changePhases, recordChangePhase, recordWorkflow, runTddPhase, sanitizeWorkflowLogFile,
-  validateTddEvidence, verifyWorkflowLogFile, type ChangePhase, type TddPhase,
+  validateTddEvidence, verifyWorkflowLogFile, migrateTddFingerprint, type ChangePhase, type TddPhase,
   attestationSigningPayload, createUnsignedAttestation, githubOidcAudience, verifyEvidenceAttestation,
   mutationDoctor, mutationIdentity, validateMutationEvidence, validateModelCorrespondenceEvidence, within,
   approvalManifest, approvalStages, recordApproval, requireApproval, validateApprovals, type ApprovalStage,
@@ -494,6 +494,22 @@ export function createProgram(): Command {
         if (!evidence.valid) process.exitCode = 1;
       });
   }
+  common(tdd.command('migrate <test-id>'))
+    .requiredOption('--approver <name>', 'Human approver recording this fingerprint migration')
+    .option('--confirm', 'Confirm the migration is reviewed and intended', false)
+    .action(async (testId: string, options: { root: string; json?: boolean; approver: string; confirm?: boolean }) => {
+      if (!options.confirm) throw new Error('Fingerprint migration requires --confirm.');
+      const root = resolve(options.root);
+      const migration = await migrateTddFingerprint(root, testId, options.approver);
+      output(
+        migration,
+        !!options.json,
+        migration.migrated
+          ? `MIGRATE: PASS (${testId}) ${migration.fromFingerprint} -> ${migration.toFingerprint}`
+          : `MIGRATE: FAIL (${testId}) ${migration.reason}`,
+      );
+      if (!migration.migrated) process.exitCode = 1;
+    });
   common(program.command('status').description('One-shot artifact and gate readiness summary'))
     .action(async (options: { root: string; json?: boolean }) => {
       const status = await projectStatus(resolve(options.root));

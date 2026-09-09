@@ -77,6 +77,30 @@
       "adapter": "vitest",
       "required": true,
       "timeoutMs": 120000
+    },
+    {
+      "name": "tdd-fingerprint-scoping-tests",
+      "command": "npx",
+      "args": [
+        "vitest",
+        "run",
+        "tests/tdd-fingerprint-scoping.test.ts"
+      ],
+      "adapter": "vitest",
+      "required": true,
+      "timeoutMs": 120000
+    },
+    {
+      "name": "tdd-fingerprint-migration-tests",
+      "command": "npx",
+      "args": [
+        "vitest",
+        "run",
+        "tests/tdd-fingerprint-migration.test.ts"
+      ],
+      "adapter": "vitest",
+      "required": true,
+      "timeoutMs": 120000
     }
   ],
   "requiredChecks": [

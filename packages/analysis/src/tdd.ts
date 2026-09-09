@@ -32,6 +32,17 @@ export interface TddPhaseEvidence {
   diagnostics: Diagnostic[];
 }
 
+export type TddChainPhase = TddPhase | 'migrate';
+
+export interface TddMigrationEvidence {
+  phase: 'migrate';
+  fromFingerprint: string;
+  toFingerprint: string;
+  approver: string;
+  order?: number;
+  recordedAt: string;
+}
+
 export interface TddCycle {
   cycleId?: string;
   requirementId: string;
@@ -41,6 +52,7 @@ export interface TddCycle {
   red: TddPhaseEvidence;
   green?: TddPhaseEvidence;
   refactor?: TddPhaseEvidence;
+  migrate?: TddMigrationEvidence;
 }
 
 export interface TddChainRecord {
@@ -50,7 +62,7 @@ export interface TddChainRecord {
   testId: string;
   testPath: string;
   commandName: string;
-  phase: TddPhase;
+  phase: TddChainPhase;
   phaseEvidenceSha256: string;
   previousSha256: string | null;
   recordSha256: string;
@@ -86,7 +98,7 @@ function chainRecordSha256(record: Omit<TddChainRecord, 'recordSha256'>): string
   return digest(JSON.stringify(record));
 }
 
-function appendChainRecord(evidence: TddEvidence, cycle: TddCycle, phase: TddPhase, phaseEvidence: TddPhaseEvidence): void {
+function appendChainRecord(evidence: TddEvidence, cycle: TddCycle, phase: TddChainPhase, phaseEvidence: unknown): void {
   if (!cycle.cycleId) throw new Error('TDD cycle ID is required for append-only evidence.');
   if (!evidence.chain) {
     if (evidence.cycles.some((entry) => entry !== cycle)) {
@@ -116,7 +128,49 @@ async function sourceFingerprint(root: string, testPath: string, excludedPaths: 
   return digest(JSON.stringify(await snapshot(root, paths)));
 }
 
+// Collect every statement in the file, at any nesting depth (not just the
+// top level), in source order. A test's leading `@id TEST-*` comment is only
+// ever attached as leading trivia of its own statement (e.g. the `it(...)`
+// expression statement), so scanning the full tree — rather than only
+// `source.statements` — finds that statement even when it is nested inside a
+// shared `describe(...)` block, without ever matching a sibling test's
+// statement (each sibling's own leading comment differs).
+/** @id CODE-TDD-FINGERPRINT-SCOPING-001
+ * @implements REQ-TDD-FINGERPRINT-SCOPING-001
+ * @design DES-TDD-FINGERPRINT-SCOPING-001
+ */
+function collectStatements(node: ts.Node, out: ts.Statement[]): void {
+  if (ts.isStatement(node)) out.push(node);
+  ts.forEachChild(node, (child) => collectStatements(child, out));
+}
+
 async function testFingerprint(root: string, test: TraceNode): Promise<string> {
+  const text = await readText(root, test.path);
+  const lines = text.split(/\r?\n/);
+  const start = lines.slice(0, Math.max(0, test.line - 1)).join('\n').length + (test.line > 1 ? 1 : 0);
+  if (isSource(test.path)) {
+    const source = ts.createSourceFile(test.path, text, ts.ScriptTarget.Latest, true);
+    const statements: ts.Statement[] = [];
+    collectStatements(source, statements);
+    const declaration = statements.find((statement) => statement.getStart(source) >= start);
+    if (declaration) return digest(text.slice(start, declaration.end).trim());
+  }
+  const lineEnd = text.indexOf('\n', start);
+  const searchFrom = lineEnd < 0 ? text.length : lineEnd + 1;
+  const next = text.slice(searchFrom).search(/^[ \t]*(?:\/\*+|\/\/|#).*?@id\s+TEST-/m);
+  return digest(text.slice(start, next < 0 ? text.length : searchFrom + next).trim());
+}
+
+// The pre-REQ-TDD-FINGERPRINT-SCOPING-001 algorithm (top-level statements
+// only). Retained solely so `migrateTddFingerprint` can prove a stored
+// fingerprint still matches what this superseded algorithm computes from
+// current source text, before moving a cycle onto the corrected algorithm
+// above. Must never be used for any other (live) fingerprint computation.
+/** @id CODE-TDD-FINGERPRINT-MIGRATION-001
+ * @implements REQ-TDD-FINGERPRINT-MIGRATION-001
+ * @design DES-TDD-FINGERPRINT-MIGRATION-001
+ */
+export async function legacyTestFingerprint(root: string, test: TraceNode): Promise<string> {
   const text = await readText(root, test.path);
   const lines = text.split(/\r?\n/);
   const start = lines.slice(0, Math.max(0, test.line - 1)).join('\n').length + (test.line > 1 ? 1 : 0);
@@ -129,6 +183,51 @@ async function testFingerprint(root: string, test: TraceNode): Promise<string> {
   const searchFrom = lineEnd < 0 ? text.length : lineEnd + 1;
   const next = text.slice(searchFrom).search(/^[ \t]*(?:\/\*+|\/\/|#).*?@id\s+TEST-/m);
   return digest(text.slice(start, next < 0 ? text.length : searchFrom + next).trim());
+}
+
+export interface TddMigrationResult {
+  migrated: boolean;
+  testId: string;
+  fromFingerprint?: string;
+  toFingerprint?: string;
+  reason?: string;
+}
+
+export async function migrateTddFingerprint(root: string, testId: string, approver: string): Promise<TddMigrationResult> {
+  if (!approver) throw new Error('An approver is required to migrate TDD fingerprint evidence.');
+  const evidence = await loadTddEvidence(root);
+  if (!evidence) throw new Error('No TDD evidence found.');
+  const cycle = evidence.cycles.filter((entry) => entry.testId === testId).at(-1);
+  if (!cycle) throw new Error(`No TDD cycle found for ${testId}.`);
+  if (!cycle.cycleId) throw new Error(`${testId} lacks a cycle ID; regenerate its evidence before migrating.`);
+  if (!cycle.green?.valid) throw new Error(`${testId} has no valid Green phase to migrate.`);
+  if (cycle.migrate) throw new Error(`${testId} has already been migrated.`);
+  const trace = await buildTrace(root);
+  const test = trace.nodes.find((node) => node.kind === 'test' && node.id === testId);
+  if (!test) throw new Error(`Annotated test ID not found: ${testId}`);
+  const latestPhase = cycle.refactor?.valid ? cycle.refactor : cycle.green;
+  const storedFingerprint = latestPhase.testFingerprint;
+  const legacyCurrent = await legacyTestFingerprint(root, test);
+  if (legacyCurrent !== storedFingerprint) {
+    return {
+      migrated: false,
+      testId,
+      reason: `${testId}'s recorded fingerprint does not match its current source under the superseded algorithm; this is real drift, not an algorithm-only change. Run a genuine Red/Green cycle instead.`,
+    };
+  }
+  const toFingerprint = await testFingerprint(root, test);
+  const record: TddMigrationEvidence = {
+    phase: 'migrate',
+    fromFingerprint: storedFingerprint,
+    toFingerprint,
+    approver,
+    recordedAt: new Date().toISOString(),
+  };
+  record.order = (await appendEvidenceOrder(root, { kind: 'tdd', entityId: cycle.cycleId, phase: 'migrate' })).sequence;
+  cycle.migrate = record;
+  appendChainRecord(evidence, cycle, 'migrate', record);
+  await writeJson(root, '.musubix/evidence/tdd.json', evidence);
+  return { migrated: true, testId, fromFingerprint: storedFingerprint, toFingerprint };
 }
 
 export async function loadTddEvidence(root: string): Promise<TddEvidence | null> {
@@ -306,7 +405,7 @@ export async function validateTddEvidence(root: string): Promise<{ present: bool
       records.set(key, record);
     }
     for (const cycle of evidence.cycles) {
-      for (const phase of ['red', 'green', 'refactor'] as const) {
+      for (const phase of ['red', 'green', 'refactor', 'migrate'] as const) {
         const phaseEvidence = cycle[phase];
         if (!phaseEvidence) continue;
         const key = `${cycle.cycleId ?? 'missing'}:${phase}`;
@@ -372,6 +471,23 @@ export async function validateTddEvidence(root: string): Promise<{ present: bool
     if (cycle.refactor?.order !== undefined && cycle.green?.order !== undefined && cycle.refactor.order <= cycle.green.order) {
       diagnostics.push(error('TDD_ORDER_SEQUENCE', `${cycle.testId}:refactor is not after Green in monotonic evidence order.`, cycle.testPath));
     }
+    if (cycle.migrate) {
+      if (!cycle.cycleId || !Number.isInteger(cycle.migrate.order)) {
+        diagnostics.push(error('TDD_ORDER_MIGRATION_REQUIRED', `${cycle.testId}:migrate lacks monotonic order evidence; archive legacy evidence and regenerate the complete cycle instead of editing append-only records.`, cycle.testPath));
+      } else {
+        const record = evidenceOrderRecord(order.records, 'tdd', cycle.cycleId, 'migrate');
+        if (!record || record.sequence !== cycle.migrate.order) {
+          diagnostics.push(error('TDD_ORDER_MISMATCH', `${cycle.testId}:migrate does not match the monotonic evidence order log.`, cycle.testPath));
+        }
+      }
+      const latestNonMigrateOrder = cycle.refactor?.valid ? cycle.refactor.order : cycle.green?.order;
+      if (cycle.migrate.order !== undefined && latestNonMigrateOrder !== undefined && cycle.migrate.order <= latestNonMigrateOrder) {
+        diagnostics.push(error('TDD_ORDER_SEQUENCE', `${cycle.testId}:migrate is not after Green/Refactor in monotonic evidence order.`, cycle.testPath));
+      }
+      if (!cycle.migrate.approver) {
+        diagnostics.push(error('TDD_LEGACY_OR_UNSCOPED_EVIDENCE', `${cycle.testId}:migrate lacks a recorded human approver.`, cycle.testPath));
+      }
+    }
     if (!cycle.red.scoped || !cycle.red.resultObserved || cycle.red.testStatus !== 'failed' || !cycle.red.reportSha256 || !cycle.red.sourceFingerprint || !cycle.red.executionId) {
       diagnostics.push(error('TDD_LEGACY_OR_UNSCOPED_EVIDENCE', `${cycle.testId} lacks test-scoped execution provenance; superseded cycles are still validated, so archive the legacy cycle and regenerate it from a clean Red baseline: move .musubix/evidence/tdd.json aside and re-record every cycle with tdd red/green/refactor. There is no partial prune command; hand-editing the evidence is not supported.`, cycle.testPath));
     }
@@ -384,8 +500,14 @@ export async function validateTddEvidence(root: string): Promise<{ present: bool
       if (latestCycles.get(cycle.testId) === cycle) {
         const test = trace.nodes.find((node) => node.kind === 'test' && node.id === cycle.testId);
         const current = test ? await testFingerprint(root, test) : undefined;
-        const latest = cycle.refactor?.valid ? cycle.refactor : cycle.green;
-        if (current !== latest.testFingerprint) diagnostics.push(error('TDD_TEST_STALE', `${cycle.testId} changed after its latest passing TDD phase.`, cycle.testPath));
+        const candidates: Array<{ order: number; fingerprint: string }> = [];
+        if (cycle.green.order !== undefined) candidates.push({ order: cycle.green.order, fingerprint: cycle.green.testFingerprint });
+        if (cycle.refactor?.valid && cycle.refactor.order !== undefined) {
+          candidates.push({ order: cycle.refactor.order, fingerprint: cycle.refactor.testFingerprint });
+        }
+        if (cycle.migrate?.order !== undefined) candidates.push({ order: cycle.migrate.order, fingerprint: cycle.migrate.toFingerprint });
+        const latest = candidates.sort((a, b) => b.order - a.order)[0];
+        if (latest && current !== latest.fingerprint) diagnostics.push(error('TDD_TEST_STALE', `${cycle.testId} changed after its latest passing TDD phase.`, cycle.testPath));
       }
       if (cycle.red.sourceFingerprint === cycle.green.sourceFingerprint) {
         diagnostics.push(error('TDD_GREEN_WITHOUT_SOURCE_CHANGE', `${cycle.testId} has no non-test project change between Red and Green.`, cycle.testPath));

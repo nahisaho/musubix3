@@ -2,9 +2,17 @@ import { mkdir, rm } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { afterEach } from 'vitest';
 import {
-  defaultConfig, readText, runProcess, writeJson, writeText, type Config, type ProcessResult, type Runner,
+  defaultConfig, digest, readText, runProcess, writeJson, writeText, type Config, type ProcessResult, type Runner,
 } from '../packages/analysis/src/index.js';
 import { install } from '../packages/cli/src/install.js';
+
+// Recomputes the TDD append-only chain's per-record SHA-256 the same way
+// `packages/analysis/src/tdd.ts`'s private `chainRecordSha256` does, so tests
+// can simulate historical evidence states (e.g. a fingerprint recorded under
+// a superseded algorithm) without breaking chain-hash validation.
+export function digestChainRecord(value: unknown): string {
+  return digest(JSON.stringify(value));
+}
 
 export const repository = resolve('.');
 const roots: string[] = [];

@@ -6,9 +6,11 @@
     ".musubix/features/cli-workflow-ux-v019/requirements.md": "8ac7b7e793009d95a03b53de1e3aca043d4433a7b6de9511d8547ebc33b5e7b2",
     ".musubix/features/human-approval-gates/requirements.md": "f2ae2380935831bb102cd6a7726f2a208ab1719e035157302ef51ed28f624fb0",
     ".musubix/features/session-scoped-development/requirements.md": "640aece168b4e6848c0d1e6371f0bfeb433fa8addfd064a77d050891d69d9a4f",
+    ".musubix/features/tdd-fingerprint-migration/requirements.md": "e8ac10f4367e8b43e427d2a27616debbd836194854a86da4850773b9cde9e1ae",
+    ".musubix/features/tdd-fingerprint-scoping/requirements.md": "d3e480fc0ef92edb87f2c22d1d67a00fc177fde913c68d0187aa45375b14d4c9",
     ".musubix/features/workflow-session-shutdown/requirements.md": "2b8d72e2fcb1dbf5bc24ee733182cf2b692e33c50550ce7a8de2e9c5a8c32c0d"
   },
-  "artifactSha256": "838455184e01ff654e9761093cceebc1527732f5346ba7d6cbceb81139ebde4e",
+  "artifactSha256": "036c2f1f1ece8e6b3b7c3bddb1b30c514ea826478c2ba589ff60907947953eab",
   "approver": "nahisaho",
-  "approvedAt": "2026-09-09T11:46:06.464Z"
+  "approvedAt": "2026-09-09T20:40:26.386Z"
 }
