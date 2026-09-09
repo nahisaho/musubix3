@@ -35,7 +35,7 @@ GitHub Copilot CLIは、要件の相談、コードの生成・編集、テス�
 - 実装言語: Go（在庫予約）、Rust（リスク判定）、Java（注文オーケストレーション）、Python（レコメンド）、TypeScript×2（BFF、ストアフロント）
 - `graph index`: 19ファイル、30 import、59 symbol、循環依存 0
 - `trace check --strict`: 25ノード、34エッジ、診断0件（要求→設計→実装→テストの全リンクが解決）
-- ネイティブテスト: 8コマンドすべて成功（Go 1件、Rust 1件、Java 2件、Python 1件、TypeScript 3件、計8テスト）
+- 品質ゲート登録コマンド: 8本（テスト実行6本＋TypeScript typecheck 2本）すべて成功、テストケースは計8件（Go 1件、Rust 1件、Java 2件、Python 1件、TypeScript 3件）
 - 品質ゲート: **リリース承認前は`FAIL`**（3段階中2段階のみ承認済み）、リリース承認を記録した後は`PASS`、`ready=true`
 
 つまり、この記事はうまくいった話だけでなく、**ゲートが実際に止めた場面**を含みます。
@@ -60,6 +60,8 @@ Copilotは実装のエンジンとして極めて優秀です。要求を理解�
 - 証拠ファイルが後から書き換えられていないか
 
 これらはいずれも、「その場の会話ログ」では機械的に再検証できません。セッションが終われば、会話の文脈も消えます。
+
+もちろん、CI、PRレビュー、既存のテスト管理ツールや自作スクリプトを組み合わせれば、チームは同種の統制を独自に構築できます。ここでの論点はCopilotがこれらを代替できないということではなく、それらの証拠が対話の外側・チーム共有のリポジトリに、要求ID・設計ID・テストIDで結びついた形で一貫して残るかどうかです。
 
 ## 2.3 大規模・多言語開発で顕在化する問題
 
@@ -147,6 +149,8 @@ MUSUBIX3を使うと、「Copilotとの会話で完了したと感じた」状�
 - 数十行で完結する使い捨てスクリプト
 - EARS形式の要求記述や、テストID注釈といった規律にコストをかけたくない短期実験
 
+小さく始めたい場合は、最初からすべてのSkill・ゲートを導入する必要はありません。`requirements validate`と`trace check`だけを既存プロジェクトに追加し、要求とコードの対応づけだけを試すといった段階的な導入も可能です。
+
 ## 5.3 MUSUBIX3が保証しないこと
 
 - 要求そのものが正しい（ビジネス的に妥当である）ことは保証しない。あくまで「書かれた要求」と成果物の一致を検査する
@@ -172,6 +176,10 @@ MUSUBIX3を使うと、「Copilotとの会話で完了したと感じた」状�
 | frontend | TypeScript(Next.js規約) | 注文結果をそのまま表示する |
 
 測定対象の業務フローは、**注文作成→在庫引当→リスク判定→受理/却下**の1本です。環境はこの実験の実行環境にすでにインストールされていた、Go / Cargo(Rust) / javac・Maven / Python3 / Node.js・npmのみを使用し、Kotlin・.NET・Ruby・PHP・Swiftなど未導入の言語は選定から除外しました。
+
+**この実験で実測した範囲を先に明確にします。** 実測したのは、各境界のネイティブテスト（言語ごとの単体テスト、`order-service`では`InventoryClient`/`RiskClient`をインメモリのフェイクに差し替えた注文フローのロジック）、要求からテストまでの静的トレース、そして品質ゲートです。Docker Composeによるサービス間の実際のネットワーク通信・分散トランザクション・E2Eの往復は、6.5節のとおりこの実験の対象外です。
+
+再現・確認可能性のため、実験の条件を明記します。MUSUBIX3 v0.1.8、実行日2026-09-09、コミット[`e3498c2`](https://github.com/nahisaho/musubix3/commit/e3498c2e613d80ff19d4cdf8468229cb0e273939)、実行ディレクトリ`examples/ecommerce-marketplace/`（`.musubix/config.json`にゲート設定を含む）。同一コミットを`git clone`し、当該ディレクトリで`npx musubix3 gate`を実行すれば、以下と同じ結果を再現できます。
 
 ## 6.2 要求・設計・承認
 
@@ -208,7 +216,7 @@ REQ-MARKETPLACE-006: ストアフロント表示（決定テキストをその�
 | `npm run typecheck` / `npm test`（bff, vitest） | PASS | 2件 |
 | `npm run typecheck` / `npm test`（frontend, vitest） | PASS | 1件 |
 
-合計8テスト、5言語すべてで実際にコマンドを実行し、成功を確認しました。
+合計8件のテストケースを、5言語すべてで実際にコマンドを実行して成功を確認しました。
 
 ## 6.4 トレース・Code Graph・品質ゲート（実測、ゲートが止めた例を含む）
 
@@ -226,7 +234,7 @@ $ npx musubix3 trace check --strict
 PASS / 合格
 ```
 
-Go・Rust・Java・Python・TypeScript混在のリポジトリでも、`graph index`は5言語すべてのソースを解析し、循環依存は0件でした。`trace check --strict`も、6要求すべてが設計・実装・テストへ到達し、診断0件でPASSしました。
+Go・Rust・Java・Python・TypeScript混在のリポジトリでも、`graph index`は5言語すべてのソースを解析し、循環依存は0件でした。`trace check --strict`も、6要求すべてについて注釈ベースの静的トレースが設計・実装・テストへ到達し、診断0件でPASSしました（これはID間のリンクが解決していることの検査であり、実行時の分散フローそのものを検証したものではありません）。
 
 次に、8つのネイティブテストコマンドを`.musubix/config.json`に登録して`gate`を実行しました。**最初の結果はFAILでした。**
 
@@ -285,10 +293,15 @@ pass    commands [required]: 8 configured command(s) executed; optional failures
 
 ## 7.2 インストール
 
-プロジェクトへ再現可能にインストールする場合:
+本記事の手順・実測結果（v0.1.8）をそのまま再現する場合はバージョンを固定します。最新版を試す場合は、コマンド仕様やゲート結果が本記事と異なる可能性があります。
 
 ```sh
+# 本記事の手順・実測を再現する場合（バージョン固定）
+npm install --save-dev --save-exact musubix3@0.1.8
+
+# 最新版を評価する場合（本記事との差分があり得る）
 npm install --save-dev --save-exact musubix3@latest
+
 npx --no-install musubix3 --version
 npx --no-install musubix3 init --dry-run
 npx --no-install musubix3 init
@@ -326,7 +339,7 @@ Copilotへの依頼はこの一言から始まります。
 
 GitHub Copilotは実装のエンジンとして強力ですが、「完了」をチームの資産として残すには、要求・設計・トレース・品質ゲート・人間承認という、機械的に検証可能な証拠が別途必要です。MUSUBIX3はこの証拠を、Copilotの会話とは独立にリポジトリへ永続化し、fail-closedに検査します。
 
-本記事では、Go/Rust/Java/Python/TypeScriptにまたがる実際のECマーケットプレイスの一部を開発し、要求6件・設計6コンポーネント・8ネイティブテストすべて成功、`trace check --strict`診断0件という結果とともに、**リリース承認前はゲートが実際にFAILした**という、うまくいかなかった実例も含めて報告しました。この「止められる」という性質こそが、大規模・多言語・長期保守を前提とするAI Coding開発にMUSUBIX3が提供する価値だと考えます。
+本記事では、Go/Rust/Java/Python/TypeScriptにまたがる実際のECマーケットプレイスの一部を開発し、要求6件・設計6コンポーネント・8件のテストケースすべて成功、`trace check --strict`診断0件という結果とともに、**リリース承認前はゲートが実際にFAILした**という、うまくいかなかった実例も含めて報告しました。この「止められる」という性質こそが、大規模・多言語・長期保守を前提とするAI Coding開発にMUSUBIX3が提供する価値だと考えます。
 
 ---
 
@@ -336,7 +349,8 @@ GitHub Copilotは実装のエンジンとして強力ですが、「完了」を
 
 | 用途 | コマンド |
 |---|---|
-| プロジェクトへ固定インストール | `npm install --save-dev --save-exact musubix3@latest` |
+| プロジェクトへ固定インストール(本記事の再現) | `npm install --save-dev --save-exact musubix3@0.1.8` |
+| プロジェクトへ固定インストール(最新版) | `npm install --save-dev --save-exact musubix3@latest` |
 | 一度きりの評価 | `npx musubix3@latest --version` / `npx musubix3@latest init --dry-run` |
 | Copilotネイティブプラグイン(ローカル) | `copilot plugin install ./musubix3` |
 | Copilotネイティブプラグイン(GitHub) | `copilot plugin install nahisaho/musubix3` |
