@@ -264,6 +264,23 @@ export async function sanitizeWorkflowLogFile(
           timestamp,
           data: { toolCallId, success },
         });
+      } else if (type === 'session.start') {
+        const sessionId = data.sessionId ?? record.sessionId;
+        if (typeof sessionId !== 'string' || !uuid.test(sessionId)) {
+          throw new Error('The workflow session start must declare a UUID sessionId before sanitization.');
+        }
+        terminalSessionId = replacementSessionId ?? sessionId;
+        await emit({
+          type: 'session.start',
+          timestamp,
+          data: { sessionId: terminalSessionId },
+        });
+      } else if (type === 'session.shutdown') {
+        await emit({
+          type: 'session.shutdown',
+          timestamp,
+          data: { shutdownType: data.shutdownType },
+        });
       } else if (type === 'result') {
         const sessionId = record.sessionId;
         if (typeof sessionId !== 'string' || !uuid.test(sessionId)) {
@@ -311,7 +328,7 @@ export async function sanitizeWorkflowLogFile(
       throw new Error('Workflow transcript changed after strict validation; retry sanitization with a stable source file.');
     }
     if (!skillCalls.size) throw new Error('No Copilot Skill invocation events were found in the workflow transcript.');
-    if (!terminalSessionId) throw new Error('No terminal workflow result event was found in the transcript.');
+    if (!terminalSessionId) throw new Error('No workflow session identity was found in the transcript.');
     await output.close();
     await rename(staging, target);
   } finally {
@@ -328,6 +345,9 @@ export async function sanitizeWorkflowLogFile(
   };
 }
 
+/* @id CODE-WORKFLOW-SHUTDOWN-001
+ * @implements REQ-WORKFLOW-SHUTDOWN-001
+ */
 async function verifyWorkflowChunks(
   root: string,
   chunks: AsyncIterable<Uint8Array>,
@@ -354,8 +374,10 @@ async function verifyWorkflowChunks(
   let maximumLineBytes = 0;
   let parsedCount = 0;
   let resultCount = 0;
-  let lastParsedWasResult = false;
+  let shutdownCount = 0;
+  let lastParsedWasTerminal = false;
   let terminalRecord: Record<string, unknown> | undefined;
+  const sessionIds = new Set<string>();
   const invocationsById = new Map<string, { skill: string; toolCallId: string; invokedAt: string }>();
   const completions = new Map<string, { completedAt: string; status: 'completed' | 'failed' }>();
   const toolStarts = new Map<string, { timestamp: string; index: number }>();
@@ -391,15 +413,25 @@ async function verifyWorkflowChunks(
     }
     const record = event as Record<string, unknown>;
     transcriptHash.update(parsedCount === 1 ? canonical(record) : `,${canonical(record)}`);
-    lastParsedWasResult = record.type === 'result';
-    if (lastParsedWasResult) {
-      resultCount += 1;
-      terminalRecord = record;
-    }
     const data = record.data && typeof record.data === 'object'
       ? record.data as Record<string, unknown>
       : record;
     const type = String(record.type ?? '');
+    const isResult = type === 'result';
+    const isShutdown = type === 'session.shutdown';
+    lastParsedWasTerminal = isResult || isShutdown;
+    if (isResult) {
+      resultCount += 1;
+      terminalRecord = record;
+    }
+    if (isShutdown) {
+      shutdownCount += 1;
+      terminalRecord = record;
+    }
+    if (type === 'session.start') {
+      const sessionId = data.sessionId ?? record.sessionId;
+      if (typeof sessionId === 'string') sessionIds.add(sessionId.toLowerCase());
+    }
     const timestampValue = record.timestamp ?? data.timestamp;
     const timestamp = typeof timestampValue === 'string' ? timestampValue : '';
     const time = Date.parse(timestamp);
@@ -488,18 +520,49 @@ async function verifyWorkflowChunks(
 
   let terminal: { timestamp: string; sessionId: string; exitCode: number } | undefined;
   if (options.mode === 'strict') {
-    if (resultCount !== 1) throw new Error('Strict workflow verification requires exactly one terminal result event.');
-    if (!lastParsedWasResult) throw new Error('The terminal result event must be the final JSONL event.');
+    if (resultCount + shutdownCount !== 1) {
+      throw new Error('Strict workflow verification requires exactly one terminal result or routine shutdown event.');
+    }
+    if (!lastParsedWasTerminal) {
+      throw new Error(resultCount === 1
+        ? 'The terminal result event must be the final JSONL event.'
+        : 'The terminal session shutdown must be the final JSONL event.');
+    }
     const timestamp = terminalRecord!.timestamp;
-    const sessionId = terminalRecord!.sessionId;
-    const exitCode = terminalRecord!.exitCode;
+    const terminalData = terminalRecord!.data && typeof terminalRecord!.data === 'object'
+      ? terminalRecord!.data as Record<string, unknown>
+      : terminalRecord!;
+    let sessionId: unknown;
+    let exitCode: unknown;
+    if (resultCount === 1) {
+      sessionId = terminalRecord!.sessionId;
+      exitCode = terminalRecord!.exitCode;
+    } else {
+      if (terminalData.shutdownType !== 'routine') {
+        throw new Error('The terminal session shutdown must declare shutdownType routine.');
+      }
+      if (sessionIds.size !== 1) {
+        throw new Error('A routine session shutdown requires exactly one session UUID.');
+      }
+      [sessionId] = sessionIds;
+      const shutdownSessionId = terminalData.sessionId ?? terminalRecord!.sessionId;
+      if (shutdownSessionId !== undefined
+        && (typeof shutdownSessionId !== 'string' || shutdownSessionId.toLowerCase() !== sessionId)) {
+        throw new Error('The terminal session shutdown identity does not match the session start.');
+      }
+      exitCode = 0;
+    }
     if (typeof timestamp !== 'string' || Number.isNaN(Date.parse(timestamp))
       || (options.maxEventSkewMs !== undefined
         && lastToolTimestamp - Date.parse(timestamp) > options.maxEventSkewMs)) {
-      throw new Error('The terminal result event violates event timestamp order.');
+      throw new Error(resultCount === 1
+        ? 'The terminal result event violates event timestamp order.'
+        : 'The terminal session shutdown violates event timestamp order.');
     }
     if (typeof sessionId !== 'string' || !uuid.test(sessionId)) {
-      throw new Error('The terminal result event must declare a UUID sessionId.');
+      throw new Error(resultCount === 1
+        ? 'The terminal result event must declare a UUID sessionId.'
+        : 'The terminal session shutdown must resolve to a UUID sessionId.');
     }
     if (exitCode !== 0) throw new Error('The terminal result event must declare exitCode 0.');
     if (options.expectedSessionId && sessionId.toLowerCase() !== options.expectedSessionId.toLowerCase()) {

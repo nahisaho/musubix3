@@ -624,7 +624,12 @@ multi-phase chronology belongs in `change-record`, not duplicate workflow events
 Incomplete, failed, reused, out-of-order and stale bindings fail.
 Set `"workflow":{"mode":"strict"}` or pass `--strict` to additionally require
 valid JSON on every nonempty line, valid event timestamps, consistent one-to-one
-tool start/completion lifecycles, and exactly one final `result` with `exitCode: 0`.
+tool start/completion lifecycles, and exactly one successful final terminal
+event. Supported terminal formats are `result` with `exitCode: 0`, or the current
+Copilot CLI lifecycle format with one session UUID and a final
+`session.shutdown` whose `data.shutdownType` is `routine`. Mixed terminal
+formats, multiple session identities, abnormal shutdowns, and trailing events
+fail closed.
 The terminal `sessionId`, exit code, event count, terminal timestamp, raw source
 hash and canonical transcript hash are persisted. `workflow.expectedSessionId`
 or `--session-id` rejects substitution with a different caller-declared session.

@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- Accept the current GitHub Copilot CLI terminal format in strict workflow
+  verification: a unique session UUID followed by exactly one final
+  `session.shutdown` with `data.shutdownType: "routine"`. Existing final
+  `result` transcripts remain supported; ambiguous, abnormal, mixed, and
+  non-final terminal events still fail closed.
+
 ## 0.1.9 - 2026-09-10
 
 - Exclude nested MUSUBIX3 workspaces (any descendant directory containing its

@@ -32,6 +32,41 @@ function strictTranscript(options: {
   }].map((event) => JSON.stringify(event)).join('\n');
 }
 
+function shutdownTranscript(options: {
+  shutdownType?: string;
+  shutdownSessionId?: string;
+  extra?: object[];
+  trailing?: object;
+} = {}): string {
+  return [
+    {
+      type: 'session.start',
+      timestamp: '2020-01-01T00:00:00.000Z',
+      data: { sessionId },
+    },
+    {
+      type: 'tool.execution_start',
+      timestamp: '2020-01-01T00:00:01.000Z',
+      data: { toolCallId: 'call-1', toolName: 'skill', arguments: { skill: 'sdd-change' } },
+    },
+    {
+      type: 'tool.execution_complete',
+      timestamp: '2020-01-01T00:00:02.000Z',
+      data: { toolCallId: 'call-1', success: true },
+    },
+    ...(options.extra ?? []),
+    {
+      type: 'session.shutdown',
+      timestamp: '2020-01-01T00:00:03.000Z',
+      data: {
+        shutdownType: options.shutdownType ?? 'routine',
+        ...(options.shutdownSessionId ? { sessionId: options.shutdownSessionId } : {}),
+      },
+    },
+    ...(options.trailing ? [options.trailing] : []),
+  ].map((event) => JSON.stringify(event)).join('\n');
+}
+
 describe('P3 strict workflow transcript provenance', () => {
   it('keeps compatible verification by default and parses strict workflow config', () => {
     expect(defaultConfig.workflow).toEqual({
@@ -141,6 +176,38 @@ describe('P3 strict workflow transcript provenance', () => {
       mode: 'strict',
       expectedSessionId: '123e4567-e89b-42d3-a456-426614174001',
     })).rejects.toThrow('does not match');
+  });
+
+  /** @id TEST-WORKFLOW-SHUTDOWN-001
+   * @verifies REQ-WORKFLOW-SHUTDOWN-001
+   */
+  it('TEST-WORKFLOW-SHUTDOWN-001 accepts only a final routine Copilot session shutdown', async () => {
+    const root = await fixture();
+    await recordWorkflow(root, { skill: 'sdd-change', phase: 'complete', status: 'completed' });
+
+    await expect(verifyWorkflowLog(root, shutdownTranscript(), {
+    mode: 'strict',
+    expectedSessionId: sessionId,
+    })).resolves.toMatchObject({
+    verification: {
+      mode: 'strict',
+      sessionId,
+      exitCode: 0,
+      terminalAt: '2020-01-01T00:00:03.000Z',
+    },
+    });
+    await expect(verifyWorkflowLog(root, shutdownTranscript({ shutdownType: 'error' }), { mode: 'strict' }))
+    .rejects.toThrow('routine');
+    await expect(verifyWorkflowLog(root, shutdownTranscript({
+    extra: [{
+      type: 'session.start',
+      timestamp: '2020-01-01T00:00:01.500Z',
+      data: { sessionId: '123e4567-e89b-42d3-a456-426614174001' },
+    }],
+    }), { mode: 'strict' })).rejects.toThrow('exactly one session');
+    await expect(verifyWorkflowLog(root, shutdownTranscript({
+    trailing: { type: 'assistant.message', timestamp: '2020-01-01T00:00:04.000Z' },
+    }), { mode: 'strict' })).rejects.toThrow('final JSONL event');
   });
 
   it('rejects malformed, unordered, orphaned, duplicate, and incomplete tool lifecycles', async () => {
