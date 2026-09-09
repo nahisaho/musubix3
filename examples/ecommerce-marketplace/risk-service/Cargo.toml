@@ -1,0 +1,14 @@
+[package]
+name = "risk-service"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "risk_service"
+path = "src/lib.rs"
+
+[[bin]]
+name = "risk-service"
+path = "src/main.rs"
+
+[dependencies]

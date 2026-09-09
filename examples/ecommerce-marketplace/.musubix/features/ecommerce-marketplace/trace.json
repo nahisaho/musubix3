@@ -1,0 +1,359 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-09-09T09:00:03.213Z",
+  "nodes": [
+    {
+      "id": "ADR-0001",
+      "kind": "adr",
+      "path": ".musubix/decisions/ADR-0001.md",
+      "line": 1
+    },
+    {
+      "id": "DES-MARKETPLACE-001",
+      "kind": "design",
+      "path": ".musubix/features/ecommerce-marketplace/design.md",
+      "line": 7
+    },
+    {
+      "id": "DES-MARKETPLACE-002",
+      "kind": "design",
+      "path": ".musubix/features/ecommerce-marketplace/design.md",
+      "line": 16
+    },
+    {
+      "id": "DES-MARKETPLACE-003",
+      "kind": "design",
+      "path": ".musubix/features/ecommerce-marketplace/design.md",
+      "line": 25
+    },
+    {
+      "id": "DES-MARKETPLACE-004",
+      "kind": "design",
+      "path": ".musubix/features/ecommerce-marketplace/design.md",
+      "line": 35
+    },
+    {
+      "id": "DES-MARKETPLACE-005",
+      "kind": "design",
+      "path": ".musubix/features/ecommerce-marketplace/design.md",
+      "line": 43
+    },
+    {
+      "id": "DES-MARKETPLACE-006",
+      "kind": "design",
+      "path": ".musubix/features/ecommerce-marketplace/design.md",
+      "line": 53
+    },
+    {
+      "id": "REQ-MARKETPLACE-001",
+      "kind": "requirement",
+      "path": ".musubix/features/ecommerce-marketplace/requirements.md",
+      "line": 7,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-MARKETPLACE-002",
+      "kind": "requirement",
+      "path": ".musubix/features/ecommerce-marketplace/requirements.md",
+      "line": 17,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-MARKETPLACE-003",
+      "kind": "requirement",
+      "path": ".musubix/features/ecommerce-marketplace/requirements.md",
+      "line": 27,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-MARKETPLACE-004",
+      "kind": "requirement",
+      "path": ".musubix/features/ecommerce-marketplace/requirements.md",
+      "line": 36,
+      "mandatory": false
+    },
+    {
+      "id": "REQ-MARKETPLACE-005",
+      "kind": "requirement",
+      "path": ".musubix/features/ecommerce-marketplace/requirements.md",
+      "line": 45,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-MARKETPLACE-006",
+      "kind": "requirement",
+      "path": ".musubix/features/ecommerce-marketplace/requirements.md",
+      "line": 54,
+      "mandatory": false
+    },
+    {
+      "id": "TEST-MARKETPLACE-005",
+      "kind": "test",
+      "path": "bff/src/submitOrder.test.ts",
+      "line": 4
+    },
+    {
+      "id": "CODE-MARKETPLACE-005",
+      "kind": "code",
+      "path": "bff/src/submitOrder.ts",
+      "line": 17
+    },
+    {
+      "id": "TEST-MARKETPLACE-006",
+      "kind": "test",
+      "path": "frontend/src/renderOrderSummary.test.ts",
+      "line": 4
+    },
+    {
+      "id": "CODE-MARKETPLACE-006",
+      "kind": "code",
+      "path": "frontend/src/renderOrderSummary.ts",
+      "line": 7
+    },
+    {
+      "id": "TEST-MARKETPLACE-001",
+      "kind": "test",
+      "path": "inventory-service/inventory/inventory_test.go",
+      "line": 5
+    },
+    {
+      "id": "CODE-MARKETPLACE-001",
+      "kind": "code",
+      "path": "inventory-service/inventory/inventory.go",
+      "line": 29
+    },
+    {
+      "id": "CODE-MARKETPLACE-003",
+      "kind": "code",
+      "path": "order-service/src/main/java/com/example/order/OrderService.java",
+      "line": 33
+    },
+    {
+      "id": "TEST-MARKETPLACE-003",
+      "kind": "test",
+      "path": "order-service/src/test/java/com/example/order/OrderServiceTest.java",
+      "line": 10
+    },
+    {
+      "id": "CODE-MARKETPLACE-004",
+      "kind": "code",
+      "path": "recommendation-service/recommendations.py",
+      "line": 11
+    },
+    {
+      "id": "TEST-MARKETPLACE-004",
+      "kind": "test",
+      "path": "recommendation-service/tests/test_recommendations.py",
+      "line": 10
+    },
+    {
+      "id": "CODE-MARKETPLACE-002",
+      "kind": "code",
+      "path": "risk-service/src/lib.rs",
+      "line": 20
+    },
+    {
+      "id": "TEST-MARKETPLACE-002",
+      "kind": "test",
+      "path": "risk-service/tests/risk_test.rs",
+      "line": 5
+    }
+  ],
+  "edges": [
+    {
+      "from": "DES-MARKETPLACE-001",
+      "to": "REQ-MARKETPLACE-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0001",
+      "to": "DES-MARKETPLACE-001",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-MARKETPLACE-002",
+      "to": "REQ-MARKETPLACE-002",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0001",
+      "to": "DES-MARKETPLACE-002",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-MARKETPLACE-003",
+      "to": "REQ-MARKETPLACE-003",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0001",
+      "to": "DES-MARKETPLACE-003",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-MARKETPLACE-003",
+      "to": "DES-MARKETPLACE-001",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-MARKETPLACE-003",
+      "to": "DES-MARKETPLACE-002",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-MARKETPLACE-004",
+      "to": "REQ-MARKETPLACE-004",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0001",
+      "to": "DES-MARKETPLACE-004",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-MARKETPLACE-005",
+      "to": "REQ-MARKETPLACE-005",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0001",
+      "to": "DES-MARKETPLACE-005",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-MARKETPLACE-005",
+      "to": "DES-MARKETPLACE-003",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-MARKETPLACE-006",
+      "to": "REQ-MARKETPLACE-006",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0001",
+      "to": "DES-MARKETPLACE-006",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-MARKETPLACE-006",
+      "to": "DES-MARKETPLACE-005",
+      "relation": "depends-on"
+    },
+    {
+      "from": "TEST-MARKETPLACE-005",
+      "to": "REQ-MARKETPLACE-005",
+      "relation": "verifies"
+    },
+    {
+      "from": "CODE-MARKETPLACE-005",
+      "to": "REQ-MARKETPLACE-005",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-MARKETPLACE-005",
+      "to": "DES-MARKETPLACE-005",
+      "relation": "implements"
+    },
+    {
+      "from": "TEST-MARKETPLACE-006",
+      "to": "REQ-MARKETPLACE-006",
+      "relation": "verifies"
+    },
+    {
+      "from": "CODE-MARKETPLACE-006",
+      "to": "REQ-MARKETPLACE-006",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-MARKETPLACE-006",
+      "to": "DES-MARKETPLACE-006",
+      "relation": "implements"
+    },
+    {
+      "from": "TEST-MARKETPLACE-001",
+      "to": "REQ-MARKETPLACE-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "CODE-MARKETPLACE-001",
+      "to": "REQ-MARKETPLACE-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-MARKETPLACE-001",
+      "to": "DES-MARKETPLACE-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-MARKETPLACE-003",
+      "to": "REQ-MARKETPLACE-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-MARKETPLACE-003",
+      "to": "DES-MARKETPLACE-003",
+      "relation": "implements"
+    },
+    {
+      "from": "TEST-MARKETPLACE-003",
+      "to": "REQ-MARKETPLACE-003",
+      "relation": "verifies"
+    },
+    {
+      "from": "CODE-MARKETPLACE-004",
+      "to": "REQ-MARKETPLACE-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-MARKETPLACE-004",
+      "to": "DES-MARKETPLACE-004",
+      "relation": "implements"
+    },
+    {
+      "from": "TEST-MARKETPLACE-004",
+      "to": "REQ-MARKETPLACE-004",
+      "relation": "verifies"
+    },
+    {
+      "from": "CODE-MARKETPLACE-002",
+      "to": "REQ-MARKETPLACE-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-MARKETPLACE-002",
+      "to": "DES-MARKETPLACE-002",
+      "relation": "implements"
+    },
+    {
+      "from": "TEST-MARKETPLACE-002",
+      "to": "REQ-MARKETPLACE-002",
+      "relation": "verifies"
+    }
+  ],
+  "diagnostics": [],
+  "fingerprints": {
+    ".musubix/decisions/ADR-0001.md": "7f19871d4c7edf5b280e1a0f57a73c509dc564b153de356bbc55c4f9a080af4b",
+    ".musubix/features/ecommerce-marketplace/design.md": "a675cfaf99101c572a669a41cab0d82088471976befb829719406d9b700a50f5",
+    ".musubix/features/ecommerce-marketplace/requirements.md": "c732c5c59209b74b23cc4abde01560d92dfedc8fe05265a098ea36c1629ee859",
+    "bff/src/server.ts": "78af65373224172500c0a64040967f471b1b603fd3ed24c3484d5fc65ec94b7d",
+    "bff/src/submitOrder.test.ts": "66d150a9bc0efbabc4b452ef514a27888aff8be906b50139cf8acda6ac484398",
+    "bff/src/submitOrder.ts": "28541c1979c220158e394864f09d8e76418c34ae4fb76ce2ce6cf4892d4c5750",
+    "bff/vitest.config.ts": "9c51fd565cf6ad875bb6cf7d572b72ae2c14d2e156cf728f029e7ed72ea41227",
+    "frontend/app/order-result/page.tsx": "09c84655aad50a307d165076dbe7061c6a5bd4b68d1f332fc62751e6f562ef7d",
+    "frontend/src/renderOrderSummary.test.ts": "5a160045f512166c2941569014e8a417f882f52acbe4989afb8b26bd5a9b2997",
+    "frontend/src/renderOrderSummary.ts": "9a7b946fdd2ecc99cbf9bc88a94e7b2e0377d73030a51639f91b80adf8632027",
+    "frontend/vitest.config.ts": "9c51fd565cf6ad875bb6cf7d572b72ae2c14d2e156cf728f029e7ed72ea41227",
+    "inventory-service/inventory/inventory_test.go": "a540d71eb7c307a63aeb38c69df91950056a17e0add1495c9b126ceab8935754",
+    "inventory-service/inventory/inventory.go": "70c3089fb61b592e0c4d1cb6dacc4217fbdeddc1ed5a20c3faf49db11361778b",
+    "inventory-service/main.go": "96fa31945542718a3337497bc3c37c8c2e61df32ccd4e0214bc742af16095a1d",
+    "order-service/src/main/java/com/example/order/OrderService.java": "7e5a906c50de8a1175609a9e2ecd338632e079d6d0d36b984e5d0fb181ee8a2e",
+    "order-service/src/test/java/com/example/order/OrderServiceTest.java": "0d3f58341d57674b608740fdac21a8828234fa5e14df25ff7444ba67692b2858",
+    "recommendation-service/main.py": "2d32a09ac252730a0fcbcfeb48b367d40afbe3e2e59b762d6c9ee05633a94ed1",
+    "recommendation-service/recommendations.py": "9d9d2408b348225e129845f3c280280d9ffb08e00f54964e0842ce8bc6e023c9",
+    "recommendation-service/tests/test_recommendations.py": "6f2a1bd4ea3b34cf24cec7472c098286c8823d448388aaa70433e407ccd99132",
+    "risk-service/src/lib.rs": "f9061f84b4581f03b0baec1015f10ffac542180874761114728d1544d9e03992",
+    "risk-service/src/main.rs": "d6e73f628badf319eacd38080cfd1e431f8797e6e61aa1f2713db4780b8cd6a9",
+    "risk-service/tests/risk_test.rs": "861df0c5084b387c1518811073a3ce8ad0e0e41967c55e44325ec5122355c245"
+  }
+}

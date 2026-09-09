@@ -1,0 +1,59 @@
+name: ecommerce-marketplace CI
+# CI/CD definition for the ecommerce-marketplace example (REQ-MARKETPLACE-*
+# support artifact). Defined for reproducibility; not triggered by the parent
+# repository's own workflows and not executed as part of this article's
+# experiment run.
+on:
+  push:
+    paths:
+      - "examples/ecommerce-marketplace/**"
+  pull_request:
+    paths:
+      - "examples/ecommerce-marketplace/**"
+
+jobs:
+  go-inventory:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with: { go-version: "1.22" }
+      - run: go test ./...
+        working-directory: examples/ecommerce-marketplace/inventory-service
+
+  rust-risk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - run: cargo test
+        working-directory: examples/ecommerce-marketplace/risk-service
+
+  java-order:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: { distribution: "temurin", java-version: "21" }
+      - run: mvn -q test
+        working-directory: examples/ecommerce-marketplace/order-service
+
+  python-recommendation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install pytest && python -m pytest tests/
+        working-directory: examples/ecommerce-marketplace/recommendation-service
+
+  node-bff-and-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "20" }
+      - run: npm install && npm run typecheck && npm test
+        working-directory: examples/ecommerce-marketplace/bff
+      - run: npm install && npm run typecheck && npm test
+        working-directory: examples/ecommerce-marketplace/frontend

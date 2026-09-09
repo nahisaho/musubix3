@@ -1,0 +1,13 @@
+# Security check configuration for the ecommerce-marketplace example.
+# Static-analysis rule set intended to run with `semgrep --config
+# security/semgrep.yml examples/ecommerce-marketplace`. Defined for
+# reproducibility; not executed as part of this article's experiment run.
+rules:
+  - id: no-hardcoded-secret-like-string
+    languages: [python, go, javascript, typescript, java]
+    message: Possible hardcoded secret; use environment configuration instead.
+    severity: WARNING
+    patterns:
+      - pattern-either:
+          - pattern: $KEY = "sk_live_..."
+          - pattern: $KEY = "AKIA..."

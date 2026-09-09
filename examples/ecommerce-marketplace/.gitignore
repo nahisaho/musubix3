@@ -1,0 +1,9 @@
+
+# musubix3 generated caches
+/.musubix/cache/
+.pytest_cache/
+__pycache__/
+target/
+node_modules/
+dist/
+*.log

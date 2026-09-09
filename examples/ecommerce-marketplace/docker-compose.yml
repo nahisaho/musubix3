@@ -1,0 +1,25 @@
+version: "3.9"
+# Integration method for the ecommerce-marketplace example (DES-MARKETPLACE-*).
+# This defines how the boundaries would be composed; it was not executed as a
+# full multi-container run in this experiment (see the article's Limitations).
+services:
+  inventory-service:
+    build: ./inventory-service
+    ports: ["8081:8081"]
+  risk-service:
+    build: ./risk-service
+    ports: ["8082:8082"]
+  order-service:
+    build: ./order-service
+    ports: ["8080:8080"]
+    environment:
+      INVENTORY_URL: http://inventory-service:8081
+      RISK_URL: http://risk-service:8082
+  recommendation-service:
+    build: ./recommendation-service
+    ports: ["8083:8083"]
+  bff:
+    build: ./bff
+    ports: ["8084:8084"]
+    environment:
+      ORDER_SERVICE_URL: http://order-service:8080/orders

@@ -1,0 +1,22 @@
+# Observability configuration for the ecommerce-marketplace example.
+# Defines a minimal OpenTelemetry Collector pipeline that each service could
+# export traces/metrics to. Not started as part of this experiment; the
+# native per-language tests above did not exercise it.
+receivers:
+  otlp:
+    protocols:
+      http:
+      grpc:
+
+exporters:
+  logging:
+    verbosity: normal
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      exporters: [logging]
+    metrics:
+      receivers: [otlp]
+      exporters: [logging]

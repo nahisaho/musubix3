@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "stage": "requirements",
+  "artifacts": {
+    ".musubix/constitution.md": "f8b47fdc486f395bab05223a94821b145cf8df70ffde2c838a28f8d71fe0fa92",
+    ".musubix/features/ecommerce-marketplace/requirements.md": "c732c5c59209b74b23cc4abde01560d92dfedc8fe05265a098ea36c1629ee859"
+  },
+  "artifactSha256": "efcc5ab118165eee6900f5846d42679df27f64425944b19ee9912866ad2feee0",
+  "approver": "nahisaho",
+  "approvedAt": "2026-09-09T08:44:51.982Z"
+}

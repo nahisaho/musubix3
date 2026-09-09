@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "language": "auto",
+  "qualityProfile": "custom",
+  "commands": [
+    { "name": "inventory-test", "command": "go", "args": ["-C", "inventory-service", "test", "./..."], "required": true, "timeoutMs": 120000 },
+    { "name": "risk-test", "command": "cargo", "args": ["test", "--manifest-path", "risk-service/Cargo.toml"], "required": true, "timeoutMs": 180000 },
+    { "name": "order-test", "command": "mvn", "args": ["-q", "-f", "order-service/pom.xml", "test"], "required": true, "timeoutMs": 180000 },
+    { "name": "recommendation-test", "command": "python3", "args": ["-m", "pytest", "-p", "no:cacheprovider", "recommendation-service/tests/"], "required": true, "timeoutMs": 120000 },
+    { "name": "bff-typecheck", "command": "npm", "args": ["--prefix", "bff", "run", "typecheck"], "required": true, "timeoutMs": 120000 },
+    { "name": "bff-test", "command": "npm", "args": ["--prefix", "bff", "test"], "required": true, "timeoutMs": 120000 },
+    { "name": "frontend-typecheck", "command": "npm", "args": ["--prefix", "frontend", "run", "typecheck"], "required": true, "timeoutMs": 120000 },
+    { "name": "frontend-test", "command": "npm", "args": ["--prefix", "frontend", "test"], "required": true, "timeoutMs": 120000 }
+  ],
+  "requiredChecks": [
+    "requirements",
+    "design",
+    "constitution",
+    "trace",
+    "graph",
+    "commands"
+  ],
+  "thresholds": {
+    "design": 1,
+    "implementation": 1,
+    "tests": 1
+  },
+  "architecture": {
+    "forbidCycles": true,
+    "rules": []
+  },
+  "codeGraph": {
+    "mode": "compatible"
+  },
+  "formal": {
+    "solver": "none",
+    "minModeledFraction": 0,
+    "timeoutMs": 12000
+  },
+  "mutation": {
+    "mode": "compatible"
+  },
+  "tdd": {
+    "redPreflightCommands": []
+  },
+  "approval": {
+    "mode": "required"
+  },
+  "workflow": {
+    "mode": "compatible",
+    "maxAgeSeconds": 3600,
+    "maxFutureSkewSeconds": 60
+  },
+  "attestation": {
+    "mode": "local",
+    "maxAgeSeconds": 3600,
+    "maxFutureSkewSeconds": 60,
+    "trustedPublicKeys": [],
+    "githubOidc": {
+      "mode": "off"
+    }
+  }
+}

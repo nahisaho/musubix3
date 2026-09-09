@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-09-09T09:00:04.102Z",
+  "totalRequirements": 6,
+  "modeledRequirements": 2,
+  "modeledFraction": 0.3333333333333333,
+  "result": {
+    "valid": true,
+    "abstraction": "Consistency of explicit branch-scoped conditional, exact unit-normalized integer numeric, bounded temporal interval, deterministic state-transition, and controlled unconditional Boolean constraints; not implementation correctness.",
+    "assumptions": [
+      "Exact normalized subject/response pairs denote the same Boolean proposition.",
+      "Explicit Formal JSON fields use only their documented closed-world constraint semantics.",
+      "Temporal constraints model one nonnegative integer response delay in milliseconds within the intersection of declared afterMs/withinMs intervals, not scheduling or liveness.",
+      "Numeric ms/s/min values share an exact millisecond dimension; bytes/kib/mib values share an exact byte dimension; other and incompatible units remain separate.",
+      "State transitions require one target for each declared from-state/event pair; undeclared transitions are unconstrained.",
+      "Copilot supplies candidate requirements; deterministic checks do not establish their truth."
+    ],
+    "literals": [
+      {
+        "requirement": "REQ-MARKETPLACE-002",
+        "atom": "[\"risk service\",\"classify every submitted order as `approve`,\"]",
+        "positive": true
+      },
+      {
+        "requirement": "REQ-MARKETPLACE-006",
+        "atom": "[\"storefront\",\"render the order decision text returned by the\"]",
+        "positive": true
+      }
+    ],
+    "constraints": [],
+    "unsupported": [
+      "REQ-MARKETPLACE-001",
+      "REQ-MARKETPLACE-003",
+      "REQ-MARKETPLACE-004",
+      "REQ-MARKETPLACE-005"
+    ],
+    "diagnostics": [
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-MARKETPLACE-001 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-MARKETPLACE-003 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-MARKETPLACE-004 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-MARKETPLACE-005 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      }
+    ],
+    "consistency": "consistent",
+    "solver": {
+      "requested": "none",
+      "name": "none",
+      "command": "",
+      "version": "",
+      "status": "not-requested",
+      "durationMs": 0,
+      "output": "Solver execution disabled."
+    }
+  },
+  "fingerprints": {
+    ".musubix/features/ecommerce-marketplace/requirements.md": "c732c5c59209b74b23cc4abde01560d92dfedc8fe05265a098ea36c1629ee859"
+  }
+}
