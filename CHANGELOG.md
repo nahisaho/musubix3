@@ -2,13 +2,18 @@
 
 ## Unreleased
 
+## 0.1.10 - 2026-09-09
+
 - Accept the current GitHub Copilot CLI terminal format in strict workflow
   verification: a unique session UUID followed by exactly one final
   `session.shutdown` with `data.shutdownType: "routine"`. Existing final
   `result` transcripts remain supported; ambiguous, abnormal, mixed, and
   non-final terminal events still fail closed.
+- Fix a test-fixture isolation bug where `project()`'s Copilot CLI
+  invocations could leak this repository's own (unbounded) Git history into
+  `knowledge build` output, truncating structured JSON responses.
 
-## 0.1.9 - 2026-09-10
+## 0.1.9 - 2026-09-09
 
 - Exclude nested MUSUBIX3 workspaces (any descendant directory containing its
   own `.musubix`) from an ancestor repository's file scan, trace, and Code
