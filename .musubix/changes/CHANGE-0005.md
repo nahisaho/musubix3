@@ -44,3 +44,30 @@ a new Red/Green execution for untouched, working tests.
   rejected alternatives and consequences, including this residual.
 - GitHub Issue #1 is updated with the corrected root-cause finding and the
   remaining 5-cycle residual.
+
+## Known evidence gap
+
+This change's own `change-record` phases (`impact`, `requirements`,
+`design`, `red`, `implementation`, `green`, `quality`) were called in a
+single rapid batch after all the requirements/design/Red/Green work above
+was already complete, instead of interleaved with each phase's real edits.
+`gate --changed` therefore reports `CHANGE_REQUIREMENTS_UNCHANGED`,
+`CHANGE_DESIGN_UNCHANGED`, `CHANGE_TESTS_UNCHANGED`,
+`CHANGE_IMPLEMENTATION_UNCHANGED`, `CHANGE_RED_UNPROVEN`, and
+`CHANGE_GREEN_UNPROVEN` for `CHANGE-0005` — correctly, since the
+repo-wide fingerprints compared between adjacent phases are identical
+(nothing changed between the batched calls).
+
+This cannot be retroactively fixed: `.musubix/evidence/order.json` is a
+hash-chained, append-only ledger, so no phase record can be inserted before
+the already-recorded Red/Green cycle's sequence numbers (order 65/66) that
+this change's phases would need to precede. Recomputing new phase records
+now would only ever produce sequence numbers *after* Red/Green, which can
+never satisfy the ordering the validator requires — attempting it would
+require deleting and refabricating chain history, not proving it. The
+underlying requirements, design, ADRs, and TDD Red/Green evidence for
+`REQ-TDD-FINGERPRINT-SCOPING-001`/`REQ-TDD-FINGERPRINT-MIGRATION-001` are
+independently real and verified; only this change's staged-change
+chronology proof is permanently incomplete. The same defect was
+independently found in `CHANGE-0006`, disclosed there rather than
+fabricated, and reported to GitHub Issue #1.
