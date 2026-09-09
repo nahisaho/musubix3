@@ -1,7 +1,9 @@
 import { mkdir, rm } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { afterEach } from 'vitest';
-import { defaultConfig, readText, writeJson, writeText, type Config, type ProcessResult, type Runner } from '../packages/analysis/src/index.js';
+import {
+  defaultConfig, readText, runProcess, writeJson, writeText, type Config, type ProcessResult, type Runner,
+} from '../packages/analysis/src/index.js';
 import { install } from '../packages/cli/src/install.js';
 
 export const repository = resolve('.');
@@ -36,6 +38,10 @@ export function testReadiness() { if (!readiness()) throw new Error('not ready')
 
 export async function project(): Promise<string> {
   const root = await fixture();
+  // Isolate real `git` invocations from this repository's own history: without its
+  // own .git, this fixture would let `git` walk up to the enclosing musubix3
+  // checkout, leaking its (unbounded, growing) history into CLI command output.
+  await runProcess('git', ['init', '-q'], { cwd: root, timeoutMs: 10_000 });
   await install(root, repository);
   await writeText(root, 'src/service.ts', code);
   await writeText(root, 'src/service.test.ts', testCode);
