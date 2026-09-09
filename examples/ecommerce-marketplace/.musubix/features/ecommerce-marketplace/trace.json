@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-09T09:00:03.213Z",
+  "generatedAt": "2026-09-09T09:34:58.675Z",
   "nodes": [
     {
       "id": "ADR-0001",
@@ -45,6 +45,12 @@
       "line": 53
     },
     {
+      "id": "DES-MARKETPLACE-007",
+      "kind": "design",
+      "path": ".musubix/features/ecommerce-marketplace/design.md",
+      "line": 63
+    },
+    {
       "id": "REQ-MARKETPLACE-001",
       "kind": "requirement",
       "path": ".musubix/features/ecommerce-marketplace/requirements.md",
@@ -87,6 +93,13 @@
       "mandatory": false
     },
     {
+      "id": "REQ-MARKETPLACE-007",
+      "kind": "requirement",
+      "path": ".musubix/features/ecommerce-marketplace/requirements.md",
+      "line": 63,
+      "mandatory": true
+    },
+    {
       "id": "TEST-MARKETPLACE-005",
       "kind": "test",
       "path": "bff/src/submitOrder.test.ts",
@@ -126,7 +139,19 @@
       "id": "CODE-MARKETPLACE-003",
       "kind": "code",
       "path": "order-service/src/main/java/com/example/order/OrderService.java",
-      "line": 33
+      "line": 44
+    },
+    {
+      "id": "CODE-MARKETPLACE-007",
+      "kind": "code",
+      "path": "order-service/src/main/java/com/example/order/OrderService.java",
+      "line": 64
+    },
+    {
+      "id": "TEST-MARKETPLACE-007",
+      "kind": "test",
+      "path": "order-service/src/test/java/com/example/order/OrderCancellationTest.java",
+      "line": 10
     },
     {
       "id": "TEST-MARKETPLACE-003",
@@ -241,6 +266,26 @@
       "relation": "depends-on"
     },
     {
+      "from": "DES-MARKETPLACE-007",
+      "to": "REQ-MARKETPLACE-007",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0001",
+      "to": "DES-MARKETPLACE-007",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-MARKETPLACE-007",
+      "to": "DES-MARKETPLACE-001",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-MARKETPLACE-007",
+      "to": "DES-MARKETPLACE-003",
+      "relation": "depends-on"
+    },
+    {
       "from": "TEST-MARKETPLACE-005",
       "to": "REQ-MARKETPLACE-005",
       "relation": "verifies"
@@ -296,6 +341,21 @@
       "relation": "implements"
     },
     {
+      "from": "CODE-MARKETPLACE-007",
+      "to": "REQ-MARKETPLACE-007",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-MARKETPLACE-007",
+      "to": "DES-MARKETPLACE-007",
+      "relation": "implements"
+    },
+    {
+      "from": "TEST-MARKETPLACE-007",
+      "to": "REQ-MARKETPLACE-007",
+      "relation": "verifies"
+    },
+    {
       "from": "TEST-MARKETPLACE-003",
       "to": "REQ-MARKETPLACE-003",
       "relation": "verifies"
@@ -334,8 +394,8 @@
   "diagnostics": [],
   "fingerprints": {
     ".musubix/decisions/ADR-0001.md": "7f19871d4c7edf5b280e1a0f57a73c509dc564b153de356bbc55c4f9a080af4b",
-    ".musubix/features/ecommerce-marketplace/design.md": "a675cfaf99101c572a669a41cab0d82088471976befb829719406d9b700a50f5",
-    ".musubix/features/ecommerce-marketplace/requirements.md": "c732c5c59209b74b23cc4abde01560d92dfedc8fe05265a098ea36c1629ee859",
+    ".musubix/features/ecommerce-marketplace/design.md": "c07bb001907584d230bde5cd4de3319ab77fc9ab8daf8bfcc24849179927cf18",
+    ".musubix/features/ecommerce-marketplace/requirements.md": "79d83dde34a7bbae7dea8eeb2fd72b7c1129de3636298532eb435c17949d020e",
     "bff/src/server.ts": "78af65373224172500c0a64040967f471b1b603fd3ed24c3484d5fc65ec94b7d",
     "bff/src/submitOrder.test.ts": "66d150a9bc0efbabc4b452ef514a27888aff8be906b50139cf8acda6ac484398",
     "bff/src/submitOrder.ts": "28541c1979c220158e394864f09d8e76418c34ae4fb76ce2ce6cf4892d4c5750",
@@ -347,7 +407,8 @@
     "inventory-service/inventory/inventory_test.go": "a540d71eb7c307a63aeb38c69df91950056a17e0add1495c9b126ceab8935754",
     "inventory-service/inventory/inventory.go": "70c3089fb61b592e0c4d1cb6dacc4217fbdeddc1ed5a20c3faf49db11361778b",
     "inventory-service/main.go": "96fa31945542718a3337497bc3c37c8c2e61df32ccd4e0214bc742af16095a1d",
-    "order-service/src/main/java/com/example/order/OrderService.java": "7e5a906c50de8a1175609a9e2ecd338632e079d6d0d36b984e5d0fb181ee8a2e",
+    "order-service/src/main/java/com/example/order/OrderService.java": "589b9d0bf984aa16a0e4135caf55b35e36ea26f18a442fbcd006e7b55ea21cd4",
+    "order-service/src/test/java/com/example/order/OrderCancellationTest.java": "06a017d60ff66df3757a8d1d72cb329a3166251d0984455e52461ea13b58e9d2",
     "order-service/src/test/java/com/example/order/OrderServiceTest.java": "0d3f58341d57674b608740fdac21a8828234fa5e14df25ff7444ba67692b2858",
     "recommendation-service/main.py": "2d32a09ac252730a0fcbcfeb48b367d40afbe3e2e59b762d6c9ee05633a94ed1",
     "recommendation-service/recommendations.py": "9d9d2408b348225e129845f3c280280d9ffb08e00f54964e0842ce8bc6e023c9",

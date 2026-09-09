@@ -3,9 +3,9 @@
   "stage": "requirements",
   "artifacts": {
     ".musubix/constitution.md": "f8b47fdc486f395bab05223a94821b145cf8df70ffde2c838a28f8d71fe0fa92",
-    ".musubix/features/ecommerce-marketplace/requirements.md": "c732c5c59209b74b23cc4abde01560d92dfedc8fe05265a098ea36c1629ee859"
+    ".musubix/features/ecommerce-marketplace/requirements.md": "79d83dde34a7bbae7dea8eeb2fd72b7c1129de3636298532eb435c17949d020e"
   },
-  "artifactSha256": "efcc5ab118165eee6900f5846d42679df27f64425944b19ee9912866ad2feee0",
+  "artifactSha256": "8b55922c87339b1969ff84473ac79d3a9e58355b8e3241dbe1eb57d325df94f1",
   "approver": "nahisaho",
-  "approvedAt": "2026-09-09T08:44:51.982Z"
+  "approvedAt": "2026-09-09T09:33:10.393Z"
 }

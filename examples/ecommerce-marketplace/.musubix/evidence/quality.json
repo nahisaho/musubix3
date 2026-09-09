@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-09T09:00:13.133Z",
+  "generatedAt": "2026-09-09T09:35:08.399Z",
   "status": "pass",
   "checks": [
     {
@@ -49,7 +49,7 @@
       "name": "formal",
       "required": false,
       "status": "pass",
-      "summary": "2/6 requirements modeled; consistency consistent; solver not-requested.",
+      "summary": "2/7 requirements modeled; consistency consistent; solver not-requested.",
       "diagnostics": [
         {
           "code": "FORMAL_UNSUPPORTED",
@@ -70,6 +70,11 @@
           "code": "FORMAL_UNSUPPORTED",
           "severity": "warning",
           "message": "REQ-MARKETPLACE-005 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+        },
+        {
+          "code": "FORMAL_UNSUPPORTED",
+          "severity": "warning",
+          "message": "REQ-MARKETPLACE-007 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
         }
       ],
       "durationMs": 0
@@ -107,7 +112,7 @@
       "required": true,
       "status": "pass",
       "summary": "go: completed, exit 0.",
-      "durationMs": 261,
+      "durationMs": 273,
       "exitCode": 0,
       "stdout": "?   \tinventory-service\t[no test files]\nok  \tinventory-service/inventory\t(cached)\n",
       "stderr": ""
@@ -117,7 +122,7 @@
       "required": true,
       "status": "pass",
       "summary": "cargo: completed, exit 0.",
-      "durationMs": 125,
+      "durationMs": 130,
       "exitCode": 0,
       "stdout": "\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 1 test\ntest tests::test_marketplace_002_classifies_risk_by_amount_and_history ... ok\n\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n",
       "stderr": "    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.01s\n     Running unittests src/lib.rs (risk-service/target/debug/deps/risk_service-e00a9aa43f75a154)\n     Running unittests src/main.rs (risk-service/target/debug/deps/risk_service-8aaf8ca86b153d8c)\n     Running tests/risk_test.rs (risk-service/target/debug/deps/risk_test-95bafe8289616b7d)\n   Doc-tests risk_service\n"
@@ -127,7 +132,7 @@
       "required": true,
       "status": "pass",
       "summary": "mvn: completed, exit 0.",
-      "durationMs": 2476,
+      "durationMs": 2401,
       "exitCode": 0,
       "stdout": "",
       "stderr": ""
@@ -137,7 +142,7 @@
       "required": true,
       "status": "pass",
       "summary": "python3: completed, exit 0.",
-      "durationMs": 2279,
+      "durationMs": 2262,
       "exitCode": 0,
       "stdout": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-8.4.2, pluggy-1.6.0\nrootdir: /home/nahisaho/GitHub/musubix3/examples/ecommerce-marketplace\nplugins: json-report-1.5.0, fast-array-utils-1.3.1, cov-7.1.0, Faker-40.8.0, typeguard-4.5.2, jaxtyping-0.3.9, metadata-3.1.1, devtools-0.12.2, anyio-4.12.1, zarr-3.1.5\ncollected 1 item\n\nrecommendation-service/tests/test_recommendations.py .                   [100%]\n\n============================== 1 passed in 0.03s ===============================\n",
       "stderr": ""
@@ -147,7 +152,7 @@
       "required": true,
       "status": "pass",
       "summary": "npm: completed, exit 0.",
-      "durationMs": 858,
+      "durationMs": 803,
       "exitCode": 0,
       "stdout": "\n> bff@0.1.0 typecheck\n> tsc --noEmit\n\n",
       "stderr": ""
@@ -157,9 +162,9 @@
       "required": true,
       "status": "pass",
       "summary": "npm: completed, exit 0.",
-      "durationMs": 1004,
+      "durationMs": 892,
       "exitCode": 0,
-      "stdout": "\n> bff@0.1.0 test\n> vitest run\n\n\n RUN  v3.2.7 /home/nahisaho/GitHub/musubix3/examples/ecommerce-marketplace/bff\n\n ✓ src/submitOrder.test.ts (2 tests) 3ms\n\n Test Files  1 passed (1)\n      Tests  2 passed (2)\n   Start at  18:00:10\n   Duration  554ms (transform 57ms, setup 0ms, collect 46ms, tests 3ms, environment 0ms, prepare 96ms)\n\n",
+      "stdout": "\n> bff@0.1.0 test\n> vitest run\n\n\n RUN  v3.2.7 /home/nahisaho/GitHub/musubix3/examples/ecommerce-marketplace/bff\n\n ✓ src/submitOrder.test.ts (2 tests) 2ms\n\n Test Files  1 passed (1)\n      Tests  2 passed (2)\n   Start at  18:35:05\n   Duration  502ms (transform 42ms, setup 0ms, collect 26ms, tests 2ms, environment 0ms, prepare 133ms)\n\n",
       "stderr": ""
     },
     {
@@ -167,7 +172,7 @@
       "required": true,
       "status": "pass",
       "summary": "npm: completed, exit 0.",
-      "durationMs": 912,
+      "durationMs": 926,
       "exitCode": 0,
       "stdout": "\n> frontend@0.1.0 typecheck\n> tsc --noEmit\n\n",
       "stderr": ""
@@ -177,9 +182,9 @@
       "required": true,
       "status": "pass",
       "summary": "npm: completed, exit 0.",
-      "durationMs": 961,
+      "durationMs": 913,
       "exitCode": 0,
-      "stdout": "\n> frontend@0.1.0 test\n> vitest run\n\n\n RUN  v3.2.7 /home/nahisaho/GitHub/musubix3/examples/ecommerce-marketplace/frontend\n\n ✓ src/renderOrderSummary.test.ts (1 test) 1ms\n\n Test Files  1 passed (1)\n      Tests  1 passed (1)\n   Start at  18:00:12\n   Duration  543ms (transform 49ms, setup 0ms, collect 27ms, tests 1ms, environment 0ms, prepare 101ms)\n\n",
+      "stdout": "\n> frontend@0.1.0 test\n> vitest run\n\n\n RUN  v3.2.7 /home/nahisaho/GitHub/musubix3/examples/ecommerce-marketplace/frontend\n\n ✓ src/renderOrderSummary.test.ts (1 test) 2ms\n\n Test Files  1 passed (1)\n      Tests  1 passed (1)\n   Start at  18:35:07\n   Duration  496ms (transform 44ms, setup 0ms, collect 33ms, tests 2ms, environment 0ms, prepare 106ms)\n\n",
       "stderr": ""
     },
     {
@@ -202,6 +207,11 @@
           "code": "TEST_ID_NOT_PASSED",
           "severity": "error",
           "message": "TEST-MARKETPLACE-001 was linked in source but not reported as passed by a successful structured test command."
+        },
+        {
+          "code": "TEST_ID_NOT_PASSED",
+          "severity": "error",
+          "message": "TEST-MARKETPLACE-007 was linked in source but not reported as passed by a successful structured test command."
         },
         {
           "code": "TEST_ID_NOT_PASSED",
@@ -287,10 +297,10 @@
     "trace.errors": 0,
     "graph.violations": 0,
     "formal.errors": 0,
-    "formal.modeledFraction": 0.3333333333333333,
+    "formal.modeledFraction": 0.2857142857142857,
     "commands.failures": 0,
     "commands.skipped": 0,
-    "tests.annotatedIds": 6,
+    "tests.annotatedIds": 7,
     "tests.executedIds": 0,
     "tdd.cycles": 0,
     "tdd.errors": 0,
@@ -300,7 +310,7 @@
     "changes.completenessErrors": 0,
     "performance.budgets": 0,
     "performance.errors": 0,
-    "mutation.requirements": 4,
+    "mutation.requirements": 5,
     "mutation.coveredRequirements": 0,
     "mutation.mutants": 0,
     "mutation.errors": 0,
@@ -319,12 +329,12 @@
   "lastChangeAnalysis": null,
   "fingerprints": {
     ".github/workflows/ci.yml": "b61bdfeff6234cc5d7524e39ceab69b7f4d928d34c0243893ff1d637f6616ff2",
-    ".gitignore": "f2141ec5930372ab25c0cc219393d6a4b9a5a99269b5b04837f459c56efd2c4d",
+    ".gitignore": "abffb8060f510df3c437ff0a3b6c7376605dc067269599658ded54752a23b92a",
     ".musubix/config.json": "3dd9ad1f083ff8f843c6215ab88cfa9f617897f255a999ebe500e9abc4f476d7",
     ".musubix/constitution.md": "f8b47fdc486f395bab05223a94821b145cf8df70ffde2c838a28f8d71fe0fa92",
     ".musubix/decisions/ADR-0001.md": "7f19871d4c7edf5b280e1a0f57a73c509dc564b153de356bbc55c4f9a080af4b",
-    ".musubix/features/ecommerce-marketplace/design.md": "a675cfaf99101c572a669a41cab0d82088471976befb829719406d9b700a50f5",
-    ".musubix/features/ecommerce-marketplace/requirements.md": "c732c5c59209b74b23cc4abde01560d92dfedc8fe05265a098ea36c1629ee859",
+    ".musubix/features/ecommerce-marketplace/design.md": "c07bb001907584d230bde5cd4de3319ab77fc9ab8daf8bfcc24849179927cf18",
+    ".musubix/features/ecommerce-marketplace/requirements.md": "79d83dde34a7bbae7dea8eeb2fd72b7c1129de3636298532eb435c17949d020e",
     ".musubix/policy-baseline.json": "ee0893b12f316ed75feb791bb987de9cec0af2f86c4d80a30384bced352a4e8c",
     "bff/package-lock.json": "29c1c66d80670c5736dee87d6629389b65f335511a76359ca0926b3377f3b9c0",
     "bff/package.json": "d38f22875050694ca733a4b17324f5025c2286ebce0c2c9c550e36321066b62e",
@@ -347,7 +357,8 @@
     "inventory-service/main.go": "96fa31945542718a3337497bc3c37c8c2e61df32ccd4e0214bc742af16095a1d",
     "observability/otel-collector-config.yaml": "23eac774b92f551bc95001c2f8c4f668185134b6e210e36b2c8b179b8e5aaeaa",
     "order-service/pom.xml": "fb1a7d1a0b9dc5053825a7217d886f27eb54a3adf73a9173a43f4ed0c02b5eb2",
-    "order-service/src/main/java/com/example/order/OrderService.java": "7e5a906c50de8a1175609a9e2ecd338632e079d6d0d36b984e5d0fb181ee8a2e",
+    "order-service/src/main/java/com/example/order/OrderService.java": "589b9d0bf984aa16a0e4135caf55b35e36ea26f18a442fbcd006e7b55ea21cd4",
+    "order-service/src/test/java/com/example/order/OrderCancellationTest.java": "06a017d60ff66df3757a8d1d72cb329a3166251d0984455e52461ea13b58e9d2",
     "order-service/src/test/java/com/example/order/OrderServiceTest.java": "0d3f58341d57674b608740fdac21a8828234fa5e14df25ff7444ba67692b2858",
     "recommendation-service/main.py": "2d32a09ac252730a0fcbcfeb48b367d40afbe3e2e59b762d6c9ee05633a94ed1",
     "recommendation-service/recommendations.py": "9d9d2408b348225e129845f3c280280d9ffb08e00f54964e0842ce8bc6e023c9",

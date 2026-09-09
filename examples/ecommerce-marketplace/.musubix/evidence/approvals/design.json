@@ -4,10 +4,10 @@
   "artifacts": {
     ".musubix/constitution.md": "f8b47fdc486f395bab05223a94821b145cf8df70ffde2c838a28f8d71fe0fa92",
     ".musubix/decisions/ADR-0001.md": "7f19871d4c7edf5b280e1a0f57a73c509dc564b153de356bbc55c4f9a080af4b",
-    ".musubix/features/ecommerce-marketplace/design.md": "a675cfaf99101c572a669a41cab0d82088471976befb829719406d9b700a50f5",
-    ".musubix/features/ecommerce-marketplace/requirements.md": "c732c5c59209b74b23cc4abde01560d92dfedc8fe05265a098ea36c1629ee859"
+    ".musubix/features/ecommerce-marketplace/design.md": "c07bb001907584d230bde5cd4de3319ab77fc9ab8daf8bfcc24849179927cf18",
+    ".musubix/features/ecommerce-marketplace/requirements.md": "79d83dde34a7bbae7dea8eeb2fd72b7c1129de3636298532eb435c17949d020e"
   },
-  "artifactSha256": "6076a696090680e58372273f50bbec02d7f6548f2c3bc2e4f05e4114df6c78f4",
+  "artifactSha256": "a1e3c7abfc5c1f8949193441dc92e8b9fdcea96d8b31366c2087a67a67beb455",
   "approver": "nahisaho",
-  "approvedAt": "2026-09-09T08:45:05.181Z"
+  "approvedAt": "2026-09-09T09:33:20.319Z"
 }

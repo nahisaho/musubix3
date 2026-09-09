@@ -59,3 +59,14 @@ Statement: The storefront shall render the order decision text returned by the
 BFF response without modification.
 Acceptance: A test renders the summary function with an "accepted" decision and
 asserts the exact decision text appears in the rendered output.
+
+## REQ-MARKETPLACE-007: Cancel an accepted order and release its reservation
+Priority: must
+Type: functional
+Pattern: event-driven
+Statement: When a cancellation request is submitted for an accepted order, the order service shall release the reserved inventory quantity for that order's SKU and mark the order as cancelled.
+Acceptance: A test cancels a previously accepted order and asserts the order's
+decision becomes "cancelled" and the inventory release call is made exactly
+once with the original SKU and quantity; a test cancels an order that was
+never accepted and asserts the cancellation is rejected with no inventory
+release call.

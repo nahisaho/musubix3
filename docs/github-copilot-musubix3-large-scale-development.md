@@ -53,8 +53,9 @@ MUSUBIX3は、この「会話の外側に証拠を残す」という一点を補
 - `trace check --strict`: 25ノード、34エッジ、診断0件（要求→設計→実装→テストの全リンクが解決）
 - 品質ゲート登録コマンド: 8本（テスト実行6本＋TypeScript typecheck 2本）すべて成功、テストケースは計8件（Go 1件、Rust 1件、Java 2件、Python 1件、TypeScript 3件）
 - 品質ゲート: **リリース承認前は`FAIL`**（3段階中2段階のみ承認済み）、リリース承認を記録した後は`PASS`、`ready=true`
+- 追加要件（6.7節）: `ready=true`後に注文キャンセル機能（`REQ-MARKETPLACE-007`）を追加。要求追加だけで`design validate`が拒否され、要求・設計を再承認した後も**リリース承認が古いままゲートが再びFAIL**。全承認を更新して`PASS`に復帰（テストは`order-service`で5件、全体で計11件）
 
-つまり、この記事はうまくいった話だけでなく、**ゲートが実際に止めた場面**を含みます。
+つまり、この記事はうまくいった話だけでなく、**ゲートが実際に止めた場面**を、初回実装時と機能追加時の両方で含みます。
 
 ---
 
@@ -147,6 +148,15 @@ MUSUBIX3を使うと、「Copilotとの会話で完了したと感じた」状�
 ## 4.3 変更管理（sdd-change）による大規模開発への適用
 
 `sdd-change` Skillは、新しい自然言語の開発依頼を、たとえ同じCopilotセッション内であっても新しい変更として扱い、前の要求・承認・TDD証拠を暗黙に引き継がせません。本記事の実験自体も、このリポジトリの既存の変更記録（`CHANGE-0003`、要求・設計承認済み・in-progress）を、ユーザーの明示的な指示のもとで継続する形で実施しました。大規模開発では、この「継続するか、新規に始めるか」を毎回明示させる仕組みが、承認の取り違えを防ぎます。
+
+さらに本記事では、いったん`ready=true`まで到達した後に**新しい機能要件（注文キャンセル/在庫戻し）を追加する**という、大規模開発で最も頻繁に起きるシナリオも実際に試しました。結果は次の通りです（詳細は6.7節）。
+
+- 既存要求`REQ-MARKETPLACE-003`（注文オーケストレーション）に対する`trace impact`は、下流の設計・テスト（`DES-MARKETPLACE-003`経由で`TEST-MARKETPLACE-004`〜`006`まで）の広い影響範囲を機械的に提示した
+- 要求ファイルに1件追加しただけで、**設計の`design validate`が「requirements承認が古い」として実行を拒否**した
+- 要求→設計の順で再承認した後も、**`gate`はリリース承認が古いままFAILし続けた**。8つの実コマンドがすべて成功していても、である
+- リリース承認を再記録した後にのみ`gate`は`PASS`に戻った
+
+つまり、「1つの要求を足しただけ」でも、承認は自動的には引き継がれず、影響範囲の広さに応じて再承認を強制されました。これは、大規模開発で暗黙のうちに承認が使い回される問題への、MUSUBIX3の直接的な回答です。
 
 ---
 
@@ -307,6 +317,66 @@ pass    commands [required]: 8 configured command(s) executed; optional failures
 - `gate`はコマンドの成否だけでなく承認の状態も見るため、「テストは全部通っているのに全体はFAIL」という直感に反する結果が起こりうる。これは欠陥ではなく、意図された fail-closed 設計である
 - 生成物のキャッシュディレクトリ（`.pytest_cache`など）がリポジトリ内にできると、`gate`実行中に入力が変化したとみなされ`input-stability`チェックが失敗する。除外設定にないキャッシュは、コマンド引数側で無効化する（例: `pytest -p no:cacheprovider`）か`.gitignore`で管理する必要がある
 
+## 6.7 追加要件の開発：`ready=true`後に機能を1件追加する
+
+6.4節で`gate`が`PASS`・`ready=true`に到達した後、大規模開発で最も頻繁に起きる作業――**既存システムへの機能追加**――を実際に行いました。追加したのは「受理済み注文のキャンセルと在庫戻し」（`REQ-MARKETPLACE-007`）です。
+
+**影響分析（変更前）**
+
+注文オーケストレーションを担う`REQ-MARKETPLACE-003`に対して`trace impact`を実行し、変更が波及する範囲を先に確認しました。
+
+```
+$ npx musubix3 trace impact REQ-MARKETPLACE-003
+```
+
+結果は、`DES-MARKETPLACE-003`を経由して`TEST-MARKETPLACE-004`〜`006`まで到達する複数の伝播経路を示しました。`order-service`を変更すると、直接のテストだけでなく、依存する下流の設計・テストにも影響しうることが、実装に着手する前に機械的にわかりました。
+
+**要求・設計の追加**
+
+```text
+REQ-MARKETPLACE-007: 受理済み注文のキャンセル（在庫を解放し、注文をcancelled扱いにする。未受理の注文へのキャンセルは拒否する）
+```
+
+`requirements validate`はPASSしましたが、続けて`design validate`を実行すると次のエラーで**実行そのものが拒否されました**。
+
+```
+musubix3: requirements approval is stale; record explicit current approval before continuing.
+```
+
+要求ファイルを1件追記しただけで、既存の要求承認ハッシュと現在の内容が一致しなくなったためです。`approval prepare/record requirements`で再承認して初めて、`design validate`が実行可能になりました。設計に`DES-MARKETPLACE-007`を追加した後も、同様に`approval prepare/record design`で再承認しました。
+
+**実装とテスト（実測）**
+
+`order-service`（Java）に`cancelOrder(orderId)`を追加し、`@id CODE-MARKETPLACE-007` / `@implements REQ-MARKETPLACE-007` / `@design DES-MARKETPLACE-007`の注釈を付けました。テストは新規クラス`OrderCancellationTest`に3件（受理済み注文のキャンセル成功、未受理注文へのキャンセル拒否、同一注文への二重キャンセル拒否）追加し、`mvn test`で**order-service計5件（既存2件＋新規3件）すべて成功**を確認しました。
+
+```
+$ npx musubix3 graph index
+Graph: 20 files, 38 imports, 75 symbols.
+
+$ npx musubix3 trace build
+Trace: 29 nodes, 41 edges, 0 diagnostics.
+
+$ npx musubix3 trace check --strict
+PASS / 合格
+```
+
+**ゲート：再承認前は再びFAIL**
+
+要求・設計の変更後、`gate`を再実行すると、8つの実コマンドがすべて成功していても、次の理由で**再びFAIL**しました。
+
+```
+FAIL
+...
+pass    command:inventory-test ... command:frontend-test [required]: すべてexit 0
+fail    approval [required]: 2/3 approval stage(s) are current.
+```
+
+要求・設計は再承認済みでしたが、**リリース承認だけがまだ古いまま**だったためです。`approval prepare/record release`を実行して再承認した後に`gate`を実行すると、`PASS`・`status --json`で`ready: true`に戻りました。
+
+**この節から言えること**
+
+1件の要求追加であっても、承認は自動的に引き継がれません。影響分析→要求→設計→実装→トレース→承認→ゲートという順序を、追加のたびに機械的に強制される――これが、大規模・長期保守のプロジェクトでMUSUBIX3が実際に果たす役割です。
+
 ---
 
 # 7. インストールから自然言語開発までの手順
@@ -367,7 +437,7 @@ Copilotへの依頼はこの一言から始まります。
 
 GitHub Copilotは実装のエンジンとして強力ですが、「完了」をチームの資産として残すには、要求・設計・トレース・品質ゲート・人間承認という、機械的に検証可能な証拠が別途必要です。MUSUBIX3はこの証拠を、Copilotの会話とは独立にリポジトリへ永続化し、fail-closedに検査します。
 
-本記事では、Go/Rust/Java/Python/TypeScriptにまたがる実際のECマーケットプレイスの一部を開発し、要求6件・設計6コンポーネント・8件のテストケースすべて成功、`trace check --strict`診断0件という結果とともに、**リリース承認前はゲートが実際にFAILした**という、うまくいかなかった実例も含めて報告しました。この「止められる」という性質こそが、大規模・多言語・長期保守を前提とするAI Coding開発にMUSUBIX3が提供する価値だと考えます。
+本記事では、Go/Rust/Java/Python/TypeScriptにまたがる実際のECマーケットプレイスの一部を開発し、要求6件・設計6コンポーネント・計8件のテストケースすべて成功、`trace check --strict`診断0件という結果とともに、**リリース承認前はゲートが実際にFAILした**という、うまくいかなかった実例も含めて報告しました。さらに、`ready=true`到達後に注文キャンセル機能を1件追加した際にも、要求追加だけで`design validate`が拒否され、要求・設計の再承認後もリリース承認が古いままゲートが再びFAILする様子（6.7節）を確認しました。この「止められる」という性質こそが、大規模・多言語・長期保守を前提とするAI Coding開発にMUSUBIX3が提供する価値だと考えます。
 
 すべてのSkill・ゲートを一度に導入する必要はありません。まずは既存プロジェクトの小さな変更1件に要求ID・テストIDを付け、`npx musubix3 requirements validate`と`npx musubix3 trace check`だけを実行してみることから始められます。
 

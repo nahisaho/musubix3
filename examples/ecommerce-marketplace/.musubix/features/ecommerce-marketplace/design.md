@@ -59,3 +59,15 @@ rendering function itself.
 Requirements: REQ-MARKETPLACE-006
 ADRs: ADR-0001
 Depends-On: DES-MARKETPLACE-005
+
+## DES-MARKETPLACE-007: Order cancellation and reservation release
+Responsibilities: Accept a cancellation request for a previously accepted
+order, release its reserved inventory quantity, and mark the order as
+cancelled; reject cancellation attempts for orders that were never accepted.
+Interfaces: `OrderService.cancelOrder(OrderId)`; HTTP `POST /orders/{id}/cancel`.
+Constraints: Must call inventory release exactly once per successful
+cancellation and must not call it when the order was not previously accepted;
+language is Java.
+Requirements: REQ-MARKETPLACE-007
+ADRs: ADR-0001
+Depends-On: DES-MARKETPLACE-001, DES-MARKETPLACE-003

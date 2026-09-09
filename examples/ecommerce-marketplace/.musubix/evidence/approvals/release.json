@@ -11,12 +11,12 @@
     ".github/skills/sdd-requirements/SKILL.md": "c2da273b796fbc7d32bbd9162816fab001dca7e6add23b15c1d92e03c4268eff",
     ".github/skills/sdd-traceability/SKILL.md": "ec1321579a91a9b6bc71e67c67e6d172b93aba652b7d6d8c2fc4c23b3e9987af",
     ".github/workflows/ci.yml": "b61bdfeff6234cc5d7524e39ceab69b7f4d928d34c0243893ff1d637f6616ff2",
-    ".gitignore": "f2141ec5930372ab25c0cc219393d6a4b9a5a99269b5b04837f459c56efd2c4d",
+    ".gitignore": "abffb8060f510df3c437ff0a3b6c7376605dc067269599658ded54752a23b92a",
     ".musubix/config.json": "3dd9ad1f083ff8f843c6215ab88cfa9f617897f255a999ebe500e9abc4f476d7",
     ".musubix/constitution.md": "f8b47fdc486f395bab05223a94821b145cf8df70ffde2c838a28f8d71fe0fa92",
     ".musubix/decisions/ADR-0001.md": "7f19871d4c7edf5b280e1a0f57a73c509dc564b153de356bbc55c4f9a080af4b",
-    ".musubix/features/ecommerce-marketplace/design.md": "a675cfaf99101c572a669a41cab0d82088471976befb829719406d9b700a50f5",
-    ".musubix/features/ecommerce-marketplace/requirements.md": "c732c5c59209b74b23cc4abde01560d92dfedc8fe05265a098ea36c1629ee859",
+    ".musubix/features/ecommerce-marketplace/design.md": "c07bb001907584d230bde5cd4de3319ab77fc9ab8daf8bfcc24849179927cf18",
+    ".musubix/features/ecommerce-marketplace/requirements.md": "79d83dde34a7bbae7dea8eeb2fd72b7c1129de3636298532eb435c17949d020e",
     ".musubix/policy-baseline.json": "ee0893b12f316ed75feb791bb987de9cec0af2f86c4d80a30384bced352a4e8c",
     "bff/package-lock.json": "29c1c66d80670c5736dee87d6629389b65f335511a76359ca0926b3377f3b9c0",
     "bff/package.json": "d38f22875050694ca733a4b17324f5025c2286ebce0c2c9c550e36321066b62e",
@@ -39,7 +39,8 @@
     "inventory-service/main.go": "96fa31945542718a3337497bc3c37c8c2e61df32ccd4e0214bc742af16095a1d",
     "observability/otel-collector-config.yaml": "23eac774b92f551bc95001c2f8c4f668185134b6e210e36b2c8b179b8e5aaeaa",
     "order-service/pom.xml": "fb1a7d1a0b9dc5053825a7217d886f27eb54a3adf73a9173a43f4ed0c02b5eb2",
-    "order-service/src/main/java/com/example/order/OrderService.java": "7e5a906c50de8a1175609a9e2ecd338632e079d6d0d36b984e5d0fb181ee8a2e",
+    "order-service/src/main/java/com/example/order/OrderService.java": "589b9d0bf984aa16a0e4135caf55b35e36ea26f18a442fbcd006e7b55ea21cd4",
+    "order-service/src/test/java/com/example/order/OrderCancellationTest.java": "06a017d60ff66df3757a8d1d72cb329a3166251d0984455e52461ea13b58e9d2",
     "order-service/src/test/java/com/example/order/OrderServiceTest.java": "0d3f58341d57674b608740fdac21a8828234fa5e14df25ff7444ba67692b2858",
     "recommendation-service/main.py": "2d32a09ac252730a0fcbcfeb48b367d40afbe3e2e59b762d6c9ee05633a94ed1",
     "recommendation-service/recommendations.py": "9d9d2408b348225e129845f3c280280d9ffb08e00f54964e0842ce8bc6e023c9",
@@ -51,7 +52,7 @@
     "risk-service/tests/risk_test.rs": "861df0c5084b387c1518811073a3ce8ad0e0e41967c55e44325ec5122355c245",
     "security/semgrep.yml": "65dc299987e3ffb3fc5f731cc7c348cad6a6d34efeac12532769d2c93ce8199f"
   },
-  "artifactSha256": "af145987ee9bad26b42e26ed22e529828c5b1f734cf1e3f6620fa3a4ae6a9edb",
+  "artifactSha256": "b85bf517782cb8040f11906cd097da6c676c6cc81494889e334474011a57b540",
   "approver": "nahisaho",
-  "approvedAt": "2026-09-09T08:53:38.691Z"
+  "approvedAt": "2026-09-09T09:34:53.638Z"
 }

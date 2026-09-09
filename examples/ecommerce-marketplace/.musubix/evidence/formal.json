@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-09T09:00:04.102Z",
-  "totalRequirements": 6,
+  "generatedAt": "2026-09-09T09:34:59.649Z",
+  "totalRequirements": 7,
   "modeledRequirements": 2,
-  "modeledFraction": 0.3333333333333333,
+  "modeledFraction": 0.2857142857142857,
   "result": {
     "valid": true,
     "abstraction": "Consistency of explicit branch-scoped conditional, exact unit-normalized integer numeric, bounded temporal interval, deterministic state-transition, and controlled unconditional Boolean constraints; not implementation correctness.",
@@ -32,7 +32,8 @@
       "REQ-MARKETPLACE-001",
       "REQ-MARKETPLACE-003",
       "REQ-MARKETPLACE-004",
-      "REQ-MARKETPLACE-005"
+      "REQ-MARKETPLACE-005",
+      "REQ-MARKETPLACE-007"
     ],
     "diagnostics": [
       {
@@ -54,6 +55,11 @@
         "code": "FORMAL_UNSUPPORTED",
         "severity": "warning",
         "message": "REQ-MARKETPLACE-005 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-MARKETPLACE-007 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
       }
     ],
     "consistency": "consistent",
@@ -68,6 +74,6 @@
     }
   },
   "fingerprints": {
-    ".musubix/features/ecommerce-marketplace/requirements.md": "c732c5c59209b74b23cc4abde01560d92dfedc8fe05265a098ea36c1629ee859"
+    ".musubix/features/ecommerce-marketplace/requirements.md": "79d83dde34a7bbae7dea8eeb2fd72b7c1129de3636298532eb435c17949d020e"
   }
 }
