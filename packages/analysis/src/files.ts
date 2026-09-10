@@ -160,7 +160,30 @@ export function evidenceInputPaths(paths: string[]): string[] {
     && !/(?:^|\/)(?:logs?|session-logs)\//.test(path));
 }
 
+// Fixed pool size chosen to stay comfortably under common OS file-descriptor
+// limits (commonly 1024 on Linux/WSL) even on projects with large,
+// unexcluded vendored source trees (ADR-0018).
+export const FILE_READ_CONCURRENCY = 256;
+
+/** @id CODE-BOUNDED-FILE-READ-CONCURRENCY-001
+ * @implements REQ-BOUNDED-FILE-READ-CONCURRENCY-001 REQ-BOUNDED-FILE-READ-CONCURRENCY-002
+ * @design DES-BOUNDED-FILE-READ-CONCURRENCY-001
+ */
+export async function mapWithConcurrency<T, R>(items: T[], limit: number, worker: (item: T, index: number) => Promise<R>): Promise<R[]> {
+  const results: R[] = new Array(items.length);
+  let cursor = 0;
+  async function run(): Promise<void> {
+    while (cursor < items.length) {
+      const index = cursor;
+      cursor += 1;
+      results[index] = await worker(items[index]!, index);
+    }
+  }
+  await Promise.all(Array.from({ length: Math.min(limit, items.length) }, run));
+  return results;
+}
+
 export async function snapshot(root: string, paths: string[]): Promise<Record<string, string>> {
-  const entries = await Promise.all(paths.map(async (path) => [path, digest(await readFile(await safePath(root, path)))] as const));
+  const entries = await mapWithConcurrency(paths, FILE_READ_CONCURRENCY, async (path) => [path, digest(await readFile(await safePath(root, path)))] as const);
   return Object.fromEntries(entries);
 }

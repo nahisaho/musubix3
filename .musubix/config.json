@@ -223,6 +223,18 @@
       "timeoutMs": 120000
     },
     {
+      "name": "bounded-file-read-concurrency-tests",
+      "command": "npx",
+      "args": [
+        "vitest",
+        "run",
+        "tests/bounded-file-read-concurrency.test.ts"
+      ],
+      "adapter": "vitest",
+      "required": true,
+      "timeoutMs": 120000
+    },
+    {
       "name": "model-correspondence-evidence-guidance-tests",
       "command": "npx",
       "args": [

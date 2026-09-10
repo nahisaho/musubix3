@@ -2,7 +2,7 @@ import ts from 'typescript';
 import { dirname, isAbsolute, posix, relative, resolve } from 'node:path';
 import { error, type Diagnostic } from '../../domain/src/index.js';
 import type { Config } from './config.js';
-import { files, isSource, isTraceSource, portable, readText, snapshot, writeJson } from './files.js';
+import { FILE_READ_CONCURRENCY, files, isSource, isTraceSource, mapWithConcurrency, portable, readText, snapshot, writeJson } from './files.js';
 
 export interface ImportEdge {
   from: string;
@@ -39,6 +39,10 @@ export async function graphInputs(root: string): Promise<string[]> {
   return (await files(root)).filter((p) => isTraceSource(p) || /(?:^|\/)(?:tsconfig[^/]*\.json|package\.json|go\.mod|pubspec\.yaml)$/.test(p));
 }
 
+/** @id CODE-BOUNDED-FILE-READ-CONCURRENCY-002
+ * @implements REQ-BOUNDED-FILE-READ-CONCURRENCY-002
+ * @design DES-BOUNDED-FILE-READ-CONCURRENCY-002
+ */
 export async function indexGraph(root: string, persist = true): Promise<CodeGraph> {
   const paths = await graphInputs(root);
   const typedSources = paths.filter(isSource);
@@ -247,49 +251,49 @@ export async function indexGraph(root: string, persist = true): Promise<CodeGrap
     }
     visit(source);
   }
-  const rustTexts = new Map(await Promise.all(rustSources.map(async (path) => [path, await readText(root, path)] as const)));
+  const rustTexts = new Map(await mapWithConcurrency(rustSources, FILE_READ_CONCURRENCY, async (path) => [path, await readText(root, path)] as const));
   for (const [path, text] of rustTexts) indexRustSymbols(path, text, graph);
   for (const [path, text] of rustTexts) indexRustRelations(path, text, known, graph);
-  const pythonTexts = new Map(await Promise.all(pythonSources.map(async (path) => [path, await readText(root, path)] as const)));
+  const pythonTexts = new Map(await mapWithConcurrency(pythonSources, FILE_READ_CONCURRENCY, async (path) => [path, await readText(root, path)] as const));
   for (const [path, text] of pythonTexts) indexPythonSymbols(path, text, graph);
   for (const [path, text] of pythonTexts) indexPythonRelations(path, text, known, graph);
-  const goTexts = new Map(await Promise.all(goSources.map(async (path) => [path, await readText(root, path)] as const)));
+  const goTexts = new Map(await mapWithConcurrency(goSources, FILE_READ_CONCURRENCY, async (path) => [path, await readText(root, path)] as const));
   for (const [path, text] of goTexts) indexGoSymbols(path, text, graph);
   const goModule = paths.includes('go.mod') ? /^module\s+(\S+)/m.exec(await readText(root, 'go.mod'))?.[1] ?? null : null;
   for (const [path, text] of goTexts) indexGoRelations(path, text, known, graph, goModule);
-  const javaTexts = new Map(await Promise.all(javaSources.map(async (path) => [path, await readText(root, path)] as const)));
+  const javaTexts = new Map(await mapWithConcurrency(javaSources, FILE_READ_CONCURRENCY, async (path) => [path, await readText(root, path)] as const));
   const javaTypes = new Map<string, string>();
   for (const [path, text] of javaTexts) indexJavaSymbols(path, text, graph, javaTypes);
   for (const [path, text] of javaTexts) indexJavaRelations(path, text, graph, javaTypes);
-  const cppTexts = new Map(await Promise.all(cppSources.map(async (path) => [path, await readText(root, path)] as const)));
+  const cppTexts = new Map(await mapWithConcurrency(cppSources, FILE_READ_CONCURRENCY, async (path) => [path, await readText(root, path)] as const));
   for (const [path, text] of cppTexts) indexCppSymbols(path, text, graph);
   for (const [path, text] of cppTexts) indexCppRelations(path, text, known, graph);
-  const csharpTexts = new Map(await Promise.all(csharpSources.map(async (path) => [path, await readText(root, path)] as const)));
+  const csharpTexts = new Map(await mapWithConcurrency(csharpSources, FILE_READ_CONCURRENCY, async (path) => [path, await readText(root, path)] as const));
   const csharpTypes = new Map<string, string>();
   for (const [path, text] of csharpTexts) indexCsharpSymbols(path, text, graph, csharpTypes);
   for (const [path, text] of csharpTexts) indexCsharpRelations(path, text, graph, csharpTypes);
-  const phpTexts = new Map(await Promise.all(phpSources.map(async (path) => [path, await readText(root, path)] as const)));
+  const phpTexts = new Map(await mapWithConcurrency(phpSources, FILE_READ_CONCURRENCY, async (path) => [path, await readText(root, path)] as const));
   const phpTypes = new Map<string, string>();
   for (const [path, text] of phpTexts) indexPhpSymbols(path, text, graph, phpTypes);
   for (const [path, text] of phpTexts) indexPhpRelations(path, text, known, graph, phpTypes);
-  const rTexts = new Map(await Promise.all(rSources.map(async (path) => [path, await readText(root, path)] as const)));
+  const rTexts = new Map(await mapWithConcurrency(rSources, FILE_READ_CONCURRENCY, async (path) => [path, await readText(root, path)] as const));
   for (const [path, text] of rTexts) indexRSymbols(path, text, graph);
   for (const [path, text] of rTexts) indexRRelations(path, text, known, graph);
-  const juliaTexts = new Map(await Promise.all(juliaSources.map(async (path) => [path, await readText(root, path)] as const)));
+  const juliaTexts = new Map(await mapWithConcurrency(juliaSources, FILE_READ_CONCURRENCY, async (path) => [path, await readText(root, path)] as const));
   const juliaModules = new Map<string, string>();
   for (const [path, text] of juliaTexts) indexJuliaSymbols(path, text, graph, juliaModules);
   for (const [path, text] of juliaTexts) indexJuliaRelations(path, text, known, graph, juliaModules);
-  const kotlinTexts = new Map(await Promise.all(kotlinSources.map(async (path) => [path, await readText(root, path)] as const)));
+  const kotlinTexts = new Map(await mapWithConcurrency(kotlinSources, FILE_READ_CONCURRENCY, async (path) => [path, await readText(root, path)] as const));
   const kotlinDeclarations = new Map<string, string>();
   for (const [path, text] of kotlinTexts) indexKotlinSymbols(path, text, graph, kotlinDeclarations);
   for (const [path, text] of kotlinTexts) indexKotlinRelations(path, text, known, graph, kotlinDeclarations);
-  const rubyTexts = new Map(await Promise.all(rubySources.map(async (path) => [path, await readText(root, path)] as const)));
+  const rubyTexts = new Map(await mapWithConcurrency(rubySources, FILE_READ_CONCURRENCY, async (path) => [path, await readText(root, path)] as const));
   for (const [path, text] of rubyTexts) indexRubySymbols(path, text, graph);
   for (const [path, text] of rubyTexts) indexRubyRelations(path, text, known, graph);
-  const swiftTexts = new Map(await Promise.all(swiftSources.map(async (path) => [path, await readText(root, path)] as const)));
+  const swiftTexts = new Map(await mapWithConcurrency(swiftSources, FILE_READ_CONCURRENCY, async (path) => [path, await readText(root, path)] as const));
   for (const [path, text] of swiftTexts) indexSwiftSymbols(path, text, graph);
   for (const [path, text] of swiftTexts) indexSwiftRelations(path, text, graph);
-  const dartTexts = new Map(await Promise.all(dartSources.map(async (path) => [path, await readText(root, path)] as const)));
+  const dartTexts = new Map(await mapWithConcurrency(dartSources, FILE_READ_CONCURRENCY, async (path) => [path, await readText(root, path)] as const));
   const dartPackages = new Map<string, string>();
   for (const manifest of paths.filter((path) => path.endsWith('pubspec.yaml'))) {
     const name = /^\s*name\s*:\s*([A-Za-z_]\w*)\s*$/m.exec(await readText(root, manifest))?.[1];
@@ -310,34 +314,34 @@ export async function indexGraph(root: string, persist = true): Promise<CodeGrap
     }
     indexDartRelations(path, text, known, graph, packageInfo);
   }
-  const scalaTexts = new Map(await Promise.all(scalaSources.map(async (path) => [path, await readText(root, path)] as const)));
+  const scalaTexts = new Map(await mapWithConcurrency(scalaSources, FILE_READ_CONCURRENCY, async (path) => [path, await readText(root, path)] as const));
   const scalaDeclarations = new Map<string, string>();
   for (const [path, text] of scalaTexts) indexScalaSymbols(path, text, graph, scalaDeclarations);
   for (const [path, text] of scalaTexts) indexScalaRelations(path, text, graph, scalaDeclarations);
-  const elixirTexts = new Map(await Promise.all(elixirSources.map(async (path) => [path, await readText(root, path)] as const)));
+  const elixirTexts = new Map(await mapWithConcurrency(elixirSources, FILE_READ_CONCURRENCY, async (path) => [path, await readText(root, path)] as const));
   const elixirModules = new Map<string, string>();
   for (const [path, text] of elixirTexts) indexElixirSymbols(path, text, graph, elixirModules);
   for (const [path, text] of elixirTexts) indexElixirRelations(path, text, known, graph, elixirModules);
-  const haskellTexts = new Map(await Promise.all(haskellSources.map(async (path) => [path, await readText(root, path)] as const)));
+  const haskellTexts = new Map(await mapWithConcurrency(haskellSources, FILE_READ_CONCURRENCY, async (path) => [path, await readText(root, path)] as const));
   const haskellModules = new Map<string, string>();
   for (const [path, text] of haskellTexts) indexHaskellSymbols(path, text, graph, haskellModules);
   for (const [path, text] of haskellTexts) indexHaskellRelations(path, text, graph, haskellModules);
-  const luaTexts = new Map(await Promise.all(luaSources.map(async (path) => [path, await readText(root, path)] as const)));
+  const luaTexts = new Map(await mapWithConcurrency(luaSources, FILE_READ_CONCURRENCY, async (path) => [path, await readText(root, path)] as const));
   for (const [path, text] of luaTexts) indexLuaSymbols(path, text, graph);
   for (const [path, text] of luaTexts) indexLuaRelations(path, text, known, graph);
-  const zigTexts = new Map(await Promise.all(zigSources.map(async (path) => [path, await readText(root, path)] as const)));
+  const zigTexts = new Map(await mapWithConcurrency(zigSources, FILE_READ_CONCURRENCY, async (path) => [path, await readText(root, path)] as const));
   for (const [path, text] of zigTexts) indexZigSymbols(path, text, graph);
   for (const [path, text] of zigTexts) indexZigRelations(path, text, known, graph);
-  const solidityTexts = new Map(await Promise.all(soliditySources.map(async (path) => [path, await readText(root, path)] as const)));
+  const solidityTexts = new Map(await mapWithConcurrency(soliditySources, FILE_READ_CONCURRENCY, async (path) => [path, await readText(root, path)] as const));
   for (const [path, text] of solidityTexts) indexSoliditySymbols(path, text, graph);
   for (const [path, text] of solidityTexts) indexSolidityRelations(path, text, known, graph);
   for (const [path, text] of cppTexts) indexObjectiveCSymbols(path, text, graph);
   for (const [path, text] of objectiveCSources.map((path) => [path, cppTexts.get(path)!] as const)) indexObjectiveCRelations(path, text, graph);
-  const fsharpTexts = new Map(await Promise.all(fsharpSources.map(async (path) => [path, await readText(root, path)] as const)));
+  const fsharpTexts = new Map(await mapWithConcurrency(fsharpSources, FILE_READ_CONCURRENCY, async (path) => [path, await readText(root, path)] as const));
   const fsharpDeclarations = new Map<string, string>();
   for (const [path, text] of fsharpTexts) indexFsharpSymbols(path, text, graph, fsharpDeclarations);
   for (const [path, text] of fsharpTexts) indexFsharpRelations(path, text, graph, fsharpDeclarations);
-  const vbTexts = new Map(await Promise.all(vbSources.map(async (path) => [path, await readText(root, path)] as const)));
+  const vbTexts = new Map(await mapWithConcurrency(vbSources, FILE_READ_CONCURRENCY, async (path) => [path, await readText(root, path)] as const));
   const vbDeclarations = new Map<string, string>();
   for (const [path, text] of vbTexts) indexVbSymbols(path, text, graph, vbDeclarations);
   for (const [path, text] of vbTexts) indexVbRelations(path, text, graph, vbDeclarations);

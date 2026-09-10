@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-10T21:02:26.318Z",
-  "totalRequirements": 41,
-  "modeledRequirements": 4,
-  "modeledFraction": 0.0975609756097561,
+  "generatedAt": "2026-09-10T21:46:29.534Z",
+  "totalRequirements": 43,
+  "modeledRequirements": 6,
+  "modeledFraction": 0.13953488372093023,
   "result": {
     "valid": true,
     "abstraction": "Consistency of explicit branch-scoped conditional, exact unit-normalized integer numeric, bounded temporal interval, deterministic state-transition, and controlled unconditional Boolean constraints; not implementation correctness.",
@@ -16,6 +16,16 @@
       "Copilot supplies candidate requirements; deterministic checks do not establish their truth."
     ],
     "literals": [
+      {
+        "requirement": "REQ-BOUNDED-FILE-READ-CONCURRENCY-001",
+        "atom": "[\"system\",\"read file contents for trace fingerprint snapshots using a bounded-concurrency pool that never has more than a fixed, small maximum number of files open at once, regardless of how many files are being snapshotted\"]",
+        "positive": true
+      },
+      {
+        "requirement": "REQ-BOUNDED-FILE-READ-CONCURRENCY-002",
+        "atom": "[\"system\",\"load per-language source file text for code graph indexing using the same bounded-concurrency pool as trace fingerprinting, instead of one unbounded `promise.all` per language\"]",
+        "positive": true
+      },
       {
         "requirement": "REQ-CLI-WORKFLOW-UX-002",
         "atom": "[\"system\",\"state, in `trace impact`'s non-json output, that returned nodes are a bidirectional candidate-review range reachable from the query, not a list of artifacts that must change\"]",
@@ -277,6 +287,7 @@
   },
   "fingerprints": {
     ".musubix/features/adapter-pattern-recognition/requirements.md": "5731561a0a04982b8a5c305bdeeae6084bcf0ee8846f295eaaaabc823d1f9793",
+    ".musubix/features/bounded-file-read-concurrency/requirements.md": "296faaba4e9e4dd363a3c46be994aea72660b4111a50f226e26e2cfb582a6980",
     ".musubix/features/change-requirement-batches/requirements.md": "215dff587257d8edf5ba17c60b610bb6abe4497d867ad20de28e5ef520184c7f",
     ".musubix/features/cli-workflow-ux-v019/requirements.md": "8ac7b7e793009d95a03b53de1e3aca043d4433a7b6de9511d8547ebc33b5e7b2",
     ".musubix/features/command-working-directory/requirements.md": "4a376dfe7a6e9b1bb1ff4a947fb2807f7179a1798df369040c879a1b9e4fcb90",

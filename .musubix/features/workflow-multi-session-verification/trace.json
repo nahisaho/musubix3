@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-10T21:02:23.174Z",
+  "generatedAt": "2026-09-10T21:52:19.001Z",
   "nodes": [
     {
       "id": "CODE-SESSION-SCOPED-DEVELOPMENT-001",
@@ -111,6 +111,12 @@
       "line": 1
     },
     {
+      "id": "ADR-0018",
+      "kind": "adr",
+      "path": ".musubix/decisions/ADR-0018.md",
+      "line": 1
+    },
+    {
       "id": "DES-ADAPTER-PATTERN-RECOGNITION-001",
       "kind": "design",
       "path": ".musubix/features/adapter-pattern-recognition/design.md",
@@ -127,6 +133,32 @@
       "id": "REQ-ADAPTER-PATTERN-RECOGNITION-002",
       "kind": "requirement",
       "path": ".musubix/features/adapter-pattern-recognition/requirements.md",
+      "line": 22,
+      "mandatory": true
+    },
+    {
+      "id": "DES-BOUNDED-FILE-READ-CONCURRENCY-001",
+      "kind": "design",
+      "path": ".musubix/features/bounded-file-read-concurrency/design.md",
+      "line": 7
+    },
+    {
+      "id": "DES-BOUNDED-FILE-READ-CONCURRENCY-002",
+      "kind": "design",
+      "path": ".musubix/features/bounded-file-read-concurrency/design.md",
+      "line": 15
+    },
+    {
+      "id": "REQ-BOUNDED-FILE-READ-CONCURRENCY-001",
+      "kind": "requirement",
+      "path": ".musubix/features/bounded-file-read-concurrency/requirements.md",
+      "line": 15,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-BOUNDED-FILE-READ-CONCURRENCY-002",
+      "kind": "requirement",
+      "path": ".musubix/features/bounded-file-read-concurrency/requirements.md",
       "line": 22,
       "mandatory": true
     },
@@ -632,10 +664,22 @@
       "line": 62
     },
     {
+      "id": "CODE-BOUNDED-FILE-READ-CONCURRENCY-001",
+      "kind": "code",
+      "path": "packages/analysis/src/files.ts",
+      "line": 168
+    },
+    {
       "id": "CODE-CLI-WORKFLOW-UX-005",
       "kind": "code",
       "path": "packages/analysis/src/gate.ts",
       "line": 83
+    },
+    {
+      "id": "CODE-BOUNDED-FILE-READ-CONCURRENCY-002",
+      "kind": "code",
+      "path": "packages/analysis/src/graph.ts",
+      "line": 42
     },
     {
       "id": "CODE-TDD-FINGERPRINT-SCOPING-001",
@@ -756,6 +800,24 @@
       "kind": "test",
       "path": "tests/approval.test.ts",
       "line": 170
+    },
+    {
+      "id": "TEST-BOUNDED-FILE-READ-CONCURRENCY-001",
+      "kind": "test",
+      "path": "tests/bounded-file-read-concurrency.test.ts",
+      "line": 26
+    },
+    {
+      "id": "TEST-BOUNDED-FILE-READ-CONCURRENCY-002",
+      "kind": "test",
+      "path": "tests/bounded-file-read-concurrency.test.ts",
+      "line": 45
+    },
+    {
+      "id": "TEST-BOUNDED-FILE-READ-CONCURRENCY-003",
+      "kind": "test",
+      "path": "tests/bounded-file-read-concurrency.test.ts",
+      "line": 71
     },
     {
       "id": "TEST-CHANGE-REQUIREMENT-BATCHES-001",
@@ -977,6 +1039,31 @@
       "from": "ADR-0015",
       "to": "DES-ADAPTER-PATTERN-RECOGNITION-001",
       "relation": "decides"
+    },
+    {
+      "from": "DES-BOUNDED-FILE-READ-CONCURRENCY-001",
+      "to": "REQ-BOUNDED-FILE-READ-CONCURRENCY-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0018",
+      "to": "DES-BOUNDED-FILE-READ-CONCURRENCY-001",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-BOUNDED-FILE-READ-CONCURRENCY-002",
+      "to": "REQ-BOUNDED-FILE-READ-CONCURRENCY-002",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0018",
+      "to": "DES-BOUNDED-FILE-READ-CONCURRENCY-002",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-BOUNDED-FILE-READ-CONCURRENCY-002",
+      "to": "DES-BOUNDED-FILE-READ-CONCURRENCY-001",
+      "relation": "depends-on"
     },
     {
       "from": "DES-CHANGE-REQUIREMENT-BATCHES-001",
@@ -1534,6 +1621,21 @@
       "relation": "implements"
     },
     {
+      "from": "CODE-BOUNDED-FILE-READ-CONCURRENCY-001",
+      "to": "REQ-BOUNDED-FILE-READ-CONCURRENCY-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-BOUNDED-FILE-READ-CONCURRENCY-001",
+      "to": "REQ-BOUNDED-FILE-READ-CONCURRENCY-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-BOUNDED-FILE-READ-CONCURRENCY-001",
+      "to": "DES-BOUNDED-FILE-READ-CONCURRENCY-001",
+      "relation": "implements"
+    },
+    {
       "from": "CODE-CLI-WORKFLOW-UX-005",
       "to": "REQ-CLI-WORKFLOW-UX-005",
       "relation": "implements"
@@ -1541,6 +1643,16 @@
     {
       "from": "CODE-CLI-WORKFLOW-UX-005",
       "to": "DES-CLI-WORKFLOW-UX-005",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-BOUNDED-FILE-READ-CONCURRENCY-002",
+      "to": "REQ-BOUNDED-FILE-READ-CONCURRENCY-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-BOUNDED-FILE-READ-CONCURRENCY-002",
+      "to": "DES-BOUNDED-FILE-READ-CONCURRENCY-002",
       "relation": "implements"
     },
     {
@@ -1706,6 +1818,21 @@
     {
       "from": "TEST-HUMAN-APPROVAL-GATES-008",
       "to": "REQ-HUMAN-APPROVAL-GATES-008",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-BOUNDED-FILE-READ-CONCURRENCY-001",
+      "to": "REQ-BOUNDED-FILE-READ-CONCURRENCY-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-BOUNDED-FILE-READ-CONCURRENCY-002",
+      "to": "REQ-BOUNDED-FILE-READ-CONCURRENCY-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-BOUNDED-FILE-READ-CONCURRENCY-003",
+      "to": "REQ-BOUNDED-FILE-READ-CONCURRENCY-002",
       "relation": "verifies"
     },
     {
@@ -1891,8 +2018,11 @@
     ".musubix/decisions/ADR-0015.md": "00e8a5d34efba2aa9bda8f49b8a2cbe221d14d74df9f2f677950002bedd6795c",
     ".musubix/decisions/ADR-0016.md": "31573419c17de4a3ecd0aa3f361c08f25c722095419cd35023e4382ac4f87895",
     ".musubix/decisions/ADR-0017.md": "791187943432f1d0d420b4fddb0404f500d8f7a2f20f9ed8597f4f1d6b20779a",
+    ".musubix/decisions/ADR-0018.md": "16f8a1bbb5fcf5c306fc7e5ef445c3ecc93aedb5773de0892f63b167af2d588a",
     ".musubix/features/adapter-pattern-recognition/design.md": "a8e0c4a11f626cb4a41c9b5b53359c072ec0c3161f704791f42ba8af38124a70",
     ".musubix/features/adapter-pattern-recognition/requirements.md": "5731561a0a04982b8a5c305bdeeae6084bcf0ee8846f295eaaaabc823d1f9793",
+    ".musubix/features/bounded-file-read-concurrency/design.md": "6d48a0b4b889060d2018c602e7ac0b687487a2fb25aacc385a59279a7bfb358e",
+    ".musubix/features/bounded-file-read-concurrency/requirements.md": "296faaba4e9e4dd363a3c46be994aea72660b4111a50f226e26e2cfb582a6980",
     ".musubix/features/change-requirement-batches/design.md": "ea7ee9aa17f9f675bf649e9eec90b07e335a6fb793faf4c9951c5f747510f453",
     ".musubix/features/change-requirement-batches/requirements.md": "215dff587257d8edf5ba17c60b610bb6abe4497d867ad20de28e5ef520184c7f",
     ".musubix/features/cli-workflow-ux-v019/design.md": "bdb13e2b903123c32e54787599220ea5444a0922532b60d38fef528991116cf8",
@@ -1929,10 +2059,10 @@
     "packages/analysis/src/attestation.ts": "2d273d2ed5aaa8521938a247492bbe54ee9b195d7902510365d6576e098b17f3",
     "packages/analysis/src/change.ts": "a789e35870a9976b67a07773e4bd60bc9cdc78000847b20eac974e9f9481c2f7",
     "packages/analysis/src/config.ts": "c4d15076d4c4e97735ec3b3069a27b85cd9adc5b0f524462d1fdd9046bc2b942",
-    "packages/analysis/src/files.ts": "fd0e693a13e42a6bea9458352f03385e1f4b5f4886b4bfe9116fa39379a69bfb",
+    "packages/analysis/src/files.ts": "6186177faea34f7b2f6dd865b4f911d3b8fbfe6786e2cd19bc7dffee2a058ba2",
     "packages/analysis/src/formal.ts": "9f5622983fed80c1e7c141cc7c7dcd217447e5c2edd39e64877db052a57b730b",
     "packages/analysis/src/gate.ts": "c41725d1c61e86fe941818ccf42b7b91f8b702cacb66a469c9661fe66f3cb599",
-    "packages/analysis/src/graph.ts": "7517703a96dc487771c8b3eb1aade2d676998f82246b5dd091930059fc43685b",
+    "packages/analysis/src/graph.ts": "8978a47c311ddef684de5e4c5ab032eed9bc87ad94a739351de6e2d6b2ae2aba",
     "packages/analysis/src/index.ts": "6df5a623a9281511a963583e648d8fea7affdf5bc9404e261a60adcabc1cac89",
     "packages/analysis/src/knowledge.ts": "072a403f89f9cdc6b79adaae7ea22821487358b8d86d37fd5145031f74d6b9cc",
     "packages/analysis/src/model-correspondence.ts": "fb19dbbdf461b8e2a2429b6107f60e7ea523e4033e4677ed7dd09ea03740659c",
@@ -1960,6 +2090,7 @@
     "tests/adapter-integration.test.ts": "42c350b4c3498d2dca32943731521ae8c2d52921f560039c0f7719b060bd4972",
     "tests/adapter-pattern-recognition.test.ts": "df7446c88eecf17cff42a5bf2cb6adc4924d62c5ed4536ad62bc8d38eb5bd40c",
     "tests/approval.test.ts": "9c5bc5dd99223cfd423507ec2e71e181cc92c7d37e50026b9e2196bf16bd87f0",
+    "tests/bounded-file-read-concurrency.test.ts": "272ecc3ff775d7a7ab4672805fd72a09575b8719afc2470e9e26342a625a415d",
     "tests/change-requirement-batches.test.ts": "77deb6dedf6ef7d4dc02ecbc0566c969067462c100c2d126c10359dd2122e7c6",
     "tests/cli-package.test.ts": "9ecfe4e2a5a6a28ae0607e625a9f7dbc54e95b3e06d1c4c9e59a2ad6ce12da74",
     "tests/cli-workflow-ux.test.ts": "d2b41c098b4953f547d6acf4ae91bb507c865ce1685d4f5948ed3ac6accd0376",
