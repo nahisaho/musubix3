@@ -206,6 +206,35 @@ npx musubix3 approval validate --json
 npx musubix3 status --json
 ```
 
+### 別の要求の実装の副作用としてすでに満たされている要求
+
+`tdd red` はすでに成功しているtestのRed記録を拒否します（`TDD_TARGET_RESULT`）。
+これはバグではなく正しい挙動です。あるrequirementのために書いた正しく汎用的な
+実装が、別のまだ未実装のrequirementも副作用として満たしてしまうこと（例:
+汎用的なcapacity-aware割当algorithmが、別のrequirementが求める「利用可能な
+resourceがない」edge caseも正しく処理してしまう場合）はありえます。この場合
+のためにRedを迂回する`--already-satisfied-by`のような宣言はあえて提供して
+いません。「他所ですでに満たされている」という人間の宣言は測定された根拠では
+なく、それを受理してしまうと未実装または誤って実装されたrequirementが検証
+されないままgateを通過しかねないためです。
+
+推奨する方法は、他のrequirementと同じように genuine なRedを証明することです。
+すでに正しい共有実装を一時的に意図的に狭め、新しいrequirementのtestを
+実際に失敗させて`tdd red`を記録し、正しい実装を復元して`tdd green`を記録
+します。
+
+```sh
+# 共有実装はすでに正しい。TEST-EXAMPLE-002を実際に失敗させるために、
+# 一時的に実装を狭める（例: 汎用algorithmがすでに包含している特殊ケースを
+# 一時的に再度別処理として書き戻すなど）。
+npx musubix3 tdd red TEST-EXAMPLE-002 --requirement REQ-EXAMPLE-002 --command test
+# 正しい（すでに書かれている）実装に戻す。他のコード変更は行わない。
+npx musubix3 tdd green TEST-EXAMPLE-002 --requirement REQ-EXAMPLE-002 --command test
+```
+
+狭める変更はその場限りに留め、Green記録と同じ手順内で必ず元に戻してください。
+弱めたコードをどの時点でもcommitしたままにしないでください。
+
 ## コマンド
 
 分析コマンドは `--root <dir>` と `--json` に対応します。ファイルは root 基準です。

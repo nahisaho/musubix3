@@ -221,6 +221,38 @@ npx musubix3 approval validate --json
 npx musubix3 status --json
 ```
 
+### A requirement already satisfied as a side effect
+
+`tdd red` rejects recording a Red phase for a test that is already passing
+(`TDD_TARGET_RESULT`). This is correct: it is not a bug when a correct,
+general implementation written for one requirement also happens to satisfy a
+separate, not-yet-implemented requirement (for example, a general
+capacity-aware assignment algorithm that also correctly handles a "no
+resource available" edge case required by a different requirement). There is
+deliberately no `--already-satisfied-by`-style declaration to bypass Red for
+this case: a human declaration that a requirement is "already satisfied
+elsewhere" is not measured evidence, and accepting one would let an
+unimplemented or incorrectly implemented requirement pass gate on an
+unverified claim.
+
+The recommended practice is to prove the Red genuinely, the same way as any
+other requirement, by briefly and deliberately narrowing the scope of the
+already-correct shared implementation so the new requirement's test fails,
+recording `tdd red`, then restoring the correct implementation for `tdd
+green`:
+
+```sh
+# The shared implementation is already correct; temporarily narrow it
+# (e.g. re-add the special case the general algorithm already subsumes)
+# so TEST-EXAMPLE-002 genuinely fails.
+npx musubix3 tdd red TEST-EXAMPLE-002 --requirement REQ-EXAMPLE-002 --command test
+# Restore the correct (already-written) implementation; no other code changes.
+npx musubix3 tdd green TEST-EXAMPLE-002 --requirement REQ-EXAMPLE-002 --command test
+```
+
+Keep the narrowing edit local and revert it in the same step as recording
+Green; do not leave the weakened code committed at any point.
+
 ## Command reference
 
 All analysis commands accept `--root <directory>` and `--json`. Files resolve
