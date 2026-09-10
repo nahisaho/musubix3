@@ -97,6 +97,30 @@ targets and paths escaping the project are refused.
 The starter is deliberately **not release-ready**: replace its example, implement
 and test it, and configure real check commands before expecting the gate to pass.
 
+## Upgrade
+
+To pick up a newer musubix3 release:
+
+```sh
+npm install --save-dev --save-exact musubix3@latest
+npx --no-install musubix3 upgrade --dry-run
+npx --no-install musubix3 upgrade
+```
+
+`upgrade` refreshes only the bundled `.github/skills/sdd-*` files that differ
+from the installed package version. It never creates, replaces, or deletes
+`.musubix/config.json`, `.musubix/policy-baseline.json`,
+`.musubix/constitution.md`, ADRs, feature artifacts, evidence, or
+`.gitignore` — those are yours to keep customizing. It is idempotent: running
+it again with no newer package version reports every skill file as
+`unchanged`. Review `--dry-run` first, same as `init`.
+
+`init --force` remains available for replacing bundled/managed paths more
+broadly (including `.musubix/config.json`, `constitution.md`, and the
+starter feature's `requirements.md`/`design.md`), but it overwrites
+customized content in those files, so prefer `upgrade` for routine version
+bumps.
+
 ## Distribution options
 
 Choose one skill-loading route to avoid duplicate skill names.
@@ -290,6 +314,7 @@ validation/gate or requested solver failure, **2** usage, I/O or malformed confi
 | Command | Behavior |
 |---|---|
 | `init [--dry-run] [--force] [--feature slug]` | Preserve-first skills/artifacts installation; `install` alias |
+| `upgrade [--dry-run]` | Refresh bundled skill files only; never touches config, constitution, or feature artifacts |
 | `plugin-install` | Invoke native Copilot installer (no internal config edits) |
 | `requirements validate <file>` | IDs, priorities, declared/detected EARS pattern |
 | `constitution validate [file]` | Versioned principles and measurable rule definitions |

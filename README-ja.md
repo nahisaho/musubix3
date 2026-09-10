@@ -94,6 +94,30 @@ Copilot の内部設定、MCP、LSP、hooks、既存のプロジェクト指示�
 **雛形はリリース可能な状態ではありません。** 実際の要求に置き換え、実装とテストを
 行い、検証コマンドを設定してから品質ゲートを実行してください。
 
+## アップグレード
+
+新しい musubix3 のリリースを取り込むには:
+
+```sh
+npm install --save-dev --save-exact musubix3@latest
+npx --no-install musubix3 upgrade --dry-run
+npx --no-install musubix3 upgrade
+```
+
+`upgrade` は、インストール済みパッケージの内容と異なる同梱の
+`.github/skills/sdd-*` ファイルだけを更新します。`.musubix/config.json`、
+`.musubix/policy-baseline.json`、`.musubix/constitution.md`、ADR、各機能の
+成果物、エビデンス、`.gitignore` は作成・置換・削除しません。これらは
+自分でカスタマイズしたまま維持されます。冪等なコマンドなので、新しい
+バージョンがなければ再実行してもすべてのSkillファイルが `unchanged` と
+報告されます。`init` と同様、まず `--dry-run` で確認してください。
+
+より広範囲に同梱・管理対象パスを置換したい場合は引き続き `init --force`
+も利用できますが（`.musubix/config.json`、`constitution.md`、雛形機能の
+`requirements.md`/`design.md` を含む）、これらのファイルをカスタマイズ済みの
+場合はその内容を上書きしてしまうため、通常のバージョンアップでは
+`upgrade` の使用を推奨します。
+
 ## 配布・インストール
 
 同名 Skill の重複を避け、以下の読み込み方法から1つ選んでください。
@@ -245,6 +269,7 @@ npx musubix3 tdd green TEST-EXAMPLE-002 --requirement REQ-EXAMPLE-002 --command 
 | コマンド | 動作 |
 |---|---|
 | `init [--dry-run] [--force] [--feature slug]` | 既存ファイル保持の配置。`install` は別名 |
+| `upgrade [--dry-run]` | 同梱Skillファイルのみ更新。config・constitution・機能成果物には触れない |
 | `plugin-install` | ネイティブ Copilot インストーラーを呼び出す |
 | `requirements validate <file>` | ID・優先度・EARS 形式検査 |
 | `constitution validate [file]` | 版・原則・測定可能な規則の定義検査 |

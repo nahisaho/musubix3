@@ -2374,6 +2374,92 @@
         "diagnostics": [],
         "order": 171
       }
+    },
+    {
+      "cycleId": "73048a0b-d464-4efc-8fcd-f6611c0327cf",
+      "requirementId": "REQ-UPGRADE-WORKFLOW-001",
+      "testId": "TEST-UPGRADE-WORKFLOW-001",
+      "testPath": "tests/upgrade-workflow.test.ts",
+      "commandName": "upgrade-workflow-tests",
+      "red": {
+        "phase": "red",
+        "valid": true,
+        "scoped": true,
+        "resultObserved": true,
+        "testStatus": "failed",
+        "reportSha256": "7328ba98f705c0d31c16303ab7b42c0c3575c0f5bde6beccbfdd8a8f14e8c918",
+        "commandSha256": "cdeed974a9af3ff7d7b37560f81d777b3fabd470029887363ba1d22d32237714",
+        "outputSha256": "e0a6526280b7ede73f4999cced6b533e2d2bc6275363573d7272c561cfd32951",
+        "exitCode": 1,
+        "durationMs": 1417,
+        "testFingerprint": "6cce90f470b52ca905c36f7cce116d5ca25551b766e6d23df1a441fbb2943e71",
+        "sourceFingerprint": "9e3d63cd046c82b9e500b8d0913a6a61562e4b82ca93aace049d8127fc3f88ce",
+        "executionId": "99c45042-42bc-46f6-a280-b2cacdd513d3",
+        "recordedAt": "2026-09-10T22:19:55.607Z",
+        "diagnostics": [],
+        "order": 172
+      },
+      "green": {
+        "phase": "green",
+        "valid": true,
+        "scoped": true,
+        "resultObserved": true,
+        "testStatus": "passed",
+        "reportSha256": "6e6356cc7097945bff295241d8791e061400d9a8e477057e4b68311df6beec6c",
+        "commandSha256": "cdeed974a9af3ff7d7b37560f81d777b3fabd470029887363ba1d22d32237714",
+        "outputSha256": "e0a6526280b7ede73f4999cced6b533e2d2bc6275363573d7272c561cfd32951",
+        "exitCode": 0,
+        "durationMs": 1575,
+        "testFingerprint": "6cce90f470b52ca905c36f7cce116d5ca25551b766e6d23df1a441fbb2943e71",
+        "sourceFingerprint": "3fb35629726622ac74b4c2083f448ab814bf37d2a4ef19e868884a8a7b6c43b9",
+        "executionId": "eeb47995-63fb-4d23-86b3-b6acd83ba939",
+        "recordedAt": "2026-09-10T22:20:52.604Z",
+        "diagnostics": [],
+        "order": 174
+      }
+    },
+    {
+      "cycleId": "45cf5535-f9e9-46b4-80a0-e7ca75bae6bb",
+      "requirementId": "REQ-UPGRADE-WORKFLOW-002",
+      "testId": "TEST-UPGRADE-WORKFLOW-002",
+      "testPath": "tests/upgrade-workflow.test.ts",
+      "commandName": "upgrade-workflow-tests",
+      "red": {
+        "phase": "red",
+        "valid": true,
+        "scoped": true,
+        "resultObserved": true,
+        "testStatus": "failed",
+        "reportSha256": "8c3edb15feaff5d6235a75a45b2f2927e3c8bf4b749aff63738893dd0089c553",
+        "commandSha256": "c580a28624e02ba5c4633e74e2234444bb51c0a0e046a6ac8afa4e01e42f5d3c",
+        "outputSha256": "6954ffe5b92784be64b22b9a63ede18e099bd4b2396a4177026287f0170d78d4",
+        "exitCode": 1,
+        "durationMs": 1423,
+        "testFingerprint": "7186229b18e37a5b008288524a6522188bf69951004f2eb49d44b4416fd9aa9c",
+        "sourceFingerprint": "9e3d63cd046c82b9e500b8d0913a6a61562e4b82ca93aace049d8127fc3f88ce",
+        "executionId": "ddb0020c-c6c1-4f57-8b91-4425a06b4200",
+        "recordedAt": "2026-09-10T22:20:14.565Z",
+        "diagnostics": [],
+        "order": 173
+      },
+      "green": {
+        "phase": "green",
+        "valid": true,
+        "scoped": true,
+        "resultObserved": true,
+        "testStatus": "passed",
+        "reportSha256": "f0a2f8cd140d4fe535ef72b23de228f5d2c9ba4fcf4f36e37aa44c48b1876611",
+        "commandSha256": "c580a28624e02ba5c4633e74e2234444bb51c0a0e046a6ac8afa4e01e42f5d3c",
+        "outputSha256": "6954ffe5b92784be64b22b9a63ede18e099bd4b2396a4177026287f0170d78d4",
+        "exitCode": 0,
+        "durationMs": 1452,
+        "testFingerprint": "7186229b18e37a5b008288524a6522188bf69951004f2eb49d44b4416fd9aa9c",
+        "sourceFingerprint": "3fb35629726622ac74b4c2083f448ab814bf37d2a4ef19e868884a8a7b6c43b9",
+        "executionId": "da7734ca-2161-48e5-8410-82b886105230",
+        "recordedAt": "2026-09-10T22:20:55.046Z",
+        "diagnostics": [],
+        "order": 175
+      }
     }
   ],
   "chain": [
@@ -3732,6 +3818,54 @@
       "phaseEvidenceSha256": "a07e59cfb1fdc9a3975ec59828fcf36dbe07311bc09c897f1f355f1551cb8a0c",
       "previousSha256": "6e469fbec43422e533e9b94a243cdc3f462d2683acbce9fa6bb9bb75f49edf7e",
       "recordSha256": "1779cb5c52a0a64bb4ea768bce37c7ca3e745ced4214139b1284c79bbae2ea3a"
+    },
+    {
+      "sequence": 114,
+      "cycleId": "73048a0b-d464-4efc-8fcd-f6611c0327cf",
+      "requirementId": "REQ-UPGRADE-WORKFLOW-001",
+      "testId": "TEST-UPGRADE-WORKFLOW-001",
+      "testPath": "tests/upgrade-workflow.test.ts",
+      "commandName": "upgrade-workflow-tests",
+      "phase": "red",
+      "phaseEvidenceSha256": "01586027ddbdc182c371455a72de60de1dc57e14b60a4cfe41641e7717ae16b8",
+      "previousSha256": "1779cb5c52a0a64bb4ea768bce37c7ca3e745ced4214139b1284c79bbae2ea3a",
+      "recordSha256": "30e71c80a62d9d62048149b64bff864fa164e98f43735d72164402793332f330"
+    },
+    {
+      "sequence": 115,
+      "cycleId": "45cf5535-f9e9-46b4-80a0-e7ca75bae6bb",
+      "requirementId": "REQ-UPGRADE-WORKFLOW-002",
+      "testId": "TEST-UPGRADE-WORKFLOW-002",
+      "testPath": "tests/upgrade-workflow.test.ts",
+      "commandName": "upgrade-workflow-tests",
+      "phase": "red",
+      "phaseEvidenceSha256": "59ad310672468096330cc6c18735898aaa165cae6238e5be0971ddc0223b017a",
+      "previousSha256": "30e71c80a62d9d62048149b64bff864fa164e98f43735d72164402793332f330",
+      "recordSha256": "9975200e65539f3d06e14042ef45a417070de5e81e02dcb5bd14ea19dcf362a5"
+    },
+    {
+      "sequence": 116,
+      "cycleId": "73048a0b-d464-4efc-8fcd-f6611c0327cf",
+      "requirementId": "REQ-UPGRADE-WORKFLOW-001",
+      "testId": "TEST-UPGRADE-WORKFLOW-001",
+      "testPath": "tests/upgrade-workflow.test.ts",
+      "commandName": "upgrade-workflow-tests",
+      "phase": "green",
+      "phaseEvidenceSha256": "60a9f569300d4493ef53a7a5640c4ceded9462ae3e05ad923c7d3ec68beeb996",
+      "previousSha256": "9975200e65539f3d06e14042ef45a417070de5e81e02dcb5bd14ea19dcf362a5",
+      "recordSha256": "7c4f7c0cd2308881897689bb95964eec89cd3214a9d31e5518e0796e00167b59"
+    },
+    {
+      "sequence": 117,
+      "cycleId": "45cf5535-f9e9-46b4-80a0-e7ca75bae6bb",
+      "requirementId": "REQ-UPGRADE-WORKFLOW-002",
+      "testId": "TEST-UPGRADE-WORKFLOW-002",
+      "testPath": "tests/upgrade-workflow.test.ts",
+      "commandName": "upgrade-workflow-tests",
+      "phase": "green",
+      "phaseEvidenceSha256": "3b80d4d772093158380657b9408e4845350e7d99cce449b626a4e9095d58b0a0",
+      "previousSha256": "7c4f7c0cd2308881897689bb95964eec89cd3214a9d31e5518e0796e00167b59",
+      "recordSha256": "004c9c7704fa2081be94071ab5f269fbecc53f14f5f8f859991bdb6c4cd69bcc"
     }
   ]
 }

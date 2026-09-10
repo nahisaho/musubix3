@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-10T22:09:28.639Z",
-  "totalRequirements": 44,
-  "modeledRequirements": 7,
-  "modeledFraction": 0.1590909090909091,
+  "generatedAt": "2026-09-10T22:28:36.829Z",
+  "totalRequirements": 46,
+  "modeledRequirements": 8,
+  "modeledFraction": 0.17391304347826086,
   "result": {
     "valid": true,
     "abstraction": "Consistency of explicit branch-scoped conditional, exact unit-normalized integer numeric, bounded temporal interval, deterministic state-transition, and controlled unconditional Boolean constraints; not implementation correctness.",
@@ -50,6 +50,11 @@
         "requirement": "REQ-TDD-SUPERSEDED-CYCLE-SCOPING-001",
         "atom": "[\"system\",\"raise `tdd_red_missing`, `tdd_green_missing`,\"]",
         "positive": false
+      },
+      {
+        "requirement": "REQ-UPGRADE-WORKFLOW-002",
+        "atom": "[\"system\",\"support `--dry-run` on `upgrade` to report the planned `create`/`replace`/`unchanged` action for each bundled skill file without writing any file\"]",
+        "positive": true
       }
     ],
     "constraints": [],
@@ -89,6 +94,7 @@
       "REQ-TDD-GREEN-REQUIREMENT-SCOPING-001",
       "REQ-TDD-GREEN-REQUIREMENT-SCOPING-002",
       "REQ-TDD-RED-COLLECTION-GUIDANCE-001",
+      "REQ-UPGRADE-WORKFLOW-001",
       "REQ-WORKFLOW-MULTI-SESSION-001",
       "REQ-WORKFLOW-SHUTDOWN-001"
     ],
@@ -271,6 +277,11 @@
       {
         "code": "FORMAL_UNSUPPORTED",
         "severity": "warning",
+        "message": "REQ-UPGRADE-WORKFLOW-001 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
         "message": "REQ-WORKFLOW-MULTI-SESSION-001 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
       },
       {
@@ -306,6 +317,7 @@
     ".musubix/features/tdd-green-requirement-scoping/requirements.md": "456edab50870ba2fc3297eccee1c4dc114a8c8400354cb3e4b00769bb8b29ba1",
     ".musubix/features/tdd-red-collection-guidance/requirements.md": "a4a49066c5146a4b8fc3ce8603a56c19721cb26573906d95de0bf150ed473fb7",
     ".musubix/features/tdd-superseded-cycle-scoping/requirements.md": "b02f10b42474ac383e278c6fa38291ba965210213d45bc759ff7db67f368e80a",
+    ".musubix/features/upgrade-workflow/requirements.md": "0b299f538f54ff56a9156a47ace1ed652c9e73bdc3d531604994edbdb0435dfd",
     ".musubix/features/workflow-multi-session-verification/requirements.md": "2ae290a162d6318ff2567a0fe6f44aa38f40e38b0b9344fd1c1c36bfc3937aa1",
     ".musubix/features/workflow-session-shutdown/requirements.md": "2b8d72e2fcb1dbf5bc24ee733182cf2b692e33c50550ce7a8de2e9c5a8c32c0d"
   }

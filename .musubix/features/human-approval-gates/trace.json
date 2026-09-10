@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-10T22:09:25.534Z",
+  "generatedAt": "2026-09-10T22:28:33.648Z",
   "nodes": [
     {
       "id": "CODE-SESSION-SCOPED-DEVELOPMENT-001",
@@ -114,6 +114,12 @@
       "id": "ADR-0018",
       "kind": "adr",
       "path": ".musubix/decisions/ADR-0018.md",
+      "line": 1
+    },
+    {
+      "id": "ADR-0019",
+      "kind": "adr",
+      "path": ".musubix/decisions/ADR-0019.md",
       "line": 1
     },
     {
@@ -579,6 +585,32 @@
       "mandatory": true
     },
     {
+      "id": "DES-UPGRADE-WORKFLOW-001",
+      "kind": "design",
+      "path": ".musubix/features/upgrade-workflow/design.md",
+      "line": 7
+    },
+    {
+      "id": "DES-UPGRADE-WORKFLOW-002",
+      "kind": "design",
+      "path": ".musubix/features/upgrade-workflow/design.md",
+      "line": 15
+    },
+    {
+      "id": "REQ-UPGRADE-WORKFLOW-001",
+      "kind": "requirement",
+      "path": ".musubix/features/upgrade-workflow/requirements.md",
+      "line": 16,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-UPGRADE-WORKFLOW-002",
+      "kind": "requirement",
+      "path": ".musubix/features/upgrade-workflow/requirements.md",
+      "line": 23,
+      "mandatory": false
+    },
+    {
       "id": "DES-WORKFLOW-MULTI-SESSION-001",
       "kind": "design",
       "path": ".musubix/features/workflow-multi-session-verification/design.md",
@@ -743,10 +775,16 @@
       "line": 416
     },
     {
+      "id": "CODE-UPGRADE-WORKFLOW-001",
+      "kind": "code",
+      "path": "packages/cli/src/install.ts",
+      "line": 70
+    },
+    {
       "id": "CODE-CLI-WORKFLOW-UX-002",
       "kind": "code",
       "path": "packages/cli/src/main.ts",
-      "line": 126
+      "line": 132
     },
     {
       "id": "CODE-DESIGN-ADR-NONE-EXEMPTION-001",
@@ -1011,6 +1049,18 @@
       "kind": "test",
       "path": "tests/tdd-superseded-cycle-scoping.test.ts",
       "line": 5
+    },
+    {
+      "id": "TEST-UPGRADE-WORKFLOW-001",
+      "kind": "test",
+      "path": "tests/upgrade-workflow.test.ts",
+      "line": 9
+    },
+    {
+      "id": "TEST-UPGRADE-WORKFLOW-002",
+      "kind": "test",
+      "path": "tests/upgrade-workflow.test.ts",
+      "line": 46
     },
     {
       "id": "TEST-WORKFLOW-MULTI-SESSION-001",
@@ -1441,6 +1491,41 @@
       "relation": "decides"
     },
     {
+      "from": "DES-UPGRADE-WORKFLOW-001",
+      "to": "REQ-UPGRADE-WORKFLOW-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-UPGRADE-WORKFLOW-001",
+      "to": "REQ-UPGRADE-WORKFLOW-002",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0019",
+      "to": "DES-UPGRADE-WORKFLOW-001",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-UPGRADE-WORKFLOW-002",
+      "to": "REQ-UPGRADE-WORKFLOW-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-UPGRADE-WORKFLOW-002",
+      "to": "REQ-UPGRADE-WORKFLOW-002",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0019",
+      "to": "DES-UPGRADE-WORKFLOW-002",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-UPGRADE-WORKFLOW-002",
+      "to": "DES-UPGRADE-WORKFLOW-001",
+      "relation": "depends-on"
+    },
+    {
       "from": "DES-WORKFLOW-MULTI-SESSION-001",
       "to": "REQ-WORKFLOW-MULTI-SESSION-001",
       "relation": "satisfies"
@@ -1776,6 +1861,21 @@
       "relation": "implements"
     },
     {
+      "from": "CODE-UPGRADE-WORKFLOW-001",
+      "to": "REQ-UPGRADE-WORKFLOW-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-UPGRADE-WORKFLOW-001",
+      "to": "REQ-UPGRADE-WORKFLOW-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-UPGRADE-WORKFLOW-001",
+      "to": "DES-UPGRADE-WORKFLOW-001",
+      "relation": "implements"
+    },
+    {
       "from": "CODE-CLI-WORKFLOW-UX-002",
       "to": "REQ-CLI-WORKFLOW-UX-002",
       "relation": "implements"
@@ -2041,6 +2141,16 @@
       "relation": "verifies"
     },
     {
+      "from": "TEST-UPGRADE-WORKFLOW-001",
+      "to": "REQ-UPGRADE-WORKFLOW-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-UPGRADE-WORKFLOW-002",
+      "to": "REQ-UPGRADE-WORKFLOW-002",
+      "relation": "verifies"
+    },
+    {
       "from": "TEST-WORKFLOW-MULTI-SESSION-001",
       "to": "REQ-WORKFLOW-MULTI-SESSION-001",
       "relation": "verifies"
@@ -2074,6 +2184,7 @@
     ".musubix/decisions/ADR-0016.md": "31573419c17de4a3ecd0aa3f361c08f25c722095419cd35023e4382ac4f87895",
     ".musubix/decisions/ADR-0017.md": "791187943432f1d0d420b4fddb0404f500d8f7a2f20f9ed8597f4f1d6b20779a",
     ".musubix/decisions/ADR-0018.md": "45623ee678e2be0a179b0913ec65648ccbd6d53d637ad75378158e186353b78e",
+    ".musubix/decisions/ADR-0019.md": "122c04a3416e1339e99fe6961e2f415034c6ffa5bab9aa9a31ab3a6d36ea8c3b",
     ".musubix/features/adapter-pattern-recognition/design.md": "a8e0c4a11f626cb4a41c9b5b53359c072ec0c3161f704791f42ba8af38124a70",
     ".musubix/features/adapter-pattern-recognition/requirements.md": "5731561a0a04982b8a5c305bdeeae6084bcf0ee8846f295eaaaabc823d1f9793",
     ".musubix/features/bounded-file-read-concurrency/design.md": "f62902f2ffe3e37202076e4fed2c390667af87dab84cd0e97316eaaab2d10394",
@@ -2104,6 +2215,8 @@
     ".musubix/features/tdd-red-collection-guidance/requirements.md": "a4a49066c5146a4b8fc3ce8603a56c19721cb26573906d95de0bf150ed473fb7",
     ".musubix/features/tdd-superseded-cycle-scoping/design.md": "45f69705b11c56b5c7e2e243534d3918b7c46723d3f4bf7ee342df19187ee2cd",
     ".musubix/features/tdd-superseded-cycle-scoping/requirements.md": "b02f10b42474ac383e278c6fa38291ba965210213d45bc759ff7db67f368e80a",
+    ".musubix/features/upgrade-workflow/design.md": "f9cd55dc17bb2fae8886288f4fa21f8346f2c1818d0d6e0e8247a30b721aa530",
+    ".musubix/features/upgrade-workflow/requirements.md": "0b299f538f54ff56a9156a47ace1ed652c9e73bdc3d531604994edbdb0435dfd",
     ".musubix/features/workflow-multi-session-verification/design.md": "16a916ca279ddfddb7b18a59bef7c9bee5c4608d751187208da3a6c3b46e0d55",
     ".musubix/features/workflow-multi-session-verification/requirements.md": "2ae290a162d6318ff2567a0fe6f44aa38f40e38b0b9344fd1c1c36bfc3937aa1",
     ".musubix/features/workflow-session-shutdown/design.md": "225d1718c0ea1628dae251f06b1c5ddafda9a7ae92a15e3d961efbea51c0e0ac",
@@ -2129,8 +2242,8 @@
     "packages/analysis/src/test-report.ts": "41c76811bfcb5e286bf097bf2f6aaf6cd5a414202efe8108f28219ecca063a01",
     "packages/analysis/src/trace.ts": "efede75c79c7dc4828a0259c46ca870a7e15042c35edd94a107349a83eb56ec9",
     "packages/analysis/src/workflow.ts": "95c93b380d2bda976f341c138edcbdd4d7fc0516ef3aca18a3329436a1c7b494",
-    "packages/cli/src/install.ts": "e8bf7c7cb73462b1f18b01a695ad89d41c3a2a9e0231e112f99b4f40800896c3",
-    "packages/cli/src/main.ts": "af9c63157e271563f56e58eef178579c5771a999156dd74688c69b80a0abec03",
+    "packages/cli/src/install.ts": "3b7d03d1864493ea9caee34855e4fd82ec970d321a205ee3378c8f13a4a34e17",
+    "packages/cli/src/main.ts": "336437a9a27a7aef5ce202941277bbef6689bd4a6dc486f06666fab3012bb992",
     "packages/domain/src/constitution.ts": "514278499642ff46ed902864b9192f566b116b4f92eb3fafa6b62588335e170a",
     "packages/domain/src/design.ts": "fc1ca4d3249abc9705ba4b6f296e0f4fa3b3d6ff6d5d82e51c99f49fc7a93ac9",
     "packages/domain/src/index.ts": "43243e9279e3826b23cd8d8b4365854974112ce4cf17cfb0f0ee32e6b28e9cc6",
@@ -2172,6 +2285,7 @@
     "tests/tdd-red-collection-guidance.test.ts": "fa98caf353c567a253efe2177f777153c1582889642cdab5c3262aba86fa3909",
     "tests/tdd-superseded-cycle-scoping.test.ts": "5e9342555b2de69b2e2d998eed5e600f7306cf25151010206a8a5de707e9415a",
     "tests/trace-graph.test.ts": "23e9ee2fa9ac2f37307cdcf2f5b088007295d76379d384e9d65b380cb6ef6c7b",
+    "tests/upgrade-workflow.test.ts": "487339a54f3169f91799aedab78f41813fc16b07f9825d165ec4e65157b1f802",
     "tests/workflow-multi-session-verification.test.ts": "e5134e981431d14c8f1c1ea7f25a0e78a391ead86e3b83ed3ffc0dc91f46d58a",
     "vitest.config.ts": "2338c9c1fc7792c2c04fb596d182829c7259f1c60617f86751169d35c914ae54"
   }

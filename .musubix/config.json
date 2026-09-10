@@ -235,6 +235,18 @@
       "timeoutMs": 120000
     },
     {
+      "name": "upgrade-workflow-tests",
+      "command": "npx",
+      "args": [
+        "vitest",
+        "run",
+        "tests/upgrade-workflow.test.ts"
+      ],
+      "adapter": "vitest",
+      "required": true,
+      "timeoutMs": 120000
+    },
+    {
       "name": "model-correspondence-evidence-guidance-tests",
       "command": "npx",
       "args": [

@@ -16,7 +16,7 @@ import {
   approvalManifest, approvalStages, recordApproval, requireApproval, validateApprovals, type ApprovalStage,
   scaffoldCommands,
 } from '../../analysis/src/index.js';
-import { install, pluginInstall } from './install.js';
+import { install, pluginInstall, upgradeSkills } from './install.js';
 
 const packageRoot = fileURLToPath(new URL('../../../../', import.meta.url));
 
@@ -46,6 +46,12 @@ export function createProgram(): Command {
     .option('--feature <slug>', 'Starter feature directory', 'example')
     .action(async (options: { root: string; json?: boolean; dryRun?: boolean; force?: boolean; feature: string }) => {
       const report = await install(resolve(options.root), packageRoot, options);
+      output(report, !!options.json, report.actions.map((a) => `${a.action.padEnd(10)} ${a.path}`).join('\n'));
+    });
+  common(program.command('upgrade').description('Refresh bundled skill files to match the installed musubix3 version; never touches config, constitution, or feature artifacts'))
+    .option('--dry-run', 'Preview without writing')
+    .action(async (options: { root: string; json?: boolean; dryRun?: boolean }) => {
+      const report = await upgradeSkills(resolve(options.root), packageRoot, options);
       output(report, !!options.json, report.actions.map((a) => `${a.action.padEnd(10)} ${a.path}`).join('\n'));
     });
   program.command('plugin-install').description('Delegate plugin installation to native copilot plugin install')

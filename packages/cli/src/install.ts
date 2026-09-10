@@ -67,6 +67,38 @@ export async function install(root: string, packageRoot: string, options: { dryR
   return { dryRun: options.dryRun ?? false, actions };
 }
 
+/* @id CODE-UPGRADE-WORKFLOW-001
+ * @implements REQ-UPGRADE-WORKFLOW-001 REQ-UPGRADE-WORKFLOW-002
+ * @design DES-UPGRADE-WORKFLOW-001
+ */
+export async function upgradeSkills(root: string, packageRoot: string, options: { dryRun?: boolean } = {}): Promise<{ dryRun: boolean; actions: InstallAction[] }> {
+  root = resolve(root);
+  const planned = new Map<string, string>();
+  for (const name of skillNames) {
+    const directory = `.github/skills/${name}`;
+    const entries = await readdir(resolve(packageRoot, directory), { withFileTypes: true });
+    for (const entry of entries) {
+      if (!entry.isFile()) throw new Error(`Unexpected skill asset: ${directory}/${entry.name}`);
+      planned.set(`${directory}/${entry.name}`, await readText(packageRoot, `${directory}/${entry.name}`));
+    }
+  }
+  const actions: InstallAction[] = [];
+  const writes = new Map<string, string>();
+  for (const [path, content] of planned) {
+    const absolute = await safePath(root, path);
+    const present = await exists(absolute);
+    const equal = present && await readText(root, path) === content;
+    const action = !present ? 'create' : equal ? 'unchanged' : 'replace';
+    actions.push({ path, action });
+    if (action === 'create' || action === 'replace') writes.set(path, content);
+  }
+  if (!options.dryRun) {
+    await mkdir(root, { recursive: true });
+    for (const [path, text] of writes) await writeText(root, path, text);
+  }
+  return { dryRun: options.dryRun ?? false, actions };
+}
+
 export async function pluginInstall(packageRoot: string, runner: Runner = runProcess): Promise<Awaited<ReturnType<Runner>>> {
   return runner('copilot', ['plugin', 'install', resolve(packageRoot)], { cwd: resolve(packageRoot), timeoutMs: 120_000 });
 }
