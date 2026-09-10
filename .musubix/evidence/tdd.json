@@ -1796,6 +1796,49 @@
         "diagnostics": [],
         "order": 147
       }
+    },
+    {
+      "cycleId": "b271f0d7-3e46-46d3-a3df-c6f4d3b427f0",
+      "requirementId": "REQ-TDD-RED-COLLECTION-GUIDANCE-001",
+      "testId": "TEST-TDD-RED-COLLECTION-GUIDANCE-001",
+      "testPath": "tests/tdd-red-collection-guidance.test.ts",
+      "commandName": "tdd-red-collection-guidance-tests",
+      "red": {
+        "phase": "red",
+        "valid": true,
+        "scoped": true,
+        "resultObserved": true,
+        "testStatus": "failed",
+        "reportSha256": "f422c4f00f03a0621b565b776749449a4261ec382b6589ce392dad9f696f2f63",
+        "commandSha256": "79ecb5952ee7c5d306b362af16d157526daa50fe90cd9ac0b48668b63c916da6",
+        "outputSha256": "22df8599c9ffe03cd773ce0f40e4c66368819653972e142a8a842be47e3ac594",
+        "exitCode": 1,
+        "durationMs": 1640,
+        "testFingerprint": "43d43cb5b03f11ec72edd93c4c9e971059f12d24567b25afa4e401d55a7d4e7e",
+        "sourceFingerprint": "31b652ad5020c4e33be3c74c553cde7cedf0baadd23c07461e0633f1cce5aa81",
+        "executionId": "d168596a-162d-4893-8141-d43279e73f93",
+        "recordedAt": "2026-09-10T14:09:28.693Z",
+        "diagnostics": [],
+        "order": 148
+      },
+      "green": {
+        "phase": "green",
+        "valid": true,
+        "scoped": true,
+        "resultObserved": true,
+        "testStatus": "passed",
+        "reportSha256": "cadf24367056b4b6fc918037eb2e9bb109cac16f9d81c37819857a91a22b408d",
+        "commandSha256": "79ecb5952ee7c5d306b362af16d157526daa50fe90cd9ac0b48668b63c916da6",
+        "outputSha256": "22df8599c9ffe03cd773ce0f40e4c66368819653972e142a8a842be47e3ac594",
+        "exitCode": 0,
+        "durationMs": 1469,
+        "testFingerprint": "43d43cb5b03f11ec72edd93c4c9e971059f12d24567b25afa4e401d55a7d4e7e",
+        "sourceFingerprint": "f6ddf947fa988e876fb2a309367e159721327e3c8f2003b78b5ffe188263e865",
+        "executionId": "fb922dcc-cb99-485c-9810-0b86d14f98ca",
+        "recordedAt": "2026-09-10T14:09:52.482Z",
+        "diagnostics": [],
+        "order": 149
+      }
     }
   ],
   "chain": [
@@ -2866,6 +2909,30 @@
       "phaseEvidenceSha256": "d5fdc44dc599d15aa90213ddeaf6b7dfcd289d6586e809cfb24204727017453a",
       "previousSha256": "2ab61c786e0cbbb683d42a1c2df7217173be431c004f01b765c264e2584e7475",
       "recordSha256": "0471b6208a71d3850a2e9777c2be3248f2a72296c150044f21a00f4fcabf83b2"
+    },
+    {
+      "sequence": 90,
+      "cycleId": "b271f0d7-3e46-46d3-a3df-c6f4d3b427f0",
+      "requirementId": "REQ-TDD-RED-COLLECTION-GUIDANCE-001",
+      "testId": "TEST-TDD-RED-COLLECTION-GUIDANCE-001",
+      "testPath": "tests/tdd-red-collection-guidance.test.ts",
+      "commandName": "tdd-red-collection-guidance-tests",
+      "phase": "red",
+      "phaseEvidenceSha256": "bc0454cf0714a023b5140369b1356fa182a6823906a4a04932ec2b6487ecde07",
+      "previousSha256": "0471b6208a71d3850a2e9777c2be3248f2a72296c150044f21a00f4fcabf83b2",
+      "recordSha256": "71f01f6b6293ff9c3ef63ad4f627c895f26cac0d5b4f79c7e16172d25f3a288f"
+    },
+    {
+      "sequence": 91,
+      "cycleId": "b271f0d7-3e46-46d3-a3df-c6f4d3b427f0",
+      "requirementId": "REQ-TDD-RED-COLLECTION-GUIDANCE-001",
+      "testId": "TEST-TDD-RED-COLLECTION-GUIDANCE-001",
+      "testPath": "tests/tdd-red-collection-guidance.test.ts",
+      "commandName": "tdd-red-collection-guidance-tests",
+      "phase": "green",
+      "phaseEvidenceSha256": "7e4219939fe9aedc50960fe6318e114d93a861feca237e900dad15bebcfa3b25",
+      "previousSha256": "71f01f6b6293ff9c3ef63ad4f627c895f26cac0d5b4f79c7e16172d25f3a288f",
+      "recordSha256": "11aac98563c95aab80314bb7964e81d3b44142f9afdf664790e52c3f4bb1c88b"
     }
   ]
 }

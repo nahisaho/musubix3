@@ -253,6 +253,32 @@ npx musubix3 tdd green TEST-EXAMPLE-002 --requirement REQ-EXAMPLE-002 --command 
 Keep the narrowing edit local and revert it in the same step as recording
 Green; do not leave the weakened code committed at any point.
 
+### A brand-new module for a from-scratch requirement
+
+`tdd red` requires a *collected and executed* failing test, not merely a test
+file that exists: if the test imports a source module that does not exist
+yet, the runner fails at collection time (0 tests run) instead of failing an
+assertion, and `tdd red` correctly reports this as an invalid Red
+(`TDD_REPORT_INVALID`). For a vitest/jest adapter, the thrown error now
+appends the underlying suite collection-failure message (for example
+`Cannot find module '../src/service.js'`) after `No annotated TEST-*
+identities were found`, to make this cause visible immediately instead of
+requiring a separate investigation.
+
+The recommended practice for a genuinely new module is the same
+stub-then-correct technique as above: create a compiling implementation file
+with a deliberately wrong body first, so the runner can collect and execute
+the test (and it fails on the wrong behavior, not on a missing import), then
+implement the correct behavior for Green:
+
+```sh
+# src/service.ts does not exist yet; create it with an intentionally wrong body
+# so the test can be collected and genuinely fails on assertion, not on import.
+npx musubix3 tdd red TEST-EXAMPLE-003 --requirement REQ-EXAMPLE-003 --command test
+# Replace the stub body with the correct implementation.
+npx musubix3 tdd green TEST-EXAMPLE-003 --requirement REQ-EXAMPLE-003 --command test
+```
+
 ## Command reference
 
 All analysis commands accept `--root <directory>` and `--json`. Files resolve

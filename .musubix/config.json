@@ -209,6 +209,18 @@
       "adapter": "vitest",
       "required": false,
       "timeoutMs": 120000
+    },
+    {
+      "name": "tdd-red-collection-guidance-tests",
+      "command": "npx",
+      "args": [
+        "vitest",
+        "run",
+        "tests/tdd-red-collection-guidance.test.ts"
+      ],
+      "adapter": "vitest",
+      "required": true,
+      "timeoutMs": 120000
     }
   ],
   "requiredChecks": [

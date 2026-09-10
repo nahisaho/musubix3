@@ -327,7 +327,12 @@ function dotnetResults(text: string): MusubixTestReport['tests'] {
 }
 
 export function normalizeAdapterReport(adapter: TestAdapter, text: string, targetTestId?: string): MusubixTestReport {
+  /* @id CODE-TDD-RED-COLLECTION-GUIDANCE-001
+   * @implements REQ-TDD-RED-COLLECTION-GUIDANCE-001
+   * @design DES-TDD-RED-COLLECTION-GUIDANCE-001
+   */
   const tests: MusubixTestReport['tests'] = [];
+  const suiteFailureMessages: string[] = [];
   if (adapter === 'vitest' || adapter === 'jest') {
     const value = JSON.parse(text) as Record<string, unknown>;
     const suites = Array.isArray(value.testResults) ? value.testResults : [];
@@ -336,6 +341,10 @@ export function normalizeAdapterReport(adapter: TestAdapter, text: string, targe
       for (const assertion of assertions as Array<Record<string, unknown>>) {
         const id = idOf(assertion.fullName) ?? idOf(assertion.title);
         if (id) tests.push({ id, status: status(assertion.status) });
+      }
+      if (!assertions.length) {
+        const failureMessage = suite.message ?? suite.failureMessage;
+        if (typeof failureMessage === 'string' && failureMessage.trim()) suiteFailureMessages.push(failureMessage.trim());
       }
     }
   } else if (adapter === 'pytest') {
@@ -382,7 +391,10 @@ export function normalizeAdapterReport(adapter: TestAdapter, text: string, targe
     const guidance = adapter === 'pytest'
       ? ' Pytest node IDs must include the normalized TEST ID (for example test_TEST_APP_001), or configure a project-local musubix-json runner.'
       : '';
-    throw new Error(`No annotated TEST-* identities were found in the ${adapter} report.${guidance}`);
+    const suiteGuidance = suiteFailureMessages.length
+      ? `\n${suiteFailureMessages.map((message) => `Suite failure: ${message}`).join('\n')}`
+      : '';
+    throw new Error(`No annotated TEST-* identities were found in the ${adapter} report.${guidance}${suiteGuidance}`);
   }
   return selected;
 }

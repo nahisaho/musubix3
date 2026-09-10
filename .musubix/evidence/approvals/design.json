@@ -41,6 +41,8 @@
     ".musubix/features/tdd-fingerprint-scoping/requirements.md": "d3e480fc0ef92edb87f2c22d1d67a00fc177fde913c68d0187aa45375b14d4c9",
     ".musubix/features/tdd-green-requirement-scoping/design.md": "5e35edb88e48648223f0360f067fcad15d078455050d2ebabaf5ee572abca6c5",
     ".musubix/features/tdd-green-requirement-scoping/requirements.md": "456edab50870ba2fc3297eccee1c4dc114a8c8400354cb3e4b00769bb8b29ba1",
+    ".musubix/features/tdd-red-collection-guidance/design.md": "d1380ce63a1fbd0c6a1a08d899df11bf92477e2eb058954ee5cde2cd2eafd6bf",
+    ".musubix/features/tdd-red-collection-guidance/requirements.md": "a4a49066c5146a4b8fc3ce8603a56c19721cb26573906d95de0bf150ed473fb7",
     ".musubix/features/tdd-superseded-cycle-scoping/design.md": "45f69705b11c56b5c7e2e243534d3918b7c46723d3f4bf7ee342df19187ee2cd",
     ".musubix/features/tdd-superseded-cycle-scoping/requirements.md": "b02f10b42474ac383e278c6fa38291ba965210213d45bc759ff7db67f368e80a",
     ".musubix/features/workflow-multi-session-verification/design.md": "16a916ca279ddfddb7b18a59bef7c9bee5c4608d751187208da3a6c3b46e0d55",
@@ -48,7 +50,7 @@
     ".musubix/features/workflow-session-shutdown/design.md": "225d1718c0ea1628dae251f06b1c5ddafda9a7ae92a15e3d961efbea51c0e0ac",
     ".musubix/features/workflow-session-shutdown/requirements.md": "2b8d72e2fcb1dbf5bc24ee733182cf2b692e33c50550ce7a8de2e9c5a8c32c0d"
   },
-  "artifactSha256": "b27a71eeb0691fcb90bb744207c742f594adee1d5e57705df39ec16fdcc969d9",
+  "artifactSha256": "62874becfc6f9f57464096281e891ee57ad0b38158cf4d7de37fd24edc4a3321",
   "approver": "nahisaho",
-  "approvedAt": "2026-09-10T12:31:52.502Z"
+  "approvedAt": "2026-09-10T14:09:04.492Z"
 }
