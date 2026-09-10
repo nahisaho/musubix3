@@ -18,6 +18,7 @@
     ".musubix/decisions/ADR-0014.md": "363215afb473df46809fb73875e18451d11e30587d8efca472f253082f789f53",
     ".musubix/decisions/ADR-0015.md": "00e8a5d34efba2aa9bda8f49b8a2cbe221d14d74df9f2f677950002bedd6795c",
     ".musubix/decisions/ADR-0016.md": "31573419c17de4a3ecd0aa3f361c08f25c722095419cd35023e4382ac4f87895",
+    ".musubix/decisions/ADR-0017.md": "791187943432f1d0d420b4fddb0404f500d8f7a2f20f9ed8597f4f1d6b20779a",
     ".musubix/features/adapter-pattern-recognition/design.md": "a8e0c4a11f626cb4a41c9b5b53359c072ec0c3161f704791f42ba8af38124a70",
     ".musubix/features/adapter-pattern-recognition/requirements.md": "5731561a0a04982b8a5c305bdeeae6084bcf0ee8846f295eaaaabc823d1f9793",
     ".musubix/features/change-requirement-batches/design.md": "ea7ee9aa17f9f675bf649e9eec90b07e335a6fb793faf4c9951c5f747510f453",
@@ -26,6 +27,8 @@
     ".musubix/features/cli-workflow-ux-v019/requirements.md": "8ac7b7e793009d95a03b53de1e3aca043d4433a7b6de9511d8547ebc33b5e7b2",
     ".musubix/features/command-working-directory/design.md": "70ccde3b2777c2cf9e06881a20ecd5b50107d9dba680694f92b811cacb5052eb",
     ".musubix/features/command-working-directory/requirements.md": "4a376dfe7a6e9b1bb1ff4a947fb2807f7179a1798df369040c879a1b9e4fcb90",
+    ".musubix/features/design-adr-none-exemption/design.md": "8e15fe5029540a37c908ceeb7d3721ce7b2f2164e9d2c66e31d2211bd700eb63",
+    ".musubix/features/design-adr-none-exemption/requirements.md": "f7586dbbc34f8dccb06141efc277ab817b15a6ac0a9fb7ed2faff9bdab144373",
     ".musubix/features/ears-id-diagnostic-messages/design.md": "d282350c0c5cd6c923c0a54e6e60d633f7ab4a6c570ffdc891ba4a92d2e4e1d2",
     ".musubix/features/ears-id-diagnostic-messages/requirements.md": "49afd4e574f1179a31707323fbbcfffabf1051f666ad1fcba60b39b2e7da3808",
     ".musubix/features/human-approval-gates/design.md": "ce1e316afee28082001ddedbce734a7766562889bd28f3eea610909c8d736206",
@@ -45,7 +48,7 @@
     ".musubix/features/workflow-session-shutdown/design.md": "225d1718c0ea1628dae251f06b1c5ddafda9a7ae92a15e3d961efbea51c0e0ac",
     ".musubix/features/workflow-session-shutdown/requirements.md": "2b8d72e2fcb1dbf5bc24ee733182cf2b692e33c50550ce7a8de2e9c5a8c32c0d"
   },
-  "artifactSha256": "a9794101db621962969c36d32af859578c5f4632077b7b8a839861f93dc43f0d",
+  "artifactSha256": "b27a71eeb0691fcb90bb744207c742f594adee1d5e57705df39ec16fdcc969d9",
   "approver": "nahisaho",
-  "approvedAt": "2026-09-10T12:10:36.371Z"
+  "approvedAt": "2026-09-10T12:31:52.502Z"
 }

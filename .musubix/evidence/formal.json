@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-10T12:26:46.727Z",
-  "totalRequirements": 35,
+  "generatedAt": "2026-09-10T12:36:57.964Z",
+  "totalRequirements": 38,
   "modeledRequirements": 3,
-  "modeledFraction": 0.08571428571428572,
+  "modeledFraction": 0.07894736842105263,
   "result": {
     "valid": true,
     "abstraction": "Consistency of explicit branch-scoped conditional, exact unit-normalized integer numeric, bounded temporal interval, deterministic state-transition, and controlled unconditional Boolean constraints; not implementation correctness.",
@@ -47,6 +47,9 @@
       "REQ-COMMAND-WORKING-DIRECTORY-001",
       "REQ-COMMAND-WORKING-DIRECTORY-002",
       "REQ-COMMAND-WORKING-DIRECTORY-003",
+      "REQ-DESIGN-ADR-NONE-EXEMPTION-001",
+      "REQ-DESIGN-ADR-NONE-EXEMPTION-002",
+      "REQ-DESIGN-ADR-NONE-EXEMPTION-003",
       "REQ-EARS-ID-DIAGNOSTIC-MESSAGES-001",
       "REQ-EARS-ID-DIAGNOSTIC-MESSAGES-002",
       "REQ-EARS-ID-DIAGNOSTIC-MESSAGES-003",
@@ -132,6 +135,21 @@
         "code": "FORMAL_UNSUPPORTED",
         "severity": "warning",
         "message": "REQ-COMMAND-WORKING-DIRECTORY-003 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-DESIGN-ADR-NONE-EXEMPTION-001 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-DESIGN-ADR-NONE-EXEMPTION-002 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-DESIGN-ADR-NONE-EXEMPTION-003 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
       },
       {
         "code": "FORMAL_UNSUPPORTED",
@@ -245,6 +263,7 @@
     ".musubix/features/change-requirement-batches/requirements.md": "215dff587257d8edf5ba17c60b610bb6abe4497d867ad20de28e5ef520184c7f",
     ".musubix/features/cli-workflow-ux-v019/requirements.md": "8ac7b7e793009d95a03b53de1e3aca043d4433a7b6de9511d8547ebc33b5e7b2",
     ".musubix/features/command-working-directory/requirements.md": "4a376dfe7a6e9b1bb1ff4a947fb2807f7179a1798df369040c879a1b9e4fcb90",
+    ".musubix/features/design-adr-none-exemption/requirements.md": "f7586dbbc34f8dccb06141efc277ab817b15a6ac0a9fb7ed2faff9bdab144373",
     ".musubix/features/ears-id-diagnostic-messages/requirements.md": "49afd4e574f1179a31707323fbbcfffabf1051f666ad1fcba60b39b2e7da3808",
     ".musubix/features/human-approval-gates/requirements.md": "f2ae2380935831bb102cd6a7726f2a208ab1719e035157302ef51ed28f624fb0",
     ".musubix/features/session-scoped-development/requirements.md": "640aece168b4e6848c0d1e6371f0bfeb433fa8addfd064a77d050891d69d9a4f",

@@ -341,6 +341,11 @@ feature: auth
 
 英語ラベルは `Responsibilities` / `Interfaces` / `Constraints` / `Requirements` /
 `ADRs` / `Depends-On`。ADR には背景・採用案・却下案・結果を記録します。
+本質的にADRに値する決定が存在しないcomponentは、実際のADR参照の代わりに
+`ADRs: none — <具体的な理由>`（プレースホルダーでない理由）と書けます。
+理由のない`none`単体、空欄、プレースホルダー理由（`TODO`/`TBD`/`N/A`/`未定`）は
+引き続き検証エラーとなり、`none`マーカーがあり理由が使えない場合は
+`DES_ADR_EXEMPTION_REASON`として報告されます。
 C4-like 図は明示した内容だけを描画し、完全な C4 モデルを推論しません。
 
 正本となるコード・テストに、エンティティごとに1つのコメントを追加します。

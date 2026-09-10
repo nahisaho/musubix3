@@ -13,6 +13,10 @@ export function validateDesign(text: string, path = '<input>', context: DesignCo
   const diagnostics = [...parsed.diagnostics, ...duplicates(sections, path)];
   if (parsed.metadata.schemaVersion !== undefined && parsed.metadata.schemaVersion !== 1) diagnostics.push(error('DES_SCHEMA', 'Unsupported schemaVersion; expected 1.', path));
   if (!sections.length) diagnostics.push(error('DES_MISSING', 'No components found (## DES-FEATURE-001: Title).', path));
+  /* @id CODE-DESIGN-ADR-NONE-EXEMPTION-001
+   * @implements REQ-DESIGN-ADR-NONE-EXEMPTION-001 REQ-DESIGN-ADR-NONE-EXEMPTION-002 REQ-DESIGN-ADR-NONE-EXEMPTION-003
+   * @design DES-DESIGN-ADR-NONE-EXEMPTION-001
+   */
   const value = sections.map((s): Component => {
     if (!ids.design.test(s.id)) diagnostics.push(error('DES_ID', `Invalid design ID ${s.id}.`, path, s.line));
     if (!s.title) diagnostics.push(error('DES_TITLE', 'Component title is required.', path, s.line));
@@ -23,10 +27,19 @@ export function validateDesign(text: string, path = '<input>', context: DesignCo
       if (!content || /^(TODO|TBD|N\/A|未定)$/i.test(content)) diagnostics.push(error('DES_FIELD', `${s.id} requires concrete ${name}.`, path, s.line));
     }
     const requirements = references(field(s.body, 'Requirements|要求'), 'REQ');
-    const decisions = references(field(s.body, 'ADRs|ADR|決定'), 'ADR');
+    const adrField = field(s.body, 'ADRs|ADR|決定');
+    const decisions = references(adrField, 'ADR');
     const dependencies = references(field(s.body, 'Depends-On|依存'), 'DES');
     if (!requirements.length) diagnostics.push(error('DES_REQUIREMENTS', `${s.id} must link requirements.`, path, s.line));
-    if (!decisions.length) diagnostics.push(error('DES_ADR', `${s.id} must reference an ADR.`, path, s.line));
+    if (!decisions.length) {
+      const exemption = /^none(?:\s*[-–—:]\s*(.*))?$/i.exec(adrField.trim());
+      if (exemption) {
+        const reason = exemption[1]?.trim() ?? '';
+        if (!reason || /^(TODO|TBD|N\/A|未定)$/i.test(reason)) diagnostics.push(error('DES_ADR_EXEMPTION_REASON', `${s.id} declares "none" but must give a concrete reason (e.g. "none — <reason>").`, path, s.line));
+      } else {
+        diagnostics.push(error('DES_ADR', `${s.id} must reference an ADR.`, path, s.line));
+      }
+    }
     for (const id of requirements) {
       if (!ids.requirement.test(id) || (context.requirementIds && !context.requirementIds.has(id))) diagnostics.push(error('DES_REQUIREMENT_LINK', `Unknown or invalid requirement ${id}.`, path, s.line));
     }

@@ -330,7 +330,12 @@ Depends-On: DES-AUTH-002
 ```
 
 Put these entries in their respective `requirements.md` / `design.md`; declare
-every dependency as another component. Each requirement has one controlled
+every dependency as another component. A component that genuinely has no
+architecturally significant decision may write `ADRs: none — <reason>` (a
+concrete, non-placeholder reason) instead of a real ADR reference; a bare
+`none`, an empty field, or a placeholder reason (`TODO`/`TBD`/`N/A`/`未定`)
+still fails validation, now with `DES_ADR_EXEMPTION_REASON` when a "none"
+marker is present without a usable reason. Each requirement has one controlled
 statement. Accepted priorities are `must` (default), `should`, `may`.
 Requirement types are `functional` (default) and `non-functional`.
 `Formal:` is optional strict single-line JSON. Supported kinds are `conditional`,

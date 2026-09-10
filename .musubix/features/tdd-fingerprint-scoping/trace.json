@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-10T12:26:43.760Z",
+  "generatedAt": "2026-09-10T12:36:54.931Z",
   "nodes": [
     {
       "id": "CODE-SESSION-SCOPED-DEVELOPMENT-001",
@@ -102,6 +102,12 @@
       "id": "ADR-0016",
       "kind": "adr",
       "path": ".musubix/decisions/ADR-0016.md",
+      "line": 1
+    },
+    {
+      "id": "ADR-0017",
+      "kind": "adr",
+      "path": ".musubix/decisions/ADR-0017.md",
       "line": 1
     },
     {
@@ -273,6 +279,33 @@
       "kind": "requirement",
       "path": ".musubix/features/command-working-directory/requirements.md",
       "line": 28,
+      "mandatory": true
+    },
+    {
+      "id": "DES-DESIGN-ADR-NONE-EXEMPTION-001",
+      "kind": "design",
+      "path": ".musubix/features/design-adr-none-exemption/design.md",
+      "line": 7
+    },
+    {
+      "id": "REQ-DESIGN-ADR-NONE-EXEMPTION-001",
+      "kind": "requirement",
+      "path": ".musubix/features/design-adr-none-exemption/requirements.md",
+      "line": 18,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-DESIGN-ADR-NONE-EXEMPTION-002",
+      "kind": "requirement",
+      "path": ".musubix/features/design-adr-none-exemption/requirements.md",
+      "line": 25,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-DESIGN-ADR-NONE-EXEMPTION-003",
+      "kind": "requirement",
+      "path": ".musubix/features/design-adr-none-exemption/requirements.md",
+      "line": 32,
       "mandatory": true
     },
     {
@@ -608,6 +641,12 @@
       "line": 126
     },
     {
+      "id": "CODE-DESIGN-ADR-NONE-EXEMPTION-001",
+      "kind": "code",
+      "path": "packages/domain/src/design.ts",
+      "line": 16
+    },
+    {
       "id": "CODE-EARS-ID-DIAGNOSTIC-MESSAGES-001",
       "kind": "code",
       "path": "packages/domain/src/requirements.ts",
@@ -756,6 +795,24 @@
       "kind": "test",
       "path": "tests/command-working-directory.test.ts",
       "line": 64
+    },
+    {
+      "id": "TEST-DESIGN-ADR-NONE-EXEMPTION-001",
+      "kind": "test",
+      "path": "tests/design-adr-none-exemption.test.ts",
+      "line": 10
+    },
+    {
+      "id": "TEST-DESIGN-ADR-NONE-EXEMPTION-002",
+      "kind": "test",
+      "path": "tests/design-adr-none-exemption.test.ts",
+      "line": 19
+    },
+    {
+      "id": "TEST-DESIGN-ADR-NONE-EXEMPTION-003",
+      "kind": "test",
+      "path": "tests/design-adr-none-exemption.test.ts",
+      "line": 31
     },
     {
       "id": "TEST-EARS-ID-DIAGNOSTIC-MESSAGES-001",
@@ -971,6 +1028,26 @@
     {
       "from": "ADR-0016",
       "to": "DES-COMMAND-WORKING-DIRECTORY-002",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-DESIGN-ADR-NONE-EXEMPTION-001",
+      "to": "REQ-DESIGN-ADR-NONE-EXEMPTION-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-DESIGN-ADR-NONE-EXEMPTION-001",
+      "to": "REQ-DESIGN-ADR-NONE-EXEMPTION-002",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-DESIGN-ADR-NONE-EXEMPTION-001",
+      "to": "REQ-DESIGN-ADR-NONE-EXEMPTION-003",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0017",
+      "to": "DES-DESIGN-ADR-NONE-EXEMPTION-001",
       "relation": "decides"
     },
     {
@@ -1459,6 +1536,26 @@
       "relation": "implements"
     },
     {
+      "from": "CODE-DESIGN-ADR-NONE-EXEMPTION-001",
+      "to": "REQ-DESIGN-ADR-NONE-EXEMPTION-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-DESIGN-ADR-NONE-EXEMPTION-001",
+      "to": "REQ-DESIGN-ADR-NONE-EXEMPTION-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-DESIGN-ADR-NONE-EXEMPTION-001",
+      "to": "REQ-DESIGN-ADR-NONE-EXEMPTION-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-DESIGN-ADR-NONE-EXEMPTION-001",
+      "to": "DES-DESIGN-ADR-NONE-EXEMPTION-001",
+      "relation": "implements"
+    },
+    {
       "from": "CODE-EARS-ID-DIAGNOSTIC-MESSAGES-001",
       "to": "REQ-EARS-ID-DIAGNOSTIC-MESSAGES-001",
       "relation": "implements"
@@ -1599,6 +1696,21 @@
       "relation": "verifies"
     },
     {
+      "from": "TEST-DESIGN-ADR-NONE-EXEMPTION-001",
+      "to": "REQ-DESIGN-ADR-NONE-EXEMPTION-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-DESIGN-ADR-NONE-EXEMPTION-002",
+      "to": "REQ-DESIGN-ADR-NONE-EXEMPTION-002",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-DESIGN-ADR-NONE-EXEMPTION-003",
+      "to": "REQ-DESIGN-ADR-NONE-EXEMPTION-003",
+      "relation": "verifies"
+    },
+    {
       "from": "TEST-EARS-ID-DIAGNOSTIC-MESSAGES-001",
       "to": "REQ-EARS-ID-DIAGNOSTIC-MESSAGES-001",
       "relation": "verifies"
@@ -1675,6 +1787,7 @@
     ".musubix/decisions/ADR-0014.md": "363215afb473df46809fb73875e18451d11e30587d8efca472f253082f789f53",
     ".musubix/decisions/ADR-0015.md": "00e8a5d34efba2aa9bda8f49b8a2cbe221d14d74df9f2f677950002bedd6795c",
     ".musubix/decisions/ADR-0016.md": "31573419c17de4a3ecd0aa3f361c08f25c722095419cd35023e4382ac4f87895",
+    ".musubix/decisions/ADR-0017.md": "791187943432f1d0d420b4fddb0404f500d8f7a2f20f9ed8597f4f1d6b20779a",
     ".musubix/features/adapter-pattern-recognition/design.md": "a8e0c4a11f626cb4a41c9b5b53359c072ec0c3161f704791f42ba8af38124a70",
     ".musubix/features/adapter-pattern-recognition/requirements.md": "5731561a0a04982b8a5c305bdeeae6084bcf0ee8846f295eaaaabc823d1f9793",
     ".musubix/features/change-requirement-batches/design.md": "ea7ee9aa17f9f675bf649e9eec90b07e335a6fb793faf4c9951c5f747510f453",
@@ -1683,6 +1796,8 @@
     ".musubix/features/cli-workflow-ux-v019/requirements.md": "8ac7b7e793009d95a03b53de1e3aca043d4433a7b6de9511d8547ebc33b5e7b2",
     ".musubix/features/command-working-directory/design.md": "70ccde3b2777c2cf9e06881a20ecd5b50107d9dba680694f92b811cacb5052eb",
     ".musubix/features/command-working-directory/requirements.md": "4a376dfe7a6e9b1bb1ff4a947fb2807f7179a1798df369040c879a1b9e4fcb90",
+    ".musubix/features/design-adr-none-exemption/design.md": "8e15fe5029540a37c908ceeb7d3721ce7b2f2164e9d2c66e31d2211bd700eb63",
+    ".musubix/features/design-adr-none-exemption/requirements.md": "f7586dbbc34f8dccb06141efc277ab817b15a6ac0a9fb7ed2faff9bdab144373",
     ".musubix/features/ears-id-diagnostic-messages/design.md": "d282350c0c5cd6c923c0a54e6e60d633f7ab4a6c570ffdc891ba4a92d2e4e1d2",
     ".musubix/features/ears-id-diagnostic-messages/requirements.md": "49afd4e574f1179a31707323fbbcfffabf1051f666ad1fcba60b39b2e7da3808",
     ".musubix/features/human-approval-gates/design.md": "ce1e316afee28082001ddedbce734a7766562889bd28f3eea610909c8d736206",
@@ -1725,7 +1840,7 @@
     "packages/cli/src/install.ts": "e8bf7c7cb73462b1f18b01a695ad89d41c3a2a9e0231e112f99b4f40800896c3",
     "packages/cli/src/main.ts": "d8f167f135517bba966698ec81817c40a5e3c4fde1c6a3823b60990dfca521b8",
     "packages/domain/src/constitution.ts": "514278499642ff46ed902864b9192f566b116b4f92eb3fafa6b62588335e170a",
-    "packages/domain/src/design.ts": "5eddae3eec9a2fb662406bc3f7e307c11ccd87ef94d7f87363c725a74d2abb59",
+    "packages/domain/src/design.ts": "fc1ca4d3249abc9705ba4b6f296e0f4fa3b3d6ff6d5d82e51c99f49fc7a93ac9",
     "packages/domain/src/index.ts": "43243e9279e3826b23cd8d8b4365854974112ce4cf17cfb0f0ee32e6b28e9cc6",
     "packages/domain/src/markdown.ts": "5c6b96486a2e31944d7d128d241f1772d0926f34464fa2b59c20748a6754487a",
     "packages/domain/src/requirements.ts": "65ea1e6d3bbd29e929c785037b930e5f5eb5535b607403e5f30c3657d36e9175",
@@ -1742,6 +1857,7 @@
     "tests/cli-package.test.ts": "65ecdbdf2b89108ad43af088d8fe735d5fcd3015d278f68476a6b2472ab73e33",
     "tests/cli-workflow-ux.test.ts": "d2b41c098b4953f547d6acf4ae91bb507c865ce1685d4f5948ed3ac6accd0376",
     "tests/command-working-directory.test.ts": "82dc863b1fcc5cd8a5ea1534238ef2f61f15e5d6c5e25d61fce43a7efe9bbc02",
+    "tests/design-adr-none-exemption.test.ts": "f8a4771eb8b71a8c83b9ef782e9ed8646ef408aa4169298ab7a02553aa1c9ed7",
     "tests/domain.test.ts": "be79af0613fe35d70659d15155efc859721d764a0ea40c9764c2e4d7f89ea16d",
     "tests/ears-id-diagnostic-messages.test.ts": "b87dbcbbd8a1c6d2c8fddd2ad0c7483da022281b4fae2f968972413933ee009a",
     "tests/formal-knowledge.test.ts": "325ff2567b72708b83d3eab7b2986e7ceb7beb252ed21276b0db7436ffa367a4",

@@ -197,6 +197,18 @@
       "adapter": "vitest",
       "required": false,
       "timeoutMs": 120000
+    },
+    {
+      "name": "design-adr-none-exemption-tests",
+      "command": "npx",
+      "args": [
+        "vitest",
+        "run",
+        "tests/design-adr-none-exemption.test.ts"
+      ],
+      "adapter": "vitest",
+      "required": false,
+      "timeoutMs": 120000
     }
   ],
   "requiredChecks": [

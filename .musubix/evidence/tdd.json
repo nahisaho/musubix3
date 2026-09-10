@@ -1593,6 +1593,209 @@
         "diagnostics": [],
         "order": 139
       }
+    },
+    {
+      "cycleId": "6862d82d-f18e-4fa2-bda1-4d71c0a30e37",
+      "requirementId": "REQ-DESIGN-ADR-NONE-EXEMPTION-001",
+      "testId": "TEST-DESIGN-ADR-NONE-EXEMPTION-001",
+      "testPath": "tests/design-adr-none-exemption.test.ts",
+      "commandName": "design-adr-none-exemption-tests",
+      "red": {
+        "phase": "red",
+        "valid": true,
+        "scoped": true,
+        "resultObserved": true,
+        "testStatus": "failed",
+        "reportSha256": "5b4ced4f6092a688bc5f654338fd9c929c7bbba5f751210dee0659758399dd66",
+        "commandSha256": "346f32f8d34f4488f67697673de7314257edbb562f4f740378361b804c7caad0",
+        "outputSha256": "ca721c1facb90d18c3961358edbe2c288dad1c5fb74bcf013b350ae01a3226cc",
+        "exitCode": 1,
+        "durationMs": 788,
+        "testFingerprint": "27024df79db019d2b97c0e7a86cbc615159f64e8cf2737d9a7a63c5735463e43",
+        "sourceFingerprint": "a4d03fe9ae47a70efd0fb4664b923a923fbee1e6ed9e664aec123c5a9c2ce810",
+        "executionId": "62ac9ecd-27fe-48c5-acd2-2a570ef4a7ed",
+        "recordedAt": "2026-09-10T12:32:54.404Z",
+        "diagnostics": [],
+        "order": 140
+      },
+      "green": {
+        "phase": "green",
+        "valid": true,
+        "scoped": true,
+        "resultObserved": true,
+        "testStatus": "passed",
+        "reportSha256": "8b09c82b0d14620a0f18fb77449a3f09b0f526f368875428f444bf6f089727c9",
+        "commandSha256": "346f32f8d34f4488f67697673de7314257edbb562f4f740378361b804c7caad0",
+        "outputSha256": "ca721c1facb90d18c3961358edbe2c288dad1c5fb74bcf013b350ae01a3226cc",
+        "exitCode": 0,
+        "durationMs": 763,
+        "testFingerprint": "27024df79db019d2b97c0e7a86cbc615159f64e8cf2737d9a7a63c5735463e43",
+        "sourceFingerprint": "faadab01812bee52cd86d6ceeb959c2b7c59287347496f0f8acedf2703b31cf1",
+        "executionId": "f25e35b7-eb34-4875-9ca5-b894b3db3738",
+        "recordedAt": "2026-09-10T12:34:12.801Z",
+        "diagnostics": [],
+        "order": 145
+      }
+    },
+    {
+      "cycleId": "fe17ad93-afd5-4ba2-a6ff-e888483995d3",
+      "requirementId": "REQ-DESIGN-ADR-NONE-EXEMPTION-002",
+      "testId": "TEST-DESIGN-ADR-NONE-EXEMPTION-002",
+      "testPath": "tests/design-adr-none-exemption.test.ts",
+      "commandName": "design-adr-none-exemption-tests",
+      "red": {
+        "phase": "red",
+        "valid": true,
+        "scoped": true,
+        "resultObserved": true,
+        "testStatus": "failed",
+        "reportSha256": "eb45f3cd3bcdebe323a94da37be113943fb488fc347a4e9d76a736ad2338ea22",
+        "commandSha256": "2c36ea2dec8525162d09167e1444f0f9f745f5b46c67ae101645844defa046da",
+        "outputSha256": "2a2a590f65f0e44b112e5f8869c2c19d7f00961ba6133ddcedd769756a686692",
+        "exitCode": 1,
+        "durationMs": 766,
+        "testFingerprint": "871b5291238c291e48500f40e16af44aabc5865034984fe39ae9ee75cdf51c89",
+        "sourceFingerprint": "a4d03fe9ae47a70efd0fb4664b923a923fbee1e6ed9e664aec123c5a9c2ce810",
+        "executionId": "9187d961-cf33-410e-95b2-36840cefb9a4",
+        "recordedAt": "2026-09-10T12:33:00.559Z",
+        "diagnostics": [],
+        "order": 141
+      },
+      "green": {
+        "phase": "green",
+        "valid": true,
+        "scoped": true,
+        "resultObserved": true,
+        "testStatus": "passed",
+        "reportSha256": "b7e91c97e4d8513393b84dbb65d574ae95df5a67cdcf2ec545c0201cd587cd5e",
+        "commandSha256": "2c36ea2dec8525162d09167e1444f0f9f745f5b46c67ae101645844defa046da",
+        "outputSha256": "2a2a590f65f0e44b112e5f8869c2c19d7f00961ba6133ddcedd769756a686692",
+        "exitCode": 0,
+        "durationMs": 725,
+        "testFingerprint": "871b5291238c291e48500f40e16af44aabc5865034984fe39ae9ee75cdf51c89",
+        "sourceFingerprint": "faadab01812bee52cd86d6ceeb959c2b7c59287347496f0f8acedf2703b31cf1",
+        "executionId": "e0cb7fa0-49e7-4019-bd97-04f2400c15dd",
+        "recordedAt": "2026-09-10T12:34:14.958Z",
+        "diagnostics": [],
+        "order": 146
+      }
+    },
+    {
+      "cycleId": "6e522fc5-df3f-4724-a46e-6b4cb64d9bb5",
+      "requirementId": "REQ-DESIGN-ADR-NONE-EXEMPTION-003",
+      "testId": "TEST-DESIGN-ADR-NONE-EXEMPTION-003",
+      "testPath": "tests/design-adr-none-exemption.test.ts",
+      "commandName": "design-adr-none-exemption-tests",
+      "red": {
+        "phase": "red",
+        "valid": false,
+        "scoped": true,
+        "resultObserved": false,
+        "testStatus": "passed",
+        "reportSha256": "55dc7cb79ea58ef7bc2721e3bf6a2edf6c0f895a2f32bf77ecc4c3fcef116f61",
+        "commandSha256": "2b1bb0e4df2f4c49d6032f76cf726f1c1f802601a0ddb83784346f0a5e1aad93",
+        "outputSha256": "e42c316a53f78f6f37ab1a7c495883802c1a1db7eae4e8e9221049f71a833d44",
+        "exitCode": 0,
+        "durationMs": 722,
+        "testFingerprint": "fd9cbb74c71c253c1a19d7d2dc730b8756350d802cd809bffe3b25c860a01e55",
+        "sourceFingerprint": "a4d03fe9ae47a70efd0fb4664b923a923fbee1e6ed9e664aec123c5a9c2ce810",
+        "executionId": "b87f94ef-e347-4d8f-9e3e-b05bba220503",
+        "recordedAt": "2026-09-10T12:33:02.764Z",
+        "diagnostics": [
+          {
+            "code": "TDD_TARGET_RESULT",
+            "severity": "error",
+            "message": "red requires TEST-DESIGN-ADR-NONE-EXEMPTION-003 to report failed, observed passed.",
+            "path": ".musubix/evidence/native/design-adr-none-exemption-tests/TEST-DESIGN-ADR-NONE-EXEMPTION-003.json"
+          },
+          {
+            "code": "TDD_PHASE_RESULT",
+            "severity": "error",
+            "message": "red requires a completed command with nonzero exit status."
+          }
+        ],
+        "order": 142
+      }
+    },
+    {
+      "cycleId": "14cb64df-cf14-4941-acd6-d2667d9b0136",
+      "requirementId": "REQ-DESIGN-ADR-NONE-EXEMPTION-003",
+      "testId": "TEST-DESIGN-ADR-NONE-EXEMPTION-003",
+      "testPath": "tests/design-adr-none-exemption.test.ts",
+      "commandName": "design-adr-none-exemption-tests",
+      "red": {
+        "phase": "red",
+        "valid": false,
+        "scoped": true,
+        "resultObserved": false,
+        "testStatus": "passed",
+        "reportSha256": "00fcfcbe8cf62616f41d390d77b458652d3b058fa9fec5f76d937a439a5b2013",
+        "commandSha256": "2b1bb0e4df2f4c49d6032f76cf726f1c1f802601a0ddb83784346f0a5e1aad93",
+        "outputSha256": "e42c316a53f78f6f37ab1a7c495883802c1a1db7eae4e8e9221049f71a833d44",
+        "exitCode": 0,
+        "durationMs": 775,
+        "testFingerprint": "fd9cbb74c71c253c1a19d7d2dc730b8756350d802cd809bffe3b25c860a01e55",
+        "sourceFingerprint": "a4d03fe9ae47a70efd0fb4664b923a923fbee1e6ed9e664aec123c5a9c2ce810",
+        "executionId": "95d14422-9a58-42ee-84e9-93c1d5078438",
+        "recordedAt": "2026-09-10T12:33:12.818Z",
+        "diagnostics": [
+          {
+            "code": "TDD_TARGET_RESULT",
+            "severity": "error",
+            "message": "red requires TEST-DESIGN-ADR-NONE-EXEMPTION-003 to report failed, observed passed.",
+            "path": ".musubix/evidence/native/design-adr-none-exemption-tests/TEST-DESIGN-ADR-NONE-EXEMPTION-003.json"
+          },
+          {
+            "code": "TDD_PHASE_RESULT",
+            "severity": "error",
+            "message": "red requires a completed command with nonzero exit status."
+          }
+        ],
+        "order": 143
+      }
+    },
+    {
+      "cycleId": "eda5e603-b99c-496b-9bbf-ca64d8af23d3",
+      "requirementId": "REQ-DESIGN-ADR-NONE-EXEMPTION-003",
+      "testId": "TEST-DESIGN-ADR-NONE-EXEMPTION-003",
+      "testPath": "tests/design-adr-none-exemption.test.ts",
+      "commandName": "design-adr-none-exemption-tests",
+      "red": {
+        "phase": "red",
+        "valid": true,
+        "scoped": true,
+        "resultObserved": true,
+        "testStatus": "failed",
+        "reportSha256": "a7e60f95a410a834467a227aabbd2323b25dbfb8894e4ab069de1d2870bb8068",
+        "commandSha256": "2b1bb0e4df2f4c49d6032f76cf726f1c1f802601a0ddb83784346f0a5e1aad93",
+        "outputSha256": "e42c316a53f78f6f37ab1a7c495883802c1a1db7eae4e8e9221049f71a833d44",
+        "exitCode": 1,
+        "durationMs": 750,
+        "testFingerprint": "fd9cbb74c71c253c1a19d7d2dc730b8756350d802cd809bffe3b25c860a01e55",
+        "sourceFingerprint": "fc3295babe5be2673ad13139c60090c3042baf333f313946dea6d07979de8ebf",
+        "executionId": "5e31e99e-cd51-47e3-be9a-8ec434e182bb",
+        "recordedAt": "2026-09-10T12:33:46.320Z",
+        "diagnostics": [],
+        "order": 144
+      },
+      "green": {
+        "phase": "green",
+        "valid": true,
+        "scoped": true,
+        "resultObserved": true,
+        "testStatus": "passed",
+        "reportSha256": "1959fd724e7b6bdf9b552356c15d217b9d974704b1d755f41bfe12bbc251d386",
+        "commandSha256": "2b1bb0e4df2f4c49d6032f76cf726f1c1f802601a0ddb83784346f0a5e1aad93",
+        "outputSha256": "e42c316a53f78f6f37ab1a7c495883802c1a1db7eae4e8e9221049f71a833d44",
+        "exitCode": 0,
+        "durationMs": 725,
+        "testFingerprint": "fd9cbb74c71c253c1a19d7d2dc730b8756350d802cd809bffe3b25c860a01e55",
+        "sourceFingerprint": "faadab01812bee52cd86d6ceeb959c2b7c59287347496f0f8acedf2703b31cf1",
+        "executionId": "08b8dfe5-9c46-4f88-8018-857c2ee788b8",
+        "recordedAt": "2026-09-10T12:34:17.185Z",
+        "diagnostics": [],
+        "order": 147
+      }
     }
   ],
   "chain": [
@@ -2567,6 +2770,102 @@
       "phaseEvidenceSha256": "7c038190abf10c11223397e9b5443d09aa947b76b5d0e7a47fabc56bb87784ec",
       "previousSha256": "b94704b1029feb4f3f5413fd5a8e2b77014bb4271028ab8457a15c3b469c0bfe",
       "recordSha256": "6f40f43f9cdc35e7cb797cda606bfc185ef07fa658426b003273577ce39e67ad"
+    },
+    {
+      "sequence": 82,
+      "cycleId": "6862d82d-f18e-4fa2-bda1-4d71c0a30e37",
+      "requirementId": "REQ-DESIGN-ADR-NONE-EXEMPTION-001",
+      "testId": "TEST-DESIGN-ADR-NONE-EXEMPTION-001",
+      "testPath": "tests/design-adr-none-exemption.test.ts",
+      "commandName": "design-adr-none-exemption-tests",
+      "phase": "red",
+      "phaseEvidenceSha256": "d99021f996ac5ecf839061d42cabf06f296ccd78c5f081e89adeb3fb18fbec42",
+      "previousSha256": "6f40f43f9cdc35e7cb797cda606bfc185ef07fa658426b003273577ce39e67ad",
+      "recordSha256": "9f6d29da314a2b7454d1ec0bf9eca23d6ea0398e3f4bf1f9f97192fa803c0847"
+    },
+    {
+      "sequence": 83,
+      "cycleId": "fe17ad93-afd5-4ba2-a6ff-e888483995d3",
+      "requirementId": "REQ-DESIGN-ADR-NONE-EXEMPTION-002",
+      "testId": "TEST-DESIGN-ADR-NONE-EXEMPTION-002",
+      "testPath": "tests/design-adr-none-exemption.test.ts",
+      "commandName": "design-adr-none-exemption-tests",
+      "phase": "red",
+      "phaseEvidenceSha256": "4429003057467cc276ad914f32cb423e967cb0ce137f8e6ceb12e0380ae81ce5",
+      "previousSha256": "9f6d29da314a2b7454d1ec0bf9eca23d6ea0398e3f4bf1f9f97192fa803c0847",
+      "recordSha256": "20c289f4b1921dcf69009e61869e0824c9a1347a99513925b315da63414e1390"
+    },
+    {
+      "sequence": 84,
+      "cycleId": "6e522fc5-df3f-4724-a46e-6b4cb64d9bb5",
+      "requirementId": "REQ-DESIGN-ADR-NONE-EXEMPTION-003",
+      "testId": "TEST-DESIGN-ADR-NONE-EXEMPTION-003",
+      "testPath": "tests/design-adr-none-exemption.test.ts",
+      "commandName": "design-adr-none-exemption-tests",
+      "phase": "red",
+      "phaseEvidenceSha256": "f5e3d71251da296787433993852fc833b9c7d9f519bb80540162a8e0f2aa638c",
+      "previousSha256": "20c289f4b1921dcf69009e61869e0824c9a1347a99513925b315da63414e1390",
+      "recordSha256": "eeda076d6d2a5ed2765c1456939c8a99ddcd1bad418103e504aad62b340ed066"
+    },
+    {
+      "sequence": 85,
+      "cycleId": "14cb64df-cf14-4941-acd6-d2667d9b0136",
+      "requirementId": "REQ-DESIGN-ADR-NONE-EXEMPTION-003",
+      "testId": "TEST-DESIGN-ADR-NONE-EXEMPTION-003",
+      "testPath": "tests/design-adr-none-exemption.test.ts",
+      "commandName": "design-adr-none-exemption-tests",
+      "phase": "red",
+      "phaseEvidenceSha256": "657d49c738f8683db8f1d6078b4795ab696ad439c0528b63293bc048edab4410",
+      "previousSha256": "eeda076d6d2a5ed2765c1456939c8a99ddcd1bad418103e504aad62b340ed066",
+      "recordSha256": "8c8f110e2436bc1f4d83a03fd26a0eeffe965c6403367862a73cbeb78d5f1c3c"
+    },
+    {
+      "sequence": 86,
+      "cycleId": "eda5e603-b99c-496b-9bbf-ca64d8af23d3",
+      "requirementId": "REQ-DESIGN-ADR-NONE-EXEMPTION-003",
+      "testId": "TEST-DESIGN-ADR-NONE-EXEMPTION-003",
+      "testPath": "tests/design-adr-none-exemption.test.ts",
+      "commandName": "design-adr-none-exemption-tests",
+      "phase": "red",
+      "phaseEvidenceSha256": "d04c6101c493f668eed66acde17c705436f67baab8249f2030af4f8c53b4d40e",
+      "previousSha256": "8c8f110e2436bc1f4d83a03fd26a0eeffe965c6403367862a73cbeb78d5f1c3c",
+      "recordSha256": "b819acf92d61102200b0e70de97d8a5c6b516eb70c206ae50d9b2ee72c4ee2bc"
+    },
+    {
+      "sequence": 87,
+      "cycleId": "6862d82d-f18e-4fa2-bda1-4d71c0a30e37",
+      "requirementId": "REQ-DESIGN-ADR-NONE-EXEMPTION-001",
+      "testId": "TEST-DESIGN-ADR-NONE-EXEMPTION-001",
+      "testPath": "tests/design-adr-none-exemption.test.ts",
+      "commandName": "design-adr-none-exemption-tests",
+      "phase": "green",
+      "phaseEvidenceSha256": "73cde902dece4067d594546752741e7fc3706be08c367efd0f7e9c1cec8f311b",
+      "previousSha256": "b819acf92d61102200b0e70de97d8a5c6b516eb70c206ae50d9b2ee72c4ee2bc",
+      "recordSha256": "2a346f48850d9815943afbab04f065fb93c02baba57a32c093e759a17697b9fd"
+    },
+    {
+      "sequence": 88,
+      "cycleId": "fe17ad93-afd5-4ba2-a6ff-e888483995d3",
+      "requirementId": "REQ-DESIGN-ADR-NONE-EXEMPTION-002",
+      "testId": "TEST-DESIGN-ADR-NONE-EXEMPTION-002",
+      "testPath": "tests/design-adr-none-exemption.test.ts",
+      "commandName": "design-adr-none-exemption-tests",
+      "phase": "green",
+      "phaseEvidenceSha256": "10f533c2a596d43b4036a2a4645b117cfefc7cf54845507f72c2892102b2943f",
+      "previousSha256": "2a346f48850d9815943afbab04f065fb93c02baba57a32c093e759a17697b9fd",
+      "recordSha256": "2ab61c786e0cbbb683d42a1c2df7217173be431c004f01b765c264e2584e7475"
+    },
+    {
+      "sequence": 89,
+      "cycleId": "eda5e603-b99c-496b-9bbf-ca64d8af23d3",
+      "requirementId": "REQ-DESIGN-ADR-NONE-EXEMPTION-003",
+      "testId": "TEST-DESIGN-ADR-NONE-EXEMPTION-003",
+      "testPath": "tests/design-adr-none-exemption.test.ts",
+      "commandName": "design-adr-none-exemption-tests",
+      "phase": "green",
+      "phaseEvidenceSha256": "d5fdc44dc599d15aa90213ddeaf6b7dfcd289d6586e809cfb24204727017453a",
+      "previousSha256": "2ab61c786e0cbbb683d42a1c2df7217173be431c004f01b765c264e2584e7475",
+      "recordSha256": "0471b6208a71d3850a2e9777c2be3248f2a72296c150044f21a00f4fcabf83b2"
     }
   ]
 }
