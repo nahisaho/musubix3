@@ -2,6 +2,33 @@
 
 ## Unreleased
 
+## 0.1.11 - 2026-09-10
+
+- `workflow-verify`/`verifyWorkflowLogFile` now accept one or more Copilot
+  CLI transcript files in compatible mode, reconciling Skill declarations
+  recorded across multiple sessions (a `workflow.json` can accumulate
+  declarations over a repository's whole lifetime, spanning many distinct
+  sessions). Files are ordered by earliest event timestamp; a `toolCallId`
+  appearing in more than one file is rejected. `--strict`/`--session-id`
+  still require exactly one file. Single-file calls are byte-identical to
+  before.
+- Wire `tests/p3-workflow-provenance.test.ts` into structured test
+  commands so `TEST-WORKFLOW-SHUTDOWN-001` is reported as passed by
+  `gate`'s test-identities check.
+
+Known open debt shipped with this release (see Issue #1, closed by explicit
+user decision):
+- `TEST-CLI-WORKFLOW-UX-001`..`005` carry a cosmetic `TDD_TEST_STALE`
+  fingerprint drift from their original v0.1.9 authoring session; the
+  underlying tests still pass and are not behaviorally stale.
+- `CHANGE-0005`/`CHANGE-0006` cannot complete `change-record` chronology
+  validation: their phases were recorded after all real work was already
+  done, and the append-only order ledger cannot accept phase records
+  retroactively. Both are documented in their respective change files.
+
+`gate.ready` is `false` for these known, non-functional reasons; release
+proceeds by explicit user decision.
+
 ## 0.1.10 - 2026-09-09
 
 - Accept the current GitHub Copilot CLI terminal format in strict workflow
