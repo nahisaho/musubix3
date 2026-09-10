@@ -2331,6 +2331,49 @@
         "diagnostics": [],
         "order": 169
       }
+    },
+    {
+      "cycleId": "8cf32bab-f22f-44f8-811a-962cf1e075c5",
+      "requirementId": "REQ-BOUNDED-FILE-READ-CONCURRENCY-003",
+      "testId": "TEST-BOUNDED-FILE-READ-CONCURRENCY-004",
+      "testPath": "tests/bounded-file-read-concurrency.test.ts",
+      "commandName": "bounded-file-read-concurrency-tests",
+      "red": {
+        "phase": "red",
+        "valid": true,
+        "scoped": true,
+        "resultObserved": true,
+        "testStatus": "failed",
+        "reportSha256": "b357a06fcb36a01eb32eede89b30abb46450ffc64a6be331804d7beaf3ff1e7d",
+        "commandSha256": "3ae368749f6f1dfae9896a14778654993f28735df231f1810dd61cd61980db6b",
+        "outputSha256": "aab17746d4561602a656d65029adedd11810c095541bab2f9ddc41be0c721db9",
+        "exitCode": 1,
+        "durationMs": 2116,
+        "testFingerprint": "2233ae00c6d21af6f19c0f10990a1810a7f86633a1105faa62e11034ed6a0339",
+        "sourceFingerprint": "57262a46fd7b812b0564b25a92b6b7b103b42e8557fc4f91054dba4a12b1b503",
+        "executionId": "21a051ce-8085-483f-9c93-42af5050895f",
+        "recordedAt": "2026-09-10T22:07:31.626Z",
+        "diagnostics": [],
+        "order": 170
+      },
+      "green": {
+        "phase": "green",
+        "valid": true,
+        "scoped": true,
+        "resultObserved": true,
+        "testStatus": "passed",
+        "reportSha256": "68391e6f508c997a74bd5b925c6821f5419a12ae09cf86ca7d9a1b3d3d170522",
+        "commandSha256": "3ae368749f6f1dfae9896a14778654993f28735df231f1810dd61cd61980db6b",
+        "outputSha256": "aab17746d4561602a656d65029adedd11810c095541bab2f9ddc41be0c721db9",
+        "exitCode": 0,
+        "durationMs": 2175,
+        "testFingerprint": "2233ae00c6d21af6f19c0f10990a1810a7f86633a1105faa62e11034ed6a0339",
+        "sourceFingerprint": "0533b57f54c7e58f1dc7656f019bec5edbf722c4d694dc99577ff9973375518a",
+        "executionId": "0974126d-30f5-40d5-9482-ad2b9b872c25",
+        "recordedAt": "2026-09-10T22:07:58.638Z",
+        "diagnostics": [],
+        "order": 171
+      }
     }
   ],
   "chain": [
@@ -3665,6 +3708,30 @@
       "phaseEvidenceSha256": "edbbffe508c92d51d1b176dc3f15fd525f52e4048efbc8168614a950c4af33a8",
       "previousSha256": "6f4579040a278d96f3e147810c440f76d5b64db20c2f43899077f717a8fe449a",
       "recordSha256": "ebd59973b964d0a009def30ad01d0fc8dac0d1bd821bf7a92986df2055100a50"
+    },
+    {
+      "sequence": 112,
+      "cycleId": "8cf32bab-f22f-44f8-811a-962cf1e075c5",
+      "requirementId": "REQ-BOUNDED-FILE-READ-CONCURRENCY-003",
+      "testId": "TEST-BOUNDED-FILE-READ-CONCURRENCY-004",
+      "testPath": "tests/bounded-file-read-concurrency.test.ts",
+      "commandName": "bounded-file-read-concurrency-tests",
+      "phase": "red",
+      "phaseEvidenceSha256": "2eb6ddacc1a6689ff23103c5a618e98cb55301d12139a73b9773c6d1edbc5a0d",
+      "previousSha256": "ebd59973b964d0a009def30ad01d0fc8dac0d1bd821bf7a92986df2055100a50",
+      "recordSha256": "6e469fbec43422e533e9b94a243cdc3f462d2683acbce9fa6bb9bb75f49edf7e"
+    },
+    {
+      "sequence": 113,
+      "cycleId": "8cf32bab-f22f-44f8-811a-962cf1e075c5",
+      "requirementId": "REQ-BOUNDED-FILE-READ-CONCURRENCY-003",
+      "testId": "TEST-BOUNDED-FILE-READ-CONCURRENCY-004",
+      "testPath": "tests/bounded-file-read-concurrency.test.ts",
+      "commandName": "bounded-file-read-concurrency-tests",
+      "phase": "green",
+      "phaseEvidenceSha256": "a07e59cfb1fdc9a3975ec59828fcf36dbe07311bc09c897f1f355f1551cb8a0c",
+      "previousSha256": "6e469fbec43422e533e9b94a243cdc3f462d2683acbce9fa6bb9bb75f49edf7e",
+      "recordSha256": "1779cb5c52a0a64bb4ea768bce37c7ca3e745ced4214139b1284c79bbae2ea3a"
     }
   ]
 }

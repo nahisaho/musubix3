@@ -7,8 +7,9 @@ feature: bounded-file-read-concurrency
 Source: GitHub issue #17 — `musubix3 init` crashed with `EMFILE: too many
 open files` on a project containing a large vendored source tree
 (thousands of trace-eligible files) not covered by the standard
-exclusion list. `files.ts#snapshot` and the per-language source loaders in
-`graph.ts` read every matched file concurrently via a single unbounded
+exclusion list. `files.ts#snapshot`, the per-language source loaders in
+`graph.ts`, and `knowledge.ts#buildKnowledge`'s Markdown loader each read
+every matched file concurrently via a single unbounded
 `Promise.all(paths.map(readFile))`, so project size directly maps to
 simultaneously-open file descriptors.
 
@@ -25,3 +26,10 @@ Type: functional
 Pattern: ubiquitous
 Statement: The system shall load per-language source file text for Code Graph indexing using the same bounded-concurrency pool as trace fingerprinting, instead of one unbounded `Promise.all` per language.
 Acceptance: Given a source list for any supported language containing more entries than the concurrency limit, loading that language's texts for `graph index` completes successfully and returns the same text for every path as reading them one at a time; at no point does the number of concurrently in-flight reads for that language exceed the configured limit.
+
+## REQ-BOUNDED-FILE-READ-CONCURRENCY-003: Bound concurrent file reads during knowledge index building
+Priority: must
+Type: functional
+Pattern: ubiquitous
+Statement: The system shall load Markdown document text for `knowledge build` using the same bounded-concurrency pool as trace fingerprinting, instead of one unbounded `Promise.all` over every Markdown file in the project.
+Acceptance: Given a project containing more Markdown files than the concurrency limit, `knowledge build` completes successfully and returns the same document text for every path as reading them one at a time; at no point does the number of concurrently in-flight reads exceed the configured limit.

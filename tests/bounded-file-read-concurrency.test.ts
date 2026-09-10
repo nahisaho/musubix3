@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { indexGraph, mapWithConcurrency, snapshot } from '../packages/analysis/src/index.js';
+import { buildKnowledge, indexGraph, mapWithConcurrency, snapshot } from '../packages/analysis/src/index.js';
 import { fixture } from './helpers.js';
 
 const tracker = vi.hoisted(() => ({ enabled: false, inFlight: 0, maxInFlight: 0 }));
@@ -83,6 +83,27 @@ describe('bounded file-read concurrency for large projects', () => {
     try {
       const graph = await indexGraph(root, false);
       expect(graph.files.filter((path) => path.endsWith('.py'))).toHaveLength(300);
+    } finally {
+      tracker.enabled = false;
+    }
+    expect(tracker.maxInFlight).toBeLessThanOrEqual(256);
+  });
+
+  /** @id TEST-BOUNDED-FILE-READ-CONCURRENCY-004
+   * @verifies REQ-BOUNDED-FILE-READ-CONCURRENCY-003
+   */
+  it('TEST-BOUNDED-FILE-READ-CONCURRENCY-004 bounds concurrent reads while knowledge build loads many Markdown documents', async () => {
+    const files: Record<string, string> = {};
+    for (let index = 0; index < 300; index += 1) {
+      files[`docs/note-${index}.md`] = `# Note ${index}\ncontent ${index}\n`;
+    }
+    const root = await fixture(files);
+    tracker.enabled = true;
+    tracker.inFlight = 0;
+    tracker.maxInFlight = 0;
+    try {
+      const knowledge = await buildKnowledge(root);
+      expect(knowledge.documents.filter((d) => d.kind === 'artifact' && d.path.startsWith('docs/note-'))).toHaveLength(300);
     } finally {
       tracker.enabled = false;
     }

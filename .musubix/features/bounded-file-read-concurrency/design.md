@@ -19,3 +19,11 @@ Constraints: Each language's resulting `Map` keys/values and iteration order use
 Requirements: REQ-BOUNDED-FILE-READ-CONCURRENCY-002
 ADRs: ADR-0018
 Depends-On: DES-BOUNDED-FILE-READ-CONCURRENCY-001
+
+## DES-BOUNDED-FILE-READ-CONCURRENCY-003: Bounded Markdown loading in knowledge index building
+Responsibilities: Replace `buildKnowledge()`'s unbounded `Promise.all(paths.map(async (path) => ({ id, path, text: await readText(root, path), kind: 'artifact' })))` over every project-wide Markdown file with a call to `mapWithConcurrency`, preserving the existing `KnowledgeDocument[]` result and order.
+Interfaces: `buildKnowledge()` in `packages/analysis/src/knowledge.ts`; imports `mapWithConcurrency` from `files.ts`.
+Constraints: Resulting `documents` array keys/order used by downstream TF-IDF indexing are unchanged; `knowledge build` never opens more than the shared concurrency limit of files at once regardless of how many Markdown files exist in the project.
+Requirements: REQ-BOUNDED-FILE-READ-CONCURRENCY-003
+ADRs: ADR-0018
+Depends-On: DES-BOUNDED-FILE-READ-CONCURRENCY-001

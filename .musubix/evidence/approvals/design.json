@@ -19,11 +19,11 @@
     ".musubix/decisions/ADR-0015.md": "00e8a5d34efba2aa9bda8f49b8a2cbe221d14d74df9f2f677950002bedd6795c",
     ".musubix/decisions/ADR-0016.md": "31573419c17de4a3ecd0aa3f361c08f25c722095419cd35023e4382ac4f87895",
     ".musubix/decisions/ADR-0017.md": "791187943432f1d0d420b4fddb0404f500d8f7a2f20f9ed8597f4f1d6b20779a",
-    ".musubix/decisions/ADR-0018.md": "16f8a1bbb5fcf5c306fc7e5ef445c3ecc93aedb5773de0892f63b167af2d588a",
+    ".musubix/decisions/ADR-0018.md": "45623ee678e2be0a179b0913ec65648ccbd6d53d637ad75378158e186353b78e",
     ".musubix/features/adapter-pattern-recognition/design.md": "a8e0c4a11f626cb4a41c9b5b53359c072ec0c3161f704791f42ba8af38124a70",
     ".musubix/features/adapter-pattern-recognition/requirements.md": "5731561a0a04982b8a5c305bdeeae6084bcf0ee8846f295eaaaabc823d1f9793",
-    ".musubix/features/bounded-file-read-concurrency/design.md": "6d48a0b4b889060d2018c602e7ac0b687487a2fb25aacc385a59279a7bfb358e",
-    ".musubix/features/bounded-file-read-concurrency/requirements.md": "296faaba4e9e4dd363a3c46be994aea72660b4111a50f226e26e2cfb582a6980",
+    ".musubix/features/bounded-file-read-concurrency/design.md": "f62902f2ffe3e37202076e4fed2c390667af87dab84cd0e97316eaaab2d10394",
+    ".musubix/features/bounded-file-read-concurrency/requirements.md": "9e08acde7e29a8f14b23d908c465c629e49d00bc29ae9bda1466427362c815be",
     ".musubix/features/change-requirement-batches/design.md": "ea7ee9aa17f9f675bf649e9eec90b07e335a6fb793faf4c9951c5f747510f453",
     ".musubix/features/change-requirement-batches/requirements.md": "215dff587257d8edf5ba17c60b610bb6abe4497d867ad20de28e5ef520184c7f",
     ".musubix/features/cli-workflow-ux-v019/design.md": "bdb13e2b903123c32e54787599220ea5444a0922532b60d38fef528991116cf8",
@@ -55,7 +55,7 @@
     ".musubix/features/workflow-session-shutdown/design.md": "225d1718c0ea1628dae251f06b1c5ddafda9a7ae92a15e3d961efbea51c0e0ac",
     ".musubix/features/workflow-session-shutdown/requirements.md": "2b8d72e2fcb1dbf5bc24ee733182cf2b692e33c50550ce7a8de2e9c5a8c32c0d"
   },
-  "artifactSha256": "cf6095a936e1f7e85a940cad2ab5cd3147b13a75afa6bd860ee15133d13a75cb",
+  "artifactSha256": "0c8255686addac3e57704d704636aa05e6eadef01a46876078e9686fcc23e5ef",
   "approver": "Hisaho Nakata",
-  "approvedAt": "2026-09-10T21:34:27.360Z"
+  "approvedAt": "2026-09-10T22:06:21.292Z"
 }
