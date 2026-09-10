@@ -279,7 +279,11 @@ export function createProgram(): Command {
     });
   const correspondence = program.command('model-correspondence')
     .description('Validate formal-model to authoritative passing-test correspondence');
-  common(correspondence.command('validate')).action(async (options: { root: string; json?: boolean }) => {
+  common(
+    correspondence.command('validate')
+      /* @id CODE-MODEL-CORRESPONDENCE-EVIDENCE-GUIDANCE-002 */
+      .description('Validate model correspondence evidence (run `npx musubix3 evidence refresh` first to generate .musubix/evidence/model-correspondence.json)'),
+  ).action(async (options: { root: string; json?: boolean }) => {
     const report = await validateModelCorrespondenceEvidence(resolve(options.root));
     result(report, !!options.json);
   });

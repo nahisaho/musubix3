@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-10T14:20:49.845Z",
+  "generatedAt": "2026-09-10T20:46:20.021Z",
   "status": "fail",
   "checks": [
     {
@@ -49,7 +49,7 @@
       "name": "formal",
       "required": false,
       "status": "pass",
-      "summary": "3/39 requirements modeled; consistency consistent; solver not-requested.",
+      "summary": "4/41 requirements modeled; consistency consistent; solver not-requested.",
       "diagnostics": [
         {
           "code": "FORMAL_UNSUPPORTED",
@@ -189,6 +189,11 @@
         {
           "code": "FORMAL_UNSUPPORTED",
           "severity": "warning",
+          "message": "REQ-MODEL-CORRESPONDENCE-EVIDENCE-GUIDANCE-001 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+        },
+        {
+          "code": "FORMAL_UNSUPPORTED",
+          "severity": "warning",
           "message": "REQ-SESSION-SCOPED-DEVELOPMENT-001 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
         },
         {
@@ -237,15 +242,21 @@
     {
       "name": "workflow",
       "required": true,
-      "status": "pass",
-      "summary": "2 workflow declaration(s) across 2 Skill(s) reconciled with Copilot invocation events.",
-      "diagnostics": []
+      "status": "fail",
+      "summary": "3 workflow declaration(s) are not fully reconciled with Copilot invocation events.",
+      "diagnostics": [
+        {
+          "code": "WORKFLOW_INVOCATION_UNVERIFIED",
+          "severity": "error",
+          "message": "Workflow declarations have not been reconciled with a Copilot session log."
+        }
+      ]
     },
     {
       "name": "tdd",
       "required": true,
       "status": "fail",
-      "summary": "41 Red-Green TDD cycle(s) recorded.",
+      "summary": "45 Red-Green TDD cycle(s) recorded.",
       "diagnostics": [
         {
           "code": "TDD_TEST_STALE",
@@ -365,7 +376,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 5771,
+      "durationMs": 6208,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/approval-tests/aggregate.json\n",
       "stderr": ""
@@ -375,7 +386,7 @@
       "required": true,
       "status": "pass",
       "summary": "npm: completed, exit 0.",
-      "durationMs": 2513,
+      "durationMs": 2780,
       "exitCode": 0,
       "stdout": "\n> musubix3@0.1.12 typecheck\n> tsc --noEmit\n\n",
       "stderr": ""
@@ -385,7 +396,7 @@
       "required": true,
       "status": "pass",
       "summary": "npm: completed, exit 0.",
-      "durationMs": 2125,
+      "durationMs": 2292,
       "exitCode": 0,
       "stdout": "\n> musubix3@0.1.12 build\n> tsc -p tsconfig.build.json\n\n",
       "stderr": ""
@@ -395,7 +406,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 30677,
+      "durationMs": 30443,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/session-tests/aggregate.json\n",
       "stderr": ""
@@ -405,9 +416,9 @@
       "required": true,
       "status": "pass",
       "summary": "npm: completed, exit 0.",
-      "durationMs": 70252,
+      "durationMs": 70369,
       "exitCode": 0,
-      "stdout": "\n> musubix3@0.1.12 test\n> vitest run\n\n\n RUN  v3.2.7 /home/nahisaho/GitHub/musubix3\n\n ✓ tests/tdd-red-collection-guidance.test.ts (1 test) 3ms\n ✓ tests/gate-install.test.ts (73 tests) 32081ms\n   ✓ quality semantics > runs actual commands and persists freshness-aware successful evidence  1153ms\n   ✓ quality semantics > fails a structured test command that reports only skipped tests  700ms\n   ✓ quality semantics > fails an exit-zero command whose structured test reports failed  722ms\n   ✓ quality semantics > fails an exit-zero command whose structured test reports error  789ms\n   ✓ quality semantics > keeps optional structured-test failures out of identity diagnostics  791ms\n   ✓ quality semantics > does not accept passing entries from a rejected optional report as test identity evidence  648ms\n   ✓ quality semantics > fails a structured test command that reports zero tests  672ms\n   ✓ quality semantics > supports a required formal gate with persisted modeled coverage  660ms\n   ✓ quality semantics > requires annotated test IDs to pass in a fresh structured command report  1259ms\n   ✓ quality semantics > records a verified Red-Green-Refactor cycle without allowing test mutation  875ms\n   ✓ quality semantics > proves staged change order with artifact fingerprints and TDD evidence  4331ms\n   ✓ quality semantics > rejects unrelated source changes as implementation evidence for a requirement  3228ms\n   ✓ quality semantics > rejects reused TDD output and reconciles required workflow with actual Skill calls  1382ms\n   ✓ quality semantics > fails a required formal gate below the modeled fraction threshold  672ms\n   ✓ quality semantics > fails missing required commands, while retaining skipped status  644ms\n   ✓ quality semantics > fails real nonzero exits and timeouts  1203ms\n   ✓ quality semantics > uses coverage thresholds without disguising missing coverage  670ms\n   ✓ quality semantics > rejects quality policy weakening against the trusted baseline  642ms\n   ✓ quality semantics > requires independent approval when the policy baseline changes  615ms\n   ✓ quality semantics > fails if verification mutates its own input snapshot  624ms\n   ✓ quality semantics > ignores standard Cargo and Maven target output without weakening source stability  676ms\n   ✓ quality semantics > keeps source directories named target inside the stability snapshot  711ms\n   ✓ quality semantics > ignores manifest-scoped .NET bin and obj output without hiding source directories  650ms\n   ✓ quality semantics > ignores manifest-scoped ecosystem caches without hiding same-named source directories  792ms\n   ✓ quality semantics > ignores Python bytecode caches without hiding Python source  648ms\n   ✓ quality semantics > ignores the conventional project-local NuGet package cache  651ms\n   ✓ quality semantics > ignores Python virtual environments identified by pyvenv.cfg without hiding similarly named source  608ms\n   ✓ quality semantics > does not exclude a source tree when pyvenv.cfg is not a regular file  632ms\n   ✓ quality semantics > does not exclude an arbitrary source tree with a regular pyvenv.cfg marker  646ms\n   ✓ quality semantics > changed mode captures changes and still runs actual commands  639ms\n   ✓ quality semantics > preserves the latest changed-run evidence across a later full gate  1161ms\n ✓ tests/cli-package.test.ts (14 tests) 33208ms\n   ✓ CLI contracts > prints version/help and JSON validation with nonzero failure  1445ms\n   ✓ CLI contracts > returns structured errors for missing files, invalid solver and unknown commands  1097ms\n   ✓ CLI contracts > supports init alias, dry-run, status and native-bin symlink invocation  1803ms\n   ✓ CLI contracts > requires explicit confirmation before recording human approval  2366ms\n   ✓ CLI contracts > runs full workflow and reports JSON evidence  11467ms\n   ✓ CLI contracts > reports and enforces strict Code Graph mode through CLI gates and status  3111ms\n   ✓ CLI contracts > enforces strict workflow session identity from config and CLI  2690ms\n   ✓ CLI contracts > derives the configured GitHub OIDC audience without reading a private key  513ms\n   ✓ CLI contracts > records a staged change checkpoint through the CLI  2609ms\n   ✓ CLI contracts > returns exit 1 for incomplete starter gates and contradictory requirements  1683ms\n   ✓ CLI contracts > executes a complete CLI TDD cycle and exposes it to the gate  3194ms\n   ✓ distribution contracts > TEST-SESSION-SCOPED-DEVELOPMENT-002 reuses evidence only for an explicit change ID  601ms\n   ✓ distribution contracts > validates native manifests and packed hidden skills/built engine/assets  612ms\n ✓ tests/p3-performance-provenance.test.ts (9 tests) 11370ms\n   ✓ P3 deterministic performance provenance > binds every observation to the exact successful command and fresh report  1131ms\n   ✓ P3 deterministic performance provenance > detects report tampering and makes prior quality status stale  877ms\n   ✓ P3 deterministic performance provenance > rejects duplicate counter reports and withholds provenance from rejected test reports  2077ms\n   ✓ P3 deterministic performance provenance > rejects failed executions, missing provenance, and configuration drift  2648ms\n   ✓ P3 deterministic performance provenance > binds semantic provenance records into the attestation performance head  819ms\n   ✓ P3 deterministic performance provenance > keeps semantic performance and quality heads stable across gate-sign-gate runs  1329ms\n   ✓ P3 deterministic performance provenance > attests stable quality verdicts and widened formal verdict fields  869ms\n   ✓ P3 deterministic performance provenance > persists stdout adapter reports and detects later tampering  853ms\n   ✓ P3 deterministic performance provenance > fails attestation verification when the bound report is changed after signing  763ms\n ✓ tests/change-requirement-batches.test.ts (3 tests) 13061ms\n   ✓ TEST-CHANGE-REQUIREMENT-BATCHES-001 completes an interleaved Red-Implement-Green loop per requirement batch  5417ms\n   ✓ TEST-CHANGE-REQUIREMENT-BATCHES-002 rejects Implementation for a batch before its own Red and Green before its own Implementation  2876ms\n   ✓ TEST-CHANGE-REQUIREMENT-BATCHES-003 rejects Quality until every requirement has Green coverage  4767ms\n ✓ tests/trace-graph.test.ts (62 tests) 6226ms\n   ✓ compiler graph > indexes static, re-export, dynamic, require, symbols and call targets  689ms\n   ✓ compiler graph > resolves tsconfig path aliases and JS directory imports  537ms\n   ✓ compiler graph > resolves nearest nested tsconfig paths  472ms\n   ✓ compiler graph > resolves NodeNext import/require conditions according to usage  477ms\n   ✓ compiler graph > finds cycles, self cycles and enforces architecture globs  432ms\n   ✓ compiler graph > reports unresolved local and nonliteral imports honestly  386ms\n   ✓ compiler graph > refuses stale caches after source and config changes  876ms\n ✓ tests/p4-correspondence-mutation.test.ts (12 tests) 8575ms\n   ✓ P4 model correspondence and mutation quality > proves explicit formal requirements through fresh trace and passing test reports  1218ms\n   ✓ P4 model correspondence and mutation quality > validates model correspondence against the exact merged .NET command  741ms\n   ✓ P4 model correspondence and mutation quality > fails closed when formal or generated trace evidence becomes stale  727ms\n   ✓ P4 model correspondence and mutation quality > accepts current deterministic killed mutants and binds both evidence heads  897ms\n   ✓ P4 model correspondence and mutation quality > fails closed when strict mode has no mutation report  694ms\n   ✓ P4 model correspondence and mutation quality > rejects survived mutants  691ms\n   ✓ P4 model correspondence and mutation quality > rejects skipped mutants  761ms\n   ✓ P4 model correspondence and mutation quality > rejects duplicate, unlinked, and stale mutation evidence  2413ms\n ✓ tests/cli-workflow-ux.test.ts (6 tests) 5120ms\n   ✓ cli workflow ux improvements (v0.1.9) > TEST-CLI-WORKFLOW-UX-001 excludes nested MUSUBIX3 workspaces from ancestor scans  989ms\n   ✓ cli workflow ux improvements (v0.1.9) > TEST-CLI-WORKFLOW-UX-002 states bidirectional candidate semantics for trace impact text output  1273ms\n   ✓ cli workflow ux improvements (v0.1.9) > TEST-CLI-WORKFLOW-UX-005 scopes gate status to one feature, isolating unrelated failures  2497ms\n ✓ tests/approval.test.ts (8 tests) 4725ms\n   ✓ artifact-bound approval evidence > TEST-HUMAN-APPROVAL-GATES-006 recomputes quality before release approval  3077ms\n   ✓ artifact-bound approval evidence > TEST-HUMAN-APPROVAL-GATES-007 rejects invalid artifacts and reports malformed evidence  707ms\n ✓ tests/p3-codegraph-policy.test.ts (4 tests) 3179ms\n   ✓ P3 unresolved dynamic module loading policy > keeps unresolved computed imports and requires as compatible warnings by default  705ms\n   ✓ P3 unresolved dynamic module loading policy > upgrades unresolved computed loading to gate-blocking errors in strict mode  1273ms\n   ✓ P3 unresolved dynamic module loading policy > rejects weakening a strict trusted Code Graph baseline  718ms\n   ✓ P3 unresolved dynamic module loading policy > allows statically resolvable cache-busting imports in strict mode  482ms\n ✓ tests/command-working-directory.test.ts (3 tests) 1369ms\n   ✓ TEST-COMMAND-WORKING-DIRECTORY-001 runs a configured command with its own working directory  1125ms\n ✓ tests/php-verification.test.ts (11 tests) 634ms\n ✓ tests/p2-improvements.test.ts (18 tests) 948ms\n   ✓ P2 dynamic graph and manifest entrypoints > resolves safe local cache-busting imports and package entrypoints without hiding arbitrary dynamics  810ms\n ✓ tests/tdd-fingerprint-migration.test.ts (2 tests) 558ms\n   ✓ TEST-TDD-FINGERPRINT-MIGRATION-001 migrates a cycle recorded under the superseded algorithm without a fresh Red/Green  341ms\n ✓ tests/p3-attestation-oidc.test.ts (10 tests) 505ms\n ✓ tests/tdd-superseded-cycle-scoping.test.ts (2 tests) 508ms\n   ✓ TEST-TDD-SUPERSEDED-CYCLE-SCOPING-001 does not block gate on a superseded incomplete Red cycle  308ms\n ✓ tests/tdd-fingerprint-scoping.test.ts (2 tests) 489ms\n ✓ tests/p4-workflow-streaming.test.ts (10 tests) 290ms\n ✓ tests/tdd-green-requirement-scoping.test.ts (2 tests) 494ms\n ✓ tests/formal-knowledge.test.ts (21 tests) 143ms\n ✓ tests/p3-workflow-provenance.test.ts (11 tests) 149ms\n ✓ tests/workflow-multi-session-verification.test.ts (3 tests) 66ms\n ✓ tests/adapter-pattern-recognition.test.ts (2 tests) 149ms\n ✓ tests/p3-formal.test.ts (10 tests | 2 skipped) 47ms\n ✓ tests/domain.test.ts (46 tests) 32ms\n ✓ tests/design-adr-none-exemption.test.ts (3 tests) 6ms\n ✓ tests/ears-id-diagnostic-messages.test.ts (3 tests) 6ms\n ↓ tests/adapter-integration.test.ts (6 tests | 6 skipped)\n\n Test Files  27 passed | 1 skipped (28)\n      Tests  349 passed | 8 skipped (357)\n   Start at  23:19:09\n   Duration  69.84s (transform 627ms, setup 0ms, collect 10.71s, tests 123.94s, environment 5ms, prepare 1.28s)\n\n",
+      "stdout": "\n> musubix3@0.1.12 test\n> vitest run\n\n\n RUN  v3.2.7 /home/nahisaho/GitHub/musubix3\n\n ✓ tests/gate-install.test.ts (73 tests) 32166ms\n   ✓ quality semantics > runs actual commands and persists freshness-aware successful evidence  1213ms\n   ✓ quality semantics > fails a structured test command that reports only skipped tests  693ms\n   ✓ quality semantics > fails an exit-zero command whose structured test reports failed  699ms\n   ✓ quality semantics > fails an exit-zero command whose structured test reports error  713ms\n   ✓ quality semantics > keeps optional structured-test failures out of identity diagnostics  715ms\n   ✓ quality semantics > does not accept passing entries from a rejected optional report as test identity evidence  713ms\n   ✓ quality semantics > fails a structured test command that reports zero tests  710ms\n   ✓ quality semantics > supports a required formal gate with persisted modeled coverage  694ms\n   ✓ quality semantics > requires annotated test IDs to pass in a fresh structured command report  1284ms\n   ✓ quality semantics > records a verified Red-Green-Refactor cycle without allowing test mutation  927ms\n   ✓ quality semantics > chains immutable TDD phase records and detects mutation, deletion and reordering  312ms\n   ✓ quality semantics > proves staged change order with artifact fingerprints and TDD evidence  4063ms\n   ✓ quality semantics > rejects unrelated source changes as implementation evidence for a requirement  3144ms\n   ✓ quality semantics > rejects reused TDD output and reconciles required workflow with actual Skill calls  1339ms\n   ✓ quality semantics > fails a required formal gate below the modeled fraction threshold  660ms\n   ✓ quality semantics > fails missing required commands, while retaining skipped status  728ms\n   ✓ quality semantics > fails real nonzero exits and timeouts  1220ms\n   ✓ quality semantics > uses coverage thresholds without disguising missing coverage  656ms\n   ✓ quality semantics > rejects quality policy weakening against the trusted baseline  683ms\n   ✓ quality semantics > requires independent approval when the policy baseline changes  598ms\n   ✓ quality semantics > fails if verification mutates its own input snapshot  642ms\n   ✓ quality semantics > ignores standard Cargo and Maven target output without weakening source stability  656ms\n   ✓ quality semantics > keeps source directories named target inside the stability snapshot  618ms\n   ✓ quality semantics > ignores manifest-scoped .NET bin and obj output without hiding source directories  682ms\n   ✓ quality semantics > ignores manifest-scoped ecosystem caches without hiding same-named source directories  814ms\n   ✓ quality semantics > ignores Python bytecode caches without hiding Python source  699ms\n   ✓ quality semantics > ignores the conventional project-local NuGet package cache  613ms\n   ✓ quality semantics > ignores Python virtual environments identified by pyvenv.cfg without hiding similarly named source  717ms\n   ✓ quality semantics > does not exclude a source tree when pyvenv.cfg is not a regular file  598ms\n   ✓ quality semantics > does not exclude an arbitrary source tree with a regular pyvenv.cfg marker  732ms\n   ✓ quality semantics > changed mode captures changes and still runs actual commands  613ms\n   ✓ quality semantics > preserves the latest changed-run evidence across a later full gate  1270ms\n ✓ tests/cli-package.test.ts (14 tests) 33283ms\n   ✓ CLI contracts > prints version/help and JSON validation with nonzero failure  1512ms\n   ✓ CLI contracts > returns structured errors for missing files, invalid solver and unknown commands  1078ms\n   ✓ CLI contracts > supports init alias, dry-run, status and native-bin symlink invocation  1586ms\n   ✓ CLI contracts > requires explicit confirmation before recording human approval  2527ms\n   ✓ CLI contracts > runs full workflow and reports JSON evidence  11200ms\n   ✓ CLI contracts > reports and enforces strict Code Graph mode through CLI gates and status  3144ms\n   ✓ CLI contracts > enforces strict workflow session identity from config and CLI  2772ms\n   ✓ CLI contracts > derives the configured GitHub OIDC audience without reading a private key  482ms\n   ✓ CLI contracts > records a staged change checkpoint through the CLI  2677ms\n   ✓ CLI contracts > returns exit 1 for incomplete starter gates and contradictory requirements  1773ms\n   ✓ CLI contracts > executes a complete CLI TDD cycle and exposes it to the gate  3323ms\n   ✓ distribution contracts > TEST-SESSION-SCOPED-DEVELOPMENT-002 reuses evidence only for an explicit change ID  614ms\n   ✓ distribution contracts > validates native manifests and packed hidden skills/built engine/assets  578ms\n ✓ tests/p3-performance-provenance.test.ts (9 tests) 11061ms\n   ✓ P3 deterministic performance provenance > binds every observation to the exact successful command and fresh report  1108ms\n   ✓ P3 deterministic performance provenance > detects report tampering and makes prior quality status stale  815ms\n   ✓ P3 deterministic performance provenance > rejects duplicate counter reports and withholds provenance from rejected test reports  2170ms\n   ✓ P3 deterministic performance provenance > rejects failed executions, missing provenance, and configuration drift  2556ms\n   ✓ P3 deterministic performance provenance > binds semantic provenance records into the attestation performance head  763ms\n   ✓ P3 deterministic performance provenance > keeps semantic performance and quality heads stable across gate-sign-gate runs  1375ms\n   ✓ P3 deterministic performance provenance > attests stable quality verdicts and widened formal verdict fields  821ms\n   ✓ P3 deterministic performance provenance > persists stdout adapter reports and detects later tampering  662ms\n   ✓ P3 deterministic performance provenance > fails attestation verification when the bound report is changed after signing  789ms\n ✓ tests/change-requirement-batches.test.ts (3 tests) 12612ms\n   ✓ TEST-CHANGE-REQUIREMENT-BATCHES-001 completes an interleaved Red-Implement-Green loop per requirement batch  5421ms\n   ✓ TEST-CHANGE-REQUIREMENT-BATCHES-002 rejects Implementation for a batch before its own Red and Green before its own Implementation  2765ms\n   ✓ TEST-CHANGE-REQUIREMENT-BATCHES-003 rejects Quality until every requirement has Green coverage  4425ms\n ✓ tests/trace-graph.test.ts (62 tests) 6298ms\n   ✓ compiler graph > indexes static, re-export, dynamic, require, symbols and call targets  790ms\n   ✓ compiler graph > resolves tsconfig path aliases and JS directory imports  500ms\n   ✓ compiler graph > resolves nearest nested tsconfig paths  478ms\n   ✓ compiler graph > resolves NodeNext import/require conditions according to usage  422ms\n   ✓ compiler graph > finds cycles, self cycles and enforces architecture globs  467ms\n   ✓ compiler graph > reports unresolved local and nonliteral imports honestly  379ms\n   ✓ compiler graph > refuses stale caches after source and config changes  863ms\n ✓ tests/p4-correspondence-mutation.test.ts (12 tests) 8511ms\n   ✓ P4 model correspondence and mutation quality > proves explicit formal requirements through fresh trace and passing test reports  1220ms\n   ✓ P4 model correspondence and mutation quality > validates model correspondence against the exact merged .NET command  729ms\n   ✓ P4 model correspondence and mutation quality > fails closed when formal or generated trace evidence becomes stale  816ms\n   ✓ P4 model correspondence and mutation quality > accepts current deterministic killed mutants and binds both evidence heads  898ms\n   ✓ P4 model correspondence and mutation quality > fails closed when strict mode has no mutation report  686ms\n   ✓ P4 model correspondence and mutation quality > rejects survived mutants  735ms\n   ✓ P4 model correspondence and mutation quality > rejects skipped mutants  748ms\n   ✓ P4 model correspondence and mutation quality > rejects duplicate, unlinked, and stale mutation evidence  2231ms\n ✓ tests/cli-workflow-ux.test.ts (6 tests) 5024ms\n   ✓ cli workflow ux improvements (v0.1.9) > TEST-CLI-WORKFLOW-UX-001 excludes nested MUSUBIX3 workspaces from ancestor scans  840ms\n   ✓ cli workflow ux improvements (v0.1.9) > TEST-CLI-WORKFLOW-UX-002 states bidirectional candidate semantics for trace impact text output  1247ms\n   ✓ cli workflow ux improvements (v0.1.9) > TEST-CLI-WORKFLOW-UX-005 scopes gate status to one feature, isolating unrelated failures  2573ms\n ✓ tests/approval.test.ts (8 tests) 4754ms\n   ✓ artifact-bound approval evidence > TEST-HUMAN-APPROVAL-GATES-006 recomputes quality before release approval  3046ms\n   ✓ artifact-bound approval evidence > TEST-HUMAN-APPROVAL-GATES-007 rejects invalid artifacts and reports malformed evidence  728ms\n ✓ tests/command-working-directory.test.ts (3 tests) 1420ms\n   ✓ TEST-COMMAND-WORKING-DIRECTORY-001 runs a configured command with its own working directory  1167ms\n ✓ tests/p3-codegraph-policy.test.ts (4 tests) 3192ms\n   ✓ P3 unresolved dynamic module loading policy > keeps unresolved computed imports and requires as compatible warnings by default  677ms\n   ✓ P3 unresolved dynamic module loading policy > upgrades unresolved computed loading to gate-blocking errors in strict mode  1358ms\n   ✓ P3 unresolved dynamic module loading policy > rejects weakening a strict trusted Code Graph baseline  741ms\n   ✓ P3 unresolved dynamic module loading policy > allows statically resolvable cache-busting imports in strict mode  415ms\n ✓ tests/p2-improvements.test.ts (18 tests) 901ms\n   ✓ P2 dynamic graph and manifest entrypoints > resolves safe local cache-busting imports and package entrypoints without hiding arbitrary dynamics  749ms\n ✓ tests/php-verification.test.ts (11 tests) 676ms\n ✓ tests/tdd-fingerprint-migration.test.ts (2 tests) 572ms\n   ✓ TEST-TDD-FINGERPRINT-MIGRATION-001 migrates a cycle recorded under the superseded algorithm without a fresh Red/Green  340ms\n ✓ tests/tdd-fingerprint-scoping.test.ts (2 tests) 507ms\n ✓ tests/tdd-superseded-cycle-scoping.test.ts (2 tests) 554ms\n ✓ tests/tdd-green-requirement-scoping.test.ts (2 tests) 549ms\n   ✓ TEST-TDD-GREEN-REQUIREMENT-SCOPING-001 completes an older pending cycle for the same test ID after a newer one starts  311ms\n ✓ tests/model-correspondence-evidence-guidance.test.ts (2 tests) 361ms\n   ✓ TEST-MODEL-CORRESPONDENCE-EVIDENCE-GUIDANCE-002 documents the `evidence refresh` prerequisite in --help  341ms\n ✓ tests/p3-attestation-oidc.test.ts (10 tests) 483ms\n ✓ tests/p3-workflow-provenance.test.ts (11 tests) 146ms\n ✓ tests/p4-workflow-streaming.test.ts (10 tests) 276ms\n ✓ tests/adapter-pattern-recognition.test.ts (2 tests) 141ms\n ✓ tests/formal-knowledge.test.ts (21 tests) 144ms\n ✓ tests/workflow-multi-session-verification.test.ts (3 tests) 62ms\n ✓ tests/p3-formal.test.ts (10 tests | 2 skipped) 40ms\n ✓ tests/design-adr-none-exemption.test.ts (3 tests) 6ms\n ✓ tests/domain.test.ts (46 tests) 29ms\n ✓ tests/ears-id-diagnostic-messages.test.ts (3 tests) 5ms\n ✓ tests/tdd-red-collection-guidance.test.ts (1 test) 2ms\n ↓ tests/adapter-integration.test.ts (6 tests | 6 skipped)\n\n Test Files  28 passed | 1 skipped (29)\n      Tests  351 passed | 8 skipped (359)\n   Start at  05:44:39\n   Duration  69.96s (transform 612ms, setup 0ms, collect 10.86s, tests 123.78s, environment 5ms, prepare 1.35s)\n\n",
       "stderr": ""
     },
     {
@@ -415,7 +426,7 @@
       "required": true,
       "status": "pass",
       "summary": "npm: completed, exit 0.",
-      "durationMs": 637,
+      "durationMs": 628,
       "exitCode": 0,
       "stdout": "\n> musubix3@0.1.12 pack:check\n> node scripts/check-package.mjs\n\nPackage verified: musubix3-0.1.12.tgz, 107 files, 9 skills.\n",
       "stderr": ""
@@ -425,7 +436,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 6140,
+      "durationMs": 6049,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/cli-workflow-ux-tests/aggregate.json\n",
       "stderr": ""
@@ -435,7 +446,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 1895,
+      "durationMs": 2118,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/tdd-fingerprint-scoping-tests/aggregate.json\n",
       "stderr": ""
@@ -445,7 +456,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 2016,
+      "durationMs": 2319,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/tdd-fingerprint-migration-tests/aggregate.json\n",
       "stderr": ""
@@ -455,7 +466,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 1893,
+      "durationMs": 2033,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/tdd-superseded-cycle-scoping-tests/aggregate.json\n",
       "stderr": ""
@@ -465,7 +476,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 12547,
+      "durationMs": 12955,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/change-requirement-batches-tests/aggregate.json\n",
       "stderr": ""
@@ -475,7 +486,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 1949,
+      "durationMs": 2076,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/tdd-green-requirement-scoping-tests/aggregate.json\n",
       "stderr": ""
@@ -485,7 +496,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 1374,
+      "durationMs": 1489,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/ears-id-diagnostic-messages-tests/aggregate.json\n",
       "stderr": ""
@@ -495,7 +506,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 1601,
+      "durationMs": 1657,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/adapter-pattern-recognition-tests/aggregate.json\n",
       "stderr": ""
@@ -505,7 +516,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 1504,
+      "durationMs": 1491,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/workflow-multi-session-verification-tests/aggregate.json\n",
       "stderr": ""
@@ -515,7 +526,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 1760,
+      "durationMs": 1596,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/workflow-session-shutdown-tests/aggregate.json\n",
       "stderr": ""
@@ -525,7 +536,7 @@
       "required": false,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 2762,
+      "durationMs": 2627,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/command-working-directory-tests/aggregate.json\n",
       "stderr": ""
@@ -535,7 +546,7 @@
       "required": false,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 759,
+      "durationMs": 747,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/design-adr-none-exemption-tests/aggregate.json\n",
       "stderr": ""
@@ -545,16 +556,26 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 1416,
+      "durationMs": 1367,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/tdd-red-collection-guidance-tests/aggregate.json\n",
+      "stderr": ""
+    },
+    {
+      "name": "command:model-correspondence-evidence-guidance-tests",
+      "required": true,
+      "status": "pass",
+      "summary": "npx: completed, exit 0.",
+      "durationMs": 1916,
+      "exitCode": 0,
+      "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/model-correspondence-evidence-guidance-tests/aggregate.json\n",
       "stderr": ""
     },
     {
       "name": "test-identities",
       "required": false,
       "status": "pass",
-      "summary": "37/37 annotated test IDs passed in structured command reports.",
+      "summary": "39/39 annotated test IDs passed in structured command reports.",
       "diagnostics": []
     },
     {
@@ -603,7 +624,7 @@
       "name": "commands",
       "required": true,
       "status": "pass",
-      "summary": "19 configured command(s) executed; optional failures are nonblocking."
+      "summary": "20 configured command(s) executed; optional failures are nonblocking."
     },
     {
       "name": "constitution:RULE-001",
@@ -631,12 +652,12 @@
     "trace.errors": 0,
     "graph.violations": 0,
     "formal.errors": 0,
-    "formal.modeledFraction": 0.07692307692307693,
+    "formal.modeledFraction": 0.0975609756097561,
     "commands.failures": 0,
     "commands.skipped": 0,
-    "tests.annotatedIds": 37,
-    "tests.executedIds": 37,
-    "tdd.cycles": 41,
+    "tests.annotatedIds": 39,
+    "tests.executedIds": 39,
+    "tdd.cycles": 45,
     "tdd.errors": 5,
     "changes.count": 4,
     "changes.errors": 11,
@@ -657,7 +678,7 @@
     "coverage.implementation": 1,
     "coverage.tests": 1
   },
-  "mode": "changed",
+  "mode": "full",
   "feature": null,
   "changed": [
     ".musubix/config.json",
@@ -852,7 +873,7 @@
     ".musubix/changes/CHANGE-0004.md": "239a926dee09d5662b01fb2f4d6cc1f07ea08e0113ae6d57379bcfa4325df027",
     ".musubix/changes/CHANGE-0005.md": "a481faee494d2eabe56fad49061e30104bfd3f3dd380f4ef84a094fdbf060ead",
     ".musubix/changes/CHANGE-0006.md": "fda3a394d492a14008f78a2e48cff40a960cf3c007b2eb5ccf435118bd27c8e9",
-    ".musubix/config.json": "e6ad468635c9a15f1b86389aec02709b2da621cdb66b3313c3b5772a8e240d60",
+    ".musubix/config.json": "b3ec1696975e599e748cf644527cb926900ba573927c1dba142677d81b51adb0",
     ".musubix/constitution.md": "f8b47fdc486f395bab05223a94821b145cf8df70ffde2c838a28f8d71fe0fa92",
     ".musubix/decisions/ADR-0002.md": "da556c6ef7efcee366a8c6497179bad96c093145366b6422548b0e3df2cba348",
     ".musubix/decisions/ADR-0003.md": "79bac3818dc9708a24999a4d45008d90ee278c28d4d5af183d14a40b4215cd5c",
@@ -884,6 +905,8 @@
     ".musubix/features/ears-id-diagnostic-messages/requirements.md": "49afd4e574f1179a31707323fbbcfffabf1051f666ad1fcba60b39b2e7da3808",
     ".musubix/features/human-approval-gates/design.md": "ce1e316afee28082001ddedbce734a7766562889bd28f3eea610909c8d736206",
     ".musubix/features/human-approval-gates/requirements.md": "f2ae2380935831bb102cd6a7726f2a208ab1719e035157302ef51ed28f624fb0",
+    ".musubix/features/model-correspondence-evidence-guidance/design.md": "708350f1f2a95dd9ab36b3da739db89be8b4895085a3c0fdf6b64482fe04837a",
+    ".musubix/features/model-correspondence-evidence-guidance/requirements.md": "d7ca8b823ddfd3265e89f2892003e5eb95faad7e9b3972b249de5f2902446511",
     ".musubix/features/session-scoped-development/design.md": "66a65a3fdc1747569f42b42798a88377ae2ff93e32ff2cc5e0bae5c62c2e9a42",
     ".musubix/features/session-scoped-development/requirements.md": "640aece168b4e6848c0d1e6371f0bfeb433fa8addfd064a77d050891d69d9a4f",
     ".musubix/features/tdd-fingerprint-migration/design.md": "3ce067571633c34991aeeb30067a5f76b1569b7fe017717d3f04d94ead17b5ac",
@@ -930,7 +953,7 @@
     "packages/analysis/src/graph.ts": "7517703a96dc487771c8b3eb1aade2d676998f82246b5dd091930059fc43685b",
     "packages/analysis/src/index.ts": "6df5a623a9281511a963583e648d8fea7affdf5bc9404e261a60adcabc1cac89",
     "packages/analysis/src/knowledge.ts": "072a403f89f9cdc6b79adaae7ea22821487358b8d86d37fd5145031f74d6b9cc",
-    "packages/analysis/src/model-correspondence.ts": "86839170b4d2e139bc2d3b739aab3cea2a7aec4dd9cab1afaa3d21fb8e14c617",
+    "packages/analysis/src/model-correspondence.ts": "fb19dbbdf461b8e2a2429b6107f60e7ea523e4033e4677ed7dd09ea03740659c",
     "packages/analysis/src/mutation.ts": "bb0582b042c973226c74b719d12e8dea05f954a68ce4dbc3c2076c31183d5a88",
     "packages/analysis/src/order.ts": "7030a2f57ab2a2c00668d92e142a9d8cfe852aff6d237695dc94cb14a6341130",
     "packages/analysis/src/performance.ts": "1145c285582ff188e90263b4d9d9f28ca49104e79b8299b2ecd3e278d8ef80ac",
@@ -941,7 +964,7 @@
     "packages/analysis/src/workflow.ts": "95c93b380d2bda976f341c138edcbdd4d7fc0516ef3aca18a3329436a1c7b494",
     "packages/cli/package.json": "574ff6c876496f92ac689a5fabe39d757c6bdfac7525a8ebd0655298a213187e",
     "packages/cli/src/install.ts": "e8bf7c7cb73462b1f18b01a695ad89d41c3a2a9e0231e112f99b4f40800896c3",
-    "packages/cli/src/main.ts": "af1378ebb113249c3e5ad790785da9971e2a0de0575628a68e90bbacac1ab8f8",
+    "packages/cli/src/main.ts": "bb9dd16d9b58ba5543c502902fed11d167b11bdd8fefb10fd9b530478920c68c",
     "packages/domain/package.json": "7afc9ba650ac52ef4f5bc6e591469e4b6e820a8d04228ac8a34760a742f78b78",
     "packages/domain/src/constitution.ts": "514278499642ff46ed902864b9192f566b116b4f92eb3fafa6b62588335e170a",
     "packages/domain/src/design.ts": "fc1ca4d3249abc9705ba4b6f296e0f4fa3b3d6ff6d5d82e51c99f49fc7a93ac9",
@@ -951,7 +974,7 @@
     "packages/domain/src/types.ts": "0c2666bcf18678e56eafcd3fae7e5163e4505bb4115c737b39a4b0b581656f18",
     "plugin.json": "b61d97cb1bb6a1edd1cbf865e581ecaeb7ac9b16f52840cf807a519b9b32ef31",
     "README-ja.md": "f7f30e39e99569f69d17558dbef9fef2f1367733b3b693fb61f85017db7a2534",
-    "README.md": "d2f39d1532e4d6476d2f2920eacfb67d61b7cd9de7407b51ffce0cf632d4e952",
+    "README.md": "fa2a323701472446a5dbdb01ea4346df487e0cd1bc719a845410d0410e320cd7",
     "release-assets/musubix3.cdx.json": "11c67e452d573aae119e08e8e6b0a03d22e152a3526fbf53b0c3186dac4cbd39",
     "release-assets/SHA256SUMS": "38c8d757e3bb0fcff9187743685db047883e3f7b27ab13022f5d3bfad7c004e7",
     "scripts/check-package.mjs": "72210ce36b88fb9fe9e435e8f1a1709e623c25cfc9c81628cce7a1a87f80bee0",
@@ -972,6 +995,7 @@
     "tests/formal-knowledge.test.ts": "325ff2567b72708b83d3eab7b2986e7ceb7beb252ed21276b0db7436ffa367a4",
     "tests/gate-install.test.ts": "da8b1f9480160be6fd05e934e3a522d94475e2c67ccac52d5ff72b166ac27a98",
     "tests/helpers.ts": "0dbf9a36ddc8da6a8371ae3b48f8e6d92a66d09b43c3a3b24ebc6fdf9b5e4f2a",
+    "tests/model-correspondence-evidence-guidance.test.ts": "f32fef2927b6353cef035f67cc8df69c1fb37ef08b745d88215df9bfa46d65ad",
     "tests/p2-improvements.test.ts": "8b4ec18632bd5899755d0b41f2659b61fa156b11ea45970ac9c24bafe248bf95",
     "tests/p3-attestation-oidc.test.ts": "6b7080699b02670e1575cdfda24dcbd301b5bd98c5df3f45a03d2fc80cc3ba05",
     "tests/p3-codegraph-policy.test.ts": "51382d96b162341a47f77643caa3d40641218c34a6106cf32c3d112defd701a6",

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-10T14:18:31.196Z",
+  "generatedAt": "2026-09-10T20:43:55.977Z",
   "nodes": [
     {
       "id": "CODE-SESSION-SCOPED-DEVELOPMENT-001",
@@ -408,6 +408,32 @@
       "path": ".musubix/features/human-approval-gates/requirements.md",
       "line": 56,
       "mandatory": true
+    },
+    {
+      "id": "DES-MODEL-CORRESPONDENCE-EVIDENCE-GUIDANCE-001",
+      "kind": "design",
+      "path": ".musubix/features/model-correspondence-evidence-guidance/design.md",
+      "line": 7
+    },
+    {
+      "id": "DES-MODEL-CORRESPONDENCE-EVIDENCE-GUIDANCE-002",
+      "kind": "design",
+      "path": ".musubix/features/model-correspondence-evidence-guidance/design.md",
+      "line": 15
+    },
+    {
+      "id": "REQ-MODEL-CORRESPONDENCE-EVIDENCE-GUIDANCE-001",
+      "kind": "requirement",
+      "path": ".musubix/features/model-correspondence-evidence-guidance/requirements.md",
+      "line": 14,
+      "mandatory": false
+    },
+    {
+      "id": "REQ-MODEL-CORRESPONDENCE-EVIDENCE-GUIDANCE-002",
+      "kind": "requirement",
+      "path": ".musubix/features/model-correspondence-evidence-guidance/requirements.md",
+      "line": 21,
+      "mandatory": false
     },
     {
       "id": "DES-SESSION-SCOPED-DEVELOPMENT-001",
@@ -852,6 +878,18 @@
       "line": 25
     },
     {
+      "id": "TEST-MODEL-CORRESPONDENCE-EVIDENCE-GUIDANCE-001",
+      "kind": "test",
+      "path": "tests/model-correspondence-evidence-guidance.test.ts",
+      "line": 8
+    },
+    {
+      "id": "TEST-MODEL-CORRESPONDENCE-EVIDENCE-GUIDANCE-002",
+      "kind": "test",
+      "path": "tests/model-correspondence-evidence-guidance.test.ts",
+      "line": 32
+    },
+    {
       "id": "TEST-WORKFLOW-SHUTDOWN-001",
       "kind": "test",
       "path": "tests/p3-workflow-provenance.test.ts",
@@ -1179,6 +1217,16 @@
       "from": "DES-APPROVAL-003",
       "to": "DES-APPROVAL-002",
       "relation": "depends-on"
+    },
+    {
+      "from": "DES-MODEL-CORRESPONDENCE-EVIDENCE-GUIDANCE-001",
+      "to": "REQ-MODEL-CORRESPONDENCE-EVIDENCE-GUIDANCE-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-MODEL-CORRESPONDENCE-EVIDENCE-GUIDANCE-002",
+      "to": "REQ-MODEL-CORRESPONDENCE-EVIDENCE-GUIDANCE-002",
+      "relation": "satisfies"
     },
     {
       "from": "DES-SESSION-SCOPED-DEVELOPMENT-001",
@@ -1766,6 +1814,16 @@
       "relation": "verifies"
     },
     {
+      "from": "TEST-MODEL-CORRESPONDENCE-EVIDENCE-GUIDANCE-001",
+      "to": "REQ-MODEL-CORRESPONDENCE-EVIDENCE-GUIDANCE-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-MODEL-CORRESPONDENCE-EVIDENCE-GUIDANCE-002",
+      "to": "REQ-MODEL-CORRESPONDENCE-EVIDENCE-GUIDANCE-002",
+      "relation": "verifies"
+    },
+    {
       "from": "TEST-WORKFLOW-SHUTDOWN-001",
       "to": "REQ-WORKFLOW-SHUTDOWN-001",
       "relation": "verifies"
@@ -1847,6 +1905,8 @@
     ".musubix/features/ears-id-diagnostic-messages/requirements.md": "49afd4e574f1179a31707323fbbcfffabf1051f666ad1fcba60b39b2e7da3808",
     ".musubix/features/human-approval-gates/design.md": "ce1e316afee28082001ddedbce734a7766562889bd28f3eea610909c8d736206",
     ".musubix/features/human-approval-gates/requirements.md": "f2ae2380935831bb102cd6a7726f2a208ab1719e035157302ef51ed28f624fb0",
+    ".musubix/features/model-correspondence-evidence-guidance/design.md": "708350f1f2a95dd9ab36b3da739db89be8b4895085a3c0fdf6b64482fe04837a",
+    ".musubix/features/model-correspondence-evidence-guidance/requirements.md": "d7ca8b823ddfd3265e89f2892003e5eb95faad7e9b3972b249de5f2902446511",
     ".musubix/features/session-scoped-development/design.md": "66a65a3fdc1747569f42b42798a88377ae2ff93e32ff2cc5e0bae5c62c2e9a42",
     ".musubix/features/session-scoped-development/requirements.md": "640aece168b4e6848c0d1e6371f0bfeb433fa8addfd064a77d050891d69d9a4f",
     ".musubix/features/tdd-fingerprint-migration/design.md": "3ce067571633c34991aeeb30067a5f76b1569b7fe017717d3f04d94ead17b5ac",
@@ -1875,7 +1935,7 @@
     "packages/analysis/src/graph.ts": "7517703a96dc487771c8b3eb1aade2d676998f82246b5dd091930059fc43685b",
     "packages/analysis/src/index.ts": "6df5a623a9281511a963583e648d8fea7affdf5bc9404e261a60adcabc1cac89",
     "packages/analysis/src/knowledge.ts": "072a403f89f9cdc6b79adaae7ea22821487358b8d86d37fd5145031f74d6b9cc",
-    "packages/analysis/src/model-correspondence.ts": "86839170b4d2e139bc2d3b739aab3cea2a7aec4dd9cab1afaa3d21fb8e14c617",
+    "packages/analysis/src/model-correspondence.ts": "fb19dbbdf461b8e2a2429b6107f60e7ea523e4033e4677ed7dd09ea03740659c",
     "packages/analysis/src/mutation.ts": "bb0582b042c973226c74b719d12e8dea05f954a68ce4dbc3c2076c31183d5a88",
     "packages/analysis/src/order.ts": "7030a2f57ab2a2c00668d92e142a9d8cfe852aff6d237695dc94cb14a6341130",
     "packages/analysis/src/performance.ts": "1145c285582ff188e90263b4d9d9f28ca49104e79b8299b2ecd3e278d8ef80ac",
@@ -1885,7 +1945,7 @@
     "packages/analysis/src/trace.ts": "efede75c79c7dc4828a0259c46ca870a7e15042c35edd94a107349a83eb56ec9",
     "packages/analysis/src/workflow.ts": "95c93b380d2bda976f341c138edcbdd4d7fc0516ef3aca18a3329436a1c7b494",
     "packages/cli/src/install.ts": "e8bf7c7cb73462b1f18b01a695ad89d41c3a2a9e0231e112f99b4f40800896c3",
-    "packages/cli/src/main.ts": "af1378ebb113249c3e5ad790785da9971e2a0de0575628a68e90bbacac1ab8f8",
+    "packages/cli/src/main.ts": "bb9dd16d9b58ba5543c502902fed11d167b11bdd8fefb10fd9b530478920c68c",
     "packages/domain/src/constitution.ts": "514278499642ff46ed902864b9192f566b116b4f92eb3fafa6b62588335e170a",
     "packages/domain/src/design.ts": "fc1ca4d3249abc9705ba4b6f296e0f4fa3b3d6ff6d5d82e51c99f49fc7a93ac9",
     "packages/domain/src/index.ts": "43243e9279e3826b23cd8d8b4365854974112ce4cf17cfb0f0ee32e6b28e9cc6",
@@ -1910,6 +1970,7 @@
     "tests/formal-knowledge.test.ts": "325ff2567b72708b83d3eab7b2986e7ceb7beb252ed21276b0db7436ffa367a4",
     "tests/gate-install.test.ts": "da8b1f9480160be6fd05e934e3a522d94475e2c67ccac52d5ff72b166ac27a98",
     "tests/helpers.ts": "0dbf9a36ddc8da6a8371ae3b48f8e6d92a66d09b43c3a3b24ebc6fdf9b5e4f2a",
+    "tests/model-correspondence-evidence-guidance.test.ts": "f32fef2927b6353cef035f67cc8df69c1fb37ef08b745d88215df9bfa46d65ad",
     "tests/p2-improvements.test.ts": "8b4ec18632bd5899755d0b41f2659b61fa156b11ea45970ac9c24bafe248bf95",
     "tests/p3-attestation-oidc.test.ts": "6b7080699b02670e1575cdfda24dcbd301b5bd98c5df3f45a03d2fc80cc3ba05",
     "tests/p3-codegraph-policy.test.ts": "51382d96b162341a47f77643caa3d40641218c34a6106cf32c3d112defd701a6",

@@ -33,6 +33,8 @@
     ".musubix/features/ears-id-diagnostic-messages/requirements.md": "49afd4e574f1179a31707323fbbcfffabf1051f666ad1fcba60b39b2e7da3808",
     ".musubix/features/human-approval-gates/design.md": "ce1e316afee28082001ddedbce734a7766562889bd28f3eea610909c8d736206",
     ".musubix/features/human-approval-gates/requirements.md": "f2ae2380935831bb102cd6a7726f2a208ab1719e035157302ef51ed28f624fb0",
+    ".musubix/features/model-correspondence-evidence-guidance/design.md": "708350f1f2a95dd9ab36b3da739db89be8b4895085a3c0fdf6b64482fe04837a",
+    ".musubix/features/model-correspondence-evidence-guidance/requirements.md": "d7ca8b823ddfd3265e89f2892003e5eb95faad7e9b3972b249de5f2902446511",
     ".musubix/features/session-scoped-development/design.md": "66a65a3fdc1747569f42b42798a88377ae2ff93e32ff2cc5e0bae5c62c2e9a42",
     ".musubix/features/session-scoped-development/requirements.md": "640aece168b4e6848c0d1e6371f0bfeb433fa8addfd064a77d050891d69d9a4f",
     ".musubix/features/tdd-fingerprint-migration/design.md": "3ce067571633c34991aeeb30067a5f76b1569b7fe017717d3f04d94ead17b5ac",
@@ -50,7 +52,7 @@
     ".musubix/features/workflow-session-shutdown/design.md": "225d1718c0ea1628dae251f06b1c5ddafda9a7ae92a15e3d961efbea51c0e0ac",
     ".musubix/features/workflow-session-shutdown/requirements.md": "2b8d72e2fcb1dbf5bc24ee733182cf2b692e33c50550ce7a8de2e9c5a8c32c0d"
   },
-  "artifactSha256": "62874becfc6f9f57464096281e891ee57ad0b38158cf4d7de37fd24edc4a3321",
+  "artifactSha256": "9bf1b71f987b202d2e2bfc4969c142951f7946bb80b5f6b6d89c6062cefcc2db",
   "approver": "nahisaho",
-  "approvedAt": "2026-09-10T14:09:04.492Z"
+  "approvedAt": "2026-09-10T20:39:30.022Z"
 }

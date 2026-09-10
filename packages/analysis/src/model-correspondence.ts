@@ -232,7 +232,13 @@ export async function validateModelCorrespondenceEvidence(root: string): Promise
       requirements: requirements.length,
       coveredRequirements: [],
       diagnostics: requirements.length
-        ? [error('MODEL_CORRESPONDENCE_MISSING', 'Requirements with explicit Formal JSON require model correspondence evidence.', path)]
+        ? [error(
+            'MODEL_CORRESPONDENCE_MISSING',
+            /* @id CODE-MODEL-CORRESPONDENCE-EVIDENCE-GUIDANCE-001 */
+            'Requirements with explicit Formal JSON require model correspondence evidence. '
+              + 'Run `npx musubix3 evidence refresh` to generate .musubix/evidence/model-correspondence.json.',
+            path,
+          )]
         : [],
     };
   }

@@ -311,7 +311,7 @@ validation/gate or requested solver failure, **2** usage, I/O or malformed confi
 | `formal doctor` | Probe Z3, Lean, and `lake env lean` availability and versions |
 | `mutation doctor` | Probe language-aware local mutation engines and show setup recommendations |
 | `formal check <file> [--solver auto\|none\|z3\|lean]` | Check the explicit Boolean/conditional/numeric/temporal/transition model |
-| `model-correspondence validate` | Revalidate Formal JSON → generated trace → authoritative passing test evidence |
+| `model-correspondence validate` | Revalidate Formal JSON → generated trace → authoritative passing test evidence (run `evidence refresh` first to generate its evidence file) |
 | `evidence refresh [--changed]` | Regenerate derived evidence through the same fail-closed gate pipeline |
 | `mutation validate` | Revalidate requirement-scoped schema-v1 killed-mutant evidence |
 | `mutation identity <REQ-ID> <TEST-ID> <sourcePath> <operator> <line> <column>` | Print the deterministic `MUT-*` identity a mutation report must declare |
@@ -583,6 +583,10 @@ Every requirement containing explicit `Formal:` JSON automatically requires
 `model-correspondence`: its current formal constraint and generated trace must
 lead to at least one authoritative `TEST-*` that passed in a fresh structured
 command report. Missing, changed, unlinked, or stale evidence fails closed.
+`.musubix/evidence/model-correspondence.json` is only produced by
+`evidence refresh`; running `model-correspondence validate` before that file
+exists fails with `MODEL_CORRESPONDENCE_MISSING`, whose message and the
+command's own `--help` output both name `evidence refresh` as the fix.
 Add `tdd` to require complete Red-Green cycles. Red must be an observed nonzero
 test result; Green/Refactor must pass with the same configured command and
 unchanged test file. Test names/output must contain their `TEST-*` ID.
