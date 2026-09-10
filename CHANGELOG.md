@@ -2,6 +2,69 @@
 
 ## Unreleased
 
+## 0.1.12 - 2026-09-10
+
+Fixes for every issue found while running real multi-language, large-scale
+trial projects against musubix3@0.1.11, all filed and fixed since that
+release (GitHub Issues #2, #3, #4, #5, #6, #7, #8, #9, #10, #11, #12, #13,
+#14).
+
+- TDD superseded-cycle scoping (#11): a recorded Red-Green cycle superseded
+  by a later, fully valid cycle for the same test ID no longer raises
+  `TDD_RED_MISSING`/`TDD_GREEN_MISSING`/`TDD_LEGACY_OR_UNSCOPED_EVIDENCE`.
+- Per-requirement change batches (#12): `change-record`'s red/implementation/
+  green phases can be recorded once per non-empty subset of a change's
+  requirement IDs, enabling an interleaved per-requirement TDD loop across a
+  multi-requirement change; recording the full requirement set at once
+  remains fully compatible with previously recorded evidence.
+- Scope Green/Refactor cycle matching by requirement ID and validate before
+  order-log append (#14).
+- More specific EARS/requirement-ID validation diagnostics: mixed clause
+  forms, missing subject, and other classification failures now name the
+  actual problem instead of a generic message; the `REQ_ID` diagnostic
+  states the expected `REQ-<FEATURE>-<digits>` pattern (#2, #3, #4).
+- Fix adapter test-ID recognition for Go/Rust-style names with a digit run
+  followed by a descriptive suffix, and stop `config lint` from flagging a
+  `go test ./...` package wildcard as a missing repository-relative path
+  (#7, #9).
+- Add an optional `cwd` field to a configured command in
+  `.musubix/config.json`, so `gate`/`tdd red`/`tdd green`/`tdd refactor`
+  run that command (including its Red preflight phase) from a
+  project-root-relative subdirectory instead of always the project root.
+  Supports polyglot monorepos with per-service toolchains. `config lint`
+  reports a new `CONFIG_CWD_INVALID` diagnostic for a `cwd` that escapes
+  the project root or does not exist, and scopes its `CONFIG_ORPHANED_PATH`
+  argument check to that command's own `cwd`. Evidence/report paths and
+  `.musubix/config.json` itself are unaffected and stay project-root
+  relative (#6).
+- `design validate` accepts an explicit `ADRs: none — <reason>` marker
+  (case-insensitive, hyphen/en dash/em dash/colon separator) as satisfying
+  the ADR requirement for a component with no architecturally significant
+  decision, as long as the reason is concrete (not empty, not a
+  `TODO`/`TBD`/`N/A`/`未定` placeholder). A bare `none` or a placeholder
+  reason is now reported as `DES_ADR_EXEMPTION_REASON` instead of `DES_ADR`,
+  so authors are told to justify the exemption rather than to add an ADR.
+  An empty field, or a field with only unknown ADR references, still fails
+  exactly as before (#5).
+- Document the recommended practice for a requirement that a correct,
+  general implementation already satisfies as a side effect of another
+  requirement: temporarily and locally narrow the shared implementation to
+  observe a genuine failing test, record `tdd red`, then restore the
+  implementation and record `tdd green`. No `--already-satisfied-by`-style
+  bypass was added: a human declaration that a requirement is "already
+  satisfied elsewhere" is not measured evidence (#13).
+- Document the two independent requirements for `tdd`'s test-ID discovery
+  (a `@verifies`/`@id`-style doc-comment link from source to the
+  requirement, and a structured test-runner report identifying the test by
+  ID) next to the existing worked example, and add a per-adapter reference
+  table (vitest/jest/pytest/go-test/cargo/junit/dotnet) with the exact
+  declaration each adapter expects. Expand the `tdd` command's CLI help
+  text to summarize the same dual requirement (#8, #10).
+- Add the `sdd-issue-report` skill for recording a discovered defect as a
+  GitHub Issue with reproduction evidence, and register it in the packaged
+  skill list (it was initially missing from `plugin-install`/`pack:check`,
+  so it did not install with the package until this release).
+
 ## 0.1.11 - 2026-09-10
 
 - `workflow-verify`/`verifyWorkflowLogFile` now accept one or more Copilot

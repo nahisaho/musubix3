@@ -1,6 +1,6 @@
 {
   "name": "musubix3",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "description": "Evidence-driven specification development skills for GitHub Copilot CLI",
   "type": "module",
   "license": "MIT",

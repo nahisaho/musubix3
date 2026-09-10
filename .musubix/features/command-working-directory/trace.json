@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-10T12:36:54.931Z",
+  "generatedAt": "2026-09-10T12:48:32.999Z",
   "nodes": [
     {
       "id": "CODE-SESSION-SCOPED-DEVELOPMENT-001",
@@ -1838,7 +1838,7 @@
     "packages/analysis/src/trace.ts": "efede75c79c7dc4828a0259c46ca870a7e15042c35edd94a107349a83eb56ec9",
     "packages/analysis/src/workflow.ts": "95c93b380d2bda976f341c138edcbdd4d7fc0516ef3aca18a3329436a1c7b494",
     "packages/cli/src/install.ts": "e8bf7c7cb73462b1f18b01a695ad89d41c3a2a9e0231e112f99b4f40800896c3",
-    "packages/cli/src/main.ts": "d8f167f135517bba966698ec81817c40a5e3c4fde1c6a3823b60990dfca521b8",
+    "packages/cli/src/main.ts": "af1378ebb113249c3e5ad790785da9971e2a0de0575628a68e90bbacac1ab8f8",
     "packages/domain/src/constitution.ts": "514278499642ff46ed902864b9192f566b116b4f92eb3fafa6b62588335e170a",
     "packages/domain/src/design.ts": "fc1ca4d3249abc9705ba4b6f296e0f4fa3b3d6ff6d5d82e51c99f49fc7a93ac9",
     "packages/domain/src/index.ts": "43243e9279e3826b23cd8d8b4365854974112ce4cf17cfb0f0ee32e6b28e9cc6",
@@ -1854,7 +1854,7 @@
     "tests/adapter-pattern-recognition.test.ts": "df7446c88eecf17cff42a5bf2cb6adc4924d62c5ed4536ad62bc8d38eb5bd40c",
     "tests/approval.test.ts": "9c5bc5dd99223cfd423507ec2e71e181cc92c7d37e50026b9e2196bf16bd87f0",
     "tests/change-requirement-batches.test.ts": "77deb6dedf6ef7d4dc02ecbc0566c969067462c100c2d126c10359dd2122e7c6",
-    "tests/cli-package.test.ts": "65ecdbdf2b89108ad43af088d8fe735d5fcd3015d278f68476a6b2472ab73e33",
+    "tests/cli-package.test.ts": "36245fd5d71111486f6cb6dbc4daaa3dc731c1b9fa00464fdbe14e36c04bb517",
     "tests/cli-workflow-ux.test.ts": "d2b41c098b4953f547d6acf4ae91bb507c865ce1685d4f5948ed3ac6accd0376",
     "tests/command-working-directory.test.ts": "82dc863b1fcc5cd8a5ea1534238ef2f61f15e5d6c5e25d61fce43a7efe9bbc02",
     "tests/design-adr-none-exemption.test.ts": "f8a4771eb8b71a8c83b9ef782e9ed8646ef408aa4169298ab7a02553aa1c9ed7",
