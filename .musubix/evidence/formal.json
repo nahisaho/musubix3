@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-09T12:50:18.536Z",
-  "totalRequirements": 17,
-  "modeledRequirements": 2,
-  "modeledFraction": 0.11764705882352941,
+  "generatedAt": "2026-09-10T10:21:42.012Z",
+  "totalRequirements": 25,
+  "modeledRequirements": 3,
+  "modeledFraction": 0.12,
   "result": {
     "valid": true,
     "abstraction": "Consistency of explicit branch-scoped conditional, exact unit-normalized integer numeric, bounded temporal interval, deterministic state-transition, and controlled unconditional Boolean constraints; not implementation correctness.",
@@ -25,10 +25,19 @@
         "requirement": "REQ-CLI-WORKFLOW-UX-004",
         "atom": "[\"system\",\"provide a `config lint` command that reports, for the loaded `.musubix/config.json`, any configured command whose `args` contains a repository-relative file path that does not exist under the project root\"]",
         "positive": true
+      },
+      {
+        "requirement": "REQ-TDD-SUPERSEDED-CYCLE-SCOPING-001",
+        "atom": "[\"system\",\"raise `tdd_red_missing`, `tdd_green_missing`,\"]",
+        "positive": false
       }
     ],
     "constraints": [],
     "unsupported": [
+      "REQ-CHANGE-REQUIREMENT-BATCHES-001",
+      "REQ-CHANGE-REQUIREMENT-BATCHES-003",
+      "REQ-CHANGE-REQUIREMENT-BATCHES-004",
+      "REQ-CHANGE-REQUIREMENT-BATCHES-005",
       "REQ-CLI-WORKFLOW-UX-001",
       "REQ-CLI-WORKFLOW-UX-003",
       "REQ-CLI-WORKFLOW-UX-005",
@@ -43,9 +52,32 @@
       "REQ-HUMAN-APPROVAL-GATES-008",
       "REQ-SESSION-SCOPED-DEVELOPMENT-001",
       "REQ-SESSION-SCOPED-DEVELOPMENT-002",
+      "REQ-TDD-FINGERPRINT-MIGRATION-001",
+      "REQ-TDD-FINGERPRINT-SCOPING-001",
+      "REQ-WORKFLOW-MULTI-SESSION-001",
       "REQ-WORKFLOW-SHUTDOWN-001"
     ],
     "diagnostics": [
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-CHANGE-REQUIREMENT-BATCHES-001 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-CHANGE-REQUIREMENT-BATCHES-003 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-CHANGE-REQUIREMENT-BATCHES-004 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-CHANGE-REQUIREMENT-BATCHES-005 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
       {
         "code": "FORMAL_UNSUPPORTED",
         "severity": "warning",
@@ -119,6 +151,21 @@
       {
         "code": "FORMAL_UNSUPPORTED",
         "severity": "warning",
+        "message": "REQ-TDD-FINGERPRINT-MIGRATION-001 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-TDD-FINGERPRINT-SCOPING-001 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-WORKFLOW-MULTI-SESSION-001 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
         "message": "REQ-WORKFLOW-SHUTDOWN-001 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
       }
     ],
@@ -134,9 +181,14 @@
     }
   },
   "fingerprints": {
+    ".musubix/features/change-requirement-batches/requirements.md": "215dff587257d8edf5ba17c60b610bb6abe4497d867ad20de28e5ef520184c7f",
     ".musubix/features/cli-workflow-ux-v019/requirements.md": "8ac7b7e793009d95a03b53de1e3aca043d4433a7b6de9511d8547ebc33b5e7b2",
     ".musubix/features/human-approval-gates/requirements.md": "f2ae2380935831bb102cd6a7726f2a208ab1719e035157302ef51ed28f624fb0",
     ".musubix/features/session-scoped-development/requirements.md": "640aece168b4e6848c0d1e6371f0bfeb433fa8addfd064a77d050891d69d9a4f",
+    ".musubix/features/tdd-fingerprint-migration/requirements.md": "e8ac10f4367e8b43e427d2a27616debbd836194854a86da4850773b9cde9e1ae",
+    ".musubix/features/tdd-fingerprint-scoping/requirements.md": "d3e480fc0ef92edb87f2c22d1d67a00fc177fde913c68d0187aa45375b14d4c9",
+    ".musubix/features/tdd-superseded-cycle-scoping/requirements.md": "b02f10b42474ac383e278c6fa38291ba965210213d45bc759ff7db67f368e80a",
+    ".musubix/features/workflow-multi-session-verification/requirements.md": "2ae290a162d6318ff2567a0fe6f44aa38f40e38b0b9344fd1c1c36bfc3937aa1",
     ".musubix/features/workflow-session-shutdown/requirements.md": "2b8d72e2fcb1dbf5bc24ee733182cf2b692e33c50550ce7a8de2e9c5a8c32c0d"
   }
 }

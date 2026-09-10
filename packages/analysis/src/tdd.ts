@@ -430,6 +430,24 @@ export async function validateTddEvidence(root: string): Promise<{ present: bool
   }
   const latestCycles = new Map<string, TddCycle>();
   for (const cycle of evidence.cycles) latestCycles.set(cycle.testId, cycle);
+  /** @id CODE-TDD-SUPERSEDED-CYCLE-SCOPING-001
+   * @implements REQ-TDD-SUPERSEDED-CYCLE-SCOPING-001
+   */
+  const supersededCycles = new Set<TddCycle>();
+  {
+    const cyclesByTest = new Map<string, TddCycle[]>();
+    for (const cycle of evidence.cycles) {
+      const list = cyclesByTest.get(cycle.testId);
+      if (list) list.push(cycle); else cyclesByTest.set(cycle.testId, [cycle]);
+    }
+    for (const cycles of cyclesByTest.values()) {
+      for (let index = 0; index < cycles.length; index++) {
+        if (cycles.slice(index + 1).some((later) => later.red.valid && later.green?.valid)) {
+          supersededCycles.add(cycles[index]!);
+        }
+      }
+    }
+  }
   const trace = await buildTrace(root, false);
   for (const requirement of trace.nodes.filter((node) => node.kind === 'requirement' && node.mandatory)) {
     const verifiedTests = trace.edges
@@ -488,11 +506,12 @@ export async function validateTddEvidence(root: string): Promise<{ present: bool
         diagnostics.push(error('TDD_LEGACY_OR_UNSCOPED_EVIDENCE', `${cycle.testId}:migrate lacks a recorded human approver.`, cycle.testPath));
       }
     }
-    if (!cycle.red.scoped || !cycle.red.resultObserved || cycle.red.testStatus !== 'failed' || !cycle.red.reportSha256 || !cycle.red.sourceFingerprint || !cycle.red.executionId) {
-      diagnostics.push(error('TDD_LEGACY_OR_UNSCOPED_EVIDENCE', `${cycle.testId} lacks test-scoped execution provenance; superseded cycles are still validated, so archive the legacy cycle and regenerate it from a clean Red baseline: move .musubix/evidence/tdd.json aside and re-record every cycle with tdd red/green/refactor. There is no partial prune command; hand-editing the evidence is not supported.`, cycle.testPath));
+    if (!supersededCycles.has(cycle)
+      && (!cycle.red.scoped || !cycle.red.resultObserved || cycle.red.testStatus !== 'failed' || !cycle.red.reportSha256 || !cycle.red.sourceFingerprint || !cycle.red.executionId)) {
+      diagnostics.push(error('TDD_LEGACY_OR_UNSCOPED_EVIDENCE', `${cycle.testId} lacks test-scoped execution provenance; archive the legacy cycle and regenerate it from a clean Red baseline: move .musubix/evidence/tdd.json aside and re-record every cycle with tdd red/green/refactor. There is no partial prune command; hand-editing the evidence is not supported.`, cycle.testPath));
     }
-    if (!cycle.red.valid) diagnostics.push(error('TDD_RED_MISSING', `${cycle.testId} has no valid failing Red phase; recording a later cycle does not supersede this one, so archive it and regenerate the complete cycle by moving .musubix/evidence/tdd.json aside and re-recording every cycle.`, cycle.testPath));
-    if (!cycle.green?.valid) diagnostics.push(error('TDD_GREEN_MISSING', `${cycle.testId} has no valid passing Green phase; recording a later cycle does not supersede this one, so archive it and regenerate the complete cycle by moving .musubix/evidence/tdd.json aside and re-recording every cycle.`, cycle.testPath));
+    if (!supersededCycles.has(cycle) && !cycle.red.valid) diagnostics.push(error('TDD_RED_MISSING', `${cycle.testId} has no valid failing Red phase; archive it and regenerate the complete cycle by moving .musubix/evidence/tdd.json aside and re-recording every cycle.`, cycle.testPath));
+    if (!supersededCycles.has(cycle) && !cycle.green?.valid) diagnostics.push(error('TDD_GREEN_MISSING', `${cycle.testId} has no valid passing Green phase; archive it and regenerate the complete cycle by moving .musubix/evidence/tdd.json aside and re-recording every cycle.`, cycle.testPath));
     if (cycle.green?.valid) {
       if (!cycle.green.scoped || !cycle.green.resultObserved || cycle.green.testStatus !== 'passed' || !cycle.green.reportSha256 || !cycle.green.sourceFingerprint || !cycle.green.executionId) {
         diagnostics.push(error('TDD_LEGACY_OR_UNSCOPED_EVIDENCE', `${cycle.testId} Green lacks test-scoped execution provenance.`, cycle.testPath));

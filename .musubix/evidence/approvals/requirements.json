@@ -3,15 +3,17 @@
   "stage": "requirements",
   "artifacts": {
     ".musubix/constitution.md": "f8b47fdc486f395bab05223a94821b145cf8df70ffde2c838a28f8d71fe0fa92",
+    ".musubix/features/change-requirement-batches/requirements.md": "215dff587257d8edf5ba17c60b610bb6abe4497d867ad20de28e5ef520184c7f",
     ".musubix/features/cli-workflow-ux-v019/requirements.md": "8ac7b7e793009d95a03b53de1e3aca043d4433a7b6de9511d8547ebc33b5e7b2",
     ".musubix/features/human-approval-gates/requirements.md": "f2ae2380935831bb102cd6a7726f2a208ab1719e035157302ef51ed28f624fb0",
     ".musubix/features/session-scoped-development/requirements.md": "640aece168b4e6848c0d1e6371f0bfeb433fa8addfd064a77d050891d69d9a4f",
     ".musubix/features/tdd-fingerprint-migration/requirements.md": "e8ac10f4367e8b43e427d2a27616debbd836194854a86da4850773b9cde9e1ae",
     ".musubix/features/tdd-fingerprint-scoping/requirements.md": "d3e480fc0ef92edb87f2c22d1d67a00fc177fde913c68d0187aa45375b14d4c9",
+    ".musubix/features/tdd-superseded-cycle-scoping/requirements.md": "b02f10b42474ac383e278c6fa38291ba965210213d45bc759ff7db67f368e80a",
     ".musubix/features/workflow-multi-session-verification/requirements.md": "2ae290a162d6318ff2567a0fe6f44aa38f40e38b0b9344fd1c1c36bfc3937aa1",
     ".musubix/features/workflow-session-shutdown/requirements.md": "2b8d72e2fcb1dbf5bc24ee733182cf2b692e33c50550ce7a8de2e9c5a8c32c0d"
   },
-  "artifactSha256": "6f29d9db3805a675a7c9f0c70c036fbe1b451b494b4b6867f12f39c3391f7ce1",
+  "artifactSha256": "3a0109b61ff71c497f1e6c870577eda57375fb1790cb05c485087753452074ec",
   "approver": "nahisaho",
-  "approvedAt": "2026-09-09T21:24:40.023Z"
+  "approvedAt": "2026-09-10T10:03:00.787Z"
 }

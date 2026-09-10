@@ -180,7 +180,11 @@ finalize requirements while blockers remain.
 4. Write an annotated behavior test, record a structured failing `tdd red`, then
    record the change `red` checkpoint.
 5. Implement the minimum change, record `implementation`, run passing `tdd green`,
-   then record `green` and refactor.
+   then record `green` and refactor. For a change with multiple requirements,
+   `red`/`implementation`/`green` may instead be recorded once per requirement
+   subset (an independent batch per subset), completing each requirement's
+   Red-Implementation-Green loop before moving to the next, instead of
+   completing every requirement's Red before any Implementation.
 6. Add trace annotations, build graphs, inspect impact and fix missing coverage.
 7. Configure real checks and run the candidate `gate --changed`. After every
    required non-approval check passes, obtain explicit human `release` approval,
@@ -200,6 +204,11 @@ npx musubix3 tdd red TEST-EXAMPLE-001 --requirement REQ-EXAMPLE-001 --command te
 # Implement the minimum behavior without changing the test.
 npx musubix3 tdd green TEST-EXAMPLE-001 --requirement REQ-EXAMPLE-001 --command test
 npx musubix3 tdd refactor TEST-EXAMPLE-001 --requirement REQ-EXAMPLE-001 --command test
+# A change declaring REQ-EXAMPLE-001 and REQ-EXAMPLE-002 may record red/implementation/green
+# once per requirement subset instead of once for the whole change:
+npx musubix3 change-record CHANGE-0001 red --requirement REQ-EXAMPLE-001
+npx musubix3 change-record CHANGE-0001 implementation --requirement REQ-EXAMPLE-001
+npx musubix3 change-record CHANGE-0001 green --requirement REQ-EXAMPLE-001
 npx musubix3 trace build
 npx musubix3 trace check --strict --json
 npx musubix3 graph index
@@ -256,7 +265,7 @@ validation/gate or requested solver failure, **2** usage, I/O or malformed confi
 | `attestation oidc-audience --key-id <id> [--public-key-file <pem>]` | Derive the GitHub custom audience that authorizes a signing key |
 | `attestation payload --provider <name> --run-id <id> --key-id <id> [--public-key-file <pem>] [--github-oidc-token-file <jwt>]` | Emit canonical unsigned CI payload for external signing |
 | `attestation verify` | Verify static-key or GitHub OIDC-authorized Ed25519 provenance |
-| `change-record <CHANGE-ID> <phase> --requirement <REQ-ID...>` | Record ordered artifact/TDD fingerprints for a staged change |
+| `change-record <CHANGE-ID> <phase> --requirement <REQ-ID...>` | Record ordered artifact/TDD fingerprints for a staged change. `impact`/`requirements`/`design`/`quality` require the change's full requirement ID set; `red`/`implementation`/`green` also accept a proper non-empty subset, recorded as an independent per-requirement batch, so a multi-requirement change can be completed with an interleaved per-requirement Red-Implementation-Green loop instead of one global batch |
 | `config lint` | Report configured commands whose `args` reference repository-relative paths that do not exist |
 | `config scaffold` | Propose native test-command entries for detected Go/Rust/Maven/Python/Node toolchains without writing `.musubix/config.json` |
 | `gate [--changed] [--feature <name>]` | Fresh full checks plus actual configured commands; persist evidence. `--feature` scopes requirements/design/trace/tdd/change-history/change-completeness checks to one feature as a diagnostic view; never a substitute for the repository-wide gate |

@@ -103,6 +103,30 @@
       "timeoutMs": 120000
     },
     {
+      "name": "tdd-superseded-cycle-scoping-tests",
+      "command": "npx",
+      "args": [
+        "vitest",
+        "run",
+        "tests/tdd-superseded-cycle-scoping.test.ts"
+      ],
+      "adapter": "vitest",
+      "required": true,
+      "timeoutMs": 120000
+    },
+    {
+      "name": "change-requirement-batches-tests",
+      "command": "npx",
+      "args": [
+        "vitest",
+        "run",
+        "tests/change-requirement-batches.test.ts"
+      ],
+      "adapter": "vitest",
+      "required": true,
+      "timeoutMs": 120000
+    },
+    {
       "name": "workflow-multi-session-verification-tests",
       "command": "npx",
       "args": [

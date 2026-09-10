@@ -12,6 +12,10 @@
     ".musubix/decisions/ADR-0008.md": "ed668b4e69b832890fe0644b18b602cfa5224dd85c8a58af3e188b609659a276",
     ".musubix/decisions/ADR-0009.md": "b81438c27d6710e45e9493ba831a8e5d0be89430183e3f581dd68c3c80fa38c1",
     ".musubix/decisions/ADR-0010.md": "b2e65434cc9c2ec8947e49bf60858784ab30e6f0c3dacd434f2e9d3f93154fa7",
+    ".musubix/decisions/ADR-0011.md": "daeaf7fa94e563f46d9f5449b49b385e9ee52de4dc2b2f7bb34c71f07efd2f8a",
+    ".musubix/decisions/ADR-0012.md": "8f33f5dec818bbf6118b08e9aeae4424fa933821be8bbb15011afa5874f6c41f",
+    ".musubix/features/change-requirement-batches/design.md": "ea7ee9aa17f9f675bf649e9eec90b07e335a6fb793faf4c9951c5f747510f453",
+    ".musubix/features/change-requirement-batches/requirements.md": "215dff587257d8edf5ba17c60b610bb6abe4497d867ad20de28e5ef520184c7f",
     ".musubix/features/cli-workflow-ux-v019/design.md": "bdb13e2b903123c32e54787599220ea5444a0922532b60d38fef528991116cf8",
     ".musubix/features/cli-workflow-ux-v019/requirements.md": "8ac7b7e793009d95a03b53de1e3aca043d4433a7b6de9511d8547ebc33b5e7b2",
     ".musubix/features/human-approval-gates/design.md": "ce1e316afee28082001ddedbce734a7766562889bd28f3eea610909c8d736206",
@@ -22,12 +26,14 @@
     ".musubix/features/tdd-fingerprint-migration/requirements.md": "e8ac10f4367e8b43e427d2a27616debbd836194854a86da4850773b9cde9e1ae",
     ".musubix/features/tdd-fingerprint-scoping/design.md": "5a52655e1555ca194116d973accbfbd5a1eb384cfcf2bcf0a36893ff0783a662",
     ".musubix/features/tdd-fingerprint-scoping/requirements.md": "d3e480fc0ef92edb87f2c22d1d67a00fc177fde913c68d0187aa45375b14d4c9",
+    ".musubix/features/tdd-superseded-cycle-scoping/design.md": "45f69705b11c56b5c7e2e243534d3918b7c46723d3f4bf7ee342df19187ee2cd",
+    ".musubix/features/tdd-superseded-cycle-scoping/requirements.md": "b02f10b42474ac383e278c6fa38291ba965210213d45bc759ff7db67f368e80a",
     ".musubix/features/workflow-multi-session-verification/design.md": "16a916ca279ddfddb7b18a59bef7c9bee5c4608d751187208da3a6c3b46e0d55",
     ".musubix/features/workflow-multi-session-verification/requirements.md": "2ae290a162d6318ff2567a0fe6f44aa38f40e38b0b9344fd1c1c36bfc3937aa1",
     ".musubix/features/workflow-session-shutdown/design.md": "225d1718c0ea1628dae251f06b1c5ddafda9a7ae92a15e3d961efbea51c0e0ac",
     ".musubix/features/workflow-session-shutdown/requirements.md": "2b8d72e2fcb1dbf5bc24ee733182cf2b692e33c50550ce7a8de2e9c5a8c32c0d"
   },
-  "artifactSha256": "897d903792c452b1cbf9b21a9865a1306c46dea5e96b81ee9bdc09943c29d1a5",
+  "artifactSha256": "8809772b9b0c892dcccb36553db3f7a1df096601e87110dda349daa3f4b41a58",
   "approver": "nahisaho",
-  "approvedAt": "2026-09-09T21:26:23.764Z"
+  "approvedAt": "2026-09-10T10:10:31.234Z"
 }
