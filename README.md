@@ -52,10 +52,24 @@ does this repository's configured policy consider the change ready?”
 
 ## Quick start
 
-This is the **npm-installed route**, one of three equivalent ways to load the
-skills (see [Distribution options](#distribution-options)). Pick exactly one
-route — npm install, native plugin, or native marketplace — never combine them
-in the same project.
+There are two ways to load musubix3's skills into a project — pick exactly
+one per project, never both:
+
+- **`npm install` (this section)**: add `musubix3` as a project dev
+  dependency, then run `npx musubix3 init` to copy the skills into
+  `.github/skills/` and scaffold starter `.musubix/` artifacts. Version and
+  upgrades are tracked in your project's `package.json`/lockfile
+  (`npm install ...@latest` + `npx musubix3 upgrade`); see
+  [Upgrade](#upgrade). Best when you want the skills and starter SDD files
+  committed to the repository itself.
+- **`copilot plugin install`** (native plugin/marketplace route): register
+  musubix3 directly with Copilot CLI's own plugin manager — no npm
+  dependency is added to the project, and no files are copied into
+  `.github/skills/`. Upgraded with `copilot plugin update musubix3` (or the
+  marketplace equivalent). See
+  [Distribution options](#distribution-options) for the exact commands.
+
+The rest of this section documents the npm install route.
 
 For a reproducible project-local installation:
 
