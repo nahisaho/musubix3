@@ -212,9 +212,19 @@ export async function readAdapterOutput(invocation: AdapterInvocation, absoluteP
   return (await Promise.all(entries.map((entry) => readFile(entry, 'utf8')))).join('\n');
 }
 
+/* @id CODE-ADAPTER-PATTERN-RECOGNITION-001
+ * @implements REQ-ADAPTER-PATTERN-RECOGNITION-001
+ * @design DES-ADAPTER-PATTERN-RECOGNITION-001
+ */
+// Anchor the ID's trailing boundary on "not immediately followed by another
+// digit" rather than a word-boundary: Go/Rust identifiers cannot contain any
+// non-word character, so a word-boundary immediately after the digits can
+// never occur when a descriptive suffix follows (e.g. "..._005AssignsX").
+// The digit-run quantifier stays greedy, so a longer numeric ID (e.g. 0051)
+// is still matched in full rather than being cut short.
 function idOf(value: unknown): string | null {
   if (typeof value !== 'string') return null;
-  const match = /(?:^|[^A-Za-z0-9])(TEST[-_](?!TEST[-_])[A-Z0-9_-]*\d{3,})\b/i.exec(value);
+  const match = /(?:^|[^A-Za-z0-9])(TEST[-_](?!TEST[-_])[A-Z0-9_-]*\d{3,})(?![0-9])/i.exec(value);
   return match?.[1]?.toUpperCase().replaceAll('_', '-') ?? null;
 }
 

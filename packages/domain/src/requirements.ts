@@ -153,6 +153,35 @@ export function classifyEars(statement: string): EarsPattern | null {
   return kinds.length === 1 ? kinds[0] as EarsPattern : null;
 }
 
+/* @id CODE-EARS-ID-DIAGNOSTIC-MESSAGES-001
+ * @implements REQ-EARS-ID-DIAGNOSTIC-MESSAGES-001 REQ-EARS-ID-DIAGNOSTIC-MESSAGES-002
+ * @design DES-EARS-ID-DIAGNOSTIC-MESSAGES-001
+ */
+// Diagnostic-only helper: called after classifyEars() has already returned
+// null for a single-obligation English statement, to name the specific
+// authoring mistake instead of a bare "invalid" classification. Never
+// changes classifyEars()'s classification outcome.
+export function earsFailureReason(statement: string): string | undefined {
+  const s = statement.trim().replace(/\s+/g, ' ');
+  if ((s.match(/\bshall\b/gi) ?? []).length !== 1) return undefined;
+  const shallMatch = /^(.*?)\bshall\b/i.exec(s);
+  if (!shallMatch) return undefined;
+  const beforeShall = (shallMatch[1] ?? '').trim();
+  const segments = beforeShall.split(/,\s*/).filter(Boolean);
+  if (segments.length > 1) {
+    const hasIfThen = /\bif\b.+\bthen\b/i.test(beforeShall);
+    const stateClauses = [...beforeShall.matchAll(/\b(while|when|where)\b/gi)].map((m) => m[1]!.toLowerCase());
+    if (hasIfThen && stateClauses.length) {
+      return `Cannot combine an "if ..., then" clause with a "${stateClauses[0]}" clause in one statement; use only one clause form per requirement.`;
+    }
+  }
+  const subjectSegment = (segments[segments.length - 1] ?? '').trim().replace(/^then\s+/i, '');
+  if (subjectSegment && !/^(?:the|a|an)\s+\S/i.test(subjectSegment) && /^[A-Za-z][\w'-]*(?:\s+[\w'-]+)*$/.test(subjectSegment)) {
+    return `The subject "${subjectSegment}" must be an explicit noun phrase starting with "the", "a", or "an" (e.g. "the <system/component> shall ..."), not a pronoun or bare noun.`;
+  }
+  return undefined;
+}
+
 export function validateRequirements(text: string, path = '<input>'): Validation<Requirement[]> {
   const parsed = markdown(text, path);
   const sections = parsed.sections.filter((s) => /^REQ-/i.test(s.id));
@@ -160,7 +189,7 @@ export function validateRequirements(text: string, path = '<input>'): Validation
   if (parsed.metadata.schemaVersion !== undefined && parsed.metadata.schemaVersion !== 1) diagnostics.push(error('REQ_SCHEMA', 'Unsupported schemaVersion; expected 1.', path));
   if (!sections.length) diagnostics.push(error('REQ_MISSING', 'No requirement headings found (## REQ-FEATURE-001: Title).', path));
   const value: Requirement[] = sections.map((section) => {
-    if (!ids.requirement.test(section.id)) diagnostics.push(error('REQ_ID', `Invalid requirement ID ${section.id}.`, path, section.line));
+    if (!ids.requirement.test(section.id)) diagnostics.push(error('REQ_ID', `Invalid requirement ID ${section.id}; expected pattern REQ-<FEATURE>-<digits> (numeric-only final segment, e.g. REQ-LOGI-008).`, path, section.line));
     if (!section.title) diagnostics.push(error('REQ_TITLE', 'Requirement title is required.', path, section.line));
     const rawPriority = field(section.body, 'Priority|優先度').toLowerCase() || 'must';
     if (!['must', 'should', 'may'].includes(rawPriority)) diagnostics.push(error('REQ_PRIORITY', 'Priority must be must, should, or may.', path, section.line));
@@ -178,7 +207,7 @@ export function validateRequirements(text: string, path = '<input>'): Validation
         + (normalized.match(/しなければならない|してはならない|してはいけない|すること/g) ?? []).length;
       const reason = obligations > 1
         ? ` This statement declares ${obligations} obligations; split it so exactly one "shall"/obligation remains per requirement.`
-        : '';
+        : (earsFailureReason(normalized) ? ` ${earsFailureReason(normalized)}` : '');
       diagnostics.push(error(
         'REQ_EARS',
         `Use one complete controlled EARS statement.${reason} English example: "When an event occurs, the system shall respond." Japanese example: "イベントが発生したとき、APIは応答しなければならない。"`,

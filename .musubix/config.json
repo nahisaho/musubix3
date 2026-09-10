@@ -139,6 +139,30 @@
       "timeoutMs": 120000
     },
     {
+      "name": "ears-id-diagnostic-messages-tests",
+      "command": "npx",
+      "args": [
+        "vitest",
+        "run",
+        "tests/ears-id-diagnostic-messages.test.ts"
+      ],
+      "adapter": "vitest",
+      "required": true,
+      "timeoutMs": 120000
+    },
+    {
+      "name": "adapter-pattern-recognition-tests",
+      "command": "npx",
+      "args": [
+        "vitest",
+        "run",
+        "tests/adapter-pattern-recognition.test.ts"
+      ],
+      "adapter": "vitest",
+      "required": true,
+      "timeoutMs": 120000
+    },
+    {
       "name": "workflow-multi-session-verification-tests",
       "command": "npx",
       "args": [

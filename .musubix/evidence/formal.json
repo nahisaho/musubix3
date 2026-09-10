@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-10T10:53:26.294Z",
-  "totalRequirements": 27,
+  "generatedAt": "2026-09-10T11:15:09.704Z",
+  "totalRequirements": 32,
   "modeledRequirements": 3,
-  "modeledFraction": 0.1111111111111111,
+  "modeledFraction": 0.09375,
   "result": {
     "valid": true,
     "abstraction": "Consistency of explicit branch-scoped conditional, exact unit-normalized integer numeric, bounded temporal interval, deterministic state-transition, and controlled unconditional Boolean constraints; not implementation correctness.",
@@ -34,6 +34,8 @@
     ],
     "constraints": [],
     "unsupported": [
+      "REQ-ADAPTER-PATTERN-RECOGNITION-001",
+      "REQ-ADAPTER-PATTERN-RECOGNITION-002",
       "REQ-CHANGE-REQUIREMENT-BATCHES-001",
       "REQ-CHANGE-REQUIREMENT-BATCHES-003",
       "REQ-CHANGE-REQUIREMENT-BATCHES-004",
@@ -42,6 +44,9 @@
       "REQ-CLI-WORKFLOW-UX-003",
       "REQ-CLI-WORKFLOW-UX-005",
       "REQ-CLI-WORKFLOW-UX-006",
+      "REQ-EARS-ID-DIAGNOSTIC-MESSAGES-001",
+      "REQ-EARS-ID-DIAGNOSTIC-MESSAGES-002",
+      "REQ-EARS-ID-DIAGNOSTIC-MESSAGES-003",
       "REQ-HUMAN-APPROVAL-GATES-001",
       "REQ-HUMAN-APPROVAL-GATES-002",
       "REQ-HUMAN-APPROVAL-GATES-003",
@@ -60,6 +65,16 @@
       "REQ-WORKFLOW-SHUTDOWN-001"
     ],
     "diagnostics": [
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-ADAPTER-PATTERN-RECOGNITION-001 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-ADAPTER-PATTERN-RECOGNITION-002 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
       {
         "code": "FORMAL_UNSUPPORTED",
         "severity": "warning",
@@ -99,6 +114,21 @@
         "code": "FORMAL_UNSUPPORTED",
         "severity": "warning",
         "message": "REQ-CLI-WORKFLOW-UX-006 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-EARS-ID-DIAGNOSTIC-MESSAGES-001 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-EARS-ID-DIAGNOSTIC-MESSAGES-002 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-EARS-ID-DIAGNOSTIC-MESSAGES-003 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
       },
       {
         "code": "FORMAL_UNSUPPORTED",
@@ -193,8 +223,10 @@
     }
   },
   "fingerprints": {
+    ".musubix/features/adapter-pattern-recognition/requirements.md": "5731561a0a04982b8a5c305bdeeae6084bcf0ee8846f295eaaaabc823d1f9793",
     ".musubix/features/change-requirement-batches/requirements.md": "215dff587257d8edf5ba17c60b610bb6abe4497d867ad20de28e5ef520184c7f",
     ".musubix/features/cli-workflow-ux-v019/requirements.md": "8ac7b7e793009d95a03b53de1e3aca043d4433a7b6de9511d8547ebc33b5e7b2",
+    ".musubix/features/ears-id-diagnostic-messages/requirements.md": "49afd4e574f1179a31707323fbbcfffabf1051f666ad1fcba60b39b2e7da3808",
     ".musubix/features/human-approval-gates/requirements.md": "f2ae2380935831bb102cd6a7726f2a208ab1719e035157302ef51ed28f624fb0",
     ".musubix/features/session-scoped-development/requirements.md": "640aece168b4e6848c0d1e6371f0bfeb433fa8addfd064a77d050891d69d9a4f",
     ".musubix/features/tdd-fingerprint-migration/requirements.md": "e8ac10f4367e8b43e427d2a27616debbd836194854a86da4850773b9cde9e1ae",

@@ -603,6 +603,18 @@ function looksLikeRepoRelativePath(arg: string): boolean {
   return arg.includes('/');
 }
 
+/* @id CODE-ADAPTER-PATTERN-RECOGNITION-002
+ * @implements REQ-ADAPTER-PATTERN-RECOGNITION-002
+ * @design DES-ADAPTER-PATTERN-RECOGNITION-001
+ */
+// Go's package-pattern syntax ("./...", "pkg/...") is not a filesystem path;
+// it is a recursive package wildcard understood only by the `go` toolchain.
+// Scoped to the go-test adapter so the orphaned-path check is not weakened
+// for any other command's genuinely path-like arguments.
+function isGoPackagePattern(arg: string): boolean {
+  return /(?:^|\/)\.\.\.$/.test(arg);
+}
+
 /**
  * REQ-CLI-WORKFLOW-UX-004: scan every configured command's `args` for tokens
  * that look like repository-relative file paths and report any that do not
@@ -618,6 +630,7 @@ export async function configLint(root: string): Promise<{ valid: boolean; diagno
   for (const command of config.commands) {
     for (const arg of command.args) {
       if (!looksLikeRepoRelativePath(arg)) continue;
+      if (command.adapter === 'go-test' && isGoPackagePattern(arg)) continue;
       if (!await exists(within(root, arg))) {
         diagnostics.push(error('CONFIG_ORPHANED_PATH', `Command "${command.name}" references a path that does not exist: ${arg}`));
       }
