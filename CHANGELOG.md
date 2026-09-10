@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+- Added a new `musubix3 upgrade [--dry-run]` command that refreshes only
+  the bundled `.github/skills/sdd-*` files to match the installed package
+  version. Unlike `init --force`, it never touches `.musubix/config.json`,
+  `policy-baseline.json`, `constitution.md`, ADRs, feature artifacts,
+  evidence, or `.gitignore`. Documented as the recommended upgrade path in
+  README.md/README-ja.md (available starting with the release after
+  0.1.13; not present in 0.1.13 or earlier — use `npm view musubix3
+  versions` to check).
+
 ## 0.1.13 - 2026-09-11
 
 Fixes for two issues (#15, #16) found while running a real large-scale IoT

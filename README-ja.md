@@ -96,7 +96,10 @@ Copilot の内部設定、MCP、LSP、hooks、既存のプロジェクト指示�
 
 ## アップグレード
 
-新しい musubix3 のリリースを取り込むには:
+`upgrade` は 0.1.13 より後のリリースから利用可能です（0.1.13 以前には
+存在しません。`npm view musubix3 versions` で確認してください）。
+
+npm でインストールした場合（`init`／リポジトリローカル Skills）:
 
 ```sh
 npm install --save-dev --save-exact musubix3@latest
@@ -118,15 +121,39 @@ npx --no-install musubix3 upgrade
 場合はその内容を上書きしてしまうため、通常のバージョンアップでは
 `upgrade` の使用を推奨します。
 
+ネイティブプラグイン経由の場合:
+
+```sh
+copilot plugin update musubix3
+```
+
+ネイティブマーケットプレイス経由の場合:
+
+```sh
+copilot plugin marketplace update musubix3-marketplace
+copilot plugin update musubix3
+```
+
+これらは Copilot 自体のプラグイン管理機能に委譲され、`plugin.json` や
+マーケットプレイスカタログを再取得します。`.musubix/` には一切触れません
+（`.musubix/` の成果物を管理するのは npm インストール経由の `upgrade` のみです）。
+
+`upgrade` の使用を推奨します。
+
 ## 配布・インストール
 
 同名 Skill の重複を避け、以下の読み込み方法から1つ選んでください。
 
 ### ネイティブプラグイン
 
+どちらか一方だけを実行してください（両方は不要です）:
+
 ```sh
-copilot plugin install ./musubix3
-copilot plugin install nahisaho/musubix3
+copilot plugin install ./musubix3            # ローカルクローンから（その親ディレクトリで実行）
+```
+
+```sh
+copilot plugin install nahisaho/musubix3     # 公開GitHubリポジトリから（ローカルクローン不要）
 ```
 
 リポジトリ直下の `plugin.json` が唯一のプラグイン定義元であり、

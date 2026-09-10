@@ -99,7 +99,10 @@ and test it, and configure real check commands before expecting the gate to pass
 
 ## Upgrade
 
-To pick up a newer musubix3 release:
+`upgrade` is available starting with the release after 0.1.13 (not in 0.1.13
+or earlier — check with `npm view musubix3 versions`).
+
+For the npm-installed route (`init`/repository-local skills):
 
 ```sh
 npm install --save-dev --save-exact musubix3@latest
@@ -121,15 +124,37 @@ starter feature's `requirements.md`/`design.md`), but it overwrites
 customized content in those files, so prefer `upgrade` for routine version
 bumps.
 
+For the native plugin route:
+
+```sh
+copilot plugin update musubix3
+```
+
+For the native marketplace route:
+
+```sh
+copilot plugin marketplace update musubix3-marketplace
+copilot plugin update musubix3
+```
+
+These delegate to Copilot's own plugin manager, which re-fetches
+`plugin.json`/the marketplace catalog; they do not touch `.musubix/` at all
+(only the npm-installed route manages `.musubix/` artifacts).
+
 ## Distribution options
 
 Choose one skill-loading route to avoid duplicate skill names.
 
 ### Native plugin (direct)
 
+Pick exactly one of the following (not both):
+
 ```sh
-copilot plugin install ./musubix3            # built/local clone, from its parent
-copilot plugin install nahisaho/musubix3     # published GitHub repository
+copilot plugin install ./musubix3            # local clone, from its parent directory
+```
+
+```sh
+copilot plugin install nahisaho/musubix3     # published GitHub repository, no local clone needed
 ```
 
 `plugin.json` at the repository root is the source of truth and references
