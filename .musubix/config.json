@@ -127,6 +127,18 @@
       "timeoutMs": 120000
     },
     {
+      "name": "tdd-green-requirement-scoping-tests",
+      "command": "npx",
+      "args": [
+        "vitest",
+        "run",
+        "tests/tdd-green-requirement-scoping.test.ts"
+      ],
+      "adapter": "vitest",
+      "required": true,
+      "timeoutMs": 120000
+    },
+    {
       "name": "workflow-multi-session-verification-tests",
       "command": "npx",
       "args": [

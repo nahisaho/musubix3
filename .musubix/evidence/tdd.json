@@ -1163,6 +1163,92 @@
         "diagnostics": [],
         "order": 119
       }
+    },
+    {
+      "cycleId": "5dc81f3e-563b-41e1-b721-9f21af687e44",
+      "requirementId": "REQ-TDD-GREEN-REQUIREMENT-SCOPING-001",
+      "testId": "TEST-TDD-GREEN-REQUIREMENT-SCOPING-001",
+      "testPath": "tests/tdd-green-requirement-scoping.test.ts",
+      "commandName": "tdd-green-requirement-scoping-tests",
+      "red": {
+        "phase": "red",
+        "valid": true,
+        "scoped": true,
+        "resultObserved": true,
+        "testStatus": "failed",
+        "reportSha256": "6957f6b69e5cff5f2d4a78d632d5c577de21944e5753aebc64cfaf13d3ea688b",
+        "commandSha256": "f03bda3209793f62f102b205ee4206f255f5912c8990c00710fd72b5cf42a2aa",
+        "outputSha256": "e9cdb137d3dfe035debbf29d2040755948f999eb577c242cc316886ede399956",
+        "exitCode": 1,
+        "durationMs": 1693,
+        "testFingerprint": "3f96d8a4ae959008c639b85706e00d657f095e18a379ef146867ebb1070e180d",
+        "sourceFingerprint": "48e95bd3e7035d4e7a3e57b03fbd0f4889c8d67d3ebbe1cbe909a77a297510b6",
+        "executionId": "6465f8ef-d77f-4065-a192-1f911d8f6ca2",
+        "recordedAt": "2026-09-10T10:50:30.582Z",
+        "diagnostics": [],
+        "order": 120
+      },
+      "green": {
+        "phase": "green",
+        "valid": true,
+        "scoped": true,
+        "resultObserved": true,
+        "testStatus": "passed",
+        "reportSha256": "ade55d9ed2c6a33306a1d2facc85b4e1d7ed4a8706681662b4a8a26782ba091d",
+        "commandSha256": "f03bda3209793f62f102b205ee4206f255f5912c8990c00710fd72b5cf42a2aa",
+        "outputSha256": "e9cdb137d3dfe035debbf29d2040755948f999eb577c242cc316886ede399956",
+        "exitCode": 0,
+        "durationMs": 1776,
+        "testFingerprint": "3f96d8a4ae959008c639b85706e00d657f095e18a379ef146867ebb1070e180d",
+        "sourceFingerprint": "8e7935c0059a9f4b1749b8f167cc270bfa2534172cbce115c301a077ca4facb7",
+        "executionId": "a8d748ab-dac9-4eae-9386-3604ec1980c0",
+        "recordedAt": "2026-09-10T10:50:35.490Z",
+        "diagnostics": [],
+        "order": 121
+      }
+    },
+    {
+      "cycleId": "1438d26c-745b-4243-987c-89f45f174d40",
+      "requirementId": "REQ-TDD-GREEN-REQUIREMENT-SCOPING-002",
+      "testId": "TEST-TDD-GREEN-REQUIREMENT-SCOPING-001",
+      "testPath": "tests/tdd-green-requirement-scoping.test.ts",
+      "commandName": "tdd-green-requirement-scoping-tests",
+      "red": {
+        "phase": "red",
+        "valid": true,
+        "scoped": true,
+        "resultObserved": true,
+        "testStatus": "failed",
+        "reportSha256": "3ef72fb1fe1de013417a449f82303858fb4cb920b523312b5b489dc3b97ae840",
+        "commandSha256": "f03bda3209793f62f102b205ee4206f255f5912c8990c00710fd72b5cf42a2aa",
+        "outputSha256": "e9cdb137d3dfe035debbf29d2040755948f999eb577c242cc316886ede399956",
+        "exitCode": 1,
+        "durationMs": 1676,
+        "testFingerprint": "3f96d8a4ae959008c639b85706e00d657f095e18a379ef146867ebb1070e180d",
+        "sourceFingerprint": "48e95bd3e7035d4e7a3e57b03fbd0f4889c8d67d3ebbe1cbe909a77a297510b6",
+        "executionId": "c6495f44-77e9-4083-a596-89bf9e30bfd2",
+        "recordedAt": "2026-09-10T10:50:43.760Z",
+        "diagnostics": [],
+        "order": 122
+      },
+      "green": {
+        "phase": "green",
+        "valid": true,
+        "scoped": true,
+        "resultObserved": true,
+        "testStatus": "passed",
+        "reportSha256": "3c0958eb48942b7ba20f801d21384073d94e413cb148863678a29e773f0b5b12",
+        "commandSha256": "f03bda3209793f62f102b205ee4206f255f5912c8990c00710fd72b5cf42a2aa",
+        "outputSha256": "e9cdb137d3dfe035debbf29d2040755948f999eb577c242cc316886ede399956",
+        "exitCode": 0,
+        "durationMs": 1636,
+        "testFingerprint": "3f96d8a4ae959008c639b85706e00d657f095e18a379ef146867ebb1070e180d",
+        "sourceFingerprint": "8e7935c0059a9f4b1749b8f167cc270bfa2534172cbce115c301a077ca4facb7",
+        "executionId": "a2edb56d-ddb7-4630-9709-231115452fa3",
+        "recordedAt": "2026-09-10T10:50:48.393Z",
+        "diagnostics": [],
+        "order": 123
+      }
     }
   ],
   "chain": [
@@ -1897,6 +1983,54 @@
       "phaseEvidenceSha256": "7a4522f6974eeb4ce8200b6d59ada0e413291bc0acb498acdd695e09b0f85b8f",
       "previousSha256": "34e5ebe803d75347c3b49f2fbf9f624fb99df1265d9acb9aea5a418a4055e953",
       "recordSha256": "43b2da8c1772c3d8ca3675e3dcea1fabd9b6e08523a23e31628cfcef508eb150"
+    },
+    {
+      "sequence": 62,
+      "cycleId": "5dc81f3e-563b-41e1-b721-9f21af687e44",
+      "requirementId": "REQ-TDD-GREEN-REQUIREMENT-SCOPING-001",
+      "testId": "TEST-TDD-GREEN-REQUIREMENT-SCOPING-001",
+      "testPath": "tests/tdd-green-requirement-scoping.test.ts",
+      "commandName": "tdd-green-requirement-scoping-tests",
+      "phase": "red",
+      "phaseEvidenceSha256": "ad18b3bbdb5fd77ba0fd86f3f163eb7a64c4220ef1e095046bd4f4f3e4480ace",
+      "previousSha256": "43b2da8c1772c3d8ca3675e3dcea1fabd9b6e08523a23e31628cfcef508eb150",
+      "recordSha256": "02c7701df0a47c95dbd363d395ef53dd5e806775c30df4ec9d77f0ab5a4dcb0c"
+    },
+    {
+      "sequence": 63,
+      "cycleId": "5dc81f3e-563b-41e1-b721-9f21af687e44",
+      "requirementId": "REQ-TDD-GREEN-REQUIREMENT-SCOPING-001",
+      "testId": "TEST-TDD-GREEN-REQUIREMENT-SCOPING-001",
+      "testPath": "tests/tdd-green-requirement-scoping.test.ts",
+      "commandName": "tdd-green-requirement-scoping-tests",
+      "phase": "green",
+      "phaseEvidenceSha256": "a2200426cd09719fd7f81097c5ad6d67c98b6ad533f5d2272201ef9c456e97ac",
+      "previousSha256": "02c7701df0a47c95dbd363d395ef53dd5e806775c30df4ec9d77f0ab5a4dcb0c",
+      "recordSha256": "5a1bd3adab7a8a290204448eea80b412ab232f0194d4c4a1156f46ebb781bf36"
+    },
+    {
+      "sequence": 64,
+      "cycleId": "1438d26c-745b-4243-987c-89f45f174d40",
+      "requirementId": "REQ-TDD-GREEN-REQUIREMENT-SCOPING-002",
+      "testId": "TEST-TDD-GREEN-REQUIREMENT-SCOPING-001",
+      "testPath": "tests/tdd-green-requirement-scoping.test.ts",
+      "commandName": "tdd-green-requirement-scoping-tests",
+      "phase": "red",
+      "phaseEvidenceSha256": "3c03389cd34dd011a016169b828769a400cd5043c59b028e831810021ea05232",
+      "previousSha256": "5a1bd3adab7a8a290204448eea80b412ab232f0194d4c4a1156f46ebb781bf36",
+      "recordSha256": "3c4686cb763576f288d1a844e8effbaeee4d249e7007d4ddb4e7474ed55ca73a"
+    },
+    {
+      "sequence": 65,
+      "cycleId": "1438d26c-745b-4243-987c-89f45f174d40",
+      "requirementId": "REQ-TDD-GREEN-REQUIREMENT-SCOPING-002",
+      "testId": "TEST-TDD-GREEN-REQUIREMENT-SCOPING-001",
+      "testPath": "tests/tdd-green-requirement-scoping.test.ts",
+      "commandName": "tdd-green-requirement-scoping-tests",
+      "phase": "green",
+      "phaseEvidenceSha256": "89cd51cf801735c82c2aabae14cb640a15148061161c41c8a3ba6e84ebfd214f",
+      "previousSha256": "3c4686cb763576f288d1a844e8effbaeee4d249e7007d4ddb4e7474ed55ca73a",
+      "recordSha256": "d252f8f0fe35b4675d96491acec6e892bacf420a383dd29872a7e0d83b65b68d"
     }
   ]
 }

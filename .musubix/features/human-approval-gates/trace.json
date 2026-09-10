@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-10T10:21:39.273Z",
+  "generatedAt": "2026-09-10T10:53:22.995Z",
   "nodes": [
     {
       "id": "CODE-SESSION-SCOPED-DEVELOPMENT-001",
@@ -78,6 +78,12 @@
       "id": "ADR-0012",
       "kind": "adr",
       "path": ".musubix/decisions/ADR-0012.md",
+      "line": 1
+    },
+    {
+      "id": "ADR-0013",
+      "kind": "adr",
+      "path": ".musubix/decisions/ADR-0013.md",
       "line": 1
     },
     {
@@ -325,6 +331,26 @@
       "mandatory": true
     },
     {
+      "id": "DES-TDD-GREEN-REQUIREMENT-SCOPING-001",
+      "kind": "design",
+      "path": ".musubix/features/tdd-green-requirement-scoping/design.md",
+      "line": 3
+    },
+    {
+      "id": "REQ-TDD-GREEN-REQUIREMENT-SCOPING-001",
+      "kind": "requirement",
+      "path": ".musubix/features/tdd-green-requirement-scoping/requirements.md",
+      "line": 21,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-TDD-GREEN-REQUIREMENT-SCOPING-002",
+      "kind": "requirement",
+      "path": ".musubix/features/tdd-green-requirement-scoping/requirements.md",
+      "line": 35,
+      "mandatory": true
+    },
+    {
       "id": "DES-TDD-SUPERSEDED-CYCLE-SCOPING-001",
       "kind": "design",
       "path": ".musubix/features/tdd-superseded-cycle-scoping/design.md",
@@ -430,10 +456,16 @@
       "line": 169
     },
     {
+      "id": "CODE-TDD-GREEN-REQUIREMENT-SCOPING-001",
+      "kind": "code",
+      "path": "packages/analysis/src/tdd.ts",
+      "line": 280
+    },
+    {
       "id": "CODE-TDD-SUPERSEDED-CYCLE-SCOPING-001",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 433
+      "line": 445
     },
     {
       "id": "CODE-SESSION-SCOPED-DEVELOPMENT-003",
@@ -590,6 +622,12 @@
       "kind": "test",
       "path": "tests/tdd-fingerprint-scoping.test.ts",
       "line": 21
+    },
+    {
+      "id": "TEST-TDD-GREEN-REQUIREMENT-SCOPING-001",
+      "kind": "test",
+      "path": "tests/tdd-green-requirement-scoping.test.ts",
+      "line": 12
     },
     {
       "id": "TEST-TDD-SUPERSEDED-CYCLE-SCOPING-001",
@@ -866,6 +904,21 @@
       "relation": "decides"
     },
     {
+      "from": "DES-TDD-GREEN-REQUIREMENT-SCOPING-001",
+      "to": "REQ-TDD-GREEN-REQUIREMENT-SCOPING-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-TDD-GREEN-REQUIREMENT-SCOPING-001",
+      "to": "REQ-TDD-GREEN-REQUIREMENT-SCOPING-002",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0013",
+      "to": "DES-TDD-GREEN-REQUIREMENT-SCOPING-001",
+      "relation": "decides"
+    },
+    {
       "from": "DES-TDD-SUPERSEDED-CYCLE-SCOPING-001",
       "to": "REQ-TDD-SUPERSEDED-CYCLE-SCOPING-001",
       "relation": "satisfies"
@@ -1071,6 +1124,21 @@
       "relation": "implements"
     },
     {
+      "from": "CODE-TDD-GREEN-REQUIREMENT-SCOPING-001",
+      "to": "REQ-TDD-GREEN-REQUIREMENT-SCOPING-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-TDD-GREEN-REQUIREMENT-SCOPING-001",
+      "to": "REQ-TDD-GREEN-REQUIREMENT-SCOPING-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-TDD-GREEN-REQUIREMENT-SCOPING-001",
+      "to": "DES-TDD-GREEN-REQUIREMENT-SCOPING-001",
+      "relation": "implements"
+    },
+    {
       "from": "CODE-TDD-SUPERSEDED-CYCLE-SCOPING-001",
       "to": "REQ-TDD-SUPERSEDED-CYCLE-SCOPING-001",
       "relation": "implements"
@@ -1231,6 +1299,16 @@
       "relation": "verifies"
     },
     {
+      "from": "TEST-TDD-GREEN-REQUIREMENT-SCOPING-001",
+      "to": "REQ-TDD-GREEN-REQUIREMENT-SCOPING-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-TDD-GREEN-REQUIREMENT-SCOPING-001",
+      "to": "REQ-TDD-GREEN-REQUIREMENT-SCOPING-002",
+      "relation": "verifies"
+    },
+    {
       "from": "TEST-TDD-SUPERSEDED-CYCLE-SCOPING-001",
       "to": "REQ-TDD-SUPERSEDED-CYCLE-SCOPING-001",
       "relation": "verifies"
@@ -1243,7 +1321,7 @@
   ],
   "diagnostics": [],
   "fingerprints": {
-    ".github/skills/sdd-change/SKILL.md": "fb42726ed860259ee16a7d4fd762dcb23e47e601bb71d9e2fe77b61eecbb1f02",
+    ".github/skills/sdd-change/SKILL.md": "865d80f0c27dd66f407c525e306d4288ec0dc7ef5a231a30d262e842e7fcf3fa",
     ".github/skills/sdd-design/SKILL.md": "8a476e3fe44c42ef5f188e73ecee619a79635d25a93b67d899138eb8b5208513",
     ".github/skills/sdd-formal-codegraph/SKILL.md": "67944f2599609922f4957a1d99fa0f2139a21c1eb08e7264b5d72e45c2204721",
     ".github/skills/sdd-implementation/SKILL.md": "5d0465684458547ea65a4502dcfbf842115f188af5a9b054fa440932ee8362ee",
@@ -1262,6 +1340,7 @@
     ".musubix/decisions/ADR-0010.md": "b2e65434cc9c2ec8947e49bf60858784ab30e6f0c3dacd434f2e9d3f93154fa7",
     ".musubix/decisions/ADR-0011.md": "daeaf7fa94e563f46d9f5449b49b385e9ee52de4dc2b2f7bb34c71f07efd2f8a",
     ".musubix/decisions/ADR-0012.md": "8f33f5dec818bbf6118b08e9aeae4424fa933821be8bbb15011afa5874f6c41f",
+    ".musubix/decisions/ADR-0013.md": "b22ea1b6049514c899a82e5964109e5d6f43c9a852a33168dce360768535aaca",
     ".musubix/features/change-requirement-batches/design.md": "ea7ee9aa17f9f675bf649e9eec90b07e335a6fb793faf4c9951c5f747510f453",
     ".musubix/features/change-requirement-batches/requirements.md": "215dff587257d8edf5ba17c60b610bb6abe4497d867ad20de28e5ef520184c7f",
     ".musubix/features/cli-workflow-ux-v019/design.md": "bdb13e2b903123c32e54787599220ea5444a0922532b60d38fef528991116cf8",
@@ -1274,6 +1353,8 @@
     ".musubix/features/tdd-fingerprint-migration/requirements.md": "e8ac10f4367e8b43e427d2a27616debbd836194854a86da4850773b9cde9e1ae",
     ".musubix/features/tdd-fingerprint-scoping/design.md": "5a52655e1555ca194116d973accbfbd5a1eb384cfcf2bcf0a36893ff0783a662",
     ".musubix/features/tdd-fingerprint-scoping/requirements.md": "d3e480fc0ef92edb87f2c22d1d67a00fc177fde913c68d0187aa45375b14d4c9",
+    ".musubix/features/tdd-green-requirement-scoping/design.md": "5e35edb88e48648223f0360f067fcad15d078455050d2ebabaf5ee572abca6c5",
+    ".musubix/features/tdd-green-requirement-scoping/requirements.md": "456edab50870ba2fc3297eccee1c4dc114a8c8400354cb3e4b00769bb8b29ba1",
     ".musubix/features/tdd-superseded-cycle-scoping/design.md": "45f69705b11c56b5c7e2e243534d3918b7c46723d3f4bf7ee342df19187ee2cd",
     ".musubix/features/tdd-superseded-cycle-scoping/requirements.md": "b02f10b42474ac383e278c6fa38291ba965210213d45bc759ff7db67f368e80a",
     ".musubix/features/workflow-multi-session-verification/design.md": "16a916ca279ddfddb7b18a59bef7c9bee5c4608d751187208da3a6c3b46e0d55",
@@ -1297,7 +1378,7 @@
     "packages/analysis/src/order.ts": "7030a2f57ab2a2c00668d92e142a9d8cfe852aff6d237695dc94cb14a6341130",
     "packages/analysis/src/performance.ts": "1145c285582ff188e90263b4d9d9f28ca49104e79b8299b2ecd3e278d8ef80ac",
     "packages/analysis/src/process.ts": "8184c7f7c4c58cdc6987fd9d2ec2c02ce8557f94b6aa30853a0c6056ba79cf4a",
-    "packages/analysis/src/tdd.ts": "0e6cf725e4d0174e4b5d988b492d31d3105948d7a736c16e5827325049a501eb",
+    "packages/analysis/src/tdd.ts": "fec341ceda915dee3e8d7831da99c0206bef2f9d573327659cc8924592d03d16",
     "packages/analysis/src/test-report.ts": "41c76811bfcb5e286bf097bf2f6aaf6cd5a414202efe8108f28219ecca063a01",
     "packages/analysis/src/trace.ts": "efede75c79c7dc4828a0259c46ca870a7e15042c35edd94a107349a83eb56ec9",
     "packages/analysis/src/workflow.ts": "95c93b380d2bda976f341c138edcbdd4d7fc0516ef3aca18a3329436a1c7b494",
@@ -1334,6 +1415,7 @@
     "tests/php-verification.test.ts": "bc70946615f3faa3cb3b5467e552140ba2ec8e25fb4d5276f72f65393ed04315",
     "tests/tdd-fingerprint-migration.test.ts": "f5263df29b0987e4b7480c40b79fe686b317520e98fe0a6e6f3bcc68c7eca1da",
     "tests/tdd-fingerprint-scoping.test.ts": "e10a3ee1d4a6d50d69051a84884ef61d6ecff5d9c47b37b25240a95821e0608e",
+    "tests/tdd-green-requirement-scoping.test.ts": "e4248a6bf6c087f78752d48c8f6c89c82eca82c98b266a42938e9a6856e43d1d",
     "tests/tdd-superseded-cycle-scoping.test.ts": "5e9342555b2de69b2e2d998eed5e600f7306cf25151010206a8a5de707e9415a",
     "tests/trace-graph.test.ts": "23e9ee2fa9ac2f37307cdcf2f5b088007295d76379d384e9d65b380cb6ef6c7b",
     "tests/workflow-multi-session-verification.test.ts": "e5134e981431d14c8f1c1ea7f25a0e78a391ead86e3b83ed3ffc0dc91f46d58a",

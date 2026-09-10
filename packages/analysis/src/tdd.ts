@@ -277,9 +277,24 @@ export async function runTddPhase(
     [cycle.red, cycle.green, cycle.refactor].some((item) => item && !Number.isInteger(item.order)))) {
     throw new Error('Existing TDD evidence lacks monotonic order; regenerate it before recording new phases.');
   }
-  const previous = evidence.cycles.filter((cycle) => cycle.testId === testId).at(-1);
+  /* @id CODE-TDD-GREEN-REQUIREMENT-SCOPING-001
+   * @implements REQ-TDD-GREEN-REQUIREMENT-SCOPING-001 REQ-TDD-GREEN-REQUIREMENT-SCOPING-002
+   * @design DES-TDD-GREEN-REQUIREMENT-SCOPING-001
+   */
+  // Match a non-Red phase to the pending cycle for this exact (testId,
+  // requirementId) pair, not merely the latest cycle for testId: one test ID
+  // can have more than one independently pending cycle for different
+  // requirement IDs. All validation for the phase runs here, before the test
+  // command executes and before appendEvidenceOrder is called below, so a
+  // rejection never leaks an order-log entry that could block a later,
+  // correctly-matched recording for the same cycle.
+  const previous = evidence.cycles
+    .filter((cycle) => cycle.testId === testId && cycle.requirementId === requirementId)
+    .at(-1);
   if (phase !== 'red') {
-    if (!previous?.red.valid) throw new Error(`A valid Red phase is required before ${phase}.`);
+    if (!previous) throw new Error(`${phase} must use the same requirement and command as Red.`);
+    if (previous.commandName !== commandName) throw new Error(`${phase} must use the same requirement and command as Red.`);
+    if (!previous.red.valid) throw new Error(`A valid Red phase is required before ${phase}.`);
     if (previous.red.testFingerprint !== currentFingerprint) throw new Error('The test changed after Red; run the Red phase again.');
     if (phase === 'refactor' && !previous.green?.valid) throw new Error('A valid Green phase is required before Refactor.');
   }
@@ -367,11 +382,8 @@ export async function runTddPhase(
     evidence.cycles.push(cycle);
     appendChainRecord(evidence, cycle, phase, result);
   } else {
-    if (!previous || previous.requirementId !== requirementId || previous.commandName !== commandName) {
-      throw new Error(`${phase} must use the same requirement and command as Red.`);
-    }
-    previous[phase] = result;
-    appendChainRecord(evidence, previous, phase, result);
+    previous![phase] = result;
+    appendChainRecord(evidence, previous!, phase, result);
   }
   await writeJson(root, '.musubix/evidence/tdd.json', evidence);
   return result;
