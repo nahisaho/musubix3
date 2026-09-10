@@ -1,6 +1,6 @@
 # musubix3
 
-**最新リリース v0.1.13 · GitHub Copilot CLI 専用 · Node.js ≥20 · TypeScript · MIT**
+**最新リリース v0.1.14 · GitHub Copilot CLI 専用 · Node.js ≥20 · TypeScript · MIT**
 
 [English](README.md)
 
@@ -116,7 +116,7 @@ Copilot の内部設定、MCP、LSP、hooks、既存のプロジェクト指示�
 
 ## アップグレード
 
-`upgrade` は 0.1.13 より後のリリースから利用可能です（0.1.13 以前には
+`upgrade` は 0.1.14 以降で利用可能です（0.1.13 以前には
 存在しません。`npm view musubix3 versions` で確認してください）。
 
 npm でインストールした場合（`init`／リポジトリローカル Skills）:

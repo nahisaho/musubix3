@@ -1,15 +1,33 @@
 # Changelog
 
-## Unreleased
+## 0.1.14 - 2026-09-11
 
+Fix for one issue (#17) found while running musubix3@0.1.13 against a large
+real-world project (500k+ files), plus a new `upgrade` command.
+
+- `EMFILE: too many open files` crash on large projects during `init` and
+  `knowledge build` (#17): `files.ts#snapshot()`, all per-language loaders in
+  `graph.ts`, and `knowledge.ts#buildKnowledge()`'s Markdown scan now read
+  files through a bounded-concurrency helper (limit 256) instead of issuing
+  one `Promise.all(paths.map(readFile))` per project. Verified with a
+  synthetic 1500-file project under `ulimit -n 300`: the old code crashed
+  with the exact reported error; the fixed code succeeds.
 - Added a new `musubix3 upgrade [--dry-run]` command that refreshes only
   the bundled `.github/skills/sdd-*` files to match the installed package
   version. Unlike `init --force`, it never touches `.musubix/config.json`,
   `policy-baseline.json`, `constitution.md`, ADRs, feature artifacts,
   evidence, or `.gitignore`. Documented as the recommended upgrade path in
-  README.md/README-ja.md (available starting with the release after
-  0.1.13; not present in 0.1.13 or earlier — use `npm view musubix3
-  versions` to check).
+  README.md/README-ja.md, alongside the existing `copilot plugin update`/
+  `copilot plugin marketplace update` routes for the native plugin and
+  marketplace install methods.
+
+Known open debt shipped with this release (unchanged since v0.1.9, see
+closed Issue #1):
+- `TDD_TEST_STALE` on `TEST-CLI-WORKFLOW-UX-001..005` (cosmetic fingerprint
+  drift; underlying tests still pass and are not stale in behavior).
+- `CHANGE-0005`/`CHANGE-0006` change-record chronology gap.
+- Stale `release` approval stage (expected until the next explicit release
+  approval is recorded).
 
 ## 0.1.13 - 2026-09-11
 

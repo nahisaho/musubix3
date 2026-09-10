@@ -1,6 +1,6 @@
 # musubix3
 
-**Latest release v0.1.13 · GitHub Copilot CLI only · Node.js ≥20 · TypeScript · MIT**
+**Latest release v0.1.14 · GitHub Copilot CLI only · Node.js ≥20 · TypeScript · MIT**
 
 [日本語](README-ja.md)
 
@@ -120,8 +120,8 @@ and test it, and configure real check commands before expecting the gate to pass
 
 ## Upgrade
 
-`upgrade` is available starting with the release after 0.1.13 (not in 0.1.13
-or earlier — check with `npm view musubix3 versions`).
+`upgrade` is available starting with 0.1.14 (not in 0.1.13 or earlier — check
+with `npm view musubix3 versions`).
 
 For the npm-installed route (`init`/repository-local skills):
 
