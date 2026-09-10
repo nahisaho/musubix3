@@ -168,11 +168,20 @@ copilot plugin install nahisaho/musubix3     # published GitHub repository, no l
 services. Git installs do not compile/install the npm engine: build the clone or
 install the npm package separately when running `npx musubix3` commands.
 
-From an installed npm package, `npx musubix3 plugin-install` delegates directly to
-`copilot plugin install <absolute-package-root>`. It does not edit Copilot
-internals. For a durable local plugin path, prefer
-`npm install --save-dev --save-exact musubix3@latest`
-and `npx --no-install musubix3 plugin-install` over an ephemeral npx cache.
+There is a third way to run the same `copilot plugin install`, useful only if
+you want a durable local path instead of an ephemeral npx cache — do this
+**instead of**, not in addition to, the two commands above:
+
+```sh
+npm install --save-dev --save-exact musubix3@latest
+npx --no-install musubix3 plugin-install
+```
+
+`plugin-install` only calls `copilot plugin install <absolute-package-root>`
+for you; it does not edit Copilot internals, and it is unrelated to the
+npm-installed skill-copy route in [Quick start](#quick-start) — it never runs
+`init` and never copies files into `.github/skills/`. Do not run both this and
+`npx musubix3 init` in the same project.
 
 ### Native marketplace
 

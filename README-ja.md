@@ -165,11 +165,20 @@ copilot plugin install nahisaho/musubix3     # 公開GitHubリポジトリから
 `.github/skills/` を参照します。Git からのプラグイン導入だけでは npm エンジンの
 依存解決・ビルドは行われません。CLI は別途ビルド、または npm で導入してください。
 
-`npx musubix3 plugin-install` は `copilot plugin install <package-root>` を実行する
-だけで、Copilot 内部を編集しません。永続的なローカルパスには
-`npm install --save-dev --save-exact musubix3@latest` と
-`npx --no-install musubix3 plugin-install` を推奨します。
-一時的な npx キャッシュのパスに依存しないでください。
+同じ `copilot plugin install` を実行する第三の方法として、一時的な npx
+キャッシュではなく永続的なローカルパスを使いたい場合は、上記2つのコマンドの
+**代わりに**（両方ではなく）次を実行します:
+
+```sh
+npm install --save-dev --save-exact musubix3@latest
+npx --no-install musubix3 plugin-install
+```
+
+`plugin-install` は `copilot plugin install <package-root>` を実行するだけで
+Copilot 内部を編集せず、[クイックスタート](#クイックスタート)のnpmインストール経由の
+Skillコピールートとは無関係です（`init` は実行されず、`.github/skills/` へ
+ファイルはコピーされません）。同一プロジェクトで `npx musubix3 init` と
+一緒に実行しないでください。
 
 ### ネイティブマーケットプレイス
 
