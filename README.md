@@ -52,6 +52,11 @@ does this repository's configured policy consider the change ready?”
 
 ## Quick start
 
+This is the **npm-installed route**, one of three equivalent ways to load the
+skills (see [Distribution options](#distribution-options)). Pick exactly one
+route — npm install, native plugin, or native marketplace — never combine them
+in the same project.
+
 For a reproducible project-local installation:
 
 ```sh
