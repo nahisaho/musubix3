@@ -1,6 +1,6 @@
 # musubix3
 
-**最新リリース v0.1.12 · GitHub Copilot CLI 専用 · Node.js ≥20 · TypeScript · MIT**
+**最新リリース v0.1.13 · GitHub Copilot CLI 専用 · Node.js ≥20 · TypeScript · MIT**
 
 [English](README.md)
 

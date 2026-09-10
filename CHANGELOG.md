@@ -2,6 +2,31 @@
 
 ## Unreleased
 
+## 0.1.13 - 2026-09-11
+
+Fixes for two issues (#15, #16) found while running a real large-scale IoT
+trial project against musubix3@0.1.12.
+
+- `tdd red` on a brand-new module referenced only by its test (#15):
+  `normalizeAdapterReport()` now appends any vitest/jest suite-level
+  collection-failure message (e.g. "Cannot find module ...") to the
+  "No annotated TEST-* identities were found" error, instead of giving no
+  hint about the underlying import/collection failure. Documented the
+  greenfield-module stub-then-correct workaround in the README.
+- `model-correspondence validate` failing with `MODEL_CORRESPONDENCE_MISSING`
+  before `evidence refresh` has been run (#16): the diagnostic message now
+  explicitly instructs running `npx musubix3 evidence refresh` to generate
+  `.musubix/evidence/model-correspondence.json`, and
+  `model-correspondence validate --help` documents the same prerequisite.
+
+Known open debt shipped with this release (unchanged since v0.1.9, see
+closed Issue #1):
+- `TDD_TEST_STALE` on `TEST-CLI-WORKFLOW-UX-001..005` (cosmetic fingerprint
+  drift; underlying tests still pass and are not stale in behavior).
+- `CHANGE-0005`/`CHANGE-0006` change-record chronology gap.
+- Stale `release` approval stage (expected until the next explicit release
+  approval is recorded).
+
 ## 0.1.12 - 2026-09-10
 
 Fixes for every issue found while running real multi-language, large-scale
