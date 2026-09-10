@@ -4,6 +4,7 @@ description: "Use when a defect, bug, or gap is found (during development, testi
 ---
 # Defect reporting / 不具合報告
 Follow the user's input language. Use the `gh` CLI (per repository preference), never the GitHub MCP tools, for all issue operations.
+Use native Copilot research/review only to gather reproduction evidence; do not add another issue-tracker client, bot, or agent runtime for this task.
 This skill only registers an issue; it never implements a fix. If the user asks
 to both report and fix now, register the issue first, then hand off to
 `sdd-change` referencing that issue number.

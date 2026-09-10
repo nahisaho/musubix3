@@ -16,7 +16,7 @@ assert.equal(manifest.version, pkg.version);
 assert.equal(marketplace.plugins[0].source, '.');
 assert.equal(marketplace.plugins[0].name, manifest.name);
 assert.equal(marketplace.plugins[0].version, pkg.version);
-const skills = ['change', 'requirements', 'design', 'implementation', 'traceability', 'quality', 'knowledge', 'formal-codegraph'];
+const skills = ['change', 'requirements', 'design', 'implementation', 'traceability', 'quality', 'knowledge', 'formal-codegraph', 'issue-report'];
 for (const required of [
   'plugin.json', '.github/plugin/marketplace.json', pkg.bin.musubix3,
   'dist/packages/domain/src/index.js', 'dist/packages/analysis/src/index.js',

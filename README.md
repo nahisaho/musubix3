@@ -373,6 +373,19 @@ export function guard() { /* actual implementation */ }
 ```
 
 One block comment per entity; comma/space-separated targets. `@design` is optional.
+**This doc comment and native test-report ID matching are two independent
+requirements that must both be satisfied for `tdd red`/`tdd green` to succeed.**
+The `@id TEST-*`/`@verifies REQ-*` comment only makes the test discoverable as a
+`kind: 'test'` trace-graph node, so the CLI can resolve its requirement link.
+Separately, the configured adapter (or `tddReport`) must match that same ID
+inside the *executed* native test report, using its own adapter-specific
+mechanism — see the adapter reference table below. A test with only the doc
+comment but a report the adapter cannot match to that ID fails Red/Green
+(the report never contains a recognized `TEST-*` entry); a test whose report
+matches but lacks the doc comment fails earlier with `Annotated test ID not
+found: <id>` (not present in the trace graph). Both failure modes look similar
+but have different causes — check the doc comment first, then the adapter's
+matching rule below.
 In PHP, use plain `/* ... */` blocks rather than `/** ... */` PHPDoc: PHPDoc reserves
 `@implements` for generic type declarations, so PHPStan/Psalm report `phpDoc.parseError`
 on requirement-ID lists inside doc comments. musubix3 reads either form.
@@ -519,6 +532,23 @@ skipped, failed, or errored test, even when its process exits zero; this prevent
 from silently passing without their dependencies. Optional command failures are
 nonblocking unless a constitution rule rejects the measured count. No configured
 commands is skipped, not passed.
+**Adapter test-ID declaration reference** (each mechanism is distinct; see the
+dual-requirement note above for how this relates to the `@id`/`@verifies` doc
+comment):
+
+| Adapter | ID-declaration mechanism | Worked example |
+| --- | --- | --- |
+| `vitest` / `jest` | ID as a substring anywhere in the test title | `it('TEST-APP-001 rejects empty input', () => { ... })` |
+| `pytest` | ID in the underscore-form test function name | `def test_TEST_APP_001(): ...` |
+| `go-test` | ID as the trailing suffix of the test/subtest name | `func TestTEST_APP_001(t *testing.T) { ... }` |
+| `cargo` | ID as the trailing suffix of a Rust test identifier | `fn test_app_001() { ... }` |
+| `junit` | Exact `@Tag("TEST-APP-001")` **plus** an ID-bearing method name or `@DisplayName` | `@Tag("TEST-APP-001") @Test void test() { ... }` |
+| `dotnet` (xUnit) | ID inside `[Fact(DisplayName = "...")]` | `[Fact(DisplayName = "TEST-APP-001 rejects empty input")]` |
+
+`junit` is the only adapter that requires a *separate* tag annotation in
+addition to an ID-bearing name/`@DisplayName`; every other adapter matches the
+ID directly from the test's own name/title string.
+
 TDD commands require either command-specific `tddArgs` plus a `tddReport`, or a
 built-in `vitest`, `jest`, `pytest`, `go-test`, `cargo`, `junit`, or `dotnet` adapter.
 The `junit` adapter drives the Java JUnit Platform Console launcher, not arbitrary

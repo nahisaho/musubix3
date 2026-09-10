@@ -473,7 +473,13 @@ export function createProgram(): Command {
     );
     if (!report.valid) process.exitCode = 1;
   });
-  const tdd = program.command('tdd').description('Verified Red-Green-Refactor execution evidence');
+  const tdd = program.command('tdd').description(
+    'Verified Red-Green-Refactor execution evidence. <test-id> requires two independent things: '
+    + 'a trace-graph @id/@verifies doc comment above the test (for requirement linking), and a '
+    + "matching native adapter report entry (adapter-specific: title substring for vitest/jest/pytest, "
+    + "name suffix for go-test/cargo, an additional @Tag for junit, DisplayName for dotnet). "
+    + 'See README.md "Adapter test-ID declaration reference" for the full table and worked examples.',
+  );
   common(tdd.command('validate')).action(async (options: { root: string; json?: boolean }) => {
     const report = await validateTddEvidence(resolve(options.root));
     result(report, !!options.json);

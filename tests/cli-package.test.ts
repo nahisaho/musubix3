@@ -358,6 +358,6 @@ describe('distribution contracts', () => {
     expect(marketplace.plugins[0]).toMatchObject({ name: pkg.name, version: pkg.version, source: '.' });
     const checked = await runProcess(process.execPath, ['scripts/check-package.mjs'], { cwd: repository, timeoutMs: 20_000 });
     expect(checked.exitCode, checked.stderr).toBe(0);
-    expect(checked.stdout).toContain('8 skills');
+    expect(checked.stdout).toContain('9 skills');
   });
 });

@@ -368,7 +368,19 @@ export function guard() { /* 実装 */ }
 // 実際の振る舞いテスト
 ```
 
-複数参照は空白・カンマ区切り。`@design` は任意。実装網羅性は要求への直接リンク、
+複数参照は空白・カンマ区切り。`@design` は任意。
+**このdoc commentとnative testレポートのID照合は、`tdd red`/`tdd green`成功のために
+両方満たす必要がある、独立した2つの要件です。**`@id TEST-*`/`@verifies REQ-*`
+commentは、テストを`kind: 'test'`のtrace-graphノードとして発見可能にし、CLIが
+要求へのリンクを解決できるようにするだけです。それとは別に、設定したadapter
+（または`tddReport`）が、実行済みのnative testレポート内で同じIDを照合できる
+必要があり、その照合方法はadapterごとに異なります（下記のadapter対応表を参照）。
+doc commentはあるがレポートをadapterが照合できない場合はRed/Greenが失敗し
+（レポートに認識可能な`TEST-*`エントリが無い）、レポートは照合できるがdoc comment
+が無い場合はtrace graph参照の時点で`Annotated test ID not found: <id>`で失敗
+します。症状は似ていますが原因は異なるため、まずdoc commentを確認し、次に
+adapterの照合ルールを確認してください。
+実装網羅性は要求への直接リンク、
 または設計経由で判定し、テストは要求への直接リンクを必要とします。
 注釈はテストの正しさを証明しません。機能別 `trace.json` は機能横断の完全な
 スナップショット（nodes/edges/diagnostics/入力SHA-256）を保持します。
@@ -500,6 +512,21 @@ strict OIDC identity/key binding、必須コマンド名の最低条件です。
 コマンド未設定は skipped です。構造化test commandはprocessがexit 0でも、
 実行testが0件、またはskipped・failed・error testを1件でも報告した場合は
 失敗します。integration suiteが依存service不在のまま暗黙に通ることを防ぎます。
+
+**adapterごとのtest-ID宣言方式対応表**（各方式は独立しており、上記の
+`@id`/`@verifies` doc commentとの関係は前述の「独立した2つの要件」を参照）:
+
+| Adapter | ID宣言方式 | 具体例 |
+| --- | --- | --- |
+| `vitest` / `jest` | test titleの任意の位置にIDを部分文字列として含める | `it('TEST-APP-001 rejects empty input', () => { ... })` |
+| `pytest` | test関数名のunderscore形式にIDを含める | `def test_TEST_APP_001(): ...` |
+| `go-test` | test/subtest名の末尾サフィックスとしてID | `func TestTEST_APP_001(t *testing.T) { ... }` |
+| `cargo` | Rust識別子の末尾サフィックスとしてID | `fn test_app_001() { ... }` |
+| `junit` | 正確な`@Tag("TEST-APP-001")` **に加えて** IDを含むmethod名または`@DisplayName` | `@Tag("TEST-APP-001") @Test void test() { ... }` |
+| `dotnet`（xUnit） | `[Fact(DisplayName = "...")]`内にID | `[Fact(DisplayName = "TEST-APP-001 rejects empty input")]` |
+
+`junit`だけが、IDを含むmethod名/`@DisplayName`に加えて**別途**tag annotationを
+要求する方式です。他のadapterはtest自身の名前/titleから直接IDを照合します。
 
 TDD用コマンドには明示的な`tddArgs`と`tddReport`、または組込みの
 `vitest`、`jest`、`pytest`、`go-test`、`cargo`、`junit`、`dotnet` adapterが必要です。
