@@ -55,13 +55,15 @@ does this repository's configured policy consider the change ready?”
 There are two ways to load musubix3's skills into a project — pick exactly
 one per project, never both:
 
-- **`npm install` (this section)**: add `musubix3` as a project dev
-  dependency, then run `npx musubix3 init` to copy the skills into
+- **`npm install` (this section, recommended)**: add `musubix3` as a project
+  dev dependency, then run `npx musubix3 init` to copy the skills into
   `.github/skills/` and scaffold starter `.musubix/` artifacts. Version and
   upgrades are tracked in your project's `package.json`/lockfile
   (`npm install ...@latest` + `npx musubix3 upgrade`); see
-  [Upgrade](#upgrade). Best when you want the skills and starter SDD files
-  committed to the repository itself.
+  [Upgrade](#upgrade). Recommended because the skills and starter SDD
+  artifacts are committed to the repository itself, so every contributor and
+  CI job gets the same reproducible setup without each of them running a
+  separate plugin install.
 - **`copilot plugin install`** (native plugin/marketplace route): register
   musubix3 directly with Copilot CLI's own plugin manager — no npm
   dependency is added to the project, and no files are copied into

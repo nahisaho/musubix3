@@ -54,13 +54,14 @@ repositoryへ残します。
 Skills をプロジェクトへ読み込む方法は2種類あり、プロジェクトごとに
 どちらか1つだけを選んでください（両方は行わないでください）。
 
-- **`npm install`（本節の内容）**: `musubix3` をプロジェクトの dev
+- **`npm install`（本節の内容、推奨）**: `musubix3` をプロジェクトの dev
   dependency として追加し、`npx musubix3 init` で Skills を
   `.github/skills/` へコピーし、雛形の `.musubix/` 成果物を作成します。
   バージョンと更新はプロジェクトの `package.json`/lockfile で管理します
   （`npm install ...@latest` + `npx musubix3 upgrade`。
-  [アップグレード](#アップグレード)参照）。Skills と雛形SDDファイルを
-  リポジトリ自体にコミットしたい場合に適しています。
+  [アップグレード](#アップグレード)参照）。Skills と雛形SDDファイルが
+  リポジトリ自体にコミットされるため、各コントリビューターやCIが個別に
+  プラグインをインストールしなくても同一の再現可能な環境になる点で推奨です。
 - **`copilot plugin install`**（ネイティブプラグイン/マーケットプレイス
   経由）: Copilot CLI 自体のプラグイン管理機能へ musubix3 を直接登録します。
   プロジェクトへ npm dependency は追加されず、`.github/skills/` への
