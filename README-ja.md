@@ -116,9 +116,10 @@ npx --no-install musubix3 upgrade
 `.github/skills/sdd-*` ファイルだけを更新します。`.musubix/config.json`、
 `.musubix/policy-baseline.json`、`.musubix/constitution.md`、ADR、各機能の
 成果物、エビデンス、`.gitignore` は作成・置換・削除しません。これらは
-自分でカスタマイズしたまま維持されます。冪等なコマンドなので、新しい
-バージョンがなければ再実行してもすべてのSkillファイルが `unchanged` と
-報告されます。`init` と同様、まず `--dry-run` で確認してください。
+自分でカスタマイズしたまま維持されます。冪等なコマンドで、インストール済み
+パッケージのSkillファイルと比較するため、新しい `musubix3` を導入していない
+状態で再実行するとすべてのSkillファイルが `unchanged` と報告されます。
+`init` と同様、まず `--dry-run` で確認してください。
 
 より広範囲に同梱・管理対象パスを置換したい場合は引き続き `init --force`
 も利用できますが（`.musubix/config.json`、`constitution.md`、雛形機能の
@@ -142,8 +143,7 @@ copilot plugin update musubix3
 これらは Copilot 自体のプラグイン管理機能に委譲され、`plugin.json` や
 マーケットプレイスカタログを再取得します。`.musubix/` には一切触れません
 （`.musubix/` の成果物を管理するのは npm インストール経由の `upgrade` のみです）。
-
-`upgrade` の使用を推奨します。
+npm インストール経由の場合は `upgrade` の使用を推奨します。
 
 ## 配布・インストール
 

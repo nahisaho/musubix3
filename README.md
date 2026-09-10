@@ -119,9 +119,10 @@ npx --no-install musubix3 upgrade
 from the installed package version. It never creates, replaces, or deletes
 `.musubix/config.json`, `.musubix/policy-baseline.json`,
 `.musubix/constitution.md`, ADRs, feature artifacts, evidence, or
-`.gitignore` — those are yours to keep customizing. It is idempotent: running
-it again with no newer package version reports every skill file as
-`unchanged`. Review `--dry-run` first, same as `init`.
+`.gitignore` — those are yours to keep customizing. It is idempotent: it
+compares against the currently installed package's skill files, so running it
+again without first installing a newer `musubix3` version reports every skill
+file as `unchanged`. Review `--dry-run` first, same as `init`.
 
 `init --force` remains available for replacing bundled/managed paths more
 broadly (including `.musubix/config.json`, `constitution.md`, and the
