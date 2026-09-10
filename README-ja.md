@@ -456,6 +456,16 @@ version: 1.0.0
 
 未知の設定キー、不正な閾値、重複コマンドはエラーです。
 glob は `*` / `**` / `?` に対応し、外部依存は `npm:` 接頭辞で表現します。
+コマンドには任意の`cwd`（project root相対のディレクトリ）を指定でき、
+project rootではなくサービス単位のサブディレクトリから実行できます。
+polyglot monorepoで、各言語のtoolingが自分のpackage/moduleディレクトリから
+実行される前提の場合に有用です。`config lint`はproject rootを脱出する、
+または実在しない`cwd`を`CONFIG_CWD_INVALID`として報告し、そのコマンドの
+repository相対path引数（`CONFIG_ORPHANED_PATH`）はproject rootではなく
+そのコマンド自身の`cwd`を基準にチェックします。
+evidence/reportのpath（`tddReport`/`testReport`/`mutationReport`、
+`.musubix/config.json`自体）は`cwd`に関わらず常にproject root基準のまま
+解決され、変わるのは起動するprocess自体の作業ディレクトリのみです。
 `qualityProfile`の既定値は`custom`です。`minimal`はSDDの基本gate、
 `recommended`はstrict Code Graph、TDD、構造化test identityも要求し、
 `release`はformal、mutation、workflow、変更、performance、CI attestationを

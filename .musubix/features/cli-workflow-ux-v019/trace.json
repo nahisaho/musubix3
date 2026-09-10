@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-10T11:57:09.757Z",
+  "generatedAt": "2026-09-10T12:26:43.760Z",
   "nodes": [
     {
       "id": "CODE-SESSION-SCOPED-DEVELOPMENT-001",
@@ -96,6 +96,12 @@
       "id": "ADR-0015",
       "kind": "adr",
       "path": ".musubix/decisions/ADR-0015.md",
+      "line": 1
+    },
+    {
+      "id": "ADR-0016",
+      "kind": "adr",
+      "path": ".musubix/decisions/ADR-0016.md",
       "line": 1
     },
     {
@@ -235,6 +241,39 @@
       "path": ".musubix/features/cli-workflow-ux-v019/requirements.md",
       "line": 46,
       "mandatory": false
+    },
+    {
+      "id": "DES-COMMAND-WORKING-DIRECTORY-001",
+      "kind": "design",
+      "path": ".musubix/features/command-working-directory/design.md",
+      "line": 7
+    },
+    {
+      "id": "DES-COMMAND-WORKING-DIRECTORY-002",
+      "kind": "design",
+      "path": ".musubix/features/command-working-directory/design.md",
+      "line": 14
+    },
+    {
+      "id": "REQ-COMMAND-WORKING-DIRECTORY-001",
+      "kind": "requirement",
+      "path": ".musubix/features/command-working-directory/requirements.md",
+      "line": 14,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-COMMAND-WORKING-DIRECTORY-002",
+      "kind": "requirement",
+      "path": ".musubix/features/command-working-directory/requirements.md",
+      "line": 21,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-COMMAND-WORKING-DIRECTORY-003",
+      "kind": "requirement",
+      "path": ".musubix/features/command-working-directory/requirements.md",
+      "line": 28,
+      "mandatory": true
     },
     {
       "id": "DES-EARS-ID-DIAGNOSTIC-MESSAGES-001",
@@ -488,19 +527,25 @@
       "id": "CODE-CLI-WORKFLOW-UX-006",
       "kind": "code",
       "path": "packages/analysis/src/config.ts",
-      "line": 574
+      "line": 580
     },
     {
-      "id": "CODE-ADAPTER-PATTERN-RECOGNITION-002",
+      "id": "CODE-COMMAND-WORKING-DIRECTORY-001",
       "kind": "code",
       "path": "packages/analysis/src/config.ts",
       "line": 606
     },
     {
+      "id": "CODE-ADAPTER-PATTERN-RECOGNITION-002",
+      "kind": "code",
+      "path": "packages/analysis/src/config.ts",
+      "line": 625
+    },
+    {
       "id": "CODE-CLI-WORKFLOW-UX-004",
       "kind": "code",
       "path": "packages/analysis/src/config.ts",
-      "line": 623
+      "line": 645
     },
     {
       "id": "CODE-CLI-WORKFLOW-UX-001",
@@ -695,6 +740,24 @@
       "line": 102
     },
     {
+      "id": "TEST-COMMAND-WORKING-DIRECTORY-001",
+      "kind": "test",
+      "path": "tests/command-working-directory.test.ts",
+      "line": 5
+    },
+    {
+      "id": "TEST-COMMAND-WORKING-DIRECTORY-002",
+      "kind": "test",
+      "path": "tests/command-working-directory.test.ts",
+      "line": 35
+    },
+    {
+      "id": "TEST-COMMAND-WORKING-DIRECTORY-003",
+      "kind": "test",
+      "path": "tests/command-working-directory.test.ts",
+      "line": 64
+    },
+    {
       "id": "TEST-EARS-ID-DIAGNOSTIC-MESSAGES-001",
       "kind": "test",
       "path": "tests/ears-id-diagnostic-messages.test.ts",
@@ -883,6 +946,31 @@
     {
       "from": "ADR-0007",
       "to": "DES-CLI-WORKFLOW-UX-006",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-COMMAND-WORKING-DIRECTORY-001",
+      "to": "REQ-COMMAND-WORKING-DIRECTORY-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0016",
+      "to": "DES-COMMAND-WORKING-DIRECTORY-001",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-COMMAND-WORKING-DIRECTORY-002",
+      "to": "REQ-COMMAND-WORKING-DIRECTORY-002",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-COMMAND-WORKING-DIRECTORY-002",
+      "to": "REQ-COMMAND-WORKING-DIRECTORY-003",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0016",
+      "to": "DES-COMMAND-WORKING-DIRECTORY-002",
       "relation": "decides"
     },
     {
@@ -1226,6 +1314,16 @@
       "relation": "implements"
     },
     {
+      "from": "CODE-COMMAND-WORKING-DIRECTORY-001",
+      "to": "REQ-COMMAND-WORKING-DIRECTORY-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-COMMAND-WORKING-DIRECTORY-001",
+      "to": "DES-COMMAND-WORKING-DIRECTORY-001",
+      "relation": "implements"
+    },
+    {
       "from": "CODE-ADAPTER-PATTERN-RECOGNITION-002",
       "to": "REQ-ADAPTER-PATTERN-RECOGNITION-002",
       "relation": "implements"
@@ -1242,7 +1340,22 @@
     },
     {
       "from": "CODE-CLI-WORKFLOW-UX-004",
+      "to": "REQ-COMMAND-WORKING-DIRECTORY-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CLI-WORKFLOW-UX-004",
+      "to": "REQ-COMMAND-WORKING-DIRECTORY-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CLI-WORKFLOW-UX-004",
       "to": "DES-CLI-WORKFLOW-UX-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CLI-WORKFLOW-UX-004",
+      "to": "DES-COMMAND-WORKING-DIRECTORY-002",
       "relation": "implements"
     },
     {
@@ -1471,6 +1584,21 @@
       "relation": "verifies"
     },
     {
+      "from": "TEST-COMMAND-WORKING-DIRECTORY-001",
+      "to": "REQ-COMMAND-WORKING-DIRECTORY-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-COMMAND-WORKING-DIRECTORY-002",
+      "to": "REQ-COMMAND-WORKING-DIRECTORY-002",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-COMMAND-WORKING-DIRECTORY-003",
+      "to": "REQ-COMMAND-WORKING-DIRECTORY-003",
+      "relation": "verifies"
+    },
+    {
       "from": "TEST-EARS-ID-DIAGNOSTIC-MESSAGES-001",
       "to": "REQ-EARS-ID-DIAGNOSTIC-MESSAGES-001",
       "relation": "verifies"
@@ -1546,12 +1674,15 @@
     ".musubix/decisions/ADR-0013.md": "b22ea1b6049514c899a82e5964109e5d6f43c9a852a33168dce360768535aaca",
     ".musubix/decisions/ADR-0014.md": "363215afb473df46809fb73875e18451d11e30587d8efca472f253082f789f53",
     ".musubix/decisions/ADR-0015.md": "00e8a5d34efba2aa9bda8f49b8a2cbe221d14d74df9f2f677950002bedd6795c",
+    ".musubix/decisions/ADR-0016.md": "31573419c17de4a3ecd0aa3f361c08f25c722095419cd35023e4382ac4f87895",
     ".musubix/features/adapter-pattern-recognition/design.md": "a8e0c4a11f626cb4a41c9b5b53359c072ec0c3161f704791f42ba8af38124a70",
     ".musubix/features/adapter-pattern-recognition/requirements.md": "5731561a0a04982b8a5c305bdeeae6084bcf0ee8846f295eaaaabc823d1f9793",
     ".musubix/features/change-requirement-batches/design.md": "ea7ee9aa17f9f675bf649e9eec90b07e335a6fb793faf4c9951c5f747510f453",
     ".musubix/features/change-requirement-batches/requirements.md": "215dff587257d8edf5ba17c60b610bb6abe4497d867ad20de28e5ef520184c7f",
     ".musubix/features/cli-workflow-ux-v019/design.md": "bdb13e2b903123c32e54787599220ea5444a0922532b60d38fef528991116cf8",
     ".musubix/features/cli-workflow-ux-v019/requirements.md": "8ac7b7e793009d95a03b53de1e3aca043d4433a7b6de9511d8547ebc33b5e7b2",
+    ".musubix/features/command-working-directory/design.md": "70ccde3b2777c2cf9e06881a20ecd5b50107d9dba680694f92b811cacb5052eb",
+    ".musubix/features/command-working-directory/requirements.md": "4a376dfe7a6e9b1bb1ff4a947fb2807f7179a1798df369040c879a1b9e4fcb90",
     ".musubix/features/ears-id-diagnostic-messages/design.md": "d282350c0c5cd6c923c0a54e6e60d633f7ab4a6c570ffdc891ba4a92d2e4e1d2",
     ".musubix/features/ears-id-diagnostic-messages/requirements.md": "49afd4e574f1179a31707323fbbcfffabf1051f666ad1fcba60b39b2e7da3808",
     ".musubix/features/human-approval-gates/design.md": "ce1e316afee28082001ddedbce734a7766562889bd28f3eea610909c8d736206",
@@ -1575,10 +1706,10 @@
     "packages/analysis/src/approval.ts": "29eb6e36e11a963471569dcefa78294849b3bb817a291aedb258912c307c50f2",
     "packages/analysis/src/attestation.ts": "2d273d2ed5aaa8521938a247492bbe54ee9b195d7902510365d6576e098b17f3",
     "packages/analysis/src/change.ts": "a789e35870a9976b67a07773e4bd60bc9cdc78000847b20eac974e9f9481c2f7",
-    "packages/analysis/src/config.ts": "9dc357d1e8e5e7b7b226c916e9fed642ede4429b2774992418d31dc251e3df35",
-    "packages/analysis/src/files.ts": "8363e1090ba66314726cd2f1ebcc51fa440e427999ec299c9a62190c34a63e95",
+    "packages/analysis/src/config.ts": "c4d15076d4c4e97735ec3b3069a27b85cd9adc5b0f524462d1fdd9046bc2b942",
+    "packages/analysis/src/files.ts": "fd0e693a13e42a6bea9458352f03385e1f4b5f4886b4bfe9116fa39379a69bfb",
     "packages/analysis/src/formal.ts": "9f5622983fed80c1e7c141cc7c7dcd217447e5c2edd39e64877db052a57b730b",
-    "packages/analysis/src/gate.ts": "c9140a8647dd74d9b4dcfec46587af62460d3c7fa50f8879c5a8581af1beb67b",
+    "packages/analysis/src/gate.ts": "c41725d1c61e86fe941818ccf42b7b91f8b702cacb66a469c9661fe66f3cb599",
     "packages/analysis/src/graph.ts": "7517703a96dc487771c8b3eb1aade2d676998f82246b5dd091930059fc43685b",
     "packages/analysis/src/index.ts": "6df5a623a9281511a963583e648d8fea7affdf5bc9404e261a60adcabc1cac89",
     "packages/analysis/src/knowledge.ts": "072a403f89f9cdc6b79adaae7ea22821487358b8d86d37fd5145031f74d6b9cc",
@@ -1587,7 +1718,7 @@
     "packages/analysis/src/order.ts": "7030a2f57ab2a2c00668d92e142a9d8cfe852aff6d237695dc94cb14a6341130",
     "packages/analysis/src/performance.ts": "1145c285582ff188e90263b4d9d9f28ca49104e79b8299b2ecd3e278d8ef80ac",
     "packages/analysis/src/process.ts": "8184c7f7c4c58cdc6987fd9d2ec2c02ce8557f94b6aa30853a0c6056ba79cf4a",
-    "packages/analysis/src/tdd.ts": "fec341ceda915dee3e8d7831da99c0206bef2f9d573327659cc8924592d03d16",
+    "packages/analysis/src/tdd.ts": "aab88f785fb9357e804b0ffe488d2594a14b40056ca6f079d785643bd38b95bf",
     "packages/analysis/src/test-report.ts": "41c76811bfcb5e286bf097bf2f6aaf6cd5a414202efe8108f28219ecca063a01",
     "packages/analysis/src/trace.ts": "efede75c79c7dc4828a0259c46ca870a7e15042c35edd94a107349a83eb56ec9",
     "packages/analysis/src/workflow.ts": "95c93b380d2bda976f341c138edcbdd4d7fc0516ef3aca18a3329436a1c7b494",
@@ -1610,6 +1741,7 @@
     "tests/change-requirement-batches.test.ts": "77deb6dedf6ef7d4dc02ecbc0566c969067462c100c2d126c10359dd2122e7c6",
     "tests/cli-package.test.ts": "65ecdbdf2b89108ad43af088d8fe735d5fcd3015d278f68476a6b2472ab73e33",
     "tests/cli-workflow-ux.test.ts": "d2b41c098b4953f547d6acf4ae91bb507c865ce1685d4f5948ed3ac6accd0376",
+    "tests/command-working-directory.test.ts": "82dc863b1fcc5cd8a5ea1534238ef2f61f15e5d6c5e25d61fce43a7efe9bbc02",
     "tests/domain.test.ts": "be79af0613fe35d70659d15155efc859721d764a0ea40c9764c2e4d7f89ea16d",
     "tests/ears-id-diagnostic-messages.test.ts": "b87dbcbbd8a1c6d2c8fddd2ad0c7483da022281b4fae2f968972413933ee009a",
     "tests/formal-knowledge.test.ts": "325ff2567b72708b83d3eab7b2986e7ceb7beb252ed21276b0db7436ffa367a4",

@@ -1,7 +1,7 @@
 import { unlink } from 'node:fs/promises';
 import ts from 'typescript';
 import { error, type Diagnostic } from '../../domain/src/index.js';
-import { loadConfig } from './config.js';
+import { loadConfig, commandCwd } from './config.js';
 import { digest, evidenceInputPaths, exists, files, isSource, readText, safePath, snapshot, within, writeJson } from './files.js';
 import { runProcess, type Runner } from './process.js';
 import { buildTrace, type TraceNode } from './trace.js';
@@ -257,7 +257,7 @@ export async function runTddPhase(
     for (const name of config.tdd.redPreflightCommands) {
       const preflight = config.commands.find((entry) => entry.name === name)!;
       const execution = await runner(preflight.command, preflight.args, {
-        cwd: root,
+        cwd: commandCwd(root, preflight),
         timeoutMs: preflight.timeoutMs,
       });
       if (execution.status !== 'completed' || execution.exitCode !== 0) {
@@ -312,7 +312,7 @@ export async function runTddPhase(
   const args = command.adapter
     ? mergeAdapterArgs(command.adapter, configuredArgs, targetedArgs)
     : [...configuredArgs, ...targetedArgs];
-  const execution = await runner(command.command, args, { cwd: root, timeoutMs: command.timeoutMs });
+  const execution = await runner(command.command, args, { cwd: commandCwd(root, command), timeoutMs: command.timeoutMs });
   const output = `${execution.stdout}\n${execution.stderr}`;
   const diagnostics: Diagnostic[] = [];
   let reportText: string | null = null;

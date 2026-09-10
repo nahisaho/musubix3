@@ -466,6 +466,16 @@ Example `.musubix/config.json` (adapt command arguments to your own project):
 
 Config is validated strictly; misspelled keys, invalid bounds and duplicate
 commands fail closed. Globs support `*`, `**`, `?`; external imports use `npm:`.
+A command may declare an optional `cwd` (a project-root-relative directory)
+so it runs from a service subdirectory instead of the project root — useful
+for a polyglot monorepo where a language's tooling expects to run from its
+own package/module directory. `config lint` reports `CONFIG_CWD_INVALID` for
+a `cwd` that escapes the project root or does not exist, and checks that
+command's repository-relative path arguments (`CONFIG_ORPHANED_PATH`)
+against its own `cwd` instead of the project root. Evidence and report paths
+(`tddReport`/`testReport`/`mutationReport`, `.musubix/config.json` itself)
+are always resolved from the project root regardless of `cwd`; only the
+spawned process's own working directory changes.
 `qualityProfile` is `custom` by default. `minimal` preserves the core SDD gate,
 `recommended` also requires strict Code Graph, TDD and structured test
 identities, and `release` requires the complete formal, mutation, workflow,

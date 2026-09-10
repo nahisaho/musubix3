@@ -1,5 +1,6 @@
+import { resolve } from 'node:path';
 import { error, type Diagnostic } from '../../domain/src/index.js';
-import { exists, files, readText, within } from './files.js';
+import { exists, files, isDirectory, readText, within } from './files.js';
 
 export interface CommandConfig {
   name: string;
@@ -19,6 +20,7 @@ export interface CommandConfig {
     path: string;
   };
   adapter?: 'vitest' | 'jest' | 'pytest' | 'go-test' | 'cargo' | 'junit' | 'dotnet';
+  cwd?: string;
   required: boolean;
   timeoutMs: number;
 }
@@ -260,10 +262,13 @@ export function parseConfig(input: unknown): Config {
   if (!Array.isArray(rawCommands)) throw new Error('commands must be an array.');
   const commands = rawCommands.map((raw: unknown): CommandConfig => {
     const c = object(raw, 'command');
-    keys(c, ['name', 'command', 'args', 'tddArgs', 'tddReport', 'testReport', 'mutationReport', 'adapter', 'required', 'timeoutMs'], 'command');
+    keys(c, ['name', 'command', 'args', 'tddArgs', 'tddReport', 'testReport', 'mutationReport', 'adapter', 'cwd', 'required', 'timeoutMs'], 'command');
     if (typeof c.name !== 'string' || !/^[a-zA-Z0-9_-]+$/.test(c.name)) throw new Error('Command name must be a simple nonempty identifier.');
     if (typeof c.command !== 'string' || !c.command.trim() || c.command.includes('\0')) throw new Error('Command executable must be nonempty.');
     if (c.required !== undefined && typeof c.required !== 'boolean') throw new Error('command.required must be boolean.');
+    if (c.cwd !== undefined && (typeof c.cwd !== 'string' || !c.cwd.trim() || c.cwd.includes('\0'))) {
+      throw new Error('command.cwd must be a nonempty relative path.');
+    }
     if (c.adapter !== undefined && !['vitest', 'jest', 'pytest', 'go-test', 'cargo', 'junit', 'dotnet'].includes(String(c.adapter))) {
       throw new Error('command.adapter must be vitest, jest, pytest, go-test, cargo, junit, or dotnet.');
     }
@@ -326,6 +331,7 @@ export function parseConfig(input: unknown): Config {
       ...(testReport ? { testReport } : {}),
       ...(mutationReport ? { mutationReport } : {}),
       ...(adapter ? { adapter } : {}),
+      ...(c.cwd !== undefined ? { cwd: c.cwd as string } : {}),
       required: c.required !== false,
       timeoutMs,
     };
@@ -597,6 +603,19 @@ export async function scaffoldCommands(root: string): Promise<CommandScaffoldPro
   return proposals;
 }
 
+/* @id CODE-COMMAND-WORKING-DIRECTORY-001
+ * @implements REQ-COMMAND-WORKING-DIRECTORY-001
+ * @design DES-COMMAND-WORKING-DIRECTORY-001
+ */
+// Resolve a command's own working directory, defaulting to the project root
+// when it declares no `cwd`. Reuses `within()` so an escaping `cwd` throws
+// the same error every other path-containment check in this project throws;
+// callers that want a lint diagnostic instead of a thrown error (configLint,
+// below) must catch it themselves.
+export function commandCwd(root: string, command: CommandConfig): string {
+  return command.cwd === undefined ? root : within(root, command.cwd);
+}
+
 function looksLikeRepoRelativePath(arg: string): boolean {
   if (arg.startsWith('-')) return false;
   if (arg.includes('{') || arg.includes('}')) return false;
@@ -619,19 +638,33 @@ function isGoPackagePattern(arg: string): boolean {
  * REQ-CLI-WORKFLOW-UX-004: scan every configured command's `args` for tokens
  * that look like repository-relative file paths and report any that do not
  * exist under the project root. Read-only; never modifies the config file.
+ * REQ-COMMAND-WORKING-DIRECTORY-002/003: a command's own `cwd` (when set) is
+ * validated first, and its `args` are checked against that directory rather
+ * than always the project root.
  */
 /** @id CODE-CLI-WORKFLOW-UX-004
- * @implements REQ-CLI-WORKFLOW-UX-004
- * @design DES-CLI-WORKFLOW-UX-004
+ * @implements REQ-CLI-WORKFLOW-UX-004 REQ-COMMAND-WORKING-DIRECTORY-002 REQ-COMMAND-WORKING-DIRECTORY-003
+ * @design DES-CLI-WORKFLOW-UX-004 DES-COMMAND-WORKING-DIRECTORY-002
  */
 export async function configLint(root: string): Promise<{ valid: boolean; diagnostics: Diagnostic[] }> {
   const config = await loadConfig(root);
   const diagnostics: Diagnostic[] = [];
   for (const command of config.commands) {
+    let base: string;
+    try {
+      base = commandCwd(root, command);
+    } catch {
+      diagnostics.push(error('CONFIG_CWD_INVALID', `Command "${command.name}" has a cwd that escapes the project root: ${command.cwd}`));
+      continue;
+    }
+    if (command.cwd !== undefined && !await isDirectory(base)) {
+      diagnostics.push(error('CONFIG_CWD_INVALID', `Command "${command.name}" has a cwd that does not exist: ${command.cwd}`));
+      continue;
+    }
     for (const arg of command.args) {
       if (!looksLikeRepoRelativePath(arg)) continue;
       if (command.adapter === 'go-test' && isGoPackagePattern(arg)) continue;
-      if (!await exists(within(root, arg))) {
+      if (!await exists(within(root, resolve(base, arg)))) {
         diagnostics.push(error('CONFIG_ORPHANED_PATH', `Command "${command.name}" references a path that does not exist: ${arg}`));
       }
     }

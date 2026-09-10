@@ -50,7 +50,7 @@ export async function safePath(root: string, path: string): Promise<string> {
   return absolute;
 }
 
-async function isDirectory(path: string): Promise<boolean> {
+export async function isDirectory(path: string): Promise<boolean> {
   try {
     return (await lstat(path)).isDirectory();
   } catch (cause) {

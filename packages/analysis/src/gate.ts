@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { unlink } from 'node:fs/promises';
 import { validateConstitution, validateDesign, validateRequirements, type Diagnostic, type Evidence } from '../../domain/src/index.js';
-import { loadConfig, loadPolicyBaseline, policyDiagnostics, type Config } from './config.js';
+import { loadConfig, loadPolicyBaseline, policyDiagnostics, commandCwd, type Config } from './config.js';
 import { digest, evidenceInputPaths, exists, files, readText, safePath, snapshot, within, writeJson } from './files.js';
 import { graphGate, graphImpact, indexGraph } from './graph.js';
 import { formalCheck, type FormalResult } from './formal.js';
@@ -276,7 +276,7 @@ export async function runGate(root: string, options: {
     const args = command.adapter
       ? mergeAdapterArgs(command.adapter, configuredArgs, adapterArgs)
       : configuredArgs;
-    const result = await runner(command.command, args, { cwd: root, timeoutMs: command.timeoutMs });
+    const result = await runner(command.command, args, { cwd: commandCwd(root, command), timeoutMs: command.timeoutMs });
     const commandCheck: Evidence = {
       name: `command:${command.name}`, required: command.required,
       status: result.status === 'missing' ? 'skipped' : result.status !== 'completed' || result.exitCode !== 0 ? 'fail' : 'pass',
