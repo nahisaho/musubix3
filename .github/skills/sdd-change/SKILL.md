@@ -9,6 +9,7 @@ description: "Use as the MANDATORY first Skill for requests to develop, build, c
  */
 Mandatory entrypoint: every new natural-language development request is a new change, even in an existing Copilot session; never reuse prior requirements, approvals, TDD, or change evidence unless the user explicitly names the existing change ID and asks to continue it. never start implementation before validating requirements/design; skip only for verified approved artifacts of that explicitly continued change.
 Never infer approval; show `approval prepare <stage>` and record only its reviewed hash with `approval record <stage> --approver <name> --artifact-sha256 <hash> --confirm`.
+Whenever an AI deliverable is documentation (requirements, design, ADRs, the CHANGE document, or release/quality evidence), run Copilot's native `rubber-duck` review agent on it before that phase's human approval, fixing every issue and re-reviewing until none remain.
 Follow the user's input language. Use native Copilot planning, editing, research, review, security review and subagents.
 Record exactly one final invocation outcome with `npx musubix3 workflow-record sdd-change complete --status <status>`; `change-record` separately proves phases.
 Run `workflow-sanitize <copilot.jsonl> <safe.jsonl>` before review, then
@@ -38,11 +39,10 @@ Persisted monotonic order, not wall-clock time, proves these phase boundaries.
 2. For a bug where implementation violates an existing requirement, keep that
    requirement and record that no specification change is needed. Never rewrite
    a requirement merely to make incorrect behavior appear compliant.
-3. Update design responsibilities/interfaces/constraints/links and ADRs for real decisions.
-4. Run requirements, constitution and design validation. Stop on invalid
-   artifacts instead of continuing with unapproved assumptions.
-5. Stop before design for explicit current `requirements` approval; stop before
-   Red/implementation for explicit current `design` approval. Changes re-open approval.
+3. Run requirements and constitution validation; stop on invalid artifacts
+   instead of continuing with unapproved assumptions.
+4. Run a `rubber-duck` review (Copilot's native review agent) of `requirements.md`, fixing every issue and re-reviewing until none remain, then stop for explicit current `requirements` approval before design. An edit to `requirements.md` re-opens approval and requires re-review.
+5. Update design responsibilities/interfaces/constraints/links and ADRs, run design validation, then run the same rubber-duck review/fix loop on `design.md`/ADRs before stopping for explicit current `design` approval before Red/implementation. An edit re-opens approval and requires re-review.
 ## 3. Implement and prove coverage / 実装と網羅性
 1. For observable behavior changes and defect fixes, write the smallest meaningful
    test first. Include its `TEST-*` ID in the test name/output and link it to the
@@ -70,8 +70,6 @@ Documentation/prototypes may omit TDD only when policy allows; record the reason
    A required `formal` check enforces modeled fraction and configured solver.
 3. Run `gate --changed --json` and `status --json`. Repair failures, dangling
    links and stale evidence; never weaken requirements or policy to obtain green.
-4. Treat the first otherwise-passing gate as the release candidate. Before any
-   release operation, prepare/show its exact hash, ask one human approve/reject
-   question and wait; record only that hash, then rerun gate/status.
+4. Treat the first otherwise-passing gate as the release candidate. Run a `rubber-duck` review of the release/quality evidence summary and the CHANGE document; fix every reported issue and re-review until zero issues remain. Before any release operation, prepare/show its exact hash, ask one human approve/reject question and wait; record only that hash, then rerun gate/status.
 5. Complete only when required checks pass and `status.gate.ready` is true;
    otherwise report blockers. One-phase work must state downstream work.

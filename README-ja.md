@@ -248,17 +248,25 @@ Copilot の提案を記号的検査で制約する構成であり、独自の「
 要求を確定しません。
 
 1. ネイティブ計画・調査で意図と測定可能な受入条件を明確化。
-2. `change-record CHANGE-ID impact` を記録して要求を編集・検証し、
-   `requirements` checkpoint後、設計前にartifact-boundな人間の
-   `requirements`承認を明示的に記録。
-3. コンポーネントとADRを更新して `design` checkpointを記録し、
-   実装前にartifact-boundな人間の`design`承認を明示的に記録。
+2. `change-record CHANGE-ID impact` を記録して要求を編集・検証し、要求文書の
+   `rubber-duck`レビューを実施して指摘事項をすべて修正（指摘がゼロになるまで
+   レビュー・修正を繰り返す）、`requirements` checkpoint後、設計前に
+   artifact-boundな人間の`requirements`承認を明示的に記録。
+3. コンポーネントとADRを更新し、設計文書・ADRの`rubber-duck`レビューを実施して
+   指摘事項をすべて修正（指摘がゼロになるまで繰り返す）、`design` checkpoint
+   を記録し、実装前にartifact-boundな人間の`design`承認を明示的に記録。
 4. 注釈付きテストを作成し、構造化結果を伴う `tdd red` と変更の `red` を記録。
 5. 最小実装後に `implementation`、成功する `tdd green`、変更の `green` を記録。
 6. 注釈とグラフを更新して変更影響・網羅性を確認。
-7. 実コマンドで候補品質ゲートを実行。承認以外の必須checkがすべて合格した後、
-   人間が`release`承認を記録してgate/statusを再実行し、その後だけ
-   commit・push・publish・deployへ進む。検証結果や自然言語から承認を推測しない。
+7. 実コマンドで候補品質ゲートを実行。リリース・品質エビデンス要約の
+   `rubber-duck`レビューを実施して指摘事項をすべて修正(指摘がゼロになるまで
+   繰り返す)。承認以外の必須checkがすべて合格した後、人間が`release`承認を
+   記録してgate/statusを再実行し、その後だけcommit・push・publish・deployへ
+   進む。検証結果や自然言語から承認を推測しない。
+
+AIが生成した文書成果物(要求、設計、ADR、CHANGE文書、リリース・品質エビデンス
+要約)は、対応する人間承認を依頼する**前**に、指摘事項がゼロになるまでこの
+`rubber-duck`レビュー・修正ループを実施する。
 
 ```sh
 npx musubix3 requirements validate .musubix/features/example/requirements.md --json

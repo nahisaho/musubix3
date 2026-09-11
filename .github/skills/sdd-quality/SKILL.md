@@ -71,8 +71,5 @@ completed` exactly once.
    check all configured claims; offline strict verification fails closed.
    Ensure the baseline protects CI-required mode, strict OIDC and key binding.
    Never store a private key or overstate OIDC as proof of arbitrary runner work.
-7. After required non-approval checks pass, run `approval prepare release`, show
-   its exact hash and residual risks, ask one approve/reject question, then wait.
-   On approval only record that hash with `approval record release --approver
-   <name> --artifact-sha256 <hash> --confirm`; rejection stops. Rerun gate/status;
-   stale approval blocks commit/push/publish/deploy; no resident watcher or REPL.
+7. Before requesting human approval, run Copilot's native `rubber-duck` review agent on the release evidence summary and the CHANGE document; fix every reported issue, then re-run the review, repeating until it reports zero remaining issues.
+8. After required non-approval checks pass, run `approval prepare release`, show its exact hash and residual risks, ask one approve/reject question, then wait. On approval only record that hash with `approval record release --approver <name> --artifact-sha256 <hash> --confirm`; rejection stops. Rerun gate/status; stale approval blocks commit/push/publish/deploy; no resident watcher or REPL.

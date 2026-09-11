@@ -252,11 +252,15 @@ question at a time and waits for the answer; it does not batch questions or
 finalize requirements while blockers remain.
 
 1. Use native planning/research to establish intent and measurable acceptance.
-2. Record `change-record CHANGE-ID impact`, edit/validate requirements, record
-   the `requirements` checkpoint, then obtain explicit artifact-bound human
-   `requirements` approval before design.
-3. Design explicit components, record trade-offs in ADRs, record `design`, then
-   obtain explicit artifact-bound human `design` approval before implementation.
+2. Record `change-record CHANGE-ID impact`, edit/validate requirements, run a
+   `rubber-duck` review of the requirements document and fix every finding
+   (repeat review/fix until zero issues remain), record the `requirements`
+   checkpoint, then obtain explicit artifact-bound human `requirements`
+   approval before design.
+3. Design explicit components, record trade-offs in ADRs, run a `rubber-duck`
+   review of the design document/ADRs and fix every finding (repeat until zero
+   issues remain), record `design`, then obtain explicit artifact-bound human
+   `design` approval before implementation.
 4. Write an annotated behavior test, record a structured failing `tdd red`, then
    record the change `red` checkpoint.
 5. Implement the minimum change, record `implementation`, run passing `tdd green`,
@@ -266,9 +270,16 @@ finalize requirements while blockers remain.
    Red-Implementation-Green loop before moving to the next, instead of
    completing every requirement's Red before any Implementation.
 6. Add trace annotations, build graphs, inspect impact and fix missing coverage.
-7. Configure real checks and run the candidate `gate --changed`. After every
-   required non-approval check passes, obtain explicit human `release` approval,
+7. Configure real checks and run the candidate `gate --changed`. Run a
+   `rubber-duck` review of the release/quality evidence summary and fix every
+   finding (repeat until zero issues remain). After every required
+   non-approval check passes, obtain explicit human `release` approval,
    rerun the gate/status, and only then commit, push, publish, or deploy.
+
+Any AI-generated documentation deliverable (requirements, design, ADRs, the
+CHANGE document, or release/quality evidence summaries) goes through this
+`rubber-duck` review/fix loop until zero issues remain **before** the
+corresponding human approval step is requested.
 
 ```sh
 npx musubix3 requirements validate .musubix/features/example/requirements.md --json

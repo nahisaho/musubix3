@@ -50,10 +50,15 @@ After the work, run `npx musubix3 workflow-record sdd-requirements complete
 5. Validate with `npx musubix3 requirements validate <file> --json` and
    `npx musubix3 constitution validate --json`. Rules use `PRINC-001`, `RULE-001`,
    a supported `Metric:` and numeric `Limit:`. Validation is not execution evidence.
-6. Validation is not human approval. Before design, run `approval prepare
+6. Before requesting human approval, run Copilot's native `rubber-duck`
+   review agent on `requirements.md`. Fix every reported issue, then re-run
+   the review. Repeat fix-then-review until the review reports zero
+   remaining issues; only then proceed to step 7. Do not request human
+   approval while rubber-duck findings remain open.
+7. Validation is not human approval. Before design, run `approval prepare
    requirements`, show its exact artifacts/hash, ask one explicit approve/reject
    question, then wait. On approval only, record that hash with `approval record
    requirements --approver <name> --artifact-sha256 <hash> --confirm`; rejection
    or any intervening artifact change stops and requires renewed review.
-7. Hand off confirmed IDs and unresolved assumptions to `sdd-design`; use native
+8. Hand off confirmed IDs and unresolved assumptions to `sdd-design`; use native
    review for semantic completeness, not merely syntactic conformance.

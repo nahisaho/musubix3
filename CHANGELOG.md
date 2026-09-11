@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.1.15 - 2026-09-11
+
+Documentation/workflow update: AI-generated documentation deliverables now go
+through a mandatory rubber-duck review/fix loop before human approval.
+
+- `sdd-requirements`, `sdd-design`, `sdd-quality`, and `sdd-change` now
+  require a `rubber-duck` review of any AI-generated documentation artifact
+  (requirements.md, design.md/ADRs, the CHANGE document, and release/quality
+  evidence summaries) before the corresponding human approval step
+  (`requirements`, `design`, or `release`). Every reported issue must be
+  fixed and the artifact re-reviewed; only once the review reports zero
+  remaining issues may human review/approval be requested.
+- Documented the same review/fix loop in the Workflow section of
+  README.md/README-ja.md.
+- No CLI, schema, or validation behavior changed. Apart from the package
+  version metadata bump (`package.json`/`package-lock.json`), this release
+  only updates the bundled `.github/skills/sdd-*` guidance and documentation.
+
 ## 0.1.14 - 2026-09-11
 
 Fix for one issue (#17) found while running musubix3@0.1.13 against a large

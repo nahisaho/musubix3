@@ -25,8 +25,12 @@ completed` exactly once.
 5. Run `npx musubix3 trace build` then `npx musubix3 trace check`.
    Do not hand-edit `trace.json`. Ask native review to inspect coupling and
    coverage; use `sdd-formal-codegraph` for compiler-based impact checks.
-6. Before implementation or Red, run `approval prepare design`, show its exact
+6. Before requesting human approval, run Copilot's native `rubber-duck`
+   review agent on `design.md` and any related ADRs. Fix every reported
+   issue, then re-run the review. Repeat fix-then-review until the review
+   reports zero remaining issues; only then proceed to step 7.
+7. Before implementation or Red, run `approval prepare design`, show its exact
    artifacts/hash, ask one explicit approve/reject question, then wait. On approval
    only, record that hash with `approval record design --approver <name>
    --artifact-sha256 <hash> --confirm`; rejection or changes require renewed review.
-7. Hand off responsibilities, interfaces, constraints and IDs to implementation.
+8. Hand off responsibilities, interfaces, constraints and IDs to implementation.
