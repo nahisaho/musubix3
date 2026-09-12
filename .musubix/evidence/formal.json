@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-12T01:57:39.141Z",
-  "totalRequirements": 52,
-  "modeledRequirements": 8,
-  "modeledFraction": 0.15384615384615385,
+  "generatedAt": "2026-09-12T14:44:17.433Z",
+  "totalRequirements": 116,
+  "modeledRequirements": 9,
+  "modeledFraction": 0.07758620689655173,
   "result": {
     "valid": true,
     "abstraction": "Consistency of explicit branch-scoped conditional, exact unit-normalized integer numeric, bounded temporal interval, deterministic state-transition, and controlled unconditional Boolean constraints; not implementation correctness.",
@@ -29,6 +29,11 @@
       {
         "requirement": "REQ-BOUNDED-FILE-READ-CONCURRENCY-003",
         "atom": "[\"system\",\"load markdown document text for `knowledge build` using the same bounded-concurrency pool as trace fingerprinting, instead of one unbounded `promise.all` over every markdown file in the project\"]",
+        "positive": true
+      },
+      {
+        "requirement": "REQ-CHANGE-EVIDENCE-WAIVER-009",
+        "atom": "[\"system\",\"report `severity: \\\"error\\\"`, unaffected, for every diagnostic instance of a waivable code that does not itself have a matching, validly linked, non-stale waiver record for that exact `changeid`/`code`/`requirementid` combination\"]",
         "positive": true
       },
       {
@@ -61,6 +66,56 @@
     "unsupported": [
       "REQ-ADAPTER-PATTERN-RECOGNITION-001",
       "REQ-ADAPTER-PATTERN-RECOGNITION-002",
+      "REQ-APPROVAL-DOMAIN-SCOPING-001",
+      "REQ-APPROVAL-DOMAIN-SCOPING-002",
+      "REQ-APPROVAL-DOMAIN-SCOPING-003",
+      "REQ-APPROVAL-DOMAIN-SCOPING-004",
+      "REQ-APPROVAL-DOMAIN-SCOPING-005",
+      "REQ-APPROVAL-DOMAIN-SCOPING-006",
+      "REQ-APPROVAL-DOMAIN-SCOPING-007",
+      "REQ-APPROVAL-DOMAIN-SCOPING-008",
+      "REQ-APPROVAL-DOMAIN-SCOPING-009",
+      "REQ-APPROVAL-DOMAIN-SCOPING-010",
+      "REQ-APPROVAL-DOMAIN-SCOPING-011",
+      "REQ-APPROVAL-DOMAIN-SCOPING-012",
+      "REQ-APPROVAL-DOMAIN-SCOPING-013",
+      "REQ-APPROVAL-DOMAIN-SCOPING-014",
+      "REQ-APPROVAL-DOMAIN-SCOPING-015",
+      "REQ-APPROVAL-DOMAIN-SCOPING-016",
+      "REQ-APPROVAL-DOMAIN-SCOPING-017",
+      "REQ-APPROVAL-DOMAIN-SCOPING-018",
+      "REQ-APPROVAL-DOMAIN-SCOPING-019",
+      "REQ-APPROVAL-DOMAIN-SCOPING-020",
+      "REQ-APPROVAL-DOMAIN-SCOPING-021",
+      "REQ-APPROVAL-DOMAIN-SCOPING-022",
+      "REQ-APPROVAL-DOMAIN-SCOPING-023",
+      "REQ-APPROVAL-DOMAIN-SCOPING-024",
+      "REQ-CHANGE-ACCEPTANCE-HEURISTIC-001",
+      "REQ-CHANGE-ACCEPTANCE-HEURISTIC-002",
+      "REQ-CHANGE-EVIDENCE-WAIVER-001",
+      "REQ-CHANGE-EVIDENCE-WAIVER-002",
+      "REQ-CHANGE-EVIDENCE-WAIVER-003",
+      "REQ-CHANGE-EVIDENCE-WAIVER-004",
+      "REQ-CHANGE-EVIDENCE-WAIVER-005",
+      "REQ-CHANGE-EVIDENCE-WAIVER-006",
+      "REQ-CHANGE-EVIDENCE-WAIVER-007",
+      "REQ-CHANGE-EVIDENCE-WAIVER-008",
+      "REQ-CHANGE-EVIDENCE-WAIVER-010",
+      "REQ-CHANGE-EVIDENCE-WAIVER-011",
+      "REQ-CHANGE-EVIDENCE-WAIVER-012",
+      "REQ-CHANGE-EVIDENCE-WAIVER-013",
+      "REQ-CHANGE-EVIDENCE-WAIVER-014",
+      "REQ-CHANGE-EVIDENCE-WAIVER-015",
+      "REQ-CHANGE-RECORD-FAIL-FAST-001",
+      "REQ-CHANGE-RECORD-FAIL-FAST-002",
+      "REQ-CHANGE-RECORD-FAIL-FAST-003",
+      "REQ-CHANGE-RECORD-FAIL-FAST-004",
+      "REQ-CHANGE-RECORD-FAIL-FAST-005",
+      "REQ-CHANGE-RECORD-FAIL-FAST-006",
+      "REQ-CHANGE-RECORD-FAIL-FAST-007",
+      "REQ-CHANGE-RECORD-FAIL-FAST-008",
+      "REQ-CHANGE-RECORD-FAIL-FAST-009",
+      "REQ-CHANGE-RECORD-FAIL-FAST-010",
       "REQ-CHANGE-REQUIREMENT-BATCHES-001",
       "REQ-CHANGE-REQUIREMENT-BATCHES-003",
       "REQ-CHANGE-REQUIREMENT-BATCHES-004",
@@ -95,6 +150,19 @@
       "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-006",
       "REQ-SESSION-SCOPED-DEVELOPMENT-001",
       "REQ-SESSION-SCOPED-DEVELOPMENT-002",
+      "REQ-TDD-CYCLE-VOID-001",
+      "REQ-TDD-CYCLE-VOID-002",
+      "REQ-TDD-CYCLE-VOID-003",
+      "REQ-TDD-CYCLE-VOID-004",
+      "REQ-TDD-CYCLE-VOID-005",
+      "REQ-TDD-CYCLE-VOID-006",
+      "REQ-TDD-CYCLE-VOID-007",
+      "REQ-TDD-CYCLE-VOID-008",
+      "REQ-TDD-CYCLE-VOID-009",
+      "REQ-TDD-CYCLE-VOID-010",
+      "REQ-TDD-CYCLE-VOID-011",
+      "REQ-TDD-CYCLE-VOID-012",
+      "REQ-TDD-CYCLE-VOID-013",
       "REQ-TDD-FINGERPRINT-MIGRATION-001",
       "REQ-TDD-FINGERPRINT-SCOPING-001",
       "REQ-TDD-GREEN-REQUIREMENT-SCOPING-001",
@@ -114,6 +182,256 @@
         "code": "FORMAL_UNSUPPORTED",
         "severity": "warning",
         "message": "REQ-ADAPTER-PATTERN-RECOGNITION-002 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-APPROVAL-DOMAIN-SCOPING-001 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-APPROVAL-DOMAIN-SCOPING-002 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-APPROVAL-DOMAIN-SCOPING-003 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-APPROVAL-DOMAIN-SCOPING-004 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-APPROVAL-DOMAIN-SCOPING-005 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-APPROVAL-DOMAIN-SCOPING-006 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-APPROVAL-DOMAIN-SCOPING-007 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-APPROVAL-DOMAIN-SCOPING-008 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-APPROVAL-DOMAIN-SCOPING-009 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-APPROVAL-DOMAIN-SCOPING-010 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-APPROVAL-DOMAIN-SCOPING-011 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-APPROVAL-DOMAIN-SCOPING-012 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-APPROVAL-DOMAIN-SCOPING-013 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-APPROVAL-DOMAIN-SCOPING-014 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-APPROVAL-DOMAIN-SCOPING-015 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-APPROVAL-DOMAIN-SCOPING-016 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-APPROVAL-DOMAIN-SCOPING-017 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-APPROVAL-DOMAIN-SCOPING-018 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-APPROVAL-DOMAIN-SCOPING-019 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-APPROVAL-DOMAIN-SCOPING-020 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-APPROVAL-DOMAIN-SCOPING-021 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-APPROVAL-DOMAIN-SCOPING-022 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-APPROVAL-DOMAIN-SCOPING-023 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-APPROVAL-DOMAIN-SCOPING-024 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-CHANGE-ACCEPTANCE-HEURISTIC-001 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-CHANGE-ACCEPTANCE-HEURISTIC-002 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-CHANGE-EVIDENCE-WAIVER-001 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-CHANGE-EVIDENCE-WAIVER-002 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-CHANGE-EVIDENCE-WAIVER-003 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-CHANGE-EVIDENCE-WAIVER-004 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-CHANGE-EVIDENCE-WAIVER-005 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-CHANGE-EVIDENCE-WAIVER-006 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-CHANGE-EVIDENCE-WAIVER-007 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-CHANGE-EVIDENCE-WAIVER-008 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-CHANGE-EVIDENCE-WAIVER-010 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-CHANGE-EVIDENCE-WAIVER-011 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-CHANGE-EVIDENCE-WAIVER-012 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-CHANGE-EVIDENCE-WAIVER-013 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-CHANGE-EVIDENCE-WAIVER-014 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-CHANGE-EVIDENCE-WAIVER-015 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-CHANGE-RECORD-FAIL-FAST-001 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-CHANGE-RECORD-FAIL-FAST-002 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-CHANGE-RECORD-FAIL-FAST-003 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-CHANGE-RECORD-FAIL-FAST-004 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-CHANGE-RECORD-FAIL-FAST-005 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-CHANGE-RECORD-FAIL-FAST-006 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-CHANGE-RECORD-FAIL-FAST-007 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-CHANGE-RECORD-FAIL-FAST-008 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-CHANGE-RECORD-FAIL-FAST-009 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-CHANGE-RECORD-FAIL-FAST-010 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
       },
       {
         "code": "FORMAL_UNSUPPORTED",
@@ -288,6 +606,71 @@
       {
         "code": "FORMAL_UNSUPPORTED",
         "severity": "warning",
+        "message": "REQ-TDD-CYCLE-VOID-001 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-TDD-CYCLE-VOID-002 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-TDD-CYCLE-VOID-003 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-TDD-CYCLE-VOID-004 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-TDD-CYCLE-VOID-005 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-TDD-CYCLE-VOID-006 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-TDD-CYCLE-VOID-007 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-TDD-CYCLE-VOID-008 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-TDD-CYCLE-VOID-009 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-TDD-CYCLE-VOID-010 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-TDD-CYCLE-VOID-011 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-TDD-CYCLE-VOID-012 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-TDD-CYCLE-VOID-013 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
         "message": "REQ-TDD-FINGERPRINT-MIGRATION-001 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
       },
       {
@@ -339,7 +722,11 @@
   },
   "fingerprints": {
     ".musubix/features/adapter-pattern-recognition/requirements.md": "5731561a0a04982b8a5c305bdeeae6084bcf0ee8846f295eaaaabc823d1f9793",
+    ".musubix/features/approval-domain-scoping/requirements.md": "c886926622fe022052c81b1ea4e76f21c04f42636f4a37d074f7d34c0505210f",
     ".musubix/features/bounded-file-read-concurrency/requirements.md": "9e08acde7e29a8f14b23d908c465c629e49d00bc29ae9bda1466427362c815be",
+    ".musubix/features/change-acceptance-heuristic/requirements.md": "82b9c8d839d6663f97b67bba2c01fc775e3253e444440eb2833f82cdd877bcf6",
+    ".musubix/features/change-evidence-waiver/requirements.md": "fb9109ce26127acb978da414697e800ad86053cb9567d6ecb4054a9f33cb49df",
+    ".musubix/features/change-record-fail-fast/requirements.md": "7488f2f96293ca03ca0690358aa528d1e329e70d39be3885540f54c81c14d94e",
     ".musubix/features/change-requirement-batches/requirements.md": "215dff587257d8edf5ba17c60b610bb6abe4497d867ad20de28e5ef520184c7f",
     ".musubix/features/cli-workflow-ux-v019/requirements.md": "8ac7b7e793009d95a03b53de1e3aca043d4433a7b6de9511d8547ebc33b5e7b2",
     ".musubix/features/command-working-directory/requirements.md": "4a376dfe7a6e9b1bb1ff4a947fb2807f7179a1798df369040c879a1b9e4fcb90",
@@ -349,6 +736,7 @@
     ".musubix/features/model-correspondence-evidence-guidance/requirements.md": "d7ca8b823ddfd3265e89f2892003e5eb95faad7e9b3972b249de5f2902446511",
     ".musubix/features/requirements-design-scaffold/requirements.md": "0a968bc27756e715f68f22a8f6d65fc8fefce09ac79d1c8d0137282b821ebc45",
     ".musubix/features/session-scoped-development/requirements.md": "640aece168b4e6848c0d1e6371f0bfeb433fa8addfd064a77d050891d69d9a4f",
+    ".musubix/features/tdd-cycle-void/requirements.md": "331aa96ff3a63f0b20c6febc9bf1635fe93921cd30516c9b5c5066cde9fe0abe",
     ".musubix/features/tdd-fingerprint-migration/requirements.md": "e8ac10f4367e8b43e427d2a27616debbd836194854a86da4850773b9cde9e1ae",
     ".musubix/features/tdd-fingerprint-scoping/requirements.md": "d3e480fc0ef92edb87f2c22d1d67a00fc177fde913c68d0187aa45375b14d4c9",
     ".musubix/features/tdd-green-requirement-scoping/requirements.md": "456edab50870ba2fc3297eccee1c4dc114a8c8400354cb3e4b00769bb8b29ba1",

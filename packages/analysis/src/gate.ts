@@ -8,6 +8,7 @@ import { formalCheck, type FormalResult } from './formal.js';
 import { validateWorkflow } from './workflow.js';
 import { parseMusubixTestReport, validateTddEvidence, type MusubixTestReport } from './tdd.js';
 import { validateChangeCompleteness, validateChangeEvidence } from './change.js';
+import { activeWaivers, waiverEvidenceDiagnostics } from './change-waiver.js';
 import { changedFiles, runProcess, type Runner } from './process.js';
 import { buildTrace, checkTrace } from './trace.js';
 import { adapterInvocation, clearAdapterOutput, mergeAdapterArgs, normalizeAdapterReport, readAdapterOutput } from './adapters.js';
@@ -23,7 +24,10 @@ import {
   validateModelCorrespondenceEvidence, writeModelCorrespondenceEvidence,
 } from './model-correspondence.js';
 import { verifyEvidenceAttestation, type AttestationVerificationOptions } from './attestation.js';
-import { validateApprovals, type ApprovalValidation } from './approval.js';
+import {
+  domainOwning, domainsConfigured, resolveDomains, validateApprovals, validateApprovalsForFeatureGate,
+  type ApprovalValidation,
+} from './approval.js';
 
 export interface GateReport {
   schemaVersion: 1;
@@ -43,6 +47,8 @@ export interface GateReport {
     generatedAt: string;
   } | null;
   fingerprints: Record<string, string>;
+  waivers?: Array<{ changeId: string; code: string; requirementId?: string; approver: string; reason: string; recordedAt: string }>;
+  waiverDiagnostics?: Diagnostic[];
 }
 
 export interface FormalEvidence {
@@ -498,14 +504,26 @@ export async function runGate(root: string, options: {
         : `Attestation status: ${attestation.status}.`,
     diagnostics: attestation.diagnostics,
   });
-  const approvals = await validateApprovals(root, config.approval);
+  const domainsOn = domainsConfigured(config.approval);
+  let approvals: ApprovalValidation;
+  if (featureDir && domainsOn) {
+    const resolvedDomains = await resolveDomains(root, config.approval);
+    const owningDomain = domainOwning(resolvedDomains, options.feature!);
+    if (!owningDomain) throw new Error(`Feature "${options.feature}" is not owned by any configured approval domain.`);
+    approvals = await validateApprovalsForFeatureGate(root, config.approval, owningDomain);
+  } else {
+    approvals = await validateApprovals(root, config.approval);
+  }
+  const approvalStages = domainsOn
+    ? [...(approvals.domains?.flatMap((d) => d.stages) ?? []), ...(approvals.release ? [approvals.release] : [])]
+    : approvals.stages;
   checks.push({
     name: 'approval',
     required: required('approval') || config.approval.mode === 'required' || approvals.present,
     status: !approvals.present && config.approval.mode === 'compatible'
       ? 'skipped'
       : approvals.valid ? 'pass' : 'fail',
-    summary: `${approvals.stages.filter((stage) => stage.status === 'approved').length}/${approvals.stages.length} approval stage(s) are current.`,
+    summary: `${approvalStages.filter((stage) => stage.status === 'approved').length}/${approvalStages.length} approval stage(s) are current.`,
     diagnostics: approvals.diagnostics,
   });
   checks.push({
@@ -594,6 +612,8 @@ export async function runGate(root: string, options: {
     };
   }
   const featureScopedCheckNames = new Set(['requirements', 'design', 'trace', 'tdd', 'change-history', 'change-completeness']);
+  if (domainsOn) featureScopedCheckNames.add('approval');
+  const [waivers, waiverDiagnostics] = await Promise.all([activeWaivers(root), waiverEvidenceDiagnostics(root)]);
   const report: GateReport = {
     schemaVersion: 1,
     generatedAt,
@@ -606,6 +626,8 @@ export async function runGate(root: string, options: {
     impacted: options.changed ? currentImpacted : lastChangeAnalysis?.impacted ?? [],
     lastChangeAnalysis,
     fingerprints: after,
+    waivers,
+    waiverDiagnostics,
   };
   if (!featureDir) await writeJson(root, evidencePath, report);
   return report;
@@ -618,6 +640,8 @@ export async function projectStatus(root: string): Promise<{
   approvals: ApprovalValidation | null;
   gate: { status: 'pass' | 'fail' | 'skipped' | 'stale'; generatedAt: string | null; ready: boolean };
   next: string[];
+  waivers: Array<{ changeId: string; code: string; requirementId?: string; approver: string; reason: string; recordedAt: string }>;
+  waiverDiagnostics: Diagnostic[];
 }> {
   const paths = await files(root);
   const initialized = paths.includes('.musubix/config.json');
@@ -650,21 +674,36 @@ export async function projectStatus(root: string): Promise<{
     generatedAt = evidence.generatedAt ?? null;
   }
   if (status === 'pass' && approvals?.valid === false) status = 'stale';
+  const [waivers, waiverDiagnostics] = await Promise.all([activeWaivers(root), waiverEvidenceDiagnostics(root)]);
   return {
     initialized,
     artifacts,
     codeGraph,
     approvals,
     gate: { status, generatedAt, ready: initialized && status === 'pass' && approvals?.valid === true },
+    waivers,
+    waiverDiagnostics,
     next: !initialized
       ? ['musubix3 init']
       : approvals && !approvals.valid
-        ? approvals.stages.filter((stage) =>
-          stage.status !== 'approved' && (stage.required || stage.present))
-          .flatMap((stage) => [
-            `musubix3 approval prepare ${stage.stage}`,
-            `musubix3 approval record ${stage.stage} --approver <name> --artifact-sha256 <approved-hash> --confirm`,
-          ])
+        ? approvals.domains
+          ? [
+            ...approvals.domains.flatMap((d) => d.stages.filter((stage) =>
+              stage.status !== 'approved' && (stage.required || stage.present))
+              .flatMap((stage) => [
+                `musubix3 approval prepare ${stage.stage} --domain ${d.name}`,
+                `musubix3 approval record ${stage.stage} --approver <name> --artifact-sha256 <approved-hash> --domain ${d.name} --confirm`,
+              ])),
+            ...(approvals.release && approvals.release.status !== 'approved' && (approvals.release.required || approvals.release.present)
+              ? ['musubix3 approval prepare release', 'musubix3 approval record release --approver <name> --artifact-sha256 <approved-hash> --confirm']
+              : []),
+          ]
+          : approvals.stages.filter((stage) =>
+            stage.status !== 'approved' && (stage.required || stage.present))
+            .flatMap((stage) => [
+              `musubix3 approval prepare ${stage.stage}`,
+              `musubix3 approval record ${stage.stage} --approver <name> --artifact-sha256 <approved-hash> --confirm`,
+            ])
         : status !== 'pass' ? ['musubix3 trace build', 'musubix3 gate'] : [],
   };
 }

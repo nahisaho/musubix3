@@ -55,7 +55,7 @@ export async function project(): Promise<string> {
   await writeText(root, 'src/service.test.ts', testCode);
   const config: Config = {
     ...defaultConfig,
-    approval: { mode: 'compatible' },
+    approval: { mode: 'compatible', domains: [] },
     commands: [{
       name: 'test',
       command: process.execPath,
@@ -73,7 +73,7 @@ export async function project(): Promise<string> {
   };
   await writeJson(root, '.musubix/config.json', config);
   const baseline = JSON.parse(await readText(root, '.musubix/policy-baseline.json')) as Config & { requiredCommands: string[] };
-  baseline.approval = { mode: 'compatible' };
+  baseline.approval = { mode: 'compatible', domains: [] };
   await writeJson(root, '.musubix/policy-baseline.json', baseline);
   return root;
 }

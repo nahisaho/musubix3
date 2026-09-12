@@ -7,6 +7,9 @@ export interface Diagnostic {
   message: string;
   path?: string;
   line?: number;
+  changeId?: string;
+  requirementId?: string;
+  waiver?: { approver: string; reason: string; recordedAt: string };
 }
 
 export interface Validation<T> {

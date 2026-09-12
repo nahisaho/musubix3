@@ -78,8 +78,14 @@ export interface TddConfig {
   redPreflightCommands: string[];
 }
 
+export interface DomainConfig {
+  name: string;
+  featureGlobs: string[];
+}
+
 export interface ApprovalConfig {
   mode: 'compatible' | 'required';
+  domains: DomainConfig[];
 }
 
 export type QualityProfile = 'custom' | 'minimal' | 'recommended' | 'release';
@@ -132,7 +138,7 @@ export const defaultConfig: Config = {
   formal: { solver: 'none', minModeledFraction: 0, timeoutMs: 12_000 },
   mutation: { mode: 'compatible' },
   tdd: { redPreflightCommands: [] },
-  approval: { mode: 'required' },
+  approval: { mode: 'required', domains: [] },
   workflow: { mode: 'compatible', maxAgeSeconds: 3600, maxFutureSkewSeconds: 60 },
   attestation: {
     mode: 'local',
@@ -234,6 +240,34 @@ function validateQualityProfile(config: Config, approvalDeclared: boolean): void
       throw new Error('qualityProfile release requires attestation.mode ci-required.');
     }
   }
+}
+
+/** @id CODE-APPROVAL-DOMAIN-SCOPING-001
+ * @implements REQ-APPROVAL-DOMAIN-SCOPING-001 REQ-APPROVAL-DOMAIN-SCOPING-024
+ * @design DES-APPROVAL-DOMAIN-SCOPING-001
+ */
+function parseApprovalDomains(rawDomains: unknown[]): DomainConfig[] {
+  const domainNamePattern = /^[a-z0-9]+(-[a-z0-9]+)*$/;
+  const reservedDomainNames = new Set(['requirements', 'design', 'release']);
+  const seenDomainNames = new Set<string>();
+  return rawDomains.map((raw: unknown): DomainConfig => {
+    const d = object(raw, 'approval.domains[]');
+    keys(d, ['name', 'featureGlobs'], 'approval.domains[]');
+    if (typeof d.name !== 'string' || !domainNamePattern.test(d.name)) {
+      throw new Error(`approval.domains[].name must be lowercase kebab-case: ${JSON.stringify(d.name)}.`);
+    }
+    if (reservedDomainNames.has(d.name)) {
+      throw new Error(`approval.domains[].name must not be the reserved word "${d.name}" (requirements, design, release are reserved).`);
+    }
+    if (seenDomainNames.has(d.name)) throw new Error(`approval.domains[].name must be unique: duplicate "${d.name}".`);
+    seenDomainNames.add(d.name);
+    const featureGlobs = strings(d.featureGlobs, `approval.domains.${d.name}.featureGlobs`);
+    if (!featureGlobs.length) throw new Error(`approval.domains.${d.name}.featureGlobs must include at least one glob.`);
+    if (featureGlobs.some((glob) => glob.includes('/'))) {
+      throw new Error(`approval.domains.${d.name}.featureGlobs must not contain "/"; globs match a bare feature slug.`);
+    }
+    return { name: d.name, featureGlobs };
+  });
 }
 
 export function parseConfig(input: unknown): Config {
@@ -354,11 +388,14 @@ export function parseConfig(input: unknown): Config {
     }
   }
   const rawApproval = object(optional(value.approval, {}), 'approval');
-  keys(rawApproval, ['mode'], 'approval');
+  keys(rawApproval, ['mode', 'domains'], 'approval');
   const approvalMode = optional(rawApproval.mode, value.approval === undefined ? 'compatible' : defaultConfig.approval.mode);
   if (!['compatible', 'required'].includes(String(approvalMode))) {
     throw new Error('approval.mode must be compatible or required.');
   }
+  const rawDomains = optional(rawApproval.domains, []);
+  if (!Array.isArray(rawDomains)) throw new Error('approval.domains must be an array.');
+  const approvalDomains = parseApprovalDomains(rawDomains);
   const architecture = object(optional(value.architecture, {}), 'architecture');
   keys(architecture, ['forbidCycles', 'rules'], 'architecture');
   if (architecture.forbidCycles !== undefined && typeof architecture.forbidCycles !== 'boolean') throw new Error('architecture.forbidCycles must be boolean.');
@@ -514,7 +551,7 @@ export function parseConfig(input: unknown): Config {
     formal: { solver: solver as FormalConfig['solver'], minModeledFraction, timeoutMs: formalTimeoutMs },
     mutation: { mode: mutationMode as MutationConfig['mode'] },
     tdd: { redPreflightCommands },
-    approval: { mode: approvalMode as ApprovalConfig['mode'] },
+    approval: { mode: approvalMode as ApprovalConfig['mode'], domains: approvalDomains },
     workflow: {
       mode: workflowMode as WorkflowConfig['mode'],
       ...(typeof rawWorkflow.expectedSessionId === 'string' ? { expectedSessionId: rawWorkflow.expectedSessionId } : {}),

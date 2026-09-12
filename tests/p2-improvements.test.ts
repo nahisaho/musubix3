@@ -129,7 +129,7 @@ describe('P2 built-in test adapters', () => {
       mutation: { mode: 'strict' },
       workflow: { mode: 'strict' },
       attestation: { mode: 'ci-required' },
-    }).approval).toEqual({ mode: 'compatible' });
+    }).approval).toEqual({ mode: 'compatible', domains: [] });
     expect(parsePolicyBaseline({
       schemaVersion: 1,
       commands: [{ name: 'format', command: 'cargo', args: ['fmt'], required: false }],

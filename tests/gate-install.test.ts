@@ -25,8 +25,8 @@ describe('installer', () => {
     expect(await readdir(resolve(root, '.github/skills'))).toEqual([...skillNames].sort());
     const trace = await readText(root, '.musubix/features/example/trace.json');
     expect(JSON.parse(trace).nodes).toHaveLength(3);
-    expect((await loadConfig(root)).approval).toEqual({ mode: 'required' });
-    expect(JSON.parse(await readText(root, '.musubix/policy-baseline.json')).approval).toEqual({ mode: 'required' });
+    expect((await loadConfig(root)).approval).toEqual({ mode: 'required', domains: [] });
+    expect(JSON.parse(await readText(root, '.musubix/policy-baseline.json')).approval).toEqual({ mode: 'required', domains: [] });
     const again = await install(root, repository);
     expect(again.actions.every((a) => ['unchanged', 'preserve'].includes(a.action))).toBe(true);
     expect(await readText(root, '.musubix/features/example/trace.json')).toBe(trace);
@@ -491,7 +491,18 @@ Statement: The system should expose unrelated behavior.
  */
 export const unrelated = false;
 `);
-    await recordChangePhase(root, 'CHANGE-0001', 'implementation', ['REQ-EXAMPLE-001']);
+    // The new fail-fast check in recordChangePhase now rejects this exact
+    // scenario at record time (REQ-CHANGE-RECORD-FAIL-FAST-005), so
+    // reconstructing a historical implementation phase whose per-requirement
+    // relevant implementation is unchanged (to exercise the separate,
+    // still-necessary validate-time diagnostic for evidence recorded before
+    // this feature existed) requires directly writing the evidence fixture,
+    // mirroring this codebase's existing evidence-fixture convention (see
+    // tests/tdd-fingerprint-migration.test.ts).
+    const raw = JSON.parse(await readText(root, '.musubix/evidence/changes.json'));
+    const change = raw.changes[0];
+    change.phases.implementation = { ...change.phases.red, phase: 'implementation', order: change.phases.red.order + 1000 };
+    await writeJson(root, '.musubix/evidence/changes.json', raw);
     await runTddPhase(root, 'green', 'TEST-EXAMPLE-001', 'REQ-EXAMPLE-001', 'test',
       tddResultRunner(root, 'passed'));
     await recordChangePhase(root, 'CHANGE-0001', 'green', ['REQ-EXAMPLE-001']);

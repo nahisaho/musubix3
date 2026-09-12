@@ -5,57 +5,26 @@ import { buildTrace } from './trace.js';
 import { indexGraph } from './graph.js';
 import { validatePerformanceEvidence } from './performance.js';
 import { appendEvidenceOrder, evidenceOrderRecord, inspectEvidenceOrder } from './order.js';
+import { loadChangeWaiverEvidence, reportWaiverEvidenceDiagnostics, waivedDiagnostic } from './change-waiver.js';
+import {
+  batchFor, changePhases, effectiveBatches, loadChangeEvidence,
+  type ChangeCompleteness, type ChangeEvidence, type ChangeFingerprints, type ChangePhase,
+  type ChangePhaseEvidence, type ChangeRecord, type ChangeTddBatch,
+} from './change-evidence.js';
 
-export const changePhases = ['impact', 'requirements', 'design', 'red', 'implementation', 'green', 'quality'] as const;
-export type ChangePhase = typeof changePhases[number];
+export * from './change-evidence.js';
 
-interface ChangeFingerprints {
-  impact: string;
-  requirements: string;
-  design: string;
-  implementation: string;
-  tests: string;
-  tdd: string;
-  requirementImplementations?: Record<string, {
-    paths: string[];
-    fingerprints: Record<string, string>;
-  }>;
-}
+/** @id CODE-CHANGE-ACCEPTANCE-HEURISTIC-001
+ * @implements REQ-CHANGE-ACCEPTANCE-HEURISTIC-001
+ * @design DES-CHANGE-ACCEPTANCE-HEURISTIC-001
+ */
+const MEASURABLE_KEYWORD_RE = /(?:\d|test|check|verif|assert|given|when|then|return|status|pass|fail|report|error|reject|contain|unaffected|unchanged|invalid|missing|stale|silently|substring|naming|configur|exit|omit|affect|raise|テスト|確認|検証|以下|以上)/i;
 
-export interface ChangePhaseEvidence {
-  phase: ChangePhase;
-  order?: number;
-  recordedAt: string;
-  fingerprints: ChangeFingerprints;
-}
-
-export interface ChangeTddBatch {
-  requirementIds: string[];
-  red?: ChangePhaseEvidence;
-  implementation?: ChangePhaseEvidence;
-  green?: ChangePhaseEvidence;
-}
-
-export interface ChangeRecord {
-  changeId: string;
-  requirementIds: string[];
-  phases: Partial<Record<ChangePhase, ChangePhaseEvidence>>;
-  tddBatches?: ChangeTddBatch[];
-}
-
-export interface ChangeEvidence {
-  schemaVersion: 1;
-  changes: ChangeRecord[];
-}
-
-export interface ChangeCompleteness {
-  changeId: string;
-  functionalRequirements: number;
-  nonFunctionalRequirements: number;
-  requirements: number;
-  completeRequirements: number;
-  valid: boolean;
-}
+/** @id CODE-CHANGE-ACCEPTANCE-HEURISTIC-002
+ * @implements REQ-CHANGE-ACCEPTANCE-HEURISTIC-002
+ * @design DES-CHANGE-ACCEPTANCE-HEURISTIC-001
+ */
+const PLACEHOLDER_PREFIX_RE = /^(?:TODO|TBD|N\/A|none|未定)(?:\s*[:\-—].*)?$/i;
 
 async function fingerprint(root: string, paths: string[]): Promise<string> {
   return digest(JSON.stringify(await snapshot(root, [...new Set(paths)].sort())));
@@ -113,14 +82,6 @@ async function currentFingerprints(root: string, changeId: string, requirementId
   };
 }
 
-export async function loadChangeEvidence(root: string): Promise<ChangeEvidence | null> {
-  const path = '.musubix/evidence/changes.json';
-  if (!await exists(within(root, path))) return null;
-  const value = JSON.parse(await readText(root, path)) as ChangeEvidence;
-  if (value.schemaVersion !== 1 || !Array.isArray(value.changes)) throw new Error('Invalid change chronology evidence.');
-  return value;
-}
-
 const tddBatchPhases = ['red', 'implementation', 'green'] as const;
 type TddBatchPhase = typeof tddBatchPhases[number];
 
@@ -128,31 +89,55 @@ function batchKey(requirementIds: string[]): string {
   return [...new Set(requirementIds)].sort().join(',');
 }
 
-/** @id CODE-CHANGE-REQUIREMENT-BATCHES-001
- * @implements REQ-CHANGE-REQUIREMENT-BATCHES-001 REQ-CHANGE-REQUIREMENT-BATCHES-003 REQ-CHANGE-REQUIREMENT-BATCHES-004
- * @design DES-CHANGE-REQUIREMENT-BATCHES-001
+/** @id CODE-CHANGE-RECORD-FAIL-FAST-001
+ * @implements REQ-CHANGE-RECORD-FAIL-FAST-001 REQ-CHANGE-RECORD-FAIL-FAST-002 REQ-CHANGE-RECORD-FAIL-FAST-003 REQ-CHANGE-RECORD-FAIL-FAST-004 REQ-CHANGE-RECORD-FAIL-FAST-005
+ * @design DES-CHANGE-RECORD-FAIL-FAST-001 DES-CHANGE-RECORD-FAIL-FAST-002
  */
-export function effectiveBatches(change: ChangeRecord): ChangeTddBatch[] {
-  const batches = change.tddBatches ?? [];
-  if (change.phases.red || change.phases.implementation || change.phases.green) {
-    const legacyBatch: ChangeTddBatch = { requirementIds: [...change.requirementIds] };
-    if (change.phases.red) legacyBatch.red = change.phases.red;
-    if (change.phases.implementation) legacyBatch.implementation = change.phases.implementation;
-    if (change.phases.green) legacyBatch.green = change.phases.green;
-    return [legacyBatch, ...batches];
+// Returns null when nothing is unchanged, or a rejection message embedding
+// one of the five stable *_AT_RECORD codes otherwise.
+function unchangedRejection(
+  changeId: string,
+  phase: ChangePhase,
+  requirementIds: string[],
+  current: ChangeFingerprints,
+  baseline: ChangeFingerprints | undefined,
+): string | null {
+  if (!baseline) return null;
+  if (phase === 'requirements' && current.requirements === baseline.requirements) {
+    return `CHANGE_REQUIREMENTS_UNCHANGED_AT_RECORD: ${changeId} did not change requirements since impact.`;
   }
-  return batches;
+  if (phase === 'design' && current.design === baseline.design) {
+    return `CHANGE_DESIGN_UNCHANGED_AT_RECORD: ${changeId} did not change design since requirements.`;
+  }
+  if (phase === 'red' && current.tests === baseline.tests) {
+    return `CHANGE_TESTS_UNCHANGED_AT_RECORD: ${changeId} did not add or change tests since design.`;
+  }
+  if (phase === 'implementation') {
+    if (current.implementation === baseline.implementation) {
+      return `CHANGE_IMPLEMENTATION_UNCHANGED_AT_RECORD: ${changeId} did not change implementation since red.`;
+    }
+    const unchanged = requirementIds.filter((requirementId) => {
+      const before = baseline.requirementImplementations?.[requirementId];
+      const after = current.requirementImplementations?.[requirementId];
+      return before && after && JSON.stringify(before.fingerprints) === JSON.stringify(after.fingerprints);
+    });
+    if (unchanged.length) {
+      return `CHANGE_RELEVANT_IMPLEMENTATION_UNCHANGED_AT_RECORD: ${changeId} did not change implementation related to ${unchanged.join(', ')} since red.`;
+    }
+  }
+  return null;
 }
 
-function batchFor(batches: ChangeTddBatch[], requirementId: string): ChangeTddBatch | undefined {
-  return batches.find((batch) => batch.requirementIds.includes(requirementId));
-}
-
+/** @id CODE-CHANGE-RECORD-FAIL-FAST-003
+ * @implements REQ-CHANGE-RECORD-FAIL-FAST-006 REQ-CHANGE-RECORD-FAIL-FAST-007 REQ-CHANGE-RECORD-FAIL-FAST-009
+ * @design DES-CHANGE-RECORD-FAIL-FAST-001 DES-CHANGE-RECORD-FAIL-FAST-003 DES-CHANGE-RECORD-FAIL-FAST-004
+ */
 export async function recordChangePhase(
   root: string,
   changeId: string,
   phase: ChangePhase,
   requirementIds: string[],
+  options: { allowUnchanged?: boolean; dryRun?: boolean } = {},
 ): Promise<ChangeEvidence> {
   if (!/^CHANGE-\d+$/.test(changeId)) throw new Error('Change ID must match CHANGE-<digits>.');
   if (!changePhases.includes(phase)) throw new Error('Unknown change phase.');
@@ -199,13 +184,30 @@ export async function recordChangePhase(
         ? 'Every phase must use the same requirement IDs.'
         : 'Every phase must use requirement IDs declared on the change.');
     }
-    const order = await appendEvidenceOrder(root, { kind: 'change', entityId: changeId, phase });
-    change.phases[phase] = {
+    const fingerprints = await currentFingerprints(root, changeId, change.requirementIds);
+    const baseline = phase === 'requirements' ? change.phases.impact?.fingerprints
+      : phase === 'design' ? change.phases.requirements?.fingerprints
+      : phase === 'red' ? change.phases.design?.fingerprints
+      : phase === 'implementation' ? change.phases.red?.fingerprints
+      : undefined;
+    const allowUnchanged = phase === 'requirements' && options.allowUnchanged === true;
+    if (!allowUnchanged) {
+      const rejection = unchangedRejection(changeId, phase, change.requirementIds, fingerprints, baseline);
+      if (rejection) throw new Error(rejection);
+    }
+    const candidate: ChangePhaseEvidence = {
       phase,
-      order: order.sequence,
       recordedAt: new Date().toISOString(),
-      fingerprints: await currentFingerprints(root, changeId, change.requirementIds),
+      fingerprints,
+      ...(phase === 'requirements' && options.allowUnchanged ? { allowUnchanged: true } : {}),
     };
+    if (options.dryRun) {
+      return { schemaVersion: evidence.schemaVersion, changes: evidence.changes.map((entry) =>
+        entry.changeId === changeId ? { ...entry, phases: { ...entry.phases, [phase]: candidate } } : entry) };
+    }
+    const order = await appendEvidenceOrder(root, { kind: 'change', entityId: changeId, phase });
+    candidate.order = order.sequence;
+    change.phases[phase] = candidate;
   } else {
     // red/implementation/green recorded with a proper, non-empty subset of the
     // change's requirement IDs: an independent requirement batch
@@ -231,21 +233,36 @@ export async function recordChangePhase(
       if (!batch?.implementation) throw new Error(`green requires the preceding implementation phase for requirement batch ${normalizedRequirementIds.join(', ')}.`);
       if (batch.green) throw new Error(`${changeId}:green is already recorded for requirement batch ${normalizedRequirementIds.join(', ')}.`);
     }
-    const order = await appendEvidenceOrder(root, { kind: 'change', entityId: changeId, phase: `${phase}:${key}` });
-    batch[batchPhase] = {
+    const fingerprints = await currentFingerprints(root, changeId, normalizedRequirementIds);
+    const baseline = batchPhase === 'red' ? change.phases.design?.fingerprints
+      : batchPhase === 'implementation' ? batch?.red?.fingerprints
+      : undefined;
+    const rejection = unchangedRejection(changeId, phase, normalizedRequirementIds, fingerprints, baseline);
+    if (rejection) throw new Error(rejection);
+    const candidate: ChangePhaseEvidence = {
       phase,
-      order: order.sequence,
       recordedAt: new Date().toISOString(),
-      fingerprints: await currentFingerprints(root, changeId, normalizedRequirementIds),
+      fingerprints,
     };
+    if (options.dryRun) {
+      const previewBatch: ChangeTddBatch = { ...(batch ?? { requirementIds: normalizedRequirementIds }), [batchPhase]: candidate };
+      const previewBatches = (change.tddBatches ?? []).some((entry) => batchKey(entry.requirementIds) === key)
+        ? (change.tddBatches ?? []).map((entry) => (batchKey(entry.requirementIds) === key ? previewBatch : entry))
+        : [...(change.tddBatches ?? []), previewBatch];
+      return { schemaVersion: evidence.schemaVersion, changes: evidence.changes.map((entry) =>
+        entry.changeId === changeId ? { ...entry, tddBatches: previewBatches } : entry) };
+    }
+    const order = await appendEvidenceOrder(root, { kind: 'change', entityId: changeId, phase: `${phase}:${key}` });
+    candidate.order = order.sequence;
+    batch[batchPhase] = candidate;
   }
   await writeJson(root, '.musubix/evidence/changes.json', evidence);
   return evidence;
 }
 
 /** @id CODE-CHANGE-REQUIREMENT-BATCHES-002
- * @implements REQ-CHANGE-REQUIREMENT-BATCHES-005
- * @design DES-CHANGE-REQUIREMENT-BATCHES-002
+ * @implements REQ-CHANGE-REQUIREMENT-BATCHES-005 REQ-CHANGE-RECORD-FAIL-FAST-008
+ * @design DES-CHANGE-REQUIREMENT-BATCHES-002 DES-CHANGE-RECORD-FAIL-FAST-003
  */
 export async function validateChangeEvidence(root: string): Promise<{
   present: boolean;
@@ -254,20 +271,26 @@ export async function validateChangeEvidence(root: string): Promise<{
   diagnostics: Diagnostic[];
 }> {
   const evidence = await loadChangeEvidence(root);
+  const tdd = await loadTddEvidence(root);
+  const waiverContext = { loaded: await loadChangeWaiverEvidence(root), order: await inspectEvidenceOrder(root) };
+  const waiverDiagnostics = reportWaiverEvidenceDiagnostics(waiverContext, evidence, tdd);
   const documents = (await files(root))
     .filter((path) => /^\.musubix\/changes\/CHANGE-\d+\.md$/.test(path))
     .map((path) => path.split('/').at(-1)!.replace(/\.md$/, ''));
   if (!evidence?.changes.length) {
+    const missingDiagnostics = [
+      ...documents.map((changeId) => error('CHANGE_RECORD_MISSING', `${changeId} has a change document but no chronology record.`)),
+      ...waiverDiagnostics,
+    ];
     return {
       present: documents.length > 0,
-      valid: false,
+      valid: !missingDiagnostics.some((d) => d.severity === 'error'),
       changes: 0,
-      diagnostics: documents.map((changeId) =>
-        error('CHANGE_RECORD_MISSING', `${changeId} has a change document but no chronology record.`)),
+      diagnostics: missingDiagnostics,
     };
   }
-  const diagnostics: Diagnostic[] = [];
-  const order = await inspectEvidenceOrder(root);
+  const diagnostics: Diagnostic[] = [...waiverDiagnostics];
+  const order = waiverContext.order;
   diagnostics.push(...order.diagnostics);
   for (const changeId of documents) {
     if (!evidence.changes.some((change) => change.changeId === changeId)) {
@@ -279,7 +302,6 @@ export async function validateChangeEvidence(root: string): Promise<{
       diagnostics.push(error('CHANGE_DOCUMENT_MISSING', `${change.changeId} has chronology evidence but no change document.`));
     }
   }
-  const tdd = await loadTddEvidence(root);
   const singularPhases = ['impact', 'requirements', 'design', 'quality'] as const;
   for (const change of evidence.changes) {
     const batches = effectiveBatches(change);
@@ -347,11 +369,14 @@ export async function validateChangeEvidence(root: string): Promise<{
     const impact = change.phases.impact;
     const requirements = change.phases.requirements;
     const design = change.phases.design;
-    if (impact && requirements && impact.fingerprints.requirements === requirements.fingerprints.requirements) {
-      diagnostics.push(error('CHANGE_REQUIREMENTS_UNCHANGED', `${change.changeId} did not change requirements after impact analysis.`));
+    if (impact && requirements && !requirements.allowUnchanged
+      && impact.fingerprints.requirements === requirements.fingerprints.requirements) {
+      diagnostics.push(waivedDiagnostic(waiverContext, evidence, tdd, 'CHANGE_REQUIREMENTS_UNCHANGED',
+        `${change.changeId} did not change requirements after impact analysis.`, change.changeId, undefined));
     }
     if (requirements && design && requirements.fingerprints.design === design.fingerprints.design) {
-      diagnostics.push(error('CHANGE_DESIGN_UNCHANGED', `${change.changeId} did not change design after requirements.`));
+      diagnostics.push(waivedDiagnostic(waiverContext, evidence, tdd, 'CHANGE_DESIGN_UNCHANGED',
+        `${change.changeId} did not change design after requirements.`, change.changeId, undefined));
     }
     for (const batch of batches) {
       const red = batch.red;
@@ -411,14 +436,16 @@ export async function validateChangeEvidence(root: string): Promise<{
         diagnostics.push(error('CHANGE_ORDER_MIGRATION_REQUIRED', `${change.changeId}:${requirementId} references TDD evidence without monotonic order; regenerate the cycle.`));
       }
       if (red && !validCycle) {
-        diagnostics.push(error('CHANGE_RED_UNPROVEN', `${change.changeId} has no valid Red evidence for ${requirementId} before its Red phase.`));
+        diagnostics.push(waivedDiagnostic(waiverContext, evidence, tdd, 'CHANGE_RED_UNPROVEN',
+          `${change.changeId} has no valid Red evidence for ${requirementId} before its Red phase.`, change.changeId, requirementId));
       }
       if (green && !validCycle) {
-        diagnostics.push(error('CHANGE_GREEN_UNPROVEN', `${change.changeId} has no valid Green evidence for ${requirementId} before its Green phase.`));
+        diagnostics.push(waivedDiagnostic(waiverContext, evidence, tdd, 'CHANGE_GREEN_UNPROVEN',
+          `${change.changeId} has no valid Green evidence for ${requirementId} before its Green phase.`, change.changeId, requirementId));
       }
     }
   }
-  return { present: true, valid: !diagnostics.length, changes: evidence.changes.length, diagnostics };
+  return { present: true, valid: !diagnostics.some((d) => d.severity === 'error'), changes: evidence.changes.length, diagnostics };
 }
 
 export async function validateChangeCompleteness(root: string): Promise<{
@@ -428,8 +455,18 @@ export async function validateChangeCompleteness(root: string): Promise<{
   diagnostics: Diagnostic[];
 }> {
   const evidence = await loadChangeEvidence(root);
-  if (!evidence?.changes.length) return { present: false, valid: false, changes: [], diagnostics: [] };
-  const diagnostics: Diagnostic[] = [];
+  const tdd = await loadTddEvidence(root);
+  const waiverContext = { loaded: await loadChangeWaiverEvidence(root), order: await inspectEvidenceOrder(root) };
+  const waiverDiagnostics = reportWaiverEvidenceDiagnostics(waiverContext, evidence, tdd);
+  if (!evidence?.changes.length) {
+    return {
+      present: false,
+      valid: !waiverDiagnostics.some((d) => d.severity === 'error'),
+      changes: [],
+      diagnostics: waiverDiagnostics,
+    };
+  }
+  const diagnostics: Diagnostic[] = [...waiverDiagnostics];
   const trace = await buildTrace(root, false);
   const nodes = new Map(trace.nodes.map((node) => [node.id, node]));
   const requirementsById = new Map<string, Requirement>();
@@ -442,7 +479,6 @@ export async function validateChangeCompleteness(root: string): Promise<{
   for (const path of (await files(root)).filter((entry) => /^\.musubix\/features\/[^/]+\/design\.md$/.test(entry))) {
     for (const component of validateDesign(await readText(root, path), path).value) designsById.set(component.id, component);
   }
-  const tdd = await loadTddEvidence(root);
   const performance = await validatePerformanceEvidence(root);
   const changes: ChangeCompleteness[] = [];
   for (const change of evidence.changes) {
@@ -490,10 +526,10 @@ export async function validateChangeCompleteness(root: string): Promise<{
           break;
         }
       }
-      const measurableAcceptance = !!requirement?.acceptance
-        && requirement.acceptance.trim().length >= 8
-        && !/^(TODO|TBD|N\/A|none|未定)$/i.test(requirement.acceptance.trim())
-        && /(?:\d|test|check|verif|assert|given|when|then|return|status|pass|fail|テスト|確認|検証|以下|以上)/i.test(requirement.acceptance);
+      const acceptanceTrimmed = requirement?.acceptance?.trim() ?? '';
+      const measurableAcceptance = acceptanceTrimmed.length >= 8
+        && !PLACEHOLDER_PREFIX_RE.test(acceptanceTrimmed)
+        && MEASURABLE_KEYWORD_RE.test(acceptanceTrimmed);
       const requirements = change.phases.requirements;
       const batch = batchFor(effectiveBatches(change), requirementId);
       const red = batch?.red;
@@ -524,13 +560,19 @@ export async function validateChangeCompleteness(root: string): Promise<{
         [hasAdr, 'CHANGE_COMPLETENESS_ADR', 'ADR'],
         [hasCode, 'CHANGE_COMPLETENESS_CODE', 'implementation'],
         [hasTest && authoritativeTest, 'CHANGE_COMPLETENESS_TEST', 'authoritative annotated test declaration'],
-        [hasTdd, 'CHANGE_COMPLETENESS_TDD', 'bounded Red-Green TDD'],
         [!requirement?.performance || (performance.valid && performance.validRequirements.includes(requirementId)), 'CHANGE_COMPLETENESS_PERFORMANCE', 'provenance-bound deterministic operation-budget evidence'],
       ] as const;
+      let tddSatisfied = hasTdd;
+      if (!hasTdd) {
+        const diagnostic = waivedDiagnostic(waiverContext, evidence, tdd, 'CHANGE_COMPLETENESS_TDD',
+          `${change.changeId}:${requirementId} lacks bounded Red-Green TDD evidence.`, change.changeId, requirementId);
+        diagnostics.push(diagnostic);
+        if (diagnostic.severity === 'warning') tddSatisfied = true;
+      }
       for (const [present, code, artifact] of checks) {
         if (!present) diagnostics.push(error(code, `${change.changeId}:${requirementId} lacks ${artifact} evidence.`));
       }
-      if (checks.every(([present]) => present)) completeRequirements++;
+      if (tddSatisfied && checks.every(([present]) => present)) completeRequirements++;
     }
     changes.push({
       changeId: change.changeId,
@@ -538,8 +580,9 @@ export async function validateChangeCompleteness(root: string): Promise<{
       nonFunctionalRequirements,
       requirements: change.requirementIds.length,
       completeRequirements,
-      valid: completeRequirements === change.requirementIds.length && diagnostics.length === diagnosticStart,
+      valid: completeRequirements === change.requirementIds.length
+        && !diagnostics.slice(diagnosticStart).some((d) => d.severity === 'error'),
     });
   }
-  return { present: true, valid: !diagnostics.length, changes, diagnostics };
+  return { present: true, valid: !diagnostics.some((d) => d.severity === 'error'), changes, diagnostics };
 }

@@ -8,6 +8,27 @@ export interface EvidenceOrderRecord {
   kind: EvidenceOrderKind;
   entityId: string;
   phase: string;
+  /**
+   * Only ever set on `kind: 'tdd'` records for the `void` phase (added for
+   * `tdd-cycle-void`), so a void order record can itself be checked against
+   * the cycle's own `testId`, not only its `entityId`/`cycleId`. Absent on
+   * every other kind/phase, including pre-existing `red`/`green`/`refactor`/
+   * `migrate` records, for backward compatibility.
+   */
+  testId?: string;
+  /**
+   * Only ever set on `kind: 'change'` records for the `waiver` phase (added
+   * for `change-evidence-waiver`), since `entityId` (the `changeId`) alone is
+   * not unique across the many codes/requirements one change can waive.
+   * Absent on every other kind/phase.
+   */
+  code?: string;
+  /**
+   * Only ever set on `kind: 'change'` records for the `waiver` phase, for a
+   * requirement-scoped waivable code. Absent for change-level waivable codes
+   * and every other kind/phase.
+   */
+  requirementId?: string;
   previousSha256: string | null;
   recordSha256: string;
 }
@@ -17,14 +38,29 @@ export interface EvidenceOrderLog {
   records: EvidenceOrderRecord[];
 }
 
+/**
+ * Scoping fields that further distinguish an order record beyond
+ * `kind`/`entityId`/`phase`, currently only used by `change-evidence-waiver`
+ * for the `waiver` phase. Each field is appended to the key only when
+ * present, so omitting `scope` (the default for every pre-existing call
+ * site) computes byte-identical keys to before this type existed.
+ */
+export interface EvidenceOrderScope {
+  code?: string;
+  requirementId?: string;
+}
+
 const orderPath = '.musubix/evidence/order.json';
 
 function recordSha256(record: Omit<EvidenceOrderRecord, 'recordSha256'>): string {
   return digest(JSON.stringify(record));
 }
 
-function recordKey(kind: EvidenceOrderKind, entityId: string, phase: string): string {
-  return JSON.stringify([kind, entityId, phase]);
+function recordKey(kind: EvidenceOrderKind, entityId: string, phase: string, scope?: EvidenceOrderScope): string {
+  const key: unknown[] = [kind, entityId, phase];
+  if (scope?.code !== undefined) key.push(scope.code);
+  if (scope?.requirementId !== undefined) key.push(scope.requirementId);
+  return JSON.stringify(key);
 }
 
 export async function loadEvidenceOrder(root: string): Promise<EvidenceOrderLog | null> {
@@ -50,6 +86,9 @@ export function validateEvidenceOrderLog(log: EvidenceOrderLog | null): {
     if (!record || !['change', 'tdd'].includes(record.kind)
       || typeof record.entityId !== 'string' || !record.entityId
       || typeof record.phase !== 'string' || !record.phase
+      || (record.testId !== undefined && (typeof record.testId !== 'string' || !record.testId))
+      || (record.code !== undefined && (typeof record.code !== 'string' || !record.code))
+      || (record.requirementId !== undefined && (typeof record.requirementId !== 'string' || !record.requirementId))
       || !Number.isInteger(record.sequence) || record.sequence < 1
       || (record.previousSha256 !== null && !/^[a-f0-9]{64}$/i.test(record.previousSha256))
       || !/^[a-f0-9]{64}$/i.test(record.recordSha256)) {
@@ -66,7 +105,10 @@ export function validateEvidenceOrderLog(log: EvidenceOrderLog | null): {
     if (actual !== recordSha256(payload)) {
       diagnostics.push(error('EVIDENCE_ORDER_HASH', `Evidence order record ${record.sequence} has an invalid SHA-256.`, orderPath));
     }
-    const key = recordKey(record.kind, record.entityId, record.phase);
+    const key = recordKey(record.kind, record.entityId, record.phase, {
+      ...(record.code !== undefined ? { code: record.code } : {}),
+      ...(record.requirementId !== undefined ? { requirementId: record.requirementId } : {}),
+    });
     if (records.has(key)) {
       diagnostics.push(error('EVIDENCE_ORDER_DUPLICATE', `${record.kind}:${record.entityId}:${record.phase} appears more than once.`, orderPath));
     }
@@ -93,14 +135,18 @@ export async function inspectEvidenceOrder(root: string): Promise<ReturnType<typ
 
 export async function appendEvidenceOrder(
   root: string,
-  input: Pick<EvidenceOrderRecord, 'kind' | 'entityId' | 'phase'>,
+  input: Pick<EvidenceOrderRecord, 'kind' | 'entityId' | 'phase'> & Partial<Pick<EvidenceOrderRecord, 'testId' | 'code' | 'requirementId'>>,
 ): Promise<EvidenceOrderRecord> {
   const log = await loadEvidenceOrder(root) ?? { schemaVersion: 1, records: [] };
   const validated = validateEvidenceOrderLog(log);
   if (!validated.valid) {
     throw new Error('Existing monotonic evidence order is invalid; regenerate evidence before appending.');
   }
-  if (validated.records.has(recordKey(input.kind, input.entityId, input.phase))) {
+  const scope: EvidenceOrderScope = {
+    ...(input.code !== undefined ? { code: input.code } : {}),
+    ...(input.requirementId !== undefined ? { requirementId: input.requirementId } : {}),
+  };
+  if (validated.records.has(recordKey(input.kind, input.entityId, input.phase, scope))) {
     throw new Error(`${input.kind}:${input.entityId}:${input.phase} is already present in monotonic evidence order.`);
   }
   const previous = log.records.at(-1);
@@ -120,6 +166,7 @@ export function evidenceOrderRecord(
   kind: EvidenceOrderKind,
   entityId: string,
   phase: string,
+  scope?: EvidenceOrderScope,
 ): EvidenceOrderRecord | undefined {
-  return records.get(recordKey(kind, entityId, phase));
+  return records.get(recordKey(kind, entityId, phase, scope));
 }

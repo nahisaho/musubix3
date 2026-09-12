@@ -93,18 +93,25 @@ it('TEST-CHANGE-REQUIREMENT-BATCHES-002 rejects Implementation for a batch befor
   await addSecondRequirement(root);
   await writeText(root, '.musubix/changes/CHANGE-0001.md', '# CHANGE-0001\nRequirements: REQ-EXAMPLE-001 REQ-EXAMPLE-002\n');
   await recordChangePhase(root, 'CHANGE-0001', 'impact', ['REQ-EXAMPLE-001', 'REQ-EXAMPLE-002']);
+  await writeText(root, '.musubix/features/example/requirements.md',
+    `${await readText(root, '.musubix/features/example/requirements.md')}\nChange: revised acceptance behavior.\n`);
   await recordChangePhase(root, 'CHANGE-0001', 'requirements', ['REQ-EXAMPLE-001', 'REQ-EXAMPLE-002']);
+  await writeText(root, '.musubix/features/example/design.md',
+    `${await readText(root, '.musubix/features/example/design.md')}\nChange: revised component behavior.\n`);
   await recordChangePhase(root, 'CHANGE-0001', 'design', ['REQ-EXAMPLE-001', 'REQ-EXAMPLE-002']);
 
   await expect(recordChangePhase(root, 'CHANGE-0001', 'implementation', ['REQ-EXAMPLE-001']))
     .rejects.toThrow(/red/i);
 
+  await writeText(root, 'src/service.test.ts', `${testCode}\n// batch 001 staged failing behavior\n`);
   await recordChangePhase(root, 'CHANGE-0001', 'red', ['REQ-EXAMPLE-001']);
   await expect(recordChangePhase(root, 'CHANGE-0001', 'green', ['REQ-EXAMPLE-001']))
     .rejects.toThrow(/implementation/i);
 
   // An unrelated batch (002) is unaffected by 001's missing Implementation.
+  await writeText(root, 'src/second.test.ts', `${await readText(root, 'src/second.test.ts')}\n// batch 002 staged failing behavior\n`);
   await recordChangePhase(root, 'CHANGE-0001', 'red', ['REQ-EXAMPLE-002']);
+  await writeText(root, 'src/second.ts', (await readText(root, 'src/second.ts')).replace('return true', 'return false'));
   await recordChangePhase(root, 'CHANGE-0001', 'implementation', ['REQ-EXAMPLE-002']);
 });
 
@@ -116,16 +123,24 @@ it('TEST-CHANGE-REQUIREMENT-BATCHES-003 rejects Quality until every requirement 
   await addSecondRequirement(root);
   await writeText(root, '.musubix/changes/CHANGE-0001.md', '# CHANGE-0001\nRequirements: REQ-EXAMPLE-001 REQ-EXAMPLE-002\n');
   await recordChangePhase(root, 'CHANGE-0001', 'impact', ['REQ-EXAMPLE-001', 'REQ-EXAMPLE-002']);
+  await writeText(root, '.musubix/features/example/requirements.md',
+    `${await readText(root, '.musubix/features/example/requirements.md')}\nChange: revised acceptance behavior.\n`);
   await recordChangePhase(root, 'CHANGE-0001', 'requirements', ['REQ-EXAMPLE-001', 'REQ-EXAMPLE-002']);
+  await writeText(root, '.musubix/features/example/design.md',
+    `${await readText(root, '.musubix/features/example/design.md')}\nChange: revised component behavior.\n`);
   await recordChangePhase(root, 'CHANGE-0001', 'design', ['REQ-EXAMPLE-001', 'REQ-EXAMPLE-002']);
+  await writeText(root, 'src/service.test.ts', `${testCode}\n// batch 001 staged failing behavior\n`);
   await recordChangePhase(root, 'CHANGE-0001', 'red', ['REQ-EXAMPLE-001']);
+  await writeText(root, 'src/service.ts', code.replace('return true', 'return false'));
   await recordChangePhase(root, 'CHANGE-0001', 'implementation', ['REQ-EXAMPLE-001']);
   await recordChangePhase(root, 'CHANGE-0001', 'green', ['REQ-EXAMPLE-001']);
 
   await expect(recordChangePhase(root, 'CHANGE-0001', 'quality', ['REQ-EXAMPLE-001', 'REQ-EXAMPLE-002']))
     .rejects.toThrow(/REQ-EXAMPLE-002/);
 
+  await writeText(root, 'src/second.test.ts', `${await readText(root, 'src/second.test.ts')}\n// batch 002 staged failing behavior\n`);
   await recordChangePhase(root, 'CHANGE-0001', 'red', ['REQ-EXAMPLE-002']);
+  await writeText(root, 'src/second.ts', (await readText(root, 'src/second.ts')).replace('return true', 'return false'));
   await recordChangePhase(root, 'CHANGE-0001', 'implementation', ['REQ-EXAMPLE-002']);
   await recordChangePhase(root, 'CHANGE-0001', 'green', ['REQ-EXAMPLE-002']);
   await recordChangePhase(root, 'CHANGE-0001', 'quality', ['REQ-EXAMPLE-001', 'REQ-EXAMPLE-002']);

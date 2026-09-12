@@ -10,11 +10,13 @@ import {
   graphImpact, indexGraph, loadConfig, loadGraph, loadTrace, portable, projectStatus, queryKnowledge,
   formalDoctor, generateFormalArtifacts, readText, runGate, traceImpact, type Solver,
   changePhases, recordChangePhase, recordWorkflow, runTddPhase, sanitizeWorkflowLogFile,
-  validateTddEvidence, verifyWorkflowLogFile, migrateTddFingerprint, type ChangePhase, type TddPhase,
+  validateTddEvidence, verifyWorkflowLogFile, migrateTddFingerprint, voidTddCycle, type ChangePhase, type TddPhase,
   attestationSigningPayload, createUnsignedAttestation, githubOidcAudience, verifyEvidenceAttestation,
   mutationDoctor, mutationIdentity, validateMutationEvidence, validateModelCorrespondenceEvidence, within,
-  approvalManifest, approvalStages, recordApproval, requireApproval, validateApprovals, type ApprovalStage,
+  approvalManifest, approvalStages, recordApproval, requireApproval,   requireDomainOption, requireValidateDomainOption, resolveDesignFileDomain, resolveNamedDomain,
+  validateApprovals, validateApprovalsForDomain, type ApprovalStage,
   scaffoldCommands, scaffoldRequirements, scaffoldDesign,
+  recordChangeWaiver,
 } from '../../analysis/src/index.js';
 import { install, pluginInstall, upgradeSkills } from './install.js';
 
@@ -99,7 +101,8 @@ export function createProgram(): Command {
     const root = resolve(options.root);
     if (await exists(within(root, '.musubix/config.json'))) {
       const config = await loadConfig(root);
-      await requireApproval(root, 'requirements', config.approval);
+      const domain = await resolveDesignFileDomain(root, config.approval, portable(relative(root, resolve(root, file))));
+      await requireApproval(root, 'requirements', config.approval, domain);
     }
     result(await designResult(file, root), !!options.json);
   });
@@ -107,7 +110,8 @@ export function createProgram(): Command {
     const root = resolve(options.root);
     if (await exists(within(root, '.musubix/config.json'))) {
       const config = await loadConfig(root);
-      await requireApproval(root, 'requirements', config.approval);
+      const domain = await resolveDesignFileDomain(root, config.approval, portable(relative(root, resolve(root, file))));
+      await requireApproval(root, 'requirements', config.approval, domain);
     }
     const report = await designResult(file, root);
     if (!report.valid) { result(report, !!options.json); return; }
@@ -450,48 +454,86 @@ export function createProgram(): Command {
     output(report, !!options.json, `${report.status}: ${report.valid ? 'valid' : 'invalid'}`);
     if (!report.valid) process.exitCode = 1;
   });
-  common(program.command('change-record <change-id> <phase>').description('Record an ordered staged-change fingerprint checkpoint'))
+  common(program.command('change-record <change-id> <phase>')
+    .description('Record an ordered staged-change fingerprint checkpoint; rejects an unchanged fingerprint since the preceding phase'))
     .requiredOption('--requirement <ids...>', 'Requirement IDs affected by this change')
+    .option('--allow-unchanged', 'Record requirements even if unchanged since impact (defect fixes only)')
+    .option('--dry-run', 'Preview the outcome without recording it')
     .action(async (changeId: string, phase: string, options: {
-      root: string; json?: boolean; requirement: string[];
+      root: string; json?: boolean; requirement: string[]; allowUnchanged?: boolean; dryRun?: boolean;
     }) => {
       if (!changePhases.includes(phase as ChangePhase)) throw new Error(`phase must be one of: ${changePhases.join(', ')}`);
-      const evidence = await recordChangePhase(resolve(options.root), changeId, phase as ChangePhase, options.requirement);
-      output(evidence, !!options.json, `Recorded ${changeId}:${phase}.`);
+      /** @id CODE-CHANGE-RECORD-FAIL-FAST-002
+       * @implements REQ-CHANGE-RECORD-FAIL-FAST-007 REQ-CHANGE-RECORD-FAIL-FAST-009 REQ-CHANGE-RECORD-FAIL-FAST-010
+       * @design DES-CHANGE-RECORD-FAIL-FAST-003 DES-CHANGE-RECORD-FAIL-FAST-004 DES-CHANGE-RECORD-FAIL-FAST-005
+       */
+      const changeOptions: { allowUnchanged?: boolean; dryRun?: boolean } = {};
+      if (options.allowUnchanged !== undefined) changeOptions.allowUnchanged = options.allowUnchanged;
+      if (options.dryRun !== undefined) changeOptions.dryRun = options.dryRun;
+      const evidence = await recordChangePhase(resolve(options.root), changeId, phase as ChangePhase, options.requirement, changeOptions);
+      output(evidence, !!options.json, options.dryRun ? `Would record ${changeId}:${phase}.` : `Recorded ${changeId}:${phase}.`);
+    });
+  const change = program.command('change').description('Change chronology and waiver evidence');
+  const waiver = change.command('waiver').description('Record an audited, bounded downgrade of a recording-order-debt diagnostic');
+  common(waiver.command('record <change-id> <code>')
+    .description('Downgrade one currently-present waivable diagnostic from error to warning, as an appended, hash-chained record'))
+    .option('--requirement <req-id>', 'Requirement ID this waiver applies to (required for requirement-scoped codes)')
+    .requiredOption('--approver <name>', 'Human approver recording this waiver')
+    .requiredOption('--reason <text>', 'Reason this diagnostic is being waived')
+    .option('--confirm', 'Confirm the waiver is reviewed and intended', false)
+    .action(async (changeId: string, code: string, options: {
+      root: string; json?: boolean; requirement?: string; approver: string; reason: string; confirm?: boolean;
+    }) => {
+      if (!options.confirm) throw new Error('Recording a change waiver requires --confirm.');
+      const result = await recordChangeWaiver(resolve(options.root), changeId, code, options.requirement, options.approver, options.reason);
+      output(result, !!options.json, `WAIVER: PASS (${changeId}:${code}${options.requirement ? `:${options.requirement}` : ''})`);
     });
   const approval = program.command('approval').description('Prepare, record and validate explicit artifact-bound human approvals');
   common(approval.command('prepare <stage>').description('Show the exact artifact manifest a human must review'))
-    .action(async (stage: string, options: { root: string; json?: boolean }) => {
+    .option('--domain <name>', 'Approval domain (required when approval.domains is configured, except for release)')
+    .action(async (stage: string, options: { root: string; json?: boolean; domain?: string }) => {
       if (!approvalStages.includes(stage as ApprovalStage)) throw new Error(`stage must be one of: ${approvalStages.join(', ')}`);
-      const manifest = await approvalManifest(resolve(options.root), stage as ApprovalStage);
+      const root = resolve(options.root);
+      const config = await loadConfig(root);
+      requireDomainOption(config.approval, stage as ApprovalStage, options.domain);
+      const domain = options.domain ? await resolveNamedDomain(root, config.approval, options.domain) : undefined;
+      const manifest = await approvalManifest(root, stage as ApprovalStage, domain);
       output(manifest, !!options.json, `${stage} artifact manifest: ${manifest.artifactSha256}\n${Object.keys(manifest.artifacts).join('\n')}`);
     });
   common(approval.command('record <stage>'))
     .requiredOption('--approver <name>', 'Human approver name')
     .requiredOption('--artifact-sha256 <hash>', 'Exact manifest SHA-256 shown to and approved by the human')
     .requiredOption('--confirm', 'Explicitly confirm this human approval')
+    .option('--domain <name>', 'Approval domain (required when approval.domains is configured, except for release)')
     .action(async (stage: string, options: {
-      root: string; json?: boolean; approver: string; artifactSha256: string; confirm: boolean;
+      root: string; json?: boolean; approver: string; artifactSha256: string; confirm: boolean; domain?: string;
     }) => {
       if (!approvalStages.includes(stage as ApprovalStage)) {
         throw new Error(`stage must be one of: ${approvalStages.join(', ')}`);
       }
       if (options.confirm !== true) throw new Error('--confirm is required to record human approval.');
       const root = resolve(options.root);
-      await loadConfig(root);
-      const evidence = await recordApproval(root, stage as ApprovalStage, options.approver, options.artifactSha256);
+      const config = await loadConfig(root);
+      const evidence = await recordApproval(root, stage as ApprovalStage, options.approver, options.artifactSha256, config.approval, options.domain);
       output(evidence, !!options.json, `Recorded explicit ${stage} approval by ${evidence.approver} for ${evidence.artifactSha256}.`);
     });
-  common(approval.command('validate')).action(async (options: { root: string; json?: boolean }) => {
-    const root = resolve(options.root);
-    const report = await validateApprovals(root, (await loadConfig(root)).approval);
-    output(
-      report,
-      !!options.json,
-      report.stages.map((stage) => `${stage.status.toUpperCase()} ${stage.stage}${stage.required ? ' [required]' : ''}`).join('\n'),
-    );
-    if (!report.valid) process.exitCode = 1;
-  });
+  common(approval.command('validate'))
+    .option('--domain <name>', 'Limit the report to one approval domain')
+    .action(async (options: { root: string; json?: boolean; domain?: string }) => {
+      const root = resolve(options.root);
+      const config = await loadConfig(root);
+      requireValidateDomainOption(config.approval, options.domain);
+      const report = options.domain
+        ? await validateApprovalsForDomain(root, config.approval, options.domain)
+        : await validateApprovals(root, config.approval);
+      const stages = report.domains ? [...report.domains.flatMap((d) => d.stages), ...(report.release ? [report.release] : [])] : report.stages;
+      output(
+        report,
+        !!options.json,
+        stages.map((stage) => `${stage.status.toUpperCase()} ${stage.stage}${stage.domain ? ` [${stage.domain}]` : ''}${stage.required ? ' [required]' : ''}`).join('\n'),
+      );
+      if (!report.valid) process.exitCode = 1;
+    });
   const tdd = program.command('tdd').description(
     'Verified Red-Green-Refactor execution evidence. <test-id> requires two independent things: '
     + 'a trace-graph @id/@verifies doc comment above the test (for requirement linking), and a '
@@ -536,6 +578,23 @@ export function createProgram(): Command {
           : `MIGRATE: FAIL (${testId}) ${migration.reason}`,
       );
       if (!migration.migrated) process.exitCode = 1;
+    });
+  common(tdd.command('void <test-id>'))
+    .requiredOption('--approver <name>', 'Human approver recording this void')
+    .requiredOption('--reason <text>', 'Reason this dangling TDD cycle is being voided')
+    .option('--confirm', 'Confirm the void is reviewed and intended', false)
+    .action(async (testId: string, options: { root: string; json?: boolean; approver: string; reason: string; confirm?: boolean }) => {
+      if (!options.confirm) throw new Error('Voiding a TDD cycle requires --confirm.');
+      const root = resolve(options.root);
+      const voidResult = await voidTddCycle(root, testId, options.approver, options.reason);
+      output(
+        voidResult,
+        !!options.json,
+        voidResult.voided
+          ? `VOID: PASS (${testId}) cycle=${voidResult.cycleId}`
+          : `VOID: FAIL (${testId}) ${voidResult.reason}`,
+      );
+      if (!voidResult.voided) process.exitCode = 1;
     });
   common(program.command('status').description('One-shot artifact and gate readiness summary'))
     .action(async (options: { root: string; json?: boolean }) => {

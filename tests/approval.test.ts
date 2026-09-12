@@ -10,7 +10,7 @@ import { fixture, project, tddResultRunner } from './helpers.js';
 
 async function approve(root: string, stage: 'requirements' | 'design' | 'release', approver: string) {
   const manifest = await approvalManifest(root, stage);
-  return recordApproval(root, stage, approver, manifest.artifactSha256);
+  return recordApproval(root, stage, approver, manifest.artifactSha256, defaultConfig.approval);
 }
 
 describe('artifact-bound approval evidence', () => {
@@ -20,7 +20,7 @@ describe('artifact-bound approval evidence', () => {
   it('TEST-HUMAN-APPROVAL-GATES-001 records explicitly confirmed approval fields', async () => {
     const root = await project();
     const config = await loadConfig(root);
-    config.approval = { mode: 'required' };
+    config.approval = { mode: 'required', domains: [] };
     await writeJson(root, '.musubix/config.json', config);
 
     const before = await approvalManifest(root, 'requirements');
@@ -49,7 +49,7 @@ describe('artifact-bound approval evidence', () => {
   it('TEST-HUMAN-APPROVAL-GATES-006 recomputes quality before release approval', async () => {
     const root = await project();
     const config = await loadConfig(root);
-    config.approval = { mode: 'required' };
+    config.approval = { mode: 'required', domains: [] };
     await writeJson(root, '.musubix/config.json', config);
     await expect(approve(root, 'design', 'Designer')).rejects.toThrow('requirements approval is missing');
 
@@ -87,7 +87,7 @@ describe('artifact-bound approval evidence', () => {
     const shown = await approvalManifest(root, 'requirements');
     const requirementPath = '.musubix/features/example/requirements.md';
     await writeText(root, requirementPath, `${await readText(root, requirementPath)}\n`);
-    await expect(recordApproval(root, 'requirements', 'Reviewer', shown.artifactSha256))
+    await expect(recordApproval(root, 'requirements', 'Reviewer', shown.artifactSha256, defaultConfig.approval))
       .rejects.toThrow('Approval artifact manifest changed');
   });
 
@@ -123,7 +123,7 @@ describe('artifact-bound approval evidence', () => {
   it('TEST-HUMAN-APPROVAL-GATES-007 rejects invalid artifacts and reports malformed evidence', async () => {
     const root = await project();
     const config = await loadConfig(root);
-    config.approval = { mode: 'required' };
+    config.approval = { mode: 'required', domains: [] };
     await writeJson(root, '.musubix/config.json', config);
     await writeText(root, '.musubix/features/example/requirements.md', '# invalid\n');
     await expect(approve(root, 'requirements', 'Reviewer'))
@@ -137,7 +137,7 @@ describe('artifact-bound approval evidence', () => {
     expect(malformed.diagnostics).toContainEqual(expect.objectContaining({ code: 'APPROVAL_SCHEMA' }));
     expect(malformed.stages[0]).toMatchObject({ present: true, status: 'stale' });
 
-    config.approval = { mode: 'compatible' };
+    config.approval = { mode: 'compatible', domains: [] };
     await writeJson(root, '.musubix/config.json', config);
     expect((await runGate(root)).checks.find((check) => check.name === 'approval'))
       .toMatchObject({ required: true, status: 'fail' });
@@ -151,7 +151,7 @@ describe('approval transition gates', () => {
   it('TEST-HUMAN-APPROVAL-GATES-005 blocks TDD Red until design approval is current', async () => {
     const root = await project();
     const config = await loadConfig(root);
-    config.approval = { mode: 'required' };
+    config.approval = { mode: 'required', domains: [] };
     await writeJson(root, '.musubix/config.json', config);
     const runner = vi.fn<Runner>(tddResultRunner(root, 'failed', { exitCode: 1 }));
 
@@ -171,14 +171,14 @@ describe('approval configuration compatibility', () => {
    * @verifies REQ-HUMAN-APPROVAL-GATES-008
    */
   it('TEST-HUMAN-APPROVAL-GATES-008 preserves legacy configs and prevents policy downgrade', async () => {
-    expect(parseConfig({ schemaVersion: 1 }).approval).toEqual({ mode: 'compatible' });
-    expect(defaultConfig.approval).toEqual({ mode: 'required' });
+    expect(parseConfig({ schemaVersion: 1 }).approval).toEqual({ mode: 'compatible', domains: [] });
+    expect(defaultConfig.approval).toEqual({ mode: 'required', domains: [] });
     const baseline = { ...defaultConfig, requiredCommands: [] };
-    const weakened = { ...defaultConfig, approval: { mode: 'compatible' as const } };
+    const weakened = { ...defaultConfig, approval: { mode: 'compatible' as const, domains: [] } };
     expect(policyDiagnostics(weakened, baseline)).toContainEqual(expect.objectContaining({ code: 'POLICY_APPROVAL_MODE' }));
 
     const root = await fixture({ '.musubix/config.json': JSON.stringify({ schemaVersion: 1 }) });
-    expect((await loadConfig(root)).approval).toEqual({ mode: 'compatible' });
-    expect((await validateApprovals(root, { mode: 'compatible' })).valid).toBe(true);
+    expect((await loadConfig(root)).approval).toEqual({ mode: 'compatible', domains: [] });
+    expect((await validateApprovals(root, { mode: 'compatible', domains: [] })).valid).toBe(true);
   });
 });

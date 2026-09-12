@@ -15,6 +15,7 @@ export * from './mutation.js';
 export * from './model-correspondence.js';
 export * from './order.js';
 export * from './change.js';
+export * from './change-waiver.js';
 export * from './approval.js';
 export * from './gate.js';
 export * from './approval-record.js';

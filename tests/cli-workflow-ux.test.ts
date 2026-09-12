@@ -44,7 +44,7 @@ describe('cli workflow ux improvements (v0.1.9)', () => {
    */
   it('TEST-CLI-WORKFLOW-UX-003 points a stale/missing approval error at approval validate', async () => {
     const root = await project();
-    await expect(requireApproval(root, 'requirements', { mode: 'required' })).rejects.toThrow('approval validate');
+    await expect(requireApproval(root, 'requirements', { mode: 'required', domains: [] })).rejects.toThrow('approval validate');
   });
 
   /** @id TEST-CLI-WORKFLOW-UX-004

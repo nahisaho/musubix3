@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-12T01:57:35.754Z",
+  "generatedAt": "2026-09-12T14:44:13.769Z",
   "nodes": [
     {
       "id": "CODE-SESSION-SCOPED-DEVELOPMENT-001",
@@ -129,6 +129,36 @@
       "line": 1
     },
     {
+      "id": "ADR-0021",
+      "kind": "adr",
+      "path": ".musubix/decisions/ADR-0021.md",
+      "line": 1
+    },
+    {
+      "id": "ADR-0022",
+      "kind": "adr",
+      "path": ".musubix/decisions/ADR-0022.md",
+      "line": 1
+    },
+    {
+      "id": "ADR-0023",
+      "kind": "adr",
+      "path": ".musubix/decisions/ADR-0023.md",
+      "line": 1
+    },
+    {
+      "id": "ADR-0024",
+      "kind": "adr",
+      "path": ".musubix/decisions/ADR-0024.md",
+      "line": 1
+    },
+    {
+      "id": "ADR-0025",
+      "kind": "adr",
+      "path": ".musubix/decisions/ADR-0025.md",
+      "line": 1
+    },
+    {
       "id": "DES-ADAPTER-PATTERN-RECOGNITION-001",
       "kind": "design",
       "path": ".musubix/features/adapter-pattern-recognition/design.md",
@@ -146,6 +176,216 @@
       "kind": "requirement",
       "path": ".musubix/features/adapter-pattern-recognition/requirements.md",
       "line": 22,
+      "mandatory": true
+    },
+    {
+      "id": "DES-APPROVAL-DOMAIN-SCOPING-001",
+      "kind": "design",
+      "path": ".musubix/features/approval-domain-scoping/design.md",
+      "line": 7
+    },
+    {
+      "id": "DES-APPROVAL-DOMAIN-SCOPING-002",
+      "kind": "design",
+      "path": ".musubix/features/approval-domain-scoping/design.md",
+      "line": 15
+    },
+    {
+      "id": "DES-APPROVAL-DOMAIN-SCOPING-003",
+      "kind": "design",
+      "path": ".musubix/features/approval-domain-scoping/design.md",
+      "line": 23
+    },
+    {
+      "id": "DES-APPROVAL-DOMAIN-SCOPING-004",
+      "kind": "design",
+      "path": ".musubix/features/approval-domain-scoping/design.md",
+      "line": 31
+    },
+    {
+      "id": "DES-APPROVAL-DOMAIN-SCOPING-005",
+      "kind": "design",
+      "path": ".musubix/features/approval-domain-scoping/design.md",
+      "line": 44
+    },
+    {
+      "id": "DES-APPROVAL-DOMAIN-SCOPING-006",
+      "kind": "design",
+      "path": ".musubix/features/approval-domain-scoping/design.md",
+      "line": 54
+    },
+    {
+      "id": "DES-APPROVAL-DOMAIN-SCOPING-007",
+      "kind": "design",
+      "path": ".musubix/features/approval-domain-scoping/design.md",
+      "line": 65
+    },
+    {
+      "id": "REQ-APPROVAL-DOMAIN-SCOPING-001",
+      "kind": "requirement",
+      "path": ".musubix/features/approval-domain-scoping/requirements.md",
+      "line": 7,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-APPROVAL-DOMAIN-SCOPING-002",
+      "kind": "requirement",
+      "path": ".musubix/features/approval-domain-scoping/requirements.md",
+      "line": 14,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-APPROVAL-DOMAIN-SCOPING-003",
+      "kind": "requirement",
+      "path": ".musubix/features/approval-domain-scoping/requirements.md",
+      "line": 21,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-APPROVAL-DOMAIN-SCOPING-004",
+      "kind": "requirement",
+      "path": ".musubix/features/approval-domain-scoping/requirements.md",
+      "line": 28,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-APPROVAL-DOMAIN-SCOPING-005",
+      "kind": "requirement",
+      "path": ".musubix/features/approval-domain-scoping/requirements.md",
+      "line": 35,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-APPROVAL-DOMAIN-SCOPING-006",
+      "kind": "requirement",
+      "path": ".musubix/features/approval-domain-scoping/requirements.md",
+      "line": 42,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-APPROVAL-DOMAIN-SCOPING-007",
+      "kind": "requirement",
+      "path": ".musubix/features/approval-domain-scoping/requirements.md",
+      "line": 49,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-APPROVAL-DOMAIN-SCOPING-008",
+      "kind": "requirement",
+      "path": ".musubix/features/approval-domain-scoping/requirements.md",
+      "line": 56,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-APPROVAL-DOMAIN-SCOPING-009",
+      "kind": "requirement",
+      "path": ".musubix/features/approval-domain-scoping/requirements.md",
+      "line": 63,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-APPROVAL-DOMAIN-SCOPING-010",
+      "kind": "requirement",
+      "path": ".musubix/features/approval-domain-scoping/requirements.md",
+      "line": 70,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-APPROVAL-DOMAIN-SCOPING-011",
+      "kind": "requirement",
+      "path": ".musubix/features/approval-domain-scoping/requirements.md",
+      "line": 77,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-APPROVAL-DOMAIN-SCOPING-012",
+      "kind": "requirement",
+      "path": ".musubix/features/approval-domain-scoping/requirements.md",
+      "line": 84,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-APPROVAL-DOMAIN-SCOPING-013",
+      "kind": "requirement",
+      "path": ".musubix/features/approval-domain-scoping/requirements.md",
+      "line": 91,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-APPROVAL-DOMAIN-SCOPING-014",
+      "kind": "requirement",
+      "path": ".musubix/features/approval-domain-scoping/requirements.md",
+      "line": 98,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-APPROVAL-DOMAIN-SCOPING-015",
+      "kind": "requirement",
+      "path": ".musubix/features/approval-domain-scoping/requirements.md",
+      "line": 105,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-APPROVAL-DOMAIN-SCOPING-016",
+      "kind": "requirement",
+      "path": ".musubix/features/approval-domain-scoping/requirements.md",
+      "line": 112,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-APPROVAL-DOMAIN-SCOPING-017",
+      "kind": "requirement",
+      "path": ".musubix/features/approval-domain-scoping/requirements.md",
+      "line": 119,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-APPROVAL-DOMAIN-SCOPING-018",
+      "kind": "requirement",
+      "path": ".musubix/features/approval-domain-scoping/requirements.md",
+      "line": 126,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-APPROVAL-DOMAIN-SCOPING-019",
+      "kind": "requirement",
+      "path": ".musubix/features/approval-domain-scoping/requirements.md",
+      "line": 133,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-APPROVAL-DOMAIN-SCOPING-020",
+      "kind": "requirement",
+      "path": ".musubix/features/approval-domain-scoping/requirements.md",
+      "line": 140,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-APPROVAL-DOMAIN-SCOPING-021",
+      "kind": "requirement",
+      "path": ".musubix/features/approval-domain-scoping/requirements.md",
+      "line": 147,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-APPROVAL-DOMAIN-SCOPING-022",
+      "kind": "requirement",
+      "path": ".musubix/features/approval-domain-scoping/requirements.md",
+      "line": 154,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-APPROVAL-DOMAIN-SCOPING-023",
+      "kind": "requirement",
+      "path": ".musubix/features/approval-domain-scoping/requirements.md",
+      "line": 161,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-APPROVAL-DOMAIN-SCOPING-024",
+      "kind": "requirement",
+      "path": ".musubix/features/approval-domain-scoping/requirements.md",
+      "line": 168,
       "mandatory": true
     },
     {
@@ -185,6 +425,261 @@
       "kind": "requirement",
       "path": ".musubix/features/bounded-file-read-concurrency/requirements.md",
       "line": 30,
+      "mandatory": true
+    },
+    {
+      "id": "DES-CHANGE-ACCEPTANCE-HEURISTIC-001",
+      "kind": "design",
+      "path": ".musubix/features/change-acceptance-heuristic/design.md",
+      "line": 7
+    },
+    {
+      "id": "REQ-CHANGE-ACCEPTANCE-HEURISTIC-001",
+      "kind": "requirement",
+      "path": ".musubix/features/change-acceptance-heuristic/requirements.md",
+      "line": 31,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-CHANGE-ACCEPTANCE-HEURISTIC-002",
+      "kind": "requirement",
+      "path": ".musubix/features/change-acceptance-heuristic/requirements.md",
+      "line": 38,
+      "mandatory": true
+    },
+    {
+      "id": "DES-CHANGE-EVIDENCE-WAIVER-001",
+      "kind": "design",
+      "path": ".musubix/features/change-evidence-waiver/design.md",
+      "line": 3
+    },
+    {
+      "id": "DES-CHANGE-EVIDENCE-WAIVER-002",
+      "kind": "design",
+      "path": ".musubix/features/change-evidence-waiver/design.md",
+      "line": 150
+    },
+    {
+      "id": "DES-CHANGE-EVIDENCE-WAIVER-003",
+      "kind": "design",
+      "path": ".musubix/features/change-evidence-waiver/design.md",
+      "line": 235
+    },
+    {
+      "id": "DES-CHANGE-EVIDENCE-WAIVER-004",
+      "kind": "design",
+      "path": ".musubix/features/change-evidence-waiver/design.md",
+      "line": 268
+    },
+    {
+      "id": "DES-CHANGE-EVIDENCE-WAIVER-005",
+      "kind": "design",
+      "path": ".musubix/features/change-evidence-waiver/design.md",
+      "line": 362
+    },
+    {
+      "id": "REQ-CHANGE-EVIDENCE-WAIVER-001",
+      "kind": "requirement",
+      "path": ".musubix/features/change-evidence-waiver/requirements.md",
+      "line": 43,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-CHANGE-EVIDENCE-WAIVER-002",
+      "kind": "requirement",
+      "path": ".musubix/features/change-evidence-waiver/requirements.md",
+      "line": 55,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-CHANGE-EVIDENCE-WAIVER-003",
+      "kind": "requirement",
+      "path": ".musubix/features/change-evidence-waiver/requirements.md",
+      "line": 67,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-CHANGE-EVIDENCE-WAIVER-004",
+      "kind": "requirement",
+      "path": ".musubix/features/change-evidence-waiver/requirements.md",
+      "line": 78,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-CHANGE-EVIDENCE-WAIVER-005",
+      "kind": "requirement",
+      "path": ".musubix/features/change-evidence-waiver/requirements.md",
+      "line": 90,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-CHANGE-EVIDENCE-WAIVER-006",
+      "kind": "requirement",
+      "path": ".musubix/features/change-evidence-waiver/requirements.md",
+      "line": 106,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-CHANGE-EVIDENCE-WAIVER-007",
+      "kind": "requirement",
+      "path": ".musubix/features/change-evidence-waiver/requirements.md",
+      "line": 124,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-CHANGE-EVIDENCE-WAIVER-008",
+      "kind": "requirement",
+      "path": ".musubix/features/change-evidence-waiver/requirements.md",
+      "line": 135,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-CHANGE-EVIDENCE-WAIVER-009",
+      "kind": "requirement",
+      "path": ".musubix/features/change-evidence-waiver/requirements.md",
+      "line": 149,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-CHANGE-EVIDENCE-WAIVER-010",
+      "kind": "requirement",
+      "path": ".musubix/features/change-evidence-waiver/requirements.md",
+      "line": 162,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-CHANGE-EVIDENCE-WAIVER-011",
+      "kind": "requirement",
+      "path": ".musubix/features/change-evidence-waiver/requirements.md",
+      "line": 173,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-CHANGE-EVIDENCE-WAIVER-012",
+      "kind": "requirement",
+      "path": ".musubix/features/change-evidence-waiver/requirements.md",
+      "line": 202,
+      "mandatory": false
+    },
+    {
+      "id": "REQ-CHANGE-EVIDENCE-WAIVER-013",
+      "kind": "requirement",
+      "path": ".musubix/features/change-evidence-waiver/requirements.md",
+      "line": 213,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-CHANGE-EVIDENCE-WAIVER-014",
+      "kind": "requirement",
+      "path": ".musubix/features/change-evidence-waiver/requirements.md",
+      "line": 225,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-CHANGE-EVIDENCE-WAIVER-015",
+      "kind": "requirement",
+      "path": ".musubix/features/change-evidence-waiver/requirements.md",
+      "line": 244,
+      "mandatory": true
+    },
+    {
+      "id": "DES-CHANGE-RECORD-FAIL-FAST-001",
+      "kind": "design",
+      "path": ".musubix/features/change-record-fail-fast/design.md",
+      "line": 7
+    },
+    {
+      "id": "DES-CHANGE-RECORD-FAIL-FAST-002",
+      "kind": "design",
+      "path": ".musubix/features/change-record-fail-fast/design.md",
+      "line": 76
+    },
+    {
+      "id": "DES-CHANGE-RECORD-FAIL-FAST-003",
+      "kind": "design",
+      "path": ".musubix/features/change-record-fail-fast/design.md",
+      "line": 102
+    },
+    {
+      "id": "DES-CHANGE-RECORD-FAIL-FAST-004",
+      "kind": "design",
+      "path": ".musubix/features/change-record-fail-fast/design.md",
+      "line": 142
+    },
+    {
+      "id": "DES-CHANGE-RECORD-FAIL-FAST-005",
+      "kind": "design",
+      "path": ".musubix/features/change-record-fail-fast/design.md",
+      "line": 169
+    },
+    {
+      "id": "REQ-CHANGE-RECORD-FAIL-FAST-001",
+      "kind": "requirement",
+      "path": ".musubix/features/change-record-fail-fast/requirements.md",
+      "line": 36,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-CHANGE-RECORD-FAIL-FAST-002",
+      "kind": "requirement",
+      "path": ".musubix/features/change-record-fail-fast/requirements.md",
+      "line": 49,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-CHANGE-RECORD-FAIL-FAST-003",
+      "kind": "requirement",
+      "path": ".musubix/features/change-record-fail-fast/requirements.md",
+      "line": 61,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-CHANGE-RECORD-FAIL-FAST-004",
+      "kind": "requirement",
+      "path": ".musubix/features/change-record-fail-fast/requirements.md",
+      "line": 72,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-CHANGE-RECORD-FAIL-FAST-005",
+      "kind": "requirement",
+      "path": ".musubix/features/change-record-fail-fast/requirements.md",
+      "line": 84,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-CHANGE-RECORD-FAIL-FAST-006",
+      "kind": "requirement",
+      "path": ".musubix/features/change-record-fail-fast/requirements.md",
+      "line": 95,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-CHANGE-RECORD-FAIL-FAST-007",
+      "kind": "requirement",
+      "path": ".musubix/features/change-record-fail-fast/requirements.md",
+      "line": 106,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-CHANGE-RECORD-FAIL-FAST-008",
+      "kind": "requirement",
+      "path": ".musubix/features/change-record-fail-fast/requirements.md",
+      "line": 122,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-CHANGE-RECORD-FAIL-FAST-009",
+      "kind": "requirement",
+      "path": ".musubix/features/change-record-fail-fast/requirements.md",
+      "line": 135,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-CHANGE-RECORD-FAIL-FAST-010",
+      "kind": "requirement",
+      "path": ".musubix/features/change-record-fail-fast/requirements.md",
+      "line": 151,
       "mandatory": true
     },
     {
@@ -567,6 +1062,139 @@
       "mandatory": true
     },
     {
+      "id": "DES-TDD-CYCLE-VOID-001",
+      "kind": "design",
+      "path": ".musubix/features/tdd-cycle-void/design.md",
+      "line": 3
+    },
+    {
+      "id": "DES-TDD-CYCLE-VOID-002",
+      "kind": "design",
+      "path": ".musubix/features/tdd-cycle-void/design.md",
+      "line": 76
+    },
+    {
+      "id": "DES-TDD-CYCLE-VOID-003",
+      "kind": "design",
+      "path": ".musubix/features/tdd-cycle-void/design.md",
+      "line": 130
+    },
+    {
+      "id": "DES-TDD-CYCLE-VOID-004",
+      "kind": "design",
+      "path": ".musubix/features/tdd-cycle-void/design.md",
+      "line": 154
+    },
+    {
+      "id": "DES-TDD-CYCLE-VOID-005",
+      "kind": "design",
+      "path": ".musubix/features/tdd-cycle-void/design.md",
+      "line": 199
+    },
+    {
+      "id": "DES-TDD-CYCLE-VOID-006",
+      "kind": "design",
+      "path": ".musubix/features/tdd-cycle-void/design.md",
+      "line": 224
+    },
+    {
+      "id": "DES-TDD-CYCLE-VOID-007",
+      "kind": "design",
+      "path": ".musubix/features/tdd-cycle-void/design.md",
+      "line": 251
+    },
+    {
+      "id": "REQ-TDD-CYCLE-VOID-001",
+      "kind": "requirement",
+      "path": ".musubix/features/tdd-cycle-void/requirements.md",
+      "line": 40,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-TDD-CYCLE-VOID-002",
+      "kind": "requirement",
+      "path": ".musubix/features/tdd-cycle-void/requirements.md",
+      "line": 51,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-TDD-CYCLE-VOID-003",
+      "kind": "requirement",
+      "path": ".musubix/features/tdd-cycle-void/requirements.md",
+      "line": 65,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-TDD-CYCLE-VOID-004",
+      "kind": "requirement",
+      "path": ".musubix/features/tdd-cycle-void/requirements.md",
+      "line": 76,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-TDD-CYCLE-VOID-005",
+      "kind": "requirement",
+      "path": ".musubix/features/tdd-cycle-void/requirements.md",
+      "line": 92,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-TDD-CYCLE-VOID-006",
+      "kind": "requirement",
+      "path": ".musubix/features/tdd-cycle-void/requirements.md",
+      "line": 106,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-TDD-CYCLE-VOID-007",
+      "kind": "requirement",
+      "path": ".musubix/features/tdd-cycle-void/requirements.md",
+      "line": 116,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-TDD-CYCLE-VOID-008",
+      "kind": "requirement",
+      "path": ".musubix/features/tdd-cycle-void/requirements.md",
+      "line": 128,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-TDD-CYCLE-VOID-009",
+      "kind": "requirement",
+      "path": ".musubix/features/tdd-cycle-void/requirements.md",
+      "line": 140,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-TDD-CYCLE-VOID-010",
+      "kind": "requirement",
+      "path": ".musubix/features/tdd-cycle-void/requirements.md",
+      "line": 153,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-TDD-CYCLE-VOID-011",
+      "kind": "requirement",
+      "path": ".musubix/features/tdd-cycle-void/requirements.md",
+      "line": 167,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-TDD-CYCLE-VOID-012",
+      "kind": "requirement",
+      "path": ".musubix/features/tdd-cycle-void/requirements.md",
+      "line": 182,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-TDD-CYCLE-VOID-013",
+      "kind": "requirement",
+      "path": ".musubix/features/tdd-cycle-void/requirements.md",
+      "line": 197,
+      "mandatory": false
+    },
+    {
       "id": "DES-TDD-FINGERPRINT-MIGRATION-001",
       "kind": "design",
       "path": ".musubix/features/tdd-fingerprint-migration/design.md",
@@ -703,25 +1331,211 @@
       "line": 330
     },
     {
+      "id": "CODE-APPROVAL-DOMAIN-SCOPING-002",
+      "kind": "code",
+      "path": "packages/analysis/src/approval-domains.ts",
+      "line": 18
+    },
+    {
+      "id": "CODE-APPROVAL-DOMAIN-SCOPING-014",
+      "kind": "code",
+      "path": "packages/analysis/src/approval-domains.ts",
+      "line": 63
+    },
+    {
+      "id": "CODE-APPROVAL-DOMAIN-SCOPING-015",
+      "kind": "code",
+      "path": "packages/analysis/src/approval-domains.ts",
+      "line": 80
+    },
+    {
       "id": "CODE-HUMAN-APPROVAL-GATES-002",
       "kind": "code",
       "path": "packages/analysis/src/approval-record.ts",
-      "line": 9
+      "line": 10
+    },
+    {
+      "id": "CODE-APPROVAL-DOMAIN-SCOPING-016",
+      "kind": "code",
+      "path": "packages/analysis/src/approval-record.ts",
+      "line": 14
+    },
+    {
+      "id": "CODE-APPROVAL-DOMAIN-SCOPING-003",
+      "kind": "code",
+      "path": "packages/analysis/src/approval.ts",
+      "line": 86
     },
     {
       "id": "CODE-HUMAN-APPROVAL-GATES-001",
       "kind": "code",
       "path": "packages/analysis/src/approval.ts",
-      "line": 63
+      "line": 113
+    },
+    {
+      "id": "CODE-APPROVAL-DOMAIN-SCOPING-007",
+      "kind": "code",
+      "path": "packages/analysis/src/approval.ts",
+      "line": 119
+    },
+    {
+      "id": "CODE-APPROVAL-DOMAIN-SCOPING-004",
+      "kind": "code",
+      "path": "packages/analysis/src/approval.ts",
+      "line": 201
+    },
+    {
+      "id": "CODE-APPROVAL-DOMAIN-SCOPING-008",
+      "kind": "code",
+      "path": "packages/analysis/src/approval.ts",
+      "line": 237
+    },
+    {
+      "id": "CODE-APPROVAL-DOMAIN-SCOPING-006",
+      "kind": "code",
+      "path": "packages/analysis/src/approval.ts",
+      "line": 261
+    },
+    {
+      "id": "CODE-APPROVAL-DOMAIN-SCOPING-009",
+      "kind": "code",
+      "path": "packages/analysis/src/approval.ts",
+      "line": 272
     },
     {
       "id": "CODE-CLI-WORKFLOW-UX-003",
       "kind": "code",
       "path": "packages/analysis/src/approval.ts",
-      "line": 145
+      "line": 303
+    },
+    {
+      "id": "CODE-APPROVAL-DOMAIN-SCOPING-005",
+      "kind": "code",
+      "path": "packages/analysis/src/approval.ts",
+      "line": 307
+    },
+    {
+      "id": "CODE-APPROVAL-DOMAIN-SCOPING-010",
+      "kind": "code",
+      "path": "packages/analysis/src/approval.ts",
+      "line": 320
+    },
+    {
+      "id": "CODE-APPROVAL-DOMAIN-SCOPING-011",
+      "kind": "code",
+      "path": "packages/analysis/src/approval.ts",
+      "line": 334
+    },
+    {
+      "id": "CODE-APPROVAL-DOMAIN-SCOPING-012",
+      "kind": "code",
+      "path": "packages/analysis/src/approval.ts",
+      "line": 347
+    },
+    {
+      "id": "CODE-APPROVAL-DOMAIN-SCOPING-013",
+      "kind": "code",
+      "path": "packages/analysis/src/approval.ts",
+      "line": 358
     },
     {
       "id": "CODE-CHANGE-REQUIREMENT-BATCHES-001",
+      "kind": "code",
+      "path": "packages/analysis/src/change-evidence.ts",
+      "line": 69
+    },
+    {
+      "id": "CODE-CHANGE-EVIDENCE-WAIVER-001",
+      "kind": "code",
+      "path": "packages/analysis/src/change-waiver.ts",
+      "line": 14
+    },
+    {
+      "id": "CODE-CHANGE-EVIDENCE-WAIVER-002",
+      "kind": "code",
+      "path": "packages/analysis/src/change-waiver.ts",
+      "line": 70
+    },
+    {
+      "id": "CODE-CHANGE-EVIDENCE-WAIVER-003",
+      "kind": "code",
+      "path": "packages/analysis/src/change-waiver.ts",
+      "line": 87
+    },
+    {
+      "id": "CODE-CHANGE-EVIDENCE-WAIVER-004",
+      "kind": "code",
+      "path": "packages/analysis/src/change-waiver.ts",
+      "line": 100
+    },
+    {
+      "id": "CODE-CHANGE-EVIDENCE-WAIVER-005",
+      "kind": "code",
+      "path": "packages/analysis/src/change-waiver.ts",
+      "line": 183
+    },
+    {
+      "id": "CODE-CHANGE-EVIDENCE-WAIVER-006",
+      "kind": "code",
+      "path": "packages/analysis/src/change-waiver.ts",
+      "line": 208
+    },
+    {
+      "id": "CODE-CHANGE-EVIDENCE-WAIVER-007",
+      "kind": "code",
+      "path": "packages/analysis/src/change-waiver.ts",
+      "line": 220
+    },
+    {
+      "id": "CODE-CHANGE-EVIDENCE-WAIVER-008",
+      "kind": "code",
+      "path": "packages/analysis/src/change-waiver.ts",
+      "line": 272
+    },
+    {
+      "id": "CODE-CHANGE-EVIDENCE-WAIVER-009",
+      "kind": "code",
+      "path": "packages/analysis/src/change-waiver.ts",
+      "line": 301
+    },
+    {
+      "id": "CODE-CHANGE-EVIDENCE-WAIVER-010",
+      "kind": "code",
+      "path": "packages/analysis/src/change-waiver.ts",
+      "line": 338
+    },
+    {
+      "id": "CODE-CHANGE-EVIDENCE-WAIVER-011",
+      "kind": "code",
+      "path": "packages/analysis/src/change-waiver.ts",
+      "line": 434
+    },
+    {
+      "id": "CODE-CHANGE-EVIDENCE-WAIVER-012",
+      "kind": "code",
+      "path": "packages/analysis/src/change-waiver.ts",
+      "line": 463
+    },
+    {
+      "id": "CODE-CHANGE-ACCEPTANCE-HEURISTIC-001",
+      "kind": "code",
+      "path": "packages/analysis/src/change.ts",
+      "line": 17
+    },
+    {
+      "id": "CODE-CHANGE-ACCEPTANCE-HEURISTIC-002",
+      "kind": "code",
+      "path": "packages/analysis/src/change.ts",
+      "line": 23
+    },
+    {
+      "id": "CODE-CHANGE-RECORD-FAIL-FAST-001",
+      "kind": "code",
+      "path": "packages/analysis/src/change.ts",
+      "line": 92
+    },
+    {
+      "id": "CODE-CHANGE-RECORD-FAIL-FAST-003",
       "kind": "code",
       "path": "packages/analysis/src/change.ts",
       "line": 131
@@ -730,31 +1544,37 @@
       "id": "CODE-CHANGE-REQUIREMENT-BATCHES-002",
       "kind": "code",
       "path": "packages/analysis/src/change.ts",
-      "line": 246
+      "line": 263
+    },
+    {
+      "id": "CODE-APPROVAL-DOMAIN-SCOPING-001",
+      "kind": "code",
+      "path": "packages/analysis/src/config.ts",
+      "line": 245
     },
     {
       "id": "CODE-CLI-WORKFLOW-UX-006",
       "kind": "code",
       "path": "packages/analysis/src/config.ts",
-      "line": 580
+      "line": 617
     },
     {
       "id": "CODE-COMMAND-WORKING-DIRECTORY-001",
       "kind": "code",
       "path": "packages/analysis/src/config.ts",
-      "line": 606
+      "line": 643
     },
     {
       "id": "CODE-ADAPTER-PATTERN-RECOGNITION-002",
       "kind": "code",
       "path": "packages/analysis/src/config.ts",
-      "line": 625
+      "line": 662
     },
     {
       "id": "CODE-CLI-WORKFLOW-UX-004",
       "kind": "code",
       "path": "packages/analysis/src/config.ts",
-      "line": 645
+      "line": 682
     },
     {
       "id": "CODE-CLI-WORKFLOW-UX-001",
@@ -772,7 +1592,7 @@
       "id": "CODE-CLI-WORKFLOW-UX-005",
       "kind": "code",
       "path": "packages/analysis/src/gate.ts",
-      "line": 83
+      "line": 89
     },
     {
       "id": "CODE-BOUNDED-FILE-READ-CONCURRENCY-002",
@@ -802,25 +1622,55 @@
       "id": "CODE-TDD-FINGERPRINT-SCOPING-001",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 138
+      "line": 147
     },
     {
       "id": "CODE-TDD-FINGERPRINT-MIGRATION-001",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 169
+      "line": 178
+    },
+    {
+      "id": "CODE-TDD-CYCLE-VOID-006",
+      "kind": "code",
+      "path": "packages/analysis/src/tdd.ts",
+      "line": 212
+    },
+    {
+      "id": "CODE-TDD-CYCLE-VOID-002",
+      "kind": "code",
+      "path": "packages/analysis/src/tdd.ts",
+      "line": 289
+    },
+    {
+      "id": "CODE-TDD-CYCLE-VOID-004",
+      "kind": "code",
+      "path": "packages/analysis/src/tdd.ts",
+      "line": 328
+    },
+    {
+      "id": "CODE-TDD-CYCLE-VOID-001",
+      "kind": "code",
+      "path": "packages/analysis/src/tdd.ts",
+      "line": 363
     },
     {
       "id": "CODE-TDD-GREEN-REQUIREMENT-SCOPING-001",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 280
+      "line": 441
     },
     {
       "id": "CODE-TDD-SUPERSEDED-CYCLE-SCOPING-001",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 445
+      "line": 609
+    },
+    {
+      "id": "CODE-TDD-CYCLE-VOID-003",
+      "kind": "code",
+      "path": "packages/analysis/src/tdd.ts",
+      "line": 627
     },
     {
       "id": "CODE-SESSION-SCOPED-DEVELOPMENT-003",
@@ -850,7 +1700,13 @@
       "id": "CODE-CLI-WORKFLOW-UX-002",
       "kind": "code",
       "path": "packages/cli/src/main.ts",
-      "line": 141
+      "line": 145
+    },
+    {
+      "id": "CODE-CHANGE-RECORD-FAIL-FAST-002",
+      "kind": "code",
+      "path": "packages/cli/src/main.ts",
+      "line": 466
     },
     {
       "id": "CODE-DESIGN-ADR-NONE-EXEMPTION-001",
@@ -875,6 +1731,150 @@
       "kind": "test",
       "path": "tests/adapter-pattern-recognition.test.ts",
       "line": 20
+    },
+    {
+      "id": "TEST-APPROVAL-DOMAIN-SCOPING-001",
+      "kind": "test",
+      "path": "tests/approval-domain-scoping.test.ts",
+      "line": 45
+    },
+    {
+      "id": "TEST-APPROVAL-DOMAIN-SCOPING-002",
+      "kind": "test",
+      "path": "tests/approval-domain-scoping.test.ts",
+      "line": 69
+    },
+    {
+      "id": "TEST-APPROVAL-DOMAIN-SCOPING-003",
+      "kind": "test",
+      "path": "tests/approval-domain-scoping.test.ts",
+      "line": 82
+    },
+    {
+      "id": "TEST-APPROVAL-DOMAIN-SCOPING-004",
+      "kind": "test",
+      "path": "tests/approval-domain-scoping.test.ts",
+      "line": 92
+    },
+    {
+      "id": "TEST-APPROVAL-DOMAIN-SCOPING-005",
+      "kind": "test",
+      "path": "tests/approval-domain-scoping.test.ts",
+      "line": 108
+    },
+    {
+      "id": "TEST-APPROVAL-DOMAIN-SCOPING-006",
+      "kind": "test",
+      "path": "tests/approval-domain-scoping.test.ts",
+      "line": 119
+    },
+    {
+      "id": "TEST-APPROVAL-DOMAIN-SCOPING-007",
+      "kind": "test",
+      "path": "tests/approval-domain-scoping.test.ts",
+      "line": 130
+    },
+    {
+      "id": "TEST-APPROVAL-DOMAIN-SCOPING-008",
+      "kind": "test",
+      "path": "tests/approval-domain-scoping.test.ts",
+      "line": 143
+    },
+    {
+      "id": "TEST-APPROVAL-DOMAIN-SCOPING-009",
+      "kind": "test",
+      "path": "tests/approval-domain-scoping.test.ts",
+      "line": 156
+    },
+    {
+      "id": "TEST-APPROVAL-DOMAIN-SCOPING-010",
+      "kind": "test",
+      "path": "tests/approval-domain-scoping.test.ts",
+      "line": 168
+    },
+    {
+      "id": "TEST-APPROVAL-DOMAIN-SCOPING-011",
+      "kind": "test",
+      "path": "tests/approval-domain-scoping.test.ts",
+      "line": 179
+    },
+    {
+      "id": "TEST-APPROVAL-DOMAIN-SCOPING-012",
+      "kind": "test",
+      "path": "tests/approval-domain-scoping.test.ts",
+      "line": 202
+    },
+    {
+      "id": "TEST-APPROVAL-DOMAIN-SCOPING-013",
+      "kind": "test",
+      "path": "tests/approval-domain-scoping.test.ts",
+      "line": 220
+    },
+    {
+      "id": "TEST-APPROVAL-DOMAIN-SCOPING-014",
+      "kind": "test",
+      "path": "tests/approval-domain-scoping.test.ts",
+      "line": 236
+    },
+    {
+      "id": "TEST-APPROVAL-DOMAIN-SCOPING-015",
+      "kind": "test",
+      "path": "tests/approval-domain-scoping.test.ts",
+      "line": 252
+    },
+    {
+      "id": "TEST-APPROVAL-DOMAIN-SCOPING-016",
+      "kind": "test",
+      "path": "tests/approval-domain-scoping.test.ts",
+      "line": 273
+    },
+    {
+      "id": "TEST-APPROVAL-DOMAIN-SCOPING-017",
+      "kind": "test",
+      "path": "tests/approval-domain-scoping.test.ts",
+      "line": 285
+    },
+    {
+      "id": "TEST-APPROVAL-DOMAIN-SCOPING-018",
+      "kind": "test",
+      "path": "tests/approval-domain-scoping.test.ts",
+      "line": 294
+    },
+    {
+      "id": "TEST-APPROVAL-DOMAIN-SCOPING-019",
+      "kind": "test",
+      "path": "tests/approval-domain-scoping.test.ts",
+      "line": 314
+    },
+    {
+      "id": "TEST-APPROVAL-DOMAIN-SCOPING-020",
+      "kind": "test",
+      "path": "tests/approval-domain-scoping.test.ts",
+      "line": 329
+    },
+    {
+      "id": "TEST-APPROVAL-DOMAIN-SCOPING-021",
+      "kind": "test",
+      "path": "tests/approval-domain-scoping.test.ts",
+      "line": 339
+    },
+    {
+      "id": "TEST-APPROVAL-DOMAIN-SCOPING-022",
+      "kind": "test",
+      "path": "tests/approval-domain-scoping.test.ts",
+      "line": 352
+    },
+    {
+      "id": "TEST-APPROVAL-DOMAIN-SCOPING-023",
+      "kind": "test",
+      "path": "tests/approval-domain-scoping.test.ts",
+      "line": 367
+    },
+    {
+      "id": "TEST-APPROVAL-DOMAIN-SCOPING-024",
+      "kind": "test",
+      "path": "tests/approval-domain-scoping.test.ts",
+      "line": 381
     },
     {
       "id": "TEST-HUMAN-APPROVAL-GATES-001",
@@ -949,6 +1949,174 @@
       "line": 92
     },
     {
+      "id": "TEST-CHANGE-ACCEPTANCE-HEURISTIC-001",
+      "kind": "test",
+      "path": "tests/change-acceptance-heuristic.test.ts",
+      "line": 28
+    },
+    {
+      "id": "TEST-CHANGE-ACCEPTANCE-HEURISTIC-002",
+      "kind": "test",
+      "path": "tests/change-acceptance-heuristic.test.ts",
+      "line": 39
+    },
+    {
+      "id": "TEST-CHANGE-ACCEPTANCE-HEURISTIC-003",
+      "kind": "test",
+      "path": "tests/change-acceptance-heuristic.test.ts",
+      "line": 50
+    },
+    {
+      "id": "TEST-CHANGE-ACCEPTANCE-HEURISTIC-004",
+      "kind": "test",
+      "path": "tests/change-acceptance-heuristic.test.ts",
+      "line": 61
+    },
+    {
+      "id": "TEST-CHANGE-ACCEPTANCE-HEURISTIC-005",
+      "kind": "test",
+      "path": "tests/change-acceptance-heuristic.test.ts",
+      "line": 74
+    },
+    {
+      "id": "TEST-CHANGE-ACCEPTANCE-HEURISTIC-006",
+      "kind": "test",
+      "path": "tests/change-acceptance-heuristic.test.ts",
+      "line": 93
+    },
+    {
+      "id": "TEST-CHANGE-EVIDENCE-WAIVER-001",
+      "kind": "test",
+      "path": "tests/change-evidence-waiver.test.ts",
+      "line": 44
+    },
+    {
+      "id": "TEST-CHANGE-EVIDENCE-WAIVER-002",
+      "kind": "test",
+      "path": "tests/change-evidence-waiver.test.ts",
+      "line": 59
+    },
+    {
+      "id": "TEST-CHANGE-EVIDENCE-WAIVER-003",
+      "kind": "test",
+      "path": "tests/change-evidence-waiver.test.ts",
+      "line": 72
+    },
+    {
+      "id": "TEST-CHANGE-EVIDENCE-WAIVER-004",
+      "kind": "test",
+      "path": "tests/change-evidence-waiver.test.ts",
+      "line": 84
+    },
+    {
+      "id": "TEST-CHANGE-EVIDENCE-WAIVER-005",
+      "kind": "test",
+      "path": "tests/change-evidence-waiver.test.ts",
+      "line": 96
+    },
+    {
+      "id": "TEST-CHANGE-EVIDENCE-WAIVER-006",
+      "kind": "test",
+      "path": "tests/change-evidence-waiver.test.ts",
+      "line": 141
+    },
+    {
+      "id": "TEST-CHANGE-EVIDENCE-WAIVER-007",
+      "kind": "test",
+      "path": "tests/change-evidence-waiver.test.ts",
+      "line": 155
+    },
+    {
+      "id": "TEST-CHANGE-EVIDENCE-WAIVER-008",
+      "kind": "test",
+      "path": "tests/change-evidence-waiver.test.ts",
+      "line": 170
+    },
+    {
+      "id": "TEST-CHANGE-EVIDENCE-WAIVER-009",
+      "kind": "test",
+      "path": "tests/change-evidence-waiver.test.ts",
+      "line": 191
+    },
+    {
+      "id": "TEST-CHANGE-EVIDENCE-WAIVER-010",
+      "kind": "test",
+      "path": "tests/change-evidence-waiver.test.ts",
+      "line": 209
+    },
+    {
+      "id": "TEST-CHANGE-EVIDENCE-WAIVER-011",
+      "kind": "test",
+      "path": "tests/change-evidence-waiver.test.ts",
+      "line": 231
+    },
+    {
+      "id": "TEST-CHANGE-EVIDENCE-WAIVER-012",
+      "kind": "test",
+      "path": "tests/change-evidence-waiver.test.ts",
+      "line": 243
+    },
+    {
+      "id": "TEST-CHANGE-RECORD-FAIL-FAST-001",
+      "kind": "test",
+      "path": "tests/change-record-fail-fast.test.ts",
+      "line": 51
+    },
+    {
+      "id": "TEST-CHANGE-RECORD-FAIL-FAST-002",
+      "kind": "test",
+      "path": "tests/change-record-fail-fast.test.ts",
+      "line": 72
+    },
+    {
+      "id": "TEST-CHANGE-RECORD-FAIL-FAST-003",
+      "kind": "test",
+      "path": "tests/change-record-fail-fast.test.ts",
+      "line": 96
+    },
+    {
+      "id": "TEST-CHANGE-RECORD-FAIL-FAST-004",
+      "kind": "test",
+      "path": "tests/change-record-fail-fast.test.ts",
+      "line": 122
+    },
+    {
+      "id": "TEST-CHANGE-RECORD-FAIL-FAST-005",
+      "kind": "test",
+      "path": "tests/change-record-fail-fast.test.ts",
+      "line": 150
+    },
+    {
+      "id": "TEST-CHANGE-RECORD-FAIL-FAST-011",
+      "kind": "test",
+      "path": "tests/change-record-fail-fast.test.ts",
+      "line": 180
+    },
+    {
+      "id": "TEST-CHANGE-RECORD-FAIL-FAST-006",
+      "kind": "test",
+      "path": "tests/change-record-fail-fast.test.ts",
+      "line": 207
+    },
+    {
+      "id": "TEST-CHANGE-RECORD-FAIL-FAST-007",
+      "kind": "test",
+      "path": "tests/change-record-fail-fast.test.ts",
+      "line": 223
+    },
+    {
+      "id": "TEST-CHANGE-RECORD-FAIL-FAST-008",
+      "kind": "test",
+      "path": "tests/change-record-fail-fast.test.ts",
+      "line": 250
+    },
+    {
+      "id": "TEST-CHANGE-RECORD-FAIL-FAST-009",
+      "kind": "test",
+      "path": "tests/change-record-fail-fast.test.ts",
+      "line": 276
+    },
+    {
       "id": "TEST-CHANGE-REQUIREMENT-BATCHES-001",
       "kind": "test",
       "path": "tests/change-requirement-batches.test.ts",
@@ -964,7 +2132,7 @@
       "id": "TEST-CHANGE-REQUIREMENT-BATCHES-003",
       "kind": "test",
       "path": "tests/change-requirement-batches.test.ts",
-      "line": 111
+      "line": 118
     },
     {
       "id": "TEST-SESSION-SCOPED-DEVELOPMENT-001",
@@ -1123,6 +2291,84 @@
       "line": 75
     },
     {
+      "id": "TEST-TDD-CYCLE-VOID-001",
+      "kind": "test",
+      "path": "tests/tdd-cycle-void.test.ts",
+      "line": 54
+    },
+    {
+      "id": "TEST-TDD-CYCLE-VOID-002",
+      "kind": "test",
+      "path": "tests/tdd-cycle-void.test.ts",
+      "line": 67
+    },
+    {
+      "id": "TEST-TDD-CYCLE-VOID-003",
+      "kind": "test",
+      "path": "tests/tdd-cycle-void.test.ts",
+      "line": 93
+    },
+    {
+      "id": "TEST-TDD-CYCLE-VOID-004",
+      "kind": "test",
+      "path": "tests/tdd-cycle-void.test.ts",
+      "line": 106
+    },
+    {
+      "id": "TEST-TDD-CYCLE-VOID-005",
+      "kind": "test",
+      "path": "tests/tdd-cycle-void.test.ts",
+      "line": 142
+    },
+    {
+      "id": "TEST-TDD-CYCLE-VOID-006",
+      "kind": "test",
+      "path": "tests/tdd-cycle-void.test.ts",
+      "line": 163
+    },
+    {
+      "id": "TEST-TDD-CYCLE-VOID-007",
+      "kind": "test",
+      "path": "tests/tdd-cycle-void.test.ts",
+      "line": 199
+    },
+    {
+      "id": "TEST-TDD-CYCLE-VOID-008",
+      "kind": "test",
+      "path": "tests/tdd-cycle-void.test.ts",
+      "line": 220
+    },
+    {
+      "id": "TEST-TDD-CYCLE-VOID-009",
+      "kind": "test",
+      "path": "tests/tdd-cycle-void.test.ts",
+      "line": 243
+    },
+    {
+      "id": "TEST-TDD-CYCLE-VOID-010",
+      "kind": "test",
+      "path": "tests/tdd-cycle-void.test.ts",
+      "line": 259
+    },
+    {
+      "id": "TEST-TDD-CYCLE-VOID-011",
+      "kind": "test",
+      "path": "tests/tdd-cycle-void.test.ts",
+      "line": 284
+    },
+    {
+      "id": "TEST-TDD-CYCLE-VOID-012",
+      "kind": "test",
+      "path": "tests/tdd-cycle-void.test.ts",
+      "line": 306
+    },
+    {
+      "id": "TEST-TDD-CYCLE-VOID-013",
+      "kind": "test",
+      "path": "tests/tdd-cycle-void.test.ts",
+      "line": 329
+    },
+    {
       "id": "TEST-TDD-FINGERPRINT-MIGRATION-001",
       "kind": "test",
       "path": "tests/tdd-fingerprint-migration.test.ts",
@@ -1218,6 +2464,216 @@
       "relation": "decides"
     },
     {
+      "from": "DES-APPROVAL-DOMAIN-SCOPING-001",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0021",
+      "to": "DES-APPROVAL-DOMAIN-SCOPING-001",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-APPROVAL-DOMAIN-SCOPING-002",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-002",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-APPROVAL-DOMAIN-SCOPING-002",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-003",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-APPROVAL-DOMAIN-SCOPING-002",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-004",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0021",
+      "to": "DES-APPROVAL-DOMAIN-SCOPING-002",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-APPROVAL-DOMAIN-SCOPING-002",
+      "to": "DES-APPROVAL-DOMAIN-SCOPING-001",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-APPROVAL-DOMAIN-SCOPING-003",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-011",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-APPROVAL-DOMAIN-SCOPING-003",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-012",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-APPROVAL-DOMAIN-SCOPING-003",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-013",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-APPROVAL-DOMAIN-SCOPING-003",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-014",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-APPROVAL-DOMAIN-SCOPING-003",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-015",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-APPROVAL-DOMAIN-SCOPING-003",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-023",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0021",
+      "to": "DES-APPROVAL-DOMAIN-SCOPING-003",
+      "relation": "decides"
+    },
+    {
+      "from": "ADR-0002",
+      "to": "DES-APPROVAL-DOMAIN-SCOPING-003",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-APPROVAL-DOMAIN-SCOPING-003",
+      "to": "DES-APPROVAL-DOMAIN-SCOPING-002",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-APPROVAL-DOMAIN-SCOPING-004",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-005",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-APPROVAL-DOMAIN-SCOPING-004",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-006",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-APPROVAL-DOMAIN-SCOPING-004",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-007",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-APPROVAL-DOMAIN-SCOPING-004",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-008",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-APPROVAL-DOMAIN-SCOPING-004",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-009",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-APPROVAL-DOMAIN-SCOPING-004",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-010",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0021",
+      "to": "DES-APPROVAL-DOMAIN-SCOPING-004",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-APPROVAL-DOMAIN-SCOPING-004",
+      "to": "DES-APPROVAL-DOMAIN-SCOPING-003",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-APPROVAL-DOMAIN-SCOPING-005",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-016",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-APPROVAL-DOMAIN-SCOPING-005",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-017",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-APPROVAL-DOMAIN-SCOPING-005",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-018",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0021",
+      "to": "DES-APPROVAL-DOMAIN-SCOPING-005",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-APPROVAL-DOMAIN-SCOPING-005",
+      "to": "DES-APPROVAL-DOMAIN-SCOPING-003",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-APPROVAL-DOMAIN-SCOPING-005",
+      "to": "DES-APPROVAL-DOMAIN-SCOPING-004",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-APPROVAL-DOMAIN-SCOPING-006",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-019",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-APPROVAL-DOMAIN-SCOPING-006",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-020",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-APPROVAL-DOMAIN-SCOPING-006",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-021",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-APPROVAL-DOMAIN-SCOPING-006",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-022",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0021",
+      "to": "DES-APPROVAL-DOMAIN-SCOPING-006",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-APPROVAL-DOMAIN-SCOPING-006",
+      "to": "DES-APPROVAL-DOMAIN-SCOPING-004",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-APPROVAL-DOMAIN-SCOPING-007",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-024",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0021",
+      "to": "DES-APPROVAL-DOMAIN-SCOPING-007",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-APPROVAL-DOMAIN-SCOPING-007",
+      "to": "DES-APPROVAL-DOMAIN-SCOPING-003",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-APPROVAL-DOMAIN-SCOPING-007",
+      "to": "DES-APPROVAL-DOMAIN-SCOPING-004",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-APPROVAL-DOMAIN-SCOPING-007",
+      "to": "DES-APPROVAL-DOMAIN-SCOPING-005",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-APPROVAL-DOMAIN-SCOPING-007",
+      "to": "DES-APPROVAL-DOMAIN-SCOPING-006",
+      "relation": "depends-on"
+    },
+    {
       "from": "DES-BOUNDED-FILE-READ-CONCURRENCY-001",
       "to": "REQ-BOUNDED-FILE-READ-CONCURRENCY-001",
       "relation": "satisfies"
@@ -1256,6 +2712,236 @@
       "from": "DES-BOUNDED-FILE-READ-CONCURRENCY-003",
       "to": "DES-BOUNDED-FILE-READ-CONCURRENCY-001",
       "relation": "depends-on"
+    },
+    {
+      "from": "DES-CHANGE-ACCEPTANCE-HEURISTIC-001",
+      "to": "REQ-CHANGE-ACCEPTANCE-HEURISTIC-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-CHANGE-ACCEPTANCE-HEURISTIC-001",
+      "to": "REQ-CHANGE-ACCEPTANCE-HEURISTIC-002",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0024",
+      "to": "DES-CHANGE-ACCEPTANCE-HEURISTIC-001",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-CHANGE-EVIDENCE-WAIVER-001",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-CHANGE-EVIDENCE-WAIVER-001",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-002",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-CHANGE-EVIDENCE-WAIVER-001",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-003",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-CHANGE-EVIDENCE-WAIVER-001",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-004",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-CHANGE-EVIDENCE-WAIVER-001",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-005",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-CHANGE-EVIDENCE-WAIVER-001",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-010",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-CHANGE-EVIDENCE-WAIVER-001",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-015",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0025",
+      "to": "DES-CHANGE-EVIDENCE-WAIVER-001",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-CHANGE-EVIDENCE-WAIVER-002",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-006",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-CHANGE-EVIDENCE-WAIVER-002",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-007",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-CHANGE-EVIDENCE-WAIVER-002",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-011",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0025",
+      "to": "DES-CHANGE-EVIDENCE-WAIVER-002",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-CHANGE-EVIDENCE-WAIVER-003",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-013",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0025",
+      "to": "DES-CHANGE-EVIDENCE-WAIVER-003",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-CHANGE-EVIDENCE-WAIVER-004",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-007",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-CHANGE-EVIDENCE-WAIVER-004",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-008",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-CHANGE-EVIDENCE-WAIVER-004",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-009",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-CHANGE-EVIDENCE-WAIVER-004",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-011",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-CHANGE-EVIDENCE-WAIVER-004",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-014",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0025",
+      "to": "DES-CHANGE-EVIDENCE-WAIVER-004",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-CHANGE-EVIDENCE-WAIVER-005",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-012",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-CHANGE-EVIDENCE-WAIVER-005",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-014",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0025",
+      "to": "DES-CHANGE-EVIDENCE-WAIVER-005",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-CHANGE-RECORD-FAIL-FAST-001",
+      "to": "REQ-CHANGE-RECORD-FAIL-FAST-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-CHANGE-RECORD-FAIL-FAST-001",
+      "to": "REQ-CHANGE-RECORD-FAIL-FAST-002",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-CHANGE-RECORD-FAIL-FAST-001",
+      "to": "REQ-CHANGE-RECORD-FAIL-FAST-003",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-CHANGE-RECORD-FAIL-FAST-001",
+      "to": "REQ-CHANGE-RECORD-FAIL-FAST-004",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-CHANGE-RECORD-FAIL-FAST-001",
+      "to": "REQ-CHANGE-RECORD-FAIL-FAST-005",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-CHANGE-RECORD-FAIL-FAST-001",
+      "to": "REQ-CHANGE-RECORD-FAIL-FAST-006",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0022",
+      "to": "DES-CHANGE-RECORD-FAIL-FAST-001",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-CHANGE-RECORD-FAIL-FAST-002",
+      "to": "REQ-CHANGE-RECORD-FAIL-FAST-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-CHANGE-RECORD-FAIL-FAST-002",
+      "to": "REQ-CHANGE-RECORD-FAIL-FAST-002",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-CHANGE-RECORD-FAIL-FAST-002",
+      "to": "REQ-CHANGE-RECORD-FAIL-FAST-003",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-CHANGE-RECORD-FAIL-FAST-002",
+      "to": "REQ-CHANGE-RECORD-FAIL-FAST-004",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-CHANGE-RECORD-FAIL-FAST-002",
+      "to": "REQ-CHANGE-RECORD-FAIL-FAST-005",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0022",
+      "to": "DES-CHANGE-RECORD-FAIL-FAST-002",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-CHANGE-RECORD-FAIL-FAST-003",
+      "to": "REQ-CHANGE-RECORD-FAIL-FAST-007",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-CHANGE-RECORD-FAIL-FAST-003",
+      "to": "REQ-CHANGE-RECORD-FAIL-FAST-008",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0022",
+      "to": "DES-CHANGE-RECORD-FAIL-FAST-003",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-CHANGE-RECORD-FAIL-FAST-004",
+      "to": "REQ-CHANGE-RECORD-FAIL-FAST-009",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0022",
+      "to": "DES-CHANGE-RECORD-FAIL-FAST-004",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-CHANGE-RECORD-FAIL-FAST-005",
+      "to": "REQ-CHANGE-RECORD-FAIL-FAST-010",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0022",
+      "to": "DES-CHANGE-RECORD-FAIL-FAST-005",
+      "relation": "decides"
     },
     {
       "from": "DES-CHANGE-REQUIREMENT-BATCHES-001",
@@ -1578,6 +3264,106 @@
       "relation": "depends-on"
     },
     {
+      "from": "DES-TDD-CYCLE-VOID-001",
+      "to": "REQ-TDD-CYCLE-VOID-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-TDD-CYCLE-VOID-001",
+      "to": "REQ-TDD-CYCLE-VOID-002",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-TDD-CYCLE-VOID-001",
+      "to": "REQ-TDD-CYCLE-VOID-003",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-TDD-CYCLE-VOID-001",
+      "to": "REQ-TDD-CYCLE-VOID-004",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0023",
+      "to": "DES-TDD-CYCLE-VOID-001",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-TDD-CYCLE-VOID-002",
+      "to": "REQ-TDD-CYCLE-VOID-005",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-TDD-CYCLE-VOID-002",
+      "to": "REQ-TDD-CYCLE-VOID-006",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-TDD-CYCLE-VOID-002",
+      "to": "REQ-TDD-CYCLE-VOID-007",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0023",
+      "to": "DES-TDD-CYCLE-VOID-002",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-TDD-CYCLE-VOID-003",
+      "to": "REQ-TDD-CYCLE-VOID-008",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-TDD-CYCLE-VOID-003",
+      "to": "REQ-TDD-CYCLE-VOID-009",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0023",
+      "to": "DES-TDD-CYCLE-VOID-003",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-TDD-CYCLE-VOID-004",
+      "to": "REQ-TDD-CYCLE-VOID-010",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0023",
+      "to": "DES-TDD-CYCLE-VOID-004",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-TDD-CYCLE-VOID-005",
+      "to": "REQ-TDD-CYCLE-VOID-011",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0023",
+      "to": "DES-TDD-CYCLE-VOID-005",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-TDD-CYCLE-VOID-006",
+      "to": "REQ-TDD-CYCLE-VOID-012",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0023",
+      "to": "DES-TDD-CYCLE-VOID-006",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-TDD-CYCLE-VOID-007",
+      "to": "REQ-TDD-CYCLE-VOID-013",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0023",
+      "to": "DES-TDD-CYCLE-VOID-007",
+      "relation": "decides"
+    },
+    {
       "from": "DES-TDD-FINGERPRINT-MIGRATION-001",
       "to": "REQ-TDD-FINGERPRINT-MIGRATION-001",
       "relation": "satisfies"
@@ -1703,6 +3489,46 @@
       "relation": "implements"
     },
     {
+      "from": "CODE-APPROVAL-DOMAIN-SCOPING-002",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-DOMAIN-SCOPING-002",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-DOMAIN-SCOPING-002",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-DOMAIN-SCOPING-002",
+      "to": "DES-APPROVAL-DOMAIN-SCOPING-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-DOMAIN-SCOPING-014",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-016",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-DOMAIN-SCOPING-014",
+      "to": "DES-APPROVAL-DOMAIN-SCOPING-005",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-DOMAIN-SCOPING-015",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-017",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-DOMAIN-SCOPING-015",
+      "to": "DES-APPROVAL-DOMAIN-SCOPING-005",
+      "relation": "implements"
+    },
+    {
       "from": "CODE-HUMAN-APPROVAL-GATES-002",
       "to": "REQ-HUMAN-APPROVAL-GATES-001",
       "relation": "implements"
@@ -1720,6 +3546,56 @@
     {
       "from": "CODE-HUMAN-APPROVAL-GATES-002",
       "to": "DES-APPROVAL-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-DOMAIN-SCOPING-016",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-005",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-DOMAIN-SCOPING-016",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-006",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-DOMAIN-SCOPING-016",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-007",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-DOMAIN-SCOPING-016",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-013",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-DOMAIN-SCOPING-016",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-014",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-DOMAIN-SCOPING-016",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-015",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-DOMAIN-SCOPING-016",
+      "to": "DES-APPROVAL-DOMAIN-SCOPING-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-DOMAIN-SCOPING-003",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-011",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-DOMAIN-SCOPING-003",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-012",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-DOMAIN-SCOPING-003",
+      "to": "DES-APPROVAL-DOMAIN-SCOPING-003",
       "relation": "implements"
     },
     {
@@ -1778,6 +3654,111 @@
       "relation": "implements"
     },
     {
+      "from": "CODE-APPROVAL-DOMAIN-SCOPING-007",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-011",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-DOMAIN-SCOPING-007",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-012",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-DOMAIN-SCOPING-007",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-013",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-DOMAIN-SCOPING-007",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-014",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-DOMAIN-SCOPING-007",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-023",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-DOMAIN-SCOPING-007",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-024",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-DOMAIN-SCOPING-007",
+      "to": "DES-APPROVAL-DOMAIN-SCOPING-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-DOMAIN-SCOPING-004",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-008",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-DOMAIN-SCOPING-004",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-021",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-DOMAIN-SCOPING-004",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-022",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-DOMAIN-SCOPING-004",
+      "to": "DES-APPROVAL-DOMAIN-SCOPING-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-DOMAIN-SCOPING-008",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-009",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-DOMAIN-SCOPING-008",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-010",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-DOMAIN-SCOPING-008",
+      "to": "DES-APPROVAL-DOMAIN-SCOPING-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-DOMAIN-SCOPING-006",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-019",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-DOMAIN-SCOPING-006",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-020",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-DOMAIN-SCOPING-006",
+      "to": "DES-APPROVAL-DOMAIN-SCOPING-006",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-DOMAIN-SCOPING-009",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-005",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-DOMAIN-SCOPING-009",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-006",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-DOMAIN-SCOPING-009",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-007",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-DOMAIN-SCOPING-009",
+      "to": "DES-APPROVAL-DOMAIN-SCOPING-004",
+      "relation": "implements"
+    },
+    {
       "from": "CODE-CLI-WORKFLOW-UX-003",
       "to": "REQ-CLI-WORKFLOW-UX-003",
       "relation": "implements"
@@ -1785,6 +3766,81 @@
     {
       "from": "CODE-CLI-WORKFLOW-UX-003",
       "to": "DES-CLI-WORKFLOW-UX-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-DOMAIN-SCOPING-005",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-016",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-DOMAIN-SCOPING-005",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-017",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-DOMAIN-SCOPING-005",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-018",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-DOMAIN-SCOPING-005",
+      "to": "DES-APPROVAL-DOMAIN-SCOPING-005",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-DOMAIN-SCOPING-010",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-016",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-DOMAIN-SCOPING-010",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-017",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-DOMAIN-SCOPING-010",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-018",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-DOMAIN-SCOPING-010",
+      "to": "DES-APPROVAL-DOMAIN-SCOPING-005",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-DOMAIN-SCOPING-011",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-005",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-DOMAIN-SCOPING-011",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-013",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-DOMAIN-SCOPING-011",
+      "to": "DES-APPROVAL-DOMAIN-SCOPING-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-DOMAIN-SCOPING-012",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-017",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-DOMAIN-SCOPING-012",
+      "to": "DES-APPROVAL-DOMAIN-SCOPING-005",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-DOMAIN-SCOPING-013",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-016",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-DOMAIN-SCOPING-013",
+      "to": "DES-APPROVAL-DOMAIN-SCOPING-005",
       "relation": "implements"
     },
     {
@@ -1808,13 +3864,293 @@
       "relation": "implements"
     },
     {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-001",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-001",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-001",
+      "to": "DES-CHANGE-EVIDENCE-WAIVER-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-002",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-007",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-002",
+      "to": "DES-CHANGE-EVIDENCE-WAIVER-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-003",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-013",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-003",
+      "to": "DES-CHANGE-EVIDENCE-WAIVER-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-004",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-011",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-004",
+      "to": "DES-CHANGE-EVIDENCE-WAIVER-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-005",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-015",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-005",
+      "to": "DES-CHANGE-EVIDENCE-WAIVER-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-006",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-015",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-006",
+      "to": "DES-CHANGE-EVIDENCE-WAIVER-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-007",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-006",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-007",
+      "to": "DES-CHANGE-EVIDENCE-WAIVER-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-008",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-008",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-008",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-009",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-008",
+      "to": "DES-CHANGE-EVIDENCE-WAIVER-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-009",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-007",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-009",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-011",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-009",
+      "to": "DES-CHANGE-EVIDENCE-WAIVER-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-010",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-010",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-010",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-010",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-010",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-005",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-010",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-010",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-010",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-015",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-010",
+      "to": "DES-CHANGE-EVIDENCE-WAIVER-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-011",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-012",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-011",
+      "to": "DES-CHANGE-EVIDENCE-WAIVER-005",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-012",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-007",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-012",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-011",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-012",
+      "to": "DES-CHANGE-EVIDENCE-WAIVER-005",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-ACCEPTANCE-HEURISTIC-001",
+      "to": "REQ-CHANGE-ACCEPTANCE-HEURISTIC-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-ACCEPTANCE-HEURISTIC-001",
+      "to": "DES-CHANGE-ACCEPTANCE-HEURISTIC-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-ACCEPTANCE-HEURISTIC-002",
+      "to": "REQ-CHANGE-ACCEPTANCE-HEURISTIC-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-ACCEPTANCE-HEURISTIC-002",
+      "to": "DES-CHANGE-ACCEPTANCE-HEURISTIC-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-RECORD-FAIL-FAST-001",
+      "to": "REQ-CHANGE-RECORD-FAIL-FAST-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-RECORD-FAIL-FAST-001",
+      "to": "REQ-CHANGE-RECORD-FAIL-FAST-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-RECORD-FAIL-FAST-001",
+      "to": "REQ-CHANGE-RECORD-FAIL-FAST-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-RECORD-FAIL-FAST-001",
+      "to": "REQ-CHANGE-RECORD-FAIL-FAST-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-RECORD-FAIL-FAST-001",
+      "to": "REQ-CHANGE-RECORD-FAIL-FAST-005",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-RECORD-FAIL-FAST-001",
+      "to": "DES-CHANGE-RECORD-FAIL-FAST-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-RECORD-FAIL-FAST-001",
+      "to": "DES-CHANGE-RECORD-FAIL-FAST-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-RECORD-FAIL-FAST-003",
+      "to": "REQ-CHANGE-RECORD-FAIL-FAST-006",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-RECORD-FAIL-FAST-003",
+      "to": "REQ-CHANGE-RECORD-FAIL-FAST-007",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-RECORD-FAIL-FAST-003",
+      "to": "REQ-CHANGE-RECORD-FAIL-FAST-009",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-RECORD-FAIL-FAST-003",
+      "to": "DES-CHANGE-RECORD-FAIL-FAST-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-RECORD-FAIL-FAST-003",
+      "to": "DES-CHANGE-RECORD-FAIL-FAST-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-RECORD-FAIL-FAST-003",
+      "to": "DES-CHANGE-RECORD-FAIL-FAST-004",
+      "relation": "implements"
+    },
+    {
       "from": "CODE-CHANGE-REQUIREMENT-BATCHES-002",
       "to": "REQ-CHANGE-REQUIREMENT-BATCHES-005",
       "relation": "implements"
     },
     {
       "from": "CODE-CHANGE-REQUIREMENT-BATCHES-002",
+      "to": "REQ-CHANGE-RECORD-FAIL-FAST-008",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-REQUIREMENT-BATCHES-002",
       "to": "DES-CHANGE-REQUIREMENT-BATCHES-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-REQUIREMENT-BATCHES-002",
+      "to": "DES-CHANGE-RECORD-FAIL-FAST-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-DOMAIN-SCOPING-001",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-DOMAIN-SCOPING-001",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-024",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-DOMAIN-SCOPING-001",
+      "to": "DES-APPROVAL-DOMAIN-SCOPING-001",
       "relation": "implements"
     },
     {
@@ -1993,6 +4329,81 @@
       "relation": "implements"
     },
     {
+      "from": "CODE-TDD-CYCLE-VOID-006",
+      "to": "REQ-TDD-CYCLE-VOID-012",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-TDD-CYCLE-VOID-006",
+      "to": "DES-TDD-CYCLE-VOID-006",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-TDD-CYCLE-VOID-002",
+      "to": "REQ-TDD-CYCLE-VOID-005",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-TDD-CYCLE-VOID-002",
+      "to": "REQ-TDD-CYCLE-VOID-006",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-TDD-CYCLE-VOID-002",
+      "to": "REQ-TDD-CYCLE-VOID-007",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-TDD-CYCLE-VOID-002",
+      "to": "DES-TDD-CYCLE-VOID-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-TDD-CYCLE-VOID-004",
+      "to": "REQ-TDD-CYCLE-VOID-010",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-TDD-CYCLE-VOID-004",
+      "to": "DES-TDD-CYCLE-VOID-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-TDD-CYCLE-VOID-001",
+      "to": "REQ-TDD-CYCLE-VOID-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-TDD-CYCLE-VOID-001",
+      "to": "REQ-TDD-CYCLE-VOID-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-TDD-CYCLE-VOID-001",
+      "to": "REQ-TDD-CYCLE-VOID-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-TDD-CYCLE-VOID-001",
+      "to": "REQ-TDD-CYCLE-VOID-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-TDD-CYCLE-VOID-001",
+      "to": "REQ-TDD-CYCLE-VOID-011",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-TDD-CYCLE-VOID-001",
+      "to": "DES-TDD-CYCLE-VOID-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-TDD-CYCLE-VOID-001",
+      "to": "DES-TDD-CYCLE-VOID-005",
+      "relation": "implements"
+    },
+    {
       "from": "CODE-TDD-GREEN-REQUIREMENT-SCOPING-001",
       "to": "REQ-TDD-GREEN-REQUIREMENT-SCOPING-001",
       "relation": "implements"
@@ -2010,6 +4421,21 @@
     {
       "from": "CODE-TDD-SUPERSEDED-CYCLE-SCOPING-001",
       "to": "REQ-TDD-SUPERSEDED-CYCLE-SCOPING-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-TDD-CYCLE-VOID-003",
+      "to": "REQ-TDD-CYCLE-VOID-008",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-TDD-CYCLE-VOID-003",
+      "to": "REQ-TDD-CYCLE-VOID-009",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-TDD-CYCLE-VOID-003",
+      "to": "DES-TDD-CYCLE-VOID-003",
       "relation": "implements"
     },
     {
@@ -2068,6 +4494,36 @@
       "relation": "implements"
     },
     {
+      "from": "CODE-CHANGE-RECORD-FAIL-FAST-002",
+      "to": "REQ-CHANGE-RECORD-FAIL-FAST-007",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-RECORD-FAIL-FAST-002",
+      "to": "REQ-CHANGE-RECORD-FAIL-FAST-009",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-RECORD-FAIL-FAST-002",
+      "to": "REQ-CHANGE-RECORD-FAIL-FAST-010",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-RECORD-FAIL-FAST-002",
+      "to": "DES-CHANGE-RECORD-FAIL-FAST-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-RECORD-FAIL-FAST-002",
+      "to": "DES-CHANGE-RECORD-FAIL-FAST-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-RECORD-FAIL-FAST-002",
+      "to": "DES-CHANGE-RECORD-FAIL-FAST-005",
+      "relation": "implements"
+    },
+    {
       "from": "CODE-DESIGN-ADR-NONE-EXEMPTION-001",
       "to": "REQ-DESIGN-ADR-NONE-EXEMPTION-001",
       "relation": "implements"
@@ -2110,6 +4566,126 @@
     {
       "from": "TEST-ADAPTER-PATTERN-RECOGNITION-002",
       "to": "REQ-ADAPTER-PATTERN-RECOGNITION-002",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-APPROVAL-DOMAIN-SCOPING-001",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-APPROVAL-DOMAIN-SCOPING-002",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-002",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-APPROVAL-DOMAIN-SCOPING-003",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-003",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-APPROVAL-DOMAIN-SCOPING-004",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-004",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-APPROVAL-DOMAIN-SCOPING-005",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-005",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-APPROVAL-DOMAIN-SCOPING-006",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-006",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-APPROVAL-DOMAIN-SCOPING-007",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-007",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-APPROVAL-DOMAIN-SCOPING-008",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-008",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-APPROVAL-DOMAIN-SCOPING-009",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-009",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-APPROVAL-DOMAIN-SCOPING-010",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-010",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-APPROVAL-DOMAIN-SCOPING-011",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-011",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-APPROVAL-DOMAIN-SCOPING-012",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-012",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-APPROVAL-DOMAIN-SCOPING-013",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-013",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-APPROVAL-DOMAIN-SCOPING-014",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-014",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-APPROVAL-DOMAIN-SCOPING-015",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-015",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-APPROVAL-DOMAIN-SCOPING-016",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-016",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-APPROVAL-DOMAIN-SCOPING-017",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-017",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-APPROVAL-DOMAIN-SCOPING-018",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-018",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-APPROVAL-DOMAIN-SCOPING-019",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-019",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-APPROVAL-DOMAIN-SCOPING-020",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-020",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-APPROVAL-DOMAIN-SCOPING-021",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-021",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-APPROVAL-DOMAIN-SCOPING-022",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-022",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-APPROVAL-DOMAIN-SCOPING-023",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-023",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-APPROVAL-DOMAIN-SCOPING-024",
+      "to": "REQ-APPROVAL-DOMAIN-SCOPING-024",
       "relation": "verifies"
     },
     {
@@ -2170,6 +4746,186 @@
     {
       "from": "TEST-BOUNDED-FILE-READ-CONCURRENCY-004",
       "to": "REQ-BOUNDED-FILE-READ-CONCURRENCY-003",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-CHANGE-ACCEPTANCE-HEURISTIC-001",
+      "to": "REQ-CHANGE-ACCEPTANCE-HEURISTIC-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-CHANGE-ACCEPTANCE-HEURISTIC-002",
+      "to": "REQ-CHANGE-ACCEPTANCE-HEURISTIC-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-CHANGE-ACCEPTANCE-HEURISTIC-003",
+      "to": "REQ-CHANGE-ACCEPTANCE-HEURISTIC-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-CHANGE-ACCEPTANCE-HEURISTIC-004",
+      "to": "REQ-CHANGE-ACCEPTANCE-HEURISTIC-002",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-CHANGE-ACCEPTANCE-HEURISTIC-005",
+      "to": "REQ-CHANGE-ACCEPTANCE-HEURISTIC-002",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-CHANGE-ACCEPTANCE-HEURISTIC-006",
+      "to": "REQ-CHANGE-ACCEPTANCE-HEURISTIC-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-CHANGE-EVIDENCE-WAIVER-001",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-CHANGE-EVIDENCE-WAIVER-002",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-002",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-CHANGE-EVIDENCE-WAIVER-003",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-003",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-CHANGE-EVIDENCE-WAIVER-004",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-004",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-CHANGE-EVIDENCE-WAIVER-005",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-005",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-CHANGE-EVIDENCE-WAIVER-005",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-015",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-CHANGE-EVIDENCE-WAIVER-006",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-008",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-CHANGE-EVIDENCE-WAIVER-006",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-009",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-CHANGE-EVIDENCE-WAIVER-007",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-010",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-CHANGE-EVIDENCE-WAIVER-008",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-011",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-CHANGE-EVIDENCE-WAIVER-009",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-006",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-CHANGE-EVIDENCE-WAIVER-009",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-007",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-CHANGE-EVIDENCE-WAIVER-010",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-012",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-CHANGE-EVIDENCE-WAIVER-011",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-013",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-CHANGE-EVIDENCE-WAIVER-012",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-014",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-CHANGE-RECORD-FAIL-FAST-001",
+      "to": "REQ-CHANGE-RECORD-FAIL-FAST-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-CHANGE-RECORD-FAIL-FAST-001",
+      "to": "REQ-CHANGE-RECORD-FAIL-FAST-006",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-CHANGE-RECORD-FAIL-FAST-002",
+      "to": "REQ-CHANGE-RECORD-FAIL-FAST-002",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-CHANGE-RECORD-FAIL-FAST-002",
+      "to": "REQ-CHANGE-RECORD-FAIL-FAST-006",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-CHANGE-RECORD-FAIL-FAST-003",
+      "to": "REQ-CHANGE-RECORD-FAIL-FAST-003",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-CHANGE-RECORD-FAIL-FAST-003",
+      "to": "REQ-CHANGE-RECORD-FAIL-FAST-006",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-CHANGE-RECORD-FAIL-FAST-004",
+      "to": "REQ-CHANGE-RECORD-FAIL-FAST-004",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-CHANGE-RECORD-FAIL-FAST-004",
+      "to": "REQ-CHANGE-RECORD-FAIL-FAST-006",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-CHANGE-RECORD-FAIL-FAST-005",
+      "to": "REQ-CHANGE-RECORD-FAIL-FAST-005",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-CHANGE-RECORD-FAIL-FAST-005",
+      "to": "REQ-CHANGE-RECORD-FAIL-FAST-006",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-CHANGE-RECORD-FAIL-FAST-011",
+      "to": "REQ-CHANGE-RECORD-FAIL-FAST-006",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-CHANGE-RECORD-FAIL-FAST-006",
+      "to": "REQ-CHANGE-RECORD-FAIL-FAST-007",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-CHANGE-RECORD-FAIL-FAST-007",
+      "to": "REQ-CHANGE-RECORD-FAIL-FAST-008",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-CHANGE-RECORD-FAIL-FAST-008",
+      "to": "REQ-CHANGE-RECORD-FAIL-FAST-009",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-CHANGE-RECORD-FAIL-FAST-009",
+      "to": "REQ-CHANGE-RECORD-FAIL-FAST-010",
       "relation": "verifies"
     },
     {
@@ -2323,6 +5079,71 @@
       "relation": "verifies"
     },
     {
+      "from": "TEST-TDD-CYCLE-VOID-001",
+      "to": "REQ-TDD-CYCLE-VOID-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-TDD-CYCLE-VOID-002",
+      "to": "REQ-TDD-CYCLE-VOID-002",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-TDD-CYCLE-VOID-003",
+      "to": "REQ-TDD-CYCLE-VOID-003",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-TDD-CYCLE-VOID-004",
+      "to": "REQ-TDD-CYCLE-VOID-004",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-TDD-CYCLE-VOID-005",
+      "to": "REQ-TDD-CYCLE-VOID-005",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-TDD-CYCLE-VOID-006",
+      "to": "REQ-TDD-CYCLE-VOID-006",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-TDD-CYCLE-VOID-007",
+      "to": "REQ-TDD-CYCLE-VOID-007",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-TDD-CYCLE-VOID-008",
+      "to": "REQ-TDD-CYCLE-VOID-008",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-TDD-CYCLE-VOID-009",
+      "to": "REQ-TDD-CYCLE-VOID-009",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-TDD-CYCLE-VOID-010",
+      "to": "REQ-TDD-CYCLE-VOID-010",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-TDD-CYCLE-VOID-011",
+      "to": "REQ-TDD-CYCLE-VOID-011",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-TDD-CYCLE-VOID-012",
+      "to": "REQ-TDD-CYCLE-VOID-012",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-TDD-CYCLE-VOID-013",
+      "to": "REQ-TDD-CYCLE-VOID-013",
+      "relation": "verifies"
+    },
+    {
       "from": "TEST-TDD-FINGERPRINT-MIGRATION-001",
       "to": "REQ-TDD-FINGERPRINT-MIGRATION-001",
       "relation": "verifies"
@@ -2398,10 +5219,23 @@
     ".musubix/decisions/ADR-0018.md": "45623ee678e2be0a179b0913ec65648ccbd6d53d637ad75378158e186353b78e",
     ".musubix/decisions/ADR-0019.md": "122c04a3416e1339e99fe6961e2f415034c6ffa5bab9aa9a31ab3a6d36ea8c3b",
     ".musubix/decisions/ADR-0020.md": "1e324adc7c32658bd51262fa3fda08868195e5d9c0bcf04c5763386b5cdad554",
+    ".musubix/decisions/ADR-0021.md": "e16390b3b0a5a05afecc955b61be462d22a8a112fa87bcf6fba16280038633cb",
+    ".musubix/decisions/ADR-0022.md": "758a2f5c1352a167ae551773e57bc27f75ee67bd52c8224508d3b52dbaf35844",
+    ".musubix/decisions/ADR-0023.md": "4ae677025df785fab3cc05052c84cbea1702108e40c615dff0276c9a2a5cddd8",
+    ".musubix/decisions/ADR-0024.md": "9f53abce6d5b20e611b3660bec229292cba236b7285f56f09c97063f79f40135",
+    ".musubix/decisions/ADR-0025.md": "0d29765a0ffa77dcb5e98791cf31a69633d9dbb085a260a5d4bdb7ae3da25626",
     ".musubix/features/adapter-pattern-recognition/design.md": "a8e0c4a11f626cb4a41c9b5b53359c072ec0c3161f704791f42ba8af38124a70",
     ".musubix/features/adapter-pattern-recognition/requirements.md": "5731561a0a04982b8a5c305bdeeae6084bcf0ee8846f295eaaaabc823d1f9793",
+    ".musubix/features/approval-domain-scoping/design.md": "e8731f1e3094aa22192ae2ae5986fb4dc9a7698f7cfe66961e1342f6e0743bd9",
+    ".musubix/features/approval-domain-scoping/requirements.md": "c886926622fe022052c81b1ea4e76f21c04f42636f4a37d074f7d34c0505210f",
     ".musubix/features/bounded-file-read-concurrency/design.md": "f62902f2ffe3e37202076e4fed2c390667af87dab84cd0e97316eaaab2d10394",
     ".musubix/features/bounded-file-read-concurrency/requirements.md": "9e08acde7e29a8f14b23d908c465c629e49d00bc29ae9bda1466427362c815be",
+    ".musubix/features/change-acceptance-heuristic/design.md": "ce67823a2c44f55a8fbfebc36b9532a0ca1f7a754613443c99ea8171ab136910",
+    ".musubix/features/change-acceptance-heuristic/requirements.md": "82b9c8d839d6663f97b67bba2c01fc775e3253e444440eb2833f82cdd877bcf6",
+    ".musubix/features/change-evidence-waiver/design.md": "19fa8242629140cb8d15a3388ab0d00a5d64fe59e2fb13be38947170a90698eb",
+    ".musubix/features/change-evidence-waiver/requirements.md": "fb9109ce26127acb978da414697e800ad86053cb9567d6ecb4054a9f33cb49df",
+    ".musubix/features/change-record-fail-fast/design.md": "4fec24158324cd376089df5c0d1018c5c58c6da37eecf63b929bf9b63c3aa253",
+    ".musubix/features/change-record-fail-fast/requirements.md": "7488f2f96293ca03ca0690358aa528d1e329e70d39be3885540f54c81c14d94e",
     ".musubix/features/change-requirement-batches/design.md": "ea7ee9aa17f9f675bf649e9eec90b07e335a6fb793faf4c9951c5f747510f453",
     ".musubix/features/change-requirement-batches/requirements.md": "215dff587257d8edf5ba17c60b610bb6abe4497d867ad20de28e5ef520184c7f",
     ".musubix/features/cli-workflow-ux-v019/design.md": "bdb13e2b903123c32e54787599220ea5444a0922532b60d38fef528991116cf8",
@@ -2420,6 +5254,8 @@
     ".musubix/features/requirements-design-scaffold/requirements.md": "0a968bc27756e715f68f22a8f6d65fc8fefce09ac79d1c8d0137282b821ebc45",
     ".musubix/features/session-scoped-development/design.md": "66a65a3fdc1747569f42b42798a88377ae2ff93e32ff2cc5e0bae5c62c2e9a42",
     ".musubix/features/session-scoped-development/requirements.md": "640aece168b4e6848c0d1e6371f0bfeb433fa8addfd064a77d050891d69d9a4f",
+    ".musubix/features/tdd-cycle-void/design.md": "96b0bd3707925d96f6b8190df6abc754c3b7d24aff9c39d644d0f9016ebf4ac3",
+    ".musubix/features/tdd-cycle-void/requirements.md": "331aa96ff3a63f0b20c6febc9bf1635fe93921cd30516c9b5c5066cde9fe0abe",
     ".musubix/features/tdd-fingerprint-migration/design.md": "3ce067571633c34991aeeb30067a5f76b1569b7fe017717d3f04d94ead17b5ac",
     ".musubix/features/tdd-fingerprint-migration/requirements.md": "e8ac10f4367e8b43e427d2a27616debbd836194854a86da4850773b9cde9e1ae",
     ".musubix/features/tdd-fingerprint-scoping/design.md": "5a52655e1555ca194116d973accbfbd5a1eb384cfcf2bcf0a36893ff0783a662",
@@ -2437,35 +5273,38 @@
     ".musubix/features/workflow-session-shutdown/design.md": "225d1718c0ea1628dae251f06b1c5ddafda9a7ae92a15e3d961efbea51c0e0ac",
     ".musubix/features/workflow-session-shutdown/requirements.md": "2b8d72e2fcb1dbf5bc24ee733182cf2b692e33c50550ce7a8de2e9c5a8c32c0d",
     "packages/analysis/src/adapters.ts": "a3c516b7c06dee11bc9786da53cf97b087543e0304d0bce8d678aa01670f53e2",
-    "packages/analysis/src/approval-record.ts": "200392853887ccedc03abd770922d91b14f762118f57bab697827133c2251000",
-    "packages/analysis/src/approval.ts": "29eb6e36e11a963471569dcefa78294849b3bb817a291aedb258912c307c50f2",
+    "packages/analysis/src/approval-domains.ts": "bc45836374021f86c4c2085184185546cc4291880aea32b9084188545b9394b4",
+    "packages/analysis/src/approval-record.ts": "838294de204a006daf5a7048a69153b573d5b61e5c9d8f3d66332b27a5b577bf",
+    "packages/analysis/src/approval.ts": "d9f57165ca455a0b49acdda7096e0df98a06cd5be33c3d20b2f06cf40917c69f",
     "packages/analysis/src/attestation.ts": "2d273d2ed5aaa8521938a247492bbe54ee9b195d7902510365d6576e098b17f3",
-    "packages/analysis/src/change.ts": "a789e35870a9976b67a07773e4bd60bc9cdc78000847b20eac974e9f9481c2f7",
-    "packages/analysis/src/config.ts": "c4d15076d4c4e97735ec3b3069a27b85cd9adc5b0f524462d1fdd9046bc2b942",
+    "packages/analysis/src/change-evidence.ts": "425fbdcb272c3709a9418f61871a426111ce2c13646d6f6903b0201729519d47",
+    "packages/analysis/src/change-waiver.ts": "6d7151694a67d511735d9a3ac2857a46ff928e80aa214accc31542ae654fcc5a",
+    "packages/analysis/src/change.ts": "a37a8e62e15c9fdae65a48c974eeddb38d6b8ef7dd849342ddfcf3b4fa36f06a",
+    "packages/analysis/src/config.ts": "52d5212f4057df9ed5caac0a0025ce744864909abceea3c64d259479ddffb998",
     "packages/analysis/src/files.ts": "6186177faea34f7b2f6dd865b4f911d3b8fbfe6786e2cd19bc7dffee2a058ba2",
     "packages/analysis/src/formal.ts": "9f5622983fed80c1e7c141cc7c7dcd217447e5c2edd39e64877db052a57b730b",
-    "packages/analysis/src/gate.ts": "c41725d1c61e86fe941818ccf42b7b91f8b702cacb66a469c9661fe66f3cb599",
+    "packages/analysis/src/gate.ts": "826ddf2397fae1fcb693604eaa41310317e3c0a9a93e63843bd513aea7b03bec",
     "packages/analysis/src/graph.ts": "8978a47c311ddef684de5e4c5ab032eed9bc87ad94a739351de6e2d6b2ae2aba",
-    "packages/analysis/src/index.ts": "6d4a88a472437b018dcfec19570e33b9c93186ca9a08a49e9fdaadb74a7f2210",
+    "packages/analysis/src/index.ts": "bfe1272e78a56fb23252d861819a85dd6d5a9c92f6636eb9735cdc643ced08c8",
     "packages/analysis/src/knowledge.ts": "48b68e9785f411327e10e1bd1f086fdaf4393d2951dcbd4e6fdec84e8008d7da",
     "packages/analysis/src/model-correspondence.ts": "fb19dbbdf461b8e2a2429b6107f60e7ea523e4033e4677ed7dd09ea03740659c",
     "packages/analysis/src/mutation.ts": "bb0582b042c973226c74b719d12e8dea05f954a68ce4dbc3c2076c31183d5a88",
-    "packages/analysis/src/order.ts": "7030a2f57ab2a2c00668d92e142a9d8cfe852aff6d237695dc94cb14a6341130",
+    "packages/analysis/src/order.ts": "214ecc1c785cefb08ffab552c3a9659d901c392d98b8de8805176a36eb453cd3",
     "packages/analysis/src/performance.ts": "1145c285582ff188e90263b4d9d9f28ca49104e79b8299b2ecd3e278d8ef80ac",
     "packages/analysis/src/process.ts": "8184c7f7c4c58cdc6987fd9d2ec2c02ce8557f94b6aa30853a0c6056ba79cf4a",
     "packages/analysis/src/scaffold-artifact.ts": "e5e6fa31fbd97ce4dcc294ab26966eb0a4a2507eb4025a7a8a522831e7fb886d",
-    "packages/analysis/src/tdd.ts": "aab88f785fb9357e804b0ffe488d2594a14b40056ca6f079d785643bd38b95bf",
+    "packages/analysis/src/tdd.ts": "386dae890240cb12bd026c51a48ea382bb0684882f73ef89ef06ab26a7e05062",
     "packages/analysis/src/test-report.ts": "41c76811bfcb5e286bf097bf2f6aaf6cd5a414202efe8108f28219ecca063a01",
     "packages/analysis/src/trace.ts": "efede75c79c7dc4828a0259c46ca870a7e15042c35edd94a107349a83eb56ec9",
     "packages/analysis/src/workflow.ts": "95c93b380d2bda976f341c138edcbdd4d7fc0516ef3aca18a3329436a1c7b494",
     "packages/cli/src/install.ts": "3b7d03d1864493ea9caee34855e4fd82ec970d321a205ee3378c8f13a4a34e17",
-    "packages/cli/src/main.ts": "faafed36dd1d92303c9db70c0302805cdbba1cddf9e5db1d60f99b0beb025bf7",
+    "packages/cli/src/main.ts": "8c4ec44e4adb0577f959fd7271758f89a3b1101d6b096cc42a634eade9965711",
     "packages/domain/src/constitution.ts": "514278499642ff46ed902864b9192f566b116b4f92eb3fafa6b62588335e170a",
     "packages/domain/src/design.ts": "fc1ca4d3249abc9705ba4b6f296e0f4fa3b3d6ff6d5d82e51c99f49fc7a93ac9",
     "packages/domain/src/index.ts": "43243e9279e3826b23cd8d8b4365854974112ce4cf17cfb0f0ee32e6b28e9cc6",
     "packages/domain/src/markdown.ts": "5c6b96486a2e31944d7d128d241f1772d0926f34464fa2b59c20748a6754487a",
     "packages/domain/src/requirements.ts": "65ea1e6d3bbd29e929c785037b930e5f5eb5535b607403e5f30c3657d36e9175",
-    "packages/domain/src/types.ts": "0c2666bcf18678e56eafcd3fae7e5163e4505bb4115c737b39a4b0b581656f18",
+    "packages/domain/src/types.ts": "6c71b45a855260f635da0cea633b660fd4a313c963daab6181dba6e54337978c",
     "scripts/check-package.mjs": "72210ce36b88fb9fe9e435e8f1a1709e623c25cfc9c81628cce7a1a87f80bee0",
     "scripts/release-attestation.mjs": "b15842f6f83eb768c361a5e054a984af0da846f3b6e789bc0c91127415576d15",
     "scripts/release-prepare.mjs": "f868e935c6d6d6e04fc486d56f5cfb2af7c3c4de493c1b2f8620447399ff0d6b",
@@ -2473,20 +5312,24 @@
     "scripts/smoke-package.mjs": "aecca89d02c2f7222567b8f86a6f6c7a8d3599d9c3539c38023012eee620a8d1",
     "tests/adapter-integration.test.ts": "42c350b4c3498d2dca32943731521ae8c2d52921f560039c0f7719b060bd4972",
     "tests/adapter-pattern-recognition.test.ts": "df7446c88eecf17cff42a5bf2cb6adc4924d62c5ed4536ad62bc8d38eb5bd40c",
-    "tests/approval.test.ts": "9c5bc5dd99223cfd423507ec2e71e181cc92c7d37e50026b9e2196bf16bd87f0",
+    "tests/approval-domain-scoping.test.ts": "130399e4bb168e0f15d7385b9704e7b0fb9a1f7d59f862204ffbcb67354c6043",
+    "tests/approval.test.ts": "6e0e909eff23c37a6a3b7bfdb0bf495bcca3084d1b44c852d1eeb902bb3d44ca",
     "tests/bounded-file-read-concurrency.test.ts": "85743bfec42baef1a8cebd36a6b9e85293f9fc29f4121b220398ce32794b3112",
-    "tests/change-requirement-batches.test.ts": "77deb6dedf6ef7d4dc02ecbc0566c969067462c100c2d126c10359dd2122e7c6",
-    "tests/cli-package.test.ts": "ee9fcf67c4929498b28e831995ef879a5d7c5582f017dd1254ad1ec36f5d9f7c",
-    "tests/cli-workflow-ux.test.ts": "d2b41c098b4953f547d6acf4ae91bb507c865ce1685d4f5948ed3ac6accd0376",
+    "tests/change-acceptance-heuristic.test.ts": "44e9ecd782a3cd38c5913b200272b083c90fc144c389740f4b8548eabec73a3e",
+    "tests/change-evidence-waiver.test.ts": "984140a8980f721f52b8faf9c3facbcc4ffdbb234891b62cbe5cf967b5e27f3d",
+    "tests/change-record-fail-fast.test.ts": "2f69f19332049c206f39b42c3bc2b505ce63173db798d74c5a9ace7064cdfe78",
+    "tests/change-requirement-batches.test.ts": "a170a3e7e8ad9dde66628a15f84343b45a1bfd2e84739d12c03e3eeb9b13d02a",
+    "tests/cli-package.test.ts": "68f235d2f1b5e203e89ec90c854ff58c0b5bc47ed7c492c23374b56e3ea59055",
+    "tests/cli-workflow-ux.test.ts": "53bdc5375bef05b365d725f5a8948393d68ae8cd1116fad8ff36ca3de127a177",
     "tests/command-working-directory.test.ts": "82dc863b1fcc5cd8a5ea1534238ef2f61f15e5d6c5e25d61fce43a7efe9bbc02",
     "tests/design-adr-none-exemption.test.ts": "f8a4771eb8b71a8c83b9ef782e9ed8646ef408aa4169298ab7a02553aa1c9ed7",
     "tests/domain.test.ts": "be79af0613fe35d70659d15155efc859721d764a0ea40c9764c2e4d7f89ea16d",
     "tests/ears-id-diagnostic-messages.test.ts": "b87dbcbbd8a1c6d2c8fddd2ad0c7483da022281b4fae2f968972413933ee009a",
     "tests/formal-knowledge.test.ts": "325ff2567b72708b83d3eab7b2986e7ceb7beb252ed21276b0db7436ffa367a4",
-    "tests/gate-install.test.ts": "da8b1f9480160be6fd05e934e3a522d94475e2c67ccac52d5ff72b166ac27a98",
-    "tests/helpers.ts": "0dbf9a36ddc8da6a8371ae3b48f8e6d92a66d09b43c3a3b24ebc6fdf9b5e4f2a",
+    "tests/gate-install.test.ts": "d2d1f923f594f15776c1ecb64325775a1c3770de557d2a2c0342ec4144538822",
+    "tests/helpers.ts": "7f2b2d283ef52eba984333232170633d89cad0a3b05924c43ff52382344eeac3",
     "tests/model-correspondence-evidence-guidance.test.ts": "f32fef2927b6353cef035f67cc8df69c1fb37ef08b745d88215df9bfa46d65ad",
-    "tests/p2-improvements.test.ts": "8b4ec18632bd5899755d0b41f2659b61fa156b11ea45970ac9c24bafe248bf95",
+    "tests/p2-improvements.test.ts": "0d96ebf371ac344778ecc5a84b75cbac2ff972263d85264e861392fca5c976e4",
     "tests/p3-attestation-oidc.test.ts": "6b7080699b02670e1575cdfda24dcbd301b5bd98c5df3f45a03d2fc80cc3ba05",
     "tests/p3-codegraph-policy.test.ts": "51382d96b162341a47f77643caa3d40641218c34a6106cf32c3d112defd701a6",
     "tests/p3-formal.test.ts": "19d7b40f4c5f92391debbc0e8f1353d93023e0774a57c5390e1b0dcfed2b3aab",
@@ -2496,6 +5339,7 @@
     "tests/p4-workflow-streaming.test.ts": "6389d083b5bca81f88bbed2f54228a17d711cb8fa16a30a68614eb59bfb1d8bf",
     "tests/php-verification.test.ts": "bc70946615f3faa3cb3b5467e552140ba2ec8e25fb4d5276f72f65393ed04315",
     "tests/scaffold-artifact.test.ts": "a8f074cdd9279f1b7c540fa1a721642ca762de9cd155f0894526a8f3daabc7d6",
+    "tests/tdd-cycle-void.test.ts": "e7ea6272d9b5e0ab5377df280ba01dd38c8d1496f3a0c0f36f2053ad1b660baf",
     "tests/tdd-fingerprint-migration.test.ts": "f5263df29b0987e4b7480c40b79fe686b317520e98fe0a6e6f3bcc68c7eca1da",
     "tests/tdd-fingerprint-scoping.test.ts": "e10a3ee1d4a6d50d69051a84884ef61d6ecff5d9c47b37b25240a95821e0608e",
     "tests/tdd-green-requirement-scoping.test.ts": "e4248a6bf6c087f78752d48c8f6c89c82eca82c98b266a42938e9a6856e43d1d",
