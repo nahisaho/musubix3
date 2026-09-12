@@ -4,6 +4,18 @@
   "qualityProfile": "custom",
   "commands": [
     {
+      "name": "requirements-design-scaffold-tests",
+      "command": "npx",
+      "args": [
+        "vitest",
+        "run",
+        "tests/scaffold-artifact.test.ts"
+      ],
+      "adapter": "vitest",
+      "required": true,
+      "timeoutMs": 120000
+    },
+    {
       "name": "approval-tests",
       "command": "npx",
       "args": [

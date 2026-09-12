@@ -18,3 +18,4 @@ export * from './change.js';
 export * from './approval.js';
 export * from './gate.js';
 export * from './approval-record.js';
+export * from './scaffold-artifact.js';

@@ -384,8 +384,10 @@ validation/gate or requested solver failure, **2** usage, I/O or malformed confi
 | `upgrade [--dry-run]` | Refresh bundled skill files only; never touches config, constitution, or feature artifacts |
 | `plugin-install` | Invoke native Copilot installer (no internal config edits) |
 | `requirements validate <file>` | IDs, priorities, declared/detected EARS pattern |
+| `requirements scaffold <slug> [--title <text>]` | Create `.musubix/features/<slug>/requirements.md` from a fixed placeholder template; never overwrites an existing file |
 | `constitution validate [file]` | Versioned principles and measurable rule definitions |
 | `design validate <file>` | Fields, global requirement IDs, existing ADR references |
+| `design scaffold <slug>` | Create `.musubix/features/<slug>/design.md` from a fixed placeholder template; never overwrites an existing file, and does not require a pre-existing `requirements.md` |
 | `design c4 <file>` | Mermaid component/dependency diagram from explicit fields |
 | `approval prepare <requirements\|design\|release>` | Display the exact deterministic manifest and hash for human review |
 | `approval record <stage> --approver <name> --artifact-sha256 <hash> --confirm` | Record approval only if the reviewed hash is still current |

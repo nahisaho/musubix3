@@ -14,7 +14,7 @@ import {
   attestationSigningPayload, createUnsignedAttestation, githubOidcAudience, verifyEvidenceAttestation,
   mutationDoctor, mutationIdentity, validateMutationEvidence, validateModelCorrespondenceEvidence, within,
   approvalManifest, approvalStages, recordApproval, requireApproval, validateApprovals, type ApprovalStage,
-  scaffoldCommands,
+  scaffoldCommands, scaffoldRequirements, scaffoldDesign,
 } from '../../analysis/src/index.js';
 import { install, pluginInstall, upgradeSkills } from './install.js';
 
@@ -66,6 +66,11 @@ export function createProgram(): Command {
     const root = resolve(options.root);
     result(validateRequirements(await readText(root, file), portable(relative(root, resolve(root, file)))), !!options.json);
   });
+  common(requirements.command('scaffold <slug>')).option('--title <text>', 'Placeholder entry heading title')
+    .action(async (slug: string, options: { root: string; json?: boolean; title?: string }) => {
+      const path = await scaffoldRequirements(resolve(options.root), slug, options.title === undefined ? {} : { title: options.title });
+      output({ path }, !!options.json, `Created ${path}`);
+    });
   const constitution = program.command('constitution').description('Versioned measurable policy validation');
   common(constitution.command('validate [file]')).action(async (file: string | undefined, options: { root: string; json?: boolean }) => {
     const path = file ?? '.musubix/constitution.md';
@@ -108,6 +113,10 @@ export function createProgram(): Command {
     if (!report.valid) { result(report, !!options.json); return; }
     const diagram = c4Diagram(report.value);
     output({ diagram }, !!options.json, diagram);
+  });
+  common(design.command('scaffold <slug>')).action(async (slug: string, options: { root: string; json?: boolean }) => {
+    const path = await scaffoldDesign(resolve(options.root), slug);
+    output({ path }, !!options.json, `Created ${path}`);
   });
 
   const trace = program.command('trace').description('Generated requirement/design/code/test traceability');

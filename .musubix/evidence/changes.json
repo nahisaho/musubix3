@@ -2689,6 +2689,424 @@
           }
         }
       }
+    },
+    {
+      "changeId": "CHANGE-0008",
+      "requirementIds": [
+        "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-001",
+        "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-002",
+        "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-003",
+        "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-004",
+        "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-005",
+        "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-006"
+      ],
+      "phases": {
+        "impact": {
+          "phase": "impact",
+          "order": 194,
+          "recordedAt": "2026-09-12T00:53:37.741Z",
+          "fingerprints": {
+            "impact": "2b79f2d3ac021f5d55ee7b8fa736cba189fab9315a5d5d94a5922450f58fe203",
+            "requirements": "2b278ed07c6fb09d926c92df23f5218b0f61c40050d7b9ec1dc47a7f33080b50",
+            "design": "c65d2b41a298d92820052f151e087cdbbd622088d6eb9b1448f803b6aad831b9",
+            "implementation": "4a6739a6f69aa3f6482a77ef8114f1822be7e09ce8617849e997bbf701046660",
+            "tests": "d65fd3235a7736e7fe17ea2ee9c4ba85709beacf7ecb04dfbef916859e27c42e",
+            "tdd": "cd822b0d2571117d204413116e68c307b8c0575dc1703e75190f6b9a36a94c65",
+            "requirementImplementations": {
+              "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-001": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-002": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-003": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-004": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-005": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-006": {
+                "paths": [],
+                "fingerprints": {}
+              }
+            }
+          }
+        },
+        "requirements": {
+          "phase": "requirements",
+          "order": 195,
+          "recordedAt": "2026-09-12T00:53:46.720Z",
+          "fingerprints": {
+            "impact": "2b79f2d3ac021f5d55ee7b8fa736cba189fab9315a5d5d94a5922450f58fe203",
+            "requirements": "1dd0b92d36a668f85ce4356c8001038c64e89f676e00a4425d968a177c307bd4",
+            "design": "c65d2b41a298d92820052f151e087cdbbd622088d6eb9b1448f803b6aad831b9",
+            "implementation": "4a6739a6f69aa3f6482a77ef8114f1822be7e09ce8617849e997bbf701046660",
+            "tests": "d65fd3235a7736e7fe17ea2ee9c4ba85709beacf7ecb04dfbef916859e27c42e",
+            "tdd": "cd822b0d2571117d204413116e68c307b8c0575dc1703e75190f6b9a36a94c65",
+            "requirementImplementations": {
+              "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-001": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-002": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-003": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-004": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-005": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-006": {
+                "paths": [],
+                "fingerprints": {}
+              }
+            }
+          }
+        },
+        "design": {
+          "phase": "design",
+          "order": 196,
+          "recordedAt": "2026-09-12T00:54:06.387Z",
+          "fingerprints": {
+            "impact": "2b79f2d3ac021f5d55ee7b8fa736cba189fab9315a5d5d94a5922450f58fe203",
+            "requirements": "1dd0b92d36a668f85ce4356c8001038c64e89f676e00a4425d968a177c307bd4",
+            "design": "3496d247b2943ad4c4fe5f60e68d43574a7fac9dfa31e76b6d64eb16512480ef",
+            "implementation": "4a6739a6f69aa3f6482a77ef8114f1822be7e09ce8617849e997bbf701046660",
+            "tests": "d65fd3235a7736e7fe17ea2ee9c4ba85709beacf7ecb04dfbef916859e27c42e",
+            "tdd": "cd822b0d2571117d204413116e68c307b8c0575dc1703e75190f6b9a36a94c65",
+            "requirementImplementations": {
+              "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-001": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-002": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-003": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-004": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-005": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-006": {
+                "paths": [],
+                "fingerprints": {}
+              }
+            }
+          }
+        },
+        "red": {
+          "phase": "red",
+          "order": 203,
+          "recordedAt": "2026-09-12T00:54:53.000Z",
+          "fingerprints": {
+            "impact": "2b79f2d3ac021f5d55ee7b8fa736cba189fab9315a5d5d94a5922450f58fe203",
+            "requirements": "1dd0b92d36a668f85ce4356c8001038c64e89f676e00a4425d968a177c307bd4",
+            "design": "3496d247b2943ad4c4fe5f60e68d43574a7fac9dfa31e76b6d64eb16512480ef",
+            "implementation": "e52fabc3fd203a0d89ac09c400935b134540821cec84ff9cfd7c403f2a4cdfd1",
+            "tests": "cfe9e3a2273746a2dadd796d1283698f383d5cf8c827f1a3e6afac95c89f386a",
+            "tdd": "795c47d068174297f0aae6678c977dc08da24bd330521cd8aa2552c0fdd3e58d",
+            "requirementImplementations": {
+              "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-001": {
+                "paths": [
+                  "packages/analysis/src/scaffold-artifact.ts"
+                ],
+                "fingerprints": {
+                  "packages/analysis/src/scaffold-artifact.ts": "195a55f49d81567bc0a42d0453adb9635a52b542bf2125db5b59aacd989f6812"
+                }
+              },
+              "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-002": {
+                "paths": [
+                  "packages/analysis/src/scaffold-artifact.ts"
+                ],
+                "fingerprints": {
+                  "packages/analysis/src/scaffold-artifact.ts": "195a55f49d81567bc0a42d0453adb9635a52b542bf2125db5b59aacd989f6812"
+                }
+              },
+              "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-003": {
+                "paths": [
+                  "packages/analysis/src/scaffold-artifact.ts"
+                ],
+                "fingerprints": {
+                  "packages/analysis/src/scaffold-artifact.ts": "195a55f49d81567bc0a42d0453adb9635a52b542bf2125db5b59aacd989f6812"
+                }
+              },
+              "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-004": {
+                "paths": [
+                  "packages/analysis/src/scaffold-artifact.ts"
+                ],
+                "fingerprints": {
+                  "packages/analysis/src/scaffold-artifact.ts": "195a55f49d81567bc0a42d0453adb9635a52b542bf2125db5b59aacd989f6812"
+                }
+              },
+              "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-005": {
+                "paths": [
+                  "packages/analysis/src/scaffold-artifact.ts"
+                ],
+                "fingerprints": {
+                  "packages/analysis/src/scaffold-artifact.ts": "195a55f49d81567bc0a42d0453adb9635a52b542bf2125db5b59aacd989f6812"
+                }
+              },
+              "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-006": {
+                "paths": [
+                  "packages/analysis/src/scaffold-artifact.ts"
+                ],
+                "fingerprints": {
+                  "packages/analysis/src/scaffold-artifact.ts": "195a55f49d81567bc0a42d0453adb9635a52b542bf2125db5b59aacd989f6812"
+                }
+              }
+            }
+          }
+        },
+        "implementation": {
+          "phase": "implementation",
+          "order": 204,
+          "recordedAt": "2026-09-12T00:55:10.713Z",
+          "fingerprints": {
+            "impact": "2b79f2d3ac021f5d55ee7b8fa736cba189fab9315a5d5d94a5922450f58fe203",
+            "requirements": "1dd0b92d36a668f85ce4356c8001038c64e89f676e00a4425d968a177c307bd4",
+            "design": "3496d247b2943ad4c4fe5f60e68d43574a7fac9dfa31e76b6d64eb16512480ef",
+            "implementation": "b1fd0cf41547e6fed5e65ba878a13b43e9ca8a505d4c199cff92e8e76638efaa",
+            "tests": "cfe9e3a2273746a2dadd796d1283698f383d5cf8c827f1a3e6afac95c89f386a",
+            "tdd": "795c47d068174297f0aae6678c977dc08da24bd330521cd8aa2552c0fdd3e58d",
+            "requirementImplementations": {
+              "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-001": {
+                "paths": [
+                  "packages/analysis/src/files.ts",
+                  "packages/analysis/src/scaffold-artifact.ts"
+                ],
+                "fingerprints": {
+                  "packages/analysis/src/files.ts": "6186177faea34f7b2f6dd865b4f911d3b8fbfe6786e2cd19bc7dffee2a058ba2",
+                  "packages/analysis/src/scaffold-artifact.ts": "e5e6fa31fbd97ce4dcc294ab26966eb0a4a2507eb4025a7a8a522831e7fb886d"
+                }
+              },
+              "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-002": {
+                "paths": [
+                  "packages/analysis/src/files.ts",
+                  "packages/analysis/src/scaffold-artifact.ts"
+                ],
+                "fingerprints": {
+                  "packages/analysis/src/files.ts": "6186177faea34f7b2f6dd865b4f911d3b8fbfe6786e2cd19bc7dffee2a058ba2",
+                  "packages/analysis/src/scaffold-artifact.ts": "e5e6fa31fbd97ce4dcc294ab26966eb0a4a2507eb4025a7a8a522831e7fb886d"
+                }
+              },
+              "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-003": {
+                "paths": [
+                  "packages/analysis/src/files.ts",
+                  "packages/analysis/src/scaffold-artifact.ts"
+                ],
+                "fingerprints": {
+                  "packages/analysis/src/files.ts": "6186177faea34f7b2f6dd865b4f911d3b8fbfe6786e2cd19bc7dffee2a058ba2",
+                  "packages/analysis/src/scaffold-artifact.ts": "e5e6fa31fbd97ce4dcc294ab26966eb0a4a2507eb4025a7a8a522831e7fb886d"
+                }
+              },
+              "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-004": {
+                "paths": [
+                  "packages/analysis/src/files.ts",
+                  "packages/analysis/src/scaffold-artifact.ts"
+                ],
+                "fingerprints": {
+                  "packages/analysis/src/files.ts": "6186177faea34f7b2f6dd865b4f911d3b8fbfe6786e2cd19bc7dffee2a058ba2",
+                  "packages/analysis/src/scaffold-artifact.ts": "e5e6fa31fbd97ce4dcc294ab26966eb0a4a2507eb4025a7a8a522831e7fb886d"
+                }
+              },
+              "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-005": {
+                "paths": [
+                  "packages/analysis/src/files.ts",
+                  "packages/analysis/src/scaffold-artifact.ts"
+                ],
+                "fingerprints": {
+                  "packages/analysis/src/files.ts": "6186177faea34f7b2f6dd865b4f911d3b8fbfe6786e2cd19bc7dffee2a058ba2",
+                  "packages/analysis/src/scaffold-artifact.ts": "e5e6fa31fbd97ce4dcc294ab26966eb0a4a2507eb4025a7a8a522831e7fb886d"
+                }
+              },
+              "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-006": {
+                "paths": [
+                  "packages/analysis/src/files.ts",
+                  "packages/analysis/src/scaffold-artifact.ts"
+                ],
+                "fingerprints": {
+                  "packages/analysis/src/files.ts": "6186177faea34f7b2f6dd865b4f911d3b8fbfe6786e2cd19bc7dffee2a058ba2",
+                  "packages/analysis/src/scaffold-artifact.ts": "e5e6fa31fbd97ce4dcc294ab26966eb0a4a2507eb4025a7a8a522831e7fb886d"
+                }
+              }
+            }
+          }
+        },
+        "green": {
+          "phase": "green",
+          "order": 211,
+          "recordedAt": "2026-09-12T00:56:06.547Z",
+          "fingerprints": {
+            "impact": "2b79f2d3ac021f5d55ee7b8fa736cba189fab9315a5d5d94a5922450f58fe203",
+            "requirements": "1dd0b92d36a668f85ce4356c8001038c64e89f676e00a4425d968a177c307bd4",
+            "design": "3496d247b2943ad4c4fe5f60e68d43574a7fac9dfa31e76b6d64eb16512480ef",
+            "implementation": "b1fd0cf41547e6fed5e65ba878a13b43e9ca8a505d4c199cff92e8e76638efaa",
+            "tests": "cfe9e3a2273746a2dadd796d1283698f383d5cf8c827f1a3e6afac95c89f386a",
+            "tdd": "72c9715514389ab7bebb38233b2dea80585f77c099d8a558ca83154fe65c29ec",
+            "requirementImplementations": {
+              "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-001": {
+                "paths": [
+                  "packages/analysis/src/files.ts",
+                  "packages/analysis/src/scaffold-artifact.ts"
+                ],
+                "fingerprints": {
+                  "packages/analysis/src/files.ts": "6186177faea34f7b2f6dd865b4f911d3b8fbfe6786e2cd19bc7dffee2a058ba2",
+                  "packages/analysis/src/scaffold-artifact.ts": "e5e6fa31fbd97ce4dcc294ab26966eb0a4a2507eb4025a7a8a522831e7fb886d"
+                }
+              },
+              "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-002": {
+                "paths": [
+                  "packages/analysis/src/files.ts",
+                  "packages/analysis/src/scaffold-artifact.ts"
+                ],
+                "fingerprints": {
+                  "packages/analysis/src/files.ts": "6186177faea34f7b2f6dd865b4f911d3b8fbfe6786e2cd19bc7dffee2a058ba2",
+                  "packages/analysis/src/scaffold-artifact.ts": "e5e6fa31fbd97ce4dcc294ab26966eb0a4a2507eb4025a7a8a522831e7fb886d"
+                }
+              },
+              "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-003": {
+                "paths": [
+                  "packages/analysis/src/files.ts",
+                  "packages/analysis/src/scaffold-artifact.ts"
+                ],
+                "fingerprints": {
+                  "packages/analysis/src/files.ts": "6186177faea34f7b2f6dd865b4f911d3b8fbfe6786e2cd19bc7dffee2a058ba2",
+                  "packages/analysis/src/scaffold-artifact.ts": "e5e6fa31fbd97ce4dcc294ab26966eb0a4a2507eb4025a7a8a522831e7fb886d"
+                }
+              },
+              "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-004": {
+                "paths": [
+                  "packages/analysis/src/files.ts",
+                  "packages/analysis/src/scaffold-artifact.ts"
+                ],
+                "fingerprints": {
+                  "packages/analysis/src/files.ts": "6186177faea34f7b2f6dd865b4f911d3b8fbfe6786e2cd19bc7dffee2a058ba2",
+                  "packages/analysis/src/scaffold-artifact.ts": "e5e6fa31fbd97ce4dcc294ab26966eb0a4a2507eb4025a7a8a522831e7fb886d"
+                }
+              },
+              "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-005": {
+                "paths": [
+                  "packages/analysis/src/files.ts",
+                  "packages/analysis/src/scaffold-artifact.ts"
+                ],
+                "fingerprints": {
+                  "packages/analysis/src/files.ts": "6186177faea34f7b2f6dd865b4f911d3b8fbfe6786e2cd19bc7dffee2a058ba2",
+                  "packages/analysis/src/scaffold-artifact.ts": "e5e6fa31fbd97ce4dcc294ab26966eb0a4a2507eb4025a7a8a522831e7fb886d"
+                }
+              },
+              "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-006": {
+                "paths": [
+                  "packages/analysis/src/files.ts",
+                  "packages/analysis/src/scaffold-artifact.ts"
+                ],
+                "fingerprints": {
+                  "packages/analysis/src/files.ts": "6186177faea34f7b2f6dd865b4f911d3b8fbfe6786e2cd19bc7dffee2a058ba2",
+                  "packages/analysis/src/scaffold-artifact.ts": "e5e6fa31fbd97ce4dcc294ab26966eb0a4a2507eb4025a7a8a522831e7fb886d"
+                }
+              }
+            }
+          }
+        },
+        "quality": {
+          "phase": "quality",
+          "order": 212,
+          "recordedAt": "2026-09-12T01:00:38.153Z",
+          "fingerprints": {
+            "impact": "2b79f2d3ac021f5d55ee7b8fa736cba189fab9315a5d5d94a5922450f58fe203",
+            "requirements": "1dd0b92d36a668f85ce4356c8001038c64e89f676e00a4425d968a177c307bd4",
+            "design": "3496d247b2943ad4c4fe5f60e68d43574a7fac9dfa31e76b6d64eb16512480ef",
+            "implementation": "b1fd0cf41547e6fed5e65ba878a13b43e9ca8a505d4c199cff92e8e76638efaa",
+            "tests": "cfe9e3a2273746a2dadd796d1283698f383d5cf8c827f1a3e6afac95c89f386a",
+            "tdd": "72c9715514389ab7bebb38233b2dea80585f77c099d8a558ca83154fe65c29ec",
+            "requirementImplementations": {
+              "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-001": {
+                "paths": [
+                  "packages/analysis/src/files.ts",
+                  "packages/analysis/src/scaffold-artifact.ts"
+                ],
+                "fingerprints": {
+                  "packages/analysis/src/files.ts": "6186177faea34f7b2f6dd865b4f911d3b8fbfe6786e2cd19bc7dffee2a058ba2",
+                  "packages/analysis/src/scaffold-artifact.ts": "e5e6fa31fbd97ce4dcc294ab26966eb0a4a2507eb4025a7a8a522831e7fb886d"
+                }
+              },
+              "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-002": {
+                "paths": [
+                  "packages/analysis/src/files.ts",
+                  "packages/analysis/src/scaffold-artifact.ts"
+                ],
+                "fingerprints": {
+                  "packages/analysis/src/files.ts": "6186177faea34f7b2f6dd865b4f911d3b8fbfe6786e2cd19bc7dffee2a058ba2",
+                  "packages/analysis/src/scaffold-artifact.ts": "e5e6fa31fbd97ce4dcc294ab26966eb0a4a2507eb4025a7a8a522831e7fb886d"
+                }
+              },
+              "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-003": {
+                "paths": [
+                  "packages/analysis/src/files.ts",
+                  "packages/analysis/src/scaffold-artifact.ts"
+                ],
+                "fingerprints": {
+                  "packages/analysis/src/files.ts": "6186177faea34f7b2f6dd865b4f911d3b8fbfe6786e2cd19bc7dffee2a058ba2",
+                  "packages/analysis/src/scaffold-artifact.ts": "e5e6fa31fbd97ce4dcc294ab26966eb0a4a2507eb4025a7a8a522831e7fb886d"
+                }
+              },
+              "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-004": {
+                "paths": [
+                  "packages/analysis/src/files.ts",
+                  "packages/analysis/src/scaffold-artifact.ts"
+                ],
+                "fingerprints": {
+                  "packages/analysis/src/files.ts": "6186177faea34f7b2f6dd865b4f911d3b8fbfe6786e2cd19bc7dffee2a058ba2",
+                  "packages/analysis/src/scaffold-artifact.ts": "e5e6fa31fbd97ce4dcc294ab26966eb0a4a2507eb4025a7a8a522831e7fb886d"
+                }
+              },
+              "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-005": {
+                "paths": [
+                  "packages/analysis/src/files.ts",
+                  "packages/analysis/src/scaffold-artifact.ts"
+                ],
+                "fingerprints": {
+                  "packages/analysis/src/files.ts": "6186177faea34f7b2f6dd865b4f911d3b8fbfe6786e2cd19bc7dffee2a058ba2",
+                  "packages/analysis/src/scaffold-artifact.ts": "e5e6fa31fbd97ce4dcc294ab26966eb0a4a2507eb4025a7a8a522831e7fb886d"
+                }
+              },
+              "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-006": {
+                "paths": [
+                  "packages/analysis/src/files.ts",
+                  "packages/analysis/src/scaffold-artifact.ts"
+                ],
+                "fingerprints": {
+                  "packages/analysis/src/files.ts": "6186177faea34f7b2f6dd865b4f911d3b8fbfe6786e2cd19bc7dffee2a058ba2",
+                  "packages/analysis/src/scaffold-artifact.ts": "e5e6fa31fbd97ce4dcc294ab26966eb0a4a2507eb4025a7a8a522831e7fb886d"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   ]
 }

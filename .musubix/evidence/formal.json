@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-10T23:02:18.430Z",
-  "totalRequirements": 46,
+  "generatedAt": "2026-09-12T01:57:39.141Z",
+  "totalRequirements": 52,
   "modeledRequirements": 8,
-  "modeledFraction": 0.17391304347826086,
+  "modeledFraction": 0.15384615384615385,
   "result": {
     "valid": true,
     "abstraction": "Consistency of explicit branch-scoped conditional, exact unit-normalized integer numeric, bounded temporal interval, deterministic state-transition, and controlled unconditional Boolean constraints; not implementation correctness.",
@@ -87,6 +87,12 @@
       "REQ-HUMAN-APPROVAL-GATES-007",
       "REQ-HUMAN-APPROVAL-GATES-008",
       "REQ-MODEL-CORRESPONDENCE-EVIDENCE-GUIDANCE-001",
+      "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-001",
+      "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-002",
+      "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-003",
+      "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-004",
+      "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-005",
+      "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-006",
       "REQ-SESSION-SCOPED-DEVELOPMENT-001",
       "REQ-SESSION-SCOPED-DEVELOPMENT-002",
       "REQ-TDD-FINGERPRINT-MIGRATION-001",
@@ -242,6 +248,36 @@
       {
         "code": "FORMAL_UNSUPPORTED",
         "severity": "warning",
+        "message": "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-001 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-002 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-003 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-004 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-005 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-006 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
         "message": "REQ-SESSION-SCOPED-DEVELOPMENT-001 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
       },
       {
@@ -311,6 +347,7 @@
     ".musubix/features/ears-id-diagnostic-messages/requirements.md": "49afd4e574f1179a31707323fbbcfffabf1051f666ad1fcba60b39b2e7da3808",
     ".musubix/features/human-approval-gates/requirements.md": "f2ae2380935831bb102cd6a7726f2a208ab1719e035157302ef51ed28f624fb0",
     ".musubix/features/model-correspondence-evidence-guidance/requirements.md": "d7ca8b823ddfd3265e89f2892003e5eb95faad7e9b3972b249de5f2902446511",
+    ".musubix/features/requirements-design-scaffold/requirements.md": "0a968bc27756e715f68f22a8f6d65fc8fefce09ac79d1c8d0137282b821ebc45",
     ".musubix/features/session-scoped-development/requirements.md": "640aece168b4e6848c0d1e6371f0bfeb433fa8addfd064a77d050891d69d9a4f",
     ".musubix/features/tdd-fingerprint-migration/requirements.md": "e8ac10f4367e8b43e427d2a27616debbd836194854a86da4850773b9cde9e1ae",
     ".musubix/features/tdd-fingerprint-scoping/requirements.md": "d3e480fc0ef92edb87f2c22d1d67a00fc177fde913c68d0187aa45375b14d4c9",
