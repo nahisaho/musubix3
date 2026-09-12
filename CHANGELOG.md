@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.1.16 - 2026-09-12
+
+New feature: scaffold starter `requirements.md`/`design.md` files for a new
+feature slug (GitHub Issue #18).
+
+- `musubix3 requirements scaffold <slug> [--title <text>]` creates
+  `.musubix/features/<slug>/requirements.md` from a fixed placeholder
+  template.
+- `musubix3 design scaffold <slug>` creates
+  `.musubix/features/<slug>/design.md` from a fixed placeholder template; it
+  does not require a matching `requirements.md` to already exist.
+- Both commands validate the slug (`^[a-z0-9]+(-[a-z0-9]+)*$`, matching
+  `install()`'s existing convention) and refuse to overwrite an existing
+  target file, using an OS-level exclusive create (`wx`) so a concurrent
+  create is never silently clobbered (see `ADR-0020`).
+- Spec: `REQ-REQUIREMENTS-DESIGN-SCAFFOLD-001..006`,
+  `DES-REQUIREMENTS-DESIGN-SCAFFOLD-001`, tracked end-to-end in `CHANGE-0008`.
+
 ## 0.1.15 - 2026-09-11
 
 Documentation/workflow update: AI-generated documentation deliverables now go
