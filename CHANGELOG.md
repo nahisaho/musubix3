@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.1.17 - 2026-09-13
+
+`gate --changed` remediation for the change-evidence-waiver feature
+(CHANGE-0012, GitHub Issue #1 item):
+
+- Fixed a `TRACE_DUPLICATE` diagnostic caused by a duplicate trace `@id` on
+  two distinct annotations in `order.ts`.
+- Added a missing `@implements REQ-TDD-CYCLE-VOID-013` trace annotation on
+  the voided-cycle handling in `tdd.ts`, closing a `CHANGE_COMPLETENESS_CODE`
+  gap for CHANGE-0011.
+- Retroactively waived 166 historical `change-history`/`change-completeness`
+  diagnostics predating the CHANGE-0012 waiver mechanism as reviewed legacy
+  debt (CHANGE-0005, 0006, 0009, 0010, 0011).
+- Performed a full retroactive TDD Red-Green ceremony (18 test/requirement
+  pairs across 15 tests in `tests/change-evidence-waiver.test.ts`), resolving
+  all `TDD_TEST_STALE`/`TDD_REQUIREMENT_UNCOVERED` diagnostics.
+
 ## 0.1.16 - 2026-09-12
 
 New feature: scaffold starter `requirements.md`/`design.md` files for a new
