@@ -362,6 +362,8 @@ npx musubix3 tdd green TEST-EXAMPLE-002 --requirement REQ-EXAMPLE-002 --command 
 | `tdd validate` | 保存済みRed/Green/Refactorの順序、指紋、実行時間、hash-chainを検証 |
 | `tdd red\|green\|refactor <TEST-ID> --requirement <REQ-ID> --command <name>` | 検証可能なTDDフェーズを実行・記録 |
 | `workflow-record <skill> <phase> --status <status>` | 自己申告のworkflow宣言を記録 |
+| `workflow waiver record <code> --skill <skill> --phase <phase> --recorded-at <timestamp> [--index <n>] --approver <name> --reason <text> --confirm` | declaration単位のworkflow照合診断（`WORKFLOW_SKILL_NOT_INVOKED`、`WORKFLOW_INVOCATION_ORDER`、`WORKFLOW_INVOCATION_INCOMPLETE`、`WORKFLOW_INVOCATION_FAILED`、`WORKFLOW_INVOCATION_REUSED`のいずれか）1件を、監査可能な範囲でnon-blockingなwaived状態に降格記録する。同じdeclaration scopeを共有する`WORKFLOW_BINDING_MISSING`診断も同時に降格される。`WORKFLOW_INVOCATION_UNVERIFIED`はwaiveできず、そのsessionで実際に`workflow-verify`を実行した場合のみ解消できる |
+| `workflow waiver record-all --approver <name> --reason <text> --confirm` | `workflow waiver record`の一括版。reconciliation report全体で現在waive可能なdeclaration scope診断を、1件ずつの`record`呼び出しの代わりに全件一括でall-or-nothingにwaiveする。不正なwaiver証拠、無効なwaiver chain、空の`--approver`/`--reason`、または`workflow-verify`が未解決の`WORKFLOW_INVOCATION_UNVERIFIED`診断のいずれかが事前条件チェックで検出された場合は何も記録せず拒否する（`workflow-verify`が一度も実行されていない場合、個別waiverも一括waiverもこれを代替できない）。waiveされた各declaration scope診断に対応する`WORKFLOW_BINDING_MISSING`も、既存の単体`record`コマンドと同様に同時に降格される。waive対象が0件（既にwaive済み、または該当なし）の場合は冪等に成功し、何も記録しない |
 | `workflow-sanitize <copilot.jsonl> <output-file> [--session-id <uuid>]` | reviewやstrict検証前にmessageとSkill以外のtool dataを除去 |
 | `workflow-verify <copilot.jsonl> [--strict] [--session-id <uuid>]` | Skillイベントを照合し、任意で完全な成功session transcriptを要求 |
 | `attestation oidc-audience --key-id <id> [--public-key-file <pem>]` | 署名鍵を許可するGitHub custom audienceを導出 |

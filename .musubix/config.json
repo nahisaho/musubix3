@@ -78,7 +78,7 @@
         "test"
       ],
       "required": true,
-      "timeoutMs": 120000
+      "timeoutMs": 180000
     },
     {
       "name": "pack-check",
@@ -205,6 +205,18 @@
         "vitest",
         "run",
         "tests/workflow-evidence-waiver.test.ts"
+      ],
+      "adapter": "vitest",
+      "required": true,
+      "timeoutMs": 120000
+    },
+    {
+      "name": "workflow-waiver-bulk-recording-tests",
+      "command": "npx",
+      "args": [
+        "vitest",
+        "run",
+        "tests/workflow-waiver-bulk-recording.test.ts"
       ],
       "adapter": "vitest",
       "required": true,

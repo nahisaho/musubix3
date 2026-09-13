@@ -85,9 +85,11 @@
     ".musubix/features/workflow-multi-session-verification/design.md": "16a916ca279ddfddb7b18a59bef7c9bee5c4608d751187208da3a6c3b46e0d55",
     ".musubix/features/workflow-multi-session-verification/requirements.md": "2ae290a162d6318ff2567a0fe6f44aa38f40e38b0b9344fd1c1c36bfc3937aa1",
     ".musubix/features/workflow-session-shutdown/design.md": "225d1718c0ea1628dae251f06b1c5ddafda9a7ae92a15e3d961efbea51c0e0ac",
-    ".musubix/features/workflow-session-shutdown/requirements.md": "2b8d72e2fcb1dbf5bc24ee733182cf2b692e33c50550ce7a8de2e9c5a8c32c0d"
+    ".musubix/features/workflow-session-shutdown/requirements.md": "2b8d72e2fcb1dbf5bc24ee733182cf2b692e33c50550ce7a8de2e9c5a8c32c0d",
+    ".musubix/features/workflow-waiver-bulk-recording/design.md": "c956f35169212cedc0fc66a11902200c7dda10230fc326075644d908f29580ae",
+    ".musubix/features/workflow-waiver-bulk-recording/requirements.md": "361cfba519d4ab189a2091cf7b99133b9c005f69fb28aa2d77bba17bd7ee7b33"
   },
-  "artifactSha256": "5fd740650bbc105d5c4558b50d8e0864f95cb46b583891e52d419aca070cd06a",
+  "artifactSha256": "d02e10d36555504516ac069f1200e06f61b4736de9e3c93b512c30bb406606e2",
   "approver": "nahisaho",
-  "approvedAt": "2026-09-13T10:01:58.328Z"
+  "approvedAt": "2026-09-13T11:42:53.232Z"
 }

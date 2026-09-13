@@ -68,8 +68,7 @@ Documentation/prototypes may omit TDD only when policy allows; record the reason
    use strict `Formal:` JSON for explicit conditional, numeric, temporal or
    transition semantics; report unsupported prose rather than claiming proof.
    A required `formal` check enforces modeled fraction and configured solver.
-3. Run `gate --changed --json` and `status --json`. Repair failures, dangling
-   links and stale evidence; never weaken requirements or policy to obtain green.
+3. Run `gate --changed --json` and `status --json`. Repair failures, dangling links and stale evidence; never weaken requirements or policy to obtain green. If `workflow` fails, run `workflow-verify` compatible mode against this session's live transcript, then `workflow waiver record-all` (bulk, all-or-nothing) for remaining declaration-scoped diagnostics (it cannot clear `WORKFLOW_INVOCATION_UNVERIFIED`), then rerun gate/status.
 4. Treat the first otherwise-passing gate as the release candidate. Run a `rubber-duck` review of the release/quality evidence summary and the CHANGE document; fix every reported issue and re-review until zero issues remain. Before any release operation, prepare/show its exact hash, ask one human approve/reject question and wait; record only that hash, then rerun gate/status.
 5. Complete only when required checks pass and `status.gate.ready` is true;
    otherwise report blockers. One-phase work must state downstream work.

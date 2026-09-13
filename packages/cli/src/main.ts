@@ -16,7 +16,7 @@ import {
   approvalManifest, approvalStages, recordApproval, requireApproval,   requireDomainOption, requireValidateDomainOption, resolveDesignFileDomain, resolveNamedDomain,
   validateApprovals, validateApprovalsForDomain, type ApprovalStage,
   scaffoldCommands, scaffoldRequirements, scaffoldDesign,
-  recordChangeWaiver, recordWorkflowWaiver,
+  recordChangeWaiver, recordWorkflowWaiver, recordAllWorkflowWaivers,
 } from '../../analysis/src/index.js';
 import { install, pluginInstall, upgradeSkills } from './install.js';
 
@@ -414,6 +414,19 @@ export function createProgram(): Command {
         options.reason,
       );
       output(result, !!options.json, `WAIVER: PASS (${code}:${options.skill}:${options.phase}:${options.recordedAt}${options.index === undefined ? '' : `:${options.index}`})`);
+    });
+  /** @id CODE-WORKFLOW-WAIVER-BULK-002
+   * @implements REQ-WORKFLOW-WAIVER-BULK-001 REQ-WORKFLOW-WAIVER-BULK-002 REQ-WORKFLOW-WAIVER-BULK-003 REQ-WORKFLOW-WAIVER-BULK-004
+   * @design DES-WORKFLOW-WAIVER-BULK-002 DES-WORKFLOW-WAIVER-BULK-003
+   */
+  common(workflowWaiver.command('record-all'))
+    .requiredOption('--approver <name>', 'Human approver recording these waivers')
+    .requiredOption('--reason <text>', 'Reason these diagnostics are being waived')
+    .option('--confirm', 'Confirm the waivers are reviewed and intended', false)
+    .action(async (options: { root: string; json?: boolean; approver: string; reason: string; confirm?: boolean }) => {
+      if (!options.confirm) throw new Error('Recording a workflow waiver requires --confirm.');
+      const result = await recordAllWorkflowWaivers(resolve(options.root), options.approver, options.reason);
+      output(result, !!options.json, `WAIVER: PASS (${result.recorded} recorded)`);
     });
   const attestation = program.command('attestation').description('Create and verify static-key or GitHub OIDC-authorized Ed25519 attestations');
   common(attestation.command('oidc-audience'))

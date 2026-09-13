@@ -8,7 +8,7 @@ import { digest, exists, safePath, writeJson } from './files.js';
 import {
   CURRENT_SNAPSHOT_VERSION, WORKFLOW_WAIVABLE_CODES, WORKFLOW_WAIVER_PATH, authoritativeIndex, buildWorkflowWaiverContext,
   deriveWorkflowWaiverAudit, loadWorkflowWaiverEvidence, nonStale, payloadShaOf, resolveEvent,
-  scopeLabel, snapshotHashFor, waiverChainValid, waiverLinkage, waiverRecordShapeValid, waivedWorkflowDiagnostic,
+  scopeKey, scopeLabel, snapshotHashFor, waiverChainValid, waiverLinkage, waiverRecordShapeValid, waivedWorkflowDiagnostic,
   type LoadedWorkflowWaiverEvidence, type WorkflowWaivableCode, type WorkflowWaiverContext, type WorkflowWaiverRecord,
   linkageReason,
 } from './workflow-waiver.js';
@@ -883,5 +883,106 @@ export async function recordWorkflowWaiver(
     declarationRecordedAt: recordedAt,
     ...(index === undefined ? {} : { index }),
     code,
+  };
+}
+
+/** @id CODE-WORKFLOW-WAIVER-BULK-001
+ * @implements REQ-WORKFLOW-WAIVER-BULK-001 REQ-WORKFLOW-WAIVER-BULK-002 REQ-WORKFLOW-WAIVER-BULK-003
+ * @design DES-WORKFLOW-WAIVER-BULK-001
+ */
+export async function recordAllWorkflowWaivers(
+  root: string,
+  approver: string,
+  reason: string,
+): Promise<{ recorded: number; waivers: Array<{ skill: string; phase: string; declarationRecordedAt: string; index?: number; code: string }> }> {
+  const loaded = await loadWorkflowWaiverEvidence(root);
+  if (loaded?.malformed) {
+    throw new Error(`${WORKFLOW_WAIVER_PATH} is malformed; regenerate or repair it before recording a new waiver.`);
+  }
+  const workflow = await loadWorkflow(root);
+  const config = await loadConfig(root);
+  const existing = loaded ?? { schemaVersion: 1 as const, waivers: [] as unknown[] };
+  for (let recordIndex = 0; recordIndex < existing.waivers.length; recordIndex += 1) {
+    const current = existing.waivers[recordIndex];
+    if (!waiverRecordShapeValid(current)
+      || !waiverChainValid(existing.waivers, recordIndex)
+      || !waiverLinkage(workflow, existing.waivers, recordIndex).valid) {
+      throw new Error(`Existing workflow waiver at waivers[${recordIndex}] is invalid; repair the evidence chain before recording a new waiver.`);
+    }
+  }
+  if (!approver.trim() || !reason.trim()) throw new Error('A non-empty --approver and --reason are required.');
+  const validated = await validateLoadedWorkflow(root, workflow, config.workflow, loaded);
+  if (validated.diagnostics.some((diagnostic) => diagnostic.code === 'WORKFLOW_INVOCATION_UNVERIFIED')) {
+    throw new Error('workflow-verify must be (re-)run before any declaration-scoped workflow diagnostic can be waived.');
+  }
+  const context = validated.workflowWaiverContext;
+  const seen = new Set<string>();
+  const candidates: Array<{ skill: string; phase: string; declarationRecordedAt: string; index?: number; code: WorkflowWaivableCode }> = [];
+  for (const diagnostic of validated.diagnostics) {
+    if (!(WORKFLOW_WAIVABLE_CODES as readonly string[]).includes(diagnostic.code)) continue;
+    if (!diagnostic.skill || !diagnostic.phase || !diagnostic.declarationRecordedAt) continue;
+    const key = scopeKey(diagnostic.skill, diagnostic.phase, diagnostic.declarationRecordedAt, diagnostic.index);
+    if (seen.has(key)) continue;
+    seen.add(key);
+    const activeIndex = authoritativeIndex(context, diagnostic.skill, diagnostic.phase, diagnostic.declarationRecordedAt, diagnostic.index);
+    if (activeIndex !== -1 && !context.loaded?.malformed && waiverRecordShapeValid(context.loaded!.waivers[activeIndex])) {
+      const activeRecord = context.loaded!.waivers[activeIndex];
+      if (nonStale(activeRecord, activeIndex, context)) continue;
+    }
+    candidates.push({
+      skill: diagnostic.skill,
+      phase: diagnostic.phase,
+      declarationRecordedAt: diagnostic.declarationRecordedAt,
+      ...(diagnostic.index === undefined ? {} : { index: diagnostic.index }),
+      code: diagnostic.code as WorkflowWaivableCode,
+    });
+  }
+  candidates.sort((a, b) =>
+    a.skill.localeCompare(b.skill)
+    || a.phase.localeCompare(b.phase)
+    || a.declarationRecordedAt.localeCompare(b.declarationRecordedAt)
+    || (a.index ?? -1) - (b.index ?? -1));
+  if (candidates.length === 0) return { recorded: 0, waivers: [] };
+  const tail = existing.waivers.at(-1);
+  let nextSequence = tail && waiverRecordShapeValid(tail) ? tail.sequence + 1 : 1;
+  let previousSha256 = tail && waiverRecordShapeValid(tail) ? tail.payloadSha256 : '0'.repeat(64);
+  const newRecords: WorkflowWaiverRecord[] = [];
+  for (const candidate of candidates) {
+    const waiverRecordedAt = new Date().toISOString();
+    const draftRecord: WorkflowWaiverRecord = {
+      skill: candidate.skill,
+      phase: candidate.phase,
+      declarationRecordedAt: candidate.declarationRecordedAt,
+      ...(candidate.index === undefined ? {} : { index: candidate.index }),
+      code: candidate.code,
+      approver,
+      reason,
+      waiverRecordedAt,
+      sequence: nextSequence,
+      snapshotVersion: CURRENT_SNAPSHOT_VERSION,
+      snapshotHash: '',
+      previousSha256,
+      payloadSha256: '',
+    };
+    const snapshotHash = snapshotHashFor(workflow, validated.diagnostics, draftRecord);
+    const withoutPayloadSha: Omit<WorkflowWaiverRecord, 'payloadSha256'> = { ...draftRecord, snapshotHash };
+    const record: WorkflowWaiverRecord = { ...withoutPayloadSha, payloadSha256: payloadShaOf(withoutPayloadSha) };
+    newRecords.push(record);
+    nextSequence += 1;
+    previousSha256 = record.payloadSha256;
+  }
+  await writeJson(root, WORKFLOW_WAIVER_PATH, {
+    schemaVersion: 1,
+    waivers: [...existing.waivers, ...newRecords],
+  });
+  return {
+    recorded: newRecords.length,
+    waivers: newRecords.map((record) => ({
+      skill: record.skill,
+      phase: record.phase,
+      declarationRecordedAt: record.declarationRecordedAt,
+      ...(record.index === undefined ? {} : { index: record.index }),
+      code: record.code,
+    })),
   };
 }

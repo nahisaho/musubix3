@@ -240,6 +240,36 @@
       "phase": "complete",
       "status": "completed",
       "recordedAt": "2026-09-13T09:49:05.953Z"
+    },
+    {
+      "skill": "sdd-requirements",
+      "version": "0.1.8",
+      "provenance": "self-reported",
+      "phase": "complete",
+      "status": "completed",
+      "recordedAt": "2026-09-13T11:08:29.875Z"
     }
-  ]
+  ],
+  "verification": {
+    "mode": "compatible",
+    "sourceSha256": "b0fafb15da1d481129507dce303d16c49358fa1b3a63b3fa8a928036d3b81255",
+    "eventsSha256": "95734b5f3cc41eb5cf369cfd59c051a3c6678c3677052435eb3bd10b747a39e1",
+    "verifiedAt": "2026-09-13T12:03:45.461Z",
+    "invocations": [
+      {
+        "skill": "sdd-change",
+        "toolCallId": "toolu_01YSZvok4wUEtR8dCKp5dvk2",
+        "invokedAt": "2026-09-13T11:00:23.642Z",
+        "completedAt": "2026-09-13T11:00:23.661Z",
+        "status": "completed"
+      },
+      {
+        "skill": "sdd-requirements",
+        "toolCallId": "call_Bpwiv8AdsfZhzuOr4ob3N8Ru",
+        "invokedAt": "2026-09-13T11:07:50.804Z",
+        "completedAt": "2026-09-13T11:07:50.806Z",
+        "status": "completed"
+      }
+    ]
+  }
 }

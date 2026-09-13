@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-13T10:43:29.044Z",
+  "generatedAt": "2026-09-13T13:32:22.753Z",
   "nodes": [
     {
       "id": "CODE-SESSION-SCOPED-DEVELOPMENT-001",
@@ -1615,6 +1615,52 @@
       "mandatory": true
     },
     {
+      "id": "DES-WORKFLOW-WAIVER-BULK-001",
+      "kind": "design",
+      "path": ".musubix/features/workflow-waiver-bulk-recording/design.md",
+      "line": 14
+    },
+    {
+      "id": "DES-WORKFLOW-WAIVER-BULK-002",
+      "kind": "design",
+      "path": ".musubix/features/workflow-waiver-bulk-recording/design.md",
+      "line": 93
+    },
+    {
+      "id": "DES-WORKFLOW-WAIVER-BULK-003",
+      "kind": "design",
+      "path": ".musubix/features/workflow-waiver-bulk-recording/design.md",
+      "line": 115
+    },
+    {
+      "id": "REQ-WORKFLOW-WAIVER-BULK-001",
+      "kind": "requirement",
+      "path": ".musubix/features/workflow-waiver-bulk-recording/requirements.md",
+      "line": 53,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-WORKFLOW-WAIVER-BULK-002",
+      "kind": "requirement",
+      "path": ".musubix/features/workflow-waiver-bulk-recording/requirements.md",
+      "line": 59,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-WORKFLOW-WAIVER-BULK-003",
+      "kind": "requirement",
+      "path": ".musubix/features/workflow-waiver-bulk-recording/requirements.md",
+      "line": 65,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-WORKFLOW-WAIVER-BULK-004",
+      "kind": "requirement",
+      "path": ".musubix/features/workflow-waiver-bulk-recording/requirements.md",
+      "line": 71,
+      "mandatory": true
+    },
+    {
       "id": "CODE-ADAPTER-PATTERN-RECOGNITION-001",
       "kind": "code",
       "path": "packages/analysis/src/adapters.ts",
@@ -2215,6 +2261,12 @@
       "line": 786
     },
     {
+      "id": "CODE-WORKFLOW-WAIVER-BULK-001",
+      "kind": "code",
+      "path": "packages/analysis/src/workflow.ts",
+      "line": 889
+    },
+    {
       "id": "CODE-UPGRADE-WORKFLOW-001",
       "kind": "code",
       "path": "packages/cli/src/install.ts",
@@ -2233,22 +2285,28 @@
       "line": 382
     },
     {
+      "id": "CODE-WORKFLOW-WAIVER-BULK-002",
+      "kind": "code",
+      "path": "packages/cli/src/main.ts",
+      "line": 418
+    },
+    {
       "id": "CODE-CHANGE-RECORD-RECORDEDAT-ORDER-004",
       "kind": "code",
       "path": "packages/cli/src/main.ts",
-      "line": 493
+      "line": 506
     },
     {
       "id": "CODE-CHANGE-RECORD-FAIL-FAST-002",
       "kind": "code",
       "path": "packages/cli/src/main.ts",
-      "line": 509
+      "line": 522
     },
     {
       "id": "CODE-TDD-ADOPTION-WARNING-003",
       "kind": "code",
       "path": "packages/cli/src/main.ts",
-      "line": 594
+      "line": 607
     },
     {
       "id": "CODE-DESIGN-ADR-NONE-EXEMPTION-001",
@@ -3101,6 +3159,30 @@
       "kind": "test",
       "path": "tests/workflow-multi-session-verification.test.ts",
       "line": 24
+    },
+    {
+      "id": "TEST-WORKFLOW-WAIVER-BULK-001",
+      "kind": "test",
+      "path": "tests/workflow-waiver-bulk-recording.test.ts",
+      "line": 97
+    },
+    {
+      "id": "TEST-WORKFLOW-WAIVER-BULK-002",
+      "kind": "test",
+      "path": "tests/workflow-waiver-bulk-recording.test.ts",
+      "line": 144
+    },
+    {
+      "id": "TEST-WORKFLOW-WAIVER-BULK-003",
+      "kind": "test",
+      "path": "tests/workflow-waiver-bulk-recording.test.ts",
+      "line": 169
+    },
+    {
+      "id": "TEST-WORKFLOW-WAIVER-BULK-004",
+      "kind": "test",
+      "path": "tests/workflow-waiver-bulk-recording.test.ts",
+      "line": 186
     }
   ],
   "edges": [
@@ -4493,6 +4575,86 @@
       "from": "ADR-0005",
       "to": "DES-WORKFLOW-SHUTDOWN-001",
       "relation": "decides"
+    },
+    {
+      "from": "DES-WORKFLOW-WAIVER-BULK-001",
+      "to": "REQ-WORKFLOW-WAIVER-BULK-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-WORKFLOW-WAIVER-BULK-001",
+      "to": "REQ-WORKFLOW-WAIVER-BULK-002",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-WORKFLOW-WAIVER-BULK-001",
+      "to": "REQ-WORKFLOW-WAIVER-BULK-003",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0026",
+      "to": "DES-WORKFLOW-WAIVER-BULK-001",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-WORKFLOW-WAIVER-BULK-002",
+      "to": "REQ-WORKFLOW-WAIVER-BULK-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-WORKFLOW-WAIVER-BULK-002",
+      "to": "REQ-WORKFLOW-WAIVER-BULK-002",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-WORKFLOW-WAIVER-BULK-002",
+      "to": "REQ-WORKFLOW-WAIVER-BULK-003",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0026",
+      "to": "DES-WORKFLOW-WAIVER-BULK-002",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-WORKFLOW-WAIVER-BULK-003",
+      "to": "REQ-WORKFLOW-WAIVER-BULK-004",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0026",
+      "to": "DES-WORKFLOW-WAIVER-BULK-003",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-WORKFLOW-WAIVER-BULK-003",
+      "to": "DES-WORKFLOW-EVIDENCE-WAIVER-001",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-WORKFLOW-WAIVER-BULK-003",
+      "to": "DES-WORKFLOW-EVIDENCE-WAIVER-002",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-WORKFLOW-WAIVER-BULK-003",
+      "to": "DES-WORKFLOW-EVIDENCE-WAIVER-003",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-WORKFLOW-WAIVER-BULK-003",
+      "to": "DES-WORKFLOW-EVIDENCE-WAIVER-004",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-WORKFLOW-WAIVER-BULK-003",
+      "to": "DES-WORKFLOW-EVIDENCE-WAIVER-005",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-WORKFLOW-WAIVER-BULK-003",
+      "to": "DES-WORKFLOW-EVIDENCE-WAIVER-006",
+      "relation": "depends-on"
     },
     {
       "from": "CODE-ADAPTER-PATTERN-RECOGNITION-001",
@@ -6160,6 +6322,26 @@
       "relation": "implements"
     },
     {
+      "from": "CODE-WORKFLOW-WAIVER-BULK-001",
+      "to": "REQ-WORKFLOW-WAIVER-BULK-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-WAIVER-BULK-001",
+      "to": "REQ-WORKFLOW-WAIVER-BULK-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-WAIVER-BULK-001",
+      "to": "REQ-WORKFLOW-WAIVER-BULK-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-WAIVER-BULK-001",
+      "to": "DES-WORKFLOW-WAIVER-BULK-001",
+      "relation": "implements"
+    },
+    {
       "from": "CODE-UPGRADE-WORKFLOW-001",
       "to": "REQ-UPGRADE-WORKFLOW-001",
       "relation": "implements"
@@ -6207,6 +6389,36 @@
     {
       "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-023",
       "to": "DES-WORKFLOW-EVIDENCE-WAIVER-006",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-WAIVER-BULK-002",
+      "to": "REQ-WORKFLOW-WAIVER-BULK-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-WAIVER-BULK-002",
+      "to": "REQ-WORKFLOW-WAIVER-BULK-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-WAIVER-BULK-002",
+      "to": "REQ-WORKFLOW-WAIVER-BULK-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-WAIVER-BULK-002",
+      "to": "REQ-WORKFLOW-WAIVER-BULK-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-WAIVER-BULK-002",
+      "to": "DES-WORKFLOW-WAIVER-BULK-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-WAIVER-BULK-002",
+      "to": "DES-WORKFLOW-WAIVER-BULK-003",
       "relation": "implements"
     },
     {
@@ -7163,11 +7375,31 @@
       "from": "TEST-WORKFLOW-MULTI-SESSION-001",
       "to": "REQ-WORKFLOW-MULTI-SESSION-001",
       "relation": "verifies"
+    },
+    {
+      "from": "TEST-WORKFLOW-WAIVER-BULK-001",
+      "to": "REQ-WORKFLOW-WAIVER-BULK-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-WORKFLOW-WAIVER-BULK-002",
+      "to": "REQ-WORKFLOW-WAIVER-BULK-002",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-WORKFLOW-WAIVER-BULK-003",
+      "to": "REQ-WORKFLOW-WAIVER-BULK-003",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-WORKFLOW-WAIVER-BULK-004",
+      "to": "REQ-WORKFLOW-WAIVER-BULK-004",
+      "relation": "verifies"
     }
   ],
   "diagnostics": [],
   "fingerprints": {
-    ".github/skills/sdd-change/SKILL.md": "7fef3ffa6ca145f4bf011b2cc4e27bb182cb9d7b1fa697e09768c8d1f5af82fd",
+    ".github/skills/sdd-change/SKILL.md": "b9c7960768a2712d4da67cc8d5e28c99cb921a2b1dd718d99ce7e28d1db45e79",
     ".github/skills/sdd-design/SKILL.md": "7f9a4fa13b420f8436b4b33704111f3b70248408fe209ab7ee98a258b2712d66",
     ".github/skills/sdd-formal-codegraph/SKILL.md": "67944f2599609922f4957a1d99fa0f2139a21c1eb08e7264b5d72e45c2204721",
     ".github/skills/sdd-implementation/SKILL.md": "5d0465684458547ea65a4502dcfbf842115f188af5a9b054fa440932ee8362ee",
@@ -7259,6 +7491,8 @@
     ".musubix/features/workflow-multi-session-verification/requirements.md": "2ae290a162d6318ff2567a0fe6f44aa38f40e38b0b9344fd1c1c36bfc3937aa1",
     ".musubix/features/workflow-session-shutdown/design.md": "225d1718c0ea1628dae251f06b1c5ddafda9a7ae92a15e3d961efbea51c0e0ac",
     ".musubix/features/workflow-session-shutdown/requirements.md": "2b8d72e2fcb1dbf5bc24ee733182cf2b692e33c50550ce7a8de2e9c5a8c32c0d",
+    ".musubix/features/workflow-waiver-bulk-recording/design.md": "c956f35169212cedc0fc66a11902200c7dda10230fc326075644d908f29580ae",
+    ".musubix/features/workflow-waiver-bulk-recording/requirements.md": "361cfba519d4ab189a2091cf7b99133b9c005f69fb28aa2d77bba17bd7ee7b33",
     "packages/analysis/src/adapters.ts": "a3c516b7c06dee11bc9786da53cf97b087543e0304d0bce8d678aa01670f53e2",
     "packages/analysis/src/approval-domains.ts": "bc45836374021f86c4c2085184185546cc4291880aea32b9084188545b9394b4",
     "packages/analysis/src/approval-record.ts": "838294de204a006daf5a7048a69153b573d5b61e5c9d8f3d66332b27a5b577bf",
@@ -7285,9 +7519,9 @@
     "packages/analysis/src/trace.ts": "efede75c79c7dc4828a0259c46ca870a7e15042c35edd94a107349a83eb56ec9",
     "packages/analysis/src/workflow-types.ts": "427c3450352eb7799e2b49933e267f9888e87d51dc5c6482b5b1378620205309",
     "packages/analysis/src/workflow-waiver.ts": "7c09999654d03fbc96879f3e6726d505706cdcba36940c00d46ac208d94f972f",
-    "packages/analysis/src/workflow.ts": "54d1dc9114b42b325a32a88f1bf503ff9ba57157651ec7b2b89135a0177c7357",
+    "packages/analysis/src/workflow.ts": "fa63488de60794c10e829c79168d5bac455aec0b02a2726705a0441da60b015c",
     "packages/cli/src/install.ts": "3b7d03d1864493ea9caee34855e4fd82ec970d321a205ee3378c8f13a4a34e17",
-    "packages/cli/src/main.ts": "ad7962ce4e34cab6261f69242da9660f34f93e97ee1a03306f24d4a57c5d19d5",
+    "packages/cli/src/main.ts": "d927e07234257423d8dbcfe4bb6cec6f5b87efb83b8a29583866d953b804456d",
     "packages/domain/src/constitution.ts": "514278499642ff46ed902864b9192f566b116b4f92eb3fafa6b62588335e170a",
     "packages/domain/src/design.ts": "fc1ca4d3249abc9705ba4b6f296e0f4fa3b3d6ff6d5d82e51c99f49fc7a93ac9",
     "packages/domain/src/index.ts": "43243e9279e3826b23cd8d8b4365854974112ce4cf17cfb0f0ee32e6b28e9cc6",
@@ -7341,6 +7575,7 @@
     "tests/upgrade-workflow.test.ts": "487339a54f3169f91799aedab78f41813fc16b07f9825d165ec4e65157b1f802",
     "tests/workflow-evidence-waiver.test.ts": "aeae933b0f0e9317e0cc42b8173bf3345ef910b9ad2b809a4bd6a29b9cf3692c",
     "tests/workflow-multi-session-verification.test.ts": "e5134e981431d14c8f1c1ea7f25a0e78a391ead86e3b83ed3ffc0dc91f46d58a",
+    "tests/workflow-waiver-bulk-recording.test.ts": "031a81460fc182d6433e3d4768a5aef8794d169709c6b5a35f3ad732397b438a",
     "vitest.config.ts": "2338c9c1fc7792c2c04fb596d182829c7259f1c60617f86751169d35c914ae54"
   }
 }

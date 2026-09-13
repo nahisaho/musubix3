@@ -1,5 +1,26 @@
 # Changelog
 
+## 0.1.18 - 2026-09-13
+
+New feature: bulk workflow-waiver recording, resolving the repeated
+release-approval blocking pattern from `workflow-verify`/waiver reconciliation
+friction (GitHub Issues #21/#22/#23, this change: #24).
+
+- `musubix3 workflow waiver record-all --approver <name> --reason <text>
+  --confirm` waives every currently-outstanding waivable declaration-scoped
+  workflow diagnostic across the whole reconciliation report in one
+  all-or-nothing call, instead of requiring one `workflow waiver record`
+  invocation per diagnostic.
+- Rejects (recording nothing) if any bulk waiver precondition fails first:
+  malformed waiver evidence, an invalid waiver chain, a blank
+  `--approver`/`--reason`, or an outstanding `WORKFLOW_INVOCATION_UNVERIFIED`
+  diagnostic (which only `workflow-verify` having actually run this session
+  can resolve).
+- Idempotent: with zero remaining waivable candidates it succeeds and records
+  nothing.
+- Spec: `REQ-WORKFLOW-WAIVER-BULK-001..004`,
+  `DES-WORKFLOW-WAIVER-BULK-001..003`, tracked end-to-end in `CHANGE-0012`.
+
 ## 0.1.17 - 2026-09-13
 
 `gate --changed` remediation for the change-evidence-waiver feature
