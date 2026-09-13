@@ -590,7 +590,28 @@ export function createProgram(): Command {
     result(report, !!options.json);
   });
   for (const phase of ['red', 'green', 'refactor'] as const) {
-    common(tdd.command(`${phase} <test-id>`))
+    const phaseCommand = common(tdd.command(`${phase} <test-id>`));
+    /* @id CODE-TDD-ADOPTION-WARNING-003
+     * @implements REQ-TDD-ADOPTION-WARNING-002
+     * @design DES-TDD-ADOPTION-WARNING-003
+     */
+    // Only `red` gets its own description: `--help` renders a subcommand's
+    // own description, never the parent `tdd` command's, so the adoption
+    // warning documented here must live on `red` specifically and not leak
+    // onto `green`/`refactor` via the shared loop.
+    if (phase === 'red') {
+      phaseCommand.description(
+        'Record a failing (Red) test as TDD evidence for a requirement. Persisting the '
+        + "project's first cycle here makes gate's tdd check required project-wide for "
+        + 'every mandatory requirement (each uncovered one surfaced as '
+        + 'TDD_REQUIREMENT_UNCOVERED); "approval record release" always runs the full '
+        + '(non-\'--changed\') gate, so it is blocked by any resulting '
+        + 'TDD_REQUIREMENT_UNCOVERED diagnostics. "tdd migrate" cannot bulk-onboard '
+        + 'previously-uncovered requirements: it only re-fingerprints a requirement that '
+        + 'already has a valid Green cycle.',
+      );
+    }
+    phaseCommand
       .requiredOption('--requirement <id>', 'Requirement ID verified by the test')
       .requiredOption('--command <name>', 'Configured command name to execute')
       .action(async (testId: string, options: {
@@ -603,7 +624,9 @@ export function createProgram(): Command {
           options.requirement,
           options.command,
         );
-        output(evidence, !!options.json, `${phase.toUpperCase()}: ${evidence.valid ? 'PASS' : 'FAIL'} (${testId})`);
+        const summaryLines = [`${phase.toUpperCase()}: ${evidence.valid ? 'PASS' : 'FAIL'} (${testId})`];
+        for (const warning of evidence.warnings ?? []) summaryLines.push(warning.message);
+        output(evidence, !!options.json, summaryLines.join('\n'));
         if (!evidence.valid) process.exitCode = 1;
       });
   }

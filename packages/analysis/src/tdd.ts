@@ -30,6 +30,7 @@ export interface TddPhaseEvidence {
   order?: number;
   recordedAt: string;
   diagnostics: Diagnostic[];
+  warnings?: Diagnostic[];
 }
 
 export type TddChainPhase = TddPhase | 'migrate' | 'void';
@@ -516,6 +517,47 @@ export async function runTddPhase(
   }
   const cycleId = phase === 'red' ? crypto.randomUUID() : previous?.cycleId;
   if (!cycleId) throw new Error(`A cycle ID is required before recording ${phase}.`);
+  /* @id CODE-TDD-ADOPTION-WARNING-001
+   * @implements REQ-TDD-ADOPTION-WARNING-001
+   * @design DES-TDD-ADOPTION-WARNING-001
+   */
+  // Fires only on the call that persists the project's very first cycle
+  // (evidence.cycles.length === 0 immediately before this call's push, and
+  // only on 'red'), regardless of whether that Red is itself valid. The
+  // causality clause mirrors gate.ts's `required('tdd') || tdd.present ||
+  // hasChangeDocuments` formula (excluding tdd.present, which this call is
+  // about to make true) without importing gate.ts, to avoid a circular
+  // module dependency (gate.ts already imports from tdd.ts).
+  let warnings: Diagnostic[] | undefined;
+  if (phase === 'red' && evidence.cycles.length === 0) {
+    const otherMandatoryRequirements = trace.nodes.filter((node) =>
+      node.kind === 'requirement' && node.mandatory && node.id !== requirementId);
+    const uncoveredIds = otherMandatoryRequirements
+      .filter((requirement) => {
+        const verifiedTests = trace.edges
+          .filter((edge) => edge.relation === 'verifies' && edge.to === requirement.id)
+          .map((edge) => edge.from);
+        return !evidence.cycles.some((cycle) =>
+          cycle.requirementId === requirement.id
+          && verifiedTests.includes(cycle.testId)
+          && cycle.red.valid
+          && cycle.green?.valid);
+      })
+      .map((requirement) => requirement.id);
+    const hasChangeDocuments = (await files(root)).some((path) => /^\.musubix\/changes\/CHANGE-\d+\.md$/.test(path));
+    const alreadyRequired = config.requiredChecks.includes('tdd') || hasChangeDocuments;
+    const uncoveredText = uncoveredIds.length
+      ? `Other uncovered mandatory requirements: ${uncoveredIds.join(', ')}.`
+      : 'There are zero other uncovered mandatory requirements.';
+    const activationText = alreadyRequired
+      ? "gate's tdd check was already required; this call activates its project-wide coverage evaluation for the first time."
+      : "this call is what makes gate's tdd check required for the entire project.";
+    warnings = [{
+      code: 'TDD_ADOPTION_PROJECT_WIDE',
+      severity: 'warning',
+      message: `Recording this Red cycle persists the project's first TDD evidence. ${activationText} ${uncoveredText} ${requirementId} itself remains uncovered until it also has a valid Green phase.`,
+    }];
+  }
   const result: TddPhaseEvidence = {
     phase,
     valid: !diagnostics.length,
@@ -532,6 +574,7 @@ export async function runTddPhase(
     executionId: crypto.randomUUID(),
     recordedAt: new Date().toISOString(),
     diagnostics,
+    ...(warnings ? { warnings } : {}),
   };
   result.order = (await appendEvidenceOrder(root, {
     kind: 'tdd',

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-13T09:37:31.975Z",
+  "generatedAt": "2026-09-13T10:43:29.044Z",
   "nodes": [
     {
       "id": "CODE-SESSION-SCOPED-DEVELOPMENT-001",
@@ -168,6 +168,12 @@
       "id": "ADR-0027",
       "kind": "adr",
       "path": ".musubix/decisions/ADR-0027.md",
+      "line": 1
+    },
+    {
+      "id": "ADR-0028",
+      "kind": "adr",
+      "path": ".musubix/decisions/ADR-0028.md",
       "line": 1
     },
     {
@@ -1159,6 +1165,38 @@
       "mandatory": true
     },
     {
+      "id": "DES-TDD-ADOPTION-WARNING-001",
+      "kind": "design",
+      "path": ".musubix/features/tdd-adoption-warning/design.md",
+      "line": 7
+    },
+    {
+      "id": "DES-TDD-ADOPTION-WARNING-002",
+      "kind": "design",
+      "path": ".musubix/features/tdd-adoption-warning/design.md",
+      "line": 69
+    },
+    {
+      "id": "DES-TDD-ADOPTION-WARNING-003",
+      "kind": "design",
+      "path": ".musubix/features/tdd-adoption-warning/design.md",
+      "line": 90
+    },
+    {
+      "id": "REQ-TDD-ADOPTION-WARNING-001",
+      "kind": "requirement",
+      "path": ".musubix/features/tdd-adoption-warning/requirements.md",
+      "line": 34,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-TDD-ADOPTION-WARNING-002",
+      "kind": "requirement",
+      "path": ".musubix/features/tdd-adoption-warning/requirements.md",
+      "line": 41,
+      "mandatory": true
+    },
+    {
       "id": "DES-TDD-CYCLE-VOID-001",
       "kind": "design",
       "path": ".musubix/features/tdd-cycle-void/design.md",
@@ -1982,61 +2020,67 @@
       "id": "CODE-TDD-FINGERPRINT-SCOPING-001",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 147
+      "line": 148
     },
     {
       "id": "CODE-TDD-FINGERPRINT-MIGRATION-001",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 178
+      "line": 179
     },
     {
       "id": "CODE-TDD-CYCLE-VOID-006",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 212
+      "line": 213
     },
     {
       "id": "CODE-TDD-CYCLE-VOID-002",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 289
+      "line": 290
     },
     {
       "id": "CODE-TDD-CYCLE-VOID-004",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 328
+      "line": 329
     },
     {
       "id": "CODE-TDD-CYCLE-VOID-001",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 363
+      "line": 364
     },
     {
       "id": "CODE-TDD-GREEN-REQUIREMENT-SCOPING-001",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 441
+      "line": 442
+    },
+    {
+      "id": "CODE-TDD-ADOPTION-WARNING-001",
+      "kind": "code",
+      "path": "packages/analysis/src/tdd.ts",
+      "line": 520
     },
     {
       "id": "CODE-TDD-SUPERSEDED-CYCLE-SCOPING-001",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 609
+      "line": 652
     },
     {
       "id": "CODE-TDD-CYCLE-VOID-003",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 627
+      "line": 670
     },
     {
       "id": "CODE-TDD-CYCLE-VOID-005",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 638
+      "line": 681
     },
     {
       "id": "CODE-SESSION-SCOPED-DEVELOPMENT-003",
@@ -2199,6 +2243,12 @@
       "kind": "code",
       "path": "packages/cli/src/main.ts",
       "line": 509
+    },
+    {
+      "id": "CODE-TDD-ADOPTION-WARNING-003",
+      "kind": "code",
+      "path": "packages/cli/src/main.ts",
+      "line": 594
     },
     {
       "id": "CODE-DESIGN-ADR-NONE-EXEMPTION-001",
@@ -2847,6 +2897,18 @@
       "kind": "test",
       "path": "tests/scaffold-artifact.test.ts",
       "line": 75
+    },
+    {
+      "id": "TEST-TDD-ADOPTION-WARNING-001",
+      "kind": "test",
+      "path": "tests/tdd-adoption-warning.test.ts",
+      "line": 15
+    },
+    {
+      "id": "TEST-TDD-ADOPTION-WARNING-002",
+      "kind": "test",
+      "path": "tests/tdd-adoption-warning.test.ts",
+      "line": 121
     },
     {
       "id": "TEST-TDD-CYCLE-VOID-001",
@@ -3956,6 +4018,26 @@
       "from": "DES-SESSION-SCOPED-DEVELOPMENT-002",
       "to": "DES-SESSION-SCOPED-DEVELOPMENT-001",
       "relation": "depends-on"
+    },
+    {
+      "from": "DES-TDD-ADOPTION-WARNING-001",
+      "to": "REQ-TDD-ADOPTION-WARNING-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0028",
+      "to": "DES-TDD-ADOPTION-WARNING-001",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-TDD-ADOPTION-WARNING-002",
+      "to": "REQ-TDD-ADOPTION-WARNING-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-TDD-ADOPTION-WARNING-003",
+      "to": "REQ-TDD-ADOPTION-WARNING-002",
+      "relation": "satisfies"
     },
     {
       "from": "DES-TDD-CYCLE-VOID-001",
@@ -5633,6 +5715,16 @@
       "relation": "implements"
     },
     {
+      "from": "CODE-TDD-ADOPTION-WARNING-001",
+      "to": "REQ-TDD-ADOPTION-WARNING-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-TDD-ADOPTION-WARNING-001",
+      "to": "DES-TDD-ADOPTION-WARNING-001",
+      "relation": "implements"
+    },
+    {
       "from": "CODE-TDD-SUPERSEDED-CYCLE-SCOPING-001",
       "to": "REQ-TDD-SUPERSEDED-CYCLE-SCOPING-001",
       "relation": "implements"
@@ -6155,6 +6247,16 @@
     {
       "from": "CODE-CHANGE-RECORD-FAIL-FAST-002",
       "to": "DES-CHANGE-RECORD-FAIL-FAST-005",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-TDD-ADOPTION-WARNING-003",
+      "to": "REQ-TDD-ADOPTION-WARNING-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-TDD-ADOPTION-WARNING-003",
+      "to": "DES-TDD-ADOPTION-WARNING-003",
       "relation": "implements"
     },
     {
@@ -6783,6 +6885,16 @@
       "relation": "verifies"
     },
     {
+      "from": "TEST-TDD-ADOPTION-WARNING-001",
+      "to": "REQ-TDD-ADOPTION-WARNING-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-TDD-ADOPTION-WARNING-002",
+      "to": "REQ-TDD-ADOPTION-WARNING-002",
+      "relation": "verifies"
+    },
+    {
       "from": "TEST-TDD-CYCLE-VOID-001",
       "to": "REQ-TDD-CYCLE-VOID-001",
       "relation": "verifies"
@@ -7090,6 +7202,7 @@
     ".musubix/decisions/ADR-0025.md": "21b4dacafba6b1c790981fdcde5f74e2d6c821e2058eb64757617d90f3897158",
     ".musubix/decisions/ADR-0026.md": "193efbb4d778f4aa9246b5e9e3e6ab1e8e86a9ddac40a189e33f2533013d8531",
     ".musubix/decisions/ADR-0027.md": "1661295df8d1cf91a49ad928d576be5c382cf132f1a211b1b3f63987ff401de1",
+    ".musubix/decisions/ADR-0028.md": "e9507066f52f57e58105e16ceac3196fad091912edbe1a5c89e2705664c4bb22",
     ".musubix/features/adapter-pattern-recognition/design.md": "a8e0c4a11f626cb4a41c9b5b53359c072ec0c3161f704791f42ba8af38124a70",
     ".musubix/features/adapter-pattern-recognition/requirements.md": "5731561a0a04982b8a5c305bdeeae6084bcf0ee8846f295eaaaabc823d1f9793",
     ".musubix/features/approval-domain-scoping/design.md": "e8731f1e3094aa22192ae2ae5986fb4dc9a7698f7cfe66961e1342f6e0743bd9",
@@ -7124,6 +7237,8 @@
     ".musubix/features/requirements-design-scaffold/requirements.md": "0a968bc27756e715f68f22a8f6d65fc8fefce09ac79d1c8d0137282b821ebc45",
     ".musubix/features/session-scoped-development/design.md": "66a65a3fdc1747569f42b42798a88377ae2ff93e32ff2cc5e0bae5c62c2e9a42",
     ".musubix/features/session-scoped-development/requirements.md": "640aece168b4e6848c0d1e6371f0bfeb433fa8addfd064a77d050891d69d9a4f",
+    ".musubix/features/tdd-adoption-warning/design.md": "0ecbc7966f90db909b6fd2afb00d13a34a9c799cbb3d75192692aac9e854fd27",
+    ".musubix/features/tdd-adoption-warning/requirements.md": "9c81cc8bbb20ede59840340de1321972679d00aa97105e8fe5069f22bf4efd12",
     ".musubix/features/tdd-cycle-void/design.md": "96b0bd3707925d96f6b8190df6abc754c3b7d24aff9c39d644d0f9016ebf4ac3",
     ".musubix/features/tdd-cycle-void/requirements.md": "331aa96ff3a63f0b20c6febc9bf1635fe93921cd30516c9b5c5066cde9fe0abe",
     ".musubix/features/tdd-fingerprint-migration/design.md": "3ce067571633c34991aeeb30067a5f76b1569b7fe017717d3f04d94ead17b5ac",
@@ -7165,14 +7280,14 @@
     "packages/analysis/src/performance.ts": "1145c285582ff188e90263b4d9d9f28ca49104e79b8299b2ecd3e278d8ef80ac",
     "packages/analysis/src/process.ts": "8184c7f7c4c58cdc6987fd9d2ec2c02ce8557f94b6aa30853a0c6056ba79cf4a",
     "packages/analysis/src/scaffold-artifact.ts": "e5e6fa31fbd97ce4dcc294ab26966eb0a4a2507eb4025a7a8a522831e7fb886d",
-    "packages/analysis/src/tdd.ts": "20234a6b35d47bbbc7474d6d7843ed0d614a392dbf71fc1e83c49f8c60963a0d",
+    "packages/analysis/src/tdd.ts": "96a9eef2bf0b1fbd034679be854e1a86994e6c0c0fd7ea4569e3f895ac115f80",
     "packages/analysis/src/test-report.ts": "41c76811bfcb5e286bf097bf2f6aaf6cd5a414202efe8108f28219ecca063a01",
     "packages/analysis/src/trace.ts": "efede75c79c7dc4828a0259c46ca870a7e15042c35edd94a107349a83eb56ec9",
     "packages/analysis/src/workflow-types.ts": "427c3450352eb7799e2b49933e267f9888e87d51dc5c6482b5b1378620205309",
     "packages/analysis/src/workflow-waiver.ts": "7c09999654d03fbc96879f3e6726d505706cdcba36940c00d46ac208d94f972f",
     "packages/analysis/src/workflow.ts": "54d1dc9114b42b325a32a88f1bf503ff9ba57157651ec7b2b89135a0177c7357",
     "packages/cli/src/install.ts": "3b7d03d1864493ea9caee34855e4fd82ec970d321a205ee3378c8f13a4a34e17",
-    "packages/cli/src/main.ts": "81ac342759c1fb98056c54a8691724ff638fc8afc51632d8cdf3cf4b52e32bff",
+    "packages/cli/src/main.ts": "ad7962ce4e34cab6261f69242da9660f34f93e97ee1a03306f24d4a57c5d19d5",
     "packages/domain/src/constitution.ts": "514278499642ff46ed902864b9192f566b116b4f92eb3fafa6b62588335e170a",
     "packages/domain/src/design.ts": "fc1ca4d3249abc9705ba4b6f296e0f4fa3b3d6ff6d5d82e51c99f49fc7a93ac9",
     "packages/domain/src/index.ts": "43243e9279e3826b23cd8d8b4365854974112ce4cf17cfb0f0ee32e6b28e9cc6",
@@ -7215,6 +7330,7 @@
     "tests/p4-workflow-streaming.test.ts": "6389d083b5bca81f88bbed2f54228a17d711cb8fa16a30a68614eb59bfb1d8bf",
     "tests/php-verification.test.ts": "bc70946615f3faa3cb3b5467e552140ba2ec8e25fb4d5276f72f65393ed04315",
     "tests/scaffold-artifact.test.ts": "a8f074cdd9279f1b7c540fa1a721642ca762de9cd155f0894526a8f3daabc7d6",
+    "tests/tdd-adoption-warning.test.ts": "fa0fc6267ad829bb4955dc352e986585f92daecd17865da7036ff2b9087d57e7",
     "tests/tdd-cycle-void.test.ts": "e7ea6272d9b5e0ab5377df280ba01dd38c8d1496f3a0c0f36f2053ad1b660baf",
     "tests/tdd-fingerprint-migration.test.ts": "f5263df29b0987e4b7480c40b79fe686b317520e98fe0a6e6f3bcc68c7eca1da",
     "tests/tdd-fingerprint-scoping.test.ts": "e10a3ee1d4a6d50d69051a84884ef61d6ecff5d9c47b37b25240a95821e0608e",

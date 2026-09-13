@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-13T09:37:36.235Z",
-  "totalRequirements": 140,
+  "generatedAt": "2026-09-13T10:43:33.499Z",
+  "totalRequirements": 142,
   "modeledRequirements": 9,
-  "modeledFraction": 0.06428571428571428,
+  "modeledFraction": 0.06338028169014084,
   "result": {
     "valid": true,
     "abstraction": "Consistency of explicit branch-scoped conditional, exact unit-normalized integer numeric, bounded temporal interval, deterministic state-transition, and controlled unconditional Boolean constraints; not implementation correctness.",
@@ -157,6 +157,8 @@
       "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-006",
       "REQ-SESSION-SCOPED-DEVELOPMENT-001",
       "REQ-SESSION-SCOPED-DEVELOPMENT-002",
+      "REQ-TDD-ADOPTION-WARNING-001",
+      "REQ-TDD-ADOPTION-WARNING-002",
       "REQ-TDD-CYCLE-VOID-001",
       "REQ-TDD-CYCLE-VOID-002",
       "REQ-TDD-CYCLE-VOID-003",
@@ -665,6 +667,16 @@
       {
         "code": "FORMAL_UNSUPPORTED",
         "severity": "warning",
+        "message": "REQ-TDD-ADOPTION-WARNING-001 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-TDD-ADOPTION-WARNING-002 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
         "message": "REQ-TDD-CYCLE-VOID-001 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
       },
       {
@@ -882,6 +894,7 @@
     ".musubix/features/model-correspondence-evidence-guidance/requirements.md": "d7ca8b823ddfd3265e89f2892003e5eb95faad7e9b3972b249de5f2902446511",
     ".musubix/features/requirements-design-scaffold/requirements.md": "0a968bc27756e715f68f22a8f6d65fc8fefce09ac79d1c8d0137282b821ebc45",
     ".musubix/features/session-scoped-development/requirements.md": "640aece168b4e6848c0d1e6371f0bfeb433fa8addfd064a77d050891d69d9a4f",
+    ".musubix/features/tdd-adoption-warning/requirements.md": "9c81cc8bbb20ede59840340de1321972679d00aa97105e8fe5069f22bf4efd12",
     ".musubix/features/tdd-cycle-void/requirements.md": "331aa96ff3a63f0b20c6febc9bf1635fe93921cd30516c9b5c5066cde9fe0abe",
     ".musubix/features/tdd-fingerprint-migration/requirements.md": "e8ac10f4367e8b43e427d2a27616debbd836194854a86da4850773b9cde9e1ae",
     ".musubix/features/tdd-fingerprint-scoping/requirements.md": "d3e480fc0ef92edb87f2c22d1d67a00fc177fde913c68d0187aa45375b14d4c9",

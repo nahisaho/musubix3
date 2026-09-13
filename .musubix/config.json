@@ -365,6 +365,18 @@
       "adapter": "vitest",
       "required": true,
       "timeoutMs": 120000
+    },
+    {
+      "name": "tdd-adoption-warning-tests",
+      "command": "npx",
+      "args": [
+        "vitest",
+        "run",
+        "tests/tdd-adoption-warning.test.ts"
+      ],
+      "adapter": "vitest",
+      "required": true,
+      "timeoutMs": 120000
     }
   ],
   "requiredChecks": [

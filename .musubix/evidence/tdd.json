@@ -8787,6 +8787,92 @@
         "diagnostics": [],
         "order": 727
       }
+    },
+    {
+      "cycleId": "7f701d9a-ba07-4072-adc9-6fc5dfa73b80",
+      "requirementId": "REQ-TDD-ADOPTION-WARNING-001",
+      "testId": "TEST-TDD-ADOPTION-WARNING-001",
+      "testPath": "tests/tdd-adoption-warning.test.ts",
+      "commandName": "tdd-adoption-warning-tests",
+      "red": {
+        "phase": "red",
+        "valid": true,
+        "scoped": true,
+        "resultObserved": true,
+        "testStatus": "failed",
+        "reportSha256": "dae7e768ecbd7f684052e12bea1bd06eb77954d21e226acbeada076df300ef7d",
+        "commandSha256": "1943c1d11f34814204061d3b7298850ff4f4dfbff2e5b909baf6a4a2e73d368b",
+        "outputSha256": "ef3b4b5df3131161f7ab3c1d4282079e644b36f9c2e603aa02ce3ea74f6ea87d",
+        "exitCode": 1,
+        "durationMs": 1595,
+        "testFingerprint": "06643ab15bacd0172fd83f86912011b4fe895d364b294cc94a80200f10fc2a15",
+        "sourceFingerprint": "427596d056d0059a02db899960e522d4cb71d22a40107cf5b38a8784ce743c25",
+        "executionId": "0f7a5d4b-ae80-4969-a832-8f248447f688",
+        "recordedAt": "2026-09-13T10:19:46.166Z",
+        "diagnostics": [],
+        "order": 728
+      },
+      "green": {
+        "phase": "green",
+        "valid": true,
+        "scoped": true,
+        "resultObserved": true,
+        "testStatus": "passed",
+        "reportSha256": "b543a6d230e76dee797041309ece09438942404d5d5a65d34eadc8c7227df11f",
+        "commandSha256": "1943c1d11f34814204061d3b7298850ff4f4dfbff2e5b909baf6a4a2e73d368b",
+        "outputSha256": "ef3b4b5df3131161f7ab3c1d4282079e644b36f9c2e603aa02ce3ea74f6ea87d",
+        "exitCode": 0,
+        "durationMs": 1691,
+        "testFingerprint": "06643ab15bacd0172fd83f86912011b4fe895d364b294cc94a80200f10fc2a15",
+        "sourceFingerprint": "9a8f4def564c0dcf1e0b858354a72103501f5a9356c4f2f8cc2a095e86e4a98b",
+        "executionId": "a5936675-4571-4f86-afb6-9a707dd83f99",
+        "recordedAt": "2026-09-13T10:20:00.934Z",
+        "diagnostics": [],
+        "order": 729
+      }
+    },
+    {
+      "cycleId": "c88e911e-a46f-4c7a-808d-c89fc8c6515c",
+      "requirementId": "REQ-TDD-ADOPTION-WARNING-002",
+      "testId": "TEST-TDD-ADOPTION-WARNING-002",
+      "testPath": "tests/tdd-adoption-warning.test.ts",
+      "commandName": "tdd-adoption-warning-tests",
+      "red": {
+        "phase": "red",
+        "valid": true,
+        "scoped": true,
+        "resultObserved": true,
+        "testStatus": "failed",
+        "reportSha256": "aee60b66f515f0c749385079e46c9680fe28af09fca425db8f04c2d51ccb269d",
+        "commandSha256": "16619712ed7a23cc6d3edcba621633192820ab81c853c6526ec91824303c8c98",
+        "outputSha256": "7bc49f0995f04ee03f6974f83ad5324655458ee506f4eaf8db53fd0519c2e161",
+        "exitCode": 1,
+        "durationMs": 1915,
+        "testFingerprint": "6a857e0d460799f1c5da39a49df23bce76e9131c3d400f1f803929d79a4ca87b",
+        "sourceFingerprint": "773cd78d472b2d541883e0dd73d9cd53ab9fe1a1280d477b4856ce25bfd73014",
+        "executionId": "ba8617e1-bc29-49d9-a4e5-33ddb167c2db",
+        "recordedAt": "2026-09-13T10:20:14.973Z",
+        "diagnostics": [],
+        "order": 730
+      },
+      "green": {
+        "phase": "green",
+        "valid": true,
+        "scoped": true,
+        "resultObserved": true,
+        "testStatus": "passed",
+        "reportSha256": "24c2c26a7a26c664833260954a8243289ecddfb422a692048102a85f99788543",
+        "commandSha256": "16619712ed7a23cc6d3edcba621633192820ab81c853c6526ec91824303c8c98",
+        "outputSha256": "7bc49f0995f04ee03f6974f83ad5324655458ee506f4eaf8db53fd0519c2e161",
+        "exitCode": 0,
+        "durationMs": 1925,
+        "testFingerprint": "6a857e0d460799f1c5da39a49df23bce76e9131c3d400f1f803929d79a4ca87b",
+        "sourceFingerprint": "9a8f4def564c0dcf1e0b858354a72103501f5a9356c4f2f8cc2a095e86e4a98b",
+        "executionId": "f78d1c94-2a90-47d5-9bbf-42bf9719574a",
+        "recordedAt": "2026-09-13T10:20:26.569Z",
+        "diagnostics": [],
+        "order": 731
+      }
     }
   ],
   "chain": [
@@ -13649,6 +13735,54 @@
       "phaseEvidenceSha256": "13fde91eb671223f3abd2fcdb4a35f45effd9461a9a10060f755cfe116e91878",
       "previousSha256": "1c9180247ae5a42a28b96589c3cae8368b2f964756c245d4bf2dbd60ec7cad38",
       "recordSha256": "55871c370cd343fa79e52d97b6aa725bb809d6def672ecdc163288d6a56a3107"
+    },
+    {
+      "sequence": 406,
+      "cycleId": "7f701d9a-ba07-4072-adc9-6fc5dfa73b80",
+      "requirementId": "REQ-TDD-ADOPTION-WARNING-001",
+      "testId": "TEST-TDD-ADOPTION-WARNING-001",
+      "testPath": "tests/tdd-adoption-warning.test.ts",
+      "commandName": "tdd-adoption-warning-tests",
+      "phase": "red",
+      "phaseEvidenceSha256": "319c45efe93731295e2a9be9fb02e10bf08edae079edd93e6744fd594c4e94a7",
+      "previousSha256": "55871c370cd343fa79e52d97b6aa725bb809d6def672ecdc163288d6a56a3107",
+      "recordSha256": "62d27a7037d3bbcc67b74921a99855ed4099cb9f3786f9e5e2d67920f0011e14"
+    },
+    {
+      "sequence": 407,
+      "cycleId": "7f701d9a-ba07-4072-adc9-6fc5dfa73b80",
+      "requirementId": "REQ-TDD-ADOPTION-WARNING-001",
+      "testId": "TEST-TDD-ADOPTION-WARNING-001",
+      "testPath": "tests/tdd-adoption-warning.test.ts",
+      "commandName": "tdd-adoption-warning-tests",
+      "phase": "green",
+      "phaseEvidenceSha256": "7f0649f3aaf20aef817e1186ea093a501cf8bb3887cc04c61e0c74b41990f7aa",
+      "previousSha256": "62d27a7037d3bbcc67b74921a99855ed4099cb9f3786f9e5e2d67920f0011e14",
+      "recordSha256": "34de384c1350e1ed619fe341f8f6db582abff78478ad9dd23b7d9105a7445612"
+    },
+    {
+      "sequence": 408,
+      "cycleId": "c88e911e-a46f-4c7a-808d-c89fc8c6515c",
+      "requirementId": "REQ-TDD-ADOPTION-WARNING-002",
+      "testId": "TEST-TDD-ADOPTION-WARNING-002",
+      "testPath": "tests/tdd-adoption-warning.test.ts",
+      "commandName": "tdd-adoption-warning-tests",
+      "phase": "red",
+      "phaseEvidenceSha256": "fe2091caed47d1f9f89312574ff60f258611653264eae421136be6624931bba9",
+      "previousSha256": "34de384c1350e1ed619fe341f8f6db582abff78478ad9dd23b7d9105a7445612",
+      "recordSha256": "a77fe1c630632d6ed6e3c0d8045951d5e0220a7459a105095cfba8898ad244e6"
+    },
+    {
+      "sequence": 409,
+      "cycleId": "c88e911e-a46f-4c7a-808d-c89fc8c6515c",
+      "requirementId": "REQ-TDD-ADOPTION-WARNING-002",
+      "testId": "TEST-TDD-ADOPTION-WARNING-002",
+      "testPath": "tests/tdd-adoption-warning.test.ts",
+      "commandName": "tdd-adoption-warning-tests",
+      "phase": "green",
+      "phaseEvidenceSha256": "c63068f6a5fc4809578c227a70b190020cea7184b40cb0ddc3c4030326da64aa",
+      "previousSha256": "a77fe1c630632d6ed6e3c0d8045951d5e0220a7459a105095cfba8898ad244e6",
+      "recordSha256": "7a2f3191a01ccd84b125fe485a9125e12fea7d3c2b7da52e464b0b6ab3703404"
     }
   ]
 }
