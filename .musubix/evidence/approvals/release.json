@@ -163,7 +163,7 @@
     "packages/analysis/src/workflow.ts": "fa63488de60794c10e829c79168d5bac455aec0b02a2726705a0441da60b015c",
     "packages/cli/package.json": "e978f271214b4bc31f7e4d64cd1c545d81e4f4e60116e3b8dd42f37dba6f5006",
     "packages/cli/src/install.ts": "3b7d03d1864493ea9caee34855e4fd82ec970d321a205ee3378c8f13a4a34e17",
-    "packages/cli/src/main.ts": "d927e07234257423d8dbcfe4bb6cec6f5b87efb83b8a29583866d953b804456d",
+    "packages/cli/src/main.ts": "d3c295351fd6c9bffe6d310cf769a5f5a9f265f8978bcf05b4061b3f0d5bc59f",
     "packages/domain/package.json": "954c83f6d08ca369c52ec3c05fdf4f1dc39bbaa255db2491be1de1b2bf5e8bce",
     "packages/domain/src/constitution.ts": "514278499642ff46ed902864b9192f566b116b4f92eb3fafa6b62588335e170a",
     "packages/domain/src/design.ts": "fc1ca4d3249abc9705ba4b6f296e0f4fa3b3d6ff6d5d82e51c99f49fc7a93ac9",
@@ -190,7 +190,7 @@
     "tests/change-record-fail-fast.test.ts": "2f69f19332049c206f39b42c3bc2b505ce63173db798d74c5a9ace7064cdfe78",
     "tests/change-record-recordedat-order.test.ts": "5ad61cf31e273dc9cdfe190b21dcc8ffc49d327592e01b6eb0251f4cdda7b149",
     "tests/change-requirement-batches.test.ts": "a170a3e7e8ad9dde66628a15f84343b45a1bfd2e84739d12c03e3eeb9b13d02a",
-    "tests/cli-package.test.ts": "706c58866bb1aff662016b679671d89bec28c629dfae88a44566c06e25931136",
+    "tests/cli-package.test.ts": "baf1547f38051f7e32fdd184aa3bdd1cd549e873e74da3d3e682851fd4e436ea",
     "tests/cli-workflow-ux.test.ts": "53bdc5375bef05b365d725f5a8948393d68ae8cd1116fad8ff36ca3de127a177",
     "tests/command-working-directory.test.ts": "82dc863b1fcc5cd8a5ea1534238ef2f61f15e5d6c5e25d61fce43a7efe9bbc02",
     "tests/design-adr-none-exemption.test.ts": "f8a4771eb8b71a8c83b9ef782e9ed8646ef408aa4169298ab7a02553aa1c9ed7",
@@ -226,7 +226,7 @@
     "tsconfig.json": "b6af14dbfc589cfa05cae4aa39b195f2322cf39d4b4efb5e2e69d0936de4f658",
     "vitest.config.ts": "2338c9c1fc7792c2c04fb596d182829c7259f1c60617f86751169d35c914ae54"
   },
-  "artifactSha256": "c6992d2f3dc39c9da6689df2e27fdc7ebcb848c5e37c5434c3fc8b7bdffca2f2",
+  "artifactSha256": "3f95b3a5a3718449fd20ee54218198632949dae623e049c29edce94070c84691",
   "approver": "nahisaho",
-  "approvedAt": "2026-09-13T13:32:17.434Z"
+  "approvedAt": "2026-09-13T14:09:01.077Z"
 }
