@@ -86,6 +86,25 @@ export function batchFor(batches: ChangeTddBatch[], requirementId: string): Chan
   return batches.find((batch) => batch.requirementIds.includes(requirementId));
 }
 
+/** @id CODE-CHANGE-EVIDENCE-WAIVER-014
+ * @implements REQ-CHANGE-EVIDENCE-WAIVER-016
+ * @design DES-CHANGE-EVIDENCE-WAIVER-001
+ * Relocated here (unchanged body) from `change.ts`, which already imports
+ * from this module, so a `batchForKey` selector living here can reuse this
+ * canonical definition without creating a module-dependency cycle.
+ */
+export function batchKey(requirementIds: string[]): string {
+  return [...new Set(requirementIds)].sort().join(',');
+}
+
+/** @id CODE-CHANGE-EVIDENCE-WAIVER-015
+ * @implements REQ-CHANGE-EVIDENCE-WAIVER-016
+ * @design DES-CHANGE-EVIDENCE-WAIVER-001
+ */
+export function batchForKey(batches: ChangeTddBatch[], key: string): ChangeTddBatch | undefined {
+  return batches.find((batch) => batchKey(batch.requirementIds) === key);
+}
+
 // Pure, side-effect-free re-derivations of the exact "would this diagnostic
 // currently fire" conditions used by change.ts's validators. Kept here (with
 // no dependency on change.ts or change-waiver.ts) so change-waiver.ts can
@@ -143,4 +162,78 @@ export function greenUnprovenCondition(change: ChangeRecord, requirementId: stri
 
 export function completenessTddUnsatisfiedCondition(change: ChangeRecord, requirementId: string, tdd: TddEvidence | null): boolean {
   return !hasValidTddCycle(change, requirementId, tdd);
+}
+
+const tddBatchPhaseNames = ['red', 'implementation', 'green'] as const;
+type TddBatchPhaseName = typeof tddBatchPhaseNames[number];
+
+/** @id CODE-CHANGE-EVIDENCE-WAIVER-016
+ * @implements REQ-CHANGE-EVIDENCE-WAIVER-002
+ * @design DES-CHANGE-EVIDENCE-WAIVER-001
+ * Pure re-derivations of the remaining seven CHANGE-0012 codes' exact
+ * "would this diagnostic currently fire" conditions, mirroring the
+ * pre-existing five-code precedent above, so `recordChangeWaiver` never
+ * needs to import from `change.ts` (which itself imports from
+ * `change-waiver.ts`, so importing `change.ts` here would create a module
+ * dependency cycle).
+ */
+export async function recordMissingCondition(root: string, evidence: ChangeEvidence | null, changeId: string): Promise<boolean> {
+  if (!await exists(within(root, `.musubix/changes/${changeId}.md`))) return false;
+  return evidence === null || !evidence.changes.some((entry) => entry.changeId === changeId);
+}
+
+export function phaseMissingCondition(change: ChangeRecord, phaseName: string): boolean {
+  if ((tddBatchPhaseNames as readonly string[]).includes(phaseName)) {
+    const covered = new Set(effectiveBatches(change)
+      .filter((batch) => batch[phaseName as TddBatchPhaseName])
+      .flatMap((batch) => batch.requirementIds));
+    return change.requirementIds.some((id) => !covered.has(id));
+  }
+  return !change.phases[phaseName as ChangePhase];
+}
+
+export function orderMigrationRequiredPhaseCondition(change: ChangeRecord, phaseName: string): boolean {
+  const item = change.phases[phaseName as ChangePhase];
+  return !!item && !Number.isInteger(item.order);
+}
+
+export function orderMigrationRequiredBatchCondition(change: ChangeRecord, batchPhaseName: string, key: string): boolean {
+  const batch = batchForKey(effectiveBatches(change), key);
+  const item = batch?.[batchPhaseName as TddBatchPhaseName];
+  return !!item && !Number.isInteger(item.order);
+}
+
+export function orderMigrationRequiredRequirementCondition(change: ChangeRecord, requirementId: string, tdd: TddEvidence | null): boolean {
+  const batch = batchFor(effectiveBatches(change), requirementId);
+  if (!batch?.red) return false;
+  const cycles = (tdd?.cycles ?? []).filter((cycle) => cycle.requirementId === requirementId);
+  return cycles.some((cycle) => !Number.isInteger(cycle.red.order) || !Number.isInteger(cycle.green?.order));
+}
+
+export function testsUnchangedCondition(change: ChangeRecord, batch: ChangeTddBatch): boolean {
+  const design = change.phases.design;
+  const red = batch.red;
+  return !!design && !!red && design.fingerprints.tests === red.fingerprints.tests;
+}
+
+export function implementationUnchangedCondition(batch: ChangeTddBatch): boolean {
+  const red = batch.red;
+  const implementation = batch.implementation;
+  return !!red && !!implementation && red.fingerprints.implementation === implementation.fingerprints.implementation;
+}
+
+export function relevantImplementationUnchangedCondition(batch: ChangeTddBatch, requirementId: string): boolean {
+  const red = batch.red;
+  const implementation = batch.implementation;
+  if (!red || !implementation) return false;
+  const before = red.fingerprints.requirementImplementations?.[requirementId];
+  const after = implementation.fingerprints.requirementImplementations?.[requirementId];
+  if (!before || !after || (!before.paths.length && !after.paths.length)) return false;
+  return JSON.stringify(before.fingerprints) === JSON.stringify(after.fingerprints);
+}
+
+export function testChangedAfterRedCondition(batch: ChangeTddBatch): boolean {
+  const red = batch.red;
+  const green = batch.green;
+  return !!red && !!green && red.fingerprints.tests !== green.fingerprints.tests;
 }

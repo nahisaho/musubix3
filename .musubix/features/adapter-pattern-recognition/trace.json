@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-12T14:44:13.769Z",
+  "generatedAt": "2026-09-13T01:04:11.086Z",
   "nodes": [
     {
       "id": "CODE-SESSION-SCOPED-DEVELOPMENT-001",
@@ -457,129 +457,136 @@
       "id": "DES-CHANGE-EVIDENCE-WAIVER-002",
       "kind": "design",
       "path": ".musubix/features/change-evidence-waiver/design.md",
-      "line": 150
+      "line": 258
     },
     {
       "id": "DES-CHANGE-EVIDENCE-WAIVER-003",
       "kind": "design",
       "path": ".musubix/features/change-evidence-waiver/design.md",
-      "line": 235
+      "line": 497
     },
     {
       "id": "DES-CHANGE-EVIDENCE-WAIVER-004",
       "kind": "design",
       "path": ".musubix/features/change-evidence-waiver/design.md",
-      "line": 268
+      "line": 560
     },
     {
       "id": "DES-CHANGE-EVIDENCE-WAIVER-005",
       "kind": "design",
       "path": ".musubix/features/change-evidence-waiver/design.md",
-      "line": 362
+      "line": 698
     },
     {
       "id": "REQ-CHANGE-EVIDENCE-WAIVER-001",
       "kind": "requirement",
       "path": ".musubix/features/change-evidence-waiver/requirements.md",
-      "line": 43,
+      "line": 72,
       "mandatory": true
     },
     {
       "id": "REQ-CHANGE-EVIDENCE-WAIVER-002",
       "kind": "requirement",
       "path": ".musubix/features/change-evidence-waiver/requirements.md",
-      "line": 55,
+      "line": 86,
       "mandatory": true
     },
     {
       "id": "REQ-CHANGE-EVIDENCE-WAIVER-003",
       "kind": "requirement",
       "path": ".musubix/features/change-evidence-waiver/requirements.md",
-      "line": 67,
+      "line": 98,
       "mandatory": true
     },
     {
       "id": "REQ-CHANGE-EVIDENCE-WAIVER-004",
       "kind": "requirement",
       "path": ".musubix/features/change-evidence-waiver/requirements.md",
-      "line": 78,
+      "line": 109,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-CHANGE-EVIDENCE-WAIVER-016",
+      "kind": "requirement",
+      "path": ".musubix/features/change-evidence-waiver/requirements.md",
+      "line": 128,
       "mandatory": true
     },
     {
       "id": "REQ-CHANGE-EVIDENCE-WAIVER-005",
       "kind": "requirement",
       "path": ".musubix/features/change-evidence-waiver/requirements.md",
-      "line": 90,
+      "line": 162,
       "mandatory": true
     },
     {
       "id": "REQ-CHANGE-EVIDENCE-WAIVER-006",
       "kind": "requirement",
       "path": ".musubix/features/change-evidence-waiver/requirements.md",
-      "line": 106,
+      "line": 178,
       "mandatory": true
     },
     {
       "id": "REQ-CHANGE-EVIDENCE-WAIVER-007",
       "kind": "requirement",
       "path": ".musubix/features/change-evidence-waiver/requirements.md",
-      "line": 124,
+      "line": 205,
       "mandatory": true
     },
     {
       "id": "REQ-CHANGE-EVIDENCE-WAIVER-008",
       "kind": "requirement",
       "path": ".musubix/features/change-evidence-waiver/requirements.md",
-      "line": 135,
+      "line": 216,
       "mandatory": true
     },
     {
       "id": "REQ-CHANGE-EVIDENCE-WAIVER-009",
       "kind": "requirement",
       "path": ".musubix/features/change-evidence-waiver/requirements.md",
-      "line": 149,
+      "line": 233,
       "mandatory": true
     },
     {
       "id": "REQ-CHANGE-EVIDENCE-WAIVER-010",
       "kind": "requirement",
       "path": ".musubix/features/change-evidence-waiver/requirements.md",
-      "line": 162,
+      "line": 248,
       "mandatory": true
     },
     {
       "id": "REQ-CHANGE-EVIDENCE-WAIVER-011",
       "kind": "requirement",
       "path": ".musubix/features/change-evidence-waiver/requirements.md",
-      "line": 173,
+      "line": 259,
       "mandatory": true
     },
     {
       "id": "REQ-CHANGE-EVIDENCE-WAIVER-012",
       "kind": "requirement",
       "path": ".musubix/features/change-evidence-waiver/requirements.md",
-      "line": 202,
+      "line": 325,
       "mandatory": false
     },
     {
       "id": "REQ-CHANGE-EVIDENCE-WAIVER-013",
       "kind": "requirement",
       "path": ".musubix/features/change-evidence-waiver/requirements.md",
-      "line": 213,
+      "line": 337,
       "mandatory": true
     },
     {
       "id": "REQ-CHANGE-EVIDENCE-WAIVER-014",
       "kind": "requirement",
       "path": ".musubix/features/change-evidence-waiver/requirements.md",
-      "line": 225,
+      "line": 351,
       "mandatory": true
     },
     {
       "id": "REQ-CHANGE-EVIDENCE-WAIVER-015",
       "kind": "requirement",
       "path": ".musubix/features/change-evidence-waiver/requirements.md",
-      "line": 244,
+      "line": 370,
       "mandatory": true
     },
     {
@@ -1445,76 +1452,118 @@
       "line": 69
     },
     {
+      "id": "CODE-CHANGE-EVIDENCE-WAIVER-014",
+      "kind": "code",
+      "path": "packages/analysis/src/change-evidence.ts",
+      "line": 89
+    },
+    {
+      "id": "CODE-CHANGE-EVIDENCE-WAIVER-015",
+      "kind": "code",
+      "path": "packages/analysis/src/change-evidence.ts",
+      "line": 100
+    },
+    {
+      "id": "CODE-CHANGE-EVIDENCE-WAIVER-016",
+      "kind": "code",
+      "path": "packages/analysis/src/change-evidence.ts",
+      "line": 170
+    },
+    {
       "id": "CODE-CHANGE-EVIDENCE-WAIVER-001",
       "kind": "code",
       "path": "packages/analysis/src/change-waiver.ts",
-      "line": 14
+      "line": 19
+    },
+    {
+      "id": "CODE-CHANGE-EVIDENCE-WAIVER-017",
+      "kind": "code",
+      "path": "packages/analysis/src/change-waiver.ts",
+      "line": 39
     },
     {
       "id": "CODE-CHANGE-EVIDENCE-WAIVER-002",
       "kind": "code",
       "path": "packages/analysis/src/change-waiver.ts",
-      "line": 70
+      "line": 107
     },
     {
       "id": "CODE-CHANGE-EVIDENCE-WAIVER-003",
       "kind": "code",
       "path": "packages/analysis/src/change-waiver.ts",
-      "line": 87
+      "line": 124
+    },
+    {
+      "id": "CODE-CHANGE-EVIDENCE-WAIVER-018",
+      "kind": "code",
+      "path": "packages/analysis/src/change-waiver.ts",
+      "line": 132
+    },
+    {
+      "id": "CODE-CHANGE-EVIDENCE-WAIVER-019",
+      "kind": "code",
+      "path": "packages/analysis/src/change-waiver.ts",
+      "line": 169
     },
     {
       "id": "CODE-CHANGE-EVIDENCE-WAIVER-004",
       "kind": "code",
       "path": "packages/analysis/src/change-waiver.ts",
-      "line": 100
+      "line": 192
     },
     {
       "id": "CODE-CHANGE-EVIDENCE-WAIVER-005",
       "kind": "code",
       "path": "packages/analysis/src/change-waiver.ts",
-      "line": 183
+      "line": 339
     },
     {
       "id": "CODE-CHANGE-EVIDENCE-WAIVER-006",
       "kind": "code",
       "path": "packages/analysis/src/change-waiver.ts",
-      "line": 208
+      "line": 365
     },
     {
       "id": "CODE-CHANGE-EVIDENCE-WAIVER-007",
       "kind": "code",
       "path": "packages/analysis/src/change-waiver.ts",
-      "line": 220
+      "line": 377
+    },
+    {
+      "id": "CODE-CHANGE-EVIDENCE-WAIVER-020",
+      "kind": "code",
+      "path": "packages/analysis/src/change-waiver.ts",
+      "line": 436
     },
     {
       "id": "CODE-CHANGE-EVIDENCE-WAIVER-008",
       "kind": "code",
       "path": "packages/analysis/src/change-waiver.ts",
-      "line": 272
+      "line": 501
     },
     {
       "id": "CODE-CHANGE-EVIDENCE-WAIVER-009",
       "kind": "code",
       "path": "packages/analysis/src/change-waiver.ts",
-      "line": 301
+      "line": 527
     },
     {
       "id": "CODE-CHANGE-EVIDENCE-WAIVER-010",
       "kind": "code",
       "path": "packages/analysis/src/change-waiver.ts",
-      "line": 338
+      "line": 569
     },
     {
       "id": "CODE-CHANGE-EVIDENCE-WAIVER-011",
       "kind": "code",
       "path": "packages/analysis/src/change-waiver.ts",
-      "line": 434
+      "line": 717
     },
     {
       "id": "CODE-CHANGE-EVIDENCE-WAIVER-012",
       "kind": "code",
       "path": "packages/analysis/src/change-waiver.ts",
-      "line": 463
+      "line": 754
     },
     {
       "id": "CODE-CHANGE-ACCEPTANCE-HEURISTIC-001",
@@ -1532,19 +1581,19 @@
       "id": "CODE-CHANGE-RECORD-FAIL-FAST-001",
       "kind": "code",
       "path": "packages/analysis/src/change.ts",
-      "line": 92
+      "line": 88
     },
     {
       "id": "CODE-CHANGE-RECORD-FAIL-FAST-003",
       "kind": "code",
       "path": "packages/analysis/src/change.ts",
-      "line": 131
+      "line": 127
     },
     {
       "id": "CODE-CHANGE-REQUIREMENT-BATCHES-002",
       "kind": "code",
       "path": "packages/analysis/src/change.ts",
-      "line": 263
+      "line": 259
     },
     {
       "id": "CODE-APPROVAL-DOMAIN-SCOPING-001",
@@ -1605,6 +1654,18 @@
       "kind": "code",
       "path": "packages/analysis/src/knowledge.ts",
       "line": 58
+    },
+    {
+      "id": "CODE-CHANGE-EVIDENCE-WAIVER-021",
+      "kind": "code",
+      "path": "packages/analysis/src/order.ts",
+      "line": 32
+    },
+    {
+      "id": "CODE-CHANGE-EVIDENCE-WAIVER-013",
+      "kind": "code",
+      "path": "packages/analysis/src/order.ts",
+      "line": 75
     },
     {
       "id": "CODE-REQUIREMENTS-DESIGN-SCAFFOLD-001",
@@ -1671,6 +1732,12 @@
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
       "line": 627
+    },
+    {
+      "id": "CODE-TDD-CYCLE-VOID-005",
+      "kind": "code",
+      "path": "packages/analysis/src/tdd.ts",
+      "line": 638
     },
     {
       "id": "CODE-SESSION-SCOPED-DEVELOPMENT-003",
@@ -2055,6 +2122,24 @@
       "kind": "test",
       "path": "tests/change-evidence-waiver.test.ts",
       "line": 243
+    },
+    {
+      "id": "TEST-CHANGE-EVIDENCE-WAIVER-013",
+      "kind": "test",
+      "path": "tests/change-evidence-waiver.test.ts",
+      "line": 273
+    },
+    {
+      "id": "TEST-CHANGE-EVIDENCE-WAIVER-014",
+      "kind": "test",
+      "path": "tests/change-evidence-waiver.test.ts",
+      "line": 295
+    },
+    {
+      "id": "TEST-CHANGE-EVIDENCE-WAIVER-015",
+      "kind": "test",
+      "path": "tests/change-evidence-waiver.test.ts",
+      "line": 323
     },
     {
       "id": "TEST-CHANGE-RECORD-FAIL-FAST-001",
@@ -2764,6 +2849,11 @@
       "relation": "satisfies"
     },
     {
+      "from": "DES-CHANGE-EVIDENCE-WAIVER-001",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-016",
+      "relation": "satisfies"
+    },
+    {
       "from": "ADR-0025",
       "to": "DES-CHANGE-EVIDENCE-WAIVER-001",
       "relation": "decides"
@@ -2780,7 +2870,17 @@
     },
     {
       "from": "DES-CHANGE-EVIDENCE-WAIVER-002",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-010",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-CHANGE-EVIDENCE-WAIVER-002",
       "to": "REQ-CHANGE-EVIDENCE-WAIVER-011",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-CHANGE-EVIDENCE-WAIVER-002",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-016",
       "relation": "satisfies"
     },
     {
@@ -2794,9 +2894,19 @@
       "relation": "satisfies"
     },
     {
+      "from": "DES-CHANGE-EVIDENCE-WAIVER-003",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-016",
+      "relation": "satisfies"
+    },
+    {
       "from": "ADR-0025",
       "to": "DES-CHANGE-EVIDENCE-WAIVER-003",
       "relation": "decides"
+    },
+    {
+      "from": "DES-CHANGE-EVIDENCE-WAIVER-004",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-006",
+      "relation": "satisfies"
     },
     {
       "from": "DES-CHANGE-EVIDENCE-WAIVER-004",
@@ -2815,6 +2925,11 @@
     },
     {
       "from": "DES-CHANGE-EVIDENCE-WAIVER-004",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-010",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-CHANGE-EVIDENCE-WAIVER-004",
       "to": "REQ-CHANGE-EVIDENCE-WAIVER-011",
       "relation": "satisfies"
     },
@@ -2827,6 +2942,11 @@
       "from": "ADR-0025",
       "to": "DES-CHANGE-EVIDENCE-WAIVER-004",
       "relation": "decides"
+    },
+    {
+      "from": "DES-CHANGE-EVIDENCE-WAIVER-005",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-006",
+      "relation": "satisfies"
     },
     {
       "from": "DES-CHANGE-EVIDENCE-WAIVER-005",
@@ -3864,6 +3984,36 @@
       "relation": "implements"
     },
     {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-014",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-016",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-014",
+      "to": "DES-CHANGE-EVIDENCE-WAIVER-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-015",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-016",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-015",
+      "to": "DES-CHANGE-EVIDENCE-WAIVER-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-016",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-016",
+      "to": "DES-CHANGE-EVIDENCE-WAIVER-001",
+      "relation": "implements"
+    },
+    {
       "from": "CODE-CHANGE-EVIDENCE-WAIVER-001",
       "to": "REQ-CHANGE-EVIDENCE-WAIVER-001",
       "relation": "implements"
@@ -3875,6 +4025,21 @@
     },
     {
       "from": "CODE-CHANGE-EVIDENCE-WAIVER-001",
+      "to": "DES-CHANGE-EVIDENCE-WAIVER-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-017",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-017",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-016",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-017",
       "to": "DES-CHANGE-EVIDENCE-WAIVER-001",
       "relation": "implements"
     },
@@ -3895,12 +4060,42 @@
     },
     {
       "from": "CODE-CHANGE-EVIDENCE-WAIVER-003",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-016",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-003",
       "to": "DES-CHANGE-EVIDENCE-WAIVER-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-018",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-016",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-018",
+      "to": "DES-CHANGE-EVIDENCE-WAIVER-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-019",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-016",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-019",
+      "to": "DES-CHANGE-EVIDENCE-WAIVER-002",
       "relation": "implements"
     },
     {
       "from": "CODE-CHANGE-EVIDENCE-WAIVER-004",
       "to": "REQ-CHANGE-EVIDENCE-WAIVER-011",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-004",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-016",
       "relation": "implements"
     },
     {
@@ -3911,6 +4106,11 @@
     {
       "from": "CODE-CHANGE-EVIDENCE-WAIVER-005",
       "to": "REQ-CHANGE-EVIDENCE-WAIVER-015",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-005",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-016",
       "relation": "implements"
     },
     {
@@ -3935,7 +4135,42 @@
     },
     {
       "from": "CODE-CHANGE-EVIDENCE-WAIVER-007",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-016",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-007",
       "to": "DES-CHANGE-EVIDENCE-WAIVER-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-020",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-006",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-020",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-007",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-020",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-010",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-020",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-011",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-020",
+      "to": "DES-CHANGE-EVIDENCE-WAIVER-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-008",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-006",
       "relation": "implements"
     },
     {
@@ -3950,7 +4185,17 @@
     },
     {
       "from": "CODE-CHANGE-EVIDENCE-WAIVER-008",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-016",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-008",
       "to": "DES-CHANGE-EVIDENCE-WAIVER-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-009",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-006",
       "relation": "implements"
     },
     {
@@ -4005,12 +4250,27 @@
     },
     {
       "from": "CODE-CHANGE-EVIDENCE-WAIVER-010",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-016",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-010",
       "to": "DES-CHANGE-EVIDENCE-WAIVER-001",
       "relation": "implements"
     },
     {
       "from": "CODE-CHANGE-EVIDENCE-WAIVER-011",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-006",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-011",
       "to": "REQ-CHANGE-EVIDENCE-WAIVER-012",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-011",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-016",
       "relation": "implements"
     },
     {
@@ -4264,6 +4524,26 @@
       "relation": "implements"
     },
     {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-021",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-016",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-021",
+      "to": "DES-CHANGE-EVIDENCE-WAIVER-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-013",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-016",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-EVIDENCE-WAIVER-013",
+      "to": "DES-CHANGE-EVIDENCE-WAIVER-001",
+      "relation": "implements"
+    },
+    {
       "from": "CODE-REQUIREMENTS-DESIGN-SCAFFOLD-001",
       "to": "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-001",
       "relation": "implements"
@@ -4436,6 +4716,16 @@
     {
       "from": "CODE-TDD-CYCLE-VOID-003",
       "to": "DES-TDD-CYCLE-VOID-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-TDD-CYCLE-VOID-005",
+      "to": "REQ-TDD-CYCLE-VOID-013",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-TDD-CYCLE-VOID-005",
+      "to": "DES-TDD-CYCLE-VOID-007",
       "relation": "implements"
     },
     {
@@ -4854,6 +5144,21 @@
       "relation": "verifies"
     },
     {
+      "from": "TEST-CHANGE-EVIDENCE-WAIVER-013",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-016",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-CHANGE-EVIDENCE-WAIVER-014",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-016",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-CHANGE-EVIDENCE-WAIVER-015",
+      "to": "REQ-CHANGE-EVIDENCE-WAIVER-016",
+      "relation": "verifies"
+    },
+    {
       "from": "TEST-CHANGE-RECORD-FAIL-FAST-001",
       "to": "REQ-CHANGE-RECORD-FAIL-FAST-001",
       "relation": "verifies"
@@ -5223,7 +5528,7 @@
     ".musubix/decisions/ADR-0022.md": "758a2f5c1352a167ae551773e57bc27f75ee67bd52c8224508d3b52dbaf35844",
     ".musubix/decisions/ADR-0023.md": "4ae677025df785fab3cc05052c84cbea1702108e40c615dff0276c9a2a5cddd8",
     ".musubix/decisions/ADR-0024.md": "9f53abce6d5b20e611b3660bec229292cba236b7285f56f09c97063f79f40135",
-    ".musubix/decisions/ADR-0025.md": "0d29765a0ffa77dcb5e98791cf31a69633d9dbb085a260a5d4bdb7ae3da25626",
+    ".musubix/decisions/ADR-0025.md": "21b4dacafba6b1c790981fdcde5f74e2d6c821e2058eb64757617d90f3897158",
     ".musubix/features/adapter-pattern-recognition/design.md": "a8e0c4a11f626cb4a41c9b5b53359c072ec0c3161f704791f42ba8af38124a70",
     ".musubix/features/adapter-pattern-recognition/requirements.md": "5731561a0a04982b8a5c305bdeeae6084bcf0ee8846f295eaaaabc823d1f9793",
     ".musubix/features/approval-domain-scoping/design.md": "e8731f1e3094aa22192ae2ae5986fb4dc9a7698f7cfe66961e1342f6e0743bd9",
@@ -5232,8 +5537,8 @@
     ".musubix/features/bounded-file-read-concurrency/requirements.md": "9e08acde7e29a8f14b23d908c465c629e49d00bc29ae9bda1466427362c815be",
     ".musubix/features/change-acceptance-heuristic/design.md": "ce67823a2c44f55a8fbfebc36b9532a0ca1f7a754613443c99ea8171ab136910",
     ".musubix/features/change-acceptance-heuristic/requirements.md": "82b9c8d839d6663f97b67bba2c01fc775e3253e444440eb2833f82cdd877bcf6",
-    ".musubix/features/change-evidence-waiver/design.md": "19fa8242629140cb8d15a3388ab0d00a5d64fe59e2fb13be38947170a90698eb",
-    ".musubix/features/change-evidence-waiver/requirements.md": "fb9109ce26127acb978da414697e800ad86053cb9567d6ecb4054a9f33cb49df",
+    ".musubix/features/change-evidence-waiver/design.md": "ceb448c69dd98a06c342f9a166ce95eed85e89ebb92c5fd3774960cb83282210",
+    ".musubix/features/change-evidence-waiver/requirements.md": "33579a83e55ac3a9f07cd3b55ab3d96c0eaf3c0fc0646af0159cfb7e178762a2",
     ".musubix/features/change-record-fail-fast/design.md": "4fec24158324cd376089df5c0d1018c5c58c6da37eecf63b929bf9b63c3aa253",
     ".musubix/features/change-record-fail-fast/requirements.md": "7488f2f96293ca03ca0690358aa528d1e329e70d39be3885540f54c81c14d94e",
     ".musubix/features/change-requirement-batches/design.md": "ea7ee9aa17f9f675bf649e9eec90b07e335a6fb793faf4c9951c5f747510f453",
@@ -5277,34 +5582,34 @@
     "packages/analysis/src/approval-record.ts": "838294de204a006daf5a7048a69153b573d5b61e5c9d8f3d66332b27a5b577bf",
     "packages/analysis/src/approval.ts": "d9f57165ca455a0b49acdda7096e0df98a06cd5be33c3d20b2f06cf40917c69f",
     "packages/analysis/src/attestation.ts": "2d273d2ed5aaa8521938a247492bbe54ee9b195d7902510365d6576e098b17f3",
-    "packages/analysis/src/change-evidence.ts": "425fbdcb272c3709a9418f61871a426111ce2c13646d6f6903b0201729519d47",
-    "packages/analysis/src/change-waiver.ts": "6d7151694a67d511735d9a3ac2857a46ff928e80aa214accc31542ae654fcc5a",
-    "packages/analysis/src/change.ts": "a37a8e62e15c9fdae65a48c974eeddb38d6b8ef7dd849342ddfcf3b4fa36f06a",
+    "packages/analysis/src/change-evidence.ts": "8bff2cb709de3834e078bf8bf30f2ddef36b37fa03bec5446e27711cae14709b",
+    "packages/analysis/src/change-waiver.ts": "edabb578fe2d968bf98fe068ee240a32b67dcf7b50724a265e83ebc2a88c1ccd",
+    "packages/analysis/src/change.ts": "e6c2d3b3118b62da9058c4cbc32dc5d3c9014679ae747dee055366f89f0456f5",
     "packages/analysis/src/config.ts": "52d5212f4057df9ed5caac0a0025ce744864909abceea3c64d259479ddffb998",
     "packages/analysis/src/files.ts": "6186177faea34f7b2f6dd865b4f911d3b8fbfe6786e2cd19bc7dffee2a058ba2",
     "packages/analysis/src/formal.ts": "9f5622983fed80c1e7c141cc7c7dcd217447e5c2edd39e64877db052a57b730b",
-    "packages/analysis/src/gate.ts": "826ddf2397fae1fcb693604eaa41310317e3c0a9a93e63843bd513aea7b03bec",
+    "packages/analysis/src/gate.ts": "235fc9fae6234e9a18b6c2dbdebffb0e6fee2d379a8e7479b55e0fd64cd03cd5",
     "packages/analysis/src/graph.ts": "8978a47c311ddef684de5e4c5ab032eed9bc87ad94a739351de6e2d6b2ae2aba",
     "packages/analysis/src/index.ts": "bfe1272e78a56fb23252d861819a85dd6d5a9c92f6636eb9735cdc643ced08c8",
     "packages/analysis/src/knowledge.ts": "48b68e9785f411327e10e1bd1f086fdaf4393d2951dcbd4e6fdec84e8008d7da",
     "packages/analysis/src/model-correspondence.ts": "fb19dbbdf461b8e2a2429b6107f60e7ea523e4033e4677ed7dd09ea03740659c",
     "packages/analysis/src/mutation.ts": "bb0582b042c973226c74b719d12e8dea05f954a68ce4dbc3c2076c31183d5a88",
-    "packages/analysis/src/order.ts": "214ecc1c785cefb08ffab552c3a9659d901c392d98b8de8805176a36eb453cd3",
+    "packages/analysis/src/order.ts": "361eff6435f7eb81ac15b9a005f8f676f499c56d3dc82abb242e2307b8af628d",
     "packages/analysis/src/performance.ts": "1145c285582ff188e90263b4d9d9f28ca49104e79b8299b2ecd3e278d8ef80ac",
     "packages/analysis/src/process.ts": "8184c7f7c4c58cdc6987fd9d2ec2c02ce8557f94b6aa30853a0c6056ba79cf4a",
     "packages/analysis/src/scaffold-artifact.ts": "e5e6fa31fbd97ce4dcc294ab26966eb0a4a2507eb4025a7a8a522831e7fb886d",
-    "packages/analysis/src/tdd.ts": "386dae890240cb12bd026c51a48ea382bb0684882f73ef89ef06ab26a7e05062",
+    "packages/analysis/src/tdd.ts": "20234a6b35d47bbbc7474d6d7843ed0d614a392dbf71fc1e83c49f8c60963a0d",
     "packages/analysis/src/test-report.ts": "41c76811bfcb5e286bf097bf2f6aaf6cd5a414202efe8108f28219ecca063a01",
     "packages/analysis/src/trace.ts": "efede75c79c7dc4828a0259c46ca870a7e15042c35edd94a107349a83eb56ec9",
     "packages/analysis/src/workflow.ts": "95c93b380d2bda976f341c138edcbdd4d7fc0516ef3aca18a3329436a1c7b494",
     "packages/cli/src/install.ts": "3b7d03d1864493ea9caee34855e4fd82ec970d321a205ee3378c8f13a4a34e17",
-    "packages/cli/src/main.ts": "8c4ec44e4adb0577f959fd7271758f89a3b1101d6b096cc42a634eade9965711",
+    "packages/cli/src/main.ts": "317303c55b9fe7397e600a58e0c4441d9f25790eeb0fb803c8264660af32c78b",
     "packages/domain/src/constitution.ts": "514278499642ff46ed902864b9192f566b116b4f92eb3fafa6b62588335e170a",
     "packages/domain/src/design.ts": "fc1ca4d3249abc9705ba4b6f296e0f4fa3b3d6ff6d5d82e51c99f49fc7a93ac9",
     "packages/domain/src/index.ts": "43243e9279e3826b23cd8d8b4365854974112ce4cf17cfb0f0ee32e6b28e9cc6",
     "packages/domain/src/markdown.ts": "5c6b96486a2e31944d7d128d241f1772d0926f34464fa2b59c20748a6754487a",
     "packages/domain/src/requirements.ts": "65ea1e6d3bbd29e929c785037b930e5f5eb5535b607403e5f30c3657d36e9175",
-    "packages/domain/src/types.ts": "6c71b45a855260f635da0cea633b660fd4a313c963daab6181dba6e54337978c",
+    "packages/domain/src/types.ts": "eba5d3e146f9de4a1577f3770fdc53a9fa16bd6d04fe1ed2deb90e8afa563ebb",
     "scripts/check-package.mjs": "72210ce36b88fb9fe9e435e8f1a1709e623c25cfc9c81628cce7a1a87f80bee0",
     "scripts/release-attestation.mjs": "b15842f6f83eb768c361a5e054a984af0da846f3b6e789bc0c91127415576d15",
     "scripts/release-prepare.mjs": "f868e935c6d6d6e04fc486d56f5cfb2af7c3c4de493c1b2f8620447399ff0d6b",
@@ -5316,7 +5621,7 @@
     "tests/approval.test.ts": "6e0e909eff23c37a6a3b7bfdb0bf495bcca3084d1b44c852d1eeb902bb3d44ca",
     "tests/bounded-file-read-concurrency.test.ts": "85743bfec42baef1a8cebd36a6b9e85293f9fc29f4121b220398ce32794b3112",
     "tests/change-acceptance-heuristic.test.ts": "44e9ecd782a3cd38c5913b200272b083c90fc144c389740f4b8548eabec73a3e",
-    "tests/change-evidence-waiver.test.ts": "984140a8980f721f52b8faf9c3facbcc4ffdbb234891b62cbe5cf967b5e27f3d",
+    "tests/change-evidence-waiver.test.ts": "254f82e14dac3beaed102979dd0e977ded31ebc20ffacb60aa798194b97bed80",
     "tests/change-record-fail-fast.test.ts": "2f69f19332049c206f39b42c3bc2b505ce63173db798d74c5a9ace7064cdfe78",
     "tests/change-requirement-batches.test.ts": "a170a3e7e8ad9dde66628a15f84343b45a1bfd2e84739d12c03e3eeb9b13d02a",
     "tests/cli-package.test.ts": "68f235d2f1b5e203e89ec90c854ff58c0b5bc47ed7c492c23374b56e3ea59055",

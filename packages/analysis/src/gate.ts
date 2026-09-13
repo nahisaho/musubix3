@@ -47,7 +47,7 @@ export interface GateReport {
     generatedAt: string;
   } | null;
   fingerprints: Record<string, string>;
-  waivers?: Array<{ changeId: string; code: string; requirementId?: string; approver: string; reason: string; recordedAt: string }>;
+  waivers?: Array<{ changeId: string; code: string; requirementId?: string; detail?: string; approver: string; reason: string; recordedAt: string }>;
   waiverDiagnostics?: Diagnostic[];
 }
 
@@ -640,7 +640,7 @@ export async function projectStatus(root: string): Promise<{
   approvals: ApprovalValidation | null;
   gate: { status: 'pass' | 'fail' | 'skipped' | 'stale'; generatedAt: string | null; ready: boolean };
   next: string[];
-  waivers: Array<{ changeId: string; code: string; requirementId?: string; approver: string; reason: string; recordedAt: string }>;
+  waivers: Array<{ changeId: string; code: string; requirementId?: string; detail?: string; approver: string; reason: string; recordedAt: string }>;
   waiverDiagnostics: Diagnostic[];
 }> {
   const paths = await files(root);

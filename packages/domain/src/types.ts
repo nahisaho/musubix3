@@ -9,6 +9,7 @@ export interface Diagnostic {
   line?: number;
   changeId?: string;
   requirementId?: string;
+  detail?: string;
   waiver?: { approver: string; reason: string; recordedAt: string };
 }
 

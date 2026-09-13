@@ -478,15 +478,16 @@ export function createProgram(): Command {
   common(waiver.command('record <change-id> <code>')
     .description('Downgrade one currently-present waivable diagnostic from error to warning, as an appended, hash-chained record'))
     .option('--requirement <req-id>', 'Requirement ID this waiver applies to (required for requirement-scoped codes)')
+    .option('--detail <value>', 'Structured detail scope this waiver applies to (required for detail-scoped codes)')
     .requiredOption('--approver <name>', 'Human approver recording this waiver')
     .requiredOption('--reason <text>', 'Reason this diagnostic is being waived')
     .option('--confirm', 'Confirm the waiver is reviewed and intended', false)
     .action(async (changeId: string, code: string, options: {
-      root: string; json?: boolean; requirement?: string; approver: string; reason: string; confirm?: boolean;
+      root: string; json?: boolean; requirement?: string; detail?: string; approver: string; reason: string; confirm?: boolean;
     }) => {
       if (!options.confirm) throw new Error('Recording a change waiver requires --confirm.');
-      const result = await recordChangeWaiver(resolve(options.root), changeId, code, options.requirement, options.approver, options.reason);
-      output(result, !!options.json, `WAIVER: PASS (${changeId}:${code}${options.requirement ? `:${options.requirement}` : ''})`);
+      const result = await recordChangeWaiver(resolve(options.root), changeId, code, options.requirement, options.detail, options.approver, options.reason);
+      output(result, !!options.json, `WAIVER: PASS (${changeId}:${code}${options.requirement ? `:${options.requirement}` : ''}${options.detail ? `:${options.detail}` : ''})`);
     });
   const approval = program.command('approval').description('Prepare, record and validate explicit artifact-bound human approvals');
   common(approval.command('prepare <stage>').description('Show the exact artifact manifest a human must review'))

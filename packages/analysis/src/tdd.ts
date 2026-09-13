@@ -635,6 +635,12 @@ export async function validateTddEvidence(root: string): Promise<{
     const linkage = voidLinkage(evidence, order, cycle);
     if (linkage.valid) {
       validlyVoidedCycles.add(cycle);
+      /** @id CODE-TDD-CYCLE-VOID-005
+       * @implements REQ-TDD-CYCLE-VOID-013
+       * @design DES-TDD-CYCLE-VOID-007
+       * One `voided` entry per validly-voided cycle, keyed by that cycle's
+       * own `cycleId`/`testId`, carrying its own `void` payload verbatim.
+       */
       voided.push({
         testId: cycle.testId,
         cycleId: cycle.cycleId!,

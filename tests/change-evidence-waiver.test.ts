@@ -1,7 +1,7 @@
 import { expect, it } from 'vitest';
 import type { Diagnostic } from '../packages/domain/src/index.js';
 import {
-  activeWaivers, digest, exists, loadChangeEvidence, readText, recordChangePhase, recordChangeWaiver,
+  activeWaivers, appendEvidenceOrder, digest, exists, loadChangeEvidence, readText, recordChangePhase, recordChangeWaiver,
   runTddPhase, validateChangeCompleteness, validateChangeEvidence, waiverEvidenceDiagnostics, within, writeJson, writeText,
 } from '../packages/analysis/src/index.js';
 import { code, project, tddResultRunner, testCode } from './helpers.js';
@@ -44,12 +44,12 @@ function diagnosticsFor(diagnostics: Diagnostic[], code: string): Diagnostic[] {
 /** @id TEST-CHANGE-EVIDENCE-WAIVER-001
  * @verifies REQ-CHANGE-EVIDENCE-WAIVER-001
  */
-it('TEST-CHANGE-EVIDENCE-WAIVER-001 rejects a waiver for any code outside the five-code allow-list', async () => {
+it('TEST-CHANGE-EVIDENCE-WAIVER-001 rejects a waiver for any code outside the twelve-code allow-list', async () => {
   const root = await project();
   await stageChangeThroughRed(root);
   const before = await readText(root, '.musubix/evidence/order.json');
-  for (const rejectedCode of ['CHANGE_TEST_CHANGED_AFTER_RED', 'CHANGE_RELEVANT_IMPLEMENTATION_UNCHANGED', 'CHANGE_COMPLETENESS_ACCEPTANCE', 'NOT_A_REAL_CODE']) {
-    await expect(recordChangeWaiver(root, 'CHANGE-0001', rejectedCode, undefined, 'nahisaho', 'not waivable'))
+  for (const rejectedCode of ['CHANGE_COMPLETENESS_ACCEPTANCE', 'CHANGE_COMPLETENESS_CODE', 'CHANGE_DOCUMENT_MISSING', 'NOT_A_REAL_CODE']) {
+    await expect(recordChangeWaiver(root, 'CHANGE-0001', rejectedCode, undefined, undefined, 'nahisaho', 'not waivable'))
       .rejects.toThrow(/not a waivable code/);
   }
   expect(await readText(root, '.musubix/evidence/order.json')).toBe(before);
@@ -64,7 +64,7 @@ it('TEST-CHANGE-EVIDENCE-WAIVER-002 rejects a waiver when no matching diagnostic
   await stageChangeThroughRed(root);
   const before = await readText(root, '.musubix/evidence/order.json');
   // CHANGE_GREEN_UNPROVEN cannot fire yet: Green has not even been recorded.
-  await expect(recordChangeWaiver(root, 'CHANGE-0001', 'CHANGE_GREEN_UNPROVEN', 'REQ-EXAMPLE-001', 'nahisaho', 'premature'))
+  await expect(recordChangeWaiver(root, 'CHANGE-0001', 'CHANGE_GREEN_UNPROVEN', 'REQ-EXAMPLE-001', undefined, 'nahisaho', 'premature'))
     .rejects.toThrow(/no matching/i);
   expect(await readText(root, '.musubix/evidence/order.json')).toBe(before);
 });
@@ -75,10 +75,10 @@ it('TEST-CHANGE-EVIDENCE-WAIVER-002 rejects a waiver when no matching diagnostic
 it('TEST-CHANGE-EVIDENCE-WAIVER-003 requires a non-empty approver and reason', async () => {
   const root = await project();
   await stageChangeThroughRed(root);
-  await expect(recordChangeWaiver(root, 'CHANGE-0001', 'CHANGE_RED_UNPROVEN', 'REQ-EXAMPLE-001', '', 'a reason')).rejects.toThrow(/approver/i);
-  await expect(recordChangeWaiver(root, 'CHANGE-0001', 'CHANGE_RED_UNPROVEN', 'REQ-EXAMPLE-001', '  ', 'a reason')).rejects.toThrow(/approver/i);
-  await expect(recordChangeWaiver(root, 'CHANGE-0001', 'CHANGE_RED_UNPROVEN', 'REQ-EXAMPLE-001', 'nahisaho', '')).rejects.toThrow(/reason/i);
-  await expect(recordChangeWaiver(root, 'CHANGE-0001', 'CHANGE_RED_UNPROVEN', 'REQ-EXAMPLE-001', 'nahisaho', '   ')).rejects.toThrow(/reason/i);
+  await expect(recordChangeWaiver(root, 'CHANGE-0001', 'CHANGE_RED_UNPROVEN', 'REQ-EXAMPLE-001', undefined, '', 'a reason')).rejects.toThrow(/approver/i);
+  await expect(recordChangeWaiver(root, 'CHANGE-0001', 'CHANGE_RED_UNPROVEN', 'REQ-EXAMPLE-001', undefined, '  ', 'a reason')).rejects.toThrow(/approver/i);
+  await expect(recordChangeWaiver(root, 'CHANGE-0001', 'CHANGE_RED_UNPROVEN', 'REQ-EXAMPLE-001', undefined, 'nahisaho', '')).rejects.toThrow(/reason/i);
+  await expect(recordChangeWaiver(root, 'CHANGE-0001', 'CHANGE_RED_UNPROVEN', 'REQ-EXAMPLE-001', undefined, 'nahisaho', '   ')).rejects.toThrow(/reason/i);
 });
 
 /** @id TEST-CHANGE-EVIDENCE-WAIVER-004
@@ -87,9 +87,9 @@ it('TEST-CHANGE-EVIDENCE-WAIVER-003 requires a non-empty approver and reason', a
 it('TEST-CHANGE-EVIDENCE-WAIVER-004 binds requirement-scoping to each code\'s own granularity', async () => {
   const root = await project();
   await stageChangeThroughRed(root);
-  await expect(recordChangeWaiver(root, 'CHANGE-0001', 'CHANGE_RED_UNPROVEN', undefined, 'nahisaho', 'missing scope'))
+  await expect(recordChangeWaiver(root, 'CHANGE-0001', 'CHANGE_RED_UNPROVEN', undefined, undefined, 'nahisaho', 'missing scope'))
     .rejects.toThrow(/requires --requirement/);
-  await expect(recordChangeWaiver(root, 'CHANGE-0001', 'CHANGE_RED_UNPROVEN', 'REQ-DOES-NOT-EXIST-001', 'nahisaho', 'bad scope'))
+  await expect(recordChangeWaiver(root, 'CHANGE-0001', 'CHANGE_RED_UNPROVEN', 'REQ-DOES-NOT-EXIST-001', undefined, 'nahisaho', 'bad scope'))
     .rejects.toThrow(/not declared/);
 });
 
@@ -104,7 +104,7 @@ it('TEST-CHANGE-EVIDENCE-WAIVER-005 records the waiver as a hash-chained, ordere
   const beforeOrder = JSON.parse(await readText(root, '.musubix/evidence/order.json'));
   const maxSequence = beforeOrder.records.length ? Math.max(...beforeOrder.records.map((r: { sequence: number }) => r.sequence)) : 0;
 
-  const result = await recordChangeWaiver(root, 'CHANGE-0001', 'CHANGE_RED_UNPROVEN', 'REQ-EXAMPLE-001', 'nahisaho', 'recorded order before impl');
+  const result = await recordChangeWaiver(root, 'CHANGE-0001', 'CHANGE_RED_UNPROVEN', 'REQ-EXAMPLE-001', undefined, 'nahisaho', 'recorded order before impl');
   expect(result).toMatchObject({ recorded: true, changeId: 'CHANGE-0001', code: 'CHANGE_RED_UNPROVEN', requirementId: 'REQ-EXAMPLE-001' });
 
   expect(await readText(root, '.musubix/evidence/changes.json')).toBe(beforeEvidence);
@@ -144,7 +144,7 @@ it('TEST-CHANGE-EVIDENCE-WAIVER-005 records the waiver as a hash-chained, ordere
 it('TEST-CHANGE-EVIDENCE-WAIVER-006 downgrades only the exact waived instance, never any other change/requirement/code', async () => {
   const root = await project();
   await stageChangeThroughRed(root, 'CHANGE-0001');
-  await recordChangeWaiver(root, 'CHANGE-0001', 'CHANGE_RED_UNPROVEN', 'REQ-EXAMPLE-001', 'nahisaho', 'waived once');
+  await recordChangeWaiver(root, 'CHANGE-0001', 'CHANGE_RED_UNPROVEN', 'REQ-EXAMPLE-001', undefined, 'nahisaho', 'waived once');
 
   const evidence = await validateChangeEvidence(root);
   const redDiagnostics = diagnosticsFor(evidence.diagnostics, 'CHANGE_RED_UNPROVEN');
@@ -158,10 +158,10 @@ it('TEST-CHANGE-EVIDENCE-WAIVER-006 downgrades only the exact waived instance, n
 it('TEST-CHANGE-EVIDENCE-WAIVER-007 rejects a duplicate waiver for an already validly waived, non-stale scope', async () => {
   const root = await project();
   await stageChangeThroughRed(root);
-  await recordChangeWaiver(root, 'CHANGE-0001', 'CHANGE_RED_UNPROVEN', 'REQ-EXAMPLE-001', 'nahisaho', 'first waiver');
+  await recordChangeWaiver(root, 'CHANGE-0001', 'CHANGE_RED_UNPROVEN', 'REQ-EXAMPLE-001', undefined, 'nahisaho', 'first waiver');
   const before = await readText(root, '.musubix/evidence/change-waivers.json');
   const beforeOrder = await readText(root, '.musubix/evidence/order.json');
-  await expect(recordChangeWaiver(root, 'CHANGE-0001', 'CHANGE_RED_UNPROVEN', 'REQ-EXAMPLE-001', 'nahisaho', 'second waiver'))
+  await expect(recordChangeWaiver(root, 'CHANGE-0001', 'CHANGE_RED_UNPROVEN', 'REQ-EXAMPLE-001', undefined, 'nahisaho', 'second waiver'))
     .rejects.toThrow(/already/i);
   expect(await readText(root, '.musubix/evidence/change-waivers.json')).toBe(before);
   expect(await readText(root, '.musubix/evidence/order.json')).toBe(beforeOrder);
@@ -173,7 +173,7 @@ it('TEST-CHANGE-EVIDENCE-WAIVER-007 rejects a duplicate waiver for an already va
 it('TEST-CHANGE-EVIDENCE-WAIVER-008 treats a waiver as stale once its snapshot payload changes, reporting it error again plus a stale diagnostic', async () => {
   const root = await project();
   await stageChangeThroughGreen(root);
-  await recordChangeWaiver(root, 'CHANGE-0001', 'CHANGE_GREEN_UNPROVEN', 'REQ-EXAMPLE-001', 'nahisaho', 'waived before real TDD evidence');
+  await recordChangeWaiver(root, 'CHANGE-0001', 'CHANGE_GREEN_UNPROVEN', 'REQ-EXAMPLE-001', undefined, 'nahisaho', 'waived before real TDD evidence');
 
   let evidence = await validateChangeEvidence(root);
   expect(diagnosticsFor(evidence.diagnostics, 'CHANGE_GREEN_UNPROVEN')[0]!.severity).toBe('warning');
@@ -194,7 +194,7 @@ it('TEST-CHANGE-EVIDENCE-WAIVER-008 treats a waiver as stale once its snapshot p
 it('TEST-CHANGE-EVIDENCE-WAIVER-009 reports malformed waiver evidence without downgrading the targeted diagnostic', async () => {
   const root = await project();
   await stageChangeThroughRed(root);
-  await recordChangeWaiver(root, 'CHANGE-0001', 'CHANGE_RED_UNPROVEN', 'REQ-EXAMPLE-001', 'nahisaho', 'valid waiver');
+  await recordChangeWaiver(root, 'CHANGE-0001', 'CHANGE_RED_UNPROVEN', 'REQ-EXAMPLE-001', undefined, 'nahisaho', 'valid waiver');
 
   // Corrupt the waiver chain: break the hash so it fails shape/chain validation.
   const waivers = JSON.parse(await readText(root, '.musubix/evidence/change-waivers.json'));
@@ -212,7 +212,7 @@ it('TEST-CHANGE-EVIDENCE-WAIVER-009 reports malformed waiver evidence without do
 it('TEST-CHANGE-EVIDENCE-WAIVER-010 surfaces active waivers for audit visibility, excluding stale/malformed ones', async () => {
   const root = await project();
   await stageChangeThroughRed(root);
-  await recordChangeWaiver(root, 'CHANGE-0001', 'CHANGE_RED_UNPROVEN', 'REQ-EXAMPLE-001', 'nahisaho', 'audited waiver');
+  await recordChangeWaiver(root, 'CHANGE-0001', 'CHANGE_RED_UNPROVEN', 'REQ-EXAMPLE-001', undefined, 'nahisaho', 'audited waiver');
 
   const active = await activeWaivers(root);
   expect(active).toHaveLength(1);
@@ -252,8 +252,8 @@ it('TEST-CHANGE-EVIDENCE-WAIVER-012 redefines change-history/change-completeness
   let completeness = await validateChangeCompleteness(root);
   expect(completeness.valid).toBe(false);
 
-  await recordChangeWaiver(root, 'CHANGE-0001', 'CHANGE_RED_UNPROVEN', 'REQ-EXAMPLE-001', 'nahisaho', 'waived red');
-  await recordChangeWaiver(root, 'CHANGE-0001', 'CHANGE_GREEN_UNPROVEN', 'REQ-EXAMPLE-001', 'nahisaho', 'waived green');
+  await recordChangeWaiver(root, 'CHANGE-0001', 'CHANGE_RED_UNPROVEN', 'REQ-EXAMPLE-001', undefined, 'nahisaho', 'waived red');
+  await recordChangeWaiver(root, 'CHANGE-0001', 'CHANGE_GREEN_UNPROVEN', 'REQ-EXAMPLE-001', undefined, 'nahisaho', 'waived green');
   await recordChangePhase(root, 'CHANGE-0001', 'quality', ['REQ-EXAMPLE-001']);
 
   evidence = await validateChangeEvidence(root);
@@ -264,8 +264,97 @@ it('TEST-CHANGE-EVIDENCE-WAIVER-012 redefines change-history/change-completeness
   expect(changeDoc?.changes).toHaveLength(1);
 
   // CHANGE_COMPLETENESS_TDD also needs waiving for completeness to pass.
-  await recordChangeWaiver(root, 'CHANGE-0001', 'CHANGE_COMPLETENESS_TDD', 'REQ-EXAMPLE-001', 'nahisaho', 'waived completeness');
+  await recordChangeWaiver(root, 'CHANGE-0001', 'CHANGE_COMPLETENESS_TDD', 'REQ-EXAMPLE-001', undefined, 'nahisaho', 'waived completeness');
   completeness = await validateChangeCompleteness(root);
   expect(completeness.valid).toBe(true);
   expect(completeness.changes[0]).toMatchObject({ changeId: 'CHANGE-0001', completeRequirements: 1, requirements: 1, valid: true });
+});
+
+/** @id TEST-CHANGE-EVIDENCE-WAIVER-013
+ * @verifies REQ-CHANGE-EVIDENCE-WAIVER-016
+ */
+it('TEST-CHANGE-EVIDENCE-WAIVER-013 waives CHANGE_RECORD_MISSING with no requirement/detail scope even when changes.json does not exist', async () => {
+  const root = await project();
+  await writeText(root, '.musubix/changes/CHANGE-0002.md', '# CHANGE-0002\nRequirements: REQ-EXAMPLE-001\n');
+  expect(await exists(within(root, '.musubix/evidence/changes.json'))).toBe(false);
+
+  let evidence = await validateChangeEvidence(root);
+  const recordMissing = diagnosticsFor(evidence.diagnostics, 'CHANGE_RECORD_MISSING');
+  expect(recordMissing).toHaveLength(1);
+  expect(recordMissing[0]!.severity).toBe('error');
+  expect(recordMissing[0]!.requirementId).toBeUndefined();
+  expect(recordMissing[0]!.detail).toBeUndefined();
+
+  const result = await recordChangeWaiver(root, 'CHANGE-0002', 'CHANGE_RECORD_MISSING', undefined, undefined, 'nahisaho', 'document staged before recording');
+  expect(result).toMatchObject({ recorded: true, changeId: 'CHANGE-0002', code: 'CHANGE_RECORD_MISSING' });
+
+  evidence = await validateChangeEvidence(root);
+  expect(diagnosticsFor(evidence.diagnostics, 'CHANGE_RECORD_MISSING')[0]!.severity).toBe('warning');
+});
+
+/** @id TEST-CHANGE-EVIDENCE-WAIVER-014
+ * @verifies REQ-CHANGE-EVIDENCE-WAIVER-016
+ */
+it('TEST-CHANGE-EVIDENCE-WAIVER-014 waives detail-scoped CHANGE_PHASE_MISSING using the phase:<name> grammar', async () => {
+  const root = await project();
+  await writeText(root, '.musubix/changes/CHANGE-0001.md', '# CHANGE-0001\nRequirements: REQ-EXAMPLE-001\n');
+  await recordChangePhase(root, 'CHANGE-0001', 'impact', ['REQ-EXAMPLE-001']);
+
+  let evidence = await validateChangeEvidence(root);
+  const phaseMissing = diagnosticsFor(evidence.diagnostics, 'CHANGE_PHASE_MISSING').filter((d) => d.detail === 'phase:requirements');
+  expect(phaseMissing).toHaveLength(1);
+  expect(phaseMissing[0]!.severity).toBe('error');
+
+  const before = await readText(root, '.musubix/evidence/order.json');
+  const result = await recordChangeWaiver(root, 'CHANGE-0001', 'CHANGE_PHASE_MISSING', undefined, 'phase:requirements', 'nahisaho', 'requirements phase deliberately deferred');
+  expect(result).toMatchObject({ recorded: true, changeId: 'CHANGE-0001', code: 'CHANGE_PHASE_MISSING', detail: 'phase:requirements' });
+  expect(await readText(root, '.musubix/evidence/order.json')).not.toBe(before);
+
+  evidence = await validateChangeEvidence(root);
+  const waived = diagnosticsFor(evidence.diagnostics, 'CHANGE_PHASE_MISSING').filter((d) => d.detail === 'phase:requirements');
+  expect(waived).toHaveLength(1);
+  expect(waived[0]!.severity).toBe('warning');
+
+  // A different phase's CHANGE_PHASE_MISSING instance is unaffected.
+  const designMissing = diagnosticsFor(evidence.diagnostics, 'CHANGE_PHASE_MISSING').filter((d) => d.detail === 'phase:design');
+  expect(designMissing[0]?.severity).toBe('error');
+});
+
+/** @id TEST-CHANGE-EVIDENCE-WAIVER-015
+ * @verifies REQ-CHANGE-EVIDENCE-WAIVER-016
+ */
+it('TEST-CHANGE-EVIDENCE-WAIVER-015 waives batch-scoped CHANGE_TESTS_UNCHANGED using the bare batchKey grammar', async () => {
+  const root = await project();
+  await writeText(root, '.musubix/changes/CHANGE-0001.md', '# CHANGE-0001\nRequirements: REQ-EXAMPLE-001\n');
+  await recordChangePhase(root, 'CHANGE-0001', 'impact', ['REQ-EXAMPLE-001']);
+  await writeText(root, '.musubix/features/example/requirements.md',
+    `${await readText(root, '.musubix/features/example/requirements.md')}\nChange: revised acceptance behavior.\n`);
+  await recordChangePhase(root, 'CHANGE-0001', 'requirements', ['REQ-EXAMPLE-001']);
+  await writeText(root, '.musubix/features/example/design.md',
+    `${await readText(root, '.musubix/features/example/design.md')}\nChange: revised component behavior.\n`);
+  await recordChangePhase(root, 'CHANGE-0001', 'design', ['REQ-EXAMPLE-001']);
+
+  // `recordChangePhase` itself fail-fasts on unchanged tests before Red, so this
+  // state (a legacy/directly-edited evidence file predating that guard) is
+  // constructed by directly appending a `red` phase whose `fingerprints.tests`
+  // is identical to `design`'s — the exact state `CHANGE_TESTS_UNCHANGED` reports.
+  const evidencePath = '.musubix/evidence/changes.json';
+  const evidence = JSON.parse(await readText(root, evidencePath));
+  const change = evidence.changes.find((entry: { changeId: string }) => entry.changeId === 'CHANGE-0001');
+  const orderRecord = await appendEvidenceOrder(root, { kind: 'change', entityId: 'CHANGE-0001', phase: 'red' });
+  change.phases.red = { phase: 'red', order: orderRecord.sequence, recordedAt: new Date().toISOString(), fingerprints: change.phases.design.fingerprints };
+  await writeJson(root, evidencePath, evidence);
+
+  let diagnostics = (await validateChangeEvidence(root)).diagnostics;
+  const testsUnchanged = diagnosticsFor(diagnostics, 'CHANGE_TESTS_UNCHANGED');
+  expect(testsUnchanged).toHaveLength(1);
+  const batchDetail = testsUnchanged[0]!.detail;
+  expect(batchDetail).toBe('REQ-EXAMPLE-001');
+  expect(testsUnchanged[0]!.severity).toBe('error');
+
+  const result = await recordChangeWaiver(root, 'CHANGE-0001', 'CHANGE_TESTS_UNCHANGED', undefined, batchDetail, 'nahisaho', 'legacy evidence predates the Red fail-fast guard');
+  expect(result).toMatchObject({ recorded: true, changeId: 'CHANGE-0001', code: 'CHANGE_TESTS_UNCHANGED', detail: batchDetail });
+
+  diagnostics = (await validateChangeEvidence(root)).diagnostics;
+  expect(diagnosticsFor(diagnostics, 'CHANGE_TESTS_UNCHANGED')[0]!.severity).toBe('warning');
 });

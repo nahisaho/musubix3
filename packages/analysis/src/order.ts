@@ -17,10 +17,10 @@ export interface EvidenceOrderRecord {
    */
   testId?: string;
   /**
-   * Only ever set on `kind: 'change'` records for the `waiver` phase (added
-   * for `change-evidence-waiver`), since `entityId` (the `changeId`) alone is
-   * not unique across the many codes/requirements one change can waive.
-   * Absent on every other kind/phase.
+   * Only ever set on `kind: 'change'` records for the `waiver` phase, since
+   * `entityId` (the `changeId`) alone is not unique across the many
+   * codes/requirements one change can waive. Absent on every other
+   * kind/phase.
    */
   code?: string;
   /**
@@ -29,6 +29,15 @@ export interface EvidenceOrderRecord {
    * and every other kind/phase.
    */
   requirementId?: string;
+  /** @id CODE-CHANGE-EVIDENCE-WAIVER-021
+   * @implements REQ-CHANGE-EVIDENCE-WAIVER-016
+   * @design DES-CHANGE-EVIDENCE-WAIVER-001
+   * Only ever set on `kind: 'change'` records for the `waiver` phase, for a
+   * `detail`-scoped or both-scoped waivable code (CHANGE-0012's generalized
+   * scope key). Absent for `neither`/`requirement`-only regime codes and
+   * every other kind/phase.
+   */
+  detail?: string;
   previousSha256: string | null;
   recordSha256: string;
 }
@@ -48,6 +57,13 @@ export interface EvidenceOrderLog {
 export interface EvidenceOrderScope {
   code?: string;
   requirementId?: string;
+  detail?: string;
+  /**
+   * Only ever supplied, and only ever consulted by `recordKey`, for
+   * `phase === 'waiver'` records — never by any external caller directly.
+   * See `recordKey`'s CODE-CHANGE-EVIDENCE-WAIVER-013 annotation below.
+   */
+  sequence?: number;
 }
 
 const orderPath = '.musubix/evidence/order.json';
@@ -56,10 +72,25 @@ function recordSha256(record: Omit<EvidenceOrderRecord, 'recordSha256'>): string
   return digest(JSON.stringify(record));
 }
 
+/** @id CODE-CHANGE-EVIDENCE-WAIVER-013
+ * @implements REQ-CHANGE-EVIDENCE-WAIVER-016
+ * @design DES-CHANGE-EVIDENCE-WAIVER-001
+ * Appends `scope.detail` after `scope.code`/`scope.requirementId` (only when
+ * present), then, only when `phase === 'waiver'`, `scope.sequence` (only when
+ * present). Every existing call site omits `scope.detail`/`scope.sequence`
+ * (or the whole `scope` argument), so pre-existing keys are byte-identical.
+ * `scope.sequence` lets multiple waiver-phase records share every other
+ * scope field (REQ-CHANGE-EVIDENCE-WAIVER-006/010's supersession) without
+ * ever colliding, since a record's `sequence` is strictly monotonic and
+ * unique; it is never appended for any non-`waiver` phase, so
+ * `EVIDENCE_ORDER_DUPLICATE` detection for every other phase is unchanged.
+ */
 function recordKey(kind: EvidenceOrderKind, entityId: string, phase: string, scope?: EvidenceOrderScope): string {
   const key: unknown[] = [kind, entityId, phase];
   if (scope?.code !== undefined) key.push(scope.code);
   if (scope?.requirementId !== undefined) key.push(scope.requirementId);
+  if (scope?.detail !== undefined) key.push(scope.detail);
+  if (phase === 'waiver' && scope?.sequence !== undefined) key.push(scope.sequence);
   return JSON.stringify(key);
 }
 
@@ -89,6 +120,7 @@ export function validateEvidenceOrderLog(log: EvidenceOrderLog | null): {
       || (record.testId !== undefined && (typeof record.testId !== 'string' || !record.testId))
       || (record.code !== undefined && (typeof record.code !== 'string' || !record.code))
       || (record.requirementId !== undefined && (typeof record.requirementId !== 'string' || !record.requirementId))
+      || (record.detail !== undefined && (typeof record.detail !== 'string' || !record.detail))
       || !Number.isInteger(record.sequence) || record.sequence < 1
       || (record.previousSha256 !== null && !/^[a-f0-9]{64}$/i.test(record.previousSha256))
       || !/^[a-f0-9]{64}$/i.test(record.recordSha256)) {
@@ -108,6 +140,8 @@ export function validateEvidenceOrderLog(log: EvidenceOrderLog | null): {
     const key = recordKey(record.kind, record.entityId, record.phase, {
       ...(record.code !== undefined ? { code: record.code } : {}),
       ...(record.requirementId !== undefined ? { requirementId: record.requirementId } : {}),
+      ...(record.detail !== undefined ? { detail: record.detail } : {}),
+      ...(record.phase === 'waiver' ? { sequence: record.sequence } : {}),
     });
     if (records.has(key)) {
       diagnostics.push(error('EVIDENCE_ORDER_DUPLICATE', `${record.kind}:${record.entityId}:${record.phase} appears more than once.`, orderPath));
@@ -135,7 +169,7 @@ export async function inspectEvidenceOrder(root: string): Promise<ReturnType<typ
 
 export async function appendEvidenceOrder(
   root: string,
-  input: Pick<EvidenceOrderRecord, 'kind' | 'entityId' | 'phase'> & Partial<Pick<EvidenceOrderRecord, 'testId' | 'code' | 'requirementId'>>,
+  input: Pick<EvidenceOrderRecord, 'kind' | 'entityId' | 'phase'> & Partial<Pick<EvidenceOrderRecord, 'testId' | 'code' | 'requirementId' | 'detail'>>,
 ): Promise<EvidenceOrderRecord> {
   const log = await loadEvidenceOrder(root) ?? { schemaVersion: 1, records: [] };
   const validated = validateEvidenceOrderLog(log);
@@ -145,6 +179,8 @@ export async function appendEvidenceOrder(
   const scope: EvidenceOrderScope = {
     ...(input.code !== undefined ? { code: input.code } : {}),
     ...(input.requirementId !== undefined ? { requirementId: input.requirementId } : {}),
+    ...(input.detail !== undefined ? { detail: input.detail } : {}),
+    ...(input.phase === 'waiver' ? { sequence: log.records.length + 1 } : {}),
   };
   if (validated.records.has(recordKey(input.kind, input.entityId, input.phase, scope))) {
     throw new Error(`${input.kind}:${input.entityId}:${input.phase} is already present in monotonic evidence order.`);

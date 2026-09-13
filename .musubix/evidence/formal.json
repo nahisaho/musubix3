@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-12T14:44:17.433Z",
-  "totalRequirements": 116,
+  "generatedAt": "2026-09-13T01:04:14.711Z",
+  "totalRequirements": 117,
   "modeledRequirements": 9,
-  "modeledFraction": 0.07758620689655173,
+  "modeledFraction": 0.07692307692307693,
   "result": {
     "valid": true,
     "abstraction": "Consistency of explicit branch-scoped conditional, exact unit-normalized integer numeric, bounded temporal interval, deterministic state-transition, and controlled unconditional Boolean constraints; not implementation correctness.",
@@ -33,7 +33,7 @@
       },
       {
         "requirement": "REQ-CHANGE-EVIDENCE-WAIVER-009",
-        "atom": "[\"system\",\"report `severity: \\\"error\\\"`, unaffected, for every diagnostic instance of a waivable code that does not itself have a matching, validly linked, non-stale waiver record for that exact `changeid`/`code`/`requirementid` combination\"]",
+        "atom": "[\"system\",\"report `severity: \\\"error\\\"`, unaffected, for every diagnostic instance of a waivable code that does not itself have a matching, validly linked, non-stale waiver record for that exact `changeid`/`code`/`requirementid`/`detail` combination\"]",
         "positive": true
       },
       {
@@ -96,6 +96,7 @@
       "REQ-CHANGE-EVIDENCE-WAIVER-002",
       "REQ-CHANGE-EVIDENCE-WAIVER-003",
       "REQ-CHANGE-EVIDENCE-WAIVER-004",
+      "REQ-CHANGE-EVIDENCE-WAIVER-016",
       "REQ-CHANGE-EVIDENCE-WAIVER-005",
       "REQ-CHANGE-EVIDENCE-WAIVER-006",
       "REQ-CHANGE-EVIDENCE-WAIVER-007",
@@ -332,6 +333,11 @@
         "code": "FORMAL_UNSUPPORTED",
         "severity": "warning",
         "message": "REQ-CHANGE-EVIDENCE-WAIVER-004 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-CHANGE-EVIDENCE-WAIVER-016 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
       },
       {
         "code": "FORMAL_UNSUPPORTED",
@@ -725,7 +731,7 @@
     ".musubix/features/approval-domain-scoping/requirements.md": "c886926622fe022052c81b1ea4e76f21c04f42636f4a37d074f7d34c0505210f",
     ".musubix/features/bounded-file-read-concurrency/requirements.md": "9e08acde7e29a8f14b23d908c465c629e49d00bc29ae9bda1466427362c815be",
     ".musubix/features/change-acceptance-heuristic/requirements.md": "82b9c8d839d6663f97b67bba2c01fc775e3253e444440eb2833f82cdd877bcf6",
-    ".musubix/features/change-evidence-waiver/requirements.md": "fb9109ce26127acb978da414697e800ad86053cb9567d6ecb4054a9f33cb49df",
+    ".musubix/features/change-evidence-waiver/requirements.md": "33579a83e55ac3a9f07cd3b55ab3d96c0eaf3c0fc0646af0159cfb7e178762a2",
     ".musubix/features/change-record-fail-fast/requirements.md": "7488f2f96293ca03ca0690358aa528d1e329e70d39be3885540f54c81c14d94e",
     ".musubix/features/change-requirement-batches/requirements.md": "215dff587257d8edf5ba17c60b610bb6abe4497d867ad20de28e5ef520184c7f",
     ".musubix/features/cli-workflow-ux-v019/requirements.md": "8ac7b7e793009d95a03b53de1e3aca043d4433a7b6de9511d8547ebc33b5e7b2",
