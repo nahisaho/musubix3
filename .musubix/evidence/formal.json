@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-13T08:01:33.820Z",
-  "totalRequirements": 138,
+  "generatedAt": "2026-09-13T09:37:36.235Z",
+  "totalRequirements": 140,
   "modeledRequirements": 9,
-  "modeledFraction": 0.06521739130434782,
+  "modeledFraction": 0.06428571428571428,
   "result": {
     "valid": true,
     "abstraction": "Consistency of explicit branch-scoped conditional, exact unit-normalized integer numeric, bounded temporal interval, deterministic state-transition, and controlled unconditional Boolean constraints; not implementation correctness.",
@@ -121,6 +121,8 @@
       "REQ-CHANGE-RECORD-FAIL-FAST-008",
       "REQ-CHANGE-RECORD-FAIL-FAST-009",
       "REQ-CHANGE-RECORD-FAIL-FAST-010",
+      "REQ-CHANGE-RECORD-RECORDEDAT-ORDER-001",
+      "REQ-CHANGE-RECORD-RECORDEDAT-ORDER-002",
       "REQ-CHANGE-REQUIREMENT-BATCHES-001",
       "REQ-CHANGE-REQUIREMENT-BATCHES-003",
       "REQ-CHANGE-REQUIREMENT-BATCHES-004",
@@ -479,6 +481,16 @@
         "code": "FORMAL_UNSUPPORTED",
         "severity": "warning",
         "message": "REQ-CHANGE-RECORD-FAIL-FAST-010 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-CHANGE-RECORD-RECORDEDAT-ORDER-001 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-CHANGE-RECORD-RECORDEDAT-ORDER-002 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
       },
       {
         "code": "FORMAL_UNSUPPORTED",
@@ -860,6 +872,7 @@
     ".musubix/features/change-acceptance-heuristic/requirements.md": "82b9c8d839d6663f97b67bba2c01fc775e3253e444440eb2833f82cdd877bcf6",
     ".musubix/features/change-evidence-waiver/requirements.md": "33579a83e55ac3a9f07cd3b55ab3d96c0eaf3c0fc0646af0159cfb7e178762a2",
     ".musubix/features/change-record-fail-fast/requirements.md": "7488f2f96293ca03ca0690358aa528d1e329e70d39be3885540f54c81c14d94e",
+    ".musubix/features/change-record-recordedat-order/requirements.md": "f43a1e3170ff7488fd2b3993ac9ba662b45ae159978513f929a99f59bdfcb83b",
     ".musubix/features/change-requirement-batches/requirements.md": "215dff587257d8edf5ba17c60b610bb6abe4497d867ad20de28e5ef520184c7f",
     ".musubix/features/cli-workflow-ux-v019/requirements.md": "8ac7b7e793009d95a03b53de1e3aca043d4433a7b6de9511d8547ebc33b5e7b2",
     ".musubix/features/command-working-directory/requirements.md": "4a376dfe7a6e9b1bb1ff4a947fb2807f7179a1798df369040c879a1b9e4fcb90",

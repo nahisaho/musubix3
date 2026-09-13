@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-13T08:01:29.263Z",
+  "generatedAt": "2026-09-13T09:37:31.975Z",
   "nodes": [
     {
       "id": "CODE-SESSION-SCOPED-DEVELOPMENT-001",
@@ -162,6 +162,12 @@
       "id": "ADR-0026",
       "kind": "adr",
       "path": ".musubix/decisions/ADR-0026.md",
+      "line": 1
+    },
+    {
+      "id": "ADR-0027",
+      "kind": "adr",
+      "path": ".musubix/decisions/ADR-0027.md",
       "line": 1
     },
     {
@@ -745,6 +751,32 @@
       "kind": "requirement",
       "path": ".musubix/features/change-record-fail-fast/requirements.md",
       "line": 151,
+      "mandatory": true
+    },
+    {
+      "id": "DES-CHANGE-RECORD-RECORDEDAT-ORDER-001",
+      "kind": "design",
+      "path": ".musubix/features/change-record-recordedat-order/design.md",
+      "line": 7
+    },
+    {
+      "id": "DES-CHANGE-RECORD-RECORDEDAT-ORDER-002",
+      "kind": "design",
+      "path": ".musubix/features/change-record-recordedat-order/design.md",
+      "line": 23
+    },
+    {
+      "id": "REQ-CHANGE-RECORD-RECORDEDAT-ORDER-001",
+      "kind": "requirement",
+      "path": ".musubix/features/change-record-recordedat-order/requirements.md",
+      "line": 46,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-CHANGE-RECORD-RECORDEDAT-ORDER-002",
+      "kind": "requirement",
+      "path": ".musubix/features/change-record-recordedat-order/requirements.md",
+      "line": 53,
       "mandatory": true
     },
     {
@@ -1806,19 +1838,37 @@
       "id": "CODE-CHANGE-RECORD-FAIL-FAST-001",
       "kind": "code",
       "path": "packages/analysis/src/change.ts",
-      "line": 88
+      "line": 89
     },
     {
       "id": "CODE-CHANGE-RECORD-FAIL-FAST-003",
       "kind": "code",
       "path": "packages/analysis/src/change.ts",
-      "line": 127
+      "line": 128
+    },
+    {
+      "id": "CODE-CHANGE-RECORD-RECORDEDAT-ORDER-001",
+      "kind": "code",
+      "path": "packages/analysis/src/change.ts",
+      "line": 260
+    },
+    {
+      "id": "CODE-CHANGE-RECORD-RECORDEDAT-ORDER-002",
+      "kind": "code",
+      "path": "packages/analysis/src/change.ts",
+      "line": 268
+    },
+    {
+      "id": "CODE-CHANGE-RECORD-RECORDEDAT-ORDER-003",
+      "kind": "code",
+      "path": "packages/analysis/src/change.ts",
+      "line": 299
     },
     {
       "id": "CODE-CHANGE-REQUIREMENT-BATCHES-002",
       "kind": "code",
       "path": "packages/analysis/src/change.ts",
-      "line": 259
+      "line": 321
     },
     {
       "id": "CODE-APPROVAL-DOMAIN-SCOPING-001",
@@ -2139,10 +2189,16 @@
       "line": 382
     },
     {
+      "id": "CODE-CHANGE-RECORD-RECORDEDAT-ORDER-004",
+      "kind": "code",
+      "path": "packages/cli/src/main.ts",
+      "line": 493
+    },
+    {
       "id": "CODE-CHANGE-RECORD-FAIL-FAST-002",
       "kind": "code",
       "path": "packages/cli/src/main.ts",
-      "line": 502
+      "line": 509
     },
     {
       "id": "CODE-DESIGN-ADR-NONE-EXEMPTION-001",
@@ -2599,6 +2655,24 @@
       "kind": "test",
       "path": "tests/change-record-fail-fast.test.ts",
       "line": 276
+    },
+    {
+      "id": "TEST-CHANGE-RECORD-RECORDEDAT-ORDER-001",
+      "kind": "test",
+      "path": "tests/change-record-recordedat-order.test.ts",
+      "line": 10
+    },
+    {
+      "id": "TEST-CHANGE-RECORD-RECORDEDAT-ORDER-002",
+      "kind": "test",
+      "path": "tests/change-record-recordedat-order.test.ts",
+      "line": 76
+    },
+    {
+      "id": "TEST-CHANGE-RECORD-RECORDEDAT-ORDER-003",
+      "kind": "test",
+      "path": "tests/change-record-recordedat-order.test.ts",
+      "line": 116
     },
     {
       "id": "TEST-CHANGE-REQUIREMENT-BATCHES-001",
@@ -3546,6 +3620,21 @@
     {
       "from": "ADR-0022",
       "to": "DES-CHANGE-RECORD-FAIL-FAST-005",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-CHANGE-RECORD-RECORDEDAT-ORDER-001",
+      "to": "REQ-CHANGE-RECORD-RECORDEDAT-ORDER-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-CHANGE-RECORD-RECORDEDAT-ORDER-002",
+      "to": "REQ-CHANGE-RECORD-RECORDEDAT-ORDER-002",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0027",
+      "to": "DES-CHANGE-RECORD-RECORDEDAT-ORDER-002",
       "relation": "decides"
     },
     {
@@ -5134,6 +5223,36 @@
       "relation": "implements"
     },
     {
+      "from": "CODE-CHANGE-RECORD-RECORDEDAT-ORDER-001",
+      "to": "REQ-CHANGE-RECORD-RECORDEDAT-ORDER-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-RECORD-RECORDEDAT-ORDER-001",
+      "to": "DES-CHANGE-RECORD-RECORDEDAT-ORDER-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-RECORD-RECORDEDAT-ORDER-002",
+      "to": "REQ-CHANGE-RECORD-RECORDEDAT-ORDER-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-RECORD-RECORDEDAT-ORDER-002",
+      "to": "DES-CHANGE-RECORD-RECORDEDAT-ORDER-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-RECORD-RECORDEDAT-ORDER-003",
+      "to": "REQ-CHANGE-RECORD-RECORDEDAT-ORDER-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-RECORD-RECORDEDAT-ORDER-003",
+      "to": "DES-CHANGE-RECORD-RECORDEDAT-ORDER-002",
+      "relation": "implements"
+    },
+    {
       "from": "CODE-CHANGE-REQUIREMENT-BATCHES-002",
       "to": "REQ-CHANGE-REQUIREMENT-BATCHES-005",
       "relation": "implements"
@@ -5999,6 +6118,16 @@
       "relation": "implements"
     },
     {
+      "from": "CODE-CHANGE-RECORD-RECORDEDAT-ORDER-004",
+      "to": "REQ-CHANGE-RECORD-RECORDEDAT-ORDER-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-RECORD-RECORDEDAT-ORDER-004",
+      "to": "DES-CHANGE-RECORD-RECORDEDAT-ORDER-001",
+      "relation": "implements"
+    },
+    {
       "from": "CODE-CHANGE-RECORD-FAIL-FAST-002",
       "to": "REQ-CHANGE-RECORD-FAIL-FAST-007",
       "relation": "implements"
@@ -6489,6 +6618,21 @@
       "relation": "verifies"
     },
     {
+      "from": "TEST-CHANGE-RECORD-RECORDEDAT-ORDER-001",
+      "to": "REQ-CHANGE-RECORD-RECORDEDAT-ORDER-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-CHANGE-RECORD-RECORDEDAT-ORDER-002",
+      "to": "REQ-CHANGE-RECORD-RECORDEDAT-ORDER-002",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-CHANGE-RECORD-RECORDEDAT-ORDER-003",
+      "to": "REQ-CHANGE-RECORD-RECORDEDAT-ORDER-002",
+      "relation": "verifies"
+    },
+    {
       "from": "TEST-CHANGE-REQUIREMENT-BATCHES-001",
       "to": "REQ-CHANGE-REQUIREMENT-BATCHES-001",
       "relation": "verifies"
@@ -6945,6 +7089,7 @@
     ".musubix/decisions/ADR-0024.md": "9f53abce6d5b20e611b3660bec229292cba236b7285f56f09c97063f79f40135",
     ".musubix/decisions/ADR-0025.md": "21b4dacafba6b1c790981fdcde5f74e2d6c821e2058eb64757617d90f3897158",
     ".musubix/decisions/ADR-0026.md": "193efbb4d778f4aa9246b5e9e3e6ab1e8e86a9ddac40a189e33f2533013d8531",
+    ".musubix/decisions/ADR-0027.md": "1661295df8d1cf91a49ad928d576be5c382cf132f1a211b1b3f63987ff401de1",
     ".musubix/features/adapter-pattern-recognition/design.md": "a8e0c4a11f626cb4a41c9b5b53359c072ec0c3161f704791f42ba8af38124a70",
     ".musubix/features/adapter-pattern-recognition/requirements.md": "5731561a0a04982b8a5c305bdeeae6084bcf0ee8846f295eaaaabc823d1f9793",
     ".musubix/features/approval-domain-scoping/design.md": "e8731f1e3094aa22192ae2ae5986fb4dc9a7698f7cfe66961e1342f6e0743bd9",
@@ -6959,6 +7104,8 @@
     ".musubix/features/change-evidence-waiver/requirements.md": "33579a83e55ac3a9f07cd3b55ab3d96c0eaf3c0fc0646af0159cfb7e178762a2",
     ".musubix/features/change-record-fail-fast/design.md": "4fec24158324cd376089df5c0d1018c5c58c6da37eecf63b929bf9b63c3aa253",
     ".musubix/features/change-record-fail-fast/requirements.md": "7488f2f96293ca03ca0690358aa528d1e329e70d39be3885540f54c81c14d94e",
+    ".musubix/features/change-record-recordedat-order/design.md": "dd13b47ff7a22763bf45114f4a789c3c566e71d5905bd1dbcebe1f093992e7ab",
+    ".musubix/features/change-record-recordedat-order/requirements.md": "f43a1e3170ff7488fd2b3993ac9ba662b45ae159978513f929a99f59bdfcb83b",
     ".musubix/features/change-requirement-batches/design.md": "ea7ee9aa17f9f675bf649e9eec90b07e335a6fb793faf4c9951c5f747510f453",
     ".musubix/features/change-requirement-batches/requirements.md": "215dff587257d8edf5ba17c60b610bb6abe4497d867ad20de28e5ef520184c7f",
     ".musubix/features/cli-workflow-ux-v019/design.md": "bdb13e2b903123c32e54787599220ea5444a0922532b60d38fef528991116cf8",
@@ -7004,7 +7151,7 @@
     "packages/analysis/src/attestation.ts": "c353b5d93f151665e1f5f0531b763db164cb54e5305a837efd47b2742eb3b949",
     "packages/analysis/src/change-evidence.ts": "8bff2cb709de3834e078bf8bf30f2ddef36b37fa03bec5446e27711cae14709b",
     "packages/analysis/src/change-waiver.ts": "edabb578fe2d968bf98fe068ee240a32b67dcf7b50724a265e83ebc2a88c1ccd",
-    "packages/analysis/src/change.ts": "e6c2d3b3118b62da9058c4cbc32dc5d3c9014679ae747dee055366f89f0456f5",
+    "packages/analysis/src/change.ts": "85647ae006e4255d10d10c6172e88b556bb0a2b9d96895dd4b12fc272fba3458",
     "packages/analysis/src/config.ts": "52d5212f4057df9ed5caac0a0025ce744864909abceea3c64d259479ddffb998",
     "packages/analysis/src/files.ts": "6186177faea34f7b2f6dd865b4f911d3b8fbfe6786e2cd19bc7dffee2a058ba2",
     "packages/analysis/src/formal.ts": "9f5622983fed80c1e7c141cc7c7dcd217447e5c2edd39e64877db052a57b730b",
@@ -7025,7 +7172,7 @@
     "packages/analysis/src/workflow-waiver.ts": "7c09999654d03fbc96879f3e6726d505706cdcba36940c00d46ac208d94f972f",
     "packages/analysis/src/workflow.ts": "54d1dc9114b42b325a32a88f1bf503ff9ba57157651ec7b2b89135a0177c7357",
     "packages/cli/src/install.ts": "3b7d03d1864493ea9caee34855e4fd82ec970d321a205ee3378c8f13a4a34e17",
-    "packages/cli/src/main.ts": "b7ee4e4eb75ec80626c05f83a5f9dc4bc28de6bbf01d9542f89d46cce10a21d5",
+    "packages/cli/src/main.ts": "81ac342759c1fb98056c54a8691724ff638fc8afc51632d8cdf3cf4b52e32bff",
     "packages/domain/src/constitution.ts": "514278499642ff46ed902864b9192f566b116b4f92eb3fafa6b62588335e170a",
     "packages/domain/src/design.ts": "fc1ca4d3249abc9705ba4b6f296e0f4fa3b3d6ff6d5d82e51c99f49fc7a93ac9",
     "packages/domain/src/index.ts": "43243e9279e3826b23cd8d8b4365854974112ce4cf17cfb0f0ee32e6b28e9cc6",
@@ -7046,6 +7193,7 @@
     "tests/change-acceptance-heuristic.test.ts": "44e9ecd782a3cd38c5913b200272b083c90fc144c389740f4b8548eabec73a3e",
     "tests/change-evidence-waiver.test.ts": "254f82e14dac3beaed102979dd0e977ded31ebc20ffacb60aa798194b97bed80",
     "tests/change-record-fail-fast.test.ts": "2f69f19332049c206f39b42c3bc2b505ce63173db798d74c5a9ace7064cdfe78",
+    "tests/change-record-recordedat-order.test.ts": "5ad61cf31e273dc9cdfe190b21dcc8ffc49d327592e01b6eb0251f4cdda7b149",
     "tests/change-requirement-batches.test.ts": "a170a3e7e8ad9dde66628a15f84343b45a1bfd2e84739d12c03e3eeb9b13d02a",
     "tests/cli-package.test.ts": "706c58866bb1aff662016b679671d89bec28c629dfae88a44566c06e25931136",
     "tests/cli-workflow-ux.test.ts": "53bdc5375bef05b365d725f5a8948393d68ae8cd1116fad8ff36ca3de127a177",

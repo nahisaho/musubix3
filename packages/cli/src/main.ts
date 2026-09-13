@@ -490,8 +490,15 @@ export function createProgram(): Command {
     output(report, !!options.json, `${report.status}: ${report.valid ? 'valid' : 'invalid'}`);
     if (!report.valid) process.exitCode = 1;
   });
+  /** @id CODE-CHANGE-RECORD-RECORDEDAT-ORDER-004
+   * @implements REQ-CHANGE-RECORD-RECORDEDAT-ORDER-001
+   * @design DES-CHANGE-RECORD-RECORDEDAT-ORDER-001
+   */
   common(program.command('change-record <change-id> <phase>')
-    .description('Record an ordered staged-change fingerprint checkpoint; rejects an unchanged fingerprint since the preceding phase'))
+    .description('Record an ordered staged-change fingerprint checkpoint; rejects an unchanged fingerprint since the preceding phase. '
+      + 'Each recorded phase/batch stores both order (the verified, gate-checked logical append sequence from order.json — the only field '
+      + 'guaranteed correct and monotonic per change) and recordedAt (an independently captured wall-clock timestamp with no ordering guarantee; '
+      + 'gate reports it via CHANGE_RECORDEDAT_OUT_OF_ORDER, a non-blocking warning, when it disagrees with order)'))
     .requiredOption('--requirement <ids...>', 'Requirement IDs affected by this change')
     .option('--allow-unchanged', 'Record requirements even if unchanged since impact (defect fixes only)')
     .option('--dry-run', 'Preview the outcome without recording it')

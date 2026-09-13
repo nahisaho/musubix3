@@ -84,6 +84,7 @@ async function currentFingerprints(root: string, changeId: string, requirementId
 
 const tddBatchPhases = ['red', 'implementation', 'green'] as const;
 type TddBatchPhase = typeof tddBatchPhases[number];
+const singularPhases = ['impact', 'requirements', 'design', 'quality'] as const;
 
 /** @id CODE-CHANGE-RECORD-FAIL-FAST-001
  * @implements REQ-CHANGE-RECORD-FAIL-FAST-001 REQ-CHANGE-RECORD-FAIL-FAST-002 REQ-CHANGE-RECORD-FAIL-FAST-003 REQ-CHANGE-RECORD-FAIL-FAST-004 REQ-CHANGE-RECORD-FAIL-FAST-005
@@ -256,6 +257,67 @@ export async function recordChangePhase(
   return evidence;
 }
 
+/** @id CODE-CHANGE-RECORD-RECORDEDAT-ORDER-001
+ * @implements REQ-CHANGE-RECORD-RECORDEDAT-ORDER-002
+ * @design DES-CHANGE-RECORD-RECORDEDAT-ORDER-002
+ */
+function isCanonicalIsoRecordedAt(value: string): boolean {
+  return typeof value === 'string' && !Number.isNaN(Date.parse(value)) && new Date(value).toISOString() === value;
+}
+
+/** @id CODE-CHANGE-RECORD-RECORDEDAT-ORDER-002
+ * @implements REQ-CHANGE-RECORD-RECORDEDAT-ORDER-002
+ * @design DES-CHANGE-RECORD-RECORDEDAT-ORDER-002
+ */
+function collectRecordedAtEntries(change: ChangeRecord): { label: string; order: number; recordedAt: string }[] {
+  const candidates: { label: string; order: number | undefined; recordedAt: string }[] = [];
+  for (const singularPhase of singularPhases) {
+    const item = change.phases[singularPhase];
+    if (item) candidates.push({ label: singularPhase, order: item.order, recordedAt: item.recordedAt });
+  }
+  const fullSetKey = batchKey(change.requirementIds);
+  for (const batch of effectiveBatches(change)) {
+    const key = batchKey(batch.requirementIds);
+    const isFullSet = key === fullSetKey;
+    for (const batchPhase of tddBatchPhases) {
+      const item = batch[batchPhase];
+      if (!item) continue;
+      candidates.push({ label: isFullSet ? batchPhase : `${batchPhase}:${key}`, order: item.order, recordedAt: item.recordedAt });
+    }
+  }
+  const orderCounts = new Map<number, number>();
+  for (const candidate of candidates) {
+    if (!Number.isInteger(candidate.order)) continue;
+    orderCounts.set(candidate.order!, (orderCounts.get(candidate.order!) ?? 0) + 1);
+  }
+  return candidates
+    .filter((candidate): candidate is { label: string; order: number; recordedAt: string } =>
+      Number.isInteger(candidate.order) && orderCounts.get(candidate.order!) === 1 && isCanonicalIsoRecordedAt(candidate.recordedAt))
+    .sort((a, b) => a.order - b.order);
+}
+
+/** @id CODE-CHANGE-RECORD-RECORDEDAT-ORDER-003
+ * @implements REQ-CHANGE-RECORD-RECORDEDAT-ORDER-002
+ * @design DES-CHANGE-RECORD-RECORDEDAT-ORDER-002
+ */
+function recordedAtOutOfOrderDiagnostics(change: ChangeRecord): Diagnostic[] {
+  const entries = collectRecordedAtEntries(change);
+  const diagnostics: Diagnostic[] = [];
+  for (let i = 1; i < entries.length; i += 1) {
+    const previous = entries[i - 1]!;
+    const current = entries[i]!;
+    if (current.recordedAt < previous.recordedAt) {
+      diagnostics.push({
+        code: 'CHANGE_RECORDEDAT_OUT_OF_ORDER',
+        severity: 'warning',
+        changeId: change.changeId,
+        message: `${change.changeId}: recordedAt for ${current.label} (order ${current.order}) is earlier than ${previous.label} (order ${previous.order}).`,
+      });
+    }
+  }
+  return diagnostics;
+}
+
 /** @id CODE-CHANGE-REQUIREMENT-BATCHES-002
  * @implements REQ-CHANGE-REQUIREMENT-BATCHES-005 REQ-CHANGE-RECORD-FAIL-FAST-008
  * @design DES-CHANGE-REQUIREMENT-BATCHES-002 DES-CHANGE-RECORD-FAIL-FAST-003
@@ -300,7 +362,6 @@ export async function validateChangeEvidence(root: string): Promise<{
       diagnostics.push(error('CHANGE_DOCUMENT_MISSING', `${change.changeId} has chronology evidence but no change document.`));
     }
   }
-  const singularPhases = ['impact', 'requirements', 'design', 'quality'] as const;
   for (const change of evidence.changes) {
     const batches = effectiveBatches(change);
     const fullSetKey = batchKey(change.requirementIds);
@@ -418,6 +479,7 @@ export async function validateChangeEvidence(root: string): Promise<{
           `${change.changeId} changed tests between Red and Green.`, change.changeId, undefined, diagnosticDetail('CHANGE_TEST_CHANGED_AFTER_RED', { batch })));
       }
     }
+    diagnostics.push(...recordedAtOutOfOrderDiagnostics(change));
     for (const requirementId of change.requirementIds) {
       const batch = batchFor(batches, requirementId);
       const red = batch?.red;

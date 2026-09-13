@@ -331,6 +331,18 @@
       "timeoutMs": 120000
     },
     {
+      "name": "change-record-recordedat-order-tests",
+      "command": "npx",
+      "args": [
+        "vitest",
+        "run",
+        "tests/change-record-recordedat-order.test.ts"
+      ],
+      "adapter": "vitest",
+      "required": true,
+      "timeoutMs": 120000
+    },
+    {
       "name": "upgrade-workflow-tests",
       "command": "npx",
       "args": [
