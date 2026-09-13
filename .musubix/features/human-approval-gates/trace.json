@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-13T05:42:01.855Z",
+  "generatedAt": "2026-09-13T08:01:29.263Z",
   "nodes": [
     {
       "id": "CODE-SESSION-SCOPED-DEVELOPMENT-001",
@@ -392,6 +392,58 @@
       "kind": "requirement",
       "path": ".musubix/features/approval-domain-scoping/requirements.md",
       "line": 168,
+      "mandatory": true
+    },
+    {
+      "id": "DES-ATTESTATION-EVIDENCE-STABILITY-001",
+      "kind": "design",
+      "path": ".musubix/features/attestation-evidence-stability/design.md",
+      "line": 25
+    },
+    {
+      "id": "DES-ATTESTATION-EVIDENCE-STABILITY-002",
+      "kind": "design",
+      "path": ".musubix/features/attestation-evidence-stability/design.md",
+      "line": 66
+    },
+    {
+      "id": "DES-ATTESTATION-EVIDENCE-STABILITY-003",
+      "kind": "design",
+      "path": ".musubix/features/attestation-evidence-stability/design.md",
+      "line": 112
+    },
+    {
+      "id": "DES-ATTESTATION-EVIDENCE-STABILITY-004",
+      "kind": "design",
+      "path": ".musubix/features/attestation-evidence-stability/design.md",
+      "line": 188
+    },
+    {
+      "id": "REQ-ATTESTATION-EVIDENCE-STABILITY-001",
+      "kind": "requirement",
+      "path": ".musubix/features/attestation-evidence-stability/requirements.md",
+      "line": 34,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-ATTESTATION-EVIDENCE-STABILITY-002",
+      "kind": "requirement",
+      "path": ".musubix/features/attestation-evidence-stability/requirements.md",
+      "line": 41,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-ATTESTATION-EVIDENCE-STABILITY-003",
+      "kind": "requirement",
+      "path": ".musubix/features/attestation-evidence-stability/requirements.md",
+      "line": 48,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-ATTESTATION-EVIDENCE-STABILITY-004",
+      "kind": "requirement",
+      "path": ".musubix/features/attestation-evidence-stability/requirements.md",
+      "line": 55,
       "mandatory": true
     },
     {
@@ -1613,6 +1665,12 @@
       "line": 358
     },
     {
+      "id": "CODE-ATTESTATION-EVIDENCE-STABILITY-002",
+      "kind": "code",
+      "path": "packages/analysis/src/attestation.ts",
+      "line": 67
+    },
+    {
       "id": "CODE-CHANGE-REQUIREMENT-BATCHES-001",
       "kind": "code",
       "path": "packages/analysis/src/change-evidence.ts",
@@ -1839,6 +1897,12 @@
       "kind": "code",
       "path": "packages/analysis/src/knowledge.ts",
       "line": 58
+    },
+    {
+      "id": "CODE-ATTESTATION-EVIDENCE-STABILITY-001",
+      "kind": "code",
+      "path": "packages/analysis/src/mutation.ts",
+      "line": 161
     },
     {
       "id": "CODE-CHANGE-EVIDENCE-WAIVER-021",
@@ -2301,6 +2365,30 @@
       "kind": "test",
       "path": "tests/approval.test.ts",
       "line": 170
+    },
+    {
+      "id": "TEST-ATTESTATION-EVIDENCE-STABILITY-001",
+      "kind": "test",
+      "path": "tests/attestation-evidence-stability.test.ts",
+      "line": 48
+    },
+    {
+      "id": "TEST-ATTESTATION-EVIDENCE-STABILITY-002",
+      "kind": "test",
+      "path": "tests/attestation-evidence-stability.test.ts",
+      "line": 91
+    },
+    {
+      "id": "TEST-ATTESTATION-EVIDENCE-STABILITY-003",
+      "kind": "test",
+      "path": "tests/attestation-evidence-stability.test.ts",
+      "line": 158
+    },
+    {
+      "id": "TEST-ATTESTATION-EVIDENCE-STABILITY-004",
+      "kind": "test",
+      "path": "tests/attestation-evidence-stability.test.ts",
+      "line": 255
     },
     {
       "id": "TEST-BOUNDED-FILE-READ-CONCURRENCY-001",
@@ -3134,6 +3222,26 @@
       "from": "DES-APPROVAL-DOMAIN-SCOPING-007",
       "to": "DES-APPROVAL-DOMAIN-SCOPING-006",
       "relation": "depends-on"
+    },
+    {
+      "from": "DES-ATTESTATION-EVIDENCE-STABILITY-001",
+      "to": "REQ-ATTESTATION-EVIDENCE-STABILITY-002",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-ATTESTATION-EVIDENCE-STABILITY-002",
+      "to": "REQ-ATTESTATION-EVIDENCE-STABILITY-003",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-ATTESTATION-EVIDENCE-STABILITY-003",
+      "to": "REQ-ATTESTATION-EVIDENCE-STABILITY-004",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-ATTESTATION-EVIDENCE-STABILITY-004",
+      "to": "REQ-ATTESTATION-EVIDENCE-STABILITY-001",
+      "relation": "satisfies"
     },
     {
       "from": "DES-BOUNDED-FILE-READ-CONCURRENCY-001",
@@ -4591,6 +4699,26 @@
       "relation": "implements"
     },
     {
+      "from": "CODE-ATTESTATION-EVIDENCE-STABILITY-002",
+      "to": "REQ-ATTESTATION-EVIDENCE-STABILITY-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-ATTESTATION-EVIDENCE-STABILITY-002",
+      "to": "REQ-ATTESTATION-EVIDENCE-STABILITY-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-ATTESTATION-EVIDENCE-STABILITY-002",
+      "to": "DES-ATTESTATION-EVIDENCE-STABILITY-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-ATTESTATION-EVIDENCE-STABILITY-002",
+      "to": "DES-ATTESTATION-EVIDENCE-STABILITY-003",
+      "relation": "implements"
+    },
+    {
       "from": "CODE-CHANGE-REQUIREMENT-BATCHES-001",
       "to": "REQ-CHANGE-REQUIREMENT-BATCHES-001",
       "relation": "implements"
@@ -5193,6 +5321,21 @@
     {
       "from": "CODE-BOUNDED-FILE-READ-CONCURRENCY-003",
       "to": "DES-BOUNDED-FILE-READ-CONCURRENCY-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-ATTESTATION-EVIDENCE-STABILITY-001",
+      "to": "REQ-ATTESTATION-EVIDENCE-STABILITY-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-ATTESTATION-EVIDENCE-STABILITY-001",
+      "to": "REQ-ATTESTATION-EVIDENCE-STABILITY-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-ATTESTATION-EVIDENCE-STABILITY-001",
+      "to": "DES-ATTESTATION-EVIDENCE-STABILITY-001",
       "relation": "implements"
     },
     {
@@ -6111,6 +6254,26 @@
       "relation": "verifies"
     },
     {
+      "from": "TEST-ATTESTATION-EVIDENCE-STABILITY-001",
+      "to": "REQ-ATTESTATION-EVIDENCE-STABILITY-002",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-ATTESTATION-EVIDENCE-STABILITY-002",
+      "to": "REQ-ATTESTATION-EVIDENCE-STABILITY-003",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-ATTESTATION-EVIDENCE-STABILITY-003",
+      "to": "REQ-ATTESTATION-EVIDENCE-STABILITY-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-ATTESTATION-EVIDENCE-STABILITY-004",
+      "to": "REQ-ATTESTATION-EVIDENCE-STABILITY-004",
+      "relation": "verifies"
+    },
+    {
       "from": "TEST-BOUNDED-FILE-READ-CONCURRENCY-001",
       "to": "REQ-BOUNDED-FILE-READ-CONCURRENCY-001",
       "relation": "verifies"
@@ -6786,6 +6949,8 @@
     ".musubix/features/adapter-pattern-recognition/requirements.md": "5731561a0a04982b8a5c305bdeeae6084bcf0ee8846f295eaaaabc823d1f9793",
     ".musubix/features/approval-domain-scoping/design.md": "e8731f1e3094aa22192ae2ae5986fb4dc9a7698f7cfe66961e1342f6e0743bd9",
     ".musubix/features/approval-domain-scoping/requirements.md": "c886926622fe022052c81b1ea4e76f21c04f42636f4a37d074f7d34c0505210f",
+    ".musubix/features/attestation-evidence-stability/design.md": "878b28a4f673bcbcf9684de3d759538a8226fb2c3bd63536d12a408723e19d1a",
+    ".musubix/features/attestation-evidence-stability/requirements.md": "afab3f5ea642e0ff89d883ca4e612e460a6291afb0d263d4ffe7f878e4145406",
     ".musubix/features/bounded-file-read-concurrency/design.md": "f62902f2ffe3e37202076e4fed2c390667af87dab84cd0e97316eaaab2d10394",
     ".musubix/features/bounded-file-read-concurrency/requirements.md": "9e08acde7e29a8f14b23d908c465c629e49d00bc29ae9bda1466427362c815be",
     ".musubix/features/change-acceptance-heuristic/design.md": "ce67823a2c44f55a8fbfebc36b9532a0ca1f7a754613443c99ea8171ab136910",
@@ -6836,7 +7001,7 @@
     "packages/analysis/src/approval-domains.ts": "bc45836374021f86c4c2085184185546cc4291880aea32b9084188545b9394b4",
     "packages/analysis/src/approval-record.ts": "838294de204a006daf5a7048a69153b573d5b61e5c9d8f3d66332b27a5b577bf",
     "packages/analysis/src/approval.ts": "d9f57165ca455a0b49acdda7096e0df98a06cd5be33c3d20b2f06cf40917c69f",
-    "packages/analysis/src/attestation.ts": "2d273d2ed5aaa8521938a247492bbe54ee9b195d7902510365d6576e098b17f3",
+    "packages/analysis/src/attestation.ts": "c353b5d93f151665e1f5f0531b763db164cb54e5305a837efd47b2742eb3b949",
     "packages/analysis/src/change-evidence.ts": "8bff2cb709de3834e078bf8bf30f2ddef36b37fa03bec5446e27711cae14709b",
     "packages/analysis/src/change-waiver.ts": "edabb578fe2d968bf98fe068ee240a32b67dcf7b50724a265e83ebc2a88c1ccd",
     "packages/analysis/src/change.ts": "e6c2d3b3118b62da9058c4cbc32dc5d3c9014679ae747dee055366f89f0456f5",
@@ -6848,7 +7013,7 @@
     "packages/analysis/src/index.ts": "01cf9d6d2e56c4fca3ee0b7268acdefbf15838991b6781112154f103d01d3fbf",
     "packages/analysis/src/knowledge.ts": "48b68e9785f411327e10e1bd1f086fdaf4393d2951dcbd4e6fdec84e8008d7da",
     "packages/analysis/src/model-correspondence.ts": "fb19dbbdf461b8e2a2429b6107f60e7ea523e4033e4677ed7dd09ea03740659c",
-    "packages/analysis/src/mutation.ts": "bb0582b042c973226c74b719d12e8dea05f954a68ce4dbc3c2076c31183d5a88",
+    "packages/analysis/src/mutation.ts": "8e68ed8491317dca183afa8c556d3f242628f20388f33b1b6fe997a98b459740",
     "packages/analysis/src/order.ts": "361eff6435f7eb81ac15b9a005f8f676f499c56d3dc82abb242e2307b8af628d",
     "packages/analysis/src/performance.ts": "1145c285582ff188e90263b4d9d9f28ca49104e79b8299b2ecd3e278d8ef80ac",
     "packages/analysis/src/process.ts": "8184c7f7c4c58cdc6987fd9d2ec2c02ce8557f94b6aa30853a0c6056ba79cf4a",
@@ -6876,6 +7041,7 @@
     "tests/adapter-pattern-recognition.test.ts": "df7446c88eecf17cff42a5bf2cb6adc4924d62c5ed4536ad62bc8d38eb5bd40c",
     "tests/approval-domain-scoping.test.ts": "130399e4bb168e0f15d7385b9704e7b0fb9a1f7d59f862204ffbcb67354c6043",
     "tests/approval.test.ts": "6e0e909eff23c37a6a3b7bfdb0bf495bcca3084d1b44c852d1eeb902bb3d44ca",
+    "tests/attestation-evidence-stability.test.ts": "dec3454d000cd88edb943d5aef3adeb6d2854c56de1c514a0aaa2b2ab63c3e1e",
     "tests/bounded-file-read-concurrency.test.ts": "85743bfec42baef1a8cebd36a6b9e85293f9fc29f4121b220398ce32794b3112",
     "tests/change-acceptance-heuristic.test.ts": "44e9ecd782a3cd38c5913b200272b083c90fc144c389740f4b8548eabec73a3e",
     "tests/change-evidence-waiver.test.ts": "254f82e14dac3beaed102979dd0e977ded31ebc20ffacb60aa798194b97bed80",

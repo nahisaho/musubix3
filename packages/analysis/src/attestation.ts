@@ -64,6 +64,18 @@ function repositoryName(remote: string): string {
   return remote.trim().replace(/^git@github\.com:/, '').replace(/^https?:\/\/github\.com\//, '').replace(/\.git$/, '');
 }
 
+/* @id CODE-ATTESTATION-EVIDENCE-STABILITY-002
+ * @implements REQ-ATTESTATION-EVIDENCE-STABILITY-001 REQ-ATTESTATION-EVIDENCE-STABILITY-004
+ * @design DES-ATTESTATION-EVIDENCE-STABILITY-004 DES-ATTESTATION-EVIDENCE-STABILITY-003
+ */
+// Every per-entry evidence-head function this collects must canonicalize its
+// input so that `full`, `--changed`, and `--feature` gate re-runs with no
+// intervening tracked change reproduce identical heads; heads built from
+// arrays of mutable-order records (e.g. `mutants`, `executions`) must sort
+// them canonically, while append-only, order-sensitive sequences (e.g.
+// `workflow`'s `invocations`) are retained as recorded, which no-op re-runs
+// do not append to or reorder. See
+// `tests/attestation-evidence-stability.test.ts`'s mode-matrix regression test.
 export async function collectEvidenceHeads(root: string): Promise<Record<string, string>> {
   const heads: Record<string, string> = {};
   const load = async (path: string): Promise<Record<string, unknown> | null> =>

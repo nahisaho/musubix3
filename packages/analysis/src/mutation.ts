@@ -158,8 +158,17 @@ export async function writeMutationEvidence(
   return evidence;
 }
 
+/* @id CODE-ATTESTATION-EVIDENCE-STABILITY-001
+ * @implements REQ-ATTESTATION-EVIDENCE-STABILITY-002 REQ-ATTESTATION-EVIDENCE-STABILITY-003
+ * @design DES-ATTESTATION-EVIDENCE-STABILITY-001
+ */
 export function mutationEvidenceHead(evidence: Record<string, unknown>): string {
   const executions = Array.isArray(evidence.executions) ? evidence.executions : [];
+  const compareCanonical = (a: unknown, b: unknown): number => {
+    const left = canonical(a);
+    const right = canonical(b);
+    return left < right ? -1 : left > right ? 1 : 0;
+  };
   return digest(canonical({
     schemaVersion: evidence.schemaVersion,
     executions: executions.map((entry) => {
@@ -170,9 +179,9 @@ export function mutationEvidenceHead(evidence: Record<string, unknown>): string 
         reportPath: execution.reportPath,
         processStatus: execution.processStatus,
         exitCode: execution.exitCode,
-        mutants: execution.mutants ?? [],
+        mutants: [...(execution.mutants ?? [])].sort(compareCanonical),
       };
-    }).sort((a, b) => canonical(a).localeCompare(canonical(b))),
+    }).sort(compareCanonical),
   }));
 }
 

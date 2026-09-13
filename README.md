@@ -901,7 +901,78 @@ artifact identity. Excluding the attestation check from the quality head avoids
 a circular signature dependency. A missing `ci-required` attestation is reported
 as a failed/missing check, never as skipped local evidence.
 
+#### Attestation evidence-head composition
+
+`collectEvidenceHeads` (`packages/analysis/src/attestation.ts`) canonicalizes
+up to ten independent evidence entries into stable per-entry digests. Each
+entry's direct input/projection is:
+
+- `tdd`: the last entry's `recordSha256` from `.musubix/evidence/tdd.json`'s
+  hash chain — a chain-tip digest, not a projection over every recorded
+  phase field.
+- `workflow`: `workflowEvidenceHead`'s projection of
+  `.musubix/evidence/workflow.json`'s `verification` block only
+  (`eventsSha256`, `sourceSha256`, `transcriptSha256`, `mode`, `sessionId`,
+  `exitCode`, `terminalAt`, `eventCount`, `sourceBytes`,
+  `maxTranscriptBytes`, `maximumLineBytes`, `maxTranscriptLineBytes`, and
+  `invocations` (each entry's `skill`/`toolCallId`/`invokedAt`/
+  `completedAt`/`status`, unsorted/order-sensitive as stored), or just
+  `eventsSha256`/`sourceSha256` when `mode`, `transcriptSha256`, and
+  `sessionId` are all absent); the raw `events` log itself is excluded.
+- `changes`: a canonical digest of `.musubix/evidence/changes.json`'s
+  `changes` array directly — not the `.musubix/changes/*.md` documents
+  themselves, which are a separate upstream input to that evidence.
+- `order`: the last entry's `recordSha256` from `.musubix/evidence/order.json`'s
+  records — a chain-tip digest, not a projection over every recorded
+  declaration.
+- `formal`: retains only `fingerprints`, `totalRequirements`,
+  `modeledRequirements`, `modeledFraction`, and the solver's
+  `artifact`/`status`/`result.consistency` from `.musubix/evidence/formal.json`,
+  excluding `generatedAt` and every other `result` field such as solver
+  duration, diagnostics, literals, and constraints.
+- `performance`: `performanceEvidenceHead`'s projection of
+  `.musubix/evidence/performance.json`, retaining per execution
+  `commandName`/`commandSha256`/`reportPath`/`sourceKind`/`processStatus`/
+  `exitCode`/a canonically-sorted `tests` array (each test entry kept in
+  full), and per observation `requirementId`/`testId`/`counter`/`observed`/
+  `maximum`/`status`/an optional `provenance` object retaining exactly
+  `commandName`/`commandSha256`/`reportPath`/`sourceKind`/`testId`/
+  `testStatus`/`counter`/`value`/`processStatus`/`exitCode`; both the
+  `executions` and `observations` arrays are canonicalized
+  order-independently.
+- `mutation`: `mutationEvidenceHead`'s equivalent projection of
+  `.musubix/evidence/mutation.json`, retaining per execution
+  `commandName`/`commandSha256`/`reportPath`/`processStatus`/`exitCode`/a
+  canonically-sorted `mutants` array (each mutant's full record); both the
+  `executions` and nested `mutants` arrays are canonicalized
+  order-independently.
+- `modelCorrespondence`: `modelCorrespondenceEvidenceHead`'s projection of
+  `.musubix/evidence/model-correspondence.json`, retaining `schemaVersion`,
+  `formalEvidenceSha256`, `traceEvidenceSha256`, and a canonically-sorted
+  `entries` array (each retaining `requirementId`/`requirementPath`/
+  `formalSha256`/`modelSha256`/`traceSha256`/a canonically-sorted `tests`
+  array retaining exactly `testId`/`testPath`/`testSha256`/`commandName`/
+  `commandSha256`/`reportPath`, excluding `reportSha256`/`provenanceSha256`);
+  any other stored run metadata is excluded.
+- `quality`: retains `schemaVersion`, `mode`, a derived pass/fail `status`,
+  and each non-`attestation` check's `name`/`required`/`status`/a narrow
+  `diagnostics` projection (`code`/`severity`/`path`/`line`), plus `metrics`
+  with the `attestation.errors` entry excluded; also excludes `generatedAt`,
+  `durationMs`, and `stdout`/`stderr`.
+- `workspace`: not an evidence file at all — a content digest over the
+  non-evidence repository file set returned by `files(root)`, filtered by
+  `evidenceInputPaths`; `.musubix/evidence/**` itself is excluded from this
+  walk so writing evidence never perturbs the workspace snapshot it is
+  bound into.
+
+See `collectEvidenceHeads` and the per-entry head functions it delegates to
+(`workflowEvidenceHead`, `performanceEvidenceHead`, `mutationEvidenceHead`,
+`modelCorrespondenceEvidenceHead`) for the authoritative implementation; this
+list is a summary, not a substitute for reading the source when precision
+matters.
+
 Example strict configuration:
+
 
 ```json
 {

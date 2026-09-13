@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-13T05:46:34.218Z",
-  "status": "pass",
+  "generatedAt": "2026-09-13T08:05:49.139Z",
+  "status": "fail",
   "checks": [
     {
       "name": "policy",
@@ -49,7 +49,7 @@
       "name": "formal",
       "required": false,
       "status": "pass",
-      "summary": "9/134 requirements modeled; consistency consistent; solver not-requested.",
+      "summary": "9/138 requirements modeled; consistency consistent; solver not-requested.",
       "diagnostics": [
         {
           "code": "FORMAL_UNSUPPORTED",
@@ -180,6 +180,26 @@
           "code": "FORMAL_UNSUPPORTED",
           "severity": "warning",
           "message": "REQ-APPROVAL-DOMAIN-SCOPING-024 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+        },
+        {
+          "code": "FORMAL_UNSUPPORTED",
+          "severity": "warning",
+          "message": "REQ-ATTESTATION-EVIDENCE-STABILITY-001 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+        },
+        {
+          "code": "FORMAL_UNSUPPORTED",
+          "severity": "warning",
+          "message": "REQ-ATTESTATION-EVIDENCE-STABILITY-002 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+        },
+        {
+          "code": "FORMAL_UNSUPPORTED",
+          "severity": "warning",
+          "message": "REQ-ATTESTATION-EVIDENCE-STABILITY-003 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+        },
+        {
+          "code": "FORMAL_UNSUPPORTED",
+          "severity": "warning",
+          "message": "REQ-ATTESTATION-EVIDENCE-STABILITY-004 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
         },
         {
           "code": "FORMAL_UNSUPPORTED",
@@ -682,260 +702,13 @@
     {
       "name": "workflow",
       "required": true,
-      "status": "pass",
-      "summary": "25 workflow declaration(s) across 8 Skill(s) reconciled with Copilot invocation events.",
+      "status": "fail",
+      "summary": "28 workflow declaration(s) are not fully reconciled with Copilot invocation events.",
       "diagnostics": [
         {
-          "code": "WORKFLOW_SKILL_NOT_INVOKED",
-          "severity": "warning",
-          "message": "sdd-change:complete has no matching earlier completed Copilot Skill invocation.",
-          "skill": "sdd-change",
-          "phase": "complete",
-          "declarationRecordedAt": "2026-09-09T08:13:50.542Z",
-          "waiver": {
-            "approver": "nahisaho",
-            "reason": "作業は実際に完了しセッション/コミット履歴で裏付けられているが、複数セッション/入れ子スキル呼び出しのため単一トランスクリプトログでは自動照合できないための恒久的waiver。",
-            "recordedAt": "2026-09-13T05:32:51.594Z",
-            "waiverRecordedAt": "2026-09-13T05:32:51.594Z"
-          }
-        },
-        {
-          "code": "WORKFLOW_BINDING_MISSING",
-          "severity": "warning",
-          "message": "sdd-change:complete is not one-to-one bound to completed invocation evidence.",
-          "skill": "sdd-change",
-          "phase": "complete",
-          "declarationRecordedAt": "2026-09-09T08:13:50.542Z",
-          "waiver": {
-            "approver": "nahisaho",
-            "reason": "作業は実際に完了しセッション/コミット履歴で裏付けられているが、複数セッション/入れ子スキル呼び出しのため単一トランスクリプトログでは自動照合できないための恒久的waiver。",
-            "recordedAt": "2026-09-13T05:32:51.594Z",
-            "waiverRecordedAt": "2026-09-13T05:32:51.594Z"
-          }
-        },
-        {
-          "code": "WORKFLOW_SKILL_NOT_INVOKED",
-          "severity": "warning",
-          "message": "sdd-knowledge:complete has no matching earlier completed Copilot Skill invocation.",
-          "skill": "sdd-knowledge",
-          "phase": "complete",
-          "declarationRecordedAt": "2026-09-09T08:34:15.566Z",
-          "waiver": {
-            "approver": "nahisaho",
-            "reason": "作業は実際に完了しセッション/コミット履歴で裏付けられているが、複数セッション/入れ子スキル呼び出しのため単一トランスクリプトログでは自動照合できないための恒久的waiver。",
-            "recordedAt": "2026-09-13T05:32:52.612Z",
-            "waiverRecordedAt": "2026-09-13T05:32:52.612Z"
-          }
-        },
-        {
-          "code": "WORKFLOW_BINDING_MISSING",
-          "severity": "warning",
-          "message": "sdd-knowledge:complete is not one-to-one bound to completed invocation evidence.",
-          "skill": "sdd-knowledge",
-          "phase": "complete",
-          "declarationRecordedAt": "2026-09-09T08:34:15.566Z",
-          "waiver": {
-            "approver": "nahisaho",
-            "reason": "作業は実際に完了しセッション/コミット履歴で裏付けられているが、複数セッション/入れ子スキル呼び出しのため単一トランスクリプトログでは自動照合できないための恒久的waiver。",
-            "recordedAt": "2026-09-13T05:32:52.612Z",
-            "waiverRecordedAt": "2026-09-13T05:32:52.612Z"
-          }
-        },
-        {
-          "code": "WORKFLOW_SKILL_NOT_INVOKED",
-          "severity": "warning",
-          "message": "sdd-change:complete has no matching earlier completed Copilot Skill invocation.",
-          "skill": "sdd-change",
-          "phase": "complete",
-          "declarationRecordedAt": "2026-09-10T14:20:57.674Z",
-          "waiver": {
-            "approver": "nahisaho",
-            "reason": "作業は実際に完了しセッション/コミット履歴で裏付けられているが、複数セッション/入れ子スキル呼び出しのため単一トランスクリプトログでは自動照合できないための恒久的waiver。",
-            "recordedAt": "2026-09-13T05:32:53.430Z",
-            "waiverRecordedAt": "2026-09-13T05:32:53.430Z"
-          }
-        },
-        {
-          "code": "WORKFLOW_BINDING_MISSING",
-          "severity": "warning",
-          "message": "sdd-change:complete is not one-to-one bound to completed invocation evidence.",
-          "skill": "sdd-change",
-          "phase": "complete",
-          "declarationRecordedAt": "2026-09-10T14:20:57.674Z",
-          "waiver": {
-            "approver": "nahisaho",
-            "reason": "作業は実際に完了しセッション/コミット履歴で裏付けられているが、複数セッション/入れ子スキル呼び出しのため単一トランスクリプトログでは自動照合できないための恒久的waiver。",
-            "recordedAt": "2026-09-13T05:32:53.430Z",
-            "waiverRecordedAt": "2026-09-13T05:32:53.430Z"
-          }
-        },
-        {
-          "code": "WORKFLOW_SKILL_NOT_INVOKED",
-          "severity": "warning",
-          "message": "sdd-change:complete has no matching earlier completed Copilot Skill invocation.",
-          "skill": "sdd-change",
-          "phase": "complete",
-          "declarationRecordedAt": "2026-09-10T20:46:25.535Z",
-          "waiver": {
-            "approver": "nahisaho",
-            "reason": "作業は実際に完了しセッション/コミット履歴で裏付けられているが、複数セッション/入れ子スキル呼び出しのため単一トランスクリプトログでは自動照合できないための恒久的waiver。",
-            "recordedAt": "2026-09-13T05:32:54.260Z",
-            "waiverRecordedAt": "2026-09-13T05:32:54.260Z"
-          }
-        },
-        {
-          "code": "WORKFLOW_BINDING_MISSING",
-          "severity": "warning",
-          "message": "sdd-change:complete is not one-to-one bound to completed invocation evidence.",
-          "skill": "sdd-change",
-          "phase": "complete",
-          "declarationRecordedAt": "2026-09-10T20:46:25.535Z",
-          "waiver": {
-            "approver": "nahisaho",
-            "reason": "作業は実際に完了しセッション/コミット履歴で裏付けられているが、複数セッション/入れ子スキル呼び出しのため単一トランスクリプトログでは自動照合できないための恒久的waiver。",
-            "recordedAt": "2026-09-13T05:32:54.260Z",
-            "waiverRecordedAt": "2026-09-13T05:32:54.260Z"
-          }
-        },
-        {
-          "code": "WORKFLOW_INVOCATION_ORDER",
-          "severity": "warning",
-          "message": "sdd-traceability:complete would bind Skill invocations out of declaration order.",
-          "skill": "sdd-traceability",
-          "phase": "complete",
-          "declarationRecordedAt": "2026-09-12T08:17:13.982Z",
-          "waiver": {
-            "approver": "nahisaho",
-            "reason": "作業は実際に完了しセッション/コミット履歴で裏付けられているが、複数セッション/入れ子スキル呼び出しのため単一トランスクリプトログでは自動照合できないための恒久的waiver。",
-            "recordedAt": "2026-09-13T05:32:55.107Z",
-            "waiverRecordedAt": "2026-09-13T05:32:55.107Z"
-          }
-        },
-        {
-          "code": "WORKFLOW_BINDING_MISSING",
-          "severity": "warning",
-          "message": "sdd-traceability:complete is not one-to-one bound to completed invocation evidence.",
-          "skill": "sdd-traceability",
-          "phase": "complete",
-          "declarationRecordedAt": "2026-09-12T08:17:13.982Z",
-          "waiver": {
-            "approver": "nahisaho",
-            "reason": "作業は実際に完了しセッション/コミット履歴で裏付けられているが、複数セッション/入れ子スキル呼び出しのため単一トランスクリプトログでは自動照合できないための恒久的waiver。",
-            "recordedAt": "2026-09-13T05:32:55.107Z",
-            "waiverRecordedAt": "2026-09-13T05:32:55.107Z"
-          }
-        },
-        {
-          "code": "WORKFLOW_INVOCATION_REUSED",
-          "severity": "warning",
-          "message": "sdd-implementation:complete would reuse an invocation already bound to another declaration.",
-          "skill": "sdd-implementation",
-          "phase": "complete",
-          "declarationRecordedAt": "2026-09-12T09:06:37.401Z",
-          "waiver": {
-            "approver": "nahisaho",
-            "reason": "作業は実際に完了しセッション/コミット履歴で裏付けられているが、複数セッション/入れ子スキル呼び出しのため単一トランスクリプトログでは自動照合できないための恒久的waiver。",
-            "recordedAt": "2026-09-13T05:32:55.859Z",
-            "waiverRecordedAt": "2026-09-13T05:32:55.859Z"
-          }
-        },
-        {
-          "code": "WORKFLOW_BINDING_MISSING",
-          "severity": "warning",
-          "message": "sdd-implementation:complete is not one-to-one bound to completed invocation evidence.",
-          "skill": "sdd-implementation",
-          "phase": "complete",
-          "declarationRecordedAt": "2026-09-12T09:06:37.401Z",
-          "waiver": {
-            "approver": "nahisaho",
-            "reason": "作業は実際に完了しセッション/コミット履歴で裏付けられているが、複数セッション/入れ子スキル呼び出しのため単一トランスクリプトログでは自動照合できないための恒久的waiver。",
-            "recordedAt": "2026-09-13T05:32:55.859Z",
-            "waiverRecordedAt": "2026-09-13T05:32:55.859Z"
-          }
-        },
-        {
-          "code": "WORKFLOW_INVOCATION_REUSED",
-          "severity": "warning",
-          "message": "sdd-requirements:complete would reuse an invocation already bound to another declaration.",
-          "skill": "sdd-requirements",
-          "phase": "complete",
-          "declarationRecordedAt": "2026-09-12T12:49:41.740Z",
-          "waiver": {
-            "approver": "nahisaho",
-            "reason": "作業は実際に完了しセッション/コミット履歴で裏付けられているが、複数セッション/入れ子スキル呼び出しのため単一トランスクリプトログでは自動照合できないための恒久的waiver。",
-            "recordedAt": "2026-09-13T05:32:56.665Z",
-            "waiverRecordedAt": "2026-09-13T05:32:56.665Z"
-          }
-        },
-        {
-          "code": "WORKFLOW_BINDING_MISSING",
-          "severity": "warning",
-          "message": "sdd-requirements:complete is not one-to-one bound to completed invocation evidence.",
-          "skill": "sdd-requirements",
-          "phase": "complete",
-          "declarationRecordedAt": "2026-09-12T12:49:41.740Z",
-          "waiver": {
-            "approver": "nahisaho",
-            "reason": "作業は実際に完了しセッション/コミット履歴で裏付けられているが、複数セッション/入れ子スキル呼び出しのため単一トランスクリプトログでは自動照合できないための恒久的waiver。",
-            "recordedAt": "2026-09-13T05:32:56.665Z",
-            "waiverRecordedAt": "2026-09-13T05:32:56.665Z"
-          }
-        },
-        {
-          "code": "WORKFLOW_INVOCATION_REUSED",
-          "severity": "warning",
-          "message": "sdd-requirements:complete would reuse an invocation already bound to another declaration.",
-          "skill": "sdd-requirements",
-          "phase": "complete",
-          "declarationRecordedAt": "2026-09-12T13:34:32.146Z",
-          "waiver": {
-            "approver": "nahisaho",
-            "reason": "作業は実際に完了しセッション/コミット履歴で裏付けられているが、複数セッション/入れ子スキル呼び出しのため単一トランスクリプトログでは自動照合できないための恒久的waiver。",
-            "recordedAt": "2026-09-13T05:32:57.421Z",
-            "waiverRecordedAt": "2026-09-13T05:32:57.421Z"
-          }
-        },
-        {
-          "code": "WORKFLOW_BINDING_MISSING",
-          "severity": "warning",
-          "message": "sdd-requirements:complete is not one-to-one bound to completed invocation evidence.",
-          "skill": "sdd-requirements",
-          "phase": "complete",
-          "declarationRecordedAt": "2026-09-12T13:34:32.146Z",
-          "waiver": {
-            "approver": "nahisaho",
-            "reason": "作業は実際に完了しセッション/コミット履歴で裏付けられているが、複数セッション/入れ子スキル呼び出しのため単一トランスクリプトログでは自動照合できないための恒久的waiver。",
-            "recordedAt": "2026-09-13T05:32:57.421Z",
-            "waiverRecordedAt": "2026-09-13T05:32:57.421Z"
-          }
-        },
-        {
-          "code": "WORKFLOW_INVOCATION_REUSED",
-          "severity": "warning",
-          "message": "sdd-design:complete would reuse an invocation already bound to another declaration.",
-          "skill": "sdd-design",
-          "phase": "complete",
-          "declarationRecordedAt": "2026-09-12T14:09:13.298Z",
-          "waiver": {
-            "approver": "nahisaho",
-            "reason": "作業は実際に完了しセッション/コミット履歴で裏付けられているが、複数セッション/入れ子スキル呼び出しのため単一トランスクリプトログでは自動照合できないための恒久的waiver。",
-            "recordedAt": "2026-09-13T05:32:58.252Z",
-            "waiverRecordedAt": "2026-09-13T05:32:58.252Z"
-          }
-        },
-        {
-          "code": "WORKFLOW_BINDING_MISSING",
-          "severity": "warning",
-          "message": "sdd-design:complete is not one-to-one bound to completed invocation evidence.",
-          "skill": "sdd-design",
-          "phase": "complete",
-          "declarationRecordedAt": "2026-09-12T14:09:13.298Z",
-          "waiver": {
-            "approver": "nahisaho",
-            "reason": "作業は実際に完了しセッション/コミット履歴で裏付けられているが、複数セッション/入れ子スキル呼び出しのため単一トランスクリプトログでは自動照合できないための恒久的waiver。",
-            "recordedAt": "2026-09-13T05:32:58.252Z",
-            "waiverRecordedAt": "2026-09-13T05:32:58.252Z"
-          }
+          "code": "WORKFLOW_INVOCATION_UNVERIFIED",
+          "severity": "error",
+          "message": "Workflow declarations have not been reconciled with a Copilot session log."
         }
       ]
     },
@@ -943,7 +716,7 @@
       "name": "tdd",
       "required": true,
       "status": "pass",
-      "summary": "194 Red-Green TDD cycle(s) recorded.",
+      "summary": "199 Red-Green TDD cycle(s) recorded.",
       "diagnostics": []
     },
     {
@@ -2978,7 +2751,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 1566,
+      "durationMs": 1616,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/requirements-design-scaffold-tests/aggregate.json\n",
       "stderr": ""
@@ -2988,7 +2761,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 5118,
+      "durationMs": 5980,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/approval-tests/aggregate.json\n",
       "stderr": ""
@@ -2998,7 +2771,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 6407,
+      "durationMs": 6647,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/approval-domain-scoping-tests/aggregate.json\n",
       "stderr": ""
@@ -3008,7 +2781,7 @@
       "required": true,
       "status": "pass",
       "summary": "npm: completed, exit 0.",
-      "durationMs": 2549,
+      "durationMs": 2605,
       "exitCode": 0,
       "stdout": "\n> musubix3@0.1.17 typecheck\n> tsc --noEmit\n\n",
       "stderr": ""
@@ -3018,7 +2791,7 @@
       "required": true,
       "status": "pass",
       "summary": "npm: completed, exit 0.",
-      "durationMs": 2224,
+      "durationMs": 2298,
       "exitCode": 0,
       "stdout": "\n> musubix3@0.1.17 build\n> tsc -p tsconfig.build.json\n\n",
       "stderr": ""
@@ -3028,7 +2801,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 29372,
+      "durationMs": 30590,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/session-tests/aggregate.json\n",
       "stderr": ""
@@ -3038,9 +2811,9 @@
       "required": true,
       "status": "pass",
       "summary": "npm: completed, exit 0.",
-      "durationMs": 112422,
+      "durationMs": 105473,
       "exitCode": 0,
-      "stdout": "\n> musubix3@0.1.17 test\n> vitest run\n\n\n RUN  v3.2.7 /home/nahisaho/GitHub/musubix3\n\n ✓ tests/gate-install.test.ts (73 tests) 29629ms\n   ✓ quality semantics > runs actual commands and persists freshness-aware successful evidence  1201ms\n   ✓ quality semantics > fails a structured test command that reports only skipped tests  677ms\n   ✓ quality semantics > fails an exit-zero command whose structured test reports failed  706ms\n   ✓ quality semantics > fails an exit-zero command whose structured test reports error  615ms\n   ✓ quality semantics > keeps optional structured-test failures out of identity diagnostics  832ms\n   ✓ quality semantics > does not accept passing entries from a rejected optional report as test identity evidence  629ms\n   ✓ quality semantics > fails a structured test command that reports zero tests  670ms\n   ✓ quality semantics > supports a required formal gate with persisted modeled coverage  681ms\n   ✓ quality semantics > requires annotated test IDs to pass in a fresh structured command report  1120ms\n   ✓ quality semantics > records a verified Red-Green-Refactor cycle without allowing test mutation  776ms\n   ✓ quality semantics > proves staged change order with artifact fingerprints and TDD evidence  3892ms\n   ✓ quality semantics > rejects unrelated source changes as implementation evidence for a requirement  2663ms\n   ✓ quality semantics > rejects reused TDD output and reconciles required workflow with actual Skill calls  1238ms\n   ✓ quality semantics > fails a required formal gate below the modeled fraction threshold  676ms\n   ✓ quality semantics > fails missing required commands, while retaining skipped status  603ms\n   ✓ quality semantics > fails real nonzero exits and timeouts  1151ms\n   ✓ quality semantics > uses coverage thresholds without disguising missing coverage  662ms\n   ✓ quality semantics > rejects quality policy weakening against the trusted baseline  652ms\n   ✓ quality semantics > requires independent approval when the policy baseline changes  563ms\n   ✓ quality semantics > fails if verification mutates its own input snapshot  561ms\n   ✓ quality semantics > ignores standard Cargo and Maven target output without weakening source stability  584ms\n   ✓ quality semantics > keeps source directories named target inside the stability snapshot  547ms\n   ✓ quality semantics > ignores manifest-scoped .NET bin and obj output without hiding source directories  626ms\n   ✓ quality semantics > ignores manifest-scoped ecosystem caches without hiding same-named source directories  771ms\n   ✓ quality semantics > ignores Python bytecode caches without hiding Python source  581ms\n   ✓ quality semantics > ignores the conventional project-local NuGet package cache  597ms\n   ✓ quality semantics > ignores Python virtual environments identified by pyvenv.cfg without hiding similarly named source  567ms\n   ✓ quality semantics > does not exclude a source tree when pyvenv.cfg is not a regular file  631ms\n   ✓ quality semantics > does not exclude an arbitrary source tree with a regular pyvenv.cfg marker  602ms\n   ✓ quality semantics > changed mode captures changes and still runs actual commands  574ms\n   ✓ quality semantics > preserves the latest changed-run evidence across a later full gate  1168ms\n ✓ tests/cli-package.test.ts (14 tests) 31001ms\n   ✓ CLI contracts > prints version/help and JSON validation with nonzero failure  1524ms\n   ✓ CLI contracts > returns structured errors for missing files, invalid solver and unknown commands  1044ms\n   ✓ CLI contracts > supports init alias, dry-run, status and native-bin symlink invocation  1641ms\n   ✓ CLI contracts > requires explicit confirmation before recording human approval  2364ms\n   ✓ CLI contracts > runs full workflow and reports JSON evidence  10435ms\n   ✓ CLI contracts > reports and enforces strict Code Graph mode through CLI gates and status  2763ms\n   ✓ CLI contracts > enforces strict workflow session identity from config and CLI  2514ms\n   ✓ CLI contracts > derives the configured GitHub OIDC audience without reading a private key  433ms\n   ✓ CLI contracts > records a staged change checkpoint through the CLI  2418ms\n   ✓ CLI contracts > returns exit 1 for incomplete starter gates and contradictory requirements  1513ms\n   ✓ CLI contracts > executes a complete CLI TDD cycle and exposes it to the gate  2948ms\n   ✓ distribution contracts > TEST-SESSION-SCOPED-DEVELOPMENT-002 reuses evidence only for an explicit change ID  757ms\n   ✓ distribution contracts > validates native manifests and packed hidden skills/built engine/assets  631ms\n ✓ tests/change-record-fail-fast.test.ts (10 tests) 21163ms\n   ✓ TEST-CHANGE-RECORD-FAIL-FAST-001 rejects an unchanged requirements phase at record time, leaving evidence untouched  1926ms\n   ✓ TEST-CHANGE-RECORD-FAIL-FAST-002 rejects an unchanged design phase at record time, leaving evidence untouched  2779ms\n   ✓ TEST-CHANGE-RECORD-FAIL-FAST-003 rejects an unchanged tests fingerprint at Red record time, leaving evidence untouched  2204ms\n   ✓ TEST-CHANGE-RECORD-FAIL-FAST-004 rejects an unchanged implementation fingerprint at Implementation record time, leaving evidence untouched  2693ms\n   ✓ TEST-CHANGE-RECORD-FAIL-FAST-005 rejects an unchanged per-requirement relevant-implementation fingerprint, naming the unchanged requirement  2939ms\n   ✓ TEST-CHANGE-RECORD-FAIL-FAST-011 leaves both changes.json and order.json byte-identical across every rejection kind, including the evidence-order sequence  2815ms\n   ✓ TEST-CHANGE-RECORD-FAIL-FAST-006 allows an explicitly overridden unchanged requirements phase and persists the marker  2262ms\n   ✓ TEST-CHANGE-RECORD-FAIL-FAST-007 suppresses only CHANGE_REQUIREMENTS_UNCHANGED for a marked override, not the other unchanged diagnostics  1040ms\n   ✓ TEST-CHANGE-RECORD-FAIL-FAST-008 previews a phase recording with --dry-run without persisting it, in both outcomes  1780ms\n   ✓ TEST-CHANGE-RECORD-FAIL-FAST-009 documents the fail-fast rejection, --allow-unchanged, and --dry-run in --help  724ms\n ✓ tests/change-evidence-waiver.test.ts (15 tests) 29985ms\n   ✓ TEST-CHANGE-EVIDENCE-WAIVER-001 rejects a waiver for any code outside the twelve-code allow-list  2165ms\n   ✓ TEST-CHANGE-EVIDENCE-WAIVER-002 rejects a waiver when no matching diagnostic is currently reported  2902ms\n   ✓ TEST-CHANGE-EVIDENCE-WAIVER-003 requires a non-empty approver and reason  1686ms\n   ✓ TEST-CHANGE-EVIDENCE-WAIVER-004 binds requirement-scoping to each code's own granularity  1790ms\n   ✓ TEST-CHANGE-EVIDENCE-WAIVER-005 records the waiver as a hash-chained, ordered, identity-bound entry, and starts non-stale  1818ms\n   ✓ TEST-CHANGE-EVIDENCE-WAIVER-006 downgrades only the exact waived instance, never any other change/requirement/code  2071ms\n   ✓ TEST-CHANGE-EVIDENCE-WAIVER-007 rejects a duplicate waiver for an already validly waived, non-stale scope  1897ms\n   ✓ TEST-CHANGE-EVIDENCE-WAIVER-008 treats a waiver as stale once its snapshot payload changes, reporting it error again plus a stale diagnostic  4046ms\n   ✓ TEST-CHANGE-EVIDENCE-WAIVER-009 reports malformed waiver evidence without downgrading the targeted diagnostic  1932ms\n   ✓ TEST-CHANGE-EVIDENCE-WAIVER-010 surfaces active waivers for audit visibility, excluding stale/malformed ones  1781ms\n   ✓ TEST-CHANGE-EVIDENCE-WAIVER-011 attaches structured changeId/requirementId targets to every waivable diagnostic  1675ms\n   ✓ TEST-CHANGE-EVIDENCE-WAIVER-012 redefines change-history/change-completeness validity as free of error-severity diagnostics  4110ms\n   ✓ TEST-CHANGE-EVIDENCE-WAIVER-014 waives detail-scoped CHANGE_PHASE_MISSING using the phase:<name> grammar  621ms\n   ✓ TEST-CHANGE-EVIDENCE-WAIVER-015 waives batch-scoped CHANGE_TESTS_UNCHANGED using the bare batchKey grammar  1316ms\n ✓ tests/change-requirement-batches.test.ts (3 tests) 14846ms\n   ✓ TEST-CHANGE-REQUIREMENT-BATCHES-001 completes an interleaved Red-Implement-Green loop per requirement batch  6527ms\n   ✓ TEST-CHANGE-REQUIREMENT-BATCHES-002 rejects Implementation for a batch before its own Red and Green before its own Implementation  2745ms\n   ✓ TEST-CHANGE-REQUIREMENT-BATCHES-003 rejects Quality until every requirement has Green coverage  5573ms\n ✓ tests/p3-performance-provenance.test.ts (9 tests) 12440ms\n   ✓ P3 deterministic performance provenance > binds every observation to the exact successful command and fresh report  1131ms\n   ✓ P3 deterministic performance provenance > detects report tampering and makes prior quality status stale  881ms\n   ✓ P3 deterministic performance provenance > rejects duplicate counter reports and withholds provenance from rejected test reports  3058ms\n   ✓ P3 deterministic performance provenance > rejects failed executions, missing provenance, and configuration drift  2427ms\n   ✓ P3 deterministic performance provenance > binds semantic provenance records into the attestation performance head  885ms\n   ✓ P3 deterministic performance provenance > keeps semantic performance and quality heads stable across gate-sign-gate runs  1858ms\n   ✓ P3 deterministic performance provenance > attests stable quality verdicts and widened formal verdict fields  941ms\n   ✓ P3 deterministic performance provenance > persists stdout adapter reports and detects later tampering  603ms\n   ✓ P3 deterministic performance provenance > fails attestation verification when the bound report is changed after signing  654ms\n ✓ tests/p4-correspondence-mutation.test.ts (12 tests) 9015ms\n   ✓ P4 model correspondence and mutation quality > proves explicit formal requirements through fresh trace and passing test reports  1622ms\n   ✓ P4 model correspondence and mutation quality > validates model correspondence against the exact merged .NET command  871ms\n   ✓ P4 model correspondence and mutation quality > fails closed when formal or generated trace evidence becomes stale  664ms\n   ✓ P4 model correspondence and mutation quality > accepts current deterministic killed mutants and binds both evidence heads  733ms\n   ✓ P4 model correspondence and mutation quality > fails closed when strict mode has no mutation report  643ms\n   ✓ P4 model correspondence and mutation quality > rejects survived mutants  657ms\n   ✓ P4 model correspondence and mutation quality > rejects skipped mutants  745ms\n   ✓ P4 model correspondence and mutation quality > rejects duplicate, unlinked, and stale mutation evidence  2689ms\n ✓ tests/workflow-evidence-waiver.test.ts (11 tests) 7315ms\n   ✓ TEST-WORKFLOW-EVIDENCE-WAIVER-002 rejects CLI calls with disallowed codes, missing confirmation, missing options, bad timestamps, and invalid --index values  2284ms\n   ✓ TEST-WORKFLOW-EVIDENCE-WAIVER-004 records a genesis waiver, downgrades only the exact colliding scope, and surfaces workflowWaivers in gate/status  1543ms\n   ✓ TEST-WORKFLOW-EVIDENCE-WAIVER-006 reports malformed workflow-waiver evidence separately and rejects further appends until repaired  844ms\n   ✓ TEST-WORKFLOW-EVIDENCE-WAIVER-007 passes the workflow gate when every workflow error is waived, while leaving non-waived diagnostics as errors  1249ms\n   ✓ TEST-WORKFLOW-EVIDENCE-WAIVER-011 keeps malformed workflow waiver diagnostics non-blocking when the workflow check itself has no error-severity diagnostics  664ms\n ✓ tests/trace-graph.test.ts (62 tests) 6499ms\n   ✓ compiler graph > indexes static, re-export, dynamic, require, symbols and call targets  676ms\n   ✓ compiler graph > resolves tsconfig path aliases and JS directory imports  533ms\n   ✓ compiler graph > resolves nearest nested tsconfig paths  515ms\n   ✓ compiler graph > resolves NodeNext import/require conditions according to usage  415ms\n   ✓ compiler graph > finds cycles, self cycles and enforces architecture globs  458ms\n   ✓ compiler graph > reports unresolved local and nonliteral imports honestly  646ms\n   ✓ compiler graph > refuses stale caches after source and config changes  949ms\n ✓ tests/approval-domain-scoping.test.ts (24 tests) 6724ms\n   ✓ approval domain scoping (manifest binding, REQ-011/012/013/014) > TEST-APPROVAL-DOMAIN-SCOPING-012 binds the design manifest to only the owning domain's design/ADR artifacts  620ms\n   ✓ approval domain scoping (design/TDD prerequisite gating, REQ-016/017/018) > TEST-APPROVAL-DOMAIN-SCOPING-018 blocks TDD Red for a requirement until only its owning domain's design approves  350ms\n   ✓ approval domain scoping (gate/status scoping, REQ-019/020/021/022) > TEST-APPROVAL-DOMAIN-SCOPING-019 scopes gate --feature's approval check to the owning domain only  1117ms\n   ✓ approval domain scoping (gate/status scoping, REQ-019/020/021/022) > TEST-APPROVAL-DOMAIN-SCOPING-021 reports a per-domain breakdown in full-repo gate  840ms\n   ✓ approval domain scoping (consistent recomputation, REQ-023) and backward compatibility (REQ-024) > TEST-APPROVAL-DOMAIN-SCOPING-023 computes the identical manifest hash at every evaluation site  751ms\n ✓ tests/cli-workflow-ux.test.ts (6 tests) 6079ms\n   ✓ cli workflow ux improvements (v0.1.9) > TEST-CLI-WORKFLOW-UX-001 excludes nested MUSUBIX3 workspaces from ancestor scans  835ms\n   ✓ cli workflow ux improvements (v0.1.9) > TEST-CLI-WORKFLOW-UX-002 states bidirectional candidate semantics for trace impact text output  1404ms\n   ✓ cli workflow ux improvements (v0.1.9) > TEST-CLI-WORKFLOW-UX-003 points a stale/missing approval error at approval validate  391ms\n   ✓ cli workflow ux improvements (v0.1.9) > TEST-CLI-WORKFLOW-UX-005 scopes gate status to one feature, isolating unrelated failures  3168ms\n ✓ tests/approval.test.ts (8 tests) 5535ms\n   ✓ artifact-bound approval evidence > TEST-HUMAN-APPROVAL-GATES-006 recomputes quality before release approval  3735ms\n   ✓ artifact-bound approval evidence > TEST-HUMAN-APPROVAL-GATES-007 rejects invalid artifacts and reports malformed evidence  787ms\n ✓ tests/change-acceptance-heuristic.test.ts (6 tests) 5056ms\n   ✓ TEST-CHANGE-ACCEPTANCE-HEURISTIC-001 recognizes report/error/naming vocabulary as measurable acceptance  1209ms\n   ✓ TEST-CHANGE-ACCEPTANCE-HEURISTIC-002 recognizes exit/configur vocabulary as measurable acceptance  697ms\n   ✓ TEST-CHANGE-ACCEPTANCE-HEURISTIC-003 recognizes contain/unaffected/stale vocabulary as measurable acceptance  846ms\n   ✓ TEST-CHANGE-ACCEPTANCE-HEURISTIC-004 still rejects whole-value placeholders and too-short text  988ms\n   ✓ TEST-CHANGE-ACCEPTANCE-HEURISTIC-005 still rejects placeholder-prefixed text even when it contains a newly recognized keyword  793ms\n   ✓ TEST-CHANGE-ACCEPTANCE-HEURISTIC-006 still rejects long non-placeholder prose containing no recognized keyword  521ms\n ✓ tests/tdd-cycle-void.test.ts (13 tests) 3212ms\n   ✓ TEST-TDD-CYCLE-VOID-002 rejects voiding when no earlier non-voided valid fallback cycle exists  354ms\n   ✓ TEST-TDD-CYCLE-VOID-011 rejects re-voiding but allows voiding a fresh later cycle  330ms\n ✓ tests/p3-codegraph-policy.test.ts (4 tests) 3323ms\n   ✓ P3 unresolved dynamic module loading policy > keeps unresolved computed imports and requires as compatible warnings by default  693ms\n   ✓ P3 unresolved dynamic module loading policy > upgrades unresolved computed loading to gate-blocking errors in strict mode  1257ms\n   ✓ P3 unresolved dynamic module loading policy > rejects weakening a strict trusted Code Graph baseline  830ms\n   ✓ P3 unresolved dynamic module loading policy > allows statically resolvable cache-busting imports in strict mode  542ms\n ✓ tests/bounded-file-read-concurrency.test.ts (4 tests) 2212ms\n   ✓ bounded file-read concurrency for large projects > TEST-BOUNDED-FILE-READ-CONCURRENCY-002 snapshots a large path list without exceeding the OS file-descriptor limit  797ms\n   ✓ bounded file-read concurrency for large projects > TEST-BOUNDED-FILE-READ-CONCURRENCY-003 bounds concurrent reads while Code Graph loads a language with many source files  695ms\n   ✓ bounded file-read concurrency for large projects > TEST-BOUNDED-FILE-READ-CONCURRENCY-004 bounds concurrent reads while knowledge build loads many Markdown documents  702ms\n ✓ tests/p2-improvements.test.ts (18 tests) 959ms\n   ✓ P2 dynamic graph and manifest entrypoints > resolves safe local cache-busting imports and package entrypoints without hiding arbitrary dynamics  825ms\n ✓ tests/command-working-directory.test.ts (3 tests) 1423ms\n   ✓ TEST-COMMAND-WORKING-DIRECTORY-001 runs a configured command with its own working directory  1209ms\n ✓ tests/tdd-fingerprint-migration.test.ts (2 tests) 483ms\n ✓ tests/php-verification.test.ts (11 tests) 523ms\n ✓ tests/model-correspondence-evidence-guidance.test.ts (2 tests) 381ms\n   ✓ TEST-MODEL-CORRESPONDENCE-EVIDENCE-GUIDANCE-002 documents the `evidence refresh` prerequisite in --help  360ms\n ✓ tests/tdd-superseded-cycle-scoping.test.ts (2 tests) 459ms\n ✓ tests/tdd-fingerprint-scoping.test.ts (2 tests) 468ms\n ✓ tests/p3-attestation-oidc.test.ts (10 tests) 516ms\n ✓ tests/p4-workflow-streaming.test.ts (10 tests) 606ms\n   ✓ P4 bounded streaming workflow verification > streams a large transcript without changing event accounting  466ms\n ✓ tests/tdd-green-requirement-scoping.test.ts (2 tests) 782ms\n   ✓ TEST-TDD-GREEN-REQUIREMENT-SCOPING-001 completes an older pending cycle for the same test ID after a newer one starts  588ms\n ✓ tests/upgrade-workflow.test.ts (2 tests) 143ms\n ✓ tests/p3-workflow-provenance.test.ts (11 tests) 169ms\n ✓ tests/formal-knowledge.test.ts (21 tests) 143ms\n ✓ tests/adapter-pattern-recognition.test.ts (2 tests) 157ms\n ✓ tests/workflow-multi-session-verification.test.ts (3 tests) 53ms\n ✓ tests/scaffold-artifact.test.ts (6 tests) 62ms\n ✓ tests/p3-formal.test.ts (10 tests | 2 skipped) 40ms\n ✓ tests/domain.test.ts (46 tests) 34ms\n ✓ tests/design-adr-none-exemption.test.ts (3 tests) 5ms\n ✓ tests/ears-id-diagnostic-messages.test.ts (3 tests) 4ms\n ✓ tests/tdd-red-collection-guidance.test.ts (1 test) 2ms\n ↓ tests/adapter-integration.test.ts (6 tests | 6 skipped)\n\n Test Files  37 passed | 1 skipped (38)\n      Tests  442 passed | 8 skipped (450)\n   Start at  14:42:53\n   Duration  112.00s (transform 811ms, setup 0ms, collect 14.80s, tests 201.44s, environment 6ms, prepare 2.06s)\n\n",
+      "stdout": "\n> musubix3@0.1.17 test\n> vitest run\n\n\n RUN  v3.2.7 /home/nahisaho/GitHub/musubix3\n\n ✓ tests/gate-install.test.ts (73 tests) 29857ms\n   ✓ quality semantics > runs actual commands and persists freshness-aware successful evidence  1057ms\n   ✓ quality semantics > fails a structured test command that reports only skipped tests  677ms\n   ✓ quality semantics > fails an exit-zero command whose structured test reports failed  622ms\n   ✓ quality semantics > fails an exit-zero command whose structured test reports error  647ms\n   ✓ quality semantics > keeps optional structured-test failures out of identity diagnostics  658ms\n   ✓ quality semantics > does not accept passing entries from a rejected optional report as test identity evidence  639ms\n   ✓ quality semantics > fails a structured test command that reports zero tests  644ms\n   ✓ quality semantics > supports a required formal gate with persisted modeled coverage  683ms\n   ✓ quality semantics > requires annotated test IDs to pass in a fresh structured command report  1122ms\n   ✓ quality semantics > records a verified Red-Green-Refactor cycle without allowing test mutation  839ms\n   ✓ quality semantics > proves staged change order with artifact fingerprints and TDD evidence  3959ms\n   ✓ quality semantics > rejects unrelated source changes as implementation evidence for a requirement  2588ms\n   ✓ quality semantics > rejects reused TDD output and reconciles required workflow with actual Skill calls  1286ms\n   ✓ quality semantics > fails a required formal gate below the modeled fraction threshold  603ms\n   ✓ quality semantics > fails missing required commands, while retaining skipped status  577ms\n   ✓ quality semantics > fails real nonzero exits and timeouts  1182ms\n   ✓ quality semantics > uses coverage thresholds without disguising missing coverage  602ms\n   ✓ quality semantics > rejects quality policy weakening against the trusted baseline  597ms\n   ✓ quality semantics > requires independent approval when the policy baseline changes  631ms\n   ✓ quality semantics > fails if verification mutates its own input snapshot  639ms\n   ✓ quality semantics > ignores standard Cargo and Maven target output without weakening source stability  691ms\n   ✓ quality semantics > keeps source directories named target inside the stability snapshot  580ms\n   ✓ quality semantics > ignores manifest-scoped .NET bin and obj output without hiding source directories  621ms\n   ✓ quality semantics > ignores manifest-scoped ecosystem caches without hiding same-named source directories  827ms\n   ✓ quality semantics > ignores Python bytecode caches without hiding Python source  606ms\n   ✓ quality semantics > ignores the conventional project-local NuGet package cache  603ms\n   ✓ quality semantics > ignores Python virtual environments identified by pyvenv.cfg without hiding similarly named source  648ms\n   ✓ quality semantics > does not exclude a source tree when pyvenv.cfg is not a regular file  662ms\n   ✓ quality semantics > does not exclude an arbitrary source tree with a regular pyvenv.cfg marker  611ms\n   ✓ quality semantics > changed mode captures changes and still runs actual commands  601ms\n   ✓ quality semantics > preserves the latest changed-run evidence across a later full gate  1298ms\n ✓ tests/cli-package.test.ts (14 tests) 31415ms\n   ✓ CLI contracts > prints version/help and JSON validation with nonzero failure  1344ms\n   ✓ CLI contracts > returns structured errors for missing files, invalid solver and unknown commands  1053ms\n   ✓ CLI contracts > supports init alias, dry-run, status and native-bin symlink invocation  1486ms\n   ✓ CLI contracts > requires explicit confirmation before recording human approval  2286ms\n   ✓ CLI contracts > runs full workflow and reports JSON evidence  10529ms\n   ✓ CLI contracts > reports and enforces strict Code Graph mode through CLI gates and status  2838ms\n   ✓ CLI contracts > enforces strict workflow session identity from config and CLI  2688ms\n   ✓ CLI contracts > derives the configured GitHub OIDC audience without reading a private key  472ms\n   ✓ CLI contracts > records a staged change checkpoint through the CLI  2448ms\n   ✓ CLI contracts > returns exit 1 for incomplete starter gates and contradictory requirements  1686ms\n   ✓ CLI contracts > executes a complete CLI TDD cycle and exposes it to the gate  3250ms\n   ✓ distribution contracts > TEST-SESSION-SCOPED-DEVELOPMENT-002 reuses evidence only for an explicit change ID  727ms\n   ✓ distribution contracts > validates native manifests and packed hidden skills/built engine/assets  588ms\n ✓ tests/change-record-fail-fast.test.ts (10 tests) 17117ms\n   ✓ TEST-CHANGE-RECORD-FAIL-FAST-001 rejects an unchanged requirements phase at record time, leaving evidence untouched  1803ms\n   ✓ TEST-CHANGE-RECORD-FAIL-FAST-002 rejects an unchanged design phase at record time, leaving evidence untouched  1763ms\n   ✓ TEST-CHANGE-RECORD-FAIL-FAST-003 rejects an unchanged tests fingerprint at Red record time, leaving evidence untouched  2134ms\n   ✓ TEST-CHANGE-RECORD-FAIL-FAST-004 rejects an unchanged implementation fingerprint at Implementation record time, leaving evidence untouched  2491ms\n   ✓ TEST-CHANGE-RECORD-FAIL-FAST-005 rejects an unchanged per-requirement relevant-implementation fingerprint, naming the unchanged requirement  2495ms\n   ✓ TEST-CHANGE-RECORD-FAIL-FAST-011 leaves both changes.json and order.json byte-identical across every rejection kind, including the evidence-order sequence  2203ms\n   ✓ TEST-CHANGE-RECORD-FAIL-FAST-006 allows an explicitly overridden unchanged requirements phase and persists the marker  1225ms\n   ✓ TEST-CHANGE-RECORD-FAIL-FAST-007 suppresses only CHANGE_REQUIREMENTS_UNCHANGED for a marked override, not the other unchanged diagnostics  945ms\n   ✓ TEST-CHANGE-RECORD-FAIL-FAST-008 previews a phase recording with --dry-run without persisting it, in both outcomes  1625ms\n   ✓ TEST-CHANGE-RECORD-FAIL-FAST-009 documents the fail-fast rejection, --allow-unchanged, and --dry-run in --help  431ms\n ✓ tests/change-evidence-waiver.test.ts (15 tests) 25347ms\n   ✓ TEST-CHANGE-EVIDENCE-WAIVER-001 rejects a waiver for any code outside the twelve-code allow-list  2170ms\n   ✓ TEST-CHANGE-EVIDENCE-WAIVER-002 rejects a waiver when no matching diagnostic is currently reported  1873ms\n   ✓ TEST-CHANGE-EVIDENCE-WAIVER-003 requires a non-empty approver and reason  1745ms\n   ✓ TEST-CHANGE-EVIDENCE-WAIVER-004 binds requirement-scoping to each code's own granularity  1702ms\n   ✓ TEST-CHANGE-EVIDENCE-WAIVER-005 records the waiver as a hash-chained, ordered, identity-bound entry, and starts non-stale  1789ms\n   ✓ TEST-CHANGE-EVIDENCE-WAIVER-006 downgrades only the exact waived instance, never any other change/requirement/code  1687ms\n   ✓ TEST-CHANGE-EVIDENCE-WAIVER-007 rejects a duplicate waiver for an already validly waived, non-stale scope  1700ms\n   ✓ TEST-CHANGE-EVIDENCE-WAIVER-008 treats a waiver as stale once its snapshot payload changes, reporting it error again plus a stale diagnostic  2640ms\n   ✓ TEST-CHANGE-EVIDENCE-WAIVER-009 reports malformed waiver evidence without downgrading the targeted diagnostic  1703ms\n   ✓ TEST-CHANGE-EVIDENCE-WAIVER-010 surfaces active waivers for audit visibility, excluding stale/malformed ones  1706ms\n   ✓ TEST-CHANGE-EVIDENCE-WAIVER-011 attaches structured changeId/requirementId targets to every waivable diagnostic  1701ms\n   ✓ TEST-CHANGE-EVIDENCE-WAIVER-012 redefines change-history/change-completeness validity as free of error-severity diagnostics  3005ms\n   ✓ TEST-CHANGE-EVIDENCE-WAIVER-014 waives detail-scoped CHANGE_PHASE_MISSING using the phase:<name> grammar  537ms\n   ✓ TEST-CHANGE-EVIDENCE-WAIVER-015 waives batch-scoped CHANGE_TESTS_UNCHANGED using the bare batchKey grammar  1268ms\n ✓ tests/change-requirement-batches.test.ts (3 tests) 11604ms\n   ✓ TEST-CHANGE-REQUIREMENT-BATCHES-001 completes an interleaved Red-Implement-Green loop per requirement batch  4855ms\n   ✓ TEST-CHANGE-REQUIREMENT-BATCHES-002 rejects Implementation for a batch before its own Red and Green before its own Implementation  2579ms\n   ✓ TEST-CHANGE-REQUIREMENT-BATCHES-003 rejects Quality until every requirement has Green coverage  4169ms\n ✓ tests/p3-performance-provenance.test.ts (9 tests) 10297ms\n   ✓ P3 deterministic performance provenance > binds every observation to the exact successful command and fresh report  1039ms\n   ✓ P3 deterministic performance provenance > detects report tampering and makes prior quality status stale  813ms\n   ✓ P3 deterministic performance provenance > rejects duplicate counter reports and withholds provenance from rejected test reports  1962ms\n   ✓ P3 deterministic performance provenance > rejects failed executions, missing provenance, and configuration drift  2394ms\n   ✓ P3 deterministic performance provenance > binds semantic provenance records into the attestation performance head  723ms\n   ✓ P3 deterministic performance provenance > keeps semantic performance and quality heads stable across gate-sign-gate runs  1313ms\n   ✓ P3 deterministic performance provenance > attests stable quality verdicts and widened formal verdict fields  722ms\n   ✓ P3 deterministic performance provenance > persists stdout adapter reports and detects later tampering  659ms\n   ✓ P3 deterministic performance provenance > fails attestation verification when the bound report is changed after signing  671ms\n ✓ tests/p4-correspondence-mutation.test.ts (12 tests) 8596ms\n   ✓ P4 model correspondence and mutation quality > proves explicit formal requirements through fresh trace and passing test reports  1018ms\n   ✓ P4 model correspondence and mutation quality > validates model correspondence against the exact merged .NET command  725ms\n   ✓ P4 model correspondence and mutation quality > fails closed when formal or generated trace evidence becomes stale  663ms\n   ✓ P4 model correspondence and mutation quality > accepts current deterministic killed mutants and binds both evidence heads  747ms\n   ✓ P4 model correspondence and mutation quality > fails closed when strict mode has no mutation report  660ms\n   ✓ P4 model correspondence and mutation quality > rejects survived mutants  659ms\n   ✓ P4 model correspondence and mutation quality > rejects skipped mutants  650ms\n   ✓ P4 model correspondence and mutation quality > rejects duplicate, unlinked, and stale mutation evidence  3080ms\n ✓ tests/attestation-evidence-stability.test.ts (4 tests) 8832ms\n   ✓ attestation evidence-head stability across no-op gate re-runs > TEST-ATTESTATION-EVIDENCE-STABILITY-002 keeps a signed attestation valid across a no-op gate re-run with reordered mutants  2631ms\n   ✓ attestation evidence-head stability across no-op gate re-runs > TEST-ATTESTATION-EVIDENCE-STABILITY-003 keeps all ten evidenceHeads entries stable across full, --changed, and --feature no-op re-runs  6190ms\n ✓ tests/workflow-evidence-waiver.test.ts (11 tests) 6947ms\n   ✓ TEST-WORKFLOW-EVIDENCE-WAIVER-002 rejects CLI calls with disallowed codes, missing confirmation, missing options, bad timestamps, and invalid --index values  2155ms\n   ✓ TEST-WORKFLOW-EVIDENCE-WAIVER-004 records a genesis waiver, downgrades only the exact colliding scope, and surfaces workflowWaivers in gate/status  953ms\n   ✓ TEST-WORKFLOW-EVIDENCE-WAIVER-006 reports malformed workflow-waiver evidence separately and rejects further appends until repaired  970ms\n   ✓ TEST-WORKFLOW-EVIDENCE-WAIVER-007 passes the workflow gate when every workflow error is waived, while leaving non-waived diagnostics as errors  1377ms\n   ✓ TEST-WORKFLOW-EVIDENCE-WAIVER-011 keeps malformed workflow waiver diagnostics non-blocking when the workflow check itself has no error-severity diagnostics  780ms\n ✓ tests/trace-graph.test.ts (62 tests) 5820ms\n   ✓ compiler graph > indexes static, re-export, dynamic, require, symbols and call targets  728ms\n   ✓ compiler graph > resolves tsconfig path aliases and JS directory imports  497ms\n   ✓ compiler graph > resolves nearest nested tsconfig paths  427ms\n   ✓ compiler graph > resolves NodeNext import/require conditions according to usage  416ms\n   ✓ compiler graph > finds cycles, self cycles and enforces architecture globs  432ms\n   ✓ compiler graph > reports unresolved local and nonliteral imports honestly  367ms\n   ✓ compiler graph > refuses stale caches after source and config changes  736ms\n ✓ tests/approval-domain-scoping.test.ts (24 tests) 5641ms\n   ✓ approval domain scoping (design/TDD prerequisite gating, REQ-016/017/018) > TEST-APPROVAL-DOMAIN-SCOPING-018 blocks TDD Red for a requirement until only its owning domain's design approves  335ms\n   ✓ approval domain scoping (gate/status scoping, REQ-019/020/021/022) > TEST-APPROVAL-DOMAIN-SCOPING-019 scopes gate --feature's approval check to the owning domain only  1074ms\n   ✓ approval domain scoping (gate/status scoping, REQ-019/020/021/022) > TEST-APPROVAL-DOMAIN-SCOPING-021 reports a per-domain breakdown in full-repo gate  831ms\n ✓ tests/approval.test.ts (8 tests) 4391ms\n   ✓ artifact-bound approval evidence > TEST-HUMAN-APPROVAL-GATES-006 recomputes quality before release approval  2844ms\n   ✓ artifact-bound approval evidence > TEST-HUMAN-APPROVAL-GATES-007 rejects invalid artifacts and reports malformed evidence  681ms\n ✓ tests/cli-workflow-ux.test.ts (6 tests) 4805ms\n   ✓ cli workflow ux improvements (v0.1.9) > TEST-CLI-WORKFLOW-UX-001 excludes nested MUSUBIX3 workspaces from ancestor scans  806ms\n   ✓ cli workflow ux improvements (v0.1.9) > TEST-CLI-WORKFLOW-UX-002 states bidirectional candidate semantics for trace impact text output  1213ms\n   ✓ cli workflow ux improvements (v0.1.9) > TEST-CLI-WORKFLOW-UX-005 scopes gate status to one feature, isolating unrelated failures  2469ms\n ✓ tests/change-acceptance-heuristic.test.ts (6 tests) 3980ms\n   ✓ TEST-CHANGE-ACCEPTANCE-HEURISTIC-001 recognizes report/error/naming vocabulary as measurable acceptance  945ms\n   ✓ TEST-CHANGE-ACCEPTANCE-HEURISTIC-002 recognizes exit/configur vocabulary as measurable acceptance  622ms\n   ✓ TEST-CHANGE-ACCEPTANCE-HEURISTIC-003 recognizes contain/unaffected/stale vocabulary as measurable acceptance  535ms\n   ✓ TEST-CHANGE-ACCEPTANCE-HEURISTIC-004 still rejects whole-value placeholders and too-short text  582ms\n   ✓ TEST-CHANGE-ACCEPTANCE-HEURISTIC-005 still rejects placeholder-prefixed text even when it contains a newly recognized keyword  735ms\n   ✓ TEST-CHANGE-ACCEPTANCE-HEURISTIC-006 still rejects long non-placeholder prose containing no recognized keyword  560ms\n ✓ tests/tdd-cycle-void.test.ts (13 tests) 3185ms\n   ✓ TEST-TDD-CYCLE-VOID-002 rejects voiding when no earlier non-voided valid fallback cycle exists  345ms\n   ✓ TEST-TDD-CYCLE-VOID-011 rejects re-voiding but allows voiding a fresh later cycle  320ms\n ✓ tests/p3-codegraph-policy.test.ts (4 tests) 3002ms\n   ✓ P3 unresolved dynamic module loading policy > keeps unresolved computed imports and requires as compatible warnings by default  705ms\n   ✓ P3 unresolved dynamic module loading policy > upgrades unresolved computed loading to gate-blocking errors in strict mode  1169ms\n   ✓ P3 unresolved dynamic module loading policy > rejects weakening a strict trusted Code Graph baseline  737ms\n   ✓ P3 unresolved dynamic module loading policy > allows statically resolvable cache-busting imports in strict mode  390ms\n ✓ tests/bounded-file-read-concurrency.test.ts (4 tests) 2019ms\n   ✓ bounded file-read concurrency for large projects > TEST-BOUNDED-FILE-READ-CONCURRENCY-002 snapshots a large path list without exceeding the OS file-descriptor limit  703ms\n   ✓ bounded file-read concurrency for large projects > TEST-BOUNDED-FILE-READ-CONCURRENCY-003 bounds concurrent reads while Code Graph loads a language with many source files  646ms\n   ✓ bounded file-read concurrency for large projects > TEST-BOUNDED-FILE-READ-CONCURRENCY-004 bounds concurrent reads while knowledge build loads many Markdown documents  652ms\n ✓ tests/p2-improvements.test.ts (18 tests) 842ms\n   ✓ P2 dynamic graph and manifest entrypoints > resolves safe local cache-busting imports and package entrypoints without hiding arbitrary dynamics  709ms\n ✓ tests/command-working-directory.test.ts (3 tests) 1250ms\n   ✓ TEST-COMMAND-WORKING-DIRECTORY-001 runs a configured command with its own working directory  1035ms\n ✓ tests/php-verification.test.ts (11 tests) 561ms\n ✓ tests/p3-attestation-oidc.test.ts (10 tests) 473ms\n ✓ tests/tdd-superseded-cycle-scoping.test.ts (2 tests) 435ms\n ✓ tests/tdd-fingerprint-migration.test.ts (2 tests) 513ms\n   ✓ TEST-TDD-FINGERPRINT-MIGRATION-001 migrates a cycle recorded under the superseded algorithm without a fresh Red/Green  309ms\n ✓ tests/tdd-green-requirement-scoping.test.ts (2 tests) 446ms\n ✓ tests/tdd-fingerprint-scoping.test.ts (2 tests) 467ms\n ✓ tests/p4-workflow-streaming.test.ts (10 tests) 255ms\n ✓ tests/model-correspondence-evidence-guidance.test.ts (2 tests) 366ms\n   ✓ TEST-MODEL-CORRESPONDENCE-EVIDENCE-GUIDANCE-002 documents the `evidence refresh` prerequisite in --help  348ms\n ✓ tests/p3-workflow-provenance.test.ts (11 tests) 145ms\n ✓ tests/upgrade-workflow.test.ts (2 tests) 143ms\n ✓ tests/adapter-pattern-recognition.test.ts (2 tests) 123ms\n ✓ tests/formal-knowledge.test.ts (21 tests) 130ms\n ✓ tests/scaffold-artifact.test.ts (6 tests) 69ms\n ✓ tests/workflow-multi-session-verification.test.ts (3 tests) 62ms\n ✓ tests/p3-formal.test.ts (10 tests | 2 skipped) 39ms\n ✓ tests/domain.test.ts (46 tests) 28ms\n ✓ tests/design-adr-none-exemption.test.ts (3 tests) 5ms\n ✓ tests/ears-id-diagnostic-messages.test.ts (3 tests) 5ms\n ✓ tests/tdd-red-collection-guidance.test.ts (1 test) 3ms\n ↓ tests/adapter-integration.test.ts (6 tests | 6 skipped)\n\n Test Files  38 passed | 1 skipped (39)\n      Tests  446 passed | 8 skipped (454)\n   Start at  17:02:21\n   Duration  105.10s (transform 766ms, setup 0ms, collect 13.93s, tests 189.21s, environment 5ms, prepare 1.69s)\n\n",
       "stderr": ""
     },
     {
@@ -3048,7 +2821,7 @@
       "required": true,
       "status": "pass",
       "summary": "npm: completed, exit 0.",
-      "durationMs": 636,
+      "durationMs": 642,
       "exitCode": 0,
       "stdout": "\n> musubix3@0.1.17 pack:check\n> node scripts/check-package.mjs\n\nPackage verified: musubix3-0.1.17.tgz, 125 files, 9 skills.\n",
       "stderr": ""
@@ -3058,7 +2831,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 6368,
+      "durationMs": 5942,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/cli-workflow-ux-tests/aggregate.json\n",
       "stderr": ""
@@ -3068,7 +2841,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 1818,
+      "durationMs": 1846,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/tdd-fingerprint-scoping-tests/aggregate.json\n",
       "stderr": ""
@@ -3078,7 +2851,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 2144,
+      "durationMs": 1889,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/tdd-fingerprint-migration-tests/aggregate.json\n",
       "stderr": ""
@@ -3088,7 +2861,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 2096,
+      "durationMs": 1801,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/tdd-superseded-cycle-scoping-tests/aggregate.json\n",
       "stderr": ""
@@ -3098,7 +2871,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 4269,
+      "durationMs": 4420,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/tdd-cycle-void-tests/aggregate.json\n",
       "stderr": ""
@@ -3108,7 +2881,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 14994,
+      "durationMs": 12207,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/change-requirement-batches-tests/aggregate.json\n",
       "stderr": ""
@@ -3118,7 +2891,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 18066,
+      "durationMs": 17258,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/change-record-fail-fast-tests/aggregate.json\n",
       "stderr": ""
@@ -3128,7 +2901,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 4976,
+      "durationMs": 5060,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/change-acceptance-heuristic-tests/aggregate.json\n",
       "stderr": ""
@@ -3138,7 +2911,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 25080,
+      "durationMs": 25094,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/change-evidence-waiver-tests/aggregate.json\n",
       "stderr": ""
@@ -3148,7 +2921,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 7434,
+      "durationMs": 7525,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/workflow-evidence-waiver-tests/aggregate.json\n",
       "stderr": ""
@@ -3158,7 +2931,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 1945,
+      "durationMs": 1816,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/tdd-green-requirement-scoping-tests/aggregate.json\n",
       "stderr": ""
@@ -3168,7 +2941,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 1405,
+      "durationMs": 1529,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/ears-id-diagnostic-messages-tests/aggregate.json\n",
       "stderr": ""
@@ -3178,7 +2951,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 1486,
+      "durationMs": 1513,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/adapter-pattern-recognition-tests/aggregate.json\n",
       "stderr": ""
@@ -3188,7 +2961,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 1723,
+      "durationMs": 1510,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/workflow-multi-session-verification-tests/aggregate.json\n",
       "stderr": ""
@@ -3198,7 +2971,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 1568,
+      "durationMs": 1578,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/workflow-session-shutdown-tests/aggregate.json\n",
       "stderr": ""
@@ -3208,7 +2981,7 @@
       "required": false,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 2471,
+      "durationMs": 2554,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/command-working-directory-tests/aggregate.json\n",
       "stderr": ""
@@ -3218,7 +2991,7 @@
       "required": false,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 747,
+      "durationMs": 746,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/design-adr-none-exemption-tests/aggregate.json\n",
       "stderr": ""
@@ -3228,7 +3001,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 1340,
+      "durationMs": 1400,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/tdd-red-collection-guidance-tests/aggregate.json\n",
       "stderr": ""
@@ -3238,9 +3011,19 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 3444,
+      "durationMs": 3326,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/bounded-file-read-concurrency-tests/aggregate.json\n",
+      "stderr": ""
+    },
+    {
+      "name": "command:attestation-evidence-stability-tests",
+      "required": true,
+      "status": "pass",
+      "summary": "npx: completed, exit 0.",
+      "durationMs": 8376,
+      "exitCode": 0,
+      "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/attestation-evidence-stability-tests/aggregate.json\n",
       "stderr": ""
     },
     {
@@ -3248,7 +3031,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 1529,
+      "durationMs": 1472,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/upgrade-workflow-tests/aggregate.json\n",
       "stderr": ""
@@ -3258,7 +3041,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 1643,
+      "durationMs": 1788,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/model-correspondence-evidence-guidance-tests/aggregate.json\n",
       "stderr": ""
@@ -3267,7 +3050,7 @@
       "name": "test-identities",
       "required": false,
       "status": "pass",
-      "summary": "130/130 annotated test IDs passed in structured command reports.",
+      "summary": "134/134 annotated test IDs passed in structured command reports.",
       "diagnostics": []
     },
     {
@@ -3301,15 +3084,22 @@
     {
       "name": "approval",
       "required": true,
-      "status": "pass",
-      "summary": "3/3 approval stage(s) are current.",
-      "diagnostics": []
+      "status": "fail",
+      "summary": "2/3 approval stage(s) are current.",
+      "diagnostics": [
+        {
+          "code": "APPROVAL_STALE",
+          "severity": "error",
+          "message": "release approval does not match the current artifact manifest.",
+          "path": ".musubix/evidence/approvals/release.json"
+        }
+      ]
     },
     {
       "name": "commands",
       "required": true,
       "status": "pass",
-      "summary": "29 configured command(s) executed; optional failures are nonblocking."
+      "summary": "30 configured command(s) executed; optional failures are nonblocking."
     },
     {
       "name": "constitution:RULE-001",
@@ -3337,12 +3127,12 @@
     "trace.errors": 0,
     "graph.violations": 0,
     "formal.errors": 0,
-    "formal.modeledFraction": 0.06716417910447761,
+    "formal.modeledFraction": 0.06521739130434782,
     "commands.failures": 0,
     "commands.skipped": 0,
-    "tests.annotatedIds": 130,
-    "tests.executedIds": 130,
-    "tdd.cycles": 194,
+    "tests.annotatedIds": 134,
+    "tests.executedIds": 134,
+    "tdd.cycles": 199,
     "tdd.errors": 0,
     "changes.count": 8,
     "changes.errors": 0,
@@ -3350,7 +3140,7 @@
     "changes.completenessErrors": 0,
     "performance.budgets": 0,
     "performance.errors": 0,
-    "mutation.requirements": 120,
+    "mutation.requirements": 124,
     "mutation.coveredRequirements": 0,
     "mutation.mutants": 0,
     "mutation.errors": 0,
@@ -3358,19 +3148,27 @@
     "modelCorrespondence.coveredRequirements": 0,
     "modelCorrespondence.errors": 0,
     "attestation.errors": 0,
-    "approval.errors": 0,
+    "approval.errors": 1,
     "coverage.design": 1,
     "coverage.implementation": 1,
     "coverage.tests": 1
   },
-  "mode": "full",
+  "mode": "changed",
   "feature": null,
   "changed": [
+    ".musubix/config.json",
+    ".musubix/evidence/approvals/design.json",
+    ".musubix/evidence/approvals/requirements.json",
+    ".musubix/evidence/changes.json",
     ".musubix/evidence/formal.json",
     ".musubix/evidence/model-correspondence.json",
     ".musubix/evidence/native/adapter-pattern-recognition-tests/aggregate.json",
     ".musubix/evidence/native/approval-domain-scoping-tests/aggregate.json",
     ".musubix/evidence/native/approval-tests/aggregate.json",
+    ".musubix/evidence/native/attestation-evidence-stability-tests/TEST-ATTESTATION-EVIDENCE-STABILITY-001.json",
+    ".musubix/evidence/native/attestation-evidence-stability-tests/TEST-ATTESTATION-EVIDENCE-STABILITY-002.json",
+    ".musubix/evidence/native/attestation-evidence-stability-tests/TEST-ATTESTATION-EVIDENCE-STABILITY-003.json",
+    ".musubix/evidence/native/attestation-evidence-stability-tests/TEST-ATTESTATION-EVIDENCE-STABILITY-004.json",
     ".musubix/evidence/native/bounded-file-read-concurrency-tests/aggregate.json",
     ".musubix/evidence/native/change-acceptance-heuristic-tests/aggregate.json",
     ".musubix/evidence/native/change-evidence-waiver-tests/aggregate.json",
@@ -3393,12 +3191,16 @@
     ".musubix/evidence/native/workflow-evidence-waiver-tests/aggregate.json",
     ".musubix/evidence/native/workflow-multi-session-verification-tests/aggregate.json",
     ".musubix/evidence/native/workflow-session-shutdown-tests/aggregate.json",
+    ".musubix/evidence/order.json",
     ".musubix/evidence/performance.json",
     ".musubix/evidence/quality.json",
-    ".musubix/evidence/workflow-waivers.json",
+    ".musubix/evidence/tdd.json",
     ".musubix/evidence/workflow.json",
     ".musubix/features/adapter-pattern-recognition/trace.json",
     ".musubix/features/approval-domain-scoping/trace.json",
+    ".musubix/features/attestation-evidence-stability/design.md",
+    ".musubix/features/attestation-evidence-stability/requirements.md",
+    ".musubix/features/attestation-evidence-stability/trace.json",
     ".musubix/features/bounded-file-read-concurrency/trace.json",
     ".musubix/features/change-acceptance-heuristic/trace.json",
     ".musubix/features/change-evidence-waiver/trace.json",
@@ -3421,18 +3223,77 @@
     ".musubix/features/upgrade-workflow/trace.json",
     ".musubix/features/workflow-evidence-waiver/trace.json",
     ".musubix/features/workflow-multi-session-verification/trace.json",
-    ".musubix/features/workflow-session-shutdown/trace.json"
+    ".musubix/features/workflow-session-shutdown/trace.json",
+    "README.md",
+    "packages/analysis/src/attestation.ts",
+    "packages/analysis/src/mutation.ts",
+    "tests/attestation-evidence-stability.test.ts"
   ],
-  "impacted": [],
+  "impacted": [
+    "packages/analysis/src/approval-record.ts",
+    "packages/analysis/src/attestation.ts",
+    "packages/analysis/src/gate.ts",
+    "packages/analysis/src/index.ts",
+    "packages/analysis/src/mutation.ts",
+    "packages/cli/src/install.ts",
+    "packages/cli/src/main.ts",
+    "tests/adapter-integration.test.ts",
+    "tests/adapter-pattern-recognition.test.ts",
+    "tests/approval-domain-scoping.test.ts",
+    "tests/approval.test.ts",
+    "tests/attestation-evidence-stability.test.ts",
+    "tests/bounded-file-read-concurrency.test.ts",
+    "tests/change-acceptance-heuristic.test.ts",
+    "tests/change-evidence-waiver.test.ts",
+    "tests/change-record-fail-fast.test.ts",
+    "tests/change-requirement-batches.test.ts",
+    "tests/cli-package.test.ts",
+    "tests/cli-workflow-ux.test.ts",
+    "tests/command-working-directory.test.ts",
+    "tests/domain.test.ts",
+    "tests/ears-id-diagnostic-messages.test.ts",
+    "tests/formal-knowledge.test.ts",
+    "tests/gate-install.test.ts",
+    "tests/helpers.ts",
+    "tests/model-correspondence-evidence-guidance.test.ts",
+    "tests/p2-improvements.test.ts",
+    "tests/p3-attestation-oidc.test.ts",
+    "tests/p3-codegraph-policy.test.ts",
+    "tests/p3-formal.test.ts",
+    "tests/p3-performance-provenance.test.ts",
+    "tests/p3-workflow-provenance.test.ts",
+    "tests/p4-correspondence-mutation.test.ts",
+    "tests/p4-workflow-streaming.test.ts",
+    "tests/php-verification.test.ts",
+    "tests/scaffold-artifact.test.ts",
+    "tests/tdd-cycle-void.test.ts",
+    "tests/tdd-fingerprint-migration.test.ts",
+    "tests/tdd-fingerprint-scoping.test.ts",
+    "tests/tdd-green-requirement-scoping.test.ts",
+    "tests/tdd-red-collection-guidance.test.ts",
+    "tests/tdd-superseded-cycle-scoping.test.ts",
+    "tests/trace-graph.test.ts",
+    "tests/upgrade-workflow.test.ts",
+    "tests/workflow-evidence-waiver.test.ts",
+    "tests/workflow-multi-session-verification.test.ts"
+  ],
   "lastChangeAnalysis": {
     "baseline": "HEAD",
-    "head": "a6f5e82c8c8e6f3cdba78936d57a89d9618cbf6e",
+    "head": "bf8bace345543b378ddac603a0257e5814e4720b",
     "changed": [
+      ".musubix/config.json",
+      ".musubix/evidence/approvals/design.json",
+      ".musubix/evidence/approvals/requirements.json",
+      ".musubix/evidence/changes.json",
       ".musubix/evidence/formal.json",
       ".musubix/evidence/model-correspondence.json",
       ".musubix/evidence/native/adapter-pattern-recognition-tests/aggregate.json",
       ".musubix/evidence/native/approval-domain-scoping-tests/aggregate.json",
       ".musubix/evidence/native/approval-tests/aggregate.json",
+      ".musubix/evidence/native/attestation-evidence-stability-tests/TEST-ATTESTATION-EVIDENCE-STABILITY-001.json",
+      ".musubix/evidence/native/attestation-evidence-stability-tests/TEST-ATTESTATION-EVIDENCE-STABILITY-002.json",
+      ".musubix/evidence/native/attestation-evidence-stability-tests/TEST-ATTESTATION-EVIDENCE-STABILITY-003.json",
+      ".musubix/evidence/native/attestation-evidence-stability-tests/TEST-ATTESTATION-EVIDENCE-STABILITY-004.json",
       ".musubix/evidence/native/bounded-file-read-concurrency-tests/aggregate.json",
       ".musubix/evidence/native/change-acceptance-heuristic-tests/aggregate.json",
       ".musubix/evidence/native/change-evidence-waiver-tests/aggregate.json",
@@ -3455,12 +3316,16 @@
       ".musubix/evidence/native/workflow-evidence-waiver-tests/aggregate.json",
       ".musubix/evidence/native/workflow-multi-session-verification-tests/aggregate.json",
       ".musubix/evidence/native/workflow-session-shutdown-tests/aggregate.json",
+      ".musubix/evidence/order.json",
       ".musubix/evidence/performance.json",
       ".musubix/evidence/quality.json",
-      ".musubix/evidence/workflow-waivers.json",
+      ".musubix/evidence/tdd.json",
       ".musubix/evidence/workflow.json",
       ".musubix/features/adapter-pattern-recognition/trace.json",
       ".musubix/features/approval-domain-scoping/trace.json",
+      ".musubix/features/attestation-evidence-stability/design.md",
+      ".musubix/features/attestation-evidence-stability/requirements.md",
+      ".musubix/features/attestation-evidence-stability/trace.json",
       ".musubix/features/bounded-file-read-concurrency/trace.json",
       ".musubix/features/change-acceptance-heuristic/trace.json",
       ".musubix/features/change-evidence-waiver/trace.json",
@@ -3483,10 +3348,61 @@
       ".musubix/features/upgrade-workflow/trace.json",
       ".musubix/features/workflow-evidence-waiver/trace.json",
       ".musubix/features/workflow-multi-session-verification/trace.json",
-      ".musubix/features/workflow-session-shutdown/trace.json"
+      ".musubix/features/workflow-session-shutdown/trace.json",
+      "README.md",
+      "packages/analysis/src/attestation.ts",
+      "packages/analysis/src/mutation.ts",
+      "tests/attestation-evidence-stability.test.ts"
     ],
-    "impacted": [],
-    "generatedAt": "2026-09-13T05:37:10.352Z"
+    "impacted": [
+      "packages/analysis/src/approval-record.ts",
+      "packages/analysis/src/attestation.ts",
+      "packages/analysis/src/gate.ts",
+      "packages/analysis/src/index.ts",
+      "packages/analysis/src/mutation.ts",
+      "packages/cli/src/install.ts",
+      "packages/cli/src/main.ts",
+      "tests/adapter-integration.test.ts",
+      "tests/adapter-pattern-recognition.test.ts",
+      "tests/approval-domain-scoping.test.ts",
+      "tests/approval.test.ts",
+      "tests/attestation-evidence-stability.test.ts",
+      "tests/bounded-file-read-concurrency.test.ts",
+      "tests/change-acceptance-heuristic.test.ts",
+      "tests/change-evidence-waiver.test.ts",
+      "tests/change-record-fail-fast.test.ts",
+      "tests/change-requirement-batches.test.ts",
+      "tests/cli-package.test.ts",
+      "tests/cli-workflow-ux.test.ts",
+      "tests/command-working-directory.test.ts",
+      "tests/domain.test.ts",
+      "tests/ears-id-diagnostic-messages.test.ts",
+      "tests/formal-knowledge.test.ts",
+      "tests/gate-install.test.ts",
+      "tests/helpers.ts",
+      "tests/model-correspondence-evidence-guidance.test.ts",
+      "tests/p2-improvements.test.ts",
+      "tests/p3-attestation-oidc.test.ts",
+      "tests/p3-codegraph-policy.test.ts",
+      "tests/p3-formal.test.ts",
+      "tests/p3-performance-provenance.test.ts",
+      "tests/p3-workflow-provenance.test.ts",
+      "tests/p4-correspondence-mutation.test.ts",
+      "tests/p4-workflow-streaming.test.ts",
+      "tests/php-verification.test.ts",
+      "tests/scaffold-artifact.test.ts",
+      "tests/tdd-cycle-void.test.ts",
+      "tests/tdd-fingerprint-migration.test.ts",
+      "tests/tdd-fingerprint-scoping.test.ts",
+      "tests/tdd-green-requirement-scoping.test.ts",
+      "tests/tdd-red-collection-guidance.test.ts",
+      "tests/tdd-superseded-cycle-scoping.test.ts",
+      "tests/trace-graph.test.ts",
+      "tests/upgrade-workflow.test.ts",
+      "tests/workflow-evidence-waiver.test.ts",
+      "tests/workflow-multi-session-verification.test.ts"
+    ],
+    "generatedAt": "2026-09-13T08:05:49.139Z"
   },
   "fingerprints": {
     ".github/copilot-instructions.md": "dae40a397cbcefef73a48c723277665ad4ec25fcbca71c6488003c861537bf2e",
@@ -3504,7 +3420,7 @@
     ".musubix/changes/CHANGE-0009.md": "32a12a7855b69b8658f83e58bcb60baec1b193098c9e70fd5fcd2c0f8683f6ee",
     ".musubix/changes/CHANGE-0010.md": "2a3b5b2dff4a8379e86ace89bb651130f60820790485b2a034ab8a152154e4d1",
     ".musubix/changes/CHANGE-0011.md": "820d05ede1ae00bacafaf634206b03f215f108cb691415a7bcbe3ac85aaa1368",
-    ".musubix/config.json": "6ac46d651105131dbee7c1d46cac292ec72917431331347be8122d23bc1cfcee",
+    ".musubix/config.json": "bfb8f08e5022f4a1dae79572fab8da46efbe57d7caaa98064f0d9d9d751a8a70",
     ".musubix/constitution.md": "f8b47fdc486f395bab05223a94821b145cf8df70ffde2c838a28f8d71fe0fa92",
     ".musubix/decisions/ADR-0002.md": "da556c6ef7efcee366a8c6497179bad96c093145366b6422548b0e3df2cba348",
     ".musubix/decisions/ADR-0003.md": "79bac3818dc9708a24999a4d45008d90ee278c28d4d5af183d14a40b4215cd5c",
@@ -3535,6 +3451,8 @@
     ".musubix/features/adapter-pattern-recognition/requirements.md": "5731561a0a04982b8a5c305bdeeae6084bcf0ee8846f295eaaaabc823d1f9793",
     ".musubix/features/approval-domain-scoping/design.md": "e8731f1e3094aa22192ae2ae5986fb4dc9a7698f7cfe66961e1342f6e0743bd9",
     ".musubix/features/approval-domain-scoping/requirements.md": "c886926622fe022052c81b1ea4e76f21c04f42636f4a37d074f7d34c0505210f",
+    ".musubix/features/attestation-evidence-stability/design.md": "878b28a4f673bcbcf9684de3d759538a8226fb2c3bd63536d12a408723e19d1a",
+    ".musubix/features/attestation-evidence-stability/requirements.md": "afab3f5ea642e0ff89d883ca4e612e460a6291afb0d263d4ffe7f878e4145406",
     ".musubix/features/bounded-file-read-concurrency/design.md": "f62902f2ffe3e37202076e4fed2c390667af87dab84cd0e97316eaaab2d10394",
     ".musubix/features/bounded-file-read-concurrency/requirements.md": "9e08acde7e29a8f14b23d908c465c629e49d00bc29ae9bda1466427362c815be",
     ".musubix/features/change-acceptance-heuristic/design.md": "ce67823a2c44f55a8fbfebc36b9532a0ca1f7a754613443c99ea8171ab136910",
@@ -3603,7 +3521,7 @@
     "packages/analysis/src/approval-domains.ts": "bc45836374021f86c4c2085184185546cc4291880aea32b9084188545b9394b4",
     "packages/analysis/src/approval-record.ts": "838294de204a006daf5a7048a69153b573d5b61e5c9d8f3d66332b27a5b577bf",
     "packages/analysis/src/approval.ts": "d9f57165ca455a0b49acdda7096e0df98a06cd5be33c3d20b2f06cf40917c69f",
-    "packages/analysis/src/attestation.ts": "2d273d2ed5aaa8521938a247492bbe54ee9b195d7902510365d6576e098b17f3",
+    "packages/analysis/src/attestation.ts": "c353b5d93f151665e1f5f0531b763db164cb54e5305a837efd47b2742eb3b949",
     "packages/analysis/src/change-evidence.ts": "8bff2cb709de3834e078bf8bf30f2ddef36b37fa03bec5446e27711cae14709b",
     "packages/analysis/src/change-waiver.ts": "edabb578fe2d968bf98fe068ee240a32b67dcf7b50724a265e83ebc2a88c1ccd",
     "packages/analysis/src/change.ts": "e6c2d3b3118b62da9058c4cbc32dc5d3c9014679ae747dee055366f89f0456f5",
@@ -3615,7 +3533,7 @@
     "packages/analysis/src/index.ts": "01cf9d6d2e56c4fca3ee0b7268acdefbf15838991b6781112154f103d01d3fbf",
     "packages/analysis/src/knowledge.ts": "48b68e9785f411327e10e1bd1f086fdaf4393d2951dcbd4e6fdec84e8008d7da",
     "packages/analysis/src/model-correspondence.ts": "fb19dbbdf461b8e2a2429b6107f60e7ea523e4033e4677ed7dd09ea03740659c",
-    "packages/analysis/src/mutation.ts": "bb0582b042c973226c74b719d12e8dea05f954a68ce4dbc3c2076c31183d5a88",
+    "packages/analysis/src/mutation.ts": "8e68ed8491317dca183afa8c556d3f242628f20388f33b1b6fe997a98b459740",
     "packages/analysis/src/order.ts": "361eff6435f7eb81ac15b9a005f8f676f499c56d3dc82abb242e2307b8af628d",
     "packages/analysis/src/performance.ts": "1145c285582ff188e90263b4d9d9f28ca49104e79b8299b2ecd3e278d8ef80ac",
     "packages/analysis/src/process.ts": "8184c7f7c4c58cdc6987fd9d2ec2c02ce8557f94b6aa30853a0c6056ba79cf4a",
@@ -3638,7 +3556,7 @@
     "packages/domain/src/types.ts": "0f0cbd43bdee4db03b83e4869e9791531a63e9b63aa7a09661f62ad1bbc75cb3",
     "plugin.json": "6a977089462b1ea2907ed97117b7f83be751ba2945e5116c1d6322f4bf6296ca",
     "README-ja.md": "dca616deb76a2884ee7933053ded354df4b8d1d71e9b9cfa8d9545baeda8e957",
-    "README.md": "d07acf4bdba6188933c17bf84d382dc50818a2e957fa2763ad4f63e8537c31ca",
+    "README.md": "1362c78e93dd1b62fa5193f3f05a11752f5614adde5486d995e981ddacb198ce",
     "release-assets/musubix3.cdx.json": "11c67e452d573aae119e08e8e6b0a03d22e152a3526fbf53b0c3186dac4cbd39",
     "release-assets/SHA256SUMS": "38c8d757e3bb0fcff9187743685db047883e3f7b27ab13022f5d3bfad7c004e7",
     "scripts/check-package.mjs": "72210ce36b88fb9fe9e435e8f1a1709e623c25cfc9c81628cce7a1a87f80bee0",
@@ -3650,6 +3568,7 @@
     "tests/adapter-pattern-recognition.test.ts": "df7446c88eecf17cff42a5bf2cb6adc4924d62c5ed4536ad62bc8d38eb5bd40c",
     "tests/approval-domain-scoping.test.ts": "130399e4bb168e0f15d7385b9704e7b0fb9a1f7d59f862204ffbcb67354c6043",
     "tests/approval.test.ts": "6e0e909eff23c37a6a3b7bfdb0bf495bcca3084d1b44c852d1eeb902bb3d44ca",
+    "tests/attestation-evidence-stability.test.ts": "dec3454d000cd88edb943d5aef3adeb6d2854c56de1c514a0aaa2b2ab63c3e1e",
     "tests/bounded-file-read-concurrency.test.ts": "85743bfec42baef1a8cebd36a6b9e85293f9fc29f4121b220398ce32794b3112",
     "tests/change-acceptance-heuristic.test.ts": "44e9ecd782a3cd38c5913b200272b083c90fc144c389740f4b8548eabec73a3e",
     "tests/change-evidence-waiver.test.ts": "254f82e14dac3beaed102979dd0e977ded31ebc20ffacb60aa798194b97bed80",
@@ -5038,88 +4957,88 @@
       "recordedAt": "2026-09-12T23:58:42.124Z"
     }
   ],
-  "workflowWaivers": [
+  "workflowWaivers": [],
+  "waiverDiagnostics": [
     {
+      "code": "WORKFLOW_WAIVER_STALE",
+      "severity": "error",
+      "message": "Workflow waiver for sdd-change:complete:2026-09-09T08:13:50.542Z is stale.",
+      "path": ".musubix/evidence/workflow-waivers.json",
       "skill": "sdd-change",
       "phase": "complete",
-      "declarationRecordedAt": "2026-09-09T08:13:50.542Z",
-      "code": "WORKFLOW_SKILL_NOT_INVOKED",
-      "approver": "nahisaho",
-      "reason": "作業は実際に完了しセッション/コミット履歴で裏付けられているが、複数セッション/入れ子スキル呼び出しのため単一トランスクリプトログでは自動照合できないための恒久的waiver。",
-      "waiverRecordedAt": "2026-09-13T05:32:51.594Z"
+      "declarationRecordedAt": "2026-09-09T08:13:50.542Z"
     },
     {
+      "code": "WORKFLOW_WAIVER_STALE",
+      "severity": "error",
+      "message": "Workflow waiver for sdd-knowledge:complete:2026-09-09T08:34:15.566Z is stale.",
+      "path": ".musubix/evidence/workflow-waivers.json",
       "skill": "sdd-knowledge",
       "phase": "complete",
-      "declarationRecordedAt": "2026-09-09T08:34:15.566Z",
-      "code": "WORKFLOW_SKILL_NOT_INVOKED",
-      "approver": "nahisaho",
-      "reason": "作業は実際に完了しセッション/コミット履歴で裏付けられているが、複数セッション/入れ子スキル呼び出しのため単一トランスクリプトログでは自動照合できないための恒久的waiver。",
-      "waiverRecordedAt": "2026-09-13T05:32:52.612Z"
+      "declarationRecordedAt": "2026-09-09T08:34:15.566Z"
     },
     {
+      "code": "WORKFLOW_WAIVER_STALE",
+      "severity": "error",
+      "message": "Workflow waiver for sdd-change:complete:2026-09-10T14:20:57.674Z is stale.",
+      "path": ".musubix/evidence/workflow-waivers.json",
       "skill": "sdd-change",
       "phase": "complete",
-      "declarationRecordedAt": "2026-09-10T14:20:57.674Z",
-      "code": "WORKFLOW_SKILL_NOT_INVOKED",
-      "approver": "nahisaho",
-      "reason": "作業は実際に完了しセッション/コミット履歴で裏付けられているが、複数セッション/入れ子スキル呼び出しのため単一トランスクリプトログでは自動照合できないための恒久的waiver。",
-      "waiverRecordedAt": "2026-09-13T05:32:53.430Z"
+      "declarationRecordedAt": "2026-09-10T14:20:57.674Z"
     },
     {
+      "code": "WORKFLOW_WAIVER_STALE",
+      "severity": "error",
+      "message": "Workflow waiver for sdd-change:complete:2026-09-10T20:46:25.535Z is stale.",
+      "path": ".musubix/evidence/workflow-waivers.json",
       "skill": "sdd-change",
       "phase": "complete",
-      "declarationRecordedAt": "2026-09-10T20:46:25.535Z",
-      "code": "WORKFLOW_SKILL_NOT_INVOKED",
-      "approver": "nahisaho",
-      "reason": "作業は実際に完了しセッション/コミット履歴で裏付けられているが、複数セッション/入れ子スキル呼び出しのため単一トランスクリプトログでは自動照合できないための恒久的waiver。",
-      "waiverRecordedAt": "2026-09-13T05:32:54.260Z"
+      "declarationRecordedAt": "2026-09-10T20:46:25.535Z"
     },
     {
+      "code": "WORKFLOW_WAIVER_STALE",
+      "severity": "error",
+      "message": "Workflow waiver for sdd-traceability:complete:2026-09-12T08:17:13.982Z is stale.",
+      "path": ".musubix/evidence/workflow-waivers.json",
       "skill": "sdd-traceability",
       "phase": "complete",
-      "declarationRecordedAt": "2026-09-12T08:17:13.982Z",
-      "code": "WORKFLOW_INVOCATION_ORDER",
-      "approver": "nahisaho",
-      "reason": "作業は実際に完了しセッション/コミット履歴で裏付けられているが、複数セッション/入れ子スキル呼び出しのため単一トランスクリプトログでは自動照合できないための恒久的waiver。",
-      "waiverRecordedAt": "2026-09-13T05:32:55.107Z"
+      "declarationRecordedAt": "2026-09-12T08:17:13.982Z"
     },
     {
+      "code": "WORKFLOW_WAIVER_STALE",
+      "severity": "error",
+      "message": "Workflow waiver for sdd-implementation:complete:2026-09-12T09:06:37.401Z is stale.",
+      "path": ".musubix/evidence/workflow-waivers.json",
       "skill": "sdd-implementation",
       "phase": "complete",
-      "declarationRecordedAt": "2026-09-12T09:06:37.401Z",
-      "code": "WORKFLOW_INVOCATION_REUSED",
-      "approver": "nahisaho",
-      "reason": "作業は実際に完了しセッション/コミット履歴で裏付けられているが、複数セッション/入れ子スキル呼び出しのため単一トランスクリプトログでは自動照合できないための恒久的waiver。",
-      "waiverRecordedAt": "2026-09-13T05:32:55.859Z"
+      "declarationRecordedAt": "2026-09-12T09:06:37.401Z"
     },
     {
+      "code": "WORKFLOW_WAIVER_STALE",
+      "severity": "error",
+      "message": "Workflow waiver for sdd-requirements:complete:2026-09-12T12:49:41.740Z is stale.",
+      "path": ".musubix/evidence/workflow-waivers.json",
       "skill": "sdd-requirements",
       "phase": "complete",
-      "declarationRecordedAt": "2026-09-12T12:49:41.740Z",
-      "code": "WORKFLOW_INVOCATION_REUSED",
-      "approver": "nahisaho",
-      "reason": "作業は実際に完了しセッション/コミット履歴で裏付けられているが、複数セッション/入れ子スキル呼び出しのため単一トランスクリプトログでは自動照合できないための恒久的waiver。",
-      "waiverRecordedAt": "2026-09-13T05:32:56.665Z"
+      "declarationRecordedAt": "2026-09-12T12:49:41.740Z"
     },
     {
+      "code": "WORKFLOW_WAIVER_STALE",
+      "severity": "error",
+      "message": "Workflow waiver for sdd-requirements:complete:2026-09-12T13:34:32.146Z is stale.",
+      "path": ".musubix/evidence/workflow-waivers.json",
       "skill": "sdd-requirements",
       "phase": "complete",
-      "declarationRecordedAt": "2026-09-12T13:34:32.146Z",
-      "code": "WORKFLOW_INVOCATION_REUSED",
-      "approver": "nahisaho",
-      "reason": "作業は実際に完了しセッション/コミット履歴で裏付けられているが、複数セッション/入れ子スキル呼び出しのため単一トランスクリプトログでは自動照合できないための恒久的waiver。",
-      "waiverRecordedAt": "2026-09-13T05:32:57.421Z"
+      "declarationRecordedAt": "2026-09-12T13:34:32.146Z"
     },
     {
+      "code": "WORKFLOW_WAIVER_STALE",
+      "severity": "error",
+      "message": "Workflow waiver for sdd-design:complete:2026-09-12T14:09:13.298Z is stale.",
+      "path": ".musubix/evidence/workflow-waivers.json",
       "skill": "sdd-design",
       "phase": "complete",
-      "declarationRecordedAt": "2026-09-12T14:09:13.298Z",
-      "code": "WORKFLOW_INVOCATION_REUSED",
-      "approver": "nahisaho",
-      "reason": "作業は実際に完了しセッション/コミット履歴で裏付けられているが、複数セッション/入れ子スキル呼び出しのため単一トランスクリプトログでは自動照合できないための恒久的waiver。",
-      "waiverRecordedAt": "2026-09-13T05:32:58.252Z"
+      "declarationRecordedAt": "2026-09-12T14:09:13.298Z"
     }
-  ],
-  "waiverDiagnostics": []
+  ]
 }

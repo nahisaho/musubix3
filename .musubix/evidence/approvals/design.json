@@ -32,6 +32,8 @@
     ".musubix/features/adapter-pattern-recognition/requirements.md": "5731561a0a04982b8a5c305bdeeae6084bcf0ee8846f295eaaaabc823d1f9793",
     ".musubix/features/approval-domain-scoping/design.md": "e8731f1e3094aa22192ae2ae5986fb4dc9a7698f7cfe66961e1342f6e0743bd9",
     ".musubix/features/approval-domain-scoping/requirements.md": "c886926622fe022052c81b1ea4e76f21c04f42636f4a37d074f7d34c0505210f",
+    ".musubix/features/attestation-evidence-stability/design.md": "878b28a4f673bcbcf9684de3d759538a8226fb2c3bd63536d12a408723e19d1a",
+    ".musubix/features/attestation-evidence-stability/requirements.md": "afab3f5ea642e0ff89d883ca4e612e460a6291afb0d263d4ffe7f878e4145406",
     ".musubix/features/bounded-file-read-concurrency/design.md": "f62902f2ffe3e37202076e4fed2c390667af87dab84cd0e97316eaaab2d10394",
     ".musubix/features/bounded-file-read-concurrency/requirements.md": "9e08acde7e29a8f14b23d908c465c629e49d00bc29ae9bda1466427362c815be",
     ".musubix/features/change-acceptance-heuristic/design.md": "ce67823a2c44f55a8fbfebc36b9532a0ca1f7a754613443c99ea8171ab136910",
@@ -79,7 +81,7 @@
     ".musubix/features/workflow-session-shutdown/design.md": "225d1718c0ea1628dae251f06b1c5ddafda9a7ae92a15e3d961efbea51c0e0ac",
     ".musubix/features/workflow-session-shutdown/requirements.md": "2b8d72e2fcb1dbf5bc24ee733182cf2b692e33c50550ce7a8de2e9c5a8c32c0d"
   },
-  "artifactSha256": "ea2c0b960e0f12e612cdc355baa8caeb2a0c126e4356fe141951f532e11e46f6",
+  "artifactSha256": "b05eac01e415e6e461b3e13802b99b18c402b8425dd21c3859f7dd6f346f113f",
   "approver": "nahisaho",
-  "approvedAt": "2026-09-13T04:09:00.536Z"
+  "approvedAt": "2026-09-13T07:37:53.199Z"
 }

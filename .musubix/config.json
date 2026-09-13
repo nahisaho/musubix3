@@ -319,6 +319,18 @@
       "timeoutMs": 120000
     },
     {
+      "name": "attestation-evidence-stability-tests",
+      "command": "npx",
+      "args": [
+        "vitest",
+        "run",
+        "tests/attestation-evidence-stability.test.ts"
+      ],
+      "adapter": "vitest",
+      "required": true,
+      "timeoutMs": 120000
+    },
+    {
       "name": "upgrade-workflow-tests",
       "command": "npx",
       "args": [

@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-13T05:42:05.896Z",
-  "totalRequirements": 134,
+  "generatedAt": "2026-09-13T08:01:33.820Z",
+  "totalRequirements": 138,
   "modeledRequirements": 9,
-  "modeledFraction": 0.06716417910447761,
+  "modeledFraction": 0.06521739130434782,
   "result": {
     "valid": true,
     "abstraction": "Consistency of explicit branch-scoped conditional, exact unit-normalized integer numeric, bounded temporal interval, deterministic state-transition, and controlled unconditional Boolean constraints; not implementation correctness.",
@@ -90,6 +90,10 @@
       "REQ-APPROVAL-DOMAIN-SCOPING-022",
       "REQ-APPROVAL-DOMAIN-SCOPING-023",
       "REQ-APPROVAL-DOMAIN-SCOPING-024",
+      "REQ-ATTESTATION-EVIDENCE-STABILITY-001",
+      "REQ-ATTESTATION-EVIDENCE-STABILITY-002",
+      "REQ-ATTESTATION-EVIDENCE-STABILITY-003",
+      "REQ-ATTESTATION-EVIDENCE-STABILITY-004",
       "REQ-CHANGE-ACCEPTANCE-HEURISTIC-001",
       "REQ-CHANGE-ACCEPTANCE-HEURISTIC-002",
       "REQ-CHANGE-EVIDENCE-WAIVER-001",
@@ -320,6 +324,26 @@
         "code": "FORMAL_UNSUPPORTED",
         "severity": "warning",
         "message": "REQ-APPROVAL-DOMAIN-SCOPING-024 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-ATTESTATION-EVIDENCE-STABILITY-001 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-ATTESTATION-EVIDENCE-STABILITY-002 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-ATTESTATION-EVIDENCE-STABILITY-003 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-ATTESTATION-EVIDENCE-STABILITY-004 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
       },
       {
         "code": "FORMAL_UNSUPPORTED",
@@ -831,6 +855,7 @@
   "fingerprints": {
     ".musubix/features/adapter-pattern-recognition/requirements.md": "5731561a0a04982b8a5c305bdeeae6084bcf0ee8846f295eaaaabc823d1f9793",
     ".musubix/features/approval-domain-scoping/requirements.md": "c886926622fe022052c81b1ea4e76f21c04f42636f4a37d074f7d34c0505210f",
+    ".musubix/features/attestation-evidence-stability/requirements.md": "afab3f5ea642e0ff89d883ca4e612e460a6291afb0d263d4ffe7f878e4145406",
     ".musubix/features/bounded-file-read-concurrency/requirements.md": "9e08acde7e29a8f14b23d908c465c629e49d00bc29ae9bda1466427362c815be",
     ".musubix/features/change-acceptance-heuristic/requirements.md": "82b9c8d839d6663f97b67bba2c01fc775e3253e444440eb2833f82cdd877bcf6",
     ".musubix/features/change-evidence-waiver/requirements.md": "33579a83e55ac3a9f07cd3b55ab3d96c0eaf3c0fc0646af0159cfb7e178762a2",
