@@ -199,6 +199,18 @@
       "timeoutMs": 120000
     },
     {
+      "name": "workflow-evidence-waiver-tests",
+      "command": "npx",
+      "args": [
+        "vitest",
+        "run",
+        "tests/workflow-evidence-waiver.test.ts"
+      ],
+      "adapter": "vitest",
+      "required": true,
+      "timeoutMs": 120000
+    },
+    {
       "name": "tdd-green-requirement-scoping-tests",
       "command": "npx",
       "args": [

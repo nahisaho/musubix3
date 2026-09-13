@@ -25,10 +25,11 @@
     ".musubix/features/tdd-red-collection-guidance/requirements.md": "a4a49066c5146a4b8fc3ce8603a56c19721cb26573906d95de0bf150ed473fb7",
     ".musubix/features/tdd-superseded-cycle-scoping/requirements.md": "b02f10b42474ac383e278c6fa38291ba965210213d45bc759ff7db67f368e80a",
     ".musubix/features/upgrade-workflow/requirements.md": "0b299f538f54ff56a9156a47ace1ed652c9e73bdc3d531604994edbdb0435dfd",
+    ".musubix/features/workflow-evidence-waiver/requirements.md": "1ac4721a882a88a4b2add783c2825460d26879e271a4d646668c1f355a28b23c",
     ".musubix/features/workflow-multi-session-verification/requirements.md": "2ae290a162d6318ff2567a0fe6f44aa38f40e38b0b9344fd1c1c36bfc3937aa1",
     ".musubix/features/workflow-session-shutdown/requirements.md": "2b8d72e2fcb1dbf5bc24ee733182cf2b692e33c50550ce7a8de2e9c5a8c32c0d"
   },
-  "artifactSha256": "4f651d1870d01f387be8a965e7e52af757fc886a880331b54d15ba8aa270c355",
+  "artifactSha256": "ff01a9a4b746868537356ad4cd3954148f546984efec68c3dd62a1019bb771a9",
   "approver": "nahisaho",
-  "approvedAt": "2026-09-12T22:28:53.611Z"
+  "approvedAt": "2026-09-13T03:34:11.553Z"
 }

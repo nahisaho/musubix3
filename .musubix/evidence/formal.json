@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-13T01:04:14.711Z",
-  "totalRequirements": 117,
+  "generatedAt": "2026-09-13T05:08:34.314Z",
+  "totalRequirements": 134,
   "modeledRequirements": 9,
-  "modeledFraction": 0.07692307692307693,
+  "modeledFraction": 0.06716417910447761,
   "result": {
     "valid": true,
     "abstraction": "Consistency of explicit branch-scoped conditional, exact unit-normalized integer numeric, bounded temporal interval, deterministic state-transition, and controlled unconditional Boolean constraints; not implementation correctness.",
@@ -170,6 +170,23 @@
       "REQ-TDD-GREEN-REQUIREMENT-SCOPING-002",
       "REQ-TDD-RED-COLLECTION-GUIDANCE-001",
       "REQ-UPGRADE-WORKFLOW-001",
+      "REQ-WORKFLOW-EVIDENCE-WAIVER-001",
+      "REQ-WORKFLOW-EVIDENCE-WAIVER-002",
+      "REQ-WORKFLOW-EVIDENCE-WAIVER-003",
+      "REQ-WORKFLOW-EVIDENCE-WAIVER-004",
+      "REQ-WORKFLOW-EVIDENCE-WAIVER-005",
+      "REQ-WORKFLOW-EVIDENCE-WAIVER-006",
+      "REQ-WORKFLOW-EVIDENCE-WAIVER-007",
+      "REQ-WORKFLOW-EVIDENCE-WAIVER-008",
+      "REQ-WORKFLOW-EVIDENCE-WAIVER-009",
+      "REQ-WORKFLOW-EVIDENCE-WAIVER-010",
+      "REQ-WORKFLOW-EVIDENCE-WAIVER-011",
+      "REQ-WORKFLOW-EVIDENCE-WAIVER-012",
+      "REQ-WORKFLOW-EVIDENCE-WAIVER-013",
+      "REQ-WORKFLOW-EVIDENCE-WAIVER-014",
+      "REQ-WORKFLOW-EVIDENCE-WAIVER-015",
+      "REQ-WORKFLOW-EVIDENCE-WAIVER-016",
+      "REQ-WORKFLOW-EVIDENCE-WAIVER-017",
       "REQ-WORKFLOW-MULTI-SESSION-001",
       "REQ-WORKFLOW-SHUTDOWN-001"
     ],
@@ -707,6 +724,91 @@
       {
         "code": "FORMAL_UNSUPPORTED",
         "severity": "warning",
+        "message": "REQ-WORKFLOW-EVIDENCE-WAIVER-001 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-WORKFLOW-EVIDENCE-WAIVER-002 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-WORKFLOW-EVIDENCE-WAIVER-003 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-WORKFLOW-EVIDENCE-WAIVER-004 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-WORKFLOW-EVIDENCE-WAIVER-005 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-WORKFLOW-EVIDENCE-WAIVER-006 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-WORKFLOW-EVIDENCE-WAIVER-007 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-WORKFLOW-EVIDENCE-WAIVER-008 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-WORKFLOW-EVIDENCE-WAIVER-009 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-WORKFLOW-EVIDENCE-WAIVER-010 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-WORKFLOW-EVIDENCE-WAIVER-011 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-WORKFLOW-EVIDENCE-WAIVER-012 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-WORKFLOW-EVIDENCE-WAIVER-013 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-WORKFLOW-EVIDENCE-WAIVER-014 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-WORKFLOW-EVIDENCE-WAIVER-015 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-WORKFLOW-EVIDENCE-WAIVER-016 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-WORKFLOW-EVIDENCE-WAIVER-017 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
         "message": "REQ-WORKFLOW-MULTI-SESSION-001 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
       },
       {
@@ -749,6 +851,7 @@
     ".musubix/features/tdd-red-collection-guidance/requirements.md": "a4a49066c5146a4b8fc3ce8603a56c19721cb26573906d95de0bf150ed473fb7",
     ".musubix/features/tdd-superseded-cycle-scoping/requirements.md": "b02f10b42474ac383e278c6fa38291ba965210213d45bc759ff7db67f368e80a",
     ".musubix/features/upgrade-workflow/requirements.md": "0b299f538f54ff56a9156a47ace1ed652c9e73bdc3d531604994edbdb0435dfd",
+    ".musubix/features/workflow-evidence-waiver/requirements.md": "1ac4721a882a88a4b2add783c2825460d26879e271a4d646668c1f355a28b23c",
     ".musubix/features/workflow-multi-session-verification/requirements.md": "2ae290a162d6318ff2567a0fe6f44aa38f40e38b0b9344fd1c1c36bfc3937aa1",
     ".musubix/features/workflow-session-shutdown/requirements.md": "2b8d72e2fcb1dbf5bc24ee733182cf2b692e33c50550ce7a8de2e9c5a8c32c0d"
   }

@@ -16,7 +16,20 @@ export * from './model-correspondence.js';
 export * from './order.js';
 export * from './change.js';
 export * from './change-waiver.js';
+/** @id CODE-WORKFLOW-EVIDENCE-WAIVER-024
+ * @implements REQ-WORKFLOW-EVIDENCE-WAIVER-013
+ * @design DES-WORKFLOW-EVIDENCE-WAIVER-001
+ */
+export * from './workflow-waiver.js';
 export * from './approval.js';
 export * from './gate.js';
 export * from './approval-record.js';
 export * from './scaffold-artifact.js';
+export {
+  CURRENT_SNAPSHOT_VERSION,
+  currentCodeFor,
+  snapshotPayload,
+  waiverChainValid,
+  waiverLinkage,
+  waiverRecordShapeValid,
+} from './workflow-waiver.js';

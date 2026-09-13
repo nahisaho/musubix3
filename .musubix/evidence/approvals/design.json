@@ -27,6 +27,7 @@
     ".musubix/decisions/ADR-0023.md": "4ae677025df785fab3cc05052c84cbea1702108e40c615dff0276c9a2a5cddd8",
     ".musubix/decisions/ADR-0024.md": "9f53abce6d5b20e611b3660bec229292cba236b7285f56f09c97063f79f40135",
     ".musubix/decisions/ADR-0025.md": "21b4dacafba6b1c790981fdcde5f74e2d6c821e2058eb64757617d90f3897158",
+    ".musubix/decisions/ADR-0026.md": "193efbb4d778f4aa9246b5e9e3e6ab1e8e86a9ddac40a189e33f2533013d8531",
     ".musubix/features/adapter-pattern-recognition/design.md": "a8e0c4a11f626cb4a41c9b5b53359c072ec0c3161f704791f42ba8af38124a70",
     ".musubix/features/adapter-pattern-recognition/requirements.md": "5731561a0a04982b8a5c305bdeeae6084bcf0ee8846f295eaaaabc823d1f9793",
     ".musubix/features/approval-domain-scoping/design.md": "e8731f1e3094aa22192ae2ae5986fb4dc9a7698f7cfe66961e1342f6e0743bd9",
@@ -71,12 +72,14 @@
     ".musubix/features/tdd-superseded-cycle-scoping/requirements.md": "b02f10b42474ac383e278c6fa38291ba965210213d45bc759ff7db67f368e80a",
     ".musubix/features/upgrade-workflow/design.md": "f9cd55dc17bb2fae8886288f4fa21f8346f2c1818d0d6e0e8247a30b721aa530",
     ".musubix/features/upgrade-workflow/requirements.md": "0b299f538f54ff56a9156a47ace1ed652c9e73bdc3d531604994edbdb0435dfd",
+    ".musubix/features/workflow-evidence-waiver/design.md": "5e565b5b645588e8d834dfaeab136fd39f4e305658a8f08b99681f0152944206",
+    ".musubix/features/workflow-evidence-waiver/requirements.md": "1ac4721a882a88a4b2add783c2825460d26879e271a4d646668c1f355a28b23c",
     ".musubix/features/workflow-multi-session-verification/design.md": "16a916ca279ddfddb7b18a59bef7c9bee5c4608d751187208da3a6c3b46e0d55",
     ".musubix/features/workflow-multi-session-verification/requirements.md": "2ae290a162d6318ff2567a0fe6f44aa38f40e38b0b9344fd1c1c36bfc3937aa1",
     ".musubix/features/workflow-session-shutdown/design.md": "225d1718c0ea1628dae251f06b1c5ddafda9a7ae92a15e3d961efbea51c0e0ac",
     ".musubix/features/workflow-session-shutdown/requirements.md": "2b8d72e2fcb1dbf5bc24ee733182cf2b692e33c50550ce7a8de2e9c5a8c32c0d"
   },
-  "artifactSha256": "2c947dea64a8f9fea9d3b37ac538cfee906fffde1f154a53cd12e8c559a2264d",
+  "artifactSha256": "ea2c0b960e0f12e612cdc355baa8caeb2a0c126e4356fe141951f532e11e46f6",
   "approver": "nahisaho",
-  "approvedAt": "2026-09-12T23:01:21.164Z"
+  "approvedAt": "2026-09-13T04:09:00.536Z"
 }

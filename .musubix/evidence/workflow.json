@@ -192,6 +192,14 @@
       "phase": "complete",
       "status": "completed",
       "recordedAt": "2026-09-12T14:48:12.220Z"
+    },
+    {
+      "skill": "sdd-implementation",
+      "version": "0.1.8",
+      "provenance": "self-reported",
+      "phase": "complete",
+      "status": "completed",
+      "recordedAt": "2026-09-13T05:13:10.791Z"
     }
   ]
 }

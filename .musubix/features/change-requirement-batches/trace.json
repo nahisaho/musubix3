@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-13T01:04:11.086Z",
+  "generatedAt": "2026-09-13T05:08:30.496Z",
   "nodes": [
     {
       "id": "CODE-SESSION-SCOPED-DEVELOPMENT-001",
@@ -156,6 +156,12 @@
       "id": "ADR-0025",
       "kind": "adr",
       "path": ".musubix/decisions/ADR-0025.md",
+      "line": 1
+    },
+    {
+      "id": "ADR-0026",
+      "kind": "adr",
+      "path": ".musubix/decisions/ADR-0026.md",
       "line": 1
     },
     {
@@ -1300,6 +1306,167 @@
       "mandatory": false
     },
     {
+      "id": "DES-WORKFLOW-EVIDENCE-WAIVER-001",
+      "kind": "design",
+      "path": ".musubix/features/workflow-evidence-waiver/design.md",
+      "line": 20
+    },
+    {
+      "id": "DES-WORKFLOW-EVIDENCE-WAIVER-002",
+      "kind": "design",
+      "path": ".musubix/features/workflow-evidence-waiver/design.md",
+      "line": 94
+    },
+    {
+      "id": "DES-WORKFLOW-EVIDENCE-WAIVER-003",
+      "kind": "design",
+      "path": ".musubix/features/workflow-evidence-waiver/design.md",
+      "line": 165
+    },
+    {
+      "id": "DES-WORKFLOW-EVIDENCE-WAIVER-004",
+      "kind": "design",
+      "path": ".musubix/features/workflow-evidence-waiver/design.md",
+      "line": 261
+    },
+    {
+      "id": "DES-WORKFLOW-EVIDENCE-WAIVER-005",
+      "kind": "design",
+      "path": ".musubix/features/workflow-evidence-waiver/design.md",
+      "line": 313
+    },
+    {
+      "id": "DES-WORKFLOW-EVIDENCE-WAIVER-006",
+      "kind": "design",
+      "path": ".musubix/features/workflow-evidence-waiver/design.md",
+      "line": 445
+    },
+    {
+      "id": "DES-WORKFLOW-EVIDENCE-WAIVER-007",
+      "kind": "design",
+      "path": ".musubix/features/workflow-evidence-waiver/design.md",
+      "line": 569
+    },
+    {
+      "id": "REQ-WORKFLOW-EVIDENCE-WAIVER-001",
+      "kind": "requirement",
+      "path": ".musubix/features/workflow-evidence-waiver/requirements.md",
+      "line": 98,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-WORKFLOW-EVIDENCE-WAIVER-002",
+      "kind": "requirement",
+      "path": ".musubix/features/workflow-evidence-waiver/requirements.md",
+      "line": 120,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-WORKFLOW-EVIDENCE-WAIVER-003",
+      "kind": "requirement",
+      "path": ".musubix/features/workflow-evidence-waiver/requirements.md",
+      "line": 146,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-WORKFLOW-EVIDENCE-WAIVER-004",
+      "kind": "requirement",
+      "path": ".musubix/features/workflow-evidence-waiver/requirements.md",
+      "line": 157,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-WORKFLOW-EVIDENCE-WAIVER-005",
+      "kind": "requirement",
+      "path": ".musubix/features/workflow-evidence-waiver/requirements.md",
+      "line": 180,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-WORKFLOW-EVIDENCE-WAIVER-006",
+      "kind": "requirement",
+      "path": ".musubix/features/workflow-evidence-waiver/requirements.md",
+      "line": 200,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-WORKFLOW-EVIDENCE-WAIVER-007",
+      "kind": "requirement",
+      "path": ".musubix/features/workflow-evidence-waiver/requirements.md",
+      "line": 219,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-WORKFLOW-EVIDENCE-WAIVER-008",
+      "kind": "requirement",
+      "path": ".musubix/features/workflow-evidence-waiver/requirements.md",
+      "line": 249,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-WORKFLOW-EVIDENCE-WAIVER-009",
+      "kind": "requirement",
+      "path": ".musubix/features/workflow-evidence-waiver/requirements.md",
+      "line": 284,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-WORKFLOW-EVIDENCE-WAIVER-010",
+      "kind": "requirement",
+      "path": ".musubix/features/workflow-evidence-waiver/requirements.md",
+      "line": 301,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-WORKFLOW-EVIDENCE-WAIVER-011",
+      "kind": "requirement",
+      "path": ".musubix/features/workflow-evidence-waiver/requirements.md",
+      "line": 314,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-WORKFLOW-EVIDENCE-WAIVER-012",
+      "kind": "requirement",
+      "path": ".musubix/features/workflow-evidence-waiver/requirements.md",
+      "line": 336,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-WORKFLOW-EVIDENCE-WAIVER-013",
+      "kind": "requirement",
+      "path": ".musubix/features/workflow-evidence-waiver/requirements.md",
+      "line": 406,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-WORKFLOW-EVIDENCE-WAIVER-014",
+      "kind": "requirement",
+      "path": ".musubix/features/workflow-evidence-waiver/requirements.md",
+      "line": 435,
+      "mandatory": false
+    },
+    {
+      "id": "REQ-WORKFLOW-EVIDENCE-WAIVER-015",
+      "kind": "requirement",
+      "path": ".musubix/features/workflow-evidence-waiver/requirements.md",
+      "line": 466,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-WORKFLOW-EVIDENCE-WAIVER-016",
+      "kind": "requirement",
+      "path": ".musubix/features/workflow-evidence-waiver/requirements.md",
+      "line": 485,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-WORKFLOW-EVIDENCE-WAIVER-017",
+      "kind": "requirement",
+      "path": ".musubix/features/workflow-evidence-waiver/requirements.md",
+      "line": 515,
+      "mandatory": true
+    },
+    {
       "id": "DES-WORKFLOW-MULTI-SESSION-001",
       "kind": "design",
       "path": ".musubix/features/workflow-multi-session-verification/design.md",
@@ -1641,13 +1808,31 @@
       "id": "CODE-CLI-WORKFLOW-UX-005",
       "kind": "code",
       "path": "packages/analysis/src/gate.ts",
-      "line": 89
+      "line": 91
+    },
+    {
+      "id": "CODE-WORKFLOW-EVIDENCE-WAIVER-021",
+      "kind": "code",
+      "path": "packages/analysis/src/gate.ts",
+      "line": 214
+    },
+    {
+      "id": "CODE-WORKFLOW-EVIDENCE-WAIVER-022",
+      "kind": "code",
+      "path": "packages/analysis/src/gate.ts",
+      "line": 688
     },
     {
       "id": "CODE-BOUNDED-FILE-READ-CONCURRENCY-002",
       "kind": "code",
       "path": "packages/analysis/src/graph.ts",
       "line": 42
+    },
+    {
+      "id": "CODE-WORKFLOW-EVIDENCE-WAIVER-024",
+      "kind": "code",
+      "path": "packages/analysis/src/index.ts",
+      "line": 19
     },
     {
       "id": "CODE-BOUNDED-FILE-READ-CONCURRENCY-003",
@@ -1746,16 +1931,130 @@
       "line": 29
     },
     {
+      "id": "CODE-WORKFLOW-EVIDENCE-WAIVER-001",
+      "kind": "code",
+      "path": "packages/analysis/src/workflow-waiver.ts",
+      "line": 14
+    },
+    {
+      "id": "CODE-WORKFLOW-EVIDENCE-WAIVER-002",
+      "kind": "code",
+      "path": "packages/analysis/src/workflow-waiver.ts",
+      "line": 27
+    },
+    {
+      "id": "CODE-WORKFLOW-EVIDENCE-WAIVER-003",
+      "kind": "code",
+      "path": "packages/analysis/src/workflow-waiver.ts",
+      "line": 54
+    },
+    {
+      "id": "CODE-WORKFLOW-EVIDENCE-WAIVER-004",
+      "kind": "code",
+      "path": "packages/analysis/src/workflow-waiver.ts",
+      "line": 141
+    },
+    {
+      "id": "CODE-WORKFLOW-EVIDENCE-WAIVER-005",
+      "kind": "code",
+      "path": "packages/analysis/src/workflow-waiver.ts",
+      "line": 159
+    },
+    {
+      "id": "CODE-WORKFLOW-EVIDENCE-WAIVER-006",
+      "kind": "code",
+      "path": "packages/analysis/src/workflow-waiver.ts",
+      "line": 185
+    },
+    {
+      "id": "CODE-WORKFLOW-EVIDENCE-WAIVER-007",
+      "kind": "code",
+      "path": "packages/analysis/src/workflow-waiver.ts",
+      "line": 200
+    },
+    {
+      "id": "CODE-WORKFLOW-EVIDENCE-WAIVER-008",
+      "kind": "code",
+      "path": "packages/analysis/src/workflow-waiver.ts",
+      "line": 217
+    },
+    {
+      "id": "CODE-WORKFLOW-EVIDENCE-WAIVER-009",
+      "kind": "code",
+      "path": "packages/analysis/src/workflow-waiver.ts",
+      "line": 225
+    },
+    {
+      "id": "CODE-WORKFLOW-EVIDENCE-WAIVER-010",
+      "kind": "code",
+      "path": "packages/analysis/src/workflow-waiver.ts",
+      "line": 250
+    },
+    {
+      "id": "CODE-WORKFLOW-EVIDENCE-WAIVER-011",
+      "kind": "code",
+      "path": "packages/analysis/src/workflow-waiver.ts",
+      "line": 293
+    },
+    {
+      "id": "CODE-WORKFLOW-EVIDENCE-WAIVER-012",
+      "kind": "code",
+      "path": "packages/analysis/src/workflow-waiver.ts",
+      "line": 320
+    },
+    {
+      "id": "CODE-WORKFLOW-EVIDENCE-WAIVER-013",
+      "kind": "code",
+      "path": "packages/analysis/src/workflow-waiver.ts",
+      "line": 356
+    },
+    {
+      "id": "CODE-WORKFLOW-EVIDENCE-WAIVER-014",
+      "kind": "code",
+      "path": "packages/analysis/src/workflow-waiver.ts",
+      "line": 389
+    },
+    {
       "id": "CODE-WORKFLOW-MULTI-SESSION-001",
       "kind": "code",
       "path": "packages/analysis/src/workflow.ts",
-      "line": 155
+      "line": 77
     },
     {
       "id": "CODE-WORKFLOW-SHUTDOWN-001",
       "kind": "code",
       "path": "packages/analysis/src/workflow.ts",
-      "line": 416
+      "line": 338
+    },
+    {
+      "id": "CODE-WORKFLOW-EVIDENCE-WAIVER-018",
+      "kind": "code",
+      "path": "packages/analysis/src/workflow.ts",
+      "line": 615
+    },
+    {
+      "id": "CODE-WORKFLOW-EVIDENCE-WAIVER-019",
+      "kind": "code",
+      "path": "packages/analysis/src/workflow.ts",
+      "line": 749
+    },
+    {
+      "id": "CODE-WORKFLOW-EVIDENCE-WAIVER-015",
+      "kind": "code",
+      "path": "packages/analysis/src/workflow.ts",
+      "line": 768
+    },
+    {
+      "id": "CODE-WORKFLOW-EVIDENCE-WAIVER-016",
+      "kind": "code",
+      "path": "packages/analysis/src/workflow.ts",
+      "line": 777
+    },
+    {
+      "id": "CODE-WORKFLOW-EVIDENCE-WAIVER-017",
+      "kind": "code",
+      "path": "packages/analysis/src/workflow.ts",
+      "line": 786
     },
     {
       "id": "CODE-UPGRADE-WORKFLOW-001",
@@ -1770,10 +2069,16 @@
       "line": 145
     },
     {
+      "id": "CODE-WORKFLOW-EVIDENCE-WAIVER-023",
+      "kind": "code",
+      "path": "packages/cli/src/main.ts",
+      "line": 382
+    },
+    {
       "id": "CODE-CHANGE-RECORD-FAIL-FAST-002",
       "kind": "code",
       "path": "packages/cli/src/main.ts",
-      "line": 466
+      "line": 502
     },
     {
       "id": "CODE-DESIGN-ADR-NONE-EXEMPTION-001",
@@ -1786,6 +2091,12 @@
       "kind": "code",
       "path": "packages/domain/src/requirements.ts",
       "line": 156
+    },
+    {
+      "id": "CODE-WORKFLOW-EVIDENCE-WAIVER-020",
+      "kind": "code",
+      "path": "packages/domain/src/types.ts",
+      "line": 4
     },
     {
       "id": "TEST-ADAPTER-PATTERN-RECOGNITION-001",
@@ -2494,6 +2805,72 @@
       "kind": "test",
       "path": "tests/upgrade-workflow.test.ts",
       "line": 46
+    },
+    {
+      "id": "TEST-WORKFLOW-EVIDENCE-WAIVER-001",
+      "kind": "test",
+      "path": "tests/workflow-evidence-waiver.test.ts",
+      "line": 113
+    },
+    {
+      "id": "TEST-WORKFLOW-EVIDENCE-WAIVER-002",
+      "kind": "test",
+      "path": "tests/workflow-evidence-waiver.test.ts",
+      "line": 140
+    },
+    {
+      "id": "TEST-WORKFLOW-EVIDENCE-WAIVER-003",
+      "kind": "test",
+      "path": "tests/workflow-evidence-waiver.test.ts",
+      "line": 197
+    },
+    {
+      "id": "TEST-WORKFLOW-EVIDENCE-WAIVER-004",
+      "kind": "test",
+      "path": "tests/workflow-evidence-waiver.test.ts",
+      "line": 221
+    },
+    {
+      "id": "TEST-WORKFLOW-EVIDENCE-WAIVER-005",
+      "kind": "test",
+      "path": "tests/workflow-evidence-waiver.test.ts",
+      "line": 299
+    },
+    {
+      "id": "TEST-WORKFLOW-EVIDENCE-WAIVER-006",
+      "kind": "test",
+      "path": "tests/workflow-evidence-waiver.test.ts",
+      "line": 343
+    },
+    {
+      "id": "TEST-WORKFLOW-EVIDENCE-WAIVER-007",
+      "kind": "test",
+      "path": "tests/workflow-evidence-waiver.test.ts",
+      "line": 378
+    },
+    {
+      "id": "TEST-WORKFLOW-EVIDENCE-WAIVER-008",
+      "kind": "test",
+      "path": "tests/workflow-evidence-waiver.test.ts",
+      "line": 402
+    },
+    {
+      "id": "TEST-WORKFLOW-EVIDENCE-WAIVER-009",
+      "kind": "test",
+      "path": "tests/workflow-evidence-waiver.test.ts",
+      "line": 437
+    },
+    {
+      "id": "TEST-WORKFLOW-EVIDENCE-WAIVER-010",
+      "kind": "test",
+      "path": "tests/workflow-evidence-waiver.test.ts",
+      "line": 455
+    },
+    {
+      "id": "TEST-WORKFLOW-EVIDENCE-WAIVER-011",
+      "kind": "test",
+      "path": "tests/workflow-evidence-waiver.test.ts",
+      "line": 506
     },
     {
       "id": "TEST-WORKFLOW-MULTI-SESSION-001",
@@ -3569,6 +3946,256 @@
       "relation": "depends-on"
     },
     {
+      "from": "DES-WORKFLOW-EVIDENCE-WAIVER-001",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-WORKFLOW-EVIDENCE-WAIVER-001",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-005",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-WORKFLOW-EVIDENCE-WAIVER-001",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-013",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-WORKFLOW-EVIDENCE-WAIVER-001",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-016",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0026",
+      "to": "DES-WORKFLOW-EVIDENCE-WAIVER-001",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-WORKFLOW-EVIDENCE-WAIVER-002",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-006",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-WORKFLOW-EVIDENCE-WAIVER-002",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-008",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-WORKFLOW-EVIDENCE-WAIVER-002",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-013",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-WORKFLOW-EVIDENCE-WAIVER-002",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-017",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0026",
+      "to": "DES-WORKFLOW-EVIDENCE-WAIVER-002",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-WORKFLOW-EVIDENCE-WAIVER-003",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-005",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-WORKFLOW-EVIDENCE-WAIVER-003",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-007",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-WORKFLOW-EVIDENCE-WAIVER-003",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-013",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0026",
+      "to": "DES-WORKFLOW-EVIDENCE-WAIVER-003",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-WORKFLOW-EVIDENCE-WAIVER-003",
+      "to": "DES-WORKFLOW-EVIDENCE-WAIVER-002",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-WORKFLOW-EVIDENCE-WAIVER-004",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-012",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0026",
+      "to": "DES-WORKFLOW-EVIDENCE-WAIVER-004",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-WORKFLOW-EVIDENCE-WAIVER-004",
+      "to": "DES-WORKFLOW-EVIDENCE-WAIVER-003",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-WORKFLOW-EVIDENCE-WAIVER-005",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-WORKFLOW-EVIDENCE-WAIVER-005",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-009",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-WORKFLOW-EVIDENCE-WAIVER-005",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-010",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-WORKFLOW-EVIDENCE-WAIVER-005",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-016",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0026",
+      "to": "DES-WORKFLOW-EVIDENCE-WAIVER-005",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-WORKFLOW-EVIDENCE-WAIVER-005",
+      "to": "DES-WORKFLOW-EVIDENCE-WAIVER-002",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-WORKFLOW-EVIDENCE-WAIVER-005",
+      "to": "DES-WORKFLOW-EVIDENCE-WAIVER-003",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-WORKFLOW-EVIDENCE-WAIVER-005",
+      "to": "DES-WORKFLOW-EVIDENCE-WAIVER-004",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-WORKFLOW-EVIDENCE-WAIVER-006",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-WORKFLOW-EVIDENCE-WAIVER-006",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-002",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-WORKFLOW-EVIDENCE-WAIVER-006",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-003",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-WORKFLOW-EVIDENCE-WAIVER-006",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-004",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-WORKFLOW-EVIDENCE-WAIVER-006",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-005",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-WORKFLOW-EVIDENCE-WAIVER-006",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-006",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-WORKFLOW-EVIDENCE-WAIVER-006",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-011",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-WORKFLOW-EVIDENCE-WAIVER-006",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-013",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-WORKFLOW-EVIDENCE-WAIVER-006",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-017",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0026",
+      "to": "DES-WORKFLOW-EVIDENCE-WAIVER-006",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-WORKFLOW-EVIDENCE-WAIVER-006",
+      "to": "DES-WORKFLOW-EVIDENCE-WAIVER-001",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-WORKFLOW-EVIDENCE-WAIVER-006",
+      "to": "DES-WORKFLOW-EVIDENCE-WAIVER-002",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-WORKFLOW-EVIDENCE-WAIVER-006",
+      "to": "DES-WORKFLOW-EVIDENCE-WAIVER-003",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-WORKFLOW-EVIDENCE-WAIVER-006",
+      "to": "DES-WORKFLOW-EVIDENCE-WAIVER-004",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-WORKFLOW-EVIDENCE-WAIVER-006",
+      "to": "DES-WORKFLOW-EVIDENCE-WAIVER-005",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-WORKFLOW-EVIDENCE-WAIVER-007",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-008",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-WORKFLOW-EVIDENCE-WAIVER-007",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-012",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-WORKFLOW-EVIDENCE-WAIVER-007",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-014",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-WORKFLOW-EVIDENCE-WAIVER-007",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-015",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0026",
+      "to": "DES-WORKFLOW-EVIDENCE-WAIVER-007",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-WORKFLOW-EVIDENCE-WAIVER-007",
+      "to": "DES-WORKFLOW-EVIDENCE-WAIVER-002",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-WORKFLOW-EVIDENCE-WAIVER-007",
+      "to": "DES-WORKFLOW-EVIDENCE-WAIVER-003",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-WORKFLOW-EVIDENCE-WAIVER-007",
+      "to": "DES-WORKFLOW-EVIDENCE-WAIVER-004",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-WORKFLOW-EVIDENCE-WAIVER-007",
+      "to": "DES-WORKFLOW-EVIDENCE-WAIVER-005",
+      "relation": "depends-on"
+    },
+    {
       "from": "DES-WORKFLOW-MULTI-SESSION-001",
       "to": "REQ-WORKFLOW-MULTI-SESSION-001",
       "relation": "satisfies"
@@ -4504,6 +5131,41 @@
       "relation": "implements"
     },
     {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-021",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-008",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-021",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-014",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-021",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-015",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-021",
+      "to": "DES-WORKFLOW-EVIDENCE-WAIVER-007",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-022",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-008",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-022",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-014",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-022",
+      "to": "DES-WORKFLOW-EVIDENCE-WAIVER-007",
+      "relation": "implements"
+    },
+    {
       "from": "CODE-BOUNDED-FILE-READ-CONCURRENCY-002",
       "to": "REQ-BOUNDED-FILE-READ-CONCURRENCY-002",
       "relation": "implements"
@@ -4511,6 +5173,16 @@
     {
       "from": "CODE-BOUNDED-FILE-READ-CONCURRENCY-002",
       "to": "DES-BOUNDED-FILE-READ-CONCURRENCY-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-024",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-013",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-024",
+      "to": "DES-WORKFLOW-EVIDENCE-WAIVER-001",
       "relation": "implements"
     },
     {
@@ -4744,6 +5416,261 @@
       "relation": "implements"
     },
     {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-001",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-001",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-005",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-001",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-013",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-001",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-016",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-001",
+      "to": "DES-WORKFLOW-EVIDENCE-WAIVER-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-002",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-013",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-002",
+      "to": "DES-WORKFLOW-EVIDENCE-WAIVER-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-003",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-006",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-003",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-008",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-003",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-013",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-003",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-017",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-003",
+      "to": "DES-WORKFLOW-EVIDENCE-WAIVER-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-004",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-006",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-004",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-008",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-004",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-013",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-004",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-017",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-004",
+      "to": "DES-WORKFLOW-EVIDENCE-WAIVER-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-005",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-013",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-005",
+      "to": "DES-WORKFLOW-EVIDENCE-WAIVER-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-006",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-013",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-006",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-017",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-006",
+      "to": "DES-WORKFLOW-EVIDENCE-WAIVER-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-007",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-005",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-007",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-007",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-007",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-013",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-007",
+      "to": "DES-WORKFLOW-EVIDENCE-WAIVER-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-008",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-005",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-008",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-007",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-008",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-013",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-008",
+      "to": "DES-WORKFLOW-EVIDENCE-WAIVER-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-009",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-007",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-009",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-013",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-009",
+      "to": "DES-WORKFLOW-EVIDENCE-WAIVER-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-010",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-005",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-010",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-007",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-010",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-013",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-010",
+      "to": "DES-WORKFLOW-EVIDENCE-WAIVER-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-011",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-012",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-011",
+      "to": "DES-WORKFLOW-EVIDENCE-WAIVER-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-012",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-012",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-012",
+      "to": "DES-WORKFLOW-EVIDENCE-WAIVER-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-013",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-013",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-009",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-013",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-010",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-013",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-016",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-013",
+      "to": "DES-WORKFLOW-EVIDENCE-WAIVER-005",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-014",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-008",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-014",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-012",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-014",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-014",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-014",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-015",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-014",
+      "to": "DES-WORKFLOW-EVIDENCE-WAIVER-007",
+      "relation": "implements"
+    },
+    {
       "from": "CODE-WORKFLOW-MULTI-SESSION-001",
       "to": "REQ-WORKFLOW-MULTI-SESSION-001",
       "relation": "implements"
@@ -4756,6 +5683,126 @@
     {
       "from": "CODE-WORKFLOW-SHUTDOWN-001",
       "to": "REQ-WORKFLOW-SHUTDOWN-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-018",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-018",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-009",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-018",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-010",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-018",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-016",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-018",
+      "to": "DES-WORKFLOW-EVIDENCE-WAIVER-005",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-019",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-009",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-019",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-010",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-019",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-016",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-019",
+      "to": "DES-WORKFLOW-EVIDENCE-WAIVER-005",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-015",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-014",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-015",
+      "to": "DES-WORKFLOW-EVIDENCE-WAIVER-007",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-016",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-008",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-016",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-012",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-016",
+      "to": "DES-WORKFLOW-EVIDENCE-WAIVER-007",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-017",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-017",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-017",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-017",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-017",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-005",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-017",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-006",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-017",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-011",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-017",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-013",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-017",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-017",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-017",
+      "to": "DES-WORKFLOW-EVIDENCE-WAIVER-006",
       "relation": "implements"
     },
     {
@@ -4781,6 +5828,31 @@
     {
       "from": "CODE-CLI-WORKFLOW-UX-002",
       "to": "DES-CLI-WORKFLOW-UX-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-023",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-023",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-023",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-023",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-005",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-023",
+      "to": "DES-WORKFLOW-EVIDENCE-WAIVER-006",
       "relation": "implements"
     },
     {
@@ -4846,6 +5918,26 @@
     {
       "from": "CODE-EARS-ID-DIAGNOSTIC-MESSAGES-001",
       "to": "DES-EARS-ID-DIAGNOSTIC-MESSAGES-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-020",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-005",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-020",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-009",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-020",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-016",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-WORKFLOW-EVIDENCE-WAIVER-020",
+      "to": "DES-WORKFLOW-EVIDENCE-WAIVER-001",
       "relation": "implements"
     },
     {
@@ -5489,6 +6581,166 @@
       "relation": "verifies"
     },
     {
+      "from": "TEST-WORKFLOW-EVIDENCE-WAIVER-001",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-013",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-WORKFLOW-EVIDENCE-WAIVER-001",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-016",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-WORKFLOW-EVIDENCE-WAIVER-002",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-WORKFLOW-EVIDENCE-WAIVER-002",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-003",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-WORKFLOW-EVIDENCE-WAIVER-002",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-005",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-WORKFLOW-EVIDENCE-WAIVER-003",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-002",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-WORKFLOW-EVIDENCE-WAIVER-003",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-004",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-WORKFLOW-EVIDENCE-WAIVER-004",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-005",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-WORKFLOW-EVIDENCE-WAIVER-004",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-006",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-WORKFLOW-EVIDENCE-WAIVER-004",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-009",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-WORKFLOW-EVIDENCE-WAIVER-004",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-014",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-WORKFLOW-EVIDENCE-WAIVER-005",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-007",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-WORKFLOW-EVIDENCE-WAIVER-005",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-013",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-WORKFLOW-EVIDENCE-WAIVER-006",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-008",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-WORKFLOW-EVIDENCE-WAIVER-006",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-017",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-WORKFLOW-EVIDENCE-WAIVER-007",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-009",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-WORKFLOW-EVIDENCE-WAIVER-007",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-010",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-WORKFLOW-EVIDENCE-WAIVER-007",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-015",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-WORKFLOW-EVIDENCE-WAIVER-008",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-011",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-WORKFLOW-EVIDENCE-WAIVER-008",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-012",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-WORKFLOW-EVIDENCE-WAIVER-008",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-014",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-WORKFLOW-EVIDENCE-WAIVER-008",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-017",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-WORKFLOW-EVIDENCE-WAIVER-009",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-WORKFLOW-EVIDENCE-WAIVER-009",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-010",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-WORKFLOW-EVIDENCE-WAIVER-009",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-016",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-WORKFLOW-EVIDENCE-WAIVER-010",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-002",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-WORKFLOW-EVIDENCE-WAIVER-010",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-012",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-WORKFLOW-EVIDENCE-WAIVER-010",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-016",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-WORKFLOW-EVIDENCE-WAIVER-011",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-006",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-WORKFLOW-EVIDENCE-WAIVER-011",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-008",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-WORKFLOW-EVIDENCE-WAIVER-011",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-014",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-WORKFLOW-EVIDENCE-WAIVER-011",
+      "to": "REQ-WORKFLOW-EVIDENCE-WAIVER-015",
+      "relation": "verifies"
+    },
+    {
       "from": "TEST-WORKFLOW-MULTI-SESSION-001",
       "to": "REQ-WORKFLOW-MULTI-SESSION-001",
       "relation": "verifies"
@@ -5529,6 +6781,7 @@
     ".musubix/decisions/ADR-0023.md": "4ae677025df785fab3cc05052c84cbea1702108e40c615dff0276c9a2a5cddd8",
     ".musubix/decisions/ADR-0024.md": "9f53abce6d5b20e611b3660bec229292cba236b7285f56f09c97063f79f40135",
     ".musubix/decisions/ADR-0025.md": "21b4dacafba6b1c790981fdcde5f74e2d6c821e2058eb64757617d90f3897158",
+    ".musubix/decisions/ADR-0026.md": "193efbb4d778f4aa9246b5e9e3e6ab1e8e86a9ddac40a189e33f2533013d8531",
     ".musubix/features/adapter-pattern-recognition/design.md": "a8e0c4a11f626cb4a41c9b5b53359c072ec0c3161f704791f42ba8af38124a70",
     ".musubix/features/adapter-pattern-recognition/requirements.md": "5731561a0a04982b8a5c305bdeeae6084bcf0ee8846f295eaaaabc823d1f9793",
     ".musubix/features/approval-domain-scoping/design.md": "e8731f1e3094aa22192ae2ae5986fb4dc9a7698f7cfe66961e1342f6e0743bd9",
@@ -5573,6 +6826,8 @@
     ".musubix/features/tdd-superseded-cycle-scoping/requirements.md": "b02f10b42474ac383e278c6fa38291ba965210213d45bc759ff7db67f368e80a",
     ".musubix/features/upgrade-workflow/design.md": "f9cd55dc17bb2fae8886288f4fa21f8346f2c1818d0d6e0e8247a30b721aa530",
     ".musubix/features/upgrade-workflow/requirements.md": "0b299f538f54ff56a9156a47ace1ed652c9e73bdc3d531604994edbdb0435dfd",
+    ".musubix/features/workflow-evidence-waiver/design.md": "5e565b5b645588e8d834dfaeab136fd39f4e305658a8f08b99681f0152944206",
+    ".musubix/features/workflow-evidence-waiver/requirements.md": "1ac4721a882a88a4b2add783c2825460d26879e271a4d646668c1f355a28b23c",
     ".musubix/features/workflow-multi-session-verification/design.md": "16a916ca279ddfddb7b18a59bef7c9bee5c4608d751187208da3a6c3b46e0d55",
     ".musubix/features/workflow-multi-session-verification/requirements.md": "2ae290a162d6318ff2567a0fe6f44aa38f40e38b0b9344fd1c1c36bfc3937aa1",
     ".musubix/features/workflow-session-shutdown/design.md": "225d1718c0ea1628dae251f06b1c5ddafda9a7ae92a15e3d961efbea51c0e0ac",
@@ -5588,9 +6843,9 @@
     "packages/analysis/src/config.ts": "52d5212f4057df9ed5caac0a0025ce744864909abceea3c64d259479ddffb998",
     "packages/analysis/src/files.ts": "6186177faea34f7b2f6dd865b4f911d3b8fbfe6786e2cd19bc7dffee2a058ba2",
     "packages/analysis/src/formal.ts": "9f5622983fed80c1e7c141cc7c7dcd217447e5c2edd39e64877db052a57b730b",
-    "packages/analysis/src/gate.ts": "235fc9fae6234e9a18b6c2dbdebffb0e6fee2d379a8e7479b55e0fd64cd03cd5",
+    "packages/analysis/src/gate.ts": "d5045b5d9de832fb7714d200f8274c8a2eedbda9f8841f9eac24cf4f3fbbc72d",
     "packages/analysis/src/graph.ts": "8978a47c311ddef684de5e4c5ab032eed9bc87ad94a739351de6e2d6b2ae2aba",
-    "packages/analysis/src/index.ts": "bfe1272e78a56fb23252d861819a85dd6d5a9c92f6636eb9735cdc643ced08c8",
+    "packages/analysis/src/index.ts": "01cf9d6d2e56c4fca3ee0b7268acdefbf15838991b6781112154f103d01d3fbf",
     "packages/analysis/src/knowledge.ts": "48b68e9785f411327e10e1bd1f086fdaf4393d2951dcbd4e6fdec84e8008d7da",
     "packages/analysis/src/model-correspondence.ts": "fb19dbbdf461b8e2a2429b6107f60e7ea523e4033e4677ed7dd09ea03740659c",
     "packages/analysis/src/mutation.ts": "bb0582b042c973226c74b719d12e8dea05f954a68ce4dbc3c2076c31183d5a88",
@@ -5601,15 +6856,17 @@
     "packages/analysis/src/tdd.ts": "20234a6b35d47bbbc7474d6d7843ed0d614a392dbf71fc1e83c49f8c60963a0d",
     "packages/analysis/src/test-report.ts": "41c76811bfcb5e286bf097bf2f6aaf6cd5a414202efe8108f28219ecca063a01",
     "packages/analysis/src/trace.ts": "efede75c79c7dc4828a0259c46ca870a7e15042c35edd94a107349a83eb56ec9",
-    "packages/analysis/src/workflow.ts": "95c93b380d2bda976f341c138edcbdd4d7fc0516ef3aca18a3329436a1c7b494",
+    "packages/analysis/src/workflow-types.ts": "427c3450352eb7799e2b49933e267f9888e87d51dc5c6482b5b1378620205309",
+    "packages/analysis/src/workflow-waiver.ts": "7c09999654d03fbc96879f3e6726d505706cdcba36940c00d46ac208d94f972f",
+    "packages/analysis/src/workflow.ts": "54d1dc9114b42b325a32a88f1bf503ff9ba57157651ec7b2b89135a0177c7357",
     "packages/cli/src/install.ts": "3b7d03d1864493ea9caee34855e4fd82ec970d321a205ee3378c8f13a4a34e17",
-    "packages/cli/src/main.ts": "317303c55b9fe7397e600a58e0c4441d9f25790eeb0fb803c8264660af32c78b",
+    "packages/cli/src/main.ts": "b7ee4e4eb75ec80626c05f83a5f9dc4bc28de6bbf01d9542f89d46cce10a21d5",
     "packages/domain/src/constitution.ts": "514278499642ff46ed902864b9192f566b116b4f92eb3fafa6b62588335e170a",
     "packages/domain/src/design.ts": "fc1ca4d3249abc9705ba4b6f296e0f4fa3b3d6ff6d5d82e51c99f49fc7a93ac9",
     "packages/domain/src/index.ts": "43243e9279e3826b23cd8d8b4365854974112ce4cf17cfb0f0ee32e6b28e9cc6",
     "packages/domain/src/markdown.ts": "5c6b96486a2e31944d7d128d241f1772d0926f34464fa2b59c20748a6754487a",
     "packages/domain/src/requirements.ts": "65ea1e6d3bbd29e929c785037b930e5f5eb5535b607403e5f30c3657d36e9175",
-    "packages/domain/src/types.ts": "eba5d3e146f9de4a1577f3770fdc53a9fa16bd6d04fe1ed2deb90e8afa563ebb",
+    "packages/domain/src/types.ts": "0f0cbd43bdee4db03b83e4869e9791531a63e9b63aa7a09661f62ad1bbc75cb3",
     "scripts/check-package.mjs": "72210ce36b88fb9fe9e435e8f1a1709e623c25cfc9c81628cce7a1a87f80bee0",
     "scripts/release-attestation.mjs": "b15842f6f83eb768c361a5e054a984af0da846f3b6e789bc0c91127415576d15",
     "scripts/release-prepare.mjs": "f868e935c6d6d6e04fc486d56f5cfb2af7c3c4de493c1b2f8620447399ff0d6b",
@@ -5624,7 +6881,7 @@
     "tests/change-evidence-waiver.test.ts": "254f82e14dac3beaed102979dd0e977ded31ebc20ffacb60aa798194b97bed80",
     "tests/change-record-fail-fast.test.ts": "2f69f19332049c206f39b42c3bc2b505ce63173db798d74c5a9ace7064cdfe78",
     "tests/change-requirement-batches.test.ts": "a170a3e7e8ad9dde66628a15f84343b45a1bfd2e84739d12c03e3eeb9b13d02a",
-    "tests/cli-package.test.ts": "68f235d2f1b5e203e89ec90c854ff58c0b5bc47ed7c492c23374b56e3ea59055",
+    "tests/cli-package.test.ts": "706c58866bb1aff662016b679671d89bec28c629dfae88a44566c06e25931136",
     "tests/cli-workflow-ux.test.ts": "53bdc5375bef05b365d725f5a8948393d68ae8cd1116fad8ff36ca3de127a177",
     "tests/command-working-directory.test.ts": "82dc863b1fcc5cd8a5ea1534238ef2f61f15e5d6c5e25d61fce43a7efe9bbc02",
     "tests/design-adr-none-exemption.test.ts": "f8a4771eb8b71a8c83b9ef782e9ed8646ef408aa4169298ab7a02553aa1c9ed7",
@@ -5652,6 +6909,7 @@
     "tests/tdd-superseded-cycle-scoping.test.ts": "5e9342555b2de69b2e2d998eed5e600f7306cf25151010206a8a5de707e9415a",
     "tests/trace-graph.test.ts": "23e9ee2fa9ac2f37307cdcf2f5b088007295d76379d384e9d65b380cb6ef6c7b",
     "tests/upgrade-workflow.test.ts": "487339a54f3169f91799aedab78f41813fc16b07f9825d165ec4e65157b1f802",
+    "tests/workflow-evidence-waiver.test.ts": "aeae933b0f0e9317e0cc42b8173bf3345ef910b9ad2b809a4bd6a29b9cf3692c",
     "tests/workflow-multi-session-verification.test.ts": "e5134e981431d14c8f1c1ea7f25a0e78a391ead86e3b83ed3ffc0dc91f46d58a",
     "vitest.config.ts": "2338c9c1fc7792c2c04fb596d182829c7259f1c60617f86751169d35c914ae54"
   }

@@ -9,6 +9,7 @@ import { validateWorkflow } from './workflow.js';
 import { parseMusubixTestReport, validateTddEvidence, type MusubixTestReport } from './tdd.js';
 import { validateChangeCompleteness, validateChangeEvidence } from './change.js';
 import { activeWaivers, waiverEvidenceDiagnostics } from './change-waiver.js';
+import { deriveWorkflowWaiverAudit } from './workflow-waiver.js';
 import { changedFiles, runProcess, type Runner } from './process.js';
 import { buildTrace, checkTrace } from './trace.js';
 import { adapterInvocation, clearAdapterOutput, mergeAdapterArgs, normalizeAdapterReport, readAdapterOutput } from './adapters.js';
@@ -48,6 +49,7 @@ export interface GateReport {
   } | null;
   fingerprints: Record<string, string>;
   waivers?: Array<{ changeId: string; code: string; requirementId?: string; detail?: string; approver: string; reason: string; recordedAt: string }>;
+  workflowWaivers?: Array<{ skill: string; phase: string; declarationRecordedAt: string; index?: number; code: string; approver: string; reason: string; waiverRecordedAt: string }>;
   waiverDiagnostics?: Diagnostic[];
 }
 
@@ -197,17 +199,23 @@ export async function runGate(root: string, options: {
     durationMs: formalResult.solver.durationMs,
   });
   const workflow = await validateWorkflow(root, config.workflow);
+  const workflowErrors = countErrors(workflow.diagnostics);
   checks.push({
     name: 'workflow',
     required: required('workflow') || workflow.present,
-    status: !workflow.present ? 'skipped' : workflow.verified ? 'pass' : 'fail',
+    status: !workflow.present ? 'skipped' : workflowErrors === 0 ? 'pass' : 'fail',
     summary: !workflow.present
       ? 'No workflow declarations are available.'
-      : workflow.verified
+      : workflowErrors === 0
         ? `${workflow.events} workflow declaration(s) across ${workflow.skills} Skill(s) reconciled with Copilot invocation events.`
         : `${workflow.events} workflow declaration(s) are not fully reconciled with Copilot invocation events.`,
     diagnostics: workflow.diagnostics,
   });
+  /** @id CODE-WORKFLOW-EVIDENCE-WAIVER-021
+   * @implements REQ-WORKFLOW-EVIDENCE-WAIVER-008 REQ-WORKFLOW-EVIDENCE-WAIVER-014 REQ-WORKFLOW-EVIDENCE-WAIVER-015
+   * @design DES-WORKFLOW-EVIDENCE-WAIVER-007
+   */
+  const { workflowWaivers, workflowWaiverDiagnostics } = deriveWorkflowWaiverAudit(workflow.workflowWaiverContext);
   const tdd = await validateTddEvidence(root);
   const tddDiagnostics = tdd.diagnostics.filter(scopedToFeature);
   checks.push({
@@ -613,7 +621,8 @@ export async function runGate(root: string, options: {
   }
   const featureScopedCheckNames = new Set(['requirements', 'design', 'trace', 'tdd', 'change-history', 'change-completeness']);
   if (domainsOn) featureScopedCheckNames.add('approval');
-  const [waivers, waiverDiagnostics] = await Promise.all([activeWaivers(root), waiverEvidenceDiagnostics(root)]);
+  const [waivers, changeWaiverDiagnostics] = await Promise.all([activeWaivers(root), waiverEvidenceDiagnostics(root)]);
+  const waiverDiagnostics = [...changeWaiverDiagnostics, ...workflowWaiverDiagnostics];
   const report: GateReport = {
     schemaVersion: 1,
     generatedAt,
@@ -627,6 +636,7 @@ export async function runGate(root: string, options: {
     lastChangeAnalysis,
     fingerprints: after,
     waivers,
+    workflowWaivers,
     waiverDiagnostics,
   };
   if (!featureDir) await writeJson(root, evidencePath, report);
@@ -641,6 +651,7 @@ export async function projectStatus(root: string): Promise<{
   gate: { status: 'pass' | 'fail' | 'skipped' | 'stale'; generatedAt: string | null; ready: boolean };
   next: string[];
   waivers: Array<{ changeId: string; code: string; requirementId?: string; detail?: string; approver: string; reason: string; recordedAt: string }>;
+  workflowWaivers: Array<{ skill: string; phase: string; declarationRecordedAt: string; index?: number; code: string; approver: string; reason: string; waiverRecordedAt: string }>;
   waiverDiagnostics: Diagnostic[];
 }> {
   const paths = await files(root);
@@ -674,7 +685,14 @@ export async function projectStatus(root: string): Promise<{
     generatedAt = evidence.generatedAt ?? null;
   }
   if (status === 'pass' && approvals?.valid === false) status = 'stale';
-  const [waivers, waiverDiagnostics] = await Promise.all([activeWaivers(root), waiverEvidenceDiagnostics(root)]);
+  /** @id CODE-WORKFLOW-EVIDENCE-WAIVER-022
+   * @implements REQ-WORKFLOW-EVIDENCE-WAIVER-008 REQ-WORKFLOW-EVIDENCE-WAIVER-014
+   * @design DES-WORKFLOW-EVIDENCE-WAIVER-007
+   */
+  const workflow = await validateWorkflow(root);
+  const { workflowWaivers, workflowWaiverDiagnostics } = deriveWorkflowWaiverAudit(workflow.workflowWaiverContext);
+  const [waivers, changeWaiverDiagnostics] = await Promise.all([activeWaivers(root), waiverEvidenceDiagnostics(root)]);
+  const waiverDiagnostics = [...changeWaiverDiagnostics, ...workflowWaiverDiagnostics];
   return {
     initialized,
     artifacts,
@@ -682,6 +700,7 @@ export async function projectStatus(root: string): Promise<{
     approvals,
     gate: { status, generatedAt, ready: initialized && status === 'pass' && approvals?.valid === true },
     waivers,
+    workflowWaivers,
     waiverDiagnostics,
     next: !initialized
       ? ['musubix3 init']

@@ -1,6 +1,10 @@
 export type Severity = 'error' | 'warning';
 export type CheckStatus = 'pass' | 'fail' | 'skipped';
 
+/** @id CODE-WORKFLOW-EVIDENCE-WAIVER-020
+ * @implements REQ-WORKFLOW-EVIDENCE-WAIVER-005 REQ-WORKFLOW-EVIDENCE-WAIVER-009 REQ-WORKFLOW-EVIDENCE-WAIVER-016
+ * @design DES-WORKFLOW-EVIDENCE-WAIVER-001
+ */
 export interface Diagnostic {
   code: string;
   severity: Severity;
@@ -10,7 +14,11 @@ export interface Diagnostic {
   changeId?: string;
   requirementId?: string;
   detail?: string;
-  waiver?: { approver: string; reason: string; recordedAt: string };
+  skill?: string;
+  phase?: string;
+  declarationRecordedAt?: string;
+  index?: number;
+  waiver?: { approver: string; reason: string; recordedAt: string; waiverRecordedAt?: string };
 }
 
 export interface Validation<T> {

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { Command, CommanderError } from 'commander';
+import { Command, CommanderError, InvalidArgumentError } from 'commander';
 import { basename, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
@@ -16,7 +16,7 @@ import {
   approvalManifest, approvalStages, recordApproval, requireApproval,   requireDomainOption, requireValidateDomainOption, resolveDesignFileDomain, resolveNamedDomain,
   validateApprovals, validateApprovalsForDomain, type ApprovalStage,
   scaffoldCommands, scaffoldRequirements, scaffoldDesign,
-  recordChangeWaiver,
+  recordChangeWaiver, recordWorkflowWaiver,
 } from '../../analysis/src/index.js';
 import { install, pluginInstall, upgradeSkills } from './install.js';
 
@@ -378,6 +378,42 @@ export function createProgram(): Command {
         !!options.json,
         `Sanitized ${report.inputEvents} event(s) to ${report.outputEvents}; retained ${report.skillInvocations} Skill invocation(s).`,
       );
+    });
+  /** @id CODE-WORKFLOW-EVIDENCE-WAIVER-023
+   * @implements REQ-WORKFLOW-EVIDENCE-WAIVER-001 REQ-WORKFLOW-EVIDENCE-WAIVER-002 REQ-WORKFLOW-EVIDENCE-WAIVER-003 REQ-WORKFLOW-EVIDENCE-WAIVER-005
+   * @design DES-WORKFLOW-EVIDENCE-WAIVER-006
+   */
+  const workflow = program.command('workflow').description('Workflow reconciliation waiver evidence');
+  const workflowWaiver = workflow.command('waiver').description('Record an audited, bounded downgrade of one declaration-scoped workflow reconciliation diagnostic');
+  common(workflowWaiver.command('record <code>'))
+    .requiredOption('--skill <skill>', 'Skill name of the declaration being waived')
+    .requiredOption('--phase <phase>', 'Phase name of the declaration being waived')
+    .requiredOption('--recorded-at <timestamp>', 'Exact declaration recordedAt timestamp to waive')
+    .option('--index <n>', 'disambiguating event index', (value) => {
+      const parsed = Number(value);
+      if (!/^\d+$/.test(value) || !Number.isSafeInteger(parsed)) {
+        throw new InvalidArgumentError('--index must be a nonnegative safe integer.');
+      }
+      return parsed;
+    })
+    .requiredOption('--approver <name>', 'Human approver recording this waiver')
+    .requiredOption('--reason <text>', 'Reason this diagnostic is being waived')
+    .option('--confirm', 'Confirm the waiver is reviewed and intended', false)
+    .action(async (code: string, options: {
+      root: string; json?: boolean; skill: string; phase: string; recordedAt: string; index?: number; approver: string; reason: string; confirm?: boolean;
+    }) => {
+      if (!options.confirm) throw new Error('Recording a workflow waiver requires --confirm.');
+      const result = await recordWorkflowWaiver(
+        resolve(options.root),
+        code,
+        options.skill,
+        options.phase,
+        options.recordedAt,
+        options.index,
+        options.approver,
+        options.reason,
+      );
+      output(result, !!options.json, `WAIVER: PASS (${code}:${options.skill}:${options.phase}:${options.recordedAt}${options.index === undefined ? '' : `:${options.index}`})`);
     });
   const attestation = program.command('attestation').description('Create and verify static-key or GitHub OIDC-authorized Ed25519 attestations');
   common(attestation.command('oidc-audience'))
