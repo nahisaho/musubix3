@@ -146,6 +146,87 @@ it('TEST-CHANGE-REQUIREMENT-BATCHES-003 rejects Quality until every requirement 
   await recordChangePhase(root, 'CHANGE-0001', 'quality', ['REQ-EXAMPLE-001', 'REQ-EXAMPLE-002']);
 });
 
+/** @id TEST-CHANGE-REQUIREMENT-BATCHES-006
+ * @verifies REQ-CHANGE-REQUIREMENT-BATCHES-005
+ */
+it('TEST-CHANGE-REQUIREMENT-BATCHES-006 recognizes every requirement in one authoritative @verifies declaration', async () => {
+  const root = await project();
+  await addSecondRequirement(root);
+  await writeText(root, 'src/second.test.ts', 'export {};\n');
+  await writeText(root, 'src/service.test.ts', `/** @id TEST-EXAMPLE-001
+ * @verifies REQ-EXAMPLE-001 REQ-EXAMPLE-002
+ */
+export function testReadiness() { return true; }
+`);
+  await writeText(root, '.musubix/changes/CHANGE-0001.md',
+    '# CHANGE-0001\nRequirements: REQ-EXAMPLE-001 REQ-EXAMPLE-002\n');
+  const requirements = ['REQ-EXAMPLE-001', 'REQ-EXAMPLE-002'];
+  await recordChangePhase(root, 'CHANGE-0001', 'impact', requirements);
+  await writeText(root, '.musubix/features/example/requirements.md',
+    `${await readText(root, '.musubix/features/example/requirements.md')}\nChange: clarified shared test coverage.\n`);
+  await recordChangePhase(root, 'CHANGE-0001', 'requirements', requirements);
+  await writeText(root, '.musubix/features/example/design.md',
+    `${await readText(root, '.musubix/features/example/design.md')}\nChange: clarified shared test binding.\n`);
+  await recordChangePhase(root, 'CHANGE-0001', 'design', requirements);
+  await writeText(root, 'src/service.test.ts',
+    `${await readText(root, 'src/service.test.ts')}\n// red checkpoint\n`);
+  await recordChangePhase(root, 'CHANGE-0001', 'red', requirements);
+  await writeText(root, 'src/service.ts',
+    `${await readText(root, 'src/service.ts')}\n// implementation checkpoint\n`);
+  await writeText(root, 'src/second.ts',
+    `${await readText(root, 'src/second.ts')}\n// implementation checkpoint\n`);
+  await recordChangePhase(root, 'CHANGE-0001', 'implementation', requirements);
+  await recordChangePhase(root, 'CHANGE-0001', 'green', requirements);
+  await recordChangePhase(root, 'CHANGE-0001', 'quality', requirements);
+
+  const result = await validateChangeCompleteness(root);
+  expect(result.diagnostics).not.toContainEqual(expect.objectContaining({
+    code: 'CHANGE_COMPLETENESS_TEST',
+    message: expect.stringContaining('REQ-EXAMPLE-002'),
+  }));
+});
+
+/** @id TEST-CHANGE-REQUIREMENT-BATCHES-007
+ * @verifies REQ-CHANGE-REQUIREMENT-BATCHES-005
+ */
+it('TEST-CHANGE-REQUIREMENT-BATCHES-007 uses trace-compatible polyglot comment blocks for authoritative tests', async () => {
+  const root = await project();
+  await addSecondRequirement(root);
+  await writeText(root, 'src/service.test.ts', 'export {};\n');
+  await writeText(root, 'src/second.test.ts', 'export {};\n');
+  await writeText(root, 'src/shared_test.py', `# @id TEST-EXAMPLE-PY-001
+# @verifies REQ-EXAMPLE-001 REQ-EXAMPLE-002
+def test_readiness():
+    assert True
+`);
+  await writeText(root, '.musubix/changes/CHANGE-0001.md',
+    '# CHANGE-0001\nRequirements: REQ-EXAMPLE-001 REQ-EXAMPLE-002\n');
+  const requirements = ['REQ-EXAMPLE-001', 'REQ-EXAMPLE-002'];
+  await recordChangePhase(root, 'CHANGE-0001', 'impact', requirements);
+  await writeText(root, '.musubix/features/example/requirements.md',
+    `${await readText(root, '.musubix/features/example/requirements.md')}\nChange: clarified polyglot test coverage.\n`);
+  await recordChangePhase(root, 'CHANGE-0001', 'requirements', requirements);
+  await writeText(root, '.musubix/features/example/design.md',
+    `${await readText(root, '.musubix/features/example/design.md')}\nChange: clarified polyglot test binding.\n`);
+  await recordChangePhase(root, 'CHANGE-0001', 'design', requirements);
+  await writeText(root, 'src/shared_test.py',
+    `${await readText(root, 'src/shared_test.py')}\n# red checkpoint\n`);
+  await recordChangePhase(root, 'CHANGE-0001', 'red', requirements);
+  await writeText(root, 'src/service.ts',
+    `${await readText(root, 'src/service.ts')}\n// implementation checkpoint\n`);
+  await writeText(root, 'src/second.ts',
+    `${await readText(root, 'src/second.ts')}\n// implementation checkpoint\n`);
+  await recordChangePhase(root, 'CHANGE-0001', 'implementation', requirements);
+  await recordChangePhase(root, 'CHANGE-0001', 'green', requirements);
+  await recordChangePhase(root, 'CHANGE-0001', 'quality', requirements);
+
+  const result = await validateChangeCompleteness(root);
+  expect(result.diagnostics).not.toContainEqual(expect.objectContaining({
+    code: 'CHANGE_COMPLETENESS_TEST',
+    message: expect.stringContaining('REQ-EXAMPLE-002'),
+  }));
+});
+
 // Supporting regression check (not independently trace-tracked): the existing
 // full-set, once-per-change recording form (REQ-CHANGE-REQUIREMENT-BATCHES-002)
 // is already proven unchanged by tests/gate-install.test.ts's

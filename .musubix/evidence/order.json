@@ -6516,6 +6516,54 @@
       "requirementId": "REQ-WORKFLOW-WAIVER-BULK-003",
       "previousSha256": "0113250c2f3be472ef3059cf9545d6be9aab4793ad6191167d4c77101dd2063c",
       "recordSha256": "18509eb6046b8fea7c388f115b8908e8529c3879af2bb1f660e956b37846ea74"
+    },
+    {
+      "sequence": 769,
+      "kind": "tdd",
+      "entityId": "6060f72a-c6cd-4526-9279-18cc88a0aab4",
+      "phase": "red",
+      "previousSha256": "18509eb6046b8fea7c388f115b8908e8529c3879af2bb1f660e956b37846ea74",
+      "recordSha256": "afd0bdf5219e5a5da0f5dedd5254ba08027c5e9cf1a21e13dafe7b7c43e5538b"
+    },
+    {
+      "sequence": 770,
+      "kind": "tdd",
+      "entityId": "4af7a66f-62cc-4352-aec2-111772e68fbe",
+      "phase": "red",
+      "previousSha256": "afd0bdf5219e5a5da0f5dedd5254ba08027c5e9cf1a21e13dafe7b7c43e5538b",
+      "recordSha256": "7cd0fdeb9a81a44680e268979e2d00cb3c39701253b46660f06dc1dd91d96f2a"
+    },
+    {
+      "sequence": 771,
+      "kind": "tdd",
+      "entityId": "96943ed9-6a5f-41d6-b8ce-165e00e5f6a6",
+      "phase": "red",
+      "previousSha256": "7cd0fdeb9a81a44680e268979e2d00cb3c39701253b46660f06dc1dd91d96f2a",
+      "recordSha256": "40cd8bf63c2a5c7e0eadd1d6a926c27a73e751dbee4d931d3c4e9c436954c56a"
+    },
+    {
+      "sequence": 772,
+      "kind": "tdd",
+      "entityId": "96943ed9-6a5f-41d6-b8ce-165e00e5f6a6",
+      "phase": "green",
+      "previousSha256": "40cd8bf63c2a5c7e0eadd1d6a926c27a73e751dbee4d931d3c4e9c436954c56a",
+      "recordSha256": "084b744c8fbeda2cf43616191042c94b67e99670d361111e310d886adaaccf8e"
+    },
+    {
+      "sequence": 773,
+      "kind": "tdd",
+      "entityId": "9a3d3c70-b2fa-4138-874a-e6f5b13d1459",
+      "phase": "red",
+      "previousSha256": "084b744c8fbeda2cf43616191042c94b67e99670d361111e310d886adaaccf8e",
+      "recordSha256": "7c30bf8a3ce82951be5e605c382ef9ad22a6c64abc1b744abc148b2938b48a76"
+    },
+    {
+      "sequence": 774,
+      "kind": "tdd",
+      "entityId": "9a3d3c70-b2fa-4138-874a-e6f5b13d1459",
+      "phase": "green",
+      "previousSha256": "7c30bf8a3ce82951be5e605c382ef9ad22a6c64abc1b744abc148b2938b48a76",
+      "recordSha256": "dfd93d2166474f811b55bb6959d83921170a95fd841abf60eb6fc3b222795a3a"
     }
   ]
 }
