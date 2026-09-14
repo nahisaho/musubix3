@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.1.19 - 2026-09-14
+
+Bug fix: change completeness now recognizes every requirement listed in a
+single authoritative `@verifies` declaration.
+
+- Reuses the trace parser's language-aware comment blocks, preserving support
+  for TypeScript/JSDoc, Python, Go, Rust, and PHP comments while excluding
+  annotation-like text in strings.
+- Requires `@id` and the matching `@verifies` declaration to remain in the same
+  comment block.
+- Adds regressions for multi-requirement and Python comment annotations.
+
 ## 0.1.18 - 2026-09-13
 
 New feature: bulk workflow-waiver recording, resolving the repeated
