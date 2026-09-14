@@ -1,7 +1,7 @@
 import { error, ids, validateDesign, validateRequirements, type Diagnostic, type Requirement } from '../../domain/src/index.js';
 import { digest, exists, files, snapshot, within, writeJson, readText } from './files.js';
 import { loadTddEvidence } from './tdd.js';
-import { buildTrace } from './trace.js';
+import { buildTrace, commentBlocks } from './trace.js';
 import { indexGraph } from './graph.js';
 import { validatePerformanceEvidence } from './performance.js';
 import { appendEvidenceOrder, evidenceOrderRecord, inspectEvidenceOrder } from './order.js';
@@ -594,7 +594,9 @@ export async function validateChangeCompleteness(root: string): Promise<{
       for (const node of trace.nodes.filter((candidate) => candidate.kind === 'test')) {
         if (!trace.edges.some((edge) => edge.from === node.id && edge.to === requirementId && edge.relation === 'verifies')) continue;
         const source = await readText(root, node.path);
-        if (new RegExp(`@id\\s+${node.id}\\b`).test(source) && new RegExp(`@verifies\\s+${requirementId}\\b`).test(source)) {
+        if (commentBlocks(source, node.path).some(({ text }) =>
+          new RegExp(`@id[ \\t]+${node.id}\\b`).test(text)
+          && new RegExp(`@verifies[ \\t]+[^\\r\\n]*\\b${requirementId}\\b`).test(text))) {
           authoritativeTest = true;
           break;
         }

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-13T14:09:06.474Z",
+  "generatedAt": "2026-09-14T22:01:43.918Z",
   "nodes": [
     {
       "id": "CODE-SESSION-SCOPED-DEVELOPMENT-001",
@@ -2799,6 +2799,18 @@
       "kind": "test",
       "path": "tests/change-requirement-batches.test.ts",
       "line": 118
+    },
+    {
+      "id": "TEST-CHANGE-REQUIREMENT-BATCHES-006",
+      "kind": "test",
+      "path": "tests/change-requirement-batches.test.ts",
+      "line": 149
+    },
+    {
+      "id": "TEST-CHANGE-REQUIREMENT-BATCHES-007",
+      "kind": "test",
+      "path": "tests/change-requirement-batches.test.ts",
+      "line": 189
     },
     {
       "id": "TEST-SESSION-SCOPED-DEVELOPMENT-001",
@@ -6967,6 +6979,16 @@
       "relation": "verifies"
     },
     {
+      "from": "TEST-CHANGE-REQUIREMENT-BATCHES-006",
+      "to": "REQ-CHANGE-REQUIREMENT-BATCHES-005",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-CHANGE-REQUIREMENT-BATCHES-007",
+      "to": "REQ-CHANGE-REQUIREMENT-BATCHES-005",
+      "relation": "verifies"
+    },
+    {
       "from": "TEST-SESSION-SCOPED-DEVELOPMENT-001",
       "to": "REQ-SESSION-SCOPED-DEVELOPMENT-001",
       "relation": "verifies"
@@ -7500,7 +7522,7 @@
     "packages/analysis/src/attestation.ts": "c353b5d93f151665e1f5f0531b763db164cb54e5305a837efd47b2742eb3b949",
     "packages/analysis/src/change-evidence.ts": "8bff2cb709de3834e078bf8bf30f2ddef36b37fa03bec5446e27711cae14709b",
     "packages/analysis/src/change-waiver.ts": "edabb578fe2d968bf98fe068ee240a32b67dcf7b50724a265e83ebc2a88c1ccd",
-    "packages/analysis/src/change.ts": "85647ae006e4255d10d10c6172e88b556bb0a2b9d96895dd4b12fc272fba3458",
+    "packages/analysis/src/change.ts": "a59c917c7a6009e8ed8802879e3ec35612b0569bd4104094f0a35f28c60caa84",
     "packages/analysis/src/config.ts": "52d5212f4057df9ed5caac0a0025ce744864909abceea3c64d259479ddffb998",
     "packages/analysis/src/files.ts": "6186177faea34f7b2f6dd865b4f911d3b8fbfe6786e2cd19bc7dffee2a058ba2",
     "packages/analysis/src/formal.ts": "9f5622983fed80c1e7c141cc7c7dcd217447e5c2edd39e64877db052a57b730b",
@@ -7516,7 +7538,7 @@
     "packages/analysis/src/scaffold-artifact.ts": "e5e6fa31fbd97ce4dcc294ab26966eb0a4a2507eb4025a7a8a522831e7fb886d",
     "packages/analysis/src/tdd.ts": "96a9eef2bf0b1fbd034679be854e1a86994e6c0c0fd7ea4569e3f895ac115f80",
     "packages/analysis/src/test-report.ts": "41c76811bfcb5e286bf097bf2f6aaf6cd5a414202efe8108f28219ecca063a01",
-    "packages/analysis/src/trace.ts": "efede75c79c7dc4828a0259c46ca870a7e15042c35edd94a107349a83eb56ec9",
+    "packages/analysis/src/trace.ts": "010f31087efea1eadb8925836527f54fddff71d40b74334de9d88800b7dad47e",
     "packages/analysis/src/workflow-types.ts": "427c3450352eb7799e2b49933e267f9888e87d51dc5c6482b5b1378620205309",
     "packages/analysis/src/workflow-waiver.ts": "7c09999654d03fbc96879f3e6726d505706cdcba36940c00d46ac208d94f972f",
     "packages/analysis/src/workflow.ts": "fa63488de60794c10e829c79168d5bac455aec0b02a2726705a0441da60b015c",
@@ -7543,7 +7565,7 @@
     "tests/change-evidence-waiver.test.ts": "254f82e14dac3beaed102979dd0e977ded31ebc20ffacb60aa798194b97bed80",
     "tests/change-record-fail-fast.test.ts": "2f69f19332049c206f39b42c3bc2b505ce63173db798d74c5a9ace7064cdfe78",
     "tests/change-record-recordedat-order.test.ts": "5ad61cf31e273dc9cdfe190b21dcc8ffc49d327592e01b6eb0251f4cdda7b149",
-    "tests/change-requirement-batches.test.ts": "a170a3e7e8ad9dde66628a15f84343b45a1bfd2e84739d12c03e3eeb9b13d02a",
+    "tests/change-requirement-batches.test.ts": "1150be6f24769b99cc88fd2984a7eaecd7b41cd9f6db6fa847f29f74e2f3f808",
     "tests/cli-package.test.ts": "baf1547f38051f7e32fdd184aa3bdd1cd549e873e74da3d3e682851fd4e436ea",
     "tests/cli-workflow-ux.test.ts": "53bdc5375bef05b365d725f5a8948393d68ae8cd1116fad8ff36ca3de127a177",
     "tests/command-working-directory.test.ts": "82dc863b1fcc5cd8a5ea1534238ef2f61f15e5d6c5e25d61fce43a7efe9bbc02",

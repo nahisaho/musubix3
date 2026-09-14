@@ -169,7 +169,7 @@ function genericCommentBlocks(text: string, path: string): { text: string; line:
   }));
 }
 
-function commentBlocks(text: string, path: string): { text: string; line: number }[] {
+export function commentBlocks(text: string, path: string): { text: string; line: number }[] {
   return isSource(path) ? typedCommentBlocks(text, path) : genericCommentBlocks(text, path);
 }
 

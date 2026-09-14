@@ -9177,6 +9177,166 @@
         "diagnostics": [],
         "order": 759
       }
+    },
+    {
+      "cycleId": "6060f72a-c6cd-4526-9279-18cc88a0aab4",
+      "requirementId": "REQ-CHANGE-REQUIREMENT-BATCHES-005",
+      "testId": "TEST-CHANGE-REQUIREMENT-BATCHES-006",
+      "testPath": "tests/change-requirement-batches.test.ts",
+      "commandName": "change-requirement-batches-tests",
+      "red": {
+        "phase": "red",
+        "valid": false,
+        "scoped": true,
+        "resultObserved": false,
+        "testStatus": "passed",
+        "reportSha256": "9664e314a75d9e5d9b3d5017acef5f2cba4ad8645cab6366b8088ad3377d2725",
+        "commandSha256": "8c8b3a9d53e5863cd663dc69e6572bad8b3132946926a268783c2737812312b1",
+        "outputSha256": "efbd0d7d431a0749c323c2a023ae1447d015d87707cd94d2c79afacd1188763f",
+        "exitCode": 0,
+        "durationMs": 5793,
+        "testFingerprint": "3112411df5c712f0757dcfb1c26b073a0ec60142cd41909e16e3aeaa5daa07e6",
+        "sourceFingerprint": "282de6b31913190758cf007ab62b48e233ba004a458d7e04685760557eda885e",
+        "executionId": "816c5773-feec-42c8-9c90-3f3b1ce185b3",
+        "recordedAt": "2026-09-14T21:53:25.475Z",
+        "diagnostics": [
+          {
+            "code": "TDD_TARGET_RESULT",
+            "severity": "error",
+            "message": "red requires TEST-CHANGE-REQUIREMENT-BATCHES-006 to report failed, observed passed.",
+            "path": ".musubix/evidence/native/change-requirement-batches-tests/TEST-CHANGE-REQUIREMENT-BATCHES-006.json"
+          },
+          {
+            "code": "TDD_PHASE_RESULT",
+            "severity": "error",
+            "message": "red requires a completed command with nonzero exit status."
+          }
+        ],
+        "order": 769
+      }
+    },
+    {
+      "cycleId": "4af7a66f-62cc-4352-aec2-111772e68fbe",
+      "requirementId": "REQ-CHANGE-REQUIREMENT-BATCHES-005",
+      "testId": "TEST-CHANGE-REQUIREMENT-BATCHES-006",
+      "testPath": "tests/change-requirement-batches.test.ts",
+      "commandName": "change-requirement-batches-tests",
+      "red": {
+        "phase": "red",
+        "valid": false,
+        "scoped": true,
+        "resultObserved": false,
+        "testStatus": "passed",
+        "reportSha256": "a24b43688a59dfaf2f4d1b80ec08839eda501a7edfdb5751f9905d46350307dc",
+        "commandSha256": "8c8b3a9d53e5863cd663dc69e6572bad8b3132946926a268783c2737812312b1",
+        "outputSha256": "efbd0d7d431a0749c323c2a023ae1447d015d87707cd94d2c79afacd1188763f",
+        "exitCode": 0,
+        "durationMs": 6082,
+        "testFingerprint": "3112411df5c712f0757dcfb1c26b073a0ec60142cd41909e16e3aeaa5daa07e6",
+        "sourceFingerprint": "282de6b31913190758cf007ab62b48e233ba004a458d7e04685760557eda885e",
+        "executionId": "10230b14-a00f-4a56-9915-d1c3507b654e",
+        "recordedAt": "2026-09-14T21:53:38.467Z",
+        "diagnostics": [
+          {
+            "code": "TDD_TARGET_RESULT",
+            "severity": "error",
+            "message": "red requires TEST-CHANGE-REQUIREMENT-BATCHES-006 to report failed, observed passed.",
+            "path": ".musubix/evidence/native/change-requirement-batches-tests/TEST-CHANGE-REQUIREMENT-BATCHES-006.json"
+          },
+          {
+            "code": "TDD_PHASE_RESULT",
+            "severity": "error",
+            "message": "red requires a completed command with nonzero exit status."
+          }
+        ],
+        "order": 770
+      }
+    },
+    {
+      "cycleId": "96943ed9-6a5f-41d6-b8ce-165e00e5f6a6",
+      "requirementId": "REQ-CHANGE-REQUIREMENT-BATCHES-005",
+      "testId": "TEST-CHANGE-REQUIREMENT-BATCHES-006",
+      "testPath": "tests/change-requirement-batches.test.ts",
+      "commandName": "change-requirement-batches-tests",
+      "red": {
+        "phase": "red",
+        "valid": true,
+        "scoped": true,
+        "resultObserved": true,
+        "testStatus": "failed",
+        "reportSha256": "89f1a3dcea01b96aac522cd48199af8f2453892e5070f21a8f6f460c9b2a0d7d",
+        "commandSha256": "8c8b3a9d53e5863cd663dc69e6572bad8b3132946926a268783c2737812312b1",
+        "outputSha256": "efbd0d7d431a0749c323c2a023ae1447d015d87707cd94d2c79afacd1188763f",
+        "exitCode": 1,
+        "durationMs": 5645,
+        "testFingerprint": "b5343d602346837ca4bf52ae8452d9bbc136c559557de7aa5b1beba0288a4e6f",
+        "sourceFingerprint": "282de6b31913190758cf007ab62b48e233ba004a458d7e04685760557eda885e",
+        "executionId": "806cf4be-4e38-42e4-870b-cea331e53de8",
+        "recordedAt": "2026-09-14T21:53:57.777Z",
+        "diagnostics": [],
+        "order": 771
+      },
+      "green": {
+        "phase": "green",
+        "valid": true,
+        "scoped": true,
+        "resultObserved": true,
+        "testStatus": "passed",
+        "reportSha256": "bf8c022fa791e330503ad51b0393b6d9fbc80ca3848011ef402c65ecddf2dc02",
+        "commandSha256": "8c8b3a9d53e5863cd663dc69e6572bad8b3132946926a268783c2737812312b1",
+        "outputSha256": "efbd0d7d431a0749c323c2a023ae1447d015d87707cd94d2c79afacd1188763f",
+        "exitCode": 0,
+        "durationMs": 5595,
+        "testFingerprint": "b5343d602346837ca4bf52ae8452d9bbc136c559557de7aa5b1beba0288a4e6f",
+        "sourceFingerprint": "f3e4dffbfa8415e71ad433461349f5bc8eb0c4023a4c57560129800d4ac1434f",
+        "executionId": "2d215aa5-be7c-428a-8ded-b4f9dfb39df7",
+        "recordedAt": "2026-09-14T21:54:30.806Z",
+        "diagnostics": [],
+        "order": 772
+      }
+    },
+    {
+      "cycleId": "9a3d3c70-b2fa-4138-874a-e6f5b13d1459",
+      "requirementId": "REQ-CHANGE-REQUIREMENT-BATCHES-005",
+      "testId": "TEST-CHANGE-REQUIREMENT-BATCHES-007",
+      "testPath": "tests/change-requirement-batches.test.ts",
+      "commandName": "change-requirement-batches-tests",
+      "red": {
+        "phase": "red",
+        "valid": true,
+        "scoped": true,
+        "resultObserved": true,
+        "testStatus": "failed",
+        "reportSha256": "04057f0fb22c166eb990036dc87cf0c8d3963280ff9a4d72ef14c1f7fb2b498b",
+        "commandSha256": "307b845916cefc29d558549e9becfe854d60d236bee860e041ec384e563ada8a",
+        "outputSha256": "a0ed96b3aad6bd8c57c0de383909d025fa1d2d8996bab189c82c6709ba9cbba7",
+        "exitCode": 1,
+        "durationMs": 5567,
+        "testFingerprint": "337a808fb12491758a757cca6ba6f78f257c3aee173b29bb6771e1bb79c36c6c",
+        "sourceFingerprint": "f3e4dffbfa8415e71ad433461349f5bc8eb0c4023a4c57560129800d4ac1434f",
+        "executionId": "6befd1b7-f68f-4b47-8b2f-c28901eb934b",
+        "recordedAt": "2026-09-14T21:58:12.338Z",
+        "diagnostics": [],
+        "order": 773
+      },
+      "green": {
+        "phase": "green",
+        "valid": true,
+        "scoped": true,
+        "resultObserved": true,
+        "testStatus": "passed",
+        "reportSha256": "245e719c62a31bf0f45d004a37bfa1388c21fc9696b60e1f17a58c57d7806308",
+        "commandSha256": "307b845916cefc29d558549e9becfe854d60d236bee860e041ec384e563ada8a",
+        "outputSha256": "a0ed96b3aad6bd8c57c0de383909d025fa1d2d8996bab189c82c6709ba9cbba7",
+        "exitCode": 0,
+        "durationMs": 5570,
+        "testFingerprint": "337a808fb12491758a757cca6ba6f78f257c3aee173b29bb6771e1bb79c36c6c",
+        "sourceFingerprint": "3a17bac02b0d04a1d24193b9d62a58a3a48caa48c7ee2f2232d2a8099fbfdd24",
+        "executionId": "e4bf1b14-5d2a-4a8b-bbda-a30ea1518d64",
+        "recordedAt": "2026-09-14T21:58:55.028Z",
+        "diagnostics": [],
+        "order": 774
+      }
     }
   ],
   "chain": [
@@ -14267,6 +14427,78 @@
       "phaseEvidenceSha256": "f6a623be0ea653d376bac3d591f2446feaf333eea3a47a4b869fa3371f68179b",
       "previousSha256": "9a82a0861be843273018f7b17c1ee704af752c5530c77aeeb7f0bf83e0901ed3",
       "recordSha256": "dd3074c06e200269518b7b0a7c48467cd679bad1e635643454496e9858efc113"
+    },
+    {
+      "sequence": 425,
+      "cycleId": "6060f72a-c6cd-4526-9279-18cc88a0aab4",
+      "requirementId": "REQ-CHANGE-REQUIREMENT-BATCHES-005",
+      "testId": "TEST-CHANGE-REQUIREMENT-BATCHES-006",
+      "testPath": "tests/change-requirement-batches.test.ts",
+      "commandName": "change-requirement-batches-tests",
+      "phase": "red",
+      "phaseEvidenceSha256": "66f40ef479020036c7e77ff0ea15b8a8f87f1ebb4d4c9b95c97344b12d39a42a",
+      "previousSha256": "dd3074c06e200269518b7b0a7c48467cd679bad1e635643454496e9858efc113",
+      "recordSha256": "3e237f3038936ec0adc629e7beed1d1a9020e39eac873c5c6b9ac4597affb315"
+    },
+    {
+      "sequence": 426,
+      "cycleId": "4af7a66f-62cc-4352-aec2-111772e68fbe",
+      "requirementId": "REQ-CHANGE-REQUIREMENT-BATCHES-005",
+      "testId": "TEST-CHANGE-REQUIREMENT-BATCHES-006",
+      "testPath": "tests/change-requirement-batches.test.ts",
+      "commandName": "change-requirement-batches-tests",
+      "phase": "red",
+      "phaseEvidenceSha256": "85f80f799428ed37a4563564d42c86ab1243dfcf4829b79c2b4a392e6404f9dd",
+      "previousSha256": "3e237f3038936ec0adc629e7beed1d1a9020e39eac873c5c6b9ac4597affb315",
+      "recordSha256": "445403b5f1308e7075475d6bd2617f979cf1124988fda84041f15e685cf377be"
+    },
+    {
+      "sequence": 427,
+      "cycleId": "96943ed9-6a5f-41d6-b8ce-165e00e5f6a6",
+      "requirementId": "REQ-CHANGE-REQUIREMENT-BATCHES-005",
+      "testId": "TEST-CHANGE-REQUIREMENT-BATCHES-006",
+      "testPath": "tests/change-requirement-batches.test.ts",
+      "commandName": "change-requirement-batches-tests",
+      "phase": "red",
+      "phaseEvidenceSha256": "4516c116a217b8189cad56274b657b3ca9f9452729c8e559fc1274d39c1db357",
+      "previousSha256": "445403b5f1308e7075475d6bd2617f979cf1124988fda84041f15e685cf377be",
+      "recordSha256": "6c741e8e68533ae34f2f9d7371c7f29ad9b861007e3fb50edca17a8ee7462c08"
+    },
+    {
+      "sequence": 428,
+      "cycleId": "96943ed9-6a5f-41d6-b8ce-165e00e5f6a6",
+      "requirementId": "REQ-CHANGE-REQUIREMENT-BATCHES-005",
+      "testId": "TEST-CHANGE-REQUIREMENT-BATCHES-006",
+      "testPath": "tests/change-requirement-batches.test.ts",
+      "commandName": "change-requirement-batches-tests",
+      "phase": "green",
+      "phaseEvidenceSha256": "6a8b163a88366d2927c8908bd77d24270d6bb107a70ed08f47b6ae0de04e83d6",
+      "previousSha256": "6c741e8e68533ae34f2f9d7371c7f29ad9b861007e3fb50edca17a8ee7462c08",
+      "recordSha256": "32dc6eb0d79edd19e4d2a19eb974b05c4381d00ac5b3c033512a685651eefc6a"
+    },
+    {
+      "sequence": 429,
+      "cycleId": "9a3d3c70-b2fa-4138-874a-e6f5b13d1459",
+      "requirementId": "REQ-CHANGE-REQUIREMENT-BATCHES-005",
+      "testId": "TEST-CHANGE-REQUIREMENT-BATCHES-007",
+      "testPath": "tests/change-requirement-batches.test.ts",
+      "commandName": "change-requirement-batches-tests",
+      "phase": "red",
+      "phaseEvidenceSha256": "3bd5133d2d1ad71a871e06f6adcfb25561842e85bb84648b49047f5cb5f4cb8f",
+      "previousSha256": "32dc6eb0d79edd19e4d2a19eb974b05c4381d00ac5b3c033512a685651eefc6a",
+      "recordSha256": "8816e7e5c0e6a0ac91eff5898606a88f2d989570c474a9e334982f56994cc58a"
+    },
+    {
+      "sequence": 430,
+      "cycleId": "9a3d3c70-b2fa-4138-874a-e6f5b13d1459",
+      "requirementId": "REQ-CHANGE-REQUIREMENT-BATCHES-005",
+      "testId": "TEST-CHANGE-REQUIREMENT-BATCHES-007",
+      "testPath": "tests/change-requirement-batches.test.ts",
+      "commandName": "change-requirement-batches-tests",
+      "phase": "green",
+      "phaseEvidenceSha256": "560d568c2e840abef12e1778f52c7dacc6fbcf8558defddaa6fb51d5a7fb2cf2",
+      "previousSha256": "8816e7e5c0e6a0ac91eff5898606a88f2d989570c474a9e334982f56994cc58a",
+      "recordSha256": "4dd19b42f4ef5d7752da2903d3c237ebc1efef4dae769c096703d66a61b76581"
     }
   ]
 }
