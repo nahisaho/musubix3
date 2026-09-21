@@ -321,6 +321,13 @@ function voidLinkage(
   return { valid: false, reason: `${cycle.testId}'s void evidence is malformed: ${reason}.` };
 }
 
+export function validlyVoidedTddCycles(
+  evidence: TddEvidence | null,
+  order: ReturnType<typeof validateEvidenceOrderLog>,
+): ReadonlySet<TddCycle> {
+  return new Set((evidence?.cycles ?? []).filter((cycle) => voidLinkage(evidence!, order, cycle).valid));
+}
+
 /** Resolves the effective latest cycle for `testId` when its actual latest
  * cycle (`voidedCycle`) is validly voided, per REQ-TDD-CYCLE-VOID-010: the
  * eligible, non-voided candidate with the greatest verified Green order

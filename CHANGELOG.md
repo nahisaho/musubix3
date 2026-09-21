@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- Fix requirement-batch validation selecting stale legacy full-set evidence
+  when later scoped Red/Implementation/Green evidence exists. Validation,
+  completeness, order-migration checks, and waiver condition re-derivation now
+  use the applicable batch with the latest Red order; later incomplete batches
+  remain fail-closed instead of falling back (#27).
+
 - Fix strict workflow verification for resumed Copilot CLI conversations.
   A single-session transcript may now contain one or more routine
   `session.shutdown` / `session.resume` episodes before its final routine

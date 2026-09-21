@@ -1,5 +1,5 @@
 import { exists, readText, within } from './files.js';
-import type { TddEvidence } from './tdd.js';
+import type { TddCycle, TddEvidence } from './tdd.js';
 
 // Shared change-chronology data model and pure accessors used by both
 // change.ts (recording/validation) and change-waiver.ts (waiver evidence).
@@ -82,8 +82,109 @@ export function effectiveBatches(change: ChangeRecord): ChangeTddBatch[] {
   return batches;
 }
 
+/** @id CODE-CHANGE-REQUIREMENT-BATCHES-003
+ * @implements REQ-CHANGE-REQUIREMENT-BATCHES-005
+ * @design DES-CHANGE-REQUIREMENT-BATCHES-002
+ */
 export function batchFor(batches: ChangeTddBatch[], requirementId: string): ChangeTddBatch | undefined {
-  return batches.find((batch) => batch.requirementIds.includes(requirementId));
+  const applicable = batches.filter((batch) => batch.requirementIds.includes(requirementId));
+  const ordered = applicable.filter((batch) => Number.isInteger(batch.red?.order));
+  if (!ordered.length) return applicable[0];
+  return ordered.reduce((selected, batch) =>
+    batch.red!.order! >= selected.red!.order! ? batch : selected);
+}
+
+export function currentRequirementIdsForBatch(
+  batches: ChangeTddBatch[],
+  batch: ChangeTddBatch,
+  requirementIds: string[],
+): string[] {
+  // `batch` must be an element of `batches`; callers intentionally share one
+  // effectiveBatches() result so duplicate batch keys remain distinguishable.
+  return requirementIds.filter((requirementId) => batchFor(batches, requirementId) === batch);
+}
+
+export function currentTddOrderWindow(
+  change: ChangeRecord,
+  requirementId: string,
+): { after: number; through: number } | undefined {
+  const requirementsOrder = change.phases.requirements?.order;
+  const batches = effectiveBatches(change);
+  const batch = batchFor(batches, requirementId);
+  const currentRedOrder = batch?.red?.order;
+  if (!Number.isInteger(requirementsOrder) || !Number.isInteger(currentRedOrder)) return undefined;
+  const previousRedOrders = batches
+    .filter((candidate) =>
+      candidate.requirementIds.includes(requirementId)
+      && Number.isInteger(candidate.red?.order)
+      && candidate.red!.order! < currentRedOrder!)
+    .map((candidate) => candidate.red!.order!);
+  return {
+    after: Math.max(requirementsOrder!, ...previousRedOrders),
+    through: currentRedOrder!,
+  };
+}
+
+/** @id CODE-CHANGE-REQUIREMENT-BATCHES-004
+ * @implements REQ-CHANGE-REQUIREMENT-BATCHES-005
+ * @design DES-CHANGE-REQUIREMENT-BATCHES-002
+ */
+export function voidedCycleOrdersInCurrentWindow(
+  change: ChangeRecord,
+  requirementId: string,
+  tdd: TddEvidence | null,
+  validlyVoided: ReadonlySet<TddCycle>,
+): number[] {
+  const window = currentTddOrderWindow(change, requirementId);
+  if (!window) return [];
+  return (tdd?.cycles ?? [])
+    .filter((cycle) =>
+      cycle.requirementId === requirementId
+      && validlyVoided.has(cycle)
+      && Number.isInteger(cycle.red.order)
+      && cycle.red.order! > window.after
+      && cycle.red.order! <= window.through
+      && Number.isInteger(cycle.void?.order))
+    .map((cycle) => cycle.void!.order!)
+    .sort((a, b) => a - b);
+}
+
+function currentTddCycle(
+  change: ChangeRecord,
+  requirementId: string,
+  tdd: TddEvidence | null,
+  validlyVoided: ReadonlySet<TddCycle>,
+) {
+  const window = currentTddOrderWindow(change, requirementId);
+  if (!window) return undefined;
+  return (tdd?.cycles ?? [])
+    .filter((cycle) =>
+      cycle.requirementId === requirementId
+      && !validlyVoided.has(cycle)
+      && Number.isInteger(cycle.red.order)
+      && cycle.red.order! > window.after
+      && cycle.red.order! <= window.through)
+    .reduce<(TddEvidence['cycles'][number] & { red: { order: number } }) | undefined>(
+      (selected, cycle) =>
+        !selected || cycle.red.order! >= selected.red.order ? cycle as typeof selected : selected,
+      undefined,
+    );
+}
+
+function tddCyclesInCurrentWindow(
+  change: ChangeRecord,
+  requirementId: string,
+  tdd: TddEvidence | null,
+  validlyVoided: ReadonlySet<TddCycle>,
+): TddCycle[] {
+  const window = currentTddOrderWindow(change, requirementId);
+  if (!window) return [];
+  return (tdd?.cycles ?? []).filter((cycle) =>
+    cycle.requirementId === requirementId
+    && !validlyVoided.has(cycle)
+    && Number.isInteger(cycle.red.order)
+    && cycle.red.order! > window.after
+    && cycle.red.order! <= window.through);
 }
 
 /** @id CODE-CHANGE-EVIDENCE-WAIVER-014
@@ -124,44 +225,54 @@ export function designUnchangedCondition(change: ChangeRecord): boolean {
   return !!requirements && !!design && requirements.fingerprints.design === design.fingerprints.design;
 }
 
-export function hasValidTddCycle(change: ChangeRecord, requirementId: string, tdd: TddEvidence | null): boolean {
-  const requirements = change.phases.requirements;
+export function hasValidTddCycle(
+  change: ChangeRecord,
+  requirementId: string,
+  tdd: TddEvidence | null,
+  validlyVoided: ReadonlySet<TddCycle> = new Set(),
+): boolean {
   const batch = batchFor(effectiveBatches(change), requirementId);
-  const red = batch?.red;
   const implementation = batch?.implementation;
   const green = batch?.green;
-  const cycles = tdd?.cycles.filter((cycle) => cycle.requirementId === requirementId) ?? [];
-  return cycles.some((cycle) =>
-    requirements
-    && red
-    && implementation
+  return tddCyclesInCurrentWindow(change, requirementId, tdd, validlyVoided).some((cycle) =>
+    !!implementation
     && green
-    && Number.isInteger(requirements.order)
-    && Number.isInteger(red.order)
     && Number.isInteger(implementation.order)
     && Number.isInteger(green.order)
-    && Number.isInteger(cycle.red.order)
     && Number.isInteger(cycle.green?.order)
     && cycle.red.valid
     && cycle.green?.valid
-    && cycle.red.order! > requirements.order!
-    && cycle.red.order! <= red.order!
     && cycle.green.order! > implementation.order!
     && cycle.green.order! <= green.order!);
 }
 
-export function redUnprovenCondition(change: ChangeRecord, requirementId: string, tdd: TddEvidence | null): boolean {
+export function redUnprovenCondition(
+  change: ChangeRecord,
+  requirementId: string,
+  tdd: TddEvidence | null,
+  validlyVoided: ReadonlySet<TddCycle> = new Set(),
+): boolean {
   const batch = batchFor(effectiveBatches(change), requirementId);
-  return !!batch?.red && !hasValidTddCycle(change, requirementId, tdd);
+  return !!batch?.red && !hasValidTddCycle(change, requirementId, tdd, validlyVoided);
 }
 
-export function greenUnprovenCondition(change: ChangeRecord, requirementId: string, tdd: TddEvidence | null): boolean {
+export function greenUnprovenCondition(
+  change: ChangeRecord,
+  requirementId: string,
+  tdd: TddEvidence | null,
+  validlyVoided: ReadonlySet<TddCycle> = new Set(),
+): boolean {
   const batch = batchFor(effectiveBatches(change), requirementId);
-  return !!batch?.green && !hasValidTddCycle(change, requirementId, tdd);
+  return !!batch?.green && !hasValidTddCycle(change, requirementId, tdd, validlyVoided);
 }
 
-export function completenessTddUnsatisfiedCondition(change: ChangeRecord, requirementId: string, tdd: TddEvidence | null): boolean {
-  return !hasValidTddCycle(change, requirementId, tdd);
+export function completenessTddUnsatisfiedCondition(
+  change: ChangeRecord,
+  requirementId: string,
+  tdd: TddEvidence | null,
+  validlyVoided: ReadonlySet<TddCycle> = new Set(),
+): boolean {
+  return !hasValidTddCycle(change, requirementId, tdd, validlyVoided);
 }
 
 const tddBatchPhaseNames = ['red', 'implementation', 'green'] as const;
@@ -203,11 +314,21 @@ export function orderMigrationRequiredBatchCondition(change: ChangeRecord, batch
   return !!item && !Number.isInteger(item.order);
 }
 
-export function orderMigrationRequiredRequirementCondition(change: ChangeRecord, requirementId: string, tdd: TddEvidence | null): boolean {
+export function orderMigrationRequiredRequirementCondition(
+  change: ChangeRecord,
+  requirementId: string,
+  tdd: TddEvidence | null,
+  validlyVoided: ReadonlySet<TddCycle> = new Set(),
+): boolean {
   const batch = batchFor(effectiveBatches(change), requirementId);
   if (!batch?.red) return false;
-  const cycles = (tdd?.cycles ?? []).filter((cycle) => cycle.requirementId === requirementId);
-  return cycles.some((cycle) => !Number.isInteger(cycle.red.order) || !Number.isInteger(cycle.green?.order));
+  const cycles = (tdd?.cycles ?? []).filter((cycle) =>
+    cycle.requirementId === requirementId && !validlyVoided.has(cycle));
+  if (cycles.some((cycle) => !Number.isInteger(cycle.red.order))) return true;
+  const window = currentTddOrderWindow(change, requirementId);
+  if (!window) return false;
+  const current = currentTddCycle(change, requirementId, tdd, validlyVoided);
+  return !!current && !Number.isInteger(current.green?.order);
 }
 
 export function testsUnchangedCondition(change: ChangeRecord, batch: ChangeTddBatch): boolean {

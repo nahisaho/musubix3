@@ -2,13 +2,15 @@ import { error, type Diagnostic } from '../../domain/src/index.js';
 import { digest, exists, readText, within, writeJson } from './files.js';
 import {
   batchFor, batchForKey, batchKey, completenessTddUnsatisfiedCondition, designUnchangedCondition,
-  effectiveBatches, greenUnprovenCondition, implementationUnchangedCondition, loadChangeEvidence,
+  currentRequirementIdsForBatch, effectiveBatches, greenUnprovenCondition,
+  implementationUnchangedCondition, loadChangeEvidence,
   orderMigrationRequiredBatchCondition, orderMigrationRequiredPhaseCondition, orderMigrationRequiredRequirementCondition,
   phaseMissingCondition, recordMissingCondition, redUnprovenCondition, relevantImplementationUnchangedCondition,
   requirementsUnchangedCondition, testChangedAfterRedCondition, testsUnchangedCondition,
+  voidedCycleOrdersInCurrentWindow,
   type ChangeEvidence, type ChangePhase, type ChangeRecord, type ChangeTddBatch,
 } from './change-evidence.js';
-import { loadTddEvidence, type TddEvidence } from './tdd.js';
+import { loadTddEvidence, validlyVoidedTddCycles, type TddEvidence } from './tdd.js';
 import { appendEvidenceOrder, evidenceOrderRecord, inspectEvidenceOrder } from './order.js';
 
 const WAIVER_PATH = '.musubix/evidence/change-waivers.json';
@@ -250,12 +252,17 @@ export async function snapshotPayload(
         return a.cycleId < b.cycleId ? -1 : a.cycleId > b.cycleId ? 1 : 0;
       })
       .map(({ cycleId: _cycleId, ...rest }) => rest);
+    const validlyVoided = validlyVoidedTddCycles(tdd, order);
+    const voidedCycleOrders = change
+      ? voidedCycleOrdersInCurrentWindow(change, requirementId, tdd, validlyVoided)
+      : [];
     return {
       requirementsOrder: change?.phases.requirements?.order ?? null,
       red: phaseItem(batch?.red),
       implementation: phaseItem(batch?.implementation),
       green: phaseItem(batch?.green),
       cycles,
+      ...(voidedCycleOrders.length ? { voidedCycleOrders } : {}),
     };
   }
 
@@ -302,11 +309,15 @@ export async function snapshotPayload(
       };
     }
     if (parsed.kind === 'requirement') {
+      const validlyVoided = validlyVoidedTddCycles(tdd, order);
       const cycles = (tdd?.cycles ?? [])
         .filter((cycle) => cycle.requirementId === parsed.requirementId)
         .map((cycle) => ({ redOrder: cycle.red.order ?? null, greenOrder: cycle.green?.order ?? null }))
         .sort((a, b) => (a.redOrder ?? Number.MAX_SAFE_INTEGER) - (b.redOrder ?? Number.MAX_SAFE_INTEGER));
-      return { cycles };
+      const voidedCycleOrders = change
+        ? voidedCycleOrdersInCurrentWindow(change, parsed.requirementId, tdd, validlyVoided)
+        : [];
+      return { cycles, ...(voidedCycleOrders.length ? { voidedCycleOrders } : {}) };
     }
     return null;
   }
@@ -621,6 +632,7 @@ export async function recordChangeWaiver(
     }
   }
   const tdd = await loadTddEvidence(root);
+  const validlyVoided = validlyVoidedTddCycles(tdd, order);
   const parsed = detail !== undefined ? parseDetail(waivableCode, detail) : null;
   if (requiresDetail(waivableCode) && !parsed) {
     throw new Error(`${detail} is not a valid --detail value for ${waivableCode}.`);
@@ -629,9 +641,9 @@ export async function recordChangeWaiver(
     switch (waivableCode) {
       case 'CHANGE_REQUIREMENTS_UNCHANGED': return requirementsUnchangedCondition(change!);
       case 'CHANGE_DESIGN_UNCHANGED': return designUnchangedCondition(change!);
-      case 'CHANGE_RED_UNPROVEN': return redUnprovenCondition(change!, requirementId!, tdd);
-      case 'CHANGE_GREEN_UNPROVEN': return greenUnprovenCondition(change!, requirementId!, tdd);
-      case 'CHANGE_COMPLETENESS_TDD': return completenessTddUnsatisfiedCondition(change!, requirementId!, tdd);
+      case 'CHANGE_RED_UNPROVEN': return redUnprovenCondition(change!, requirementId!, tdd, validlyVoided);
+      case 'CHANGE_GREEN_UNPROVEN': return greenUnprovenCondition(change!, requirementId!, tdd, validlyVoided);
+      case 'CHANGE_COMPLETENESS_TDD': return completenessTddUnsatisfiedCondition(change!, requirementId!, tdd, validlyVoided);
       case 'CHANGE_RECORD_MISSING': return recordMissingCondition(root, evidence, changeId);
       case 'CHANGE_PHASE_MISSING':
         return parsed?.kind === 'phase' ? phaseMissingCondition(change!, parsed.phaseName) : false;
@@ -639,28 +651,42 @@ export async function recordChangeWaiver(
         if (!parsed) return false;
         if (parsed.kind === 'phase') return orderMigrationRequiredPhaseCondition(change!, parsed.phaseName);
         if (parsed.kind === 'batch') return orderMigrationRequiredBatchCondition(change!, parsed.batchPhaseName, parsed.batchKey);
-        if (parsed.kind === 'requirement') return orderMigrationRequiredRequirementCondition(change!, parsed.requirementId, tdd);
+        if (parsed.kind === 'requirement') {
+          return orderMigrationRequiredRequirementCondition(change!, parsed.requirementId, tdd, validlyVoided);
+        }
         return false;
       }
       case 'CHANGE_TESTS_UNCHANGED': {
         if (parsed?.kind !== 'batchKey') return false;
-        const batch = batchForKey(effectiveBatches(change!), parsed.batchKey);
-        return !!batch && testsUnchangedCondition(change!, batch);
+        const batches = effectiveBatches(change!);
+        const batch = batchForKey(batches, parsed.batchKey);
+        return !!batch
+          && currentRequirementIdsForBatch(batches, batch, change!.requirementIds).length > 0
+          && testsUnchangedCondition(change!, batch);
       }
       case 'CHANGE_IMPLEMENTATION_UNCHANGED': {
         if (parsed?.kind !== 'batchKey') return false;
-        const batch = batchForKey(effectiveBatches(change!), parsed.batchKey);
-        return !!batch && implementationUnchangedCondition(batch);
+        const batches = effectiveBatches(change!);
+        const batch = batchForKey(batches, parsed.batchKey);
+        return !!batch
+          && currentRequirementIdsForBatch(batches, batch, change!.requirementIds).length > 0
+          && implementationUnchangedCondition(batch);
       }
       case 'CHANGE_TEST_CHANGED_AFTER_RED': {
         if (parsed?.kind !== 'batchKey') return false;
-        const batch = batchForKey(effectiveBatches(change!), parsed.batchKey);
-        return !!batch && testChangedAfterRedCondition(batch);
+        const batches = effectiveBatches(change!);
+        const batch = batchForKey(batches, parsed.batchKey);
+        return !!batch
+          && currentRequirementIdsForBatch(batches, batch, change!.requirementIds).length > 0
+          && testChangedAfterRedCondition(batch);
       }
       case 'CHANGE_RELEVANT_IMPLEMENTATION_UNCHANGED': {
         if (parsed?.kind !== 'batchKey' || requirementId === undefined) return false;
-        const batch = batchForKey(effectiveBatches(change!), parsed.batchKey);
-        return !!batch && relevantImplementationUnchangedCondition(batch, requirementId);
+        const batches = effectiveBatches(change!);
+        const batch = batchForKey(batches, parsed.batchKey);
+        return !!batch
+          && currentRequirementIdsForBatch(batches, batch, change!.requirementIds).includes(requirementId)
+          && relevantImplementationUnchangedCondition(batch, requirementId);
       }
       default: return false;
     }

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-21T05:19:39.515Z",
+  "generatedAt": "2026-09-21T08:43:21.294Z",
   "nodes": [
     {
       "id": "CODE-SESSION-SCOPED-DEVELOPMENT-001",
@@ -1793,166 +1793,178 @@
       "line": 69
     },
     {
+      "id": "CODE-CHANGE-REQUIREMENT-BATCHES-003",
+      "kind": "code",
+      "path": "packages/analysis/src/change-evidence.ts",
+      "line": 85
+    },
+    {
+      "id": "CODE-CHANGE-REQUIREMENT-BATCHES-004",
+      "kind": "code",
+      "path": "packages/analysis/src/change-evidence.ts",
+      "line": 128
+    },
+    {
       "id": "CODE-CHANGE-EVIDENCE-WAIVER-014",
       "kind": "code",
       "path": "packages/analysis/src/change-evidence.ts",
-      "line": 89
+      "line": 190
     },
     {
       "id": "CODE-CHANGE-EVIDENCE-WAIVER-015",
       "kind": "code",
       "path": "packages/analysis/src/change-evidence.ts",
-      "line": 100
+      "line": 201
     },
     {
       "id": "CODE-CHANGE-EVIDENCE-WAIVER-016",
       "kind": "code",
       "path": "packages/analysis/src/change-evidence.ts",
-      "line": 170
+      "line": 281
     },
     {
       "id": "CODE-CHANGE-EVIDENCE-WAIVER-001",
       "kind": "code",
       "path": "packages/analysis/src/change-waiver.ts",
-      "line": 19
+      "line": 21
     },
     {
       "id": "CODE-CHANGE-EVIDENCE-WAIVER-017",
       "kind": "code",
       "path": "packages/analysis/src/change-waiver.ts",
-      "line": 39
+      "line": 41
     },
     {
       "id": "CODE-CHANGE-EVIDENCE-WAIVER-002",
       "kind": "code",
       "path": "packages/analysis/src/change-waiver.ts",
-      "line": 107
+      "line": 109
     },
     {
       "id": "CODE-CHANGE-EVIDENCE-WAIVER-003",
       "kind": "code",
       "path": "packages/analysis/src/change-waiver.ts",
-      "line": 124
+      "line": 126
     },
     {
       "id": "CODE-CHANGE-EVIDENCE-WAIVER-018",
       "kind": "code",
       "path": "packages/analysis/src/change-waiver.ts",
-      "line": 132
+      "line": 134
     },
     {
       "id": "CODE-CHANGE-EVIDENCE-WAIVER-019",
       "kind": "code",
       "path": "packages/analysis/src/change-waiver.ts",
-      "line": 169
+      "line": 171
     },
     {
       "id": "CODE-CHANGE-EVIDENCE-WAIVER-004",
       "kind": "code",
       "path": "packages/analysis/src/change-waiver.ts",
-      "line": 192
+      "line": 194
     },
     {
       "id": "CODE-CHANGE-EVIDENCE-WAIVER-005",
       "kind": "code",
       "path": "packages/analysis/src/change-waiver.ts",
-      "line": 339
+      "line": 350
     },
     {
       "id": "CODE-CHANGE-EVIDENCE-WAIVER-006",
       "kind": "code",
       "path": "packages/analysis/src/change-waiver.ts",
-      "line": 365
+      "line": 376
     },
     {
       "id": "CODE-CHANGE-EVIDENCE-WAIVER-007",
       "kind": "code",
       "path": "packages/analysis/src/change-waiver.ts",
-      "line": 377
+      "line": 388
     },
     {
       "id": "CODE-CHANGE-EVIDENCE-WAIVER-020",
       "kind": "code",
       "path": "packages/analysis/src/change-waiver.ts",
-      "line": 436
+      "line": 447
     },
     {
       "id": "CODE-CHANGE-EVIDENCE-WAIVER-008",
       "kind": "code",
       "path": "packages/analysis/src/change-waiver.ts",
-      "line": 501
+      "line": 512
     },
     {
       "id": "CODE-CHANGE-EVIDENCE-WAIVER-009",
       "kind": "code",
       "path": "packages/analysis/src/change-waiver.ts",
-      "line": 527
+      "line": 538
     },
     {
       "id": "CODE-CHANGE-EVIDENCE-WAIVER-010",
       "kind": "code",
       "path": "packages/analysis/src/change-waiver.ts",
-      "line": 569
+      "line": 580
     },
     {
       "id": "CODE-CHANGE-EVIDENCE-WAIVER-011",
       "kind": "code",
       "path": "packages/analysis/src/change-waiver.ts",
-      "line": 717
+      "line": 743
     },
     {
       "id": "CODE-CHANGE-EVIDENCE-WAIVER-012",
       "kind": "code",
       "path": "packages/analysis/src/change-waiver.ts",
-      "line": 754
+      "line": 780
     },
     {
       "id": "CODE-CHANGE-ACCEPTANCE-HEURISTIC-001",
       "kind": "code",
       "path": "packages/analysis/src/change.ts",
-      "line": 17
+      "line": 18
     },
     {
       "id": "CODE-CHANGE-ACCEPTANCE-HEURISTIC-002",
       "kind": "code",
       "path": "packages/analysis/src/change.ts",
-      "line": 23
+      "line": 24
     },
     {
       "id": "CODE-CHANGE-RECORD-FAIL-FAST-001",
       "kind": "code",
       "path": "packages/analysis/src/change.ts",
-      "line": 89
+      "line": 90
     },
     {
       "id": "CODE-CHANGE-RECORD-FAIL-FAST-003",
       "kind": "code",
       "path": "packages/analysis/src/change.ts",
-      "line": 128
+      "line": 129
     },
     {
       "id": "CODE-CHANGE-RECORD-RECORDEDAT-ORDER-001",
       "kind": "code",
       "path": "packages/analysis/src/change.ts",
-      "line": 260
+      "line": 261
     },
     {
       "id": "CODE-CHANGE-RECORD-RECORDEDAT-ORDER-002",
       "kind": "code",
       "path": "packages/analysis/src/change.ts",
-      "line": 268
+      "line": 269
     },
     {
       "id": "CODE-CHANGE-RECORD-RECORDEDAT-ORDER-003",
       "kind": "code",
       "path": "packages/analysis/src/change.ts",
-      "line": 299
+      "line": 300
     },
     {
       "id": "CODE-CHANGE-REQUIREMENT-BATCHES-002",
       "kind": "code",
       "path": "packages/analysis/src/change.ts",
-      "line": 321
+      "line": 322
     },
     {
       "id": "CODE-APPROVAL-DOMAIN-SCOPING-001",
@@ -2090,43 +2102,43 @@
       "id": "CODE-TDD-CYCLE-VOID-004",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 329
+      "line": 336
     },
     {
       "id": "CODE-TDD-CYCLE-VOID-001",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 364
+      "line": 371
     },
     {
       "id": "CODE-TDD-GREEN-REQUIREMENT-SCOPING-001",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 442
+      "line": 449
     },
     {
       "id": "CODE-TDD-ADOPTION-WARNING-001",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 520
+      "line": 527
     },
     {
       "id": "CODE-TDD-SUPERSEDED-CYCLE-SCOPING-001",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 652
+      "line": 659
     },
     {
       "id": "CODE-TDD-CYCLE-VOID-003",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 670
+      "line": 677
     },
     {
       "id": "CODE-TDD-CYCLE-VOID-005",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 681
+      "line": 688
     },
     {
       "id": "CODE-SESSION-SCOPED-DEVELOPMENT-003",
@@ -2786,31 +2798,43 @@
       "id": "TEST-CHANGE-REQUIREMENT-BATCHES-001",
       "kind": "test",
       "path": "tests/change-requirement-batches.test.ts",
-      "line": 41
+      "line": 87
     },
     {
       "id": "TEST-CHANGE-REQUIREMENT-BATCHES-002",
       "kind": "test",
       "path": "tests/change-requirement-batches.test.ts",
-      "line": 88
+      "line": 134
     },
     {
       "id": "TEST-CHANGE-REQUIREMENT-BATCHES-003",
       "kind": "test",
       "path": "tests/change-requirement-batches.test.ts",
-      "line": 118
+      "line": 164
     },
     {
       "id": "TEST-CHANGE-REQUIREMENT-BATCHES-006",
       "kind": "test",
       "path": "tests/change-requirement-batches.test.ts",
-      "line": 149
+      "line": 195
     },
     {
       "id": "TEST-CHANGE-REQUIREMENT-BATCHES-007",
       "kind": "test",
       "path": "tests/change-requirement-batches.test.ts",
-      "line": 189
+      "line": 235
+    },
+    {
+      "id": "TEST-CHANGE-REQUIREMENT-BATCHES-008",
+      "kind": "test",
+      "path": "tests/change-requirement-batches.test.ts",
+      "line": 276
+    },
+    {
+      "id": "TEST-CHANGE-REQUIREMENT-BATCHES-009",
+      "kind": "test",
+      "path": "tests/change-requirement-batches.test.ts",
+      "line": 301
     },
     {
       "id": "TEST-SESSION-SCOPED-DEVELOPMENT-001",
@@ -5102,6 +5126,26 @@
       "relation": "implements"
     },
     {
+      "from": "CODE-CHANGE-REQUIREMENT-BATCHES-003",
+      "to": "REQ-CHANGE-REQUIREMENT-BATCHES-005",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-REQUIREMENT-BATCHES-003",
+      "to": "DES-CHANGE-REQUIREMENT-BATCHES-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-REQUIREMENT-BATCHES-004",
+      "to": "REQ-CHANGE-REQUIREMENT-BATCHES-005",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-REQUIREMENT-BATCHES-004",
+      "to": "DES-CHANGE-REQUIREMENT-BATCHES-002",
+      "relation": "implements"
+    },
+    {
       "from": "CODE-CHANGE-EVIDENCE-WAIVER-014",
       "to": "REQ-CHANGE-EVIDENCE-WAIVER-016",
       "relation": "implements"
@@ -7007,6 +7051,16 @@
       "relation": "verifies"
     },
     {
+      "from": "TEST-CHANGE-REQUIREMENT-BATCHES-008",
+      "to": "REQ-CHANGE-REQUIREMENT-BATCHES-005",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-CHANGE-REQUIREMENT-BATCHES-009",
+      "to": "REQ-CHANGE-REQUIREMENT-BATCHES-005",
+      "relation": "verifies"
+    },
+    {
       "from": "TEST-SESSION-SCOPED-DEVELOPMENT-001",
       "to": "REQ-SESSION-SCOPED-DEVELOPMENT-001",
       "relation": "verifies"
@@ -7472,7 +7526,7 @@
     ".musubix/decisions/ADR-0008.md": "ed668b4e69b832890fe0644b18b602cfa5224dd85c8a58af3e188b609659a276",
     ".musubix/decisions/ADR-0009.md": "b81438c27d6710e45e9493ba831a8e5d0be89430183e3f581dd68c3c80fa38c1",
     ".musubix/decisions/ADR-0010.md": "b2e65434cc9c2ec8947e49bf60858784ab30e6f0c3dacd434f2e9d3f93154fa7",
-    ".musubix/decisions/ADR-0011.md": "daeaf7fa94e563f46d9f5449b49b385e9ee52de4dc2b2f7bb34c71f07efd2f8a",
+    ".musubix/decisions/ADR-0011.md": "ad5822d96a5fa350c7f70f3b1ffaa45bd83d298a6c493c4a247742911169f40c",
     ".musubix/decisions/ADR-0012.md": "8f33f5dec818bbf6118b08e9aeae4424fa933821be8bbb15011afa5874f6c41f",
     ".musubix/decisions/ADR-0013.md": "b22ea1b6049514c899a82e5964109e5d6f43c9a852a33168dce360768535aaca",
     ".musubix/decisions/ADR-0014.md": "363215afb473df46809fb73875e18451d11e30587d8efca472f253082f789f53",
@@ -7506,8 +7560,8 @@
     ".musubix/features/change-record-fail-fast/requirements.md": "7488f2f96293ca03ca0690358aa528d1e329e70d39be3885540f54c81c14d94e",
     ".musubix/features/change-record-recordedat-order/design.md": "dd13b47ff7a22763bf45114f4a789c3c566e71d5905bd1dbcebe1f093992e7ab",
     ".musubix/features/change-record-recordedat-order/requirements.md": "f43a1e3170ff7488fd2b3993ac9ba662b45ae159978513f929a99f59bdfcb83b",
-    ".musubix/features/change-requirement-batches/design.md": "ea7ee9aa17f9f675bf649e9eec90b07e335a6fb793faf4c9951c5f747510f453",
-    ".musubix/features/change-requirement-batches/requirements.md": "215dff587257d8edf5ba17c60b610bb6abe4497d867ad20de28e5ef520184c7f",
+    ".musubix/features/change-requirement-batches/design.md": "11ee9d356f4f2e9a144cf9368294efa76daf31de0dbe96d6326d0141d581f6b7",
+    ".musubix/features/change-requirement-batches/requirements.md": "d4d2d1e9e12cd4e062ca3a14e4a28d9f011de634fb3c10defb53653260667110",
     ".musubix/features/cli-workflow-ux-v019/design.md": "bdb13e2b903123c32e54787599220ea5444a0922532b60d38fef528991116cf8",
     ".musubix/features/cli-workflow-ux-v019/requirements.md": "8ac7b7e793009d95a03b53de1e3aca043d4433a7b6de9511d8547ebc33b5e7b2",
     ".musubix/features/command-working-directory/design.md": "70ccde3b2777c2cf9e06881a20ecd5b50107d9dba680694f92b811cacb5052eb",
@@ -7553,9 +7607,9 @@
     "packages/analysis/src/approval-record.ts": "838294de204a006daf5a7048a69153b573d5b61e5c9d8f3d66332b27a5b577bf",
     "packages/analysis/src/approval.ts": "d9f57165ca455a0b49acdda7096e0df98a06cd5be33c3d20b2f06cf40917c69f",
     "packages/analysis/src/attestation.ts": "c353b5d93f151665e1f5f0531b763db164cb54e5305a837efd47b2742eb3b949",
-    "packages/analysis/src/change-evidence.ts": "8bff2cb709de3834e078bf8bf30f2ddef36b37fa03bec5446e27711cae14709b",
-    "packages/analysis/src/change-waiver.ts": "edabb578fe2d968bf98fe068ee240a32b67dcf7b50724a265e83ebc2a88c1ccd",
-    "packages/analysis/src/change.ts": "a59c917c7a6009e8ed8802879e3ec35612b0569bd4104094f0a35f28c60caa84",
+    "packages/analysis/src/change-evidence.ts": "a4d3f08d27ea87cf0b888256429227963df0839b20e741f85c844ab7ca7fb717",
+    "packages/analysis/src/change-waiver.ts": "a53d6463de68c125d4d078b0057b4d27a92f70c105adf09c3ef206274f7bcb5f",
+    "packages/analysis/src/change.ts": "82be3f8de93c45ae103a62a17ca3e6ffbb56223a8b4c612b3c15d1d74d64eeb2",
     "packages/analysis/src/config.ts": "52d5212f4057df9ed5caac0a0025ce744864909abceea3c64d259479ddffb998",
     "packages/analysis/src/files.ts": "6186177faea34f7b2f6dd865b4f911d3b8fbfe6786e2cd19bc7dffee2a058ba2",
     "packages/analysis/src/formal.ts": "9f5622983fed80c1e7c141cc7c7dcd217447e5c2edd39e64877db052a57b730b",
@@ -7569,7 +7623,7 @@
     "packages/analysis/src/performance.ts": "1145c285582ff188e90263b4d9d9f28ca49104e79b8299b2ecd3e278d8ef80ac",
     "packages/analysis/src/process.ts": "8184c7f7c4c58cdc6987fd9d2ec2c02ce8557f94b6aa30853a0c6056ba79cf4a",
     "packages/analysis/src/scaffold-artifact.ts": "e5e6fa31fbd97ce4dcc294ab26966eb0a4a2507eb4025a7a8a522831e7fb886d",
-    "packages/analysis/src/tdd.ts": "96a9eef2bf0b1fbd034679be854e1a86994e6c0c0fd7ea4569e3f895ac115f80",
+    "packages/analysis/src/tdd.ts": "d8735ca304f208b1f6d3f4fdff002869b79f7ac22fd0512806fbf2cd50a1bde9",
     "packages/analysis/src/test-report.ts": "41c76811bfcb5e286bf097bf2f6aaf6cd5a414202efe8108f28219ecca063a01",
     "packages/analysis/src/trace.ts": "010f31087efea1eadb8925836527f54fddff71d40b74334de9d88800b7dad47e",
     "packages/analysis/src/workflow-types.ts": "427c3450352eb7799e2b49933e267f9888e87d51dc5c6482b5b1378620205309",
@@ -7598,7 +7652,7 @@
     "tests/change-evidence-waiver.test.ts": "254f82e14dac3beaed102979dd0e977ded31ebc20ffacb60aa798194b97bed80",
     "tests/change-record-fail-fast.test.ts": "2f69f19332049c206f39b42c3bc2b505ce63173db798d74c5a9ace7064cdfe78",
     "tests/change-record-recordedat-order.test.ts": "5ad61cf31e273dc9cdfe190b21dcc8ffc49d327592e01b6eb0251f4cdda7b149",
-    "tests/change-requirement-batches.test.ts": "1150be6f24769b99cc88fd2984a7eaecd7b41cd9f6db6fa847f29f74e2f3f808",
+    "tests/change-requirement-batches.test.ts": "919b14e0fc9174e82b916dac0448ba2f9acf57f038f0ec820ed0aa6a397f77bd",
     "tests/cli-package.test.ts": "49ff7dc11787413186ac46267b402468407ca681f5093326e0fee892b08ec512",
     "tests/cli-workflow-ux.test.ts": "53bdc5375bef05b365d725f5a8948393d68ae8cd1116fad8ff36ca3de127a177",
     "tests/command-working-directory.test.ts": "82dc863b1fcc5cd8a5ea1534238ef2f61f15e5d6c5e25d61fce43a7efe9bbc02",

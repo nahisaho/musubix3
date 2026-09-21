@@ -1,13 +1,14 @@
 import { error, ids, validateDesign, validateRequirements, type Diagnostic, type Requirement } from '../../domain/src/index.js';
 import { digest, exists, files, snapshot, within, writeJson, readText } from './files.js';
-import { loadTddEvidence } from './tdd.js';
+import { loadTddEvidence, validlyVoidedTddCycles } from './tdd.js';
 import { buildTrace, commentBlocks } from './trace.js';
 import { indexGraph } from './graph.js';
 import { validatePerformanceEvidence } from './performance.js';
 import { appendEvidenceOrder, evidenceOrderRecord, inspectEvidenceOrder } from './order.js';
 import { loadChangeWaiverEvidence, buildWaiverContext, diagnosticDetail, errorFor, reportWaiverEvidenceDiagnostics, waivedDiagnostic } from './change-waiver.js';
 import {
-  batchFor, batchKey, changePhases, effectiveBatches, loadChangeEvidence,
+  batchFor, batchKey, changePhases, currentRequirementIdsForBatch, effectiveBatches, hasValidTddCycle,
+  loadChangeEvidence, orderMigrationRequiredRequirementCondition,
   type ChangeCompleteness, type ChangeEvidence, type ChangeFingerprints, type ChangePhase,
   type ChangePhaseEvidence, type ChangeRecord, type ChangeTddBatch,
 } from './change-evidence.js';
@@ -164,7 +165,7 @@ export async function recordChangePhase(
   if (!isBatchPhase || isFullSet) {
     // impact/requirements/design/quality (always), and red/implementation/green
     // recorded with the change's exact full requirement ID set: identical,
-    // unchanged, once-per-change behavior (REQ-CHANGE-REQUIREMENT-BATCHES-002).
+    // unchanged, once-per-change behavior (REQ-CHANGE-REQUIREMENT-BATCHES-001).
     if (change.phases[phase]) throw new Error(`${changeId}:${phase} is already recorded.`);
     if (phase === 'requirements' && !change.phases.impact) throw new Error('requirements requires the preceding impact phase.');
     if (phase === 'design' && !change.phases.requirements) throw new Error('design requires the preceding requirements phase.');
@@ -350,6 +351,7 @@ export async function validateChangeEvidence(root: string): Promise<{
   }
   const diagnostics: Diagnostic[] = [...waiverDiagnostics];
   const order = waiverContext.order;
+  const validlyVoided = validlyVoidedTddCycles(tdd, order);
   diagnostics.push(...order.diagnostics);
   for (const changeId of documents) {
     if (!evidence.changes.some((change) => change.changeId === changeId)) {
@@ -447,6 +449,8 @@ export async function validateChangeEvidence(root: string): Promise<{
         `${change.changeId} did not change design after requirements.`, change.changeId, undefined, undefined));
     }
     for (const batch of batches) {
+      const currentRequirementIds = currentRequirementIdsForBatch(batches, batch, change.requirementIds);
+      if (!currentRequirementIds.length) continue;
       const red = batch.red;
       const implementation = batch.implementation;
       const green = batch.green;
@@ -459,7 +463,7 @@ export async function validateChangeEvidence(root: string): Promise<{
           `${change.changeId} did not change implementation after Red.`, change.changeId, undefined, diagnosticDetail('CHANGE_IMPLEMENTATION_UNCHANGED', { batch })));
       }
       if (red && implementation) {
-        for (const requirementId of batch.requirementIds) {
+        for (const requirementId of currentRequirementIds) {
           const before = red.fingerprints.requirementImplementations?.[requirementId];
           const after = implementation.fingerprints.requirementImplementations?.[requirementId];
           if (!before || !after || (!before.paths.length && !after.paths.length)) {
@@ -483,27 +487,9 @@ export async function validateChangeEvidence(root: string): Promise<{
     for (const requirementId of change.requirementIds) {
       const batch = batchFor(batches, requirementId);
       const red = batch?.red;
-      const implementation = batch?.implementation;
       const green = batch?.green;
-      const cycles = tdd?.cycles.filter((cycle) => cycle.requirementId === requirementId) ?? [];
-      const validCycle = cycles.find((cycle) =>
-        requirements
-        && red
-        && implementation
-        && green
-        && Number.isInteger(requirements.order)
-        && Number.isInteger(red.order)
-        && Number.isInteger(implementation.order)
-        && Number.isInteger(green.order)
-        && Number.isInteger(cycle.red.order)
-        && Number.isInteger(cycle.green?.order)
-        && cycle.red.valid
-        && cycle.green?.valid
-        && cycle.red.order! > requirements.order!
-        && cycle.red.order! <= red.order!
-        && cycle.green.order! > implementation.order!
-        && cycle.green.order! <= green.order!);
-      if (red && cycles.some((cycle) => !Number.isInteger(cycle.red.order) || !Number.isInteger(cycle.green?.order))) {
+      const validCycle = hasValidTddCycle(change, requirementId, tdd, validlyVoided);
+      if (orderMigrationRequiredRequirementCondition(change, requirementId, tdd, validlyVoided)) {
         diagnostics.push(waivedDiagnostic(waiverContext, 'CHANGE_ORDER_MIGRATION_REQUIRED',
           `${change.changeId}:${requirementId} references TDD evidence without monotonic order; regenerate the cycle.`,
           change.changeId, undefined, diagnosticDetail('CHANGE_ORDER_MIGRATION_REQUIRED', { requirementId })));
@@ -530,6 +516,7 @@ export async function validateChangeCompleteness(root: string): Promise<{
   const evidence = await loadChangeEvidence(root);
   const tdd = await loadTddEvidence(root);
   const waiverContext = await buildWaiverContext(root, evidence, tdd);
+  const validlyVoided = validlyVoidedTddCycles(tdd, waiverContext.order);
   const waiverDiagnostics = reportWaiverEvidenceDiagnostics(waiverContext, evidence, tdd);
   if (!evidence?.changes.length) {
     return {
@@ -605,29 +592,7 @@ export async function validateChangeCompleteness(root: string): Promise<{
       const measurableAcceptance = acceptanceTrimmed.length >= 8
         && !PLACEHOLDER_PREFIX_RE.test(acceptanceTrimmed)
         && MEASURABLE_KEYWORD_RE.test(acceptanceTrimmed);
-      const requirements = change.phases.requirements;
-      const batch = batchFor(effectiveBatches(change), requirementId);
-      const red = batch?.red;
-      const implementation = batch?.implementation;
-      const green = batch?.green;
-      const hasTdd = tdd?.cycles.some((cycle) =>
-        cycle.requirementId === requirementId
-        && requirements
-        && red
-        && implementation
-        && green
-        && Number.isInteger(requirements.order)
-        && Number.isInteger(red.order)
-        && Number.isInteger(implementation.order)
-        && Number.isInteger(green.order)
-        && Number.isInteger(cycle.red.order)
-        && Number.isInteger(cycle.green?.order)
-        && cycle.red.valid
-        && cycle.green?.valid
-        && cycle.red.order! > requirements.order!
-        && cycle.red.order! <= red.order!
-        && cycle.green.order! > implementation.order!
-        && cycle.green.order! <= green.order!) ?? false;
+      const hasTdd = hasValidTddCycle(change, requirementId, tdd, validlyVoided);
       const checks = [
         [!!requirementNode && !!requirement && !!type, 'CHANGE_COMPLETENESS_REQUIREMENT', 'requirement'],
         [measurableAcceptance, 'CHANGE_COMPLETENESS_ACCEPTANCE', 'nonempty measurable Acceptance criteria'],
