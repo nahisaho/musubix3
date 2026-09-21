@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased
+
+- Fix strict workflow verification for resumed Copilot CLI conversations.
+  A single-session transcript may now contain one or more routine
+  `session.shutdown` / `session.resume` episodes before its final routine
+  shutdown. Invalid or unmatched lifecycle transitions, mixed `result` and
+  shutdown formats, abnormal shutdowns, multiple session identities, and
+  non-final terminal state still fail closed. `workflow-sanitize` retains the
+  resume boundaries required for strict re-verification (#26).
+
 ## 0.1.19 - 2026-09-14
 
 Bug fix: change completeness now recognizes every requirement listed in a

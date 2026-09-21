@@ -837,11 +837,14 @@ Incomplete, failed, reused, out-of-order and stale bindings fail.
 Set `"workflow":{"mode":"strict"}` or pass `--strict` to additionally require
 valid JSON on every nonempty line, valid event timestamps, consistent one-to-one
 tool start/completion lifecycles, and exactly one successful final terminal
-event. Supported terminal formats are `result` with `exitCode: 0`, or the current
+state. Supported terminal formats are `result` with `exitCode: 0`, or the current
 Copilot CLI lifecycle format with one session UUID and a final
-`session.shutdown` whose `data.shutdownType` is `routine`. Mixed terminal
-formats, multiple session identities, abnormal shutdowns, and trailing events
-fail closed. Compatible mode alone accepts more than one transcript path;
+`session.shutdown` whose `data.shutdownType` is `routine`. The shutdown format
+also accepts one or more intermediate routine shutdowns when each is immediately
+followed by `session.resume`; `workflow-sanitize` retains those lifecycle
+boundaries. Mixed terminal formats, unmatched shutdown/resume transitions,
+multiple session identities, abnormal shutdowns, and trailing events fail
+closed. Compatible mode alone accepts more than one transcript path;
 supplied files are concatenated in ascending order of each file's earliest
 event timestamp (not command-line order), while each file's own internal
 event order is preserved untouched — this lets declarations whose invocation

@@ -1,7 +1,9 @@
+import { writeFile } from 'node:fs/promises';
+import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import {
-  collectEvidenceHeads, defaultConfig, loadWorkflow, parseConfig, recordWorkflow, validateWorkflow,
-  verifyWorkflowLog, writeJson,
+  collectEvidenceHeads, defaultConfig, loadWorkflow, parseConfig, readText, recordWorkflow,
+  sanitizeWorkflowLogFile, validateWorkflow, verifyWorkflowLog, writeJson,
 } from '../packages/analysis/src/index.js';
 import { fixture } from './helpers.js';
 
@@ -64,6 +66,58 @@ function shutdownTranscript(options: {
       },
     },
     ...(options.trailing ? [options.trailing] : []),
+  ].map((event) => JSON.stringify(event)).join('\n');
+}
+
+function resumedShutdownTranscript(options: {
+  firstShutdownType?: string;
+  betweenShutdownAndResume?: object;
+  resumeSessionId?: string;
+  duplicateStart?: boolean;
+  orphanResume?: boolean;
+} = {}): string {
+  return [
+    ...(options.orphanResume ? [] : [{
+      type: 'session.start',
+      timestamp: '2020-01-01T00:00:00.000Z',
+      data: { sessionId },
+    }]),
+    ...(options.duplicateStart ? [{
+      type: 'session.start',
+      timestamp: '2020-01-01T00:00:00.500Z',
+      data: { sessionId },
+    }] : []),
+    {
+      type: 'tool.execution_start',
+      timestamp: '2020-01-01T00:00:01.000Z',
+      data: { toolCallId: 'call-1', toolName: 'skill', arguments: { skill: 'sdd-change' } },
+    },
+    {
+      type: 'tool.execution_complete',
+      timestamp: '2020-01-01T00:00:02.000Z',
+      data: { toolCallId: 'call-1', success: true },
+    },
+    {
+      type: 'session.shutdown',
+      timestamp: '2020-01-01T00:00:03.000Z',
+      data: { shutdownType: options.firstShutdownType ?? 'routine' },
+    },
+    ...(options.betweenShutdownAndResume ? [options.betweenShutdownAndResume] : []),
+    {
+      type: 'session.resume',
+      timestamp: '2020-01-01T00:00:04.000Z',
+      ...(options.resumeSessionId ? { data: { sessionId: options.resumeSessionId } } : {}),
+    },
+    {
+      type: 'assistant.message',
+      timestamp: '2020-01-01T00:00:05.000Z',
+      data: { content: 'private' },
+    },
+    {
+      type: 'session.shutdown',
+      timestamp: '2020-01-01T00:00:06.000Z',
+      data: { shutdownType: 'routine' },
+    },
   ].map((event) => JSON.stringify(event)).join('\n');
 }
 
@@ -208,6 +262,89 @@ describe('P3 strict workflow transcript provenance', () => {
     await expect(verifyWorkflowLog(root, shutdownTranscript({
     trailing: { type: 'assistant.message', timestamp: '2020-01-01T00:00:04.000Z' },
     }), { mode: 'strict' })).rejects.toThrow('final JSONL event');
+  });
+
+  /** @id TEST-WORKFLOW-SHUTDOWN-RESUME-001
+   * @verifies REQ-WORKFLOW-SHUTDOWN-001
+   */
+  it('TEST-WORKFLOW-SHUTDOWN-RESUME-001 accepts routine shutdown and resume episodes', async () => {
+    const root = await fixture();
+    await recordWorkflow(root, { skill: 'sdd-change', phase: 'complete', status: 'completed' });
+
+    await expect(verifyWorkflowLog(root, resumedShutdownTranscript(), {
+      mode: 'strict',
+      expectedSessionId: sessionId,
+    })).resolves.toMatchObject({
+      verification: {
+        mode: 'strict',
+        sessionId,
+        exitCode: 0,
+        terminalAt: '2020-01-01T00:00:06.000Z',
+        eventCount: 7,
+      },
+    });
+  });
+
+  /** @id TEST-WORKFLOW-SHUTDOWN-RESUME-002
+   * @verifies REQ-WORKFLOW-SHUTDOWN-001
+   */
+  it('TEST-WORKFLOW-SHUTDOWN-RESUME-002 rejects invalid resumed shutdown lifecycles', async () => {
+    const root = await fixture();
+    await recordWorkflow(root, { skill: 'sdd-change', phase: 'complete', status: 'completed' });
+
+    await expect(verifyWorkflowLog(root, resumedShutdownTranscript({
+      firstShutdownType: 'error',
+    }), { mode: 'strict' })).rejects.toThrow('shutdownType routine');
+    await expect(verifyWorkflowLog(root, resumedShutdownTranscript({
+      betweenShutdownAndResume: {
+        type: 'assistant.message',
+        timestamp: '2020-01-01T00:00:03.500Z',
+      },
+    }), { mode: 'strict' })).rejects.toThrow();
+    await expect(verifyWorkflowLog(root, resumedShutdownTranscript({
+      resumeSessionId: '123e4567-e89b-42d3-a456-426614174001',
+    }), { mode: 'strict' })).rejects.toThrow();
+    await expect(verifyWorkflowLog(root, resumedShutdownTranscript({
+      duplicateStart: true,
+    }), { mode: 'strict' })).rejects.toThrow();
+    await expect(verifyWorkflowLog(root, resumedShutdownTranscript({
+      orphanResume: true,
+    }), { mode: 'strict' })).rejects.toThrow();
+
+    const raw = resolve(root, 'invalid-resume.jsonl');
+    await writeFile(raw, resumedShutdownTranscript({
+      betweenShutdownAndResume: {
+        type: 'assistant.message',
+        timestamp: '2020-01-01T00:00:03.500Z',
+      },
+    }));
+    await expect(sanitizeWorkflowLogFile(root, raw, 'evidence/workflow.jsonl')).rejects.toThrow();
+  });
+
+  /** @id TEST-WORKFLOW-SHUTDOWN-RESUME-003
+   * @verifies REQ-WORKFLOW-SHUTDOWN-001
+   */
+  it('TEST-WORKFLOW-SHUTDOWN-RESUME-003 preserves resume boundaries during sanitization', async () => {
+    const root = await fixture();
+    const replacement = '123e4567-e89b-42d3-a456-426614174099';
+    await recordWorkflow(root, { skill: 'sdd-change', phase: 'complete', status: 'completed' });
+    const raw = resolve(root, 'resumed-session.jsonl');
+    await writeFile(raw, resumedShutdownTranscript());
+
+    await expect(sanitizeWorkflowLogFile(root, raw, 'evidence/workflow.jsonl', replacement))
+      .resolves.toMatchObject({ inputEvents: 7, outputEvents: 6, sessionId: replacement });
+    const sanitized = await readText(root, 'evidence/workflow.jsonl');
+    expect(sanitized).toContain('"type":"session.resume"');
+    await expect(verifyWorkflowLog(root, sanitized, {
+      mode: 'strict',
+      expectedSessionId: replacement,
+    })).resolves.toMatchObject({
+      verification: {
+        sessionId: replacement,
+        exitCode: 0,
+        terminalAt: '2020-01-01T00:00:06.000Z',
+      },
+    });
   });
 
   it('rejects malformed, unordered, orphaned, duplicate, and incomplete tool lifecycles', async () => {

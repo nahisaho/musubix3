@@ -1,8 +1,8 @@
 # Copilot session shutdown workflow design
 
 ## DES-WORKFLOW-SHUTDOWN-001: Strict terminal normalization
-Responsibilities: strict transcript解析時に従来の`result`と現行Copilot CLIの`session.shutdown`を共通のterminal identityへ正規化し、完全性条件を一箇所で検証する。
-Interfaces: `verifyWorkflowLog`、`verifyWorkflowLogFile`、`sanitizeWorkflowLogFile`、`WorkflowManifest.verification`。
-Constraints: `result`互換を維持する。shutdown形式では一意な`session.start` UUID、正確に1件かつ最終イベントの`session.shutdown`、`data.shutdownType="routine"`を必須とする。両形式の混在、複数session、非routine、非final、欠落を拒否する。検証前のログ変換は禁止する。
+Responsibilities: strict transcript解析時に従来の`result`と現行Copilot CLIの`session.shutdown`を共通のterminal identityへ正規化し、単一sessionのshutdown/resume lifecycleと最終terminal完全性を一箇所で検証する。sanitizerは同じlifecycle状態機械で入力のshutdown/resume隣接性をfail-closed検証し、検証に必要なresume境界を出力へ保持する。
+Interfaces: `verifyWorkflowLog`、`verifyWorkflowLogFile`、`sanitizeWorkflowLogFile`。`WorkflowManifest.verification`の既存terminal identity契約は変更しない。
+Constraints: `result`互換を維持する。`result`の最大1件制約とresult/shutdown非混在をlifecycle遷移より先に判定し、shutdown件数は状態機械で判定する。shutdown形式では状態を`before-start`、`active`、`awaiting-resume`として追跡し、空白行を無視したEOF時の`awaiting-resume`をfinal shutdownとして判定する。`session.start`は既存のUUID正規表現に合格するUUIDを持つ正確に1件とする。`before-start`では非terminalかつ非lifecycleイベントを許容し、shutdown/resumeを拒否する。`active`では`session.start`と`session.resume`を除く非terminalイベントを許容し、`data.shutdownType === "routine"`のshutdownだけで`awaiting-resume`へ遷移する。EOF以外で`awaiting-resume`の次に許容する非空イベントは`session.resume`だけとし、resume後は`active`へ戻る。session UUIDはstart/resume/shutdownで`data.sessionId ?? record.sessionId`からだけ読み取り、resumeとshutdownでは任意だが存在時はstartと一致させる。全eventのtype/timestamp検証と、start前を含むtranscript全体で最も新しい先行tool eventに対するfinal shutdownの`latestToolTimestamp - finalShutdownTimestamp > maxEventSkewMs`検査は既存strict規則を維持し、final shutdownだけをexit code 0へ正規化する。複数session、孤立resume、不正な状態遷移、非routine、非final terminal、欠落を拒否する。sanitizerは未加工入力に`verifyWorkflowLogFile`の同じ状態機械を先に適用し、検証成功後に既存のprivacy-minimized skill tool eventsとstart/shutdown/resumeを`type`、`timestamp`、必要最小限の`data`を持つstrict-validな形で保持する。非skill tool eventsの除外でlatest tool timestampは同じか古くなるため、入力で偽だったskew拒否不等式が出力で真になることはなく、残存tool eventに同じ検査を適用する。session identity置換時はstartと、UUIDを含むresume/shutdownを同じUUIDへ正規化する。検証前の証拠改変と別実装によるlifecycle再判定は禁止する。
 Requirements: REQ-WORKFLOW-SHUTDOWN-001
 ADRs: ADR-0005

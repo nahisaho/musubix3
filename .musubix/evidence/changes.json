@@ -13505,6 +13505,469 @@
           "order": 752
         }
       }
+    },
+    {
+      "changeId": "CHANGE-0013",
+      "requirementIds": [
+        "REQ-WORKFLOW-SHUTDOWN-001"
+      ],
+      "phases": {
+        "impact": {
+          "phase": "impact",
+          "recordedAt": "2026-09-21T03:48:50.537Z",
+          "fingerprints": {
+            "impact": "3ebff68c9f1d5558ba38f5423a8c8a521b470fcf9218684a94ae3cd74cadb190",
+            "requirements": "a6337a2e809a87f7654dc78c0fc57120efb54def992efbcfdbf352533f309378",
+            "design": "32af8b839dfc7e81259a59337d81a151c0c1c57bc4fd0cf57d523f6347960d1a",
+            "implementation": "07b86dafff7b5083f97d5710065300c3de0c0f20a32dd44934f5e85e3771c825",
+            "tests": "b975c98c20f25f68fa8e7c5f03f6222593c9a5496c92a836b6709132cb82874a",
+            "tdd": "9cb9382e41c15680024f07d9f841e59d0936732d3e70d96e4573613a2d83761b",
+            "requirementImplementations": {
+              "REQ-WORKFLOW-SHUTDOWN-001": {
+                "paths": [
+                  "packages/analysis/src/adapters.ts",
+                  "packages/analysis/src/approval-domains.ts",
+                  "packages/analysis/src/approval.ts",
+                  "packages/analysis/src/change-evidence.ts",
+                  "packages/analysis/src/change-waiver.ts",
+                  "packages/analysis/src/config.ts",
+                  "packages/analysis/src/files.ts",
+                  "packages/analysis/src/graph.ts",
+                  "packages/analysis/src/order.ts",
+                  "packages/analysis/src/process.ts",
+                  "packages/analysis/src/tdd.ts",
+                  "packages/analysis/src/test-report.ts",
+                  "packages/analysis/src/trace.ts",
+                  "packages/analysis/src/workflow-types.ts",
+                  "packages/analysis/src/workflow-waiver.ts",
+                  "packages/analysis/src/workflow.ts",
+                  "packages/domain/src/constitution.ts",
+                  "packages/domain/src/design.ts",
+                  "packages/domain/src/index.ts",
+                  "packages/domain/src/markdown.ts",
+                  "packages/domain/src/requirements.ts",
+                  "packages/domain/src/types.ts"
+                ],
+                "fingerprints": {
+                  "packages/analysis/src/adapters.ts": "a3c516b7c06dee11bc9786da53cf97b087543e0304d0bce8d678aa01670f53e2",
+                  "packages/analysis/src/approval-domains.ts": "bc45836374021f86c4c2085184185546cc4291880aea32b9084188545b9394b4",
+                  "packages/analysis/src/approval.ts": "d9f57165ca455a0b49acdda7096e0df98a06cd5be33c3d20b2f06cf40917c69f",
+                  "packages/analysis/src/change-evidence.ts": "8bff2cb709de3834e078bf8bf30f2ddef36b37fa03bec5446e27711cae14709b",
+                  "packages/analysis/src/change-waiver.ts": "edabb578fe2d968bf98fe068ee240a32b67dcf7b50724a265e83ebc2a88c1ccd",
+                  "packages/analysis/src/config.ts": "52d5212f4057df9ed5caac0a0025ce744864909abceea3c64d259479ddffb998",
+                  "packages/analysis/src/files.ts": "6186177faea34f7b2f6dd865b4f911d3b8fbfe6786e2cd19bc7dffee2a058ba2",
+                  "packages/analysis/src/graph.ts": "8978a47c311ddef684de5e4c5ab032eed9bc87ad94a739351de6e2d6b2ae2aba",
+                  "packages/analysis/src/order.ts": "361eff6435f7eb81ac15b9a005f8f676f499c56d3dc82abb242e2307b8af628d",
+                  "packages/analysis/src/process.ts": "8184c7f7c4c58cdc6987fd9d2ec2c02ce8557f94b6aa30853a0c6056ba79cf4a",
+                  "packages/analysis/src/tdd.ts": "96a9eef2bf0b1fbd034679be854e1a86994e6c0c0fd7ea4569e3f895ac115f80",
+                  "packages/analysis/src/test-report.ts": "41c76811bfcb5e286bf097bf2f6aaf6cd5a414202efe8108f28219ecca063a01",
+                  "packages/analysis/src/trace.ts": "efede75c79c7dc4828a0259c46ca870a7e15042c35edd94a107349a83eb56ec9",
+                  "packages/analysis/src/workflow-types.ts": "427c3450352eb7799e2b49933e267f9888e87d51dc5c6482b5b1378620205309",
+                  "packages/analysis/src/workflow-waiver.ts": "7c09999654d03fbc96879f3e6726d505706cdcba36940c00d46ac208d94f972f",
+                  "packages/analysis/src/workflow.ts": "fa63488de60794c10e829c79168d5bac455aec0b02a2726705a0441da60b015c",
+                  "packages/domain/src/constitution.ts": "514278499642ff46ed902864b9192f566b116b4f92eb3fafa6b62588335e170a",
+                  "packages/domain/src/design.ts": "fc1ca4d3249abc9705ba4b6f296e0f4fa3b3d6ff6d5d82e51c99f49fc7a93ac9",
+                  "packages/domain/src/index.ts": "43243e9279e3826b23cd8d8b4365854974112ce4cf17cfb0f0ee32e6b28e9cc6",
+                  "packages/domain/src/markdown.ts": "5c6b96486a2e31944d7d128d241f1772d0926f34464fa2b59c20748a6754487a",
+                  "packages/domain/src/requirements.ts": "65ea1e6d3bbd29e929c785037b930e5f5eb5535b607403e5f30c3657d36e9175",
+                  "packages/domain/src/types.ts": "0f0cbd43bdee4db03b83e4869e9791531a63e9b63aa7a09661f62ad1bbc75cb3"
+                }
+              }
+            }
+          },
+          "order": 775
+        },
+        "requirements": {
+          "phase": "requirements",
+          "recordedAt": "2026-09-21T03:56:11.545Z",
+          "fingerprints": {
+            "impact": "8e8751ceb9e675bbfc8d0fe1ca902fce7740d74c468132f94e26ee530bcd06c4",
+            "requirements": "ed9e0d949d66a851ef53a3ef59948481f42e239acc0c4c90cf9ed8c3e0379972",
+            "design": "32af8b839dfc7e81259a59337d81a151c0c1c57bc4fd0cf57d523f6347960d1a",
+            "implementation": "07b86dafff7b5083f97d5710065300c3de0c0f20a32dd44934f5e85e3771c825",
+            "tests": "b975c98c20f25f68fa8e7c5f03f6222593c9a5496c92a836b6709132cb82874a",
+            "tdd": "9cb9382e41c15680024f07d9f841e59d0936732d3e70d96e4573613a2d83761b",
+            "requirementImplementations": {
+              "REQ-WORKFLOW-SHUTDOWN-001": {
+                "paths": [
+                  "packages/analysis/src/adapters.ts",
+                  "packages/analysis/src/approval-domains.ts",
+                  "packages/analysis/src/approval.ts",
+                  "packages/analysis/src/change-evidence.ts",
+                  "packages/analysis/src/change-waiver.ts",
+                  "packages/analysis/src/config.ts",
+                  "packages/analysis/src/files.ts",
+                  "packages/analysis/src/graph.ts",
+                  "packages/analysis/src/order.ts",
+                  "packages/analysis/src/process.ts",
+                  "packages/analysis/src/tdd.ts",
+                  "packages/analysis/src/test-report.ts",
+                  "packages/analysis/src/trace.ts",
+                  "packages/analysis/src/workflow-types.ts",
+                  "packages/analysis/src/workflow-waiver.ts",
+                  "packages/analysis/src/workflow.ts",
+                  "packages/domain/src/constitution.ts",
+                  "packages/domain/src/design.ts",
+                  "packages/domain/src/index.ts",
+                  "packages/domain/src/markdown.ts",
+                  "packages/domain/src/requirements.ts",
+                  "packages/domain/src/types.ts"
+                ],
+                "fingerprints": {
+                  "packages/analysis/src/adapters.ts": "a3c516b7c06dee11bc9786da53cf97b087543e0304d0bce8d678aa01670f53e2",
+                  "packages/analysis/src/approval-domains.ts": "bc45836374021f86c4c2085184185546cc4291880aea32b9084188545b9394b4",
+                  "packages/analysis/src/approval.ts": "d9f57165ca455a0b49acdda7096e0df98a06cd5be33c3d20b2f06cf40917c69f",
+                  "packages/analysis/src/change-evidence.ts": "8bff2cb709de3834e078bf8bf30f2ddef36b37fa03bec5446e27711cae14709b",
+                  "packages/analysis/src/change-waiver.ts": "edabb578fe2d968bf98fe068ee240a32b67dcf7b50724a265e83ebc2a88c1ccd",
+                  "packages/analysis/src/config.ts": "52d5212f4057df9ed5caac0a0025ce744864909abceea3c64d259479ddffb998",
+                  "packages/analysis/src/files.ts": "6186177faea34f7b2f6dd865b4f911d3b8fbfe6786e2cd19bc7dffee2a058ba2",
+                  "packages/analysis/src/graph.ts": "8978a47c311ddef684de5e4c5ab032eed9bc87ad94a739351de6e2d6b2ae2aba",
+                  "packages/analysis/src/order.ts": "361eff6435f7eb81ac15b9a005f8f676f499c56d3dc82abb242e2307b8af628d",
+                  "packages/analysis/src/process.ts": "8184c7f7c4c58cdc6987fd9d2ec2c02ce8557f94b6aa30853a0c6056ba79cf4a",
+                  "packages/analysis/src/tdd.ts": "96a9eef2bf0b1fbd034679be854e1a86994e6c0c0fd7ea4569e3f895ac115f80",
+                  "packages/analysis/src/test-report.ts": "41c76811bfcb5e286bf097bf2f6aaf6cd5a414202efe8108f28219ecca063a01",
+                  "packages/analysis/src/trace.ts": "efede75c79c7dc4828a0259c46ca870a7e15042c35edd94a107349a83eb56ec9",
+                  "packages/analysis/src/workflow-types.ts": "427c3450352eb7799e2b49933e267f9888e87d51dc5c6482b5b1378620205309",
+                  "packages/analysis/src/workflow-waiver.ts": "7c09999654d03fbc96879f3e6726d505706cdcba36940c00d46ac208d94f972f",
+                  "packages/analysis/src/workflow.ts": "fa63488de60794c10e829c79168d5bac455aec0b02a2726705a0441da60b015c",
+                  "packages/domain/src/constitution.ts": "514278499642ff46ed902864b9192f566b116b4f92eb3fafa6b62588335e170a",
+                  "packages/domain/src/design.ts": "fc1ca4d3249abc9705ba4b6f296e0f4fa3b3d6ff6d5d82e51c99f49fc7a93ac9",
+                  "packages/domain/src/index.ts": "43243e9279e3826b23cd8d8b4365854974112ce4cf17cfb0f0ee32e6b28e9cc6",
+                  "packages/domain/src/markdown.ts": "5c6b96486a2e31944d7d128d241f1772d0926f34464fa2b59c20748a6754487a",
+                  "packages/domain/src/requirements.ts": "65ea1e6d3bbd29e929c785037b930e5f5eb5535b607403e5f30c3657d36e9175",
+                  "packages/domain/src/types.ts": "0f0cbd43bdee4db03b83e4869e9791531a63e9b63aa7a09661f62ad1bbc75cb3"
+                }
+              }
+            }
+          },
+          "order": 776
+        },
+        "design": {
+          "phase": "design",
+          "recordedAt": "2026-09-21T04:14:40.160Z",
+          "fingerprints": {
+            "impact": "90a450ce58d83ed7274f5cfbc1d01c80e7f7b5f418ceb5b1e3634ce96660d154",
+            "requirements": "c1b84ae653a3fbcf9af6aaeb9a5b70a1dd1b5298d4671016d1aba4ad5cd5b9a3",
+            "design": "c33629d16e4a08e1a02898561644114f0aebc25d892e03ef21e12a5189305ba0",
+            "implementation": "07b86dafff7b5083f97d5710065300c3de0c0f20a32dd44934f5e85e3771c825",
+            "tests": "b975c98c20f25f68fa8e7c5f03f6222593c9a5496c92a836b6709132cb82874a",
+            "tdd": "9cb9382e41c15680024f07d9f841e59d0936732d3e70d96e4573613a2d83761b",
+            "requirementImplementations": {
+              "REQ-WORKFLOW-SHUTDOWN-001": {
+                "paths": [
+                  "packages/analysis/src/adapters.ts",
+                  "packages/analysis/src/approval-domains.ts",
+                  "packages/analysis/src/approval.ts",
+                  "packages/analysis/src/change-evidence.ts",
+                  "packages/analysis/src/change-waiver.ts",
+                  "packages/analysis/src/config.ts",
+                  "packages/analysis/src/files.ts",
+                  "packages/analysis/src/graph.ts",
+                  "packages/analysis/src/order.ts",
+                  "packages/analysis/src/process.ts",
+                  "packages/analysis/src/tdd.ts",
+                  "packages/analysis/src/test-report.ts",
+                  "packages/analysis/src/trace.ts",
+                  "packages/analysis/src/workflow-types.ts",
+                  "packages/analysis/src/workflow-waiver.ts",
+                  "packages/analysis/src/workflow.ts",
+                  "packages/domain/src/constitution.ts",
+                  "packages/domain/src/design.ts",
+                  "packages/domain/src/index.ts",
+                  "packages/domain/src/markdown.ts",
+                  "packages/domain/src/requirements.ts",
+                  "packages/domain/src/types.ts"
+                ],
+                "fingerprints": {
+                  "packages/analysis/src/adapters.ts": "a3c516b7c06dee11bc9786da53cf97b087543e0304d0bce8d678aa01670f53e2",
+                  "packages/analysis/src/approval-domains.ts": "bc45836374021f86c4c2085184185546cc4291880aea32b9084188545b9394b4",
+                  "packages/analysis/src/approval.ts": "d9f57165ca455a0b49acdda7096e0df98a06cd5be33c3d20b2f06cf40917c69f",
+                  "packages/analysis/src/change-evidence.ts": "8bff2cb709de3834e078bf8bf30f2ddef36b37fa03bec5446e27711cae14709b",
+                  "packages/analysis/src/change-waiver.ts": "edabb578fe2d968bf98fe068ee240a32b67dcf7b50724a265e83ebc2a88c1ccd",
+                  "packages/analysis/src/config.ts": "52d5212f4057df9ed5caac0a0025ce744864909abceea3c64d259479ddffb998",
+                  "packages/analysis/src/files.ts": "6186177faea34f7b2f6dd865b4f911d3b8fbfe6786e2cd19bc7dffee2a058ba2",
+                  "packages/analysis/src/graph.ts": "8978a47c311ddef684de5e4c5ab032eed9bc87ad94a739351de6e2d6b2ae2aba",
+                  "packages/analysis/src/order.ts": "361eff6435f7eb81ac15b9a005f8f676f499c56d3dc82abb242e2307b8af628d",
+                  "packages/analysis/src/process.ts": "8184c7f7c4c58cdc6987fd9d2ec2c02ce8557f94b6aa30853a0c6056ba79cf4a",
+                  "packages/analysis/src/tdd.ts": "96a9eef2bf0b1fbd034679be854e1a86994e6c0c0fd7ea4569e3f895ac115f80",
+                  "packages/analysis/src/test-report.ts": "41c76811bfcb5e286bf097bf2f6aaf6cd5a414202efe8108f28219ecca063a01",
+                  "packages/analysis/src/trace.ts": "efede75c79c7dc4828a0259c46ca870a7e15042c35edd94a107349a83eb56ec9",
+                  "packages/analysis/src/workflow-types.ts": "427c3450352eb7799e2b49933e267f9888e87d51dc5c6482b5b1378620205309",
+                  "packages/analysis/src/workflow-waiver.ts": "7c09999654d03fbc96879f3e6726d505706cdcba36940c00d46ac208d94f972f",
+                  "packages/analysis/src/workflow.ts": "fa63488de60794c10e829c79168d5bac455aec0b02a2726705a0441da60b015c",
+                  "packages/domain/src/constitution.ts": "514278499642ff46ed902864b9192f566b116b4f92eb3fafa6b62588335e170a",
+                  "packages/domain/src/design.ts": "fc1ca4d3249abc9705ba4b6f296e0f4fa3b3d6ff6d5d82e51c99f49fc7a93ac9",
+                  "packages/domain/src/index.ts": "43243e9279e3826b23cd8d8b4365854974112ce4cf17cfb0f0ee32e6b28e9cc6",
+                  "packages/domain/src/markdown.ts": "5c6b96486a2e31944d7d128d241f1772d0926f34464fa2b59c20748a6754487a",
+                  "packages/domain/src/requirements.ts": "65ea1e6d3bbd29e929c785037b930e5f5eb5535b607403e5f30c3657d36e9175",
+                  "packages/domain/src/types.ts": "0f0cbd43bdee4db03b83e4869e9791531a63e9b63aa7a09661f62ad1bbc75cb3"
+                }
+              }
+            }
+          },
+          "order": 777
+        },
+        "red": {
+          "phase": "red",
+          "recordedAt": "2026-09-21T04:17:01.598Z",
+          "fingerprints": {
+            "impact": "90a450ce58d83ed7274f5cfbc1d01c80e7f7b5f418ceb5b1e3634ce96660d154",
+            "requirements": "c1b84ae653a3fbcf9af6aaeb9a5b70a1dd1b5298d4671016d1aba4ad5cd5b9a3",
+            "design": "c33629d16e4a08e1a02898561644114f0aebc25d892e03ef21e12a5189305ba0",
+            "implementation": "07b86dafff7b5083f97d5710065300c3de0c0f20a32dd44934f5e85e3771c825",
+            "tests": "e806474f57d1dc1617d6f53ff713379ef6c908d13090f34164a40f196f1a0501",
+            "tdd": "fa0e1bf778bd6334822ca2252056b2cafd62050224d00300036cb58fe1c6a93f",
+            "requirementImplementations": {
+              "REQ-WORKFLOW-SHUTDOWN-001": {
+                "paths": [
+                  "packages/analysis/src/adapters.ts",
+                  "packages/analysis/src/approval-domains.ts",
+                  "packages/analysis/src/approval.ts",
+                  "packages/analysis/src/change-evidence.ts",
+                  "packages/analysis/src/change-waiver.ts",
+                  "packages/analysis/src/config.ts",
+                  "packages/analysis/src/files.ts",
+                  "packages/analysis/src/graph.ts",
+                  "packages/analysis/src/order.ts",
+                  "packages/analysis/src/process.ts",
+                  "packages/analysis/src/tdd.ts",
+                  "packages/analysis/src/test-report.ts",
+                  "packages/analysis/src/trace.ts",
+                  "packages/analysis/src/workflow-types.ts",
+                  "packages/analysis/src/workflow-waiver.ts",
+                  "packages/analysis/src/workflow.ts",
+                  "packages/domain/src/constitution.ts",
+                  "packages/domain/src/design.ts",
+                  "packages/domain/src/index.ts",
+                  "packages/domain/src/markdown.ts",
+                  "packages/domain/src/requirements.ts",
+                  "packages/domain/src/types.ts"
+                ],
+                "fingerprints": {
+                  "packages/analysis/src/adapters.ts": "a3c516b7c06dee11bc9786da53cf97b087543e0304d0bce8d678aa01670f53e2",
+                  "packages/analysis/src/approval-domains.ts": "bc45836374021f86c4c2085184185546cc4291880aea32b9084188545b9394b4",
+                  "packages/analysis/src/approval.ts": "d9f57165ca455a0b49acdda7096e0df98a06cd5be33c3d20b2f06cf40917c69f",
+                  "packages/analysis/src/change-evidence.ts": "8bff2cb709de3834e078bf8bf30f2ddef36b37fa03bec5446e27711cae14709b",
+                  "packages/analysis/src/change-waiver.ts": "edabb578fe2d968bf98fe068ee240a32b67dcf7b50724a265e83ebc2a88c1ccd",
+                  "packages/analysis/src/config.ts": "52d5212f4057df9ed5caac0a0025ce744864909abceea3c64d259479ddffb998",
+                  "packages/analysis/src/files.ts": "6186177faea34f7b2f6dd865b4f911d3b8fbfe6786e2cd19bc7dffee2a058ba2",
+                  "packages/analysis/src/graph.ts": "8978a47c311ddef684de5e4c5ab032eed9bc87ad94a739351de6e2d6b2ae2aba",
+                  "packages/analysis/src/order.ts": "361eff6435f7eb81ac15b9a005f8f676f499c56d3dc82abb242e2307b8af628d",
+                  "packages/analysis/src/process.ts": "8184c7f7c4c58cdc6987fd9d2ec2c02ce8557f94b6aa30853a0c6056ba79cf4a",
+                  "packages/analysis/src/tdd.ts": "96a9eef2bf0b1fbd034679be854e1a86994e6c0c0fd7ea4569e3f895ac115f80",
+                  "packages/analysis/src/test-report.ts": "41c76811bfcb5e286bf097bf2f6aaf6cd5a414202efe8108f28219ecca063a01",
+                  "packages/analysis/src/trace.ts": "efede75c79c7dc4828a0259c46ca870a7e15042c35edd94a107349a83eb56ec9",
+                  "packages/analysis/src/workflow-types.ts": "427c3450352eb7799e2b49933e267f9888e87d51dc5c6482b5b1378620205309",
+                  "packages/analysis/src/workflow-waiver.ts": "7c09999654d03fbc96879f3e6726d505706cdcba36940c00d46ac208d94f972f",
+                  "packages/analysis/src/workflow.ts": "fa63488de60794c10e829c79168d5bac455aec0b02a2726705a0441da60b015c",
+                  "packages/domain/src/constitution.ts": "514278499642ff46ed902864b9192f566b116b4f92eb3fafa6b62588335e170a",
+                  "packages/domain/src/design.ts": "fc1ca4d3249abc9705ba4b6f296e0f4fa3b3d6ff6d5d82e51c99f49fc7a93ac9",
+                  "packages/domain/src/index.ts": "43243e9279e3826b23cd8d8b4365854974112ce4cf17cfb0f0ee32e6b28e9cc6",
+                  "packages/domain/src/markdown.ts": "5c6b96486a2e31944d7d128d241f1772d0926f34464fa2b59c20748a6754487a",
+                  "packages/domain/src/requirements.ts": "65ea1e6d3bbd29e929c785037b930e5f5eb5535b607403e5f30c3657d36e9175",
+                  "packages/domain/src/types.ts": "0f0cbd43bdee4db03b83e4869e9791531a63e9b63aa7a09661f62ad1bbc75cb3"
+                }
+              }
+            }
+          },
+          "order": 781
+        },
+        "implementation": {
+          "phase": "implementation",
+          "recordedAt": "2026-09-21T04:17:53.875Z",
+          "fingerprints": {
+            "impact": "90a450ce58d83ed7274f5cfbc1d01c80e7f7b5f418ceb5b1e3634ce96660d154",
+            "requirements": "c1b84ae653a3fbcf9af6aaeb9a5b70a1dd1b5298d4671016d1aba4ad5cd5b9a3",
+            "design": "c33629d16e4a08e1a02898561644114f0aebc25d892e03ef21e12a5189305ba0",
+            "implementation": "15a092842c5ef929f931cc88926e4ce523fccb230c312ffbbbdf8fc980e559c6",
+            "tests": "e806474f57d1dc1617d6f53ff713379ef6c908d13090f34164a40f196f1a0501",
+            "tdd": "fa0e1bf778bd6334822ca2252056b2cafd62050224d00300036cb58fe1c6a93f",
+            "requirementImplementations": {
+              "REQ-WORKFLOW-SHUTDOWN-001": {
+                "paths": [
+                  "packages/analysis/src/adapters.ts",
+                  "packages/analysis/src/approval-domains.ts",
+                  "packages/analysis/src/approval.ts",
+                  "packages/analysis/src/change-evidence.ts",
+                  "packages/analysis/src/change-waiver.ts",
+                  "packages/analysis/src/config.ts",
+                  "packages/analysis/src/files.ts",
+                  "packages/analysis/src/graph.ts",
+                  "packages/analysis/src/order.ts",
+                  "packages/analysis/src/process.ts",
+                  "packages/analysis/src/tdd.ts",
+                  "packages/analysis/src/test-report.ts",
+                  "packages/analysis/src/trace.ts",
+                  "packages/analysis/src/workflow-types.ts",
+                  "packages/analysis/src/workflow-waiver.ts",
+                  "packages/analysis/src/workflow.ts",
+                  "packages/domain/src/constitution.ts",
+                  "packages/domain/src/design.ts",
+                  "packages/domain/src/index.ts",
+                  "packages/domain/src/markdown.ts",
+                  "packages/domain/src/requirements.ts",
+                  "packages/domain/src/types.ts"
+                ],
+                "fingerprints": {
+                  "packages/analysis/src/adapters.ts": "a3c516b7c06dee11bc9786da53cf97b087543e0304d0bce8d678aa01670f53e2",
+                  "packages/analysis/src/approval-domains.ts": "bc45836374021f86c4c2085184185546cc4291880aea32b9084188545b9394b4",
+                  "packages/analysis/src/approval.ts": "d9f57165ca455a0b49acdda7096e0df98a06cd5be33c3d20b2f06cf40917c69f",
+                  "packages/analysis/src/change-evidence.ts": "8bff2cb709de3834e078bf8bf30f2ddef36b37fa03bec5446e27711cae14709b",
+                  "packages/analysis/src/change-waiver.ts": "edabb578fe2d968bf98fe068ee240a32b67dcf7b50724a265e83ebc2a88c1ccd",
+                  "packages/analysis/src/config.ts": "52d5212f4057df9ed5caac0a0025ce744864909abceea3c64d259479ddffb998",
+                  "packages/analysis/src/files.ts": "6186177faea34f7b2f6dd865b4f911d3b8fbfe6786e2cd19bc7dffee2a058ba2",
+                  "packages/analysis/src/graph.ts": "8978a47c311ddef684de5e4c5ab032eed9bc87ad94a739351de6e2d6b2ae2aba",
+                  "packages/analysis/src/order.ts": "361eff6435f7eb81ac15b9a005f8f676f499c56d3dc82abb242e2307b8af628d",
+                  "packages/analysis/src/process.ts": "8184c7f7c4c58cdc6987fd9d2ec2c02ce8557f94b6aa30853a0c6056ba79cf4a",
+                  "packages/analysis/src/tdd.ts": "96a9eef2bf0b1fbd034679be854e1a86994e6c0c0fd7ea4569e3f895ac115f80",
+                  "packages/analysis/src/test-report.ts": "41c76811bfcb5e286bf097bf2f6aaf6cd5a414202efe8108f28219ecca063a01",
+                  "packages/analysis/src/trace.ts": "efede75c79c7dc4828a0259c46ca870a7e15042c35edd94a107349a83eb56ec9",
+                  "packages/analysis/src/workflow-types.ts": "427c3450352eb7799e2b49933e267f9888e87d51dc5c6482b5b1378620205309",
+                  "packages/analysis/src/workflow-waiver.ts": "7c09999654d03fbc96879f3e6726d505706cdcba36940c00d46ac208d94f972f",
+                  "packages/analysis/src/workflow.ts": "b17a2ad05e7126aa961518c6499ef196fca3f42762813f279e54c8f1382a2b77",
+                  "packages/domain/src/constitution.ts": "514278499642ff46ed902864b9192f566b116b4f92eb3fafa6b62588335e170a",
+                  "packages/domain/src/design.ts": "fc1ca4d3249abc9705ba4b6f296e0f4fa3b3d6ff6d5d82e51c99f49fc7a93ac9",
+                  "packages/domain/src/index.ts": "43243e9279e3826b23cd8d8b4365854974112ce4cf17cfb0f0ee32e6b28e9cc6",
+                  "packages/domain/src/markdown.ts": "5c6b96486a2e31944d7d128d241f1772d0926f34464fa2b59c20748a6754487a",
+                  "packages/domain/src/requirements.ts": "65ea1e6d3bbd29e929c785037b930e5f5eb5535b607403e5f30c3657d36e9175",
+                  "packages/domain/src/types.ts": "0f0cbd43bdee4db03b83e4869e9791531a63e9b63aa7a09661f62ad1bbc75cb3"
+                }
+              }
+            }
+          },
+          "order": 782
+        },
+        "green": {
+          "phase": "green",
+          "recordedAt": "2026-09-21T04:18:04.878Z",
+          "fingerprints": {
+            "impact": "90a450ce58d83ed7274f5cfbc1d01c80e7f7b5f418ceb5b1e3634ce96660d154",
+            "requirements": "c1b84ae653a3fbcf9af6aaeb9a5b70a1dd1b5298d4671016d1aba4ad5cd5b9a3",
+            "design": "c33629d16e4a08e1a02898561644114f0aebc25d892e03ef21e12a5189305ba0",
+            "implementation": "15a092842c5ef929f931cc88926e4ce523fccb230c312ffbbbdf8fc980e559c6",
+            "tests": "e806474f57d1dc1617d6f53ff713379ef6c908d13090f34164a40f196f1a0501",
+            "tdd": "20339f2b084b3a69818aa0f78dd94408c7422073dfbeda666148f80031926a3e",
+            "requirementImplementations": {
+              "REQ-WORKFLOW-SHUTDOWN-001": {
+                "paths": [
+                  "packages/analysis/src/adapters.ts",
+                  "packages/analysis/src/approval-domains.ts",
+                  "packages/analysis/src/approval.ts",
+                  "packages/analysis/src/change-evidence.ts",
+                  "packages/analysis/src/change-waiver.ts",
+                  "packages/analysis/src/config.ts",
+                  "packages/analysis/src/files.ts",
+                  "packages/analysis/src/graph.ts",
+                  "packages/analysis/src/order.ts",
+                  "packages/analysis/src/process.ts",
+                  "packages/analysis/src/tdd.ts",
+                  "packages/analysis/src/test-report.ts",
+                  "packages/analysis/src/trace.ts",
+                  "packages/analysis/src/workflow-types.ts",
+                  "packages/analysis/src/workflow-waiver.ts",
+                  "packages/analysis/src/workflow.ts",
+                  "packages/domain/src/constitution.ts",
+                  "packages/domain/src/design.ts",
+                  "packages/domain/src/index.ts",
+                  "packages/domain/src/markdown.ts",
+                  "packages/domain/src/requirements.ts",
+                  "packages/domain/src/types.ts"
+                ],
+                "fingerprints": {
+                  "packages/analysis/src/adapters.ts": "a3c516b7c06dee11bc9786da53cf97b087543e0304d0bce8d678aa01670f53e2",
+                  "packages/analysis/src/approval-domains.ts": "bc45836374021f86c4c2085184185546cc4291880aea32b9084188545b9394b4",
+                  "packages/analysis/src/approval.ts": "d9f57165ca455a0b49acdda7096e0df98a06cd5be33c3d20b2f06cf40917c69f",
+                  "packages/analysis/src/change-evidence.ts": "8bff2cb709de3834e078bf8bf30f2ddef36b37fa03bec5446e27711cae14709b",
+                  "packages/analysis/src/change-waiver.ts": "edabb578fe2d968bf98fe068ee240a32b67dcf7b50724a265e83ebc2a88c1ccd",
+                  "packages/analysis/src/config.ts": "52d5212f4057df9ed5caac0a0025ce744864909abceea3c64d259479ddffb998",
+                  "packages/analysis/src/files.ts": "6186177faea34f7b2f6dd865b4f911d3b8fbfe6786e2cd19bc7dffee2a058ba2",
+                  "packages/analysis/src/graph.ts": "8978a47c311ddef684de5e4c5ab032eed9bc87ad94a739351de6e2d6b2ae2aba",
+                  "packages/analysis/src/order.ts": "361eff6435f7eb81ac15b9a005f8f676f499c56d3dc82abb242e2307b8af628d",
+                  "packages/analysis/src/process.ts": "8184c7f7c4c58cdc6987fd9d2ec2c02ce8557f94b6aa30853a0c6056ba79cf4a",
+                  "packages/analysis/src/tdd.ts": "96a9eef2bf0b1fbd034679be854e1a86994e6c0c0fd7ea4569e3f895ac115f80",
+                  "packages/analysis/src/test-report.ts": "41c76811bfcb5e286bf097bf2f6aaf6cd5a414202efe8108f28219ecca063a01",
+                  "packages/analysis/src/trace.ts": "efede75c79c7dc4828a0259c46ca870a7e15042c35edd94a107349a83eb56ec9",
+                  "packages/analysis/src/workflow-types.ts": "427c3450352eb7799e2b49933e267f9888e87d51dc5c6482b5b1378620205309",
+                  "packages/analysis/src/workflow-waiver.ts": "7c09999654d03fbc96879f3e6726d505706cdcba36940c00d46ac208d94f972f",
+                  "packages/analysis/src/workflow.ts": "b17a2ad05e7126aa961518c6499ef196fca3f42762813f279e54c8f1382a2b77",
+                  "packages/domain/src/constitution.ts": "514278499642ff46ed902864b9192f566b116b4f92eb3fafa6b62588335e170a",
+                  "packages/domain/src/design.ts": "fc1ca4d3249abc9705ba4b6f296e0f4fa3b3d6ff6d5d82e51c99f49fc7a93ac9",
+                  "packages/domain/src/index.ts": "43243e9279e3826b23cd8d8b4365854974112ce4cf17cfb0f0ee32e6b28e9cc6",
+                  "packages/domain/src/markdown.ts": "5c6b96486a2e31944d7d128d241f1772d0926f34464fa2b59c20748a6754487a",
+                  "packages/domain/src/requirements.ts": "65ea1e6d3bbd29e929c785037b930e5f5eb5535b607403e5f30c3657d36e9175",
+                  "packages/domain/src/types.ts": "0f0cbd43bdee4db03b83e4869e9791531a63e9b63aa7a09661f62ad1bbc75cb3"
+                }
+              }
+            }
+          },
+          "order": 786
+        },
+        "quality": {
+          "phase": "quality",
+          "recordedAt": "2026-09-21T04:21:56.301Z",
+          "fingerprints": {
+            "impact": "fa55ca9464e01cb0fe9b7fd3bebbee0096e43995e33a19587d07f5bb6a4d4017",
+            "requirements": "c1b84ae653a3fbcf9af6aaeb9a5b70a1dd1b5298d4671016d1aba4ad5cd5b9a3",
+            "design": "c33629d16e4a08e1a02898561644114f0aebc25d892e03ef21e12a5189305ba0",
+            "implementation": "db42e4530f7d46f451de82dc08f1227609ae0cd6f1ba08049388e8081d26736a",
+            "tests": "e806474f57d1dc1617d6f53ff713379ef6c908d13090f34164a40f196f1a0501",
+            "tdd": "a7fca1e988a57020794f091467443c3bf86ed31d3627d6e51278f7b296caf2cf",
+            "requirementImplementations": {
+              "REQ-WORKFLOW-SHUTDOWN-001": {
+                "paths": [
+                  "packages/analysis/src/adapters.ts",
+                  "packages/analysis/src/approval-domains.ts",
+                  "packages/analysis/src/approval.ts",
+                  "packages/analysis/src/change-evidence.ts",
+                  "packages/analysis/src/change-waiver.ts",
+                  "packages/analysis/src/config.ts",
+                  "packages/analysis/src/files.ts",
+                  "packages/analysis/src/graph.ts",
+                  "packages/analysis/src/order.ts",
+                  "packages/analysis/src/process.ts",
+                  "packages/analysis/src/tdd.ts",
+                  "packages/analysis/src/test-report.ts",
+                  "packages/analysis/src/trace.ts",
+                  "packages/analysis/src/workflow-types.ts",
+                  "packages/analysis/src/workflow-waiver.ts",
+                  "packages/analysis/src/workflow.ts",
+                  "packages/domain/src/constitution.ts",
+                  "packages/domain/src/design.ts",
+                  "packages/domain/src/index.ts",
+                  "packages/domain/src/markdown.ts",
+                  "packages/domain/src/requirements.ts",
+                  "packages/domain/src/types.ts"
+                ],
+                "fingerprints": {
+                  "packages/analysis/src/adapters.ts": "a3c516b7c06dee11bc9786da53cf97b087543e0304d0bce8d678aa01670f53e2",
+                  "packages/analysis/src/approval-domains.ts": "bc45836374021f86c4c2085184185546cc4291880aea32b9084188545b9394b4",
+                  "packages/analysis/src/approval.ts": "d9f57165ca455a0b49acdda7096e0df98a06cd5be33c3d20b2f06cf40917c69f",
+                  "packages/analysis/src/change-evidence.ts": "8bff2cb709de3834e078bf8bf30f2ddef36b37fa03bec5446e27711cae14709b",
+                  "packages/analysis/src/change-waiver.ts": "edabb578fe2d968bf98fe068ee240a32b67dcf7b50724a265e83ebc2a88c1ccd",
+                  "packages/analysis/src/config.ts": "52d5212f4057df9ed5caac0a0025ce744864909abceea3c64d259479ddffb998",
+                  "packages/analysis/src/files.ts": "6186177faea34f7b2f6dd865b4f911d3b8fbfe6786e2cd19bc7dffee2a058ba2",
+                  "packages/analysis/src/graph.ts": "8978a47c311ddef684de5e4c5ab032eed9bc87ad94a739351de6e2d6b2ae2aba",
+                  "packages/analysis/src/order.ts": "361eff6435f7eb81ac15b9a005f8f676f499c56d3dc82abb242e2307b8af628d",
+                  "packages/analysis/src/process.ts": "8184c7f7c4c58cdc6987fd9d2ec2c02ce8557f94b6aa30853a0c6056ba79cf4a",
+                  "packages/analysis/src/tdd.ts": "96a9eef2bf0b1fbd034679be854e1a86994e6c0c0fd7ea4569e3f895ac115f80",
+                  "packages/analysis/src/test-report.ts": "41c76811bfcb5e286bf097bf2f6aaf6cd5a414202efe8108f28219ecca063a01",
+                  "packages/analysis/src/trace.ts": "efede75c79c7dc4828a0259c46ca870a7e15042c35edd94a107349a83eb56ec9",
+                  "packages/analysis/src/workflow-types.ts": "427c3450352eb7799e2b49933e267f9888e87d51dc5c6482b5b1378620205309",
+                  "packages/analysis/src/workflow-waiver.ts": "7c09999654d03fbc96879f3e6726d505706cdcba36940c00d46ac208d94f972f",
+                  "packages/analysis/src/workflow.ts": "ec8bec0cdc08941f97a3a5bd26b1c3fc58240b59f45ca23ad08e1f4639150ce4",
+                  "packages/domain/src/constitution.ts": "514278499642ff46ed902864b9192f566b116b4f92eb3fafa6b62588335e170a",
+                  "packages/domain/src/design.ts": "fc1ca4d3249abc9705ba4b6f296e0f4fa3b3d6ff6d5d82e51c99f49fc7a93ac9",
+                  "packages/domain/src/index.ts": "43243e9279e3826b23cd8d8b4365854974112ce4cf17cfb0f0ee32e6b28e9cc6",
+                  "packages/domain/src/markdown.ts": "5c6b96486a2e31944d7d128d241f1772d0926f34464fa2b59c20748a6754487a",
+                  "packages/domain/src/requirements.ts": "65ea1e6d3bbd29e929c785037b930e5f5eb5535b607403e5f30c3657d36e9175",
+                  "packages/domain/src/types.ts": "0f0cbd43bdee4db03b83e4869e9791531a63e9b63aa7a09661f62ad1bbc75cb3"
+                }
+              }
+            }
+          },
+          "order": 790
+        }
+      }
     }
   ]
 }

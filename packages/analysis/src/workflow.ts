@@ -266,10 +266,25 @@ export async function sanitizeWorkflowLogFile(
           data: { sessionId: terminalSessionId },
         });
       } else if (type === 'session.shutdown') {
+        const sessionId = data.sessionId ?? record.sessionId;
         await emit({
           type: 'session.shutdown',
           timestamp,
-          data: { shutdownType: data.shutdownType },
+          data: {
+            shutdownType: data.shutdownType,
+            ...(typeof sessionId === 'string'
+              ? { sessionId: replacementSessionId ?? sessionId }
+              : {}),
+          },
+        });
+      } else if (type === 'session.resume') {
+        const sessionId = data.sessionId ?? record.sessionId;
+        await emit({
+          type: 'session.resume',
+          timestamp,
+          ...(typeof sessionId === 'string'
+            ? { data: { sessionId: replacementSessionId ?? sessionId } }
+            : {}),
         });
       } else if (type === 'result') {
         const sessionId = record.sessionId;
@@ -365,9 +380,14 @@ async function verifyWorkflowChunks(
   let parsedCount = 0;
   let resultCount = 0;
   let shutdownCount = 0;
+  let sessionStartCount = 0;
   let lastParsedWasTerminal = false;
   let terminalRecord: Record<string, unknown> | undefined;
   const sessionIds = new Set<string>();
+  let lifecycleState: 'before-start' | 'active' | 'awaiting-resume' = 'before-start';
+  let lifecycleError: string | undefined;
+  let shutdownTypeError = false;
+  let lifecycleIdentityError: string | undefined;
   const invocationsById = new Map<string, { skill: string; toolCallId: string; invokedAt: string }>();
   const completions = new Map<string, { completedAt: string; status: 'completed' | 'failed' }>();
   const toolStarts = new Map<string, { timestamp: string; index: number }>();
@@ -418,9 +438,39 @@ async function verifyWorkflowChunks(
       shutdownCount += 1;
       terminalRecord = record;
     }
+    if (type === 'session.start' || type === 'session.resume' || isShutdown) {
+      const lifecycleSessionId = data.sessionId ?? record.sessionId;
+      if (lifecycleSessionId !== undefined) {
+        if (typeof lifecycleSessionId !== 'string' || !uuid.test(lifecycleSessionId)) {
+          lifecycleIdentityError ??= `The ${type} event must declare a UUID sessionId when present.`;
+        } else {
+          sessionIds.add(lifecycleSessionId.toLowerCase());
+        }
+      }
+    }
     if (type === 'session.start') {
-      const sessionId = data.sessionId ?? record.sessionId;
-      if (typeof sessionId === 'string') sessionIds.add(sessionId.toLowerCase());
+      sessionStartCount += 1;
+      if (lifecycleState !== 'before-start' || sessionStartCount > 1) {
+        lifecycleError ??= 'A routine shutdown lifecycle requires exactly one session start.';
+      } else {
+        lifecycleState = 'active';
+      }
+    } else if (type === 'session.resume') {
+      if (lifecycleState !== 'awaiting-resume') {
+        lifecycleError ??= 'A session resume must immediately follow a non-final routine shutdown.';
+      } else {
+        lifecycleState = 'active';
+      }
+    } else if (isShutdown) {
+      if (data.shutdownType !== 'routine') shutdownTypeError = true;
+      if (lifecycleState === 'before-start') {
+        lifecycleError ??= 'A session shutdown cannot occur before the session start.';
+      } else if (lifecycleState === 'awaiting-resume') {
+        lifecycleError ??= 'Every non-final session shutdown must be immediately followed by session.resume.';
+      }
+      lifecycleState = 'awaiting-resume';
+    } else if (lifecycleState === 'awaiting-resume') {
+      lifecycleError ??= 'Every non-final session shutdown must be immediately followed by session.resume.';
     }
     const timestampValue = record.timestamp ?? data.timestamp;
     const timestamp = typeof timestampValue === 'string' ? timestampValue : '';
@@ -510,8 +560,8 @@ async function verifyWorkflowChunks(
 
   let terminal: { timestamp: string; sessionId: string; exitCode: number } | undefined;
   if (options.mode === 'strict') {
-    if (resultCount + shutdownCount !== 1) {
-      throw new Error('Strict workflow verification requires exactly one terminal result or routine shutdown event.');
+    if (resultCount > 1 || (resultCount > 0 && shutdownCount > 0) || (resultCount === 0 && shutdownCount === 0)) {
+      throw new Error('Strict workflow verification requires exactly one terminal result format or a routine shutdown lifecycle.');
     }
     if (!lastParsedWasTerminal) {
       throw new Error(resultCount === 1
@@ -528,10 +578,12 @@ async function verifyWorkflowChunks(
       sessionId = terminalRecord!.sessionId;
       exitCode = terminalRecord!.exitCode;
     } else {
-      if (terminalData.shutdownType !== 'routine') {
-        throw new Error('The terminal session shutdown must declare shutdownType routine.');
+      if (shutdownTypeError || terminalData.shutdownType !== 'routine') {
+        throw new Error('Every session shutdown must declare shutdownType routine.');
       }
-      if (sessionIds.size !== 1) {
+      if (lifecycleError) throw new Error(lifecycleError);
+      if (lifecycleIdentityError) throw new Error(lifecycleIdentityError);
+      if (sessionStartCount !== 1 || sessionIds.size !== 1) {
         throw new Error('A routine session shutdown requires exactly one session UUID.');
       }
       [sessionId] = sessionIds;

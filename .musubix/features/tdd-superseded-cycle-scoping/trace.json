@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-14T22:01:43.918Z",
+  "generatedAt": "2026-09-21T05:01:39.404Z",
   "nodes": [
     {
       "id": "CODE-SESSION-SCOPED-DEVELOPMENT-001",
@@ -2228,43 +2228,43 @@
       "id": "CODE-WORKFLOW-SHUTDOWN-001",
       "kind": "code",
       "path": "packages/analysis/src/workflow.ts",
-      "line": 338
+      "line": 353
     },
     {
       "id": "CODE-WORKFLOW-EVIDENCE-WAIVER-018",
       "kind": "code",
       "path": "packages/analysis/src/workflow.ts",
-      "line": 615
+      "line": 667
     },
     {
       "id": "CODE-WORKFLOW-EVIDENCE-WAIVER-019",
       "kind": "code",
       "path": "packages/analysis/src/workflow.ts",
-      "line": 749
+      "line": 801
     },
     {
       "id": "CODE-WORKFLOW-EVIDENCE-WAIVER-015",
       "kind": "code",
       "path": "packages/analysis/src/workflow.ts",
-      "line": 768
+      "line": 820
     },
     {
       "id": "CODE-WORKFLOW-EVIDENCE-WAIVER-016",
       "kind": "code",
       "path": "packages/analysis/src/workflow.ts",
-      "line": 777
+      "line": 829
     },
     {
       "id": "CODE-WORKFLOW-EVIDENCE-WAIVER-017",
       "kind": "code",
       "path": "packages/analysis/src/workflow.ts",
-      "line": 786
+      "line": 838
     },
     {
       "id": "CODE-WORKFLOW-WAIVER-BULK-001",
       "kind": "code",
       "path": "packages/analysis/src/workflow.ts",
-      "line": 889
+      "line": 941
     },
     {
       "id": "CODE-UPGRADE-WORKFLOW-001",
@@ -2930,7 +2930,25 @@
       "id": "TEST-WORKFLOW-SHUTDOWN-001",
       "kind": "test",
       "path": "tests/p3-workflow-provenance.test.ts",
-      "line": 181
+      "line": 235
+    },
+    {
+      "id": "TEST-WORKFLOW-SHUTDOWN-RESUME-001",
+      "kind": "test",
+      "path": "tests/p3-workflow-provenance.test.ts",
+      "line": 267
+    },
+    {
+      "id": "TEST-WORKFLOW-SHUTDOWN-RESUME-002",
+      "kind": "test",
+      "path": "tests/p3-workflow-provenance.test.ts",
+      "line": 288
+    },
+    {
+      "id": "TEST-WORKFLOW-SHUTDOWN-RESUME-003",
+      "kind": "test",
+      "path": "tests/p3-workflow-provenance.test.ts",
+      "line": 324
     },
     {
       "id": "TEST-REQUIREMENTS-DESIGN-SCAFFOLD-001",
@@ -7089,6 +7107,21 @@
       "relation": "verifies"
     },
     {
+      "from": "TEST-WORKFLOW-SHUTDOWN-RESUME-001",
+      "to": "REQ-WORKFLOW-SHUTDOWN-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-WORKFLOW-SHUTDOWN-RESUME-002",
+      "to": "REQ-WORKFLOW-SHUTDOWN-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-WORKFLOW-SHUTDOWN-RESUME-003",
+      "to": "REQ-WORKFLOW-SHUTDOWN-001",
+      "relation": "verifies"
+    },
+    {
       "from": "TEST-REQUIREMENTS-DESIGN-SCAFFOLD-001",
       "to": "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-001",
       "relation": "verifies"
@@ -7433,7 +7466,7 @@
     ".musubix/decisions/ADR-0002.md": "da556c6ef7efcee366a8c6497179bad96c093145366b6422548b0e3df2cba348",
     ".musubix/decisions/ADR-0003.md": "79bac3818dc9708a24999a4d45008d90ee278c28d4d5af183d14a40b4215cd5c",
     ".musubix/decisions/ADR-0004.md": "9646c30f95575ca7500ef219fb0d078d21827d2d22f5b5b6b873f16ca4a17efc",
-    ".musubix/decisions/ADR-0005.md": "d140b67fafaec59681623f962e4f3bb279ea2104ba12232c9b17ff677e1a5b44",
+    ".musubix/decisions/ADR-0005.md": "dfdc7361ad9f45d568ddb040ed0db0ecc2361a6ffcd921fc25a0681102dd8211",
     ".musubix/decisions/ADR-0006.md": "5242adbfcf7c527398b4f0b25e742001c624f612b7cd42d434b16c25d141e2b7",
     ".musubix/decisions/ADR-0007.md": "5c6a93287e4bbd6aa947f171dd5bd0017b7ca263a23077054101e7df8fc360f2",
     ".musubix/decisions/ADR-0008.md": "ed668b4e69b832890fe0644b18b602cfa5224dd85c8a58af3e188b609659a276",
@@ -7511,8 +7544,8 @@
     ".musubix/features/workflow-evidence-waiver/requirements.md": "1ac4721a882a88a4b2add783c2825460d26879e271a4d646668c1f355a28b23c",
     ".musubix/features/workflow-multi-session-verification/design.md": "16a916ca279ddfddb7b18a59bef7c9bee5c4608d751187208da3a6c3b46e0d55",
     ".musubix/features/workflow-multi-session-verification/requirements.md": "2ae290a162d6318ff2567a0fe6f44aa38f40e38b0b9344fd1c1c36bfc3937aa1",
-    ".musubix/features/workflow-session-shutdown/design.md": "225d1718c0ea1628dae251f06b1c5ddafda9a7ae92a15e3d961efbea51c0e0ac",
-    ".musubix/features/workflow-session-shutdown/requirements.md": "2b8d72e2fcb1dbf5bc24ee733182cf2b692e33c50550ce7a8de2e9c5a8c32c0d",
+    ".musubix/features/workflow-session-shutdown/design.md": "d08e7ec4eb67fd91434788fd96f1b0f247d5caddd1783692766061b7296cbbf3",
+    ".musubix/features/workflow-session-shutdown/requirements.md": "c00d313bbb445e0951fad5d2cd70f22341a19ce357659cd03e80f3049ef8d873",
     ".musubix/features/workflow-waiver-bulk-recording/design.md": "c956f35169212cedc0fc66a11902200c7dda10230fc326075644d908f29580ae",
     ".musubix/features/workflow-waiver-bulk-recording/requirements.md": "361cfba519d4ab189a2091cf7b99133b9c005f69fb28aa2d77bba17bd7ee7b33",
     "packages/analysis/src/adapters.ts": "a3c516b7c06dee11bc9786da53cf97b087543e0304d0bce8d678aa01670f53e2",
@@ -7541,9 +7574,9 @@
     "packages/analysis/src/trace.ts": "010f31087efea1eadb8925836527f54fddff71d40b74334de9d88800b7dad47e",
     "packages/analysis/src/workflow-types.ts": "427c3450352eb7799e2b49933e267f9888e87d51dc5c6482b5b1378620205309",
     "packages/analysis/src/workflow-waiver.ts": "7c09999654d03fbc96879f3e6726d505706cdcba36940c00d46ac208d94f972f",
-    "packages/analysis/src/workflow.ts": "fa63488de60794c10e829c79168d5bac455aec0b02a2726705a0441da60b015c",
+    "packages/analysis/src/workflow.ts": "ec8bec0cdc08941f97a3a5bd26b1c3fc58240b59f45ca23ad08e1f4639150ce4",
     "packages/cli/src/install.ts": "3b7d03d1864493ea9caee34855e4fd82ec970d321a205ee3378c8f13a4a34e17",
-    "packages/cli/src/main.ts": "d3c295351fd6c9bffe6d310cf769a5f5a9f265f8978bcf05b4061b3f0d5bc59f",
+    "packages/cli/src/main.ts": "1b89b1dc7d91352839423fbfbef3049553f9848c74c6afd09f85bddc7a4c379e",
     "packages/domain/src/constitution.ts": "514278499642ff46ed902864b9192f566b116b4f92eb3fafa6b62588335e170a",
     "packages/domain/src/design.ts": "fc1ca4d3249abc9705ba4b6f296e0f4fa3b3d6ff6d5d82e51c99f49fc7a93ac9",
     "packages/domain/src/index.ts": "43243e9279e3826b23cd8d8b4365854974112ce4cf17cfb0f0ee32e6b28e9cc6",
@@ -7566,7 +7599,7 @@
     "tests/change-record-fail-fast.test.ts": "2f69f19332049c206f39b42c3bc2b505ce63173db798d74c5a9ace7064cdfe78",
     "tests/change-record-recordedat-order.test.ts": "5ad61cf31e273dc9cdfe190b21dcc8ffc49d327592e01b6eb0251f4cdda7b149",
     "tests/change-requirement-batches.test.ts": "1150be6f24769b99cc88fd2984a7eaecd7b41cd9f6db6fa847f29f74e2f3f808",
-    "tests/cli-package.test.ts": "baf1547f38051f7e32fdd184aa3bdd1cd549e873e74da3d3e682851fd4e436ea",
+    "tests/cli-package.test.ts": "49ff7dc11787413186ac46267b402468407ca681f5093326e0fee892b08ec512",
     "tests/cli-workflow-ux.test.ts": "53bdc5375bef05b365d725f5a8948393d68ae8cd1116fad8ff36ca3de127a177",
     "tests/command-working-directory.test.ts": "82dc863b1fcc5cd8a5ea1534238ef2f61f15e5d6c5e25d61fce43a7efe9bbc02",
     "tests/design-adr-none-exemption.test.ts": "f8a4771eb8b71a8c83b9ef782e9ed8646ef408aa4169298ab7a02553aa1c9ed7",
@@ -7581,7 +7614,7 @@
     "tests/p3-codegraph-policy.test.ts": "51382d96b162341a47f77643caa3d40641218c34a6106cf32c3d112defd701a6",
     "tests/p3-formal.test.ts": "19d7b40f4c5f92391debbc0e8f1353d93023e0774a57c5390e1b0dcfed2b3aab",
     "tests/p3-performance-provenance.test.ts": "a71e222cca5217e210c2b623b09c9e9d9c37c7999eb70ea058ab780c59fabe83",
-    "tests/p3-workflow-provenance.test.ts": "75a885b88e16602194d39711a07fd33748bc2264195d3445452ea84b95772605",
+    "tests/p3-workflow-provenance.test.ts": "eb1a3f7235292b1d9440183ab1b18b8513ef6e896a6bb1c5a6c8ecf9ad4f0a4a",
     "tests/p4-correspondence-mutation.test.ts": "d8ab95e6cfcd01518bc130e190913e172c6eb7519cd98e37bac1525391ce43fa",
     "tests/p4-workflow-streaming.test.ts": "6389d083b5bca81f88bbed2f54228a17d711cb8fa16a30a68614eb59bfb1d8bf",
     "tests/php-verification.test.ts": "bc70946615f3faa3cb3b5467e552140ba2ec8e25fb4d5276f72f65393ed04315",

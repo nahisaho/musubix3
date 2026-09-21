@@ -752,10 +752,13 @@ review evidenceへ入れる前に`workflow-sanitize`で必要最小限へ変換�
 重複workflow eventではなく`change-record`に記録します。
 `"workflow":{"mode":"strict"}`または`--strict`では、全非空行のJSON、
 event timestamp、tool start/completionの1対1整合性、最後に1件だけ存在する
-正常終了terminal eventを追加検査します。対応形式は`exitCode: 0`の`result`、
+正常終了terminal stateを追加検査します。対応形式は`exitCode: 0`の`result`、
 または一意なsession UUIDと、末尾の
 `session.shutdown(data.shutdownType="routine")`を持つ現行Copilot CLI形式です。
-terminal形式の混在、複数session、異常shutdown、末尾以外のterminal eventは
+shutdown形式では、各中間routine shutdownの直後に`session.resume`がある場合、
+1回以上のshutdown/resumeを含む再開sessionも受理し、`workflow-sanitize`は
+検証に必要なlifecycle境界を保持します。terminal形式の混在、対応しない
+shutdown/resume、複数session、異常shutdown、末尾以外のterminal stateは
 fail closedで拒否します。terminal `sessionId`、exit code、
 event数、terminal時刻、raw source hash、canonical transcript hashを保存します。
 `workflow.expectedSessionId`または`--session-id`でcaller申告sessionの置換を拒否します。
