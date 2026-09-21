@@ -407,6 +407,8 @@ validation/gate or requested solver failure, **2** usage, I/O or malformed confi
 | `formal check <file> [--solver auto\|none\|z3\|lean]` | Check the explicit Boolean/conditional/numeric/temporal/transition model |
 | `model-correspondence validate` | Revalidate Formal JSON → generated trace → authoritative passing test evidence (run `evidence refresh` first to generate its evidence file) |
 | `evidence refresh [--changed]` | Regenerate derived evidence through the same fail-closed gate pipeline |
+| `evidence merge --incoming <directory> [--dry-run]` | Merge the current root's valid order/TDD/change/waiver history with another valid project history. Base records remain first; exact duplicates are deduplicated; ambiguous payloads, chronology inversions, and post-Quality batch additions fail without writes. Dry-run performs the same planning and validation. The incoming directory is never modified. |
+| `evidence merge --recover` | Recover an interrupted evidence merge from its journal. Prepared transactions roll back; committed transactions verify and roll forward. If recovery reports `EVIDENCE_MERGE_RECOVERY_UNSAFE`, back up `.musubix/evidence`, restore or verify `order.json`, `tdd.json`, `changes.json`, and `change-waivers.json` from a trusted source, quarantine merge journal/temporary files, then rerun validation. |
 | `mutation validate` | Revalidate requirement-scoped schema-v1 killed-mutant evidence |
 | `mutation identity <REQ-ID> <TEST-ID> <sourcePath> <operator> <line> <column>` | Print the deterministic `MUT-*` identity a mutation report must declare |
 | `tdd validate` | Validate persisted Red/Green/Refactor order, fingerprints, durations, and hash-chain evidence |
@@ -424,6 +426,32 @@ validation/gate or requested solver failure, **2** usage, I/O or malformed confi
 | `config scaffold` | Propose native test-command entries for detected Go/Rust/Maven/Python/Node toolchains without writing `.musubix/config.json` |
 | `gate [--changed] [--feature <name>]` | Fresh full checks plus actual configured commands; persist evidence. `--feature` scopes requirements/design/trace/tdd/change-history/change-completeness checks to one feature as a diagnostic view; never a substitute for the repository-wide gate |
 | `status` | Artifact counts and readiness/staleness summary |
+
+### Evidence-history merge
+
+`evidence merge` requires both roots to have individually valid `order.json`,
+`tdd.json`, and `changes.json`; `change-waivers.json` is optional. The incoming
+real path must be disjoint from the current root, remains read-only, and the
+current worktree must already contain each newly introduced incoming change
+document. Duplicate comparison canonicalizes JSON after removing only rebuilt
+sequence/order/hash-link fields. The result keeps base history first and then
+incoming relative order, so wall-clock `recordedAt` warnings can remain even
+when logical order is valid. If base Quality precedes an incoming Red or
+Implementation batch, merge the histories before recording Quality and record
+Quality again against the merged history.
+
+Use `--dry-run` for the same conflict, candidate, stale-waiver, and supersession
+analysis without writes. A successful merge can make waiver snapshots stale
+and inactive or select a later authoritative waiver; explicitly re-approve
+those waivers and rerun normal `gate` and `status`. Only `order.json`,
+`tdd.json`, `changes.json`, and `change-waivers.json` are merged. Workflow,
+approval, quality, formal, mutation, correspondence, performance, attestation,
+and native test-report evidence must use their existing regeneration or
+conflict-resolution workflows. `EVIDENCE_MERGE_CANDIDATE_INVALID` reports each
+underlying file/entity diagnostic. Use `--recover` after interruption; for
+`EVIDENCE_MERGE_RECOVERY_UNSAFE`, back up `.musubix/evidence`, restore or verify
+all four targets from a trusted source, quarantine merge-owned journal and
+temporary files, and rerun structural validation.
 
 `--changed` reads staged, unstaged, untracked and renamed/deleted paths from Git.
 It reports affected files but **conservatively recomputes all deterministic checks

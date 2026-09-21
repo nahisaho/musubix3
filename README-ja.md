@@ -357,6 +357,8 @@ npx musubix3 tdd green TEST-EXAMPLE-002 --requirement REQ-EXAMPLE-002 --command 
 | `formal check <file> [--solver auto\|none\|z3\|lean]` | 明示的なBoolean・条件・数値・時間・状態遷移モデルを検査 |
 | `model-correspondence validate` | Formal JSON→生成trace→正本passing testの証拠を再検証 |
 | `evidence refresh [--changed]` | 同じfail-closed gate pipelineで派生証拠を再生成 |
+| `evidence merge --incoming <directory> [--dry-run]` | 現在rootの有効なorder/TDD/change/waiver履歴へ、別projectの有効な履歴を統合する。base recordを先に保持し、完全重複をdedupeし、payload競合・chronology逆転・Quality後のbatch追加は書込みなしで拒否する。dry-runも同じ計画・検証を行い、incoming directoryは変更しない |
+| `evidence merge --recover` | journalから中断したevidence mergeを復旧する。prepared transactionはrollback、committed transactionは検証してroll-forwardする。`EVIDENCE_MERGE_RECOVERY_UNSAFE`の場合は`.musubix/evidence`をバックアップし、信頼できるsourceから`order.json`、`tdd.json`、`changes.json`、`change-waivers.json`を復元または検証し、merge journal/tempを隔離してから再検証する |
 | `mutation validate` | 要求scopeのschema-v1 killed-mutant証拠を再検証 |
 | `mutation identity <REQ-ID> <TEST-ID> <sourcePath> <operator> <line> <column>` | mutation reportが宣言すべき決定的な`MUT-*`識別子を出力 |
 | `tdd validate` | 保存済みRed/Green/Refactorの順序、指紋、実行時間、hash-chainを検証 |
@@ -374,6 +376,31 @@ npx musubix3 tdd green TEST-EXAMPLE-002 --requirement REQ-EXAMPLE-002 --command 
 | `config scaffold` | 検出したGo/Rust/Maven/Python/Nodeツールチェーン向けのnative test-command候補を`.musubix/config.json`へ書き込まずに提案 |
 | `gate [--changed] [--feature <name>]` | 検証・実コマンドを集約し品質根拠を保存。`--feature`は requirements/design/trace/tdd/change-history/change-completeness の検査を1機能へ限定する診断用途で、repository全体のgateの代替ではない |
 | `status` | 成果物数と準備状況・陳腐化を表示 |
+
+### Evidence history の統合
+
+`evidence merge` は両方のrootに個別に有効な`order.json`、`tdd.json`、
+`changes.json`があることを前提とし、`change-waivers.json`は省略できます。
+incomingのreal pathは現在rootと分離され、read-onlyのままです。現在worktree
+には新しく導入するincoming change documentが必要です。duplicate比較では、
+再構築対象のsequence/order/hash-link fieldだけを除外してJSONをcanonical化します。
+結果はbase historyを先に、incomingの相対順序を後に保持するため、論理orderが
+正しくてもwall-clockの`recordedAt` warningは残り得ます。base Qualityより後に
+incoming RedまたはImplementation batchがある場合は、Quality記録前にhistoryを
+統合し、統合後のhistoryに対してQualityを再記録してください。
+
+`--dry-run`は書込みなしで同じconflict、candidate、stale waiver、
+supersession解析を行います。統合によりwaiver snapshotがstaleかつinactiveに
+なったり、より後のauthoritative waiverが選択されたりするため、該当waiverを
+明示的に再承認し、通常の`gate`と`status`を再実行してください。統合対象は
+`order.json`、`tdd.json`、`changes.json`、`change-waivers.json`だけです。
+workflow、approval、quality、formal、mutation、correspondence、performance、
+attestation、native test-report evidenceは既存の再生成またはconflict解決手順を
+使用します。`EVIDENCE_MERGE_CANDIDATE_INVALID`は基礎となるfile/entity診断を
+すべて報告します。中断後は`--recover`を使い、
+`EVIDENCE_MERGE_RECOVERY_UNSAFE`の場合は`.musubix/evidence`をバックアップし、
+信頼できるsourceから4 targetを復元または検証し、merge journal/tempを隔離して
+structural validationを再実行してください。
 
 `--changed` は Git の staged/unstaged/untracked/rename/delete を収集し、
 変更・影響を表示します。**安全のため全検査と全設定コマンドを再実行**します。

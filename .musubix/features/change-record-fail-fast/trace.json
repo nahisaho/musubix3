@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-21T08:43:21.294Z",
+  "generatedAt": "2026-09-21T13:36:32.139Z",
   "nodes": [
     {
       "id": "CODE-SESSION-SCOPED-DEVELOPMENT-001",
@@ -174,6 +174,18 @@
       "id": "ADR-0028",
       "kind": "adr",
       "path": ".musubix/decisions/ADR-0028.md",
+      "line": 1
+    },
+    {
+      "id": "ADR-0029",
+      "kind": "adr",
+      "path": ".musubix/decisions/ADR-0029.md",
+      "line": 1
+    },
+    {
+      "id": "ADR-0030",
+      "kind": "adr",
+      "path": ".musubix/decisions/ADR-0030.md",
       "line": 1
     },
     {
@@ -991,6 +1003,65 @@
       "mandatory": true
     },
     {
+      "id": "DES-EVIDENCE-HISTORY-MERGE-001",
+      "kind": "design",
+      "path": ".musubix/features/evidence-history-merge/design.md",
+      "line": 3
+    },
+    {
+      "id": "DES-EVIDENCE-HISTORY-MERGE-002",
+      "kind": "design",
+      "path": ".musubix/features/evidence-history-merge/design.md",
+      "line": 44
+    },
+    {
+      "id": "DES-EVIDENCE-HISTORY-MERGE-003",
+      "kind": "design",
+      "path": ".musubix/features/evidence-history-merge/design.md",
+      "line": 108
+    },
+    {
+      "id": "DES-EVIDENCE-HISTORY-MERGE-004",
+      "kind": "design",
+      "path": ".musubix/features/evidence-history-merge/design.md",
+      "line": 162
+    },
+    {
+      "id": "REQ-EVIDENCE-HISTORY-MERGE-001",
+      "kind": "requirement",
+      "path": ".musubix/features/evidence-history-merge/requirements.md",
+      "line": 12,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-EVIDENCE-HISTORY-MERGE-002",
+      "kind": "requirement",
+      "path": ".musubix/features/evidence-history-merge/requirements.md",
+      "line": 19,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-EVIDENCE-HISTORY-MERGE-003",
+      "kind": "requirement",
+      "path": ".musubix/features/evidence-history-merge/requirements.md",
+      "line": 26,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-EVIDENCE-HISTORY-MERGE-004",
+      "kind": "requirement",
+      "path": ".musubix/features/evidence-history-merge/requirements.md",
+      "line": 33,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-EVIDENCE-HISTORY-MERGE-005",
+      "kind": "requirement",
+      "path": ".musubix/features/evidence-history-merge/requirements.md",
+      "line": 40,
+      "mandatory": true
+    },
+    {
       "id": "DES-APPROVAL-001",
       "kind": "design",
       "path": ".musubix/features/human-approval-gates/design.md",
@@ -1664,13 +1735,13 @@
       "id": "CODE-ADAPTER-PATTERN-RECOGNITION-001",
       "kind": "code",
       "path": "packages/analysis/src/adapters.ts",
-      "line": 215
+      "line": 218
     },
     {
       "id": "CODE-TDD-RED-COLLECTION-GUIDANCE-001",
       "kind": "code",
       "path": "packages/analysis/src/adapters.ts",
-      "line": 330
+      "line": 333
     },
     {
       "id": "CODE-APPROVAL-DOMAIN-SCOPING-002",
@@ -1916,7 +1987,7 @@
       "id": "CODE-CHANGE-EVIDENCE-WAIVER-012",
       "kind": "code",
       "path": "packages/analysis/src/change-waiver.ts",
-      "line": 780
+      "line": 841
     },
     {
       "id": "CODE-CHANGE-ACCEPTANCE-HEURISTIC-001",
@@ -1997,16 +2068,40 @@
       "line": 682
     },
     {
+      "id": "CODE-EVIDENCE-HISTORY-MERGE-001",
+      "kind": "code",
+      "path": "packages/analysis/src/evidence-merge.ts",
+      "line": 405
+    },
+    {
+      "id": "CODE-EVIDENCE-HISTORY-MERGE-002",
+      "kind": "code",
+      "path": "packages/analysis/src/evidence-merge.ts",
+      "line": 846
+    },
+    {
+      "id": "CODE-EVIDENCE-HISTORY-MERGE-003",
+      "kind": "code",
+      "path": "packages/analysis/src/evidence-merge.ts",
+      "line": 933
+    },
+    {
+      "id": "CODE-EVIDENCE-HISTORY-MERGE-004",
+      "kind": "code",
+      "path": "packages/analysis/src/evidence-merge.ts",
+      "line": 1031
+    },
+    {
       "id": "CODE-CLI-WORKFLOW-UX-001",
       "kind": "code",
       "path": "packages/analysis/src/files.ts",
-      "line": 62
+      "line": 63
     },
     {
       "id": "CODE-BOUNDED-FILE-READ-CONCURRENCY-001",
       "kind": "code",
       "path": "packages/analysis/src/files.ts",
-      "line": 168
+      "line": 171
     },
     {
       "id": "CODE-CLI-WORKFLOW-UX-005",
@@ -2036,7 +2131,7 @@
       "id": "CODE-WORKFLOW-EVIDENCE-WAIVER-024",
       "kind": "code",
       "path": "packages/analysis/src/index.ts",
-      "line": 19
+      "line": 20
     },
     {
       "id": "CODE-BOUNDED-FILE-READ-CONCURRENCY-003",
@@ -2234,49 +2329,49 @@
       "id": "CODE-WORKFLOW-MULTI-SESSION-001",
       "kind": "code",
       "path": "packages/analysis/src/workflow.ts",
-      "line": 77
+      "line": 78
     },
     {
       "id": "CODE-WORKFLOW-SHUTDOWN-001",
       "kind": "code",
       "path": "packages/analysis/src/workflow.ts",
-      "line": 353
+      "line": 355
     },
     {
       "id": "CODE-WORKFLOW-EVIDENCE-WAIVER-018",
       "kind": "code",
       "path": "packages/analysis/src/workflow.ts",
-      "line": 667
+      "line": 669
     },
     {
       "id": "CODE-WORKFLOW-EVIDENCE-WAIVER-019",
       "kind": "code",
       "path": "packages/analysis/src/workflow.ts",
-      "line": 801
+      "line": 803
     },
     {
       "id": "CODE-WORKFLOW-EVIDENCE-WAIVER-015",
       "kind": "code",
       "path": "packages/analysis/src/workflow.ts",
-      "line": 820
+      "line": 822
     },
     {
       "id": "CODE-WORKFLOW-EVIDENCE-WAIVER-016",
       "kind": "code",
       "path": "packages/analysis/src/workflow.ts",
-      "line": 829
+      "line": 831
     },
     {
       "id": "CODE-WORKFLOW-EVIDENCE-WAIVER-017",
       "kind": "code",
       "path": "packages/analysis/src/workflow.ts",
-      "line": 838
+      "line": 840
     },
     {
       "id": "CODE-WORKFLOW-WAIVER-BULK-001",
       "kind": "code",
       "path": "packages/analysis/src/workflow.ts",
-      "line": 941
+      "line": 943
     },
     {
       "id": "CODE-UPGRADE-WORKFLOW-001",
@@ -2288,37 +2383,37 @@
       "id": "CODE-CLI-WORKFLOW-UX-002",
       "kind": "code",
       "path": "packages/cli/src/main.ts",
-      "line": 145
+      "line": 146
     },
     {
       "id": "CODE-WORKFLOW-EVIDENCE-WAIVER-023",
       "kind": "code",
       "path": "packages/cli/src/main.ts",
-      "line": 382
+      "line": 425
     },
     {
       "id": "CODE-WORKFLOW-WAIVER-BULK-002",
       "kind": "code",
       "path": "packages/cli/src/main.ts",
-      "line": 418
+      "line": 461
     },
     {
       "id": "CODE-CHANGE-RECORD-RECORDEDAT-ORDER-004",
       "kind": "code",
       "path": "packages/cli/src/main.ts",
-      "line": 506
+      "line": 549
     },
     {
       "id": "CODE-CHANGE-RECORD-FAIL-FAST-002",
       "kind": "code",
       "path": "packages/cli/src/main.ts",
-      "line": 522
+      "line": 565
     },
     {
       "id": "CODE-TDD-ADOPTION-WARNING-003",
       "kind": "code",
       "path": "packages/cli/src/main.ts",
-      "line": 607
+      "line": 650
     },
     {
       "id": "CODE-DESIGN-ADR-NONE-EXEMPTION-001",
@@ -2937,6 +3032,36 @@
       "kind": "test",
       "path": "tests/ears-id-diagnostic-messages.test.ts",
       "line": 25
+    },
+    {
+      "id": "TEST-EVIDENCE-HISTORY-MERGE-001",
+      "kind": "test",
+      "path": "tests/evidence-history-merge.test.ts",
+      "line": 58
+    },
+    {
+      "id": "TEST-EVIDENCE-HISTORY-MERGE-002",
+      "kind": "test",
+      "path": "tests/evidence-history-merge.test.ts",
+      "line": 73
+    },
+    {
+      "id": "TEST-EVIDENCE-HISTORY-MERGE-003",
+      "kind": "test",
+      "path": "tests/evidence-history-merge.test.ts",
+      "line": 90
+    },
+    {
+      "id": "TEST-EVIDENCE-HISTORY-MERGE-004",
+      "kind": "test",
+      "path": "tests/evidence-history-merge.test.ts",
+      "line": 115
+    },
+    {
+      "id": "TEST-EVIDENCE-HISTORY-MERGE-005",
+      "kind": "test",
+      "path": "tests/evidence-history-merge.test.ts",
+      "line": 131
     },
     {
       "id": "TEST-MODEL-CORRESPONDENCE-EVIDENCE-GUIDANCE-001",
@@ -3989,6 +4114,111 @@
       "from": "ADR-0014",
       "to": "DES-EARS-ID-DIAGNOSTIC-MESSAGES-001",
       "relation": "decides"
+    },
+    {
+      "from": "DES-EVIDENCE-HISTORY-MERGE-001",
+      "to": "REQ-EVIDENCE-HISTORY-MERGE-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-EVIDENCE-HISTORY-MERGE-001",
+      "to": "REQ-EVIDENCE-HISTORY-MERGE-003",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-EVIDENCE-HISTORY-MERGE-001",
+      "to": "REQ-EVIDENCE-HISTORY-MERGE-005",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0029",
+      "to": "DES-EVIDENCE-HISTORY-MERGE-001",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-EVIDENCE-HISTORY-MERGE-002",
+      "to": "REQ-EVIDENCE-HISTORY-MERGE-002",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-EVIDENCE-HISTORY-MERGE-002",
+      "to": "REQ-EVIDENCE-HISTORY-MERGE-003",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-EVIDENCE-HISTORY-MERGE-002",
+      "to": "REQ-EVIDENCE-HISTORY-MERGE-005",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0029",
+      "to": "DES-EVIDENCE-HISTORY-MERGE-002",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-EVIDENCE-HISTORY-MERGE-002",
+      "to": "DES-EVIDENCE-HISTORY-MERGE-001",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-EVIDENCE-HISTORY-MERGE-003",
+      "to": "REQ-EVIDENCE-HISTORY-MERGE-004",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-EVIDENCE-HISTORY-MERGE-003",
+      "to": "REQ-EVIDENCE-HISTORY-MERGE-005",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0030",
+      "to": "DES-EVIDENCE-HISTORY-MERGE-003",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-EVIDENCE-HISTORY-MERGE-003",
+      "to": "DES-EVIDENCE-HISTORY-MERGE-002",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-EVIDENCE-HISTORY-MERGE-004",
+      "to": "REQ-EVIDENCE-HISTORY-MERGE-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-EVIDENCE-HISTORY-MERGE-004",
+      "to": "REQ-EVIDENCE-HISTORY-MERGE-004",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-EVIDENCE-HISTORY-MERGE-004",
+      "to": "REQ-EVIDENCE-HISTORY-MERGE-005",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0029",
+      "to": "DES-EVIDENCE-HISTORY-MERGE-004",
+      "relation": "decides"
+    },
+    {
+      "from": "ADR-0030",
+      "to": "DES-EVIDENCE-HISTORY-MERGE-004",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-EVIDENCE-HISTORY-MERGE-004",
+      "to": "DES-EVIDENCE-HISTORY-MERGE-001",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-EVIDENCE-HISTORY-MERGE-004",
+      "to": "DES-EVIDENCE-HISTORY-MERGE-002",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-EVIDENCE-HISTORY-MERGE-004",
+      "to": "DES-EVIDENCE-HISTORY-MERGE-003",
+      "relation": "depends-on"
     },
     {
       "from": "DES-APPROVAL-001",
@@ -5661,6 +5891,66 @@
       "relation": "implements"
     },
     {
+      "from": "CODE-EVIDENCE-HISTORY-MERGE-001",
+      "to": "REQ-EVIDENCE-HISTORY-MERGE-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-EVIDENCE-HISTORY-MERGE-001",
+      "to": "REQ-EVIDENCE-HISTORY-MERGE-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-EVIDENCE-HISTORY-MERGE-001",
+      "to": "DES-EVIDENCE-HISTORY-MERGE-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-EVIDENCE-HISTORY-MERGE-002",
+      "to": "REQ-EVIDENCE-HISTORY-MERGE-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-EVIDENCE-HISTORY-MERGE-002",
+      "to": "REQ-EVIDENCE-HISTORY-MERGE-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-EVIDENCE-HISTORY-MERGE-002",
+      "to": "DES-EVIDENCE-HISTORY-MERGE-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-EVIDENCE-HISTORY-MERGE-003",
+      "to": "REQ-EVIDENCE-HISTORY-MERGE-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-EVIDENCE-HISTORY-MERGE-003",
+      "to": "DES-EVIDENCE-HISTORY-MERGE-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-EVIDENCE-HISTORY-MERGE-004",
+      "to": "REQ-EVIDENCE-HISTORY-MERGE-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-EVIDENCE-HISTORY-MERGE-004",
+      "to": "REQ-EVIDENCE-HISTORY-MERGE-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-EVIDENCE-HISTORY-MERGE-004",
+      "to": "REQ-EVIDENCE-HISTORY-MERGE-005",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-EVIDENCE-HISTORY-MERGE-004",
+      "to": "DES-EVIDENCE-HISTORY-MERGE-004",
+      "relation": "implements"
+    },
+    {
       "from": "CODE-CLI-WORKFLOW-UX-001",
       "to": "REQ-CLI-WORKFLOW-UX-001",
       "relation": "implements"
@@ -7146,6 +7436,31 @@
       "relation": "verifies"
     },
     {
+      "from": "TEST-EVIDENCE-HISTORY-MERGE-001",
+      "to": "REQ-EVIDENCE-HISTORY-MERGE-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-EVIDENCE-HISTORY-MERGE-002",
+      "to": "REQ-EVIDENCE-HISTORY-MERGE-002",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-EVIDENCE-HISTORY-MERGE-003",
+      "to": "REQ-EVIDENCE-HISTORY-MERGE-003",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-EVIDENCE-HISTORY-MERGE-004",
+      "to": "REQ-EVIDENCE-HISTORY-MERGE-004",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-EVIDENCE-HISTORY-MERGE-005",
+      "to": "REQ-EVIDENCE-HISTORY-MERGE-005",
+      "relation": "verifies"
+    },
+    {
       "from": "TEST-MODEL-CORRESPONDENCE-EVIDENCE-GUIDANCE-001",
       "to": "REQ-MODEL-CORRESPONDENCE-EVIDENCE-GUIDANCE-001",
       "relation": "verifies"
@@ -7544,6 +7859,8 @@
     ".musubix/decisions/ADR-0026.md": "193efbb4d778f4aa9246b5e9e3e6ab1e8e86a9ddac40a189e33f2533013d8531",
     ".musubix/decisions/ADR-0027.md": "1661295df8d1cf91a49ad928d576be5c382cf132f1a211b1b3f63987ff401de1",
     ".musubix/decisions/ADR-0028.md": "e9507066f52f57e58105e16ceac3196fad091912edbe1a5c89e2705664c4bb22",
+    ".musubix/decisions/ADR-0029.md": "ad78f16771e42db6742c0aadbbe2e1e7d4640f4447995f7f801c994b5b424485",
+    ".musubix/decisions/ADR-0030.md": "80b4d83140891df2ae9b8056d8ed4ec4b04bcb03544ca0523932a18465b088d2",
     ".musubix/features/adapter-pattern-recognition/design.md": "a8e0c4a11f626cb4a41c9b5b53359c072ec0c3161f704791f42ba8af38124a70",
     ".musubix/features/adapter-pattern-recognition/requirements.md": "5731561a0a04982b8a5c305bdeeae6084bcf0ee8846f295eaaaabc823d1f9793",
     ".musubix/features/approval-domain-scoping/design.md": "e8731f1e3094aa22192ae2ae5986fb4dc9a7698f7cfe66961e1342f6e0743bd9",
@@ -7570,6 +7887,8 @@
     ".musubix/features/design-adr-none-exemption/requirements.md": "f7586dbbc34f8dccb06141efc277ab817b15a6ac0a9fb7ed2faff9bdab144373",
     ".musubix/features/ears-id-diagnostic-messages/design.md": "d282350c0c5cd6c923c0a54e6e60d633f7ab4a6c570ffdc891ba4a92d2e4e1d2",
     ".musubix/features/ears-id-diagnostic-messages/requirements.md": "49afd4e574f1179a31707323fbbcfffabf1051f666ad1fcba60b39b2e7da3808",
+    ".musubix/features/evidence-history-merge/design.md": "9c469da087e4f259c57af526e82609ca84b05e94c790e1b6f7c54cb8709d42d7",
+    ".musubix/features/evidence-history-merge/requirements.md": "7fa32ee9bc9dd11e25bcdaff1959ab4d17156f9965c5904f4a0cf2283d5cd988",
     ".musubix/features/human-approval-gates/design.md": "ce1e316afee28082001ddedbce734a7766562889bd28f3eea610909c8d736206",
     ".musubix/features/human-approval-gates/requirements.md": "f2ae2380935831bb102cd6a7726f2a208ab1719e035157302ef51ed28f624fb0",
     ".musubix/features/model-correspondence-evidence-guidance/design.md": "708350f1f2a95dd9ab36b3da739db89be8b4895085a3c0fdf6b64482fe04837a",
@@ -7602,20 +7921,22 @@
     ".musubix/features/workflow-session-shutdown/requirements.md": "c00d313bbb445e0951fad5d2cd70f22341a19ce357659cd03e80f3049ef8d873",
     ".musubix/features/workflow-waiver-bulk-recording/design.md": "c956f35169212cedc0fc66a11902200c7dda10230fc326075644d908f29580ae",
     ".musubix/features/workflow-waiver-bulk-recording/requirements.md": "361cfba519d4ab189a2091cf7b99133b9c005f69fb28aa2d77bba17bd7ee7b33",
-    "packages/analysis/src/adapters.ts": "a3c516b7c06dee11bc9786da53cf97b087543e0304d0bce8d678aa01670f53e2",
+    "packages/analysis/src/adapters.ts": "6c7b5a2d1f5673bd252aeb3958e0f1628752c11927a11acdd7d2893dc081d9c7",
     "packages/analysis/src/approval-domains.ts": "bc45836374021f86c4c2085184185546cc4291880aea32b9084188545b9394b4",
     "packages/analysis/src/approval-record.ts": "838294de204a006daf5a7048a69153b573d5b61e5c9d8f3d66332b27a5b577bf",
     "packages/analysis/src/approval.ts": "d9f57165ca455a0b49acdda7096e0df98a06cd5be33c3d20b2f06cf40917c69f",
     "packages/analysis/src/attestation.ts": "c353b5d93f151665e1f5f0531b763db164cb54e5305a837efd47b2742eb3b949",
     "packages/analysis/src/change-evidence.ts": "a4d3f08d27ea87cf0b888256429227963df0839b20e741f85c844ab7ca7fb717",
-    "packages/analysis/src/change-waiver.ts": "a53d6463de68c125d4d078b0057b4d27a92f70c105adf09c3ef206274f7bcb5f",
+    "packages/analysis/src/change-waiver.ts": "37ec569bdaed0636feb2cb0323d060aa5fe09183cbd4637f3fe53a879c1f68b9",
     "packages/analysis/src/change.ts": "82be3f8de93c45ae103a62a17ca3e6ffbb56223a8b4c612b3c15d1d74d64eeb2",
     "packages/analysis/src/config.ts": "52d5212f4057df9ed5caac0a0025ce744864909abceea3c64d259479ddffb998",
-    "packages/analysis/src/files.ts": "6186177faea34f7b2f6dd865b4f911d3b8fbfe6786e2cd19bc7dffee2a058ba2",
+    "packages/analysis/src/evidence-merge-guard.ts": "cc0303770804e83c5daf231b4f137ebfd0e5238cc18db94a6f5b9568dfa2f20f",
+    "packages/analysis/src/evidence-merge.ts": "6a54fff0d452e5ed916105f26cc8dbff7a621969ac13d038ac3b7f3003c9f547",
+    "packages/analysis/src/files.ts": "dc3220e5ba04740a9fe754bb77c62b9c480012daadc3979f454fe5a428d851e4",
     "packages/analysis/src/formal.ts": "9f5622983fed80c1e7c141cc7c7dcd217447e5c2edd39e64877db052a57b730b",
     "packages/analysis/src/gate.ts": "d5045b5d9de832fb7714d200f8274c8a2eedbda9f8841f9eac24cf4f3fbbc72d",
     "packages/analysis/src/graph.ts": "8978a47c311ddef684de5e4c5ab032eed9bc87ad94a739351de6e2d6b2ae2aba",
-    "packages/analysis/src/index.ts": "01cf9d6d2e56c4fca3ee0b7268acdefbf15838991b6781112154f103d01d3fbf",
+    "packages/analysis/src/index.ts": "fd43baf5b90bfe1f1b46fddda3793852802fb4787f3e8115bcb5d45aba74010e",
     "packages/analysis/src/knowledge.ts": "48b68e9785f411327e10e1bd1f086fdaf4393d2951dcbd4e6fdec84e8008d7da",
     "packages/analysis/src/model-correspondence.ts": "fb19dbbdf461b8e2a2429b6107f60e7ea523e4033e4677ed7dd09ea03740659c",
     "packages/analysis/src/mutation.ts": "8e68ed8491317dca183afa8c556d3f242628f20388f33b1b6fe997a98b459740",
@@ -7628,9 +7949,9 @@
     "packages/analysis/src/trace.ts": "010f31087efea1eadb8925836527f54fddff71d40b74334de9d88800b7dad47e",
     "packages/analysis/src/workflow-types.ts": "427c3450352eb7799e2b49933e267f9888e87d51dc5c6482b5b1378620205309",
     "packages/analysis/src/workflow-waiver.ts": "7c09999654d03fbc96879f3e6726d505706cdcba36940c00d46ac208d94f972f",
-    "packages/analysis/src/workflow.ts": "ec8bec0cdc08941f97a3a5bd26b1c3fc58240b59f45ca23ad08e1f4639150ce4",
+    "packages/analysis/src/workflow.ts": "fa3f6c4d44c7e2f932ec1960cec7e94c1c7f13fabae9eb3250487a261b634906",
     "packages/cli/src/install.ts": "3b7d03d1864493ea9caee34855e4fd82ec970d321a205ee3378c8f13a4a34e17",
-    "packages/cli/src/main.ts": "1b89b1dc7d91352839423fbfbef3049553f9848c74c6afd09f85bddc7a4c379e",
+    "packages/cli/src/main.ts": "67f110c6db20e3432f76ec418de918bcd3bf4a42ba3b23d91c4da14bbcae9750",
     "packages/domain/src/constitution.ts": "514278499642ff46ed902864b9192f566b116b4f92eb3fafa6b62588335e170a",
     "packages/domain/src/design.ts": "fc1ca4d3249abc9705ba4b6f296e0f4fa3b3d6ff6d5d82e51c99f49fc7a93ac9",
     "packages/domain/src/index.ts": "43243e9279e3826b23cd8d8b4365854974112ce4cf17cfb0f0ee32e6b28e9cc6",
@@ -7659,6 +7980,8 @@
     "tests/design-adr-none-exemption.test.ts": "f8a4771eb8b71a8c83b9ef782e9ed8646ef408aa4169298ab7a02553aa1c9ed7",
     "tests/domain.test.ts": "be79af0613fe35d70659d15155efc859721d764a0ea40c9764c2e4d7f89ea16d",
     "tests/ears-id-diagnostic-messages.test.ts": "b87dbcbbd8a1c6d2c8fddd2ad0c7483da022281b4fae2f968972413933ee009a",
+    "tests/evidence-history-merge-recovery.test.ts": "2389fa9fdc2fe1a064a00df536c0e5d281da86bb9820f12e118f0886f38103f4",
+    "tests/evidence-history-merge.test.ts": "18e2b5adb0b67e459099350e592f55ee629bf1c2732454776fd5bb591d4cfadd",
     "tests/formal-knowledge.test.ts": "325ff2567b72708b83d3eab7b2986e7ceb7beb252ed21276b0db7436ffa367a4",
     "tests/gate-install.test.ts": "d2d1f923f594f15776c1ecb64325775a1c3770de557d2a2c0342ec4144538822",
     "tests/helpers.ts": "7f2b2d283ef52eba984333232170633d89cad0a3b05924c43ff52382344eeac3",

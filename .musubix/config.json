@@ -199,6 +199,18 @@
       "timeoutMs": 120000
     },
     {
+      "name": "evidence-history-merge-tests",
+      "command": "npx",
+      "args": [
+        "vitest",
+        "run",
+        "tests/evidence-history-merge.test.ts"
+      ],
+      "adapter": "vitest",
+      "required": true,
+      "timeoutMs": 120000
+    },
+    {
       "name": "workflow-evidence-waiver-tests",
       "command": "npx",
       "args": [

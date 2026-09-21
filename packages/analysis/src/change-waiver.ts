@@ -117,7 +117,7 @@ export async function loadChangeWaiverEvidence(root: string): Promise<LoadedChan
     if (value.schemaVersion !== 1 || !Array.isArray(value.waivers)) {
       return { schemaVersion: 1, waivers: [], malformed: true };
     }
-    return { schemaVersion: 1, waivers: value.waivers };
+    return { ...value, schemaVersion: 1, waivers: value.waivers };
   } catch {
     return { schemaVersion: 1, waivers: [], malformed: true };
   }
@@ -775,6 +775,67 @@ export async function activeWaivers(root: string): Promise<Array<{
     });
   }
   return results;
+}
+
+export async function evaluateChangeWaiverState(
+  root: string,
+  evidence: ChangeEvidence,
+  tdd: TddEvidence,
+  order: Awaited<ReturnType<typeof inspectEvidenceOrder>>,
+  waivers: ChangeWaiverEvidence,
+): Promise<{
+  stale: Array<{ changeId: string; code: string; requirementId?: string; detail?: string }>;
+  authoritative: Map<string, string>;
+}> {
+  const linkage: Array<{ valid: boolean; reason?: string }> = [];
+  const currentHash: Array<string | undefined> = [];
+  for (let index = 0; index < waivers.waivers.length; index++) {
+    const recordLinkage = await waiverLinkage(root, evidence, order, waivers.waivers, index);
+    linkage.push(recordLinkage);
+    if (recordLinkage.valid) {
+      const record = waivers.waivers[index]!;
+      currentHash.push(digest(canonicalJson(await snapshotPayload(
+        root, evidence, tdd, order, record.changeId, record.code as WaivableCode, record.requirementId, record.detail,
+      ))));
+    } else {
+      currentHash.push(undefined);
+    }
+  }
+  const context: WaiverContext = {
+    loaded: { schemaVersion: 1, waivers: waivers.waivers, malformed: false },
+    order,
+    linkage,
+    currentHash,
+  };
+  const stale = waivers.waivers.flatMap((record, index) =>
+    linkage[index]?.valid && !nonStale(record, index, context)
+      ? [{
+          changeId: record.changeId,
+          code: record.code,
+          ...(record.requirementId !== undefined ? { requirementId: record.requirementId } : {}),
+          ...(record.detail !== undefined ? { detail: record.detail } : {}),
+        }]
+      : []);
+  const authoritative = new Map<string, string>();
+  for (const record of waivers.waivers) {
+    const scope = JSON.stringify([record.changeId, record.code, record.requirementId, record.detail]);
+    if (authoritative.has(scope)) continue;
+    const index = authoritativeIndex(context, record.changeId, record.code, record.requirementId, record.detail);
+    if (index === -1) continue;
+    const selected = waivers.waivers[index]!;
+    authoritative.set(scope, JSON.stringify([
+      selected.changeId,
+      selected.code,
+      selected.requirementId,
+      selected.detail,
+      selected.approver,
+      selected.reason,
+      selected.recordedAt,
+      selected.snapshotVersion,
+      selected.snapshotHash,
+    ]));
+  }
+  return { stale, authoritative };
 }
 
 /** @id CODE-CHANGE-EVIDENCE-WAIVER-012

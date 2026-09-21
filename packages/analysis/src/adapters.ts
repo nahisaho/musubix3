@@ -1,6 +1,7 @@
 import { dirname, posix } from 'node:path';
 import { mkdir, readdir, readFile, rm, unlink, writeFile } from 'node:fs/promises';
 import { exists } from './files.js';
+import { assertAbsoluteEvidencePathReady } from './evidence-merge-guard.js';
 import type { CommandConfig } from './config.js';
 import type { MusubixTestReport } from './test-report.js';
 
@@ -180,6 +181,7 @@ export function adapterInvocation(
 }
 
 export async function clearAdapterOutput(invocation: AdapterInvocation, absolutePath: string): Promise<void> {
+  await assertAbsoluteEvidencePathReady(absolutePath);
   if (await exists(absolutePath)) {
     if (invocation.source === 'directory') await rm(absolutePath, { recursive: true });
     else await unlink(absolutePath);
@@ -188,6 +190,7 @@ export async function clearAdapterOutput(invocation: AdapterInvocation, absolute
 }
 
 export async function readAdapterOutput(invocation: AdapterInvocation, absolutePath: string, stdout: string): Promise<string | null> {
+  await assertAbsoluteEvidencePathReady(absolutePath);
   if (invocation.source === 'stdout') {
     if (stdout) {
       await mkdir(dirname(absolutePath), { recursive: true });

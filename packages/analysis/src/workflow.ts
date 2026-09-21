@@ -5,6 +5,7 @@ import { dirname } from 'node:path';
 import { error, type Diagnostic } from '../../domain/src/index.js';
 import { loadConfig } from './config.js';
 import { digest, exists, safePath, writeJson } from './files.js';
+import { assertAbsoluteEvidencePathReady } from './evidence-merge-guard.js';
 import {
   CURRENT_SNAPSHOT_VERSION, WORKFLOW_WAIVABLE_CODES, WORKFLOW_WAIVER_PATH, authoritativeIndex, buildWorkflowWaiverContext,
   deriveWorkflowWaiverAudit, loadWorkflowWaiverEvidence, nonStale, payloadShaOf, resolveEvent,
@@ -173,6 +174,7 @@ export async function sanitizeWorkflowLogFile(
   const maxBytes = maxTranscriptBytes ?? workflowVerificationLimits.maxBytes;
   const maxLineBytes = maxTranscriptLineBytes ?? workflowVerificationLimits.maxLineBytes;
   const target = await safePath(root, outputPath);
+  await assertAbsoluteEvidencePathReady(target);
   await mkdir(dirname(target), { recursive: true });
   const staging = `${target}.${process.pid}.${crypto.randomUUID()}.writing`;
   const output = await open(staging, 'wx');

@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-21T08:43:25.823Z",
-  "totalRequirements": 146,
+  "generatedAt": "2026-09-21T13:36:36.809Z",
+  "totalRequirements": 151,
   "modeledRequirements": 10,
-  "modeledFraction": 0.0684931506849315,
+  "modeledFraction": 0.06622516556291391,
   "result": {
     "valid": true,
     "abstraction": "Consistency of explicit branch-scoped conditional, exact unit-normalized integer numeric, bounded temporal interval, deterministic state-transition, and controlled unconditional Boolean constraints; not implementation correctness.",
@@ -144,6 +144,11 @@
       "REQ-EARS-ID-DIAGNOSTIC-MESSAGES-001",
       "REQ-EARS-ID-DIAGNOSTIC-MESSAGES-002",
       "REQ-EARS-ID-DIAGNOSTIC-MESSAGES-003",
+      "REQ-EVIDENCE-HISTORY-MERGE-001",
+      "REQ-EVIDENCE-HISTORY-MERGE-002",
+      "REQ-EVIDENCE-HISTORY-MERGE-003",
+      "REQ-EVIDENCE-HISTORY-MERGE-004",
+      "REQ-EVIDENCE-HISTORY-MERGE-005",
       "REQ-HUMAN-APPROVAL-GATES-001",
       "REQ-HUMAN-APPROVAL-GATES-002",
       "REQ-HUMAN-APPROVAL-GATES-003",
@@ -585,6 +590,31 @@
       {
         "code": "FORMAL_UNSUPPORTED",
         "severity": "warning",
+        "message": "REQ-EVIDENCE-HISTORY-MERGE-001 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-EVIDENCE-HISTORY-MERGE-002 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-EVIDENCE-HISTORY-MERGE-003 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-EVIDENCE-HISTORY-MERGE-004 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-EVIDENCE-HISTORY-MERGE-005 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
         "message": "REQ-HUMAN-APPROVAL-GATES-001 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
       },
       {
@@ -913,6 +943,7 @@
     ".musubix/features/command-working-directory/requirements.md": "4a376dfe7a6e9b1bb1ff4a947fb2807f7179a1798df369040c879a1b9e4fcb90",
     ".musubix/features/design-adr-none-exemption/requirements.md": "f7586dbbc34f8dccb06141efc277ab817b15a6ac0a9fb7ed2faff9bdab144373",
     ".musubix/features/ears-id-diagnostic-messages/requirements.md": "49afd4e574f1179a31707323fbbcfffabf1051f666ad1fcba60b39b2e7da3808",
+    ".musubix/features/evidence-history-merge/requirements.md": "7fa32ee9bc9dd11e25bcdaff1959ab4d17156f9965c5904f4a0cf2283d5cd988",
     ".musubix/features/human-approval-gates/requirements.md": "f2ae2380935831bb102cd6a7726f2a208ab1719e035157302ef51ed28f624fb0",
     ".musubix/features/model-correspondence-evidence-guidance/requirements.md": "d7ca8b823ddfd3265e89f2892003e5eb95faad7e9b3972b249de5f2902446511",
     ".musubix/features/requirements-design-scaffold/requirements.md": "0a968bc27756e715f68f22a8f6d65fc8fefce09ac79d1c8d0137282b821ebc45",

@@ -11,6 +11,7 @@ import {
   formalDoctor, generateFormalArtifacts, readText, runGate, traceImpact, type Solver,
   changePhases, recordChangePhase, recordWorkflow, runTddPhase, sanitizeWorkflowLogFile,
   validateTddEvidence, verifyWorkflowLogFile, migrateTddFingerprint, voidTddCycle, type ChangePhase, type TddPhase,
+  mergeEvidenceHistories, recoverEvidenceMerge,
   attestationSigningPayload, createUnsignedAttestation, githubOidcAudience, verifyEvidenceAttestation,
   mutationDoctor, mutationIdentity, validateMutationEvidence, validateModelCorrespondenceEvidence, within,
   approvalManifest, approvalStages, recordApproval, requireApproval,   requireDomainOption, requireValidateDomainOption, resolveDesignFileDomain, resolveNamedDomain,
@@ -269,6 +270,48 @@ export function createProgram(): Command {
   common(evidence.command('refresh'))
     .option('--changed', 'Preserve changed-file impact context while refreshing all checks')
     .action(executeGate);
+  common(evidence.command('merge')
+    .description('Deterministically merge another valid append-only evidence history into the current root')
+    .option('--incoming <directory>', 'Project directory containing the incoming .musubix/evidence history')
+    .option('--dry-run', 'Validate and preview the merge without writing evidence')
+    .option('--recover', 'Recover an interrupted merge without requiring --incoming')
+    .addHelpText('after', `
+Both roots must contain individually valid order, TDD, and change evidence. The
+incoming root must be path-disjoint and is never modified. Merge uses canonical
+duplicate comparison and stable base-first ordering; recordedAt warnings may
+remain. The current worktree must already contain incoming change documents.
+Merge only handles order.json, tdd.json, changes.json, and change-waivers.json.
+Run gate/status afterward and explicitly re-approve stale waivers. If base
+Quality precedes incoming batch evidence, merge before recording Quality.
+Use --recover for interrupted transactions; unsafe recovery requires backing up
+the evidence directory, restoring/verifying all four targets from a trusted
+source, quarantining merge files, and rerunning structural validation.`))
+    .action(async (options: {
+      root: string; json?: boolean; incoming?: string; dryRun?: boolean; recover?: boolean;
+    }) => {
+      const root = resolve(options.root);
+      if (options.recover) {
+        if (options.incoming || options.dryRun) throw new Error('--recover cannot be combined with --incoming or --dry-run.');
+        const report = await recoverEvidenceMerge(root);
+        output(report, !!options.json, report.action);
+        return;
+      }
+      if (!options.incoming) throw new Error('--incoming <directory> is required unless --recover is used.');
+      const report = await mergeEvidenceHistories(root, resolve(options.incoming), { ...(options.dryRun ? { dryRun: true } : {}) });
+      output(
+        report,
+        !!options.json,
+        `${report.valid ? (options.dryRun ? 'DRY-RUN' : 'MERGED') : 'FAILED'}`
+          + ` preserved=${report.preserved} deduplicated=${report.deduplicated} appended=${report.appended}`
+          + `${report.diagnostics.length ? `\n${report.diagnostics.map((item) =>
+            `${item.code}${item.file ? ` ${item.file}` : ''}${item.identity ? ` ${item.identity}` : ''}: ${item.message}`).join('\n')}` : ''}`
+          + `${report.followUpDiagnostics.length ? `\n${report.followUpDiagnostics.map((item) =>
+            `${item.code}${item.path ? ` ${item.path}` : ''}: ${item.message}`).join('\n')}` : ''}`
+          + `${report.supersededScopes.length ? `\nWaiver supersession changed for ${report.supersededScopes.length} scope(s).` : ''}`
+          + `${report.revalidationRequired ? '\nEVIDENCE_MERGE_REVALIDATION_REQUIRED: rerun gate and status; re-approve stale waivers.' : ''}`,
+      );
+      if (!report.valid) process.exitCode = 1;
+    });
   const mutation = program.command('mutation').description('Inspect and validate requirement-scoped mutation evidence');
   common(mutation.command('doctor')).action(async (options: { root: string; json?: boolean }) => {
     const report = await mutationDoctor(resolve(options.root));

@@ -16,6 +16,7 @@
     ".musubix/features/command-working-directory/requirements.md": "4a376dfe7a6e9b1bb1ff4a947fb2807f7179a1798df369040c879a1b9e4fcb90",
     ".musubix/features/design-adr-none-exemption/requirements.md": "f7586dbbc34f8dccb06141efc277ab817b15a6ac0a9fb7ed2faff9bdab144373",
     ".musubix/features/ears-id-diagnostic-messages/requirements.md": "49afd4e574f1179a31707323fbbcfffabf1051f666ad1fcba60b39b2e7da3808",
+    ".musubix/features/evidence-history-merge/requirements.md": "7fa32ee9bc9dd11e25bcdaff1959ab4d17156f9965c5904f4a0cf2283d5cd988",
     ".musubix/features/human-approval-gates/requirements.md": "f2ae2380935831bb102cd6a7726f2a208ab1719e035157302ef51ed28f624fb0",
     ".musubix/features/model-correspondence-evidence-guidance/requirements.md": "d7ca8b823ddfd3265e89f2892003e5eb95faad7e9b3972b249de5f2902446511",
     ".musubix/features/requirements-design-scaffold/requirements.md": "0a968bc27756e715f68f22a8f6d65fc8fefce09ac79d1c8d0137282b821ebc45",
@@ -33,7 +34,7 @@
     ".musubix/features/workflow-session-shutdown/requirements.md": "c00d313bbb445e0951fad5d2cd70f22341a19ce357659cd03e80f3049ef8d873",
     ".musubix/features/workflow-waiver-bulk-recording/requirements.md": "361cfba519d4ab189a2091cf7b99133b9c005f69fb28aa2d77bba17bd7ee7b33"
   },
-  "artifactSha256": "6480570a3dce128717cf4facf12e88f35b256f39c416ad8835c27695d4ccadf9",
+  "artifactSha256": "f15dc0ae7262ab894b924a1af8ac03a9bbd3558c0636eae96ffdfc6b77d0cc9e",
   "approver": "nahisaho",
-  "approvedAt": "2026-09-21T07:50:50.272Z"
+  "approvedAt": "2026-09-21T11:05:00.662Z"
 }
