@@ -460,6 +460,18 @@
       "adapter": "vitest",
       "required": true,
       "timeoutMs": 120000
+    },
+    {
+      "name": "github-actions-node24-runtime-tests",
+      "command": "npx",
+      "args": [
+        "vitest",
+        "run",
+        "tests/github-actions-node24-runtime.test.ts"
+      ],
+      "adapter": "vitest",
+      "required": true,
+      "timeoutMs": 120000
     }
   ],
   "requiredChecks": [
