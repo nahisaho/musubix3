@@ -103,7 +103,8 @@
   "workflow": {
     "mode": "compatible",
     "maxAgeSeconds": 3600,
-    "maxFutureSkewSeconds": 60
+    "maxFutureSkewSeconds": 60,
+    "maxTranscriptBytes": 120000000
   },
   "attestation": {
     "mode": "local",
