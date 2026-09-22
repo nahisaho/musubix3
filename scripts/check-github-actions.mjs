@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { parse } from 'yaml';
 
@@ -7,6 +7,10 @@ const workflowPaths = [
   '.github/workflows/ci.yml',
   '.github/workflows/release.yml',
   '.github/workflows/npm-publish.yml',
+];
+const actionWorkflowPaths = [
+  ...workflowPaths,
+  '.github/workflows/dependency-audit.yml',
 ];
 const lockPath = 'scripts/github-actions-lock.json';
 const fixturePath = 'tests/fixtures/github-actions-node24-runtime/baseline.json';
@@ -16,7 +20,10 @@ const shaPattern = /^[0-9a-f]{40}$/;
 const datePattern = /^\d{4}-\d{2}-\d{2}$/;
 
 function currentPath(path) {
-  return workflowRoot ? resolve(workflowRoot, path) : path;
+  if (!workflowRoot) return path;
+  const fixturePath = resolve(workflowRoot, path);
+  if (existsSync(fixturePath)) return fixturePath;
+  return path === '.github/workflows/dependency-audit.yml' ? path : fixturePath;
 }
 
 function diagnostic(code, message, path) {
@@ -61,8 +68,8 @@ function major(tag) {
 }
 
 /** @id CODE-GITHUB-ACTIONS-NODE24-RUNTIME-001
- * @implements REQ-GITHUB-ACTIONS-NODE24-RUNTIME-001
- * @design DES-GITHUB-ACTIONS-NODE24-RUNTIME-001
+ * @implements REQ-GITHUB-ACTIONS-NODE24-RUNTIME-001 REQ-NPM-AUDIT-REMEDIATION-004
+ * @design DES-GITHUB-ACTIONS-NODE24-RUNTIME-001 DES-NPM-AUDIT-REMEDIATION-003
  */
 function checkLock() {
   const diagnostics = [];
@@ -71,7 +78,7 @@ function checkLock() {
   if (lock.schemaVersion !== 1 || !Array.isArray(lock.actions)) {
     return [diagnostic('ACTION_LOCK_SCHEMA', 'Action lock must use schemaVersion 1 with an actions array.', lockPath)];
   }
-  const references = workflowPaths.flatMap(actionReferences);
+  const references = actionWorkflowPaths.flatMap(actionReferences);
   const entries = new Map();
   for (const entry of lock.actions) {
     const path = lockPath;

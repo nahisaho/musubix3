@@ -20215,6 +20215,1689 @@
           "order": 1043
         }
       ]
+    },
+    {
+      "changeId": "CHANGE-0022",
+      "requirementIds": [
+        "REQ-NPM-AUDIT-REMEDIATION-001",
+        "REQ-NPM-AUDIT-REMEDIATION-002",
+        "REQ-NPM-AUDIT-REMEDIATION-003",
+        "REQ-NPM-AUDIT-REMEDIATION-004"
+      ],
+      "phases": {
+        "impact": {
+          "phase": "impact",
+          "recordedAt": "2026-09-22T16:13:29.710Z",
+          "fingerprints": {
+            "impact": "dc237cc329f8b04cdd1935c44372afb1911ae92a50993d4228b465f6a536de6d",
+            "requirements": "ad3f2af0cf1612ed60dce095d83de4ea02a2bcbd50a1e6861c5958919f7a074c",
+            "design": "5c1453adb8b74dd336fb1579b3db51a005b4731681358667a7c1d7b9e6bfc458",
+            "implementation": "8a5a44cde7249329662424111b82e74287c1c40c04f8a11609b9f5be90e2a7e7",
+            "tests": "d64dda8c845eab3c3afdb251829824e861281ecdcec355a3c78d94f2fdce7b6b",
+            "tdd": "9d556c1eae45ceba5896d51faaa7148c48ff83eb1a412bec0dd53b96d5b59196",
+            "requirementImplementations": {
+              "REQ-NPM-AUDIT-REMEDIATION-001": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-NPM-AUDIT-REMEDIATION-002": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-NPM-AUDIT-REMEDIATION-003": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-NPM-AUDIT-REMEDIATION-004": {
+                "paths": [],
+                "fingerprints": {}
+              }
+            }
+          },
+          "order": 1050
+        },
+        "requirements": {
+          "phase": "requirements",
+          "recordedAt": "2026-09-22T16:14:51.989Z",
+          "fingerprints": {
+            "impact": "dc237cc329f8b04cdd1935c44372afb1911ae92a50993d4228b465f6a536de6d",
+            "requirements": "b97022c93eb68949a4aa747dc88a9cb7da31e571368e07bc3a44e907ab436f99",
+            "design": "5c1453adb8b74dd336fb1579b3db51a005b4731681358667a7c1d7b9e6bfc458",
+            "implementation": "8a5a44cde7249329662424111b82e74287c1c40c04f8a11609b9f5be90e2a7e7",
+            "tests": "d64dda8c845eab3c3afdb251829824e861281ecdcec355a3c78d94f2fdce7b6b",
+            "tdd": "9d556c1eae45ceba5896d51faaa7148c48ff83eb1a412bec0dd53b96d5b59196",
+            "requirementImplementations": {
+              "REQ-NPM-AUDIT-REMEDIATION-001": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-NPM-AUDIT-REMEDIATION-002": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-NPM-AUDIT-REMEDIATION-003": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-NPM-AUDIT-REMEDIATION-004": {
+                "paths": [],
+                "fingerprints": {}
+              }
+            }
+          },
+          "order": 1051
+        },
+        "design": {
+          "phase": "design",
+          "recordedAt": "2026-09-22T16:47:03.140Z",
+          "fingerprints": {
+            "impact": "448a7c179468bd63fc12da8c70b59c16eab90d2f3cbc7094376db19f68414d90",
+            "requirements": "b97022c93eb68949a4aa747dc88a9cb7da31e571368e07bc3a44e907ab436f99",
+            "design": "b8963a25a2c3811580e555dc06c1dd3679a1d51bab10dfcc73a015bcc03417af",
+            "implementation": "8a5a44cde7249329662424111b82e74287c1c40c04f8a11609b9f5be90e2a7e7",
+            "tests": "d64dda8c845eab3c3afdb251829824e861281ecdcec355a3c78d94f2fdce7b6b",
+            "tdd": "9d556c1eae45ceba5896d51faaa7148c48ff83eb1a412bec0dd53b96d5b59196",
+            "requirementImplementations": {
+              "REQ-NPM-AUDIT-REMEDIATION-001": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-NPM-AUDIT-REMEDIATION-002": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-NPM-AUDIT-REMEDIATION-003": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-NPM-AUDIT-REMEDIATION-004": {
+                "paths": [],
+                "fingerprints": {}
+              }
+            }
+          },
+          "order": 1052
+        },
+        "red": {
+          "phase": "red",
+          "recordedAt": "2026-09-22T16:52:01.837Z",
+          "fingerprints": {
+            "impact": "448a7c179468bd63fc12da8c70b59c16eab90d2f3cbc7094376db19f68414d90",
+            "requirements": "b97022c93eb68949a4aa747dc88a9cb7da31e571368e07bc3a44e907ab436f99",
+            "design": "b8963a25a2c3811580e555dc06c1dd3679a1d51bab10dfcc73a015bcc03417af",
+            "implementation": "8a5a44cde7249329662424111b82e74287c1c40c04f8a11609b9f5be90e2a7e7",
+            "tests": "5108f6d2b4151b8be7f94b94220aab2d91321e78c5594fe1bc7a3f32dcf9785c",
+            "tdd": "aa2f0a9f94ebc984d72440f096709aec8d25cce51b2936091d04ba18d1dd2f36",
+            "requirementImplementations": {
+              "REQ-NPM-AUDIT-REMEDIATION-001": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-NPM-AUDIT-REMEDIATION-002": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-NPM-AUDIT-REMEDIATION-003": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-NPM-AUDIT-REMEDIATION-004": {
+                "paths": [],
+                "fingerprints": {}
+              }
+            }
+          },
+          "order": 1057
+        },
+        "implementation": {
+          "phase": "implementation",
+          "recordedAt": "2026-09-22T16:58:32.847Z",
+          "fingerprints": {
+            "impact": "e3115f31287009ab5754f59d9555ed6663e6da39d3438c293cd16cea1dd724a6",
+            "requirements": "b97022c93eb68949a4aa747dc88a9cb7da31e571368e07bc3a44e907ab436f99",
+            "design": "b8963a25a2c3811580e555dc06c1dd3679a1d51bab10dfcc73a015bcc03417af",
+            "implementation": "b595b55dd88bed40582ad7c3252e82370fa710e425bcb46e3ba443f8316a27d1",
+            "tests": "5108f6d2b4151b8be7f94b94220aab2d91321e78c5594fe1bc7a3f32dcf9785c",
+            "tdd": "aa2f0a9f94ebc984d72440f096709aec8d25cce51b2936091d04ba18d1dd2f36",
+            "requirementImplementations": {
+              "REQ-NPM-AUDIT-REMEDIATION-001": {
+                "paths": [
+                  "scripts/check-npm-audit-remediation.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-npm-audit-remediation.mjs": "50411354741221b8abd8d27cf786005bb59c0a596c390a44289c4538e181e4c0"
+                }
+              },
+              "REQ-NPM-AUDIT-REMEDIATION-002": {
+                "paths": [
+                  "scripts/check-npm-audit-remediation.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-npm-audit-remediation.mjs": "50411354741221b8abd8d27cf786005bb59c0a596c390a44289c4538e181e4c0"
+                }
+              },
+              "REQ-NPM-AUDIT-REMEDIATION-003": {
+                "paths": [
+                  "scripts/check-npm-audit-remediation.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-npm-audit-remediation.mjs": "50411354741221b8abd8d27cf786005bb59c0a596c390a44289c4538e181e4c0"
+                }
+              },
+              "REQ-NPM-AUDIT-REMEDIATION-004": {
+                "paths": [
+                  "scripts/check-npm-audit-remediation.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-npm-audit-remediation.mjs": "50411354741221b8abd8d27cf786005bb59c0a596c390a44289c4538e181e4c0"
+                }
+              }
+            }
+          },
+          "order": 1058
+        },
+        "green": {
+          "phase": "green",
+          "recordedAt": "2026-09-22T16:58:49.174Z",
+          "fingerprints": {
+            "impact": "e3115f31287009ab5754f59d9555ed6663e6da39d3438c293cd16cea1dd724a6",
+            "requirements": "b97022c93eb68949a4aa747dc88a9cb7da31e571368e07bc3a44e907ab436f99",
+            "design": "b8963a25a2c3811580e555dc06c1dd3679a1d51bab10dfcc73a015bcc03417af",
+            "implementation": "b595b55dd88bed40582ad7c3252e82370fa710e425bcb46e3ba443f8316a27d1",
+            "tests": "5108f6d2b4151b8be7f94b94220aab2d91321e78c5594fe1bc7a3f32dcf9785c",
+            "tdd": "d3a6606b0d7b71c33c80ec563e694d12fcb217b7b679163c8035c7cba1c9568b",
+            "requirementImplementations": {
+              "REQ-NPM-AUDIT-REMEDIATION-001": {
+                "paths": [
+                  "scripts/check-npm-audit-remediation.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-npm-audit-remediation.mjs": "50411354741221b8abd8d27cf786005bb59c0a596c390a44289c4538e181e4c0"
+                }
+              },
+              "REQ-NPM-AUDIT-REMEDIATION-002": {
+                "paths": [
+                  "scripts/check-npm-audit-remediation.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-npm-audit-remediation.mjs": "50411354741221b8abd8d27cf786005bb59c0a596c390a44289c4538e181e4c0"
+                }
+              },
+              "REQ-NPM-AUDIT-REMEDIATION-003": {
+                "paths": [
+                  "scripts/check-npm-audit-remediation.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-npm-audit-remediation.mjs": "50411354741221b8abd8d27cf786005bb59c0a596c390a44289c4538e181e4c0"
+                }
+              },
+              "REQ-NPM-AUDIT-REMEDIATION-004": {
+                "paths": [
+                  "scripts/check-npm-audit-remediation.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-npm-audit-remediation.mjs": "50411354741221b8abd8d27cf786005bb59c0a596c390a44289c4538e181e4c0"
+                }
+              }
+            }
+          },
+          "order": 1063
+        },
+        "quality": {
+          "phase": "quality",
+          "recordedAt": "2026-09-22T20:34:01.362Z",
+          "fingerprints": {
+            "impact": "9039c234fa05e9a3fc4ca68aa8b770135d4707f991ae33042b8dffa52171da73",
+            "requirements": "7c5c684540c5cba0a9feec086f2c6a93aa5a562dd0d8553478ab651c10e40048",
+            "design": "1709135a73679f9d247d3a29030f6a473cb39081d71579a173ad9269d67aae4d",
+            "implementation": "b1fd479d40b8238c85ec89706ae1c93e252467c0e34249468b7b3e51ef0b6277",
+            "tests": "fb9ffc2995244b0b8e3683acf6f59e6a40d8e39ddaa6bc3f85915bf81c937b28",
+            "tdd": "54c04711dffff4e7c484b1ab83637ba6ff68e8b438135eeacc9fbeae1c4c7cb7",
+            "requirementImplementations": {
+              "REQ-NPM-AUDIT-REMEDIATION-001": {
+                "paths": [
+                  "scripts/check-npm-audit-remediation.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-npm-audit-remediation.mjs": "bd9ae8e70edcee3ba45729701bc89a27fd9b168613a9a7dc9b0d8bdc18ab6f10"
+                }
+              },
+              "REQ-NPM-AUDIT-REMEDIATION-002": {
+                "paths": [
+                  "scripts/check-npm-audit-remediation.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-npm-audit-remediation.mjs": "bd9ae8e70edcee3ba45729701bc89a27fd9b168613a9a7dc9b0d8bdc18ab6f10"
+                }
+              },
+              "REQ-NPM-AUDIT-REMEDIATION-003": {
+                "paths": [
+                  "scripts/check-npm-audit-remediation.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-npm-audit-remediation.mjs": "bd9ae8e70edcee3ba45729701bc89a27fd9b168613a9a7dc9b0d8bdc18ab6f10"
+                }
+              },
+              "REQ-NPM-AUDIT-REMEDIATION-004": {
+                "paths": [
+                  "scripts/check-github-actions.mjs",
+                  "scripts/check-npm-audit-remediation.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-github-actions.mjs": "36c6fc9ff5e6070bf15fa6d232ffd8d72f14a7d651636d3b88c560c78677d4cb",
+                  "scripts/check-npm-audit-remediation.mjs": "bd9ae8e70edcee3ba45729701bc89a27fd9b168613a9a7dc9b0d8bdc18ab6f10"
+                }
+              }
+            }
+          },
+          "order": 1149
+        }
+      },
+      "tddBatches": [
+        {
+          "requirementIds": [
+            "REQ-NPM-AUDIT-REMEDIATION-002",
+            "REQ-NPM-AUDIT-REMEDIATION-003"
+          ],
+          "red": {
+            "phase": "red",
+            "recordedAt": "2026-09-22T17:05:54.550Z",
+            "fingerprints": {
+              "impact": "e3115f31287009ab5754f59d9555ed6663e6da39d3438c293cd16cea1dd724a6",
+              "requirements": "b97022c93eb68949a4aa747dc88a9cb7da31e571368e07bc3a44e907ab436f99",
+              "design": "b8963a25a2c3811580e555dc06c1dd3679a1d51bab10dfcc73a015bcc03417af",
+              "implementation": "b595b55dd88bed40582ad7c3252e82370fa710e425bcb46e3ba443f8316a27d1",
+              "tests": "6571c452729fbd0419159a7918c08b6be35143ec6db2a72fc4cc24fccded5b7c",
+              "tdd": "7b5d93ac097df90b43fa9c7feb56fa5628f9d458aa3750dd2d6031dba51f3b7d",
+              "requirementImplementations": {
+                "REQ-NPM-AUDIT-REMEDIATION-002": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "50411354741221b8abd8d27cf786005bb59c0a596c390a44289c4538e181e4c0"
+                  }
+                },
+                "REQ-NPM-AUDIT-REMEDIATION-003": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "50411354741221b8abd8d27cf786005bb59c0a596c390a44289c4538e181e4c0"
+                  }
+                }
+              }
+            },
+            "order": 1066
+          },
+          "implementation": {
+            "phase": "implementation",
+            "recordedAt": "2026-09-22T17:07:41.379Z",
+            "fingerprints": {
+              "impact": "e3115f31287009ab5754f59d9555ed6663e6da39d3438c293cd16cea1dd724a6",
+              "requirements": "b97022c93eb68949a4aa747dc88a9cb7da31e571368e07bc3a44e907ab436f99",
+              "design": "b8963a25a2c3811580e555dc06c1dd3679a1d51bab10dfcc73a015bcc03417af",
+              "implementation": "f0e1293904340cdf95927ef7c88620b6156f549ebe57c14960fdafde0da59749",
+              "tests": "6571c452729fbd0419159a7918c08b6be35143ec6db2a72fc4cc24fccded5b7c",
+              "tdd": "7b5d93ac097df90b43fa9c7feb56fa5628f9d458aa3750dd2d6031dba51f3b7d",
+              "requirementImplementations": {
+                "REQ-NPM-AUDIT-REMEDIATION-002": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "a94c2966f0857c08221501af1eb1aabfb01d49aa7057dd443d6a271894e5a3a8"
+                  }
+                },
+                "REQ-NPM-AUDIT-REMEDIATION-003": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "a94c2966f0857c08221501af1eb1aabfb01d49aa7057dd443d6a271894e5a3a8"
+                  }
+                }
+              }
+            },
+            "order": 1067
+          },
+          "green": {
+            "phase": "green",
+            "recordedAt": "2026-09-22T17:08:04.419Z",
+            "fingerprints": {
+              "impact": "e3115f31287009ab5754f59d9555ed6663e6da39d3438c293cd16cea1dd724a6",
+              "requirements": "b97022c93eb68949a4aa747dc88a9cb7da31e571368e07bc3a44e907ab436f99",
+              "design": "b8963a25a2c3811580e555dc06c1dd3679a1d51bab10dfcc73a015bcc03417af",
+              "implementation": "f0e1293904340cdf95927ef7c88620b6156f549ebe57c14960fdafde0da59749",
+              "tests": "6571c452729fbd0419159a7918c08b6be35143ec6db2a72fc4cc24fccded5b7c",
+              "tdd": "fbaee365577ffa9129cc0b652643613c021d7046ad6847f75cd6ea599a04f206",
+              "requirementImplementations": {
+                "REQ-NPM-AUDIT-REMEDIATION-002": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "a94c2966f0857c08221501af1eb1aabfb01d49aa7057dd443d6a271894e5a3a8"
+                  }
+                },
+                "REQ-NPM-AUDIT-REMEDIATION-003": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "a94c2966f0857c08221501af1eb1aabfb01d49aa7057dd443d6a271894e5a3a8"
+                  }
+                }
+              }
+            },
+            "order": 1070
+          }
+        },
+        {
+          "requirementIds": [
+            "REQ-NPM-AUDIT-REMEDIATION-003"
+          ],
+          "red": {
+            "phase": "red",
+            "recordedAt": "2026-09-22T17:12:45.876Z",
+            "fingerprints": {
+              "impact": "e3115f31287009ab5754f59d9555ed6663e6da39d3438c293cd16cea1dd724a6",
+              "requirements": "b97022c93eb68949a4aa747dc88a9cb7da31e571368e07bc3a44e907ab436f99",
+              "design": "b8963a25a2c3811580e555dc06c1dd3679a1d51bab10dfcc73a015bcc03417af",
+              "implementation": "f0e1293904340cdf95927ef7c88620b6156f549ebe57c14960fdafde0da59749",
+              "tests": "bd8f81f924ce5eb653f1edbbb90b71679b0cbe4d7131dafe21d105254ee53932",
+              "tdd": "f78d71138727c82c2c1e22de477c66f636b7d95bdb8970416a0f9d1fb0fd0c54",
+              "requirementImplementations": {
+                "REQ-NPM-AUDIT-REMEDIATION-003": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "a94c2966f0857c08221501af1eb1aabfb01d49aa7057dd443d6a271894e5a3a8"
+                  }
+                }
+              }
+            },
+            "order": 1072
+          },
+          "implementation": {
+            "phase": "implementation",
+            "recordedAt": "2026-09-22T17:16:11.729Z",
+            "fingerprints": {
+              "impact": "e3115f31287009ab5754f59d9555ed6663e6da39d3438c293cd16cea1dd724a6",
+              "requirements": "b97022c93eb68949a4aa747dc88a9cb7da31e571368e07bc3a44e907ab436f99",
+              "design": "b8963a25a2c3811580e555dc06c1dd3679a1d51bab10dfcc73a015bcc03417af",
+              "implementation": "d2653791dd97cc95121b98d73e54f6c6e7a6901d94c8a5477b6af9767d764634",
+              "tests": "71f1fc261b4128fbdf67b8e5bbd944d7fd2c2ed8677862a9b1cd917c661d36d6",
+              "tdd": "f78d71138727c82c2c1e22de477c66f636b7d95bdb8970416a0f9d1fb0fd0c54",
+              "requirementImplementations": {
+                "REQ-NPM-AUDIT-REMEDIATION-003": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "939bec06525e082db48b3534f66acef5f61d683797aeb4e7983587aa325764fb"
+                  }
+                }
+              }
+            },
+            "order": 1073
+          },
+          "green": {
+            "phase": "green",
+            "recordedAt": "2026-09-22T17:22:44.262Z",
+            "fingerprints": {
+              "impact": "e3115f31287009ab5754f59d9555ed6663e6da39d3438c293cd16cea1dd724a6",
+              "requirements": "b97022c93eb68949a4aa747dc88a9cb7da31e571368e07bc3a44e907ab436f99",
+              "design": "b8963a25a2c3811580e555dc06c1dd3679a1d51bab10dfcc73a015bcc03417af",
+              "implementation": "f3591aae9976b58b7e8cf143b88aae82b4e98043691dedf8df92a322c7fba05d",
+              "tests": "b6dcb15de0b195cc0c80561f8140c38916a553334b2b974a9d02079f63d04180",
+              "tdd": "f2af676f18c85e46fd8cf14a04743e679479db0d4136c0365e574a52242433d0",
+              "requirementImplementations": {
+                "REQ-NPM-AUDIT-REMEDIATION-003": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "a8580bae8a8e96acfce63bef9e5a53719fefa5095c022e92d5a9f3f779b7e22a"
+                  }
+                }
+              }
+            },
+            "order": 1076
+          }
+        },
+        {
+          "requirementIds": [
+            "REQ-NPM-AUDIT-REMEDIATION-003",
+            "REQ-NPM-AUDIT-REMEDIATION-004"
+          ],
+          "red": {
+            "phase": "red",
+            "recordedAt": "2026-09-22T17:36:01.911Z",
+            "fingerprints": {
+              "impact": "10149484a47bedf02df0ad8724d082108be6189e16847a4770af8589ce40b8be",
+              "requirements": "b97022c93eb68949a4aa747dc88a9cb7da31e571368e07bc3a44e907ab436f99",
+              "design": "b8963a25a2c3811580e555dc06c1dd3679a1d51bab10dfcc73a015bcc03417af",
+              "implementation": "f3591aae9976b58b7e8cf143b88aae82b4e98043691dedf8df92a322c7fba05d",
+              "tests": "0fc4c6df6ae81b5ea9f086a61efcb26163e5a889beb4f2b108ed2abc676f4992",
+              "tdd": "09ab1e5fa502e8f3782ef8797f96104d47c68f3de1fd321e48c6ed210d23484b",
+              "requirementImplementations": {
+                "REQ-NPM-AUDIT-REMEDIATION-003": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "a8580bae8a8e96acfce63bef9e5a53719fefa5095c022e92d5a9f3f779b7e22a"
+                  }
+                },
+                "REQ-NPM-AUDIT-REMEDIATION-004": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "a8580bae8a8e96acfce63bef9e5a53719fefa5095c022e92d5a9f3f779b7e22a"
+                  }
+                }
+              }
+            },
+            "order": 1080
+          },
+          "implementation": {
+            "phase": "implementation",
+            "recordedAt": "2026-09-22T17:37:20.711Z",
+            "fingerprints": {
+              "impact": "10149484a47bedf02df0ad8724d082108be6189e16847a4770af8589ce40b8be",
+              "requirements": "b97022c93eb68949a4aa747dc88a9cb7da31e571368e07bc3a44e907ab436f99",
+              "design": "b8963a25a2c3811580e555dc06c1dd3679a1d51bab10dfcc73a015bcc03417af",
+              "implementation": "40323b92da9aa769b184b873e7f65a062c8e684da1dfe85332237fecc13f46a5",
+              "tests": "0fc4c6df6ae81b5ea9f086a61efcb26163e5a889beb4f2b108ed2abc676f4992",
+              "tdd": "09ab1e5fa502e8f3782ef8797f96104d47c68f3de1fd321e48c6ed210d23484b",
+              "requirementImplementations": {
+                "REQ-NPM-AUDIT-REMEDIATION-003": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "ec63b368b9a5dc8a66a1af33a3aeb75ea9640b8982265b85760380061f7154ca"
+                  }
+                },
+                "REQ-NPM-AUDIT-REMEDIATION-004": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "ec63b368b9a5dc8a66a1af33a3aeb75ea9640b8982265b85760380061f7154ca"
+                  }
+                }
+              }
+            },
+            "order": 1081
+          },
+          "green": {
+            "phase": "green",
+            "recordedAt": "2026-09-22T17:37:46.187Z",
+            "fingerprints": {
+              "impact": "10149484a47bedf02df0ad8724d082108be6189e16847a4770af8589ce40b8be",
+              "requirements": "b97022c93eb68949a4aa747dc88a9cb7da31e571368e07bc3a44e907ab436f99",
+              "design": "b8963a25a2c3811580e555dc06c1dd3679a1d51bab10dfcc73a015bcc03417af",
+              "implementation": "40323b92da9aa769b184b873e7f65a062c8e684da1dfe85332237fecc13f46a5",
+              "tests": "0fc4c6df6ae81b5ea9f086a61efcb26163e5a889beb4f2b108ed2abc676f4992",
+              "tdd": "01ebe6f72079abbf32303ca520be3e6e7fe9dcf2d50c1877d865b40e7e331638",
+              "requirementImplementations": {
+                "REQ-NPM-AUDIT-REMEDIATION-003": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "ec63b368b9a5dc8a66a1af33a3aeb75ea9640b8982265b85760380061f7154ca"
+                  }
+                },
+                "REQ-NPM-AUDIT-REMEDIATION-004": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "ec63b368b9a5dc8a66a1af33a3aeb75ea9640b8982265b85760380061f7154ca"
+                  }
+                }
+              }
+            },
+            "order": 1084
+          }
+        },
+        {
+          "requirementIds": [
+            "REQ-NPM-AUDIT-REMEDIATION-001",
+            "REQ-NPM-AUDIT-REMEDIATION-003",
+            "REQ-NPM-AUDIT-REMEDIATION-004"
+          ],
+          "red": {
+            "phase": "red",
+            "recordedAt": "2026-09-22T18:15:59.133Z",
+            "fingerprints": {
+              "impact": "783fd6fc551cdc44e8055db8e0577af740b439f04cfb474fb983910ade34b9c6",
+              "requirements": "b97022c93eb68949a4aa747dc88a9cb7da31e571368e07bc3a44e907ab436f99",
+              "design": "b8963a25a2c3811580e555dc06c1dd3679a1d51bab10dfcc73a015bcc03417af",
+              "implementation": "5ee408b27fa52df6056c72c47a24d3a48bf01bd94796f6e1012c6648eea5323f",
+              "tests": "775918eb574ba4eb591693e01dd07486b7cd2a4192886167cd5d5539b24beba5",
+              "tdd": "4faf6261b593b7015ed82ec0da5d3c3570e92a735c54c4b3cc0c957ec9c4ddfb",
+              "requirementImplementations": {
+                "REQ-NPM-AUDIT-REMEDIATION-001": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "58419fa2a56cc324eec7a940d5a5f760f0f9602a5006bcda7a991328c810e80c"
+                  }
+                },
+                "REQ-NPM-AUDIT-REMEDIATION-003": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "58419fa2a56cc324eec7a940d5a5f760f0f9602a5006bcda7a991328c810e80c"
+                  }
+                },
+                "REQ-NPM-AUDIT-REMEDIATION-004": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "58419fa2a56cc324eec7a940d5a5f760f0f9602a5006bcda7a991328c810e80c"
+                  }
+                }
+              }
+            },
+            "order": 1089
+          },
+          "implementation": {
+            "phase": "implementation",
+            "recordedAt": "2026-09-22T18:17:18.559Z",
+            "fingerprints": {
+              "impact": "783fd6fc551cdc44e8055db8e0577af740b439f04cfb474fb983910ade34b9c6",
+              "requirements": "b97022c93eb68949a4aa747dc88a9cb7da31e571368e07bc3a44e907ab436f99",
+              "design": "b8963a25a2c3811580e555dc06c1dd3679a1d51bab10dfcc73a015bcc03417af",
+              "implementation": "78da271ef6ace9aa3f62dcd5ba820ae4e4b614641c3a1bf9cde3aef88bf5983a",
+              "tests": "775918eb574ba4eb591693e01dd07486b7cd2a4192886167cd5d5539b24beba5",
+              "tdd": "4faf6261b593b7015ed82ec0da5d3c3570e92a735c54c4b3cc0c957ec9c4ddfb",
+              "requirementImplementations": {
+                "REQ-NPM-AUDIT-REMEDIATION-001": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "898d676ca42f1a8a3f56f58310f289800f9a637ac65bf5b04f9cc106e2cce8e7"
+                  }
+                },
+                "REQ-NPM-AUDIT-REMEDIATION-003": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "898d676ca42f1a8a3f56f58310f289800f9a637ac65bf5b04f9cc106e2cce8e7"
+                  }
+                },
+                "REQ-NPM-AUDIT-REMEDIATION-004": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "898d676ca42f1a8a3f56f58310f289800f9a637ac65bf5b04f9cc106e2cce8e7"
+                  }
+                }
+              }
+            },
+            "order": 1090
+          },
+          "green": {
+            "phase": "green",
+            "recordedAt": "2026-09-22T18:19:14.199Z",
+            "fingerprints": {
+              "impact": "783fd6fc551cdc44e8055db8e0577af740b439f04cfb474fb983910ade34b9c6",
+              "requirements": "b97022c93eb68949a4aa747dc88a9cb7da31e571368e07bc3a44e907ab436f99",
+              "design": "b8963a25a2c3811580e555dc06c1dd3679a1d51bab10dfcc73a015bcc03417af",
+              "implementation": "d13f4a12eccc53047b9e56dfa1a70cf4344c15be080e5a8c153ee2ca0dea3c61",
+              "tests": "775918eb574ba4eb591693e01dd07486b7cd2a4192886167cd5d5539b24beba5",
+              "tdd": "0d40ed0af02c2d7c15ea73ea315637a8c857706b8898b833588ab47f6f232948",
+              "requirementImplementations": {
+                "REQ-NPM-AUDIT-REMEDIATION-001": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "a99c07deaca226531e5bf42fb45d8485a8637b393d6bb9355cbb01b658c7b6de"
+                  }
+                },
+                "REQ-NPM-AUDIT-REMEDIATION-003": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "a99c07deaca226531e5bf42fb45d8485a8637b393d6bb9355cbb01b658c7b6de"
+                  }
+                },
+                "REQ-NPM-AUDIT-REMEDIATION-004": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "a99c07deaca226531e5bf42fb45d8485a8637b393d6bb9355cbb01b658c7b6de"
+                  }
+                }
+              }
+            },
+            "order": 1094
+          }
+        },
+        {
+          "requirementIds": [
+            "REQ-NPM-AUDIT-REMEDIATION-001",
+            "REQ-NPM-AUDIT-REMEDIATION-004"
+          ],
+          "red": {
+            "phase": "red",
+            "recordedAt": "2026-09-22T18:43:18.005Z",
+            "fingerprints": {
+              "impact": "783fd6fc551cdc44e8055db8e0577af740b439f04cfb474fb983910ade34b9c6",
+              "requirements": "b97022c93eb68949a4aa747dc88a9cb7da31e571368e07bc3a44e907ab436f99",
+              "design": "b8963a25a2c3811580e555dc06c1dd3679a1d51bab10dfcc73a015bcc03417af",
+              "implementation": "d13f4a12eccc53047b9e56dfa1a70cf4344c15be080e5a8c153ee2ca0dea3c61",
+              "tests": "827ff3abf69ccdc72ec6992a975dcb90310327d1114b7df7c75a146c4374368e",
+              "tdd": "c81d7b458f092a83d95cfc265f87ec2c93046c4d374c11f2b75ecc57dcaf4e3c",
+              "requirementImplementations": {
+                "REQ-NPM-AUDIT-REMEDIATION-001": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "a99c07deaca226531e5bf42fb45d8485a8637b393d6bb9355cbb01b658c7b6de"
+                  }
+                },
+                "REQ-NPM-AUDIT-REMEDIATION-004": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "a99c07deaca226531e5bf42fb45d8485a8637b393d6bb9355cbb01b658c7b6de"
+                  }
+                }
+              }
+            },
+            "order": 1098
+          },
+          "implementation": {
+            "phase": "implementation",
+            "recordedAt": "2026-09-22T18:44:23.827Z",
+            "fingerprints": {
+              "impact": "783fd6fc551cdc44e8055db8e0577af740b439f04cfb474fb983910ade34b9c6",
+              "requirements": "b97022c93eb68949a4aa747dc88a9cb7da31e571368e07bc3a44e907ab436f99",
+              "design": "b8963a25a2c3811580e555dc06c1dd3679a1d51bab10dfcc73a015bcc03417af",
+              "implementation": "5a192a5181b1fe9ca5bb5c26645cea92c11425c9295d2039442aed519f5be9ea",
+              "tests": "827ff3abf69ccdc72ec6992a975dcb90310327d1114b7df7c75a146c4374368e",
+              "tdd": "c81d7b458f092a83d95cfc265f87ec2c93046c4d374c11f2b75ecc57dcaf4e3c",
+              "requirementImplementations": {
+                "REQ-NPM-AUDIT-REMEDIATION-001": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "e5071da30d64834981ea30b7f861a43d5886c219f2f1c3fee1225b8b68cc80a9"
+                  }
+                },
+                "REQ-NPM-AUDIT-REMEDIATION-004": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "e5071da30d64834981ea30b7f861a43d5886c219f2f1c3fee1225b8b68cc80a9"
+                  }
+                }
+              }
+            },
+            "order": 1099
+          },
+          "green": {
+            "phase": "green",
+            "recordedAt": "2026-09-22T18:44:56.406Z",
+            "fingerprints": {
+              "impact": "783fd6fc551cdc44e8055db8e0577af740b439f04cfb474fb983910ade34b9c6",
+              "requirements": "b97022c93eb68949a4aa747dc88a9cb7da31e571368e07bc3a44e907ab436f99",
+              "design": "b8963a25a2c3811580e555dc06c1dd3679a1d51bab10dfcc73a015bcc03417af",
+              "implementation": "5a192a5181b1fe9ca5bb5c26645cea92c11425c9295d2039442aed519f5be9ea",
+              "tests": "827ff3abf69ccdc72ec6992a975dcb90310327d1114b7df7c75a146c4374368e",
+              "tdd": "10735b7f1d8de55675e6755870ccd798a601f151762b700aeefef801df5f02cc",
+              "requirementImplementations": {
+                "REQ-NPM-AUDIT-REMEDIATION-001": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "e5071da30d64834981ea30b7f861a43d5886c219f2f1c3fee1225b8b68cc80a9"
+                  }
+                },
+                "REQ-NPM-AUDIT-REMEDIATION-004": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "e5071da30d64834981ea30b7f861a43d5886c219f2f1c3fee1225b8b68cc80a9"
+                  }
+                }
+              }
+            },
+            "order": 1102
+          }
+        },
+        {
+          "requirementIds": [
+            "REQ-NPM-AUDIT-REMEDIATION-004"
+          ],
+          "red": {
+            "phase": "red",
+            "recordedAt": "2026-09-22T19:02:15.432Z",
+            "fingerprints": {
+              "impact": "629186130c4382b706aa365ffe2aef482c996c52ef984b82d3e787538255d91a",
+              "requirements": "b97022c93eb68949a4aa747dc88a9cb7da31e571368e07bc3a44e907ab436f99",
+              "design": "b8963a25a2c3811580e555dc06c1dd3679a1d51bab10dfcc73a015bcc03417af",
+              "implementation": "5a192a5181b1fe9ca5bb5c26645cea92c11425c9295d2039442aed519f5be9ea",
+              "tests": "c6766fe1fb87b07ea8332aecae89041582124529b7055ce0575cfea365119932",
+              "tdd": "55e3927a69275a17803e3635ee8825c32db9f0bdc399621246731c054e7454b9",
+              "requirementImplementations": {
+                "REQ-NPM-AUDIT-REMEDIATION-004": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "e5071da30d64834981ea30b7f861a43d5886c219f2f1c3fee1225b8b68cc80a9"
+                  }
+                }
+              }
+            },
+            "order": 1105
+          },
+          "implementation": {
+            "phase": "implementation",
+            "recordedAt": "2026-09-22T19:02:40.527Z",
+            "fingerprints": {
+              "impact": "5b2a20d4f9a60591122ce732e5a27862d1404907e4de6299e818270b9034334e",
+              "requirements": "b97022c93eb68949a4aa747dc88a9cb7da31e571368e07bc3a44e907ab436f99",
+              "design": "b8963a25a2c3811580e555dc06c1dd3679a1d51bab10dfcc73a015bcc03417af",
+              "implementation": "448bfe5b19a2b361561daf435d5dfeeb180d4e82847eb90d207b29839226858a",
+              "tests": "c6766fe1fb87b07ea8332aecae89041582124529b7055ce0575cfea365119932",
+              "tdd": "55e3927a69275a17803e3635ee8825c32db9f0bdc399621246731c054e7454b9",
+              "requirementImplementations": {
+                "REQ-NPM-AUDIT-REMEDIATION-004": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "50d37be83ef5e949079e09d815973f11edd49a06880154620437be00123859eb"
+                  }
+                }
+              }
+            },
+            "order": 1106
+          },
+          "green": {
+            "phase": "green",
+            "recordedAt": "2026-09-22T19:03:06.990Z",
+            "fingerprints": {
+              "impact": "5b2a20d4f9a60591122ce732e5a27862d1404907e4de6299e818270b9034334e",
+              "requirements": "b97022c93eb68949a4aa747dc88a9cb7da31e571368e07bc3a44e907ab436f99",
+              "design": "b8963a25a2c3811580e555dc06c1dd3679a1d51bab10dfcc73a015bcc03417af",
+              "implementation": "448bfe5b19a2b361561daf435d5dfeeb180d4e82847eb90d207b29839226858a",
+              "tests": "c6766fe1fb87b07ea8332aecae89041582124529b7055ce0575cfea365119932",
+              "tdd": "c112222a7853354ea97b449e305eb89795d2642520d800af4b512c5e3d082c6a",
+              "requirementImplementations": {
+                "REQ-NPM-AUDIT-REMEDIATION-004": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "50d37be83ef5e949079e09d815973f11edd49a06880154620437be00123859eb"
+                  }
+                }
+              }
+            },
+            "order": 1108
+          }
+        },
+        {
+          "requirementIds": [
+            "REQ-NPM-AUDIT-REMEDIATION-002",
+            "REQ-NPM-AUDIT-REMEDIATION-004"
+          ],
+          "red": {
+            "phase": "red",
+            "recordedAt": "2026-09-22T19:04:57.697Z",
+            "fingerprints": {
+              "impact": "5b2a20d4f9a60591122ce732e5a27862d1404907e4de6299e818270b9034334e",
+              "requirements": "b97022c93eb68949a4aa747dc88a9cb7da31e571368e07bc3a44e907ab436f99",
+              "design": "b8963a25a2c3811580e555dc06c1dd3679a1d51bab10dfcc73a015bcc03417af",
+              "implementation": "448bfe5b19a2b361561daf435d5dfeeb180d4e82847eb90d207b29839226858a",
+              "tests": "d86d423109f56cc7482005e36ff630f8399d0547768cde0951732943cf33dea0",
+              "tdd": "6860e51e743702399804fb101219b324bb2bf4b1c217ad84fe72b562df355b18",
+              "requirementImplementations": {
+                "REQ-NPM-AUDIT-REMEDIATION-002": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "50d37be83ef5e949079e09d815973f11edd49a06880154620437be00123859eb"
+                  }
+                },
+                "REQ-NPM-AUDIT-REMEDIATION-004": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "50d37be83ef5e949079e09d815973f11edd49a06880154620437be00123859eb"
+                  }
+                }
+              }
+            },
+            "order": 1111
+          },
+          "implementation": {
+            "phase": "implementation",
+            "recordedAt": "2026-09-22T19:05:45.153Z",
+            "fingerprints": {
+              "impact": "5b2a20d4f9a60591122ce732e5a27862d1404907e4de6299e818270b9034334e",
+              "requirements": "b97022c93eb68949a4aa747dc88a9cb7da31e571368e07bc3a44e907ab436f99",
+              "design": "b8963a25a2c3811580e555dc06c1dd3679a1d51bab10dfcc73a015bcc03417af",
+              "implementation": "cc98680d5a7b30dda9ed79b69e7882f0bb09057faaff6b296c89817780efd2ba",
+              "tests": "d86d423109f56cc7482005e36ff630f8399d0547768cde0951732943cf33dea0",
+              "tdd": "6860e51e743702399804fb101219b324bb2bf4b1c217ad84fe72b562df355b18",
+              "requirementImplementations": {
+                "REQ-NPM-AUDIT-REMEDIATION-002": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "e95317cde01fc118b7abe63916d687bda056ed0d9744d524b10867bd0d7b250c"
+                  }
+                },
+                "REQ-NPM-AUDIT-REMEDIATION-004": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "e95317cde01fc118b7abe63916d687bda056ed0d9744d524b10867bd0d7b250c"
+                  }
+                }
+              }
+            },
+            "order": 1112
+          },
+          "green": {
+            "phase": "green",
+            "recordedAt": "2026-09-22T19:06:04.421Z",
+            "fingerprints": {
+              "impact": "5b2a20d4f9a60591122ce732e5a27862d1404907e4de6299e818270b9034334e",
+              "requirements": "b97022c93eb68949a4aa747dc88a9cb7da31e571368e07bc3a44e907ab436f99",
+              "design": "b8963a25a2c3811580e555dc06c1dd3679a1d51bab10dfcc73a015bcc03417af",
+              "implementation": "cc98680d5a7b30dda9ed79b69e7882f0bb09057faaff6b296c89817780efd2ba",
+              "tests": "d86d423109f56cc7482005e36ff630f8399d0547768cde0951732943cf33dea0",
+              "tdd": "bfae9d0c42d70a200cc010dc9b95d661d1057c32d038edc8f58f511e0887140f",
+              "requirementImplementations": {
+                "REQ-NPM-AUDIT-REMEDIATION-002": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "e95317cde01fc118b7abe63916d687bda056ed0d9744d524b10867bd0d7b250c"
+                  }
+                },
+                "REQ-NPM-AUDIT-REMEDIATION-004": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "e95317cde01fc118b7abe63916d687bda056ed0d9744d524b10867bd0d7b250c"
+                  }
+                }
+              }
+            },
+            "order": 1115
+          }
+        },
+        {
+          "requirementIds": [
+            "REQ-NPM-AUDIT-REMEDIATION-001",
+            "REQ-NPM-AUDIT-REMEDIATION-002",
+            "REQ-NPM-AUDIT-REMEDIATION-004"
+          ],
+          "red": {
+            "phase": "red",
+            "recordedAt": "2026-09-22T19:22:01.178Z",
+            "fingerprints": {
+              "impact": "5b2a20d4f9a60591122ce732e5a27862d1404907e4de6299e818270b9034334e",
+              "requirements": "b97022c93eb68949a4aa747dc88a9cb7da31e571368e07bc3a44e907ab436f99",
+              "design": "b8963a25a2c3811580e555dc06c1dd3679a1d51bab10dfcc73a015bcc03417af",
+              "implementation": "cc98680d5a7b30dda9ed79b69e7882f0bb09057faaff6b296c89817780efd2ba",
+              "tests": "c69d9ff55263117d64ccfd07033e895eaa9fa65c22451a81ebeb0b083463c8c6",
+              "tdd": "692feaf98e162f4244f71e598e47b98b8663df39ce2659e367585be82db20cbc",
+              "requirementImplementations": {
+                "REQ-NPM-AUDIT-REMEDIATION-001": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "e95317cde01fc118b7abe63916d687bda056ed0d9744d524b10867bd0d7b250c"
+                  }
+                },
+                "REQ-NPM-AUDIT-REMEDIATION-002": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "e95317cde01fc118b7abe63916d687bda056ed0d9744d524b10867bd0d7b250c"
+                  }
+                },
+                "REQ-NPM-AUDIT-REMEDIATION-004": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "e95317cde01fc118b7abe63916d687bda056ed0d9744d524b10867bd0d7b250c"
+                  }
+                }
+              }
+            },
+            "order": 1120
+          },
+          "implementation": {
+            "phase": "implementation",
+            "recordedAt": "2026-09-22T19:22:44.742Z",
+            "fingerprints": {
+              "impact": "5b2a20d4f9a60591122ce732e5a27862d1404907e4de6299e818270b9034334e",
+              "requirements": "b97022c93eb68949a4aa747dc88a9cb7da31e571368e07bc3a44e907ab436f99",
+              "design": "b8963a25a2c3811580e555dc06c1dd3679a1d51bab10dfcc73a015bcc03417af",
+              "implementation": "f5ffad451ee99582d85c8761b5e7574864c0429118aba11829c67c51550b5832",
+              "tests": "c69d9ff55263117d64ccfd07033e895eaa9fa65c22451a81ebeb0b083463c8c6",
+              "tdd": "692feaf98e162f4244f71e598e47b98b8663df39ce2659e367585be82db20cbc",
+              "requirementImplementations": {
+                "REQ-NPM-AUDIT-REMEDIATION-001": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "a2f1201997661d9243c2c2245dcae30d75e5580182608c92d4642b004ffe0776"
+                  }
+                },
+                "REQ-NPM-AUDIT-REMEDIATION-002": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "a2f1201997661d9243c2c2245dcae30d75e5580182608c92d4642b004ffe0776"
+                  }
+                },
+                "REQ-NPM-AUDIT-REMEDIATION-004": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "a2f1201997661d9243c2c2245dcae30d75e5580182608c92d4642b004ffe0776"
+                  }
+                }
+              }
+            },
+            "order": 1121
+          },
+          "green": {
+            "phase": "green",
+            "recordedAt": "2026-09-22T19:23:08.839Z",
+            "fingerprints": {
+              "impact": "5b2a20d4f9a60591122ce732e5a27862d1404907e4de6299e818270b9034334e",
+              "requirements": "b97022c93eb68949a4aa747dc88a9cb7da31e571368e07bc3a44e907ab436f99",
+              "design": "b8963a25a2c3811580e555dc06c1dd3679a1d51bab10dfcc73a015bcc03417af",
+              "implementation": "f5ffad451ee99582d85c8761b5e7574864c0429118aba11829c67c51550b5832",
+              "tests": "c69d9ff55263117d64ccfd07033e895eaa9fa65c22451a81ebeb0b083463c8c6",
+              "tdd": "a5bdbe12306b12505a001a0d13c27f1299ae23084181adada626cef6c974c71a",
+              "requirementImplementations": {
+                "REQ-NPM-AUDIT-REMEDIATION-001": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "a2f1201997661d9243c2c2245dcae30d75e5580182608c92d4642b004ffe0776"
+                  }
+                },
+                "REQ-NPM-AUDIT-REMEDIATION-002": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "a2f1201997661d9243c2c2245dcae30d75e5580182608c92d4642b004ffe0776"
+                  }
+                },
+                "REQ-NPM-AUDIT-REMEDIATION-004": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "a2f1201997661d9243c2c2245dcae30d75e5580182608c92d4642b004ffe0776"
+                  }
+                }
+              }
+            },
+            "order": 1125
+          }
+        },
+        {
+          "requirementIds": [
+            "REQ-NPM-AUDIT-REMEDIATION-002",
+            "REQ-NPM-AUDIT-REMEDIATION-003",
+            "REQ-NPM-AUDIT-REMEDIATION-004"
+          ],
+          "red": {
+            "phase": "red",
+            "recordedAt": "2026-09-22T20:06:14.193Z",
+            "fingerprints": {
+              "impact": "5b2a20d4f9a60591122ce732e5a27862d1404907e4de6299e818270b9034334e",
+              "requirements": "7c5c684540c5cba0a9feec086f2c6a93aa5a562dd0d8553478ab651c10e40048",
+              "design": "1709135a73679f9d247d3a29030f6a473cb39081d71579a173ad9269d67aae4d",
+              "implementation": "eec98c2e0f2fc5418634c858a018e51838db39515ce68e2eba631f73245d0b3f",
+              "tests": "aee7c8f0d8aa37c55ab06c27043d2f1a60f6b624943d9ac75602171a43356851",
+              "tdd": "dfdabe7037d87d14d6337e2f3b497087ca957a6adf2670daa4e867c5c251878b",
+              "requirementImplementations": {
+                "REQ-NPM-AUDIT-REMEDIATION-002": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "52a777e686cea440d400d73b4f1bde0847feb9ba871f89610648bbc96330b96f"
+                  }
+                },
+                "REQ-NPM-AUDIT-REMEDIATION-003": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "52a777e686cea440d400d73b4f1bde0847feb9ba871f89610648bbc96330b96f"
+                  }
+                },
+                "REQ-NPM-AUDIT-REMEDIATION-004": {
+                  "paths": [
+                    "scripts/check-github-actions.mjs",
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-github-actions.mjs": "1f2ff43054233a38c8edf07d33254044dbd273cb868af5a749e346e9366b6dbc",
+                    "scripts/check-npm-audit-remediation.mjs": "52a777e686cea440d400d73b4f1bde0847feb9ba871f89610648bbc96330b96f"
+                  }
+                }
+              }
+            },
+            "order": 1130
+          },
+          "implementation": {
+            "phase": "implementation",
+            "recordedAt": "2026-09-22T20:06:45.714Z",
+            "fingerprints": {
+              "impact": "5b2a20d4f9a60591122ce732e5a27862d1404907e4de6299e818270b9034334e",
+              "requirements": "7c5c684540c5cba0a9feec086f2c6a93aa5a562dd0d8553478ab651c10e40048",
+              "design": "1709135a73679f9d247d3a29030f6a473cb39081d71579a173ad9269d67aae4d",
+              "implementation": "86efa2af83756b48615ebd329422dc34d07eb8d87929904861ad971928bf89af",
+              "tests": "aee7c8f0d8aa37c55ab06c27043d2f1a60f6b624943d9ac75602171a43356851",
+              "tdd": "dfdabe7037d87d14d6337e2f3b497087ca957a6adf2670daa4e867c5c251878b",
+              "requirementImplementations": {
+                "REQ-NPM-AUDIT-REMEDIATION-002": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "4a69ba9442629a84c98dd5f74d737408f3880e96e2e5ad20fab853def5bcb5d2"
+                  }
+                },
+                "REQ-NPM-AUDIT-REMEDIATION-003": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "4a69ba9442629a84c98dd5f74d737408f3880e96e2e5ad20fab853def5bcb5d2"
+                  }
+                },
+                "REQ-NPM-AUDIT-REMEDIATION-004": {
+                  "paths": [
+                    "scripts/check-github-actions.mjs",
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-github-actions.mjs": "1f2ff43054233a38c8edf07d33254044dbd273cb868af5a749e346e9366b6dbc",
+                    "scripts/check-npm-audit-remediation.mjs": "4a69ba9442629a84c98dd5f74d737408f3880e96e2e5ad20fab853def5bcb5d2"
+                  }
+                }
+              }
+            },
+            "order": 1131
+          },
+          "green": {
+            "phase": "green",
+            "recordedAt": "2026-09-22T20:07:27.427Z",
+            "fingerprints": {
+              "impact": "5b2a20d4f9a60591122ce732e5a27862d1404907e4de6299e818270b9034334e",
+              "requirements": "7c5c684540c5cba0a9feec086f2c6a93aa5a562dd0d8553478ab651c10e40048",
+              "design": "1709135a73679f9d247d3a29030f6a473cb39081d71579a173ad9269d67aae4d",
+              "implementation": "86efa2af83756b48615ebd329422dc34d07eb8d87929904861ad971928bf89af",
+              "tests": "aee7c8f0d8aa37c55ab06c27043d2f1a60f6b624943d9ac75602171a43356851",
+              "tdd": "f45adabbd8a6d15b6098c70dced45d703ed2bbf62a67760caed37c5f1809205b",
+              "requirementImplementations": {
+                "REQ-NPM-AUDIT-REMEDIATION-002": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "4a69ba9442629a84c98dd5f74d737408f3880e96e2e5ad20fab853def5bcb5d2"
+                  }
+                },
+                "REQ-NPM-AUDIT-REMEDIATION-003": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "4a69ba9442629a84c98dd5f74d737408f3880e96e2e5ad20fab853def5bcb5d2"
+                  }
+                },
+                "REQ-NPM-AUDIT-REMEDIATION-004": {
+                  "paths": [
+                    "scripts/check-github-actions.mjs",
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-github-actions.mjs": "1f2ff43054233a38c8edf07d33254044dbd273cb868af5a749e346e9366b6dbc",
+                    "scripts/check-npm-audit-remediation.mjs": "4a69ba9442629a84c98dd5f74d737408f3880e96e2e5ad20fab853def5bcb5d2"
+                  }
+                }
+              }
+            },
+            "order": 1135
+          }
+        },
+        {
+          "requirementIds": [
+            "REQ-NPM-AUDIT-REMEDIATION-001"
+          ],
+          "red": {
+            "phase": "red",
+            "recordedAt": "2026-09-22T20:08:04.093Z",
+            "fingerprints": {
+              "impact": "5b2a20d4f9a60591122ce732e5a27862d1404907e4de6299e818270b9034334e",
+              "requirements": "7c5c684540c5cba0a9feec086f2c6a93aa5a562dd0d8553478ab651c10e40048",
+              "design": "1709135a73679f9d247d3a29030f6a473cb39081d71579a173ad9269d67aae4d",
+              "implementation": "86efa2af83756b48615ebd329422dc34d07eb8d87929904861ad971928bf89af",
+              "tests": "abd8dd5c75816b84a6ae3425fcbac94c52b1584b22f64fdf04ac8be23a33cf7a",
+              "tdd": "e4a60e3eb45a5e64151976c1f0e6990b5af6a9a1d76103b5b186abf6fd4fa0e5",
+              "requirementImplementations": {
+                "REQ-NPM-AUDIT-REMEDIATION-001": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "4a69ba9442629a84c98dd5f74d737408f3880e96e2e5ad20fab853def5bcb5d2"
+                  }
+                }
+              }
+            },
+            "order": 1137
+          },
+          "implementation": {
+            "phase": "implementation",
+            "recordedAt": "2026-09-22T20:08:26.252Z",
+            "fingerprints": {
+              "impact": "5b2a20d4f9a60591122ce732e5a27862d1404907e4de6299e818270b9034334e",
+              "requirements": "7c5c684540c5cba0a9feec086f2c6a93aa5a562dd0d8553478ab651c10e40048",
+              "design": "1709135a73679f9d247d3a29030f6a473cb39081d71579a173ad9269d67aae4d",
+              "implementation": "7ffa8f1d0d4c250d19717f5aa5985ec890daa7f6428d7320d5eec0e0488bbdf7",
+              "tests": "abd8dd5c75816b84a6ae3425fcbac94c52b1584b22f64fdf04ac8be23a33cf7a",
+              "tdd": "e4a60e3eb45a5e64151976c1f0e6990b5af6a9a1d76103b5b186abf6fd4fa0e5",
+              "requirementImplementations": {
+                "REQ-NPM-AUDIT-REMEDIATION-001": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "244ba34042ba13b95b85aae871e125e6871e0f5d951a122dbc15413617983f77"
+                  }
+                }
+              }
+            },
+            "order": 1138
+          },
+          "green": {
+            "phase": "green",
+            "recordedAt": "2026-09-22T20:08:49.001Z",
+            "fingerprints": {
+              "impact": "5b2a20d4f9a60591122ce732e5a27862d1404907e4de6299e818270b9034334e",
+              "requirements": "7c5c684540c5cba0a9feec086f2c6a93aa5a562dd0d8553478ab651c10e40048",
+              "design": "1709135a73679f9d247d3a29030f6a473cb39081d71579a173ad9269d67aae4d",
+              "implementation": "7ffa8f1d0d4c250d19717f5aa5985ec890daa7f6428d7320d5eec0e0488bbdf7",
+              "tests": "abd8dd5c75816b84a6ae3425fcbac94c52b1584b22f64fdf04ac8be23a33cf7a",
+              "tdd": "133639702fde36797e7a18e935575208875f2b7fce7bb306427b1d099bbb2a7e",
+              "requirementImplementations": {
+                "REQ-NPM-AUDIT-REMEDIATION-001": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "244ba34042ba13b95b85aae871e125e6871e0f5d951a122dbc15413617983f77"
+                  }
+                }
+              }
+            },
+            "order": 1140
+          }
+        },
+        {
+          "requirementIds": [
+            "REQ-NPM-AUDIT-REMEDIATION-002"
+          ],
+          "red": {
+            "phase": "red",
+            "recordedAt": "2026-09-22T20:26:30.655Z",
+            "fingerprints": {
+              "impact": "5b2a20d4f9a60591122ce732e5a27862d1404907e4de6299e818270b9034334e",
+              "requirements": "7c5c684540c5cba0a9feec086f2c6a93aa5a562dd0d8553478ab651c10e40048",
+              "design": "1709135a73679f9d247d3a29030f6a473cb39081d71579a173ad9269d67aae4d",
+              "implementation": "7ffa8f1d0d4c250d19717f5aa5985ec890daa7f6428d7320d5eec0e0488bbdf7",
+              "tests": "fb9ffc2995244b0b8e3683acf6f59e6a40d8e39ddaa6bc3f85915bf81c937b28",
+              "tdd": "f6433d183303f729157840ead5fd3eec1c275306696000934d04f4455dabd4f5",
+              "requirementImplementations": {
+                "REQ-NPM-AUDIT-REMEDIATION-002": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "244ba34042ba13b95b85aae871e125e6871e0f5d951a122dbc15413617983f77"
+                  }
+                }
+              }
+            },
+            "order": 1143
+          },
+          "implementation": {
+            "phase": "implementation",
+            "recordedAt": "2026-09-22T20:27:59.403Z",
+            "fingerprints": {
+              "impact": "9039c234fa05e9a3fc4ca68aa8b770135d4707f991ae33042b8dffa52171da73",
+              "requirements": "7c5c684540c5cba0a9feec086f2c6a93aa5a562dd0d8553478ab651c10e40048",
+              "design": "1709135a73679f9d247d3a29030f6a473cb39081d71579a173ad9269d67aae4d",
+              "implementation": "b1fd479d40b8238c85ec89706ae1c93e252467c0e34249468b7b3e51ef0b6277",
+              "tests": "fb9ffc2995244b0b8e3683acf6f59e6a40d8e39ddaa6bc3f85915bf81c937b28",
+              "tdd": "f6433d183303f729157840ead5fd3eec1c275306696000934d04f4455dabd4f5",
+              "requirementImplementations": {
+                "REQ-NPM-AUDIT-REMEDIATION-002": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "bd9ae8e70edcee3ba45729701bc89a27fd9b168613a9a7dc9b0d8bdc18ab6f10"
+                  }
+                }
+              }
+            },
+            "order": 1144
+          },
+          "green": {
+            "phase": "green",
+            "recordedAt": "2026-09-22T20:28:21.915Z",
+            "fingerprints": {
+              "impact": "9039c234fa05e9a3fc4ca68aa8b770135d4707f991ae33042b8dffa52171da73",
+              "requirements": "7c5c684540c5cba0a9feec086f2c6a93aa5a562dd0d8553478ab651c10e40048",
+              "design": "1709135a73679f9d247d3a29030f6a473cb39081d71579a173ad9269d67aae4d",
+              "implementation": "b1fd479d40b8238c85ec89706ae1c93e252467c0e34249468b7b3e51ef0b6277",
+              "tests": "fb9ffc2995244b0b8e3683acf6f59e6a40d8e39ddaa6bc3f85915bf81c937b28",
+              "tdd": "bd93b0e1e78f705b9df1e5da3a8f9a39d52ca8232ab9c85c6f5f03a0b33cc581",
+              "requirementImplementations": {
+                "REQ-NPM-AUDIT-REMEDIATION-002": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "bd9ae8e70edcee3ba45729701bc89a27fd9b168613a9a7dc9b0d8bdc18ab6f10"
+                  }
+                }
+              }
+            },
+            "order": 1146
+          }
+        }
+      ],
+      "qualityHistory": [
+        {
+          "phase": "quality",
+          "recordedAt": "2026-09-22T17:28:15.945Z",
+          "fingerprints": {
+            "impact": "10149484a47bedf02df0ad8724d082108be6189e16847a4770af8589ce40b8be",
+            "requirements": "b97022c93eb68949a4aa747dc88a9cb7da31e571368e07bc3a44e907ab436f99",
+            "design": "b8963a25a2c3811580e555dc06c1dd3679a1d51bab10dfcc73a015bcc03417af",
+            "implementation": "f3591aae9976b58b7e8cf143b88aae82b4e98043691dedf8df92a322c7fba05d",
+            "tests": "b6dcb15de0b195cc0c80561f8140c38916a553334b2b974a9d02079f63d04180",
+            "tdd": "f2af676f18c85e46fd8cf14a04743e679479db0d4136c0365e574a52242433d0",
+            "requirementImplementations": {
+              "REQ-NPM-AUDIT-REMEDIATION-001": {
+                "paths": [
+                  "scripts/check-npm-audit-remediation.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-npm-audit-remediation.mjs": "a8580bae8a8e96acfce63bef9e5a53719fefa5095c022e92d5a9f3f779b7e22a"
+                }
+              },
+              "REQ-NPM-AUDIT-REMEDIATION-002": {
+                "paths": [
+                  "scripts/check-npm-audit-remediation.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-npm-audit-remediation.mjs": "a8580bae8a8e96acfce63bef9e5a53719fefa5095c022e92d5a9f3f779b7e22a"
+                }
+              },
+              "REQ-NPM-AUDIT-REMEDIATION-003": {
+                "paths": [
+                  "scripts/check-npm-audit-remediation.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-npm-audit-remediation.mjs": "a8580bae8a8e96acfce63bef9e5a53719fefa5095c022e92d5a9f3f779b7e22a"
+                }
+              },
+              "REQ-NPM-AUDIT-REMEDIATION-004": {
+                "paths": [
+                  "scripts/check-npm-audit-remediation.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-npm-audit-remediation.mjs": "a8580bae8a8e96acfce63bef9e5a53719fefa5095c022e92d5a9f3f779b7e22a"
+                }
+              }
+            }
+          },
+          "order": 1077
+        },
+        {
+          "phase": "quality",
+          "recordedAt": "2026-09-22T17:43:20.572Z",
+          "fingerprints": {
+            "impact": "2fda7086c0a6c396d875670cfb660b9a01e7ae0c54c627bc8d97e8f7db0a0830",
+            "requirements": "b97022c93eb68949a4aa747dc88a9cb7da31e571368e07bc3a44e907ab436f99",
+            "design": "b8963a25a2c3811580e555dc06c1dd3679a1d51bab10dfcc73a015bcc03417af",
+            "implementation": "40323b92da9aa769b184b873e7f65a062c8e684da1dfe85332237fecc13f46a5",
+            "tests": "0fc4c6df6ae81b5ea9f086a61efcb26163e5a889beb4f2b108ed2abc676f4992",
+            "tdd": "01ebe6f72079abbf32303ca520be3e6e7fe9dcf2d50c1877d865b40e7e331638",
+            "requirementImplementations": {
+              "REQ-NPM-AUDIT-REMEDIATION-001": {
+                "paths": [
+                  "scripts/check-npm-audit-remediation.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-npm-audit-remediation.mjs": "ec63b368b9a5dc8a66a1af33a3aeb75ea9640b8982265b85760380061f7154ca"
+                }
+              },
+              "REQ-NPM-AUDIT-REMEDIATION-002": {
+                "paths": [
+                  "scripts/check-npm-audit-remediation.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-npm-audit-remediation.mjs": "ec63b368b9a5dc8a66a1af33a3aeb75ea9640b8982265b85760380061f7154ca"
+                }
+              },
+              "REQ-NPM-AUDIT-REMEDIATION-003": {
+                "paths": [
+                  "scripts/check-npm-audit-remediation.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-npm-audit-remediation.mjs": "ec63b368b9a5dc8a66a1af33a3aeb75ea9640b8982265b85760380061f7154ca"
+                }
+              },
+              "REQ-NPM-AUDIT-REMEDIATION-004": {
+                "paths": [
+                  "scripts/check-npm-audit-remediation.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-npm-audit-remediation.mjs": "ec63b368b9a5dc8a66a1af33a3aeb75ea9640b8982265b85760380061f7154ca"
+                }
+              }
+            }
+          },
+          "order": 1085
+        },
+        {
+          "phase": "quality",
+          "recordedAt": "2026-09-22T18:22:21.129Z",
+          "fingerprints": {
+            "impact": "783fd6fc551cdc44e8055db8e0577af740b439f04cfb474fb983910ade34b9c6",
+            "requirements": "b97022c93eb68949a4aa747dc88a9cb7da31e571368e07bc3a44e907ab436f99",
+            "design": "b8963a25a2c3811580e555dc06c1dd3679a1d51bab10dfcc73a015bcc03417af",
+            "implementation": "d13f4a12eccc53047b9e56dfa1a70cf4344c15be080e5a8c153ee2ca0dea3c61",
+            "tests": "775918eb574ba4eb591693e01dd07486b7cd2a4192886167cd5d5539b24beba5",
+            "tdd": "0d40ed0af02c2d7c15ea73ea315637a8c857706b8898b833588ab47f6f232948",
+            "requirementImplementations": {
+              "REQ-NPM-AUDIT-REMEDIATION-001": {
+                "paths": [
+                  "scripts/check-npm-audit-remediation.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-npm-audit-remediation.mjs": "a99c07deaca226531e5bf42fb45d8485a8637b393d6bb9355cbb01b658c7b6de"
+                }
+              },
+              "REQ-NPM-AUDIT-REMEDIATION-002": {
+                "paths": [
+                  "scripts/check-npm-audit-remediation.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-npm-audit-remediation.mjs": "a99c07deaca226531e5bf42fb45d8485a8637b393d6bb9355cbb01b658c7b6de"
+                }
+              },
+              "REQ-NPM-AUDIT-REMEDIATION-003": {
+                "paths": [
+                  "scripts/check-npm-audit-remediation.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-npm-audit-remediation.mjs": "a99c07deaca226531e5bf42fb45d8485a8637b393d6bb9355cbb01b658c7b6de"
+                }
+              },
+              "REQ-NPM-AUDIT-REMEDIATION-004": {
+                "paths": [
+                  "scripts/check-npm-audit-remediation.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-npm-audit-remediation.mjs": "a99c07deaca226531e5bf42fb45d8485a8637b393d6bb9355cbb01b658c7b6de"
+                }
+              }
+            }
+          },
+          "order": 1095
+        },
+        {
+          "phase": "quality",
+          "recordedAt": "2026-09-22T18:48:37.410Z",
+          "fingerprints": {
+            "impact": "629186130c4382b706aa365ffe2aef482c996c52ef984b82d3e787538255d91a",
+            "requirements": "b97022c93eb68949a4aa747dc88a9cb7da31e571368e07bc3a44e907ab436f99",
+            "design": "b8963a25a2c3811580e555dc06c1dd3679a1d51bab10dfcc73a015bcc03417af",
+            "implementation": "5a192a5181b1fe9ca5bb5c26645cea92c11425c9295d2039442aed519f5be9ea",
+            "tests": "827ff3abf69ccdc72ec6992a975dcb90310327d1114b7df7c75a146c4374368e",
+            "tdd": "10735b7f1d8de55675e6755870ccd798a601f151762b700aeefef801df5f02cc",
+            "requirementImplementations": {
+              "REQ-NPM-AUDIT-REMEDIATION-001": {
+                "paths": [
+                  "scripts/check-npm-audit-remediation.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-npm-audit-remediation.mjs": "e5071da30d64834981ea30b7f861a43d5886c219f2f1c3fee1225b8b68cc80a9"
+                }
+              },
+              "REQ-NPM-AUDIT-REMEDIATION-002": {
+                "paths": [
+                  "scripts/check-npm-audit-remediation.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-npm-audit-remediation.mjs": "e5071da30d64834981ea30b7f861a43d5886c219f2f1c3fee1225b8b68cc80a9"
+                }
+              },
+              "REQ-NPM-AUDIT-REMEDIATION-003": {
+                "paths": [
+                  "scripts/check-npm-audit-remediation.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-npm-audit-remediation.mjs": "e5071da30d64834981ea30b7f861a43d5886c219f2f1c3fee1225b8b68cc80a9"
+                }
+              },
+              "REQ-NPM-AUDIT-REMEDIATION-004": {
+                "paths": [
+                  "scripts/check-npm-audit-remediation.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-npm-audit-remediation.mjs": "e5071da30d64834981ea30b7f861a43d5886c219f2f1c3fee1225b8b68cc80a9"
+                }
+              }
+            }
+          },
+          "order": 1103
+        },
+        {
+          "phase": "quality",
+          "recordedAt": "2026-09-22T19:09:13.855Z",
+          "fingerprints": {
+            "impact": "5b2a20d4f9a60591122ce732e5a27862d1404907e4de6299e818270b9034334e",
+            "requirements": "b97022c93eb68949a4aa747dc88a9cb7da31e571368e07bc3a44e907ab436f99",
+            "design": "b8963a25a2c3811580e555dc06c1dd3679a1d51bab10dfcc73a015bcc03417af",
+            "implementation": "cc98680d5a7b30dda9ed79b69e7882f0bb09057faaff6b296c89817780efd2ba",
+            "tests": "d86d423109f56cc7482005e36ff630f8399d0547768cde0951732943cf33dea0",
+            "tdd": "bfae9d0c42d70a200cc010dc9b95d661d1057c32d038edc8f58f511e0887140f",
+            "requirementImplementations": {
+              "REQ-NPM-AUDIT-REMEDIATION-001": {
+                "paths": [
+                  "scripts/check-npm-audit-remediation.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-npm-audit-remediation.mjs": "e95317cde01fc118b7abe63916d687bda056ed0d9744d524b10867bd0d7b250c"
+                }
+              },
+              "REQ-NPM-AUDIT-REMEDIATION-002": {
+                "paths": [
+                  "scripts/check-npm-audit-remediation.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-npm-audit-remediation.mjs": "e95317cde01fc118b7abe63916d687bda056ed0d9744d524b10867bd0d7b250c"
+                }
+              },
+              "REQ-NPM-AUDIT-REMEDIATION-003": {
+                "paths": [
+                  "scripts/check-npm-audit-remediation.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-npm-audit-remediation.mjs": "e95317cde01fc118b7abe63916d687bda056ed0d9744d524b10867bd0d7b250c"
+                }
+              },
+              "REQ-NPM-AUDIT-REMEDIATION-004": {
+                "paths": [
+                  "scripts/check-npm-audit-remediation.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-npm-audit-remediation.mjs": "e95317cde01fc118b7abe63916d687bda056ed0d9744d524b10867bd0d7b250c"
+                }
+              }
+            }
+          },
+          "order": 1116
+        },
+        {
+          "phase": "quality",
+          "recordedAt": "2026-09-22T19:26:17.943Z",
+          "fingerprints": {
+            "impact": "5b2a20d4f9a60591122ce732e5a27862d1404907e4de6299e818270b9034334e",
+            "requirements": "b97022c93eb68949a4aa747dc88a9cb7da31e571368e07bc3a44e907ab436f99",
+            "design": "b8963a25a2c3811580e555dc06c1dd3679a1d51bab10dfcc73a015bcc03417af",
+            "implementation": "f5ffad451ee99582d85c8761b5e7574864c0429118aba11829c67c51550b5832",
+            "tests": "c69d9ff55263117d64ccfd07033e895eaa9fa65c22451a81ebeb0b083463c8c6",
+            "tdd": "a5bdbe12306b12505a001a0d13c27f1299ae23084181adada626cef6c974c71a",
+            "requirementImplementations": {
+              "REQ-NPM-AUDIT-REMEDIATION-001": {
+                "paths": [
+                  "scripts/check-npm-audit-remediation.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-npm-audit-remediation.mjs": "a2f1201997661d9243c2c2245dcae30d75e5580182608c92d4642b004ffe0776"
+                }
+              },
+              "REQ-NPM-AUDIT-REMEDIATION-002": {
+                "paths": [
+                  "scripts/check-npm-audit-remediation.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-npm-audit-remediation.mjs": "a2f1201997661d9243c2c2245dcae30d75e5580182608c92d4642b004ffe0776"
+                }
+              },
+              "REQ-NPM-AUDIT-REMEDIATION-003": {
+                "paths": [
+                  "scripts/check-npm-audit-remediation.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-npm-audit-remediation.mjs": "a2f1201997661d9243c2c2245dcae30d75e5580182608c92d4642b004ffe0776"
+                }
+              },
+              "REQ-NPM-AUDIT-REMEDIATION-004": {
+                "paths": [
+                  "scripts/check-npm-audit-remediation.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-npm-audit-remediation.mjs": "a2f1201997661d9243c2c2245dcae30d75e5580182608c92d4642b004ffe0776"
+                }
+              }
+            }
+          },
+          "order": 1126
+        },
+        {
+          "phase": "quality",
+          "recordedAt": "2026-09-22T20:11:48.145Z",
+          "fingerprints": {
+            "impact": "5b2a20d4f9a60591122ce732e5a27862d1404907e4de6299e818270b9034334e",
+            "requirements": "7c5c684540c5cba0a9feec086f2c6a93aa5a562dd0d8553478ab651c10e40048",
+            "design": "1709135a73679f9d247d3a29030f6a473cb39081d71579a173ad9269d67aae4d",
+            "implementation": "7ffa8f1d0d4c250d19717f5aa5985ec890daa7f6428d7320d5eec0e0488bbdf7",
+            "tests": "abd8dd5c75816b84a6ae3425fcbac94c52b1584b22f64fdf04ac8be23a33cf7a",
+            "tdd": "133639702fde36797e7a18e935575208875f2b7fce7bb306427b1d099bbb2a7e",
+            "requirementImplementations": {
+              "REQ-NPM-AUDIT-REMEDIATION-001": {
+                "paths": [
+                  "scripts/check-npm-audit-remediation.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-npm-audit-remediation.mjs": "244ba34042ba13b95b85aae871e125e6871e0f5d951a122dbc15413617983f77"
+                }
+              },
+              "REQ-NPM-AUDIT-REMEDIATION-002": {
+                "paths": [
+                  "scripts/check-npm-audit-remediation.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-npm-audit-remediation.mjs": "244ba34042ba13b95b85aae871e125e6871e0f5d951a122dbc15413617983f77"
+                }
+              },
+              "REQ-NPM-AUDIT-REMEDIATION-003": {
+                "paths": [
+                  "scripts/check-npm-audit-remediation.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-npm-audit-remediation.mjs": "244ba34042ba13b95b85aae871e125e6871e0f5d951a122dbc15413617983f77"
+                }
+              },
+              "REQ-NPM-AUDIT-REMEDIATION-004": {
+                "paths": [
+                  "scripts/check-github-actions.mjs",
+                  "scripts/check-npm-audit-remediation.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-github-actions.mjs": "1f2ff43054233a38c8edf07d33254044dbd273cb868af5a749e346e9366b6dbc",
+                  "scripts/check-npm-audit-remediation.mjs": "244ba34042ba13b95b85aae871e125e6871e0f5d951a122dbc15413617983f77"
+                }
+              }
+            }
+          },
+          "order": 1141
+        }
+      ]
     }
   ]
 }
