@@ -2,7 +2,7 @@
 schemaVersion: 1
 id: CHANGE-0021
 summary: Update GitHub Actions to supported Node.js 24 action runtimes
-status: in-progress
+status: completed
 ---
 # CHANGE-0021: github-actions-node24-runtime
 
@@ -72,8 +72,8 @@ provenance, and publication behavior.
   compatible transcript verification and the explicitly approved historical
   workflow residual waiver refresh.
 - Baseline correspondence evidence below is complete.
-- Post-merge CI evidence: pending. Before this change is completed, record the
-  first CI run URL and the exact zero-match command for
+- Post-merge CI evidence: https://github.com/nahisaho/musubix3/actions/runs/35746618493.
+  `gh run view 35746618493 --log` returned zero literal matches for
   `The following actions target Node.js 20`.
 - Deferred release/npm-publish evidence: pending until the next real
   publication; do not trigger a release solely to manufacture this evidence.

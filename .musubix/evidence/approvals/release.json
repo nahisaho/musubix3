@@ -35,7 +35,7 @@
     ".musubix/changes/CHANGE-0018.md": "fc4b5fef916249a6e38b1a4ea0bfd66379524a1958b32643e8f0195949b77bb3",
     ".musubix/changes/CHANGE-0019.md": "651b1a69c6a02aabfa34ae71d435ac3799453cc6c6f0e507eea19dc6b410e689",
     ".musubix/changes/CHANGE-0020.md": "397255f2a475329769f4bca123a4c16a6d8b760b787abd83b89c1debbcb52dc2",
-    ".musubix/changes/CHANGE-0021.md": "f69454ab9ff618d6b21c6e51ce984b9879b5707ffc98eb143a7f6aa4737c834b",
+    ".musubix/changes/CHANGE-0021.md": "aaf3ee0513421d1e807be10e2fd94c9dd8cf1dc3623e1805448e271991fe8d0a",
     ".musubix/config.json": "758d25b13e72b2373c132f33c3b4ab5e27e3f39dc7dc23b1e77020955e82bddb",
     ".musubix/constitution.md": "f8b47fdc486f395bab05223a94821b145cf8df70ffde2c838a28f8d71fe0fa92",
     ".musubix/decisions/ADR-0002.md": "da556c6ef7efcee366a8c6497179bad96c093145366b6422548b0e3df2cba348",
@@ -268,7 +268,7 @@
     "tsconfig.json": "b6af14dbfc589cfa05cae4aa39b195f2322cf39d4b4efb5e2e69d0936de4f658",
     "vitest.config.ts": "2338c9c1fc7792c2c04fb596d182829c7259f1c60617f86751169d35c914ae54"
   },
-  "artifactSha256": "7eac10e11bbc967fe62b96514f19028068d201447949385d332fc88fb045c834",
+  "artifactSha256": "29af135e75ab9ec6b0e6d3bb84c0306399216505a6e2cca9a12c8a4b9a7b3387",
   "approver": "nahisaho",
-  "approvedAt": "2026-09-22T15:04:14.089Z"
+  "approvedAt": "2026-09-22T15:41:32.548Z"
 }
