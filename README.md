@@ -1156,6 +1156,19 @@ npm run pack:check
 npm run pack:smoke
 ```
 
+### Dependency audit policy
+
+When installation or release preparation reports a dependency advisory, run
+root-workspace `npm run audit:report` (`npm audit --json`) with all severities and development
+dependencies included. Record the advisory ID, every dependency path,
+production/build/test reachability, maintained fix availability, remediation
+decision, and residual risk or monitoring obligation. Development-only or
+currently unreachable code lowers exposure but is not remediation when a
+maintained fix is available. A recorded clean result is time-bound and must not
+be treated as proof that future audits remain clean.
+`.github/workflows/dependency-audit.yml` repeats the full report weekly and on
+manual dispatch; review and remediate any failing run before release.
+
 Synchronize every mechanically managed release-version surface before building:
 
 ```sh

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-22T15:41:35.527Z",
+  "generatedAt": "2026-09-22T22:02:00.628Z",
   "nodes": [
     {
       "id": "CODE-SESSION-SCOPED-DEVELOPMENT-001",
@@ -216,6 +216,12 @@
       "id": "ADR-0035",
       "kind": "adr",
       "path": ".musubix/decisions/ADR-0035.md",
+      "line": 1
+    },
+    {
+      "id": "ADR-0036",
+      "kind": "adr",
+      "path": ".musubix/decisions/ADR-0036.md",
       "line": 1
     },
     {
@@ -1333,6 +1339,52 @@
       "path": ".musubix/features/model-correspondence-evidence-guidance/requirements.md",
       "line": 21,
       "mandatory": false
+    },
+    {
+      "id": "DES-NPM-AUDIT-REMEDIATION-001",
+      "kind": "design",
+      "path": ".musubix/features/npm-audit-remediation/design.md",
+      "line": 7
+    },
+    {
+      "id": "DES-NPM-AUDIT-REMEDIATION-002",
+      "kind": "design",
+      "path": ".musubix/features/npm-audit-remediation/design.md",
+      "line": 14
+    },
+    {
+      "id": "DES-NPM-AUDIT-REMEDIATION-003",
+      "kind": "design",
+      "path": ".musubix/features/npm-audit-remediation/design.md",
+      "line": 22
+    },
+    {
+      "id": "REQ-NPM-AUDIT-REMEDIATION-001",
+      "kind": "requirement",
+      "path": ".musubix/features/npm-audit-remediation/requirements.md",
+      "line": 10,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-NPM-AUDIT-REMEDIATION-002",
+      "kind": "requirement",
+      "path": ".musubix/features/npm-audit-remediation/requirements.md",
+      "line": 17,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-NPM-AUDIT-REMEDIATION-003",
+      "kind": "requirement",
+      "path": ".musubix/features/npm-audit-remediation/requirements.md",
+      "line": 24,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-NPM-AUDIT-REMEDIATION-004",
+      "kind": "requirement",
+      "path": ".musubix/features/npm-audit-remediation/requirements.md",
+      "line": 31,
+      "mandatory": true
     },
     {
       "id": "DES-RELEASE-APPROVAL-ORDERING-001",
@@ -2832,19 +2884,37 @@
       "id": "CODE-GITHUB-ACTIONS-NODE24-RUNTIME-001",
       "kind": "code",
       "path": "scripts/check-github-actions.mjs",
-      "line": 63
+      "line": 70
     },
     {
       "id": "CODE-GITHUB-ACTIONS-NODE24-RUNTIME-002",
       "kind": "code",
       "path": "scripts/check-github-actions.mjs",
-      "line": 240
+      "line": 247
     },
     {
       "id": "CODE-GITHUB-ACTIONS-NODE24-RUNTIME-003",
       "kind": "code",
       "path": "scripts/check-github-actions.mjs",
-      "line": 313
+      "line": 320
+    },
+    {
+      "id": "CODE-NPM-AUDIT-REMEDIATION-001",
+      "kind": "code",
+      "path": "scripts/check-npm-audit-remediation.mjs",
+      "line": 68
+    },
+    {
+      "id": "CODE-NPM-AUDIT-REMEDIATION-002",
+      "kind": "code",
+      "path": "scripts/check-npm-audit-remediation.mjs",
+      "line": 134
+    },
+    {
+      "id": "CODE-NPM-AUDIT-REMEDIATION-003",
+      "kind": "code",
+      "path": "scripts/check-npm-audit-remediation.mjs",
+      "line": 320
     },
     {
       "id": "CODE-RELEASE-VERSION-SYNCHRONIZATION-004",
@@ -3697,6 +3767,30 @@
       "kind": "test",
       "path": "tests/model-correspondence-evidence-guidance.test.ts",
       "line": 32
+    },
+    {
+      "id": "TEST-NPM-AUDIT-REMEDIATION-001",
+      "kind": "test",
+      "path": "tests/npm-audit-remediation.test.ts",
+      "line": 102
+    },
+    {
+      "id": "TEST-NPM-AUDIT-REMEDIATION-002",
+      "kind": "test",
+      "path": "tests/npm-audit-remediation.test.ts",
+      "line": 154
+    },
+    {
+      "id": "TEST-NPM-AUDIT-REMEDIATION-003",
+      "kind": "test",
+      "path": "tests/npm-audit-remediation.test.ts",
+      "line": 223
+    },
+    {
+      "id": "TEST-NPM-AUDIT-REMEDIATION-004",
+      "kind": "test",
+      "path": "tests/npm-audit-remediation.test.ts",
+      "line": 291
     },
     {
       "id": "TEST-WORKFLOW-SHUTDOWN-001",
@@ -5276,6 +5370,56 @@
       "from": "DES-MODEL-CORRESPONDENCE-EVIDENCE-GUIDANCE-002",
       "to": "REQ-MODEL-CORRESPONDENCE-EVIDENCE-GUIDANCE-002",
       "relation": "satisfies"
+    },
+    {
+      "from": "DES-NPM-AUDIT-REMEDIATION-001",
+      "to": "REQ-NPM-AUDIT-REMEDIATION-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-NPM-AUDIT-REMEDIATION-001",
+      "to": "REQ-NPM-AUDIT-REMEDIATION-002",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0036",
+      "to": "DES-NPM-AUDIT-REMEDIATION-001",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-NPM-AUDIT-REMEDIATION-002",
+      "to": "REQ-NPM-AUDIT-REMEDIATION-002",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-NPM-AUDIT-REMEDIATION-002",
+      "to": "REQ-NPM-AUDIT-REMEDIATION-003",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0036",
+      "to": "DES-NPM-AUDIT-REMEDIATION-002",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-NPM-AUDIT-REMEDIATION-002",
+      "to": "DES-NPM-AUDIT-REMEDIATION-001",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-NPM-AUDIT-REMEDIATION-003",
+      "to": "REQ-NPM-AUDIT-REMEDIATION-004",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0036",
+      "to": "DES-NPM-AUDIT-REMEDIATION-003",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-NPM-AUDIT-REMEDIATION-003",
+      "to": "DES-NPM-AUDIT-REMEDIATION-002",
+      "relation": "depends-on"
     },
     {
       "from": "DES-RELEASE-APPROVAL-ORDERING-001",
@@ -8374,7 +8518,17 @@
     },
     {
       "from": "CODE-GITHUB-ACTIONS-NODE24-RUNTIME-001",
+      "to": "REQ-NPM-AUDIT-REMEDIATION-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-GITHUB-ACTIONS-NODE24-RUNTIME-001",
       "to": "DES-GITHUB-ACTIONS-NODE24-RUNTIME-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-GITHUB-ACTIONS-NODE24-RUNTIME-001",
+      "to": "DES-NPM-AUDIT-REMEDIATION-003",
       "relation": "implements"
     },
     {
@@ -8395,6 +8549,46 @@
     {
       "from": "CODE-GITHUB-ACTIONS-NODE24-RUNTIME-003",
       "to": "DES-GITHUB-ACTIONS-NODE24-RUNTIME-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-NPM-AUDIT-REMEDIATION-001",
+      "to": "REQ-NPM-AUDIT-REMEDIATION-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-NPM-AUDIT-REMEDIATION-001",
+      "to": "REQ-NPM-AUDIT-REMEDIATION-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-NPM-AUDIT-REMEDIATION-001",
+      "to": "DES-NPM-AUDIT-REMEDIATION-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-NPM-AUDIT-REMEDIATION-002",
+      "to": "REQ-NPM-AUDIT-REMEDIATION-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-NPM-AUDIT-REMEDIATION-002",
+      "to": "REQ-NPM-AUDIT-REMEDIATION-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-NPM-AUDIT-REMEDIATION-002",
+      "to": "DES-NPM-AUDIT-REMEDIATION-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-NPM-AUDIT-REMEDIATION-003",
+      "to": "REQ-NPM-AUDIT-REMEDIATION-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-NPM-AUDIT-REMEDIATION-003",
+      "to": "DES-NPM-AUDIT-REMEDIATION-003",
       "relation": "implements"
     },
     {
@@ -9313,6 +9507,26 @@
       "relation": "verifies"
     },
     {
+      "from": "TEST-NPM-AUDIT-REMEDIATION-001",
+      "to": "REQ-NPM-AUDIT-REMEDIATION-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-NPM-AUDIT-REMEDIATION-002",
+      "to": "REQ-NPM-AUDIT-REMEDIATION-002",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-NPM-AUDIT-REMEDIATION-003",
+      "to": "REQ-NPM-AUDIT-REMEDIATION-003",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-NPM-AUDIT-REMEDIATION-004",
+      "to": "REQ-NPM-AUDIT-REMEDIATION-004",
+      "relation": "verifies"
+    },
+    {
       "from": "TEST-WORKFLOW-SHUTDOWN-001",
       "to": "REQ-WORKFLOW-SHUTDOWN-001",
       "relation": "verifies"
@@ -9853,6 +10067,7 @@
     ".musubix/decisions/ADR-0033.md": "82855115e4da67d3c4ddbbb72435e9a852b405ab6db325c416f427e9cde30978",
     ".musubix/decisions/ADR-0034.md": "3553589fd9d989c089351af9cea4f2fe671117006591dc1f6336b6b95196ebcd",
     ".musubix/decisions/ADR-0035.md": "14befbc7cb086ab8e9da1779546c274b795e58d084441b1c0823a82681e5a896",
+    ".musubix/decisions/ADR-0036.md": "c4ed0289564d2b19e3c28e06e4784d792c694ff2be59d97c8f24431157d3faa3",
     ".musubix/features/adapter-pattern-recognition/design.md": "a8e0c4a11f626cb4a41c9b5b53359c072ec0c3161f704791f42ba8af38124a70",
     ".musubix/features/adapter-pattern-recognition/requirements.md": "5731561a0a04982b8a5c305bdeeae6084bcf0ee8846f295eaaaabc823d1f9793",
     ".musubix/features/approval-domain-scoping/design.md": "e8731f1e3094aa22192ae2ae5986fb4dc9a7698f7cfe66961e1342f6e0743bd9",
@@ -9891,6 +10106,8 @@
     ".musubix/features/human-approval-gates/requirements.md": "f2ae2380935831bb102cd6a7726f2a208ab1719e035157302ef51ed28f624fb0",
     ".musubix/features/model-correspondence-evidence-guidance/design.md": "708350f1f2a95dd9ab36b3da739db89be8b4895085a3c0fdf6b64482fe04837a",
     ".musubix/features/model-correspondence-evidence-guidance/requirements.md": "d7ca8b823ddfd3265e89f2892003e5eb95faad7e9b3972b249de5f2902446511",
+    ".musubix/features/npm-audit-remediation/design.md": "bc71c39e5eb1db5726375b6cfef7da6aef0b5e419bc12e8d3f089a8936abbd87",
+    ".musubix/features/npm-audit-remediation/requirements.md": "6811ea7e5dca6ead582e50fe390084c87703ef385e345f90da5aafca7cbd7e94",
     ".musubix/features/release-approval-ordering/design.md": "8e54722870ebfaa554667b5a7ead9a1e5a830bcc340b572f1de4280097a078f2",
     ".musubix/features/release-approval-ordering/requirements.md": "fecd1f0e25311d37dcea2b8582fbbdb08d628bda75035da8593f56e29499f980",
     ".musubix/features/release-version-synchronization/design.md": "8df85935c9e2151cba0b0640fb5b25af81a529cfa7d2e7ec43f7730a44ebf42e",
@@ -9962,7 +10179,8 @@
     "packages/domain/src/markdown.ts": "5c6b96486a2e31944d7d128d241f1772d0926f34464fa2b59c20748a6754487a",
     "packages/domain/src/requirements.ts": "65ea1e6d3bbd29e929c785037b930e5f5eb5535b607403e5f30c3657d36e9175",
     "packages/domain/src/types.ts": "0f0cbd43bdee4db03b83e4869e9791531a63e9b63aa7a09661f62ad1bbc75cb3",
-    "scripts/check-github-actions.mjs": "ee5d54f1db66b54223396777ca8bc31ce8abd0052417c983f22ea589f32e33df",
+    "scripts/check-github-actions.mjs": "36c6fc9ff5e6070bf15fa6d232ffd8d72f14a7d651636d3b88c560c78677d4cb",
+    "scripts/check-npm-audit-remediation.mjs": "fad3268d94c49e04cb59252a1f6830faf6c75cceb9c163cf379f74921ff2ff0c",
     "scripts/check-package.mjs": "f5cdb012f3ec097b52501dba3a2f106bf7a3b38468769f12977ccd14d9a4ee83",
     "scripts/release-attestation.mjs": "b15842f6f83eb768c361a5e054a984af0da846f3b6e789bc0c91127415576d15",
     "scripts/release-prepare.mjs": "866f10190cd7598256e87d6e073cc6cd85d071ce09fa777e2fb4e347466d309f",
@@ -9996,9 +10214,10 @@
     "tests/github-actions-node24-runtime.test.ts": "9a444869a4d0dcdb76fb34fc5e017eb8f4f39896ec7b8aa8e0d36e8a6552e28d",
     "tests/helpers.ts": "7f2b2d283ef52eba984333232170633d89cad0a3b05924c43ff52382344eeac3",
     "tests/model-correspondence-evidence-guidance.test.ts": "f32fef2927b6353cef035f67cc8df69c1fb37ef08b745d88215df9bfa46d65ad",
+    "tests/npm-audit-remediation.test.ts": "cab7e374e745dad664ba5f2c0db8cd3e284275545c86cba29ddd4c22f9c65f11",
     "tests/p2-improvements.test.ts": "0d96ebf371ac344778ecc5a84b75cbac2ff972263d85264e861392fca5c976e4",
     "tests/p3-attestation-oidc.test.ts": "6b7080699b02670e1575cdfda24dcbd301b5bd98c5df3f45a03d2fc80cc3ba05",
-    "tests/p3-codegraph-policy.test.ts": "51382d96b162341a47f77643caa3d40641218c34a6106cf32c3d112defd701a6",
+    "tests/p3-codegraph-policy.test.ts": "f7772220ef1c3cb73170d43e64855c539f262d4aab64a268b743640ce088bfd6",
     "tests/p3-formal.test.ts": "19d7b40f4c5f92391debbc0e8f1353d93023e0774a57c5390e1b0dcfed2b3aab",
     "tests/p3-performance-provenance.test.ts": "a71e222cca5217e210c2b623b09c9e9d9c37c7999eb70ea058ab780c59fabe83",
     "tests/p3-workflow-provenance.test.ts": "eb1a3f7235292b1d9440183ab1b18b8513ef6e896a6bb1c5a6c8ecf9ad4f0a4a",

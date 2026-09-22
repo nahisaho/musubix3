@@ -967,6 +967,19 @@ npm run pack:check
 npm run pack:smoke
 ```
 
+### 依存関係auditポリシー
+
+導入時またはrelease preparationで依存関係advisoryが報告された場合は、
+すべてのseverityと開発時依存を含むroot workspaceの
+`npm run audit:report`（`npm audit --json`）を実行します。advisory ID、すべての依存経路、
+production/build/testへの到達可能性、maintained fixの有無、remediation判断、
+残存リスクまたはmonitoring義務を記録します。開発時依存または現在到達不能で
+あることはexposureを下げますが、maintained fixが存在する場合のremediation
+にはなりません。記録したclean resultはその時点の証拠であり、将来のauditも
+cleanであることの証明として扱いません。
+`.github/workflows/dependency-audit.yml`は週次および手動dispatchでfull reportを
+再実行します。失敗したrunはrelease前にreviewし、remediationしてください。
+
 ビルド前に、機械管理されるすべてのリリース version を同期します。
 
 ```sh

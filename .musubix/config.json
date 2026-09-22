@@ -472,6 +472,18 @@
       "adapter": "vitest",
       "required": true,
       "timeoutMs": 120000
+    },
+    {
+      "name": "npm-audit-remediation-tests",
+      "command": "npx",
+      "args": [
+        "vitest",
+        "run",
+        "tests/npm-audit-remediation.test.ts"
+      ],
+      "adapter": "vitest",
+      "required": true,
+      "timeoutMs": 120000
     }
   ],
   "requiredChecks": [

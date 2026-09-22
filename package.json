@@ -39,6 +39,7 @@
     "test": "vitest run",
     "test:adapters": "vitest run tests/adapter-integration.test.ts --maxWorkers=1",
     "test:watch": "vitest",
+    "audit:report": "npm audit --json",
     "pack:check": "node scripts/check-package.mjs",
     "pack:smoke": "node scripts/smoke-package.mjs",
     "release:prepare": "node scripts/release-prepare.mjs",
@@ -55,6 +56,6 @@
   "devDependencies": {
     "@types/node": "^22.19.0",
     "jest": "^30.5.1",
-    "vitest": "^3.2.4"
+    "vitest": "^4.1.11"
   }
 }
