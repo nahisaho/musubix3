@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-22T00:08:40.970Z",
+  "generatedAt": "2026-09-22T01:02:21.672Z",
   "status": "pass",
   "checks": [
     {
@@ -788,7 +788,7 @@
       "name": "workflow",
       "required": true,
       "status": "pass",
-      "summary": "48 workflow declaration(s) across 8 Skill(s) reconciled with Copilot invocation events.",
+      "summary": "49 workflow declaration(s) across 8 Skill(s) reconciled with Copilot invocation events.",
       "diagnostics": [
         {
           "code": "WORKFLOW_SKILL_NOT_INVOKED",
@@ -799,9 +799,9 @@
           "declarationRecordedAt": "2026-09-09T08:13:50.542Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.264Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.264Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.652Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.652Z"
           }
         },
         {
@@ -813,9 +813,9 @@
           "declarationRecordedAt": "2026-09-09T08:13:50.542Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.264Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.264Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.652Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.652Z"
           }
         },
         {
@@ -827,9 +827,9 @@
           "declarationRecordedAt": "2026-09-09T08:34:15.566Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.265Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.653Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.653Z"
           }
         },
         {
@@ -841,9 +841,9 @@
           "declarationRecordedAt": "2026-09-09T08:34:15.566Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.265Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.653Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.653Z"
           }
         },
         {
@@ -855,9 +855,9 @@
           "declarationRecordedAt": "2026-09-10T14:20:57.674Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.264Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.264Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.652Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.652Z"
           }
         },
         {
@@ -869,9 +869,9 @@
           "declarationRecordedAt": "2026-09-10T14:20:57.674Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.264Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.264Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.652Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.652Z"
           }
         },
         {
@@ -883,9 +883,9 @@
           "declarationRecordedAt": "2026-09-10T20:46:25.535Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.264Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.264Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.652Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.652Z"
           }
         },
         {
@@ -897,9 +897,9 @@
           "declarationRecordedAt": "2026-09-10T20:46:25.535Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.264Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.264Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.652Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.652Z"
           }
         },
         {
@@ -911,9 +911,9 @@
           "declarationRecordedAt": "2026-09-12T01:54:09.875Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.264Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.264Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.652Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.652Z"
           }
         },
         {
@@ -925,9 +925,9 @@
           "declarationRecordedAt": "2026-09-12T01:54:09.875Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.264Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.264Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.652Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.652Z"
           }
         },
         {
@@ -939,9 +939,9 @@
           "declarationRecordedAt": "2026-09-12T07:38:19.409Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.265Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.653Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.653Z"
           }
         },
         {
@@ -953,9 +953,9 @@
           "declarationRecordedAt": "2026-09-12T07:38:19.409Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.265Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.653Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.653Z"
           }
         },
         {
@@ -967,9 +967,9 @@
           "declarationRecordedAt": "2026-09-12T08:17:13.982Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.266Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.266Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.654Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.654Z"
           }
         },
         {
@@ -981,9 +981,9 @@
           "declarationRecordedAt": "2026-09-12T08:17:13.982Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.266Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.266Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.654Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.654Z"
           }
         },
         {
@@ -995,9 +995,9 @@
           "declarationRecordedAt": "2026-09-12T08:27:46.747Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.265Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.653Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.653Z"
           }
         },
         {
@@ -1009,9 +1009,9 @@
           "declarationRecordedAt": "2026-09-12T08:27:46.747Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.265Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.653Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.653Z"
           }
         },
         {
@@ -1023,9 +1023,9 @@
           "declarationRecordedAt": "2026-09-12T09:06:37.401Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.265Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.653Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.653Z"
           }
         },
         {
@@ -1037,9 +1037,9 @@
           "declarationRecordedAt": "2026-09-12T09:06:37.401Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.265Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.653Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.653Z"
           }
         },
         {
@@ -1051,9 +1051,9 @@
           "declarationRecordedAt": "2026-09-12T09:50:01.519Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.265Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.653Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.653Z"
           }
         },
         {
@@ -1065,9 +1065,9 @@
           "declarationRecordedAt": "2026-09-12T09:50:01.519Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.265Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.653Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.653Z"
           }
         },
         {
@@ -1079,9 +1079,9 @@
           "declarationRecordedAt": "2026-09-12T11:45:42.068Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.264Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.264Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.652Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.652Z"
           }
         },
         {
@@ -1093,9 +1093,9 @@
           "declarationRecordedAt": "2026-09-12T11:45:42.068Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.264Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.264Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.652Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.652Z"
           }
         },
         {
@@ -1107,9 +1107,9 @@
           "declarationRecordedAt": "2026-09-12T12:20:15.709Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.265Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.653Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.653Z"
           }
         },
         {
@@ -1121,9 +1121,9 @@
           "declarationRecordedAt": "2026-09-12T12:20:15.709Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.265Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.653Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.653Z"
           }
         },
         {
@@ -1135,9 +1135,9 @@
           "declarationRecordedAt": "2026-09-12T12:46:54.330Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.265Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.653Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.653Z"
           }
         },
         {
@@ -1149,9 +1149,9 @@
           "declarationRecordedAt": "2026-09-12T12:46:54.330Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.265Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.653Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.653Z"
           }
         },
         {
@@ -1163,9 +1163,9 @@
           "declarationRecordedAt": "2026-09-12T12:49:41.740Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.265Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.653Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.653Z"
           }
         },
         {
@@ -1177,9 +1177,9 @@
           "declarationRecordedAt": "2026-09-12T12:49:41.740Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.265Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.653Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.653Z"
           }
         },
         {
@@ -1191,9 +1191,9 @@
           "declarationRecordedAt": "2026-09-12T12:56:56.282Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.264Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.264Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.652Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.652Z"
           }
         },
         {
@@ -1205,9 +1205,9 @@
           "declarationRecordedAt": "2026-09-12T12:56:56.282Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.264Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.264Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.652Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.652Z"
           }
         },
         {
@@ -1219,9 +1219,9 @@
           "declarationRecordedAt": "2026-09-12T13:10:29.870Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.265Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.653Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.653Z"
           }
         },
         {
@@ -1233,9 +1233,9 @@
           "declarationRecordedAt": "2026-09-12T13:10:29.870Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.265Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.653Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.653Z"
           }
         },
         {
@@ -1247,9 +1247,9 @@
           "declarationRecordedAt": "2026-09-12T13:29:57.286Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.265Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.653Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.653Z"
           }
         },
         {
@@ -1261,9 +1261,9 @@
           "declarationRecordedAt": "2026-09-12T13:29:57.286Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.265Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.653Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.653Z"
           }
         },
         {
@@ -1275,9 +1275,9 @@
           "declarationRecordedAt": "2026-09-12T13:34:32.146Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.265Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.653Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.653Z"
           }
         },
         {
@@ -1289,9 +1289,9 @@
           "declarationRecordedAt": "2026-09-12T13:34:32.146Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.265Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.653Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.653Z"
           }
         },
         {
@@ -1303,9 +1303,9 @@
           "declarationRecordedAt": "2026-09-12T13:37:58.157Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.266Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.266Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.654Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.654Z"
           }
         },
         {
@@ -1317,9 +1317,9 @@
           "declarationRecordedAt": "2026-09-12T13:37:58.157Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.266Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.266Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.654Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.654Z"
           }
         },
         {
@@ -1331,9 +1331,9 @@
           "declarationRecordedAt": "2026-09-12T13:58:38.736Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.266Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.266Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.654Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.654Z"
           }
         },
         {
@@ -1345,9 +1345,9 @@
           "declarationRecordedAt": "2026-09-12T13:58:38.736Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.266Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.266Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.654Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.654Z"
           }
         },
         {
@@ -1359,9 +1359,9 @@
           "declarationRecordedAt": "2026-09-12T13:58:40.073Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.265Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.652Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.652Z"
           }
         },
         {
@@ -1373,9 +1373,9 @@
           "declarationRecordedAt": "2026-09-12T13:58:40.073Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.265Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.652Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.652Z"
           }
         },
         {
@@ -1387,9 +1387,9 @@
           "declarationRecordedAt": "2026-09-12T14:04:10.679Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.265Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.653Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.653Z"
           }
         },
         {
@@ -1401,9 +1401,9 @@
           "declarationRecordedAt": "2026-09-12T14:04:10.679Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.265Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.653Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.653Z"
           }
         },
         {
@@ -1415,9 +1415,9 @@
           "declarationRecordedAt": "2026-09-12T14:09:13.298Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.265Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.652Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.652Z"
           }
         },
         {
@@ -1429,9 +1429,9 @@
           "declarationRecordedAt": "2026-09-12T14:09:13.298Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.265Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.652Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.652Z"
           }
         },
         {
@@ -1443,9 +1443,9 @@
           "declarationRecordedAt": "2026-09-12T14:48:12.220Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.265Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.653Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.653Z"
           }
         },
         {
@@ -1457,9 +1457,9 @@
           "declarationRecordedAt": "2026-09-12T14:48:12.220Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.265Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.653Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.653Z"
           }
         },
         {
@@ -1471,9 +1471,9 @@
           "declarationRecordedAt": "2026-09-13T05:13:10.791Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.265Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.653Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.653Z"
           }
         },
         {
@@ -1485,9 +1485,9 @@
           "declarationRecordedAt": "2026-09-13T05:13:10.791Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.265Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.653Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.653Z"
           }
         },
         {
@@ -1499,9 +1499,9 @@
           "declarationRecordedAt": "2026-09-13T06:26:38.708Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.265Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.653Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.653Z"
           }
         },
         {
@@ -1513,9 +1513,9 @@
           "declarationRecordedAt": "2026-09-13T06:26:38.708Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.265Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.653Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.653Z"
           }
         },
         {
@@ -1527,9 +1527,9 @@
           "declarationRecordedAt": "2026-09-13T06:30:07.498Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.265Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.653Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.653Z"
           }
         },
         {
@@ -1541,9 +1541,9 @@
           "declarationRecordedAt": "2026-09-13T06:30:07.498Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.265Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.653Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.653Z"
           }
         },
         {
@@ -1555,9 +1555,9 @@
           "declarationRecordedAt": "2026-09-13T07:09:54.712Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.265Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.654Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.654Z"
           }
         },
         {
@@ -1569,9 +1569,9 @@
           "declarationRecordedAt": "2026-09-13T07:09:54.712Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.265Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.654Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.654Z"
           }
         },
         {
@@ -1583,9 +1583,9 @@
           "declarationRecordedAt": "2026-09-13T08:18:03.686Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.266Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.266Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.654Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.654Z"
           }
         },
         {
@@ -1597,9 +1597,9 @@
           "declarationRecordedAt": "2026-09-13T08:18:03.686Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.266Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.266Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.654Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.654Z"
           }
         },
         {
@@ -1611,9 +1611,9 @@
           "declarationRecordedAt": "2026-09-13T09:49:05.953Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.266Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.266Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.654Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.654Z"
           }
         },
         {
@@ -1625,9 +1625,9 @@
           "declarationRecordedAt": "2026-09-13T09:49:05.953Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.266Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.266Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.654Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.654Z"
           }
         },
         {
@@ -1639,9 +1639,9 @@
           "declarationRecordedAt": "2026-09-13T11:08:29.875Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.266Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.266Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.654Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.654Z"
           }
         },
         {
@@ -1653,9 +1653,9 @@
           "declarationRecordedAt": "2026-09-13T11:08:29.875Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.266Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.266Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.654Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.654Z"
           }
         },
         {
@@ -1667,9 +1667,9 @@
           "declarationRecordedAt": "2026-09-21T12:40:15.639Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.264Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.264Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.652Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.652Z"
           }
         },
         {
@@ -1681,9 +1681,9 @@
           "declarationRecordedAt": "2026-09-21T12:40:15.639Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.264Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.264Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.652Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.652Z"
           }
         },
         {
@@ -1695,9 +1695,9 @@
           "declarationRecordedAt": "2026-09-21T14:46:04.097Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.265Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.652Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.652Z"
           }
         },
         {
@@ -1709,9 +1709,9 @@
           "declarationRecordedAt": "2026-09-21T14:46:04.097Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.265Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.652Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.652Z"
           }
         },
         {
@@ -1723,9 +1723,9 @@
           "declarationRecordedAt": "2026-09-21T21:52:13.408Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.265Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.653Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.653Z"
           }
         },
         {
@@ -1737,9 +1737,9 @@
           "declarationRecordedAt": "2026-09-21T21:52:13.408Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.265Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.653Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.653Z"
           }
         },
         {
@@ -1751,9 +1751,9 @@
           "declarationRecordedAt": "2026-09-21T23:34:17.583Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.264Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.264Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.652Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.652Z"
           }
         },
         {
@@ -1765,9 +1765,9 @@
           "declarationRecordedAt": "2026-09-21T23:34:17.583Z",
           "waiver": {
             "approver": "@nahisaho",
-            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-            "recordedAt": "2026-09-21T23:43:40.264Z",
-            "waiverRecordedAt": "2026-09-21T23:43:40.264Z"
+            "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+            "recordedAt": "2026-09-22T00:32:53.652Z",
+            "waiverRecordedAt": "2026-09-22T00:32:53.652Z"
           }
         }
       ]
@@ -4099,7 +4099,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 1551,
+      "durationMs": 1763,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/requirements-design-scaffold-tests/aggregate.json\n",
       "stderr": ""
@@ -4109,7 +4109,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 6533,
+      "durationMs": 7112,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/approval-tests/aggregate.json\n",
       "stderr": ""
@@ -4119,7 +4119,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 8676,
+      "durationMs": 9545,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/approval-domain-scoping-tests/aggregate.json\n",
       "stderr": ""
@@ -4129,9 +4129,9 @@
       "required": true,
       "status": "pass",
       "summary": "npm: completed, exit 0.",
-      "durationMs": 3169,
+      "durationMs": 3380,
       "exitCode": 0,
-      "stdout": "\n> musubix3@0.1.19 typecheck\n> tsc --noEmit\n\n",
+      "stdout": "\n> musubix3@0.1.20 typecheck\n> tsc --noEmit\n\n",
       "stderr": ""
     },
     {
@@ -4139,9 +4139,9 @@
       "required": true,
       "status": "pass",
       "summary": "npm: completed, exit 0.",
-      "durationMs": 2725,
+      "durationMs": 2849,
       "exitCode": 0,
-      "stdout": "\n> musubix3@0.1.19 build\n> tsc -p tsconfig.build.json\n\n",
+      "stdout": "\n> musubix3@0.1.20 build\n> tsc -p tsconfig.build.json\n\n",
       "stderr": ""
     },
     {
@@ -4149,7 +4149,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 33964,
+      "durationMs": 32306,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/session-tests/aggregate.json\n",
       "stderr": ""
@@ -4159,9 +4159,9 @@
       "required": true,
       "status": "pass",
       "summary": "npm: completed, exit 0.",
-      "durationMs": 140771,
+      "durationMs": 144698,
       "exitCode": 0,
-      "stdout": "\n> musubix3@0.1.19 test\n> vitest run\n\n\n RUN  v3.2.7 /home/nahisaho/GitHub/musubix3\n\n ✓ tests/cli-package.test.ts (14 tests) 34616ms\n   ✓ CLI contracts > prints version/help and JSON validation with nonzero failure  1412ms\n   ✓ CLI contracts > returns structured errors for missing files, invalid solver and unknown commands  1065ms\n   ✓ CLI contracts > supports init alias, dry-run, status and native-bin symlink invocation  1764ms\n   ✓ CLI contracts > requires explicit confirmation before recording human approval  2500ms\n   ✓ CLI contracts > runs full workflow and reports JSON evidence  11524ms\n   ✓ CLI contracts > reports and enforces strict Code Graph mode through CLI gates and status  3098ms\n   ✓ CLI contracts > enforces strict workflow session identity from config and CLI  2738ms\n   ✓ CLI contracts > derives the configured GitHub OIDC audience without reading a private key  516ms\n   ✓ CLI contracts > records a staged change checkpoint through the CLI  2876ms\n   ✓ CLI contracts > returns exit 1 for incomplete starter gates and contradictory requirements  1720ms\n   ✓ CLI contracts > executes a complete CLI TDD cycle and exposes it to the gate  3461ms\n   ✓ distribution contracts > TEST-SESSION-SCOPED-DEVELOPMENT-002 reuses evidence only for an explicit change ID  935ms\n   ✓ distribution contracts > validates native manifests and packed hidden skills/built engine/assets  980ms\n ✓ tests/gate-install.test.ts (73 tests) 35848ms\n   ✓ quality semantics > runs actual commands and persists freshness-aware successful evidence  1292ms\n   ✓ quality semantics > fails a structured test command that reports only skipped tests  817ms\n   ✓ quality semantics > fails an exit-zero command whose structured test reports failed  869ms\n   ✓ quality semantics > fails an exit-zero command whose structured test reports error  768ms\n   ✓ quality semantics > keeps optional structured-test failures out of identity diagnostics  847ms\n   ✓ quality semantics > does not accept passing entries from a rejected optional report as test identity evidence  874ms\n   ✓ quality semantics > fails a structured test command that reports zero tests  726ms\n   ✓ quality semantics > supports a required formal gate with persisted modeled coverage  740ms\n   ✓ quality semantics > requires annotated test IDs to pass in a fresh structured command report  1408ms\n   ✓ quality semantics > records a verified Red-Green-Refactor cycle without allowing test mutation  1050ms\n   ✓ quality semantics > chains immutable TDD phase records and detects mutation, deletion and reordering  428ms\n   ✓ quality semantics > proves staged change order with artifact fingerprints and TDD evidence  4519ms\n   ✓ quality semantics > rejects unrelated source changes as implementation evidence for a requirement  2911ms\n   ✓ quality semantics > rejects reused TDD output and reconciles required workflow with actual Skill calls  1622ms\n   ✓ quality semantics > fails a required formal gate below the modeled fraction threshold  721ms\n   ✓ quality semantics > fails missing required commands, while retaining skipped status  740ms\n   ✓ quality semantics > fails real nonzero exits and timeouts  1251ms\n   ✓ quality semantics > uses coverage thresholds without disguising missing coverage  727ms\n   ✓ quality semantics > rejects quality policy weakening against the trusted baseline  800ms\n   ✓ quality semantics > requires independent approval when the policy baseline changes  767ms\n   ✓ quality semantics > fails if verification mutates its own input snapshot  695ms\n   ✓ quality semantics > ignores standard Cargo and Maven target output without weakening source stability  747ms\n   ✓ quality semantics > keeps source directories named target inside the stability snapshot  701ms\n   ✓ quality semantics > ignores manifest-scoped .NET bin and obj output without hiding source directories  750ms\n   ✓ quality semantics > ignores manifest-scoped ecosystem caches without hiding same-named source directories  872ms\n   ✓ quality semantics > ignores Python bytecode caches without hiding Python source  781ms\n   ✓ quality semantics > ignores the conventional project-local NuGet package cache  761ms\n   ✓ quality semantics > ignores Python virtual environments identified by pyvenv.cfg without hiding similarly named source  807ms\n   ✓ quality semantics > does not exclude a source tree when pyvenv.cfg is not a regular file  742ms\n   ✓ quality semantics > does not exclude an arbitrary source tree with a regular pyvenv.cfg marker  716ms\n   ✓ quality semantics > changed mode captures changes and still runs actual commands  734ms\n   ✓ quality semantics > preserves the latest changed-run evidence across a later full gate  1340ms\n ✓ tests/change-requirement-batches.test.ts (10 tests) 25717ms\n   ✓ TEST-CHANGE-REQUIREMENT-BATCHES-001 completes an interleaved Red-Implement-Green loop per requirement batch  5706ms\n   ✓ TEST-CHANGE-REQUIREMENT-BATCHES-002 rejects Implementation for a batch before its own Red and Green before its own Implementation  3109ms\n   ✓ TEST-CHANGE-REQUIREMENT-BATCHES-003 rejects Quality until every requirement has Green coverage  4661ms\n   ✓ TEST-CHANGE-REQUIREMENT-BATCHES-006 recognizes every requirement in one authoritative @verifies declaration  3220ms\n   ✓ TEST-CHANGE-REQUIREMENT-BATCHES-007 uses trace-compatible polyglot comment blocks for authoritative tests  3210ms\n   ✓ suppresses fully superseded batch diagnostics in validation and waiver recording  5808ms\n ✓ tests/change-evidence-waiver.test.ts (15 tests) 29668ms\n   ✓ TEST-CHANGE-EVIDENCE-WAIVER-001 rejects a waiver for any code outside the twelve-code allow-list  2587ms\n   ✓ TEST-CHANGE-EVIDENCE-WAIVER-002 rejects a waiver when no matching diagnostic is currently reported  2020ms\n   ✓ TEST-CHANGE-EVIDENCE-WAIVER-003 requires a non-empty approver and reason  2104ms\n   ✓ TEST-CHANGE-EVIDENCE-WAIVER-004 binds requirement-scoping to each code's own granularity  2093ms\n   ✓ TEST-CHANGE-EVIDENCE-WAIVER-005 records the waiver as a hash-chained, ordered, identity-bound entry, and starts non-stale  2053ms\n   ✓ TEST-CHANGE-EVIDENCE-WAIVER-006 downgrades only the exact waived instance, never any other change/requirement/code  2113ms\n   ✓ TEST-CHANGE-EVIDENCE-WAIVER-007 rejects a duplicate waiver for an already validly waived, non-stale scope  1867ms\n   ✓ TEST-CHANGE-EVIDENCE-WAIVER-008 treats a waiver as stale once its snapshot payload changes, reporting it error again plus a stale diagnostic  2878ms\n   ✓ TEST-CHANGE-EVIDENCE-WAIVER-009 reports malformed waiver evidence without downgrading the targeted diagnostic  1864ms\n   ✓ TEST-CHANGE-EVIDENCE-WAIVER-010 surfaces active waivers for audit visibility, excluding stale/malformed ones  1983ms\n   ✓ TEST-CHANGE-EVIDENCE-WAIVER-011 attaches structured changeId/requirementId targets to every waivable diagnostic  2141ms\n   ✓ TEST-CHANGE-EVIDENCE-WAIVER-012 redefines change-history/change-completeness validity as free of error-severity diagnostics  3483ms\n   ✓ TEST-CHANGE-EVIDENCE-WAIVER-014 waives detail-scoped CHANGE_PHASE_MISSING using the phase:<name> grammar  616ms\n   ✓ TEST-CHANGE-EVIDENCE-WAIVER-015 waives batch-scoped CHANGE_TESTS_UNCHANGED using the bare batchKey grammar  1672ms\n ✓ tests/p3-performance-provenance.test.ts (9 tests) 12247ms\n   ✓ P3 deterministic performance provenance > binds every observation to the exact successful command and fresh report  1104ms\n   ✓ P3 deterministic performance provenance > detects report tampering and makes prior quality status stale  909ms\n   ✓ P3 deterministic performance provenance > rejects duplicate counter reports and withholds provenance from rejected test reports  2411ms\n   ✓ P3 deterministic performance provenance > rejects failed executions, missing provenance, and configuration drift  2997ms\n   ✓ P3 deterministic performance provenance > binds semantic provenance records into the attestation performance head  818ms\n   ✓ P3 deterministic performance provenance > keeps semantic performance and quality heads stable across gate-sign-gate runs  1534ms\n   ✓ P3 deterministic performance provenance > attests stable quality verdicts and widened formal verdict fields  899ms\n   ✓ P3 deterministic performance provenance > persists stdout adapter reports and detects later tampering  723ms\n   ✓ P3 deterministic performance provenance > fails attestation verification when the bound report is changed after signing  851ms\n ✓ tests/change-record-fail-fast.test.ts (10 tests) 19235ms\n   ✓ TEST-CHANGE-RECORD-FAIL-FAST-001 rejects an unchanged requirements phase at record time, leaving evidence untouched  1997ms\n   ✓ TEST-CHANGE-RECORD-FAIL-FAST-002 rejects an unchanged design phase at record time, leaving evidence untouched  2004ms\n   ✓ TEST-CHANGE-RECORD-FAIL-FAST-003 rejects an unchanged tests fingerprint at Red record time, leaving evidence untouched  2359ms\n   ✓ TEST-CHANGE-RECORD-FAIL-FAST-004 rejects an unchanged implementation fingerprint at Implementation record time, leaving evidence untouched  3070ms\n   ✓ TEST-CHANGE-RECORD-FAIL-FAST-005 rejects an unchanged per-requirement relevant-implementation fingerprint, naming the unchanged requirement  2850ms\n   ✓ TEST-CHANGE-RECORD-FAIL-FAST-011 leaves both changes.json and order.json byte-identical across every rejection kind, including the evidence-order sequence  2150ms\n   ✓ TEST-CHANGE-RECORD-FAIL-FAST-006 allows an explicitly overridden unchanged requirements phase and persists the marker  1387ms\n   ✓ TEST-CHANGE-RECORD-FAIL-FAST-007 suppresses only CHANGE_REQUIREMENTS_UNCHANGED for a marked override, not the other unchanged diagnostics  1087ms\n   ✓ TEST-CHANGE-RECORD-FAIL-FAST-008 previews a phase recording with --dry-run without persisting it, in both outcomes  1784ms\n   ✓ TEST-CHANGE-RECORD-FAIL-FAST-009 documents the fail-fast rejection, --allow-unchanged, and --dry-run in --help  546ms\n ✓ tests/p4-correspondence-mutation.test.ts (12 tests) 9344ms\n   ✓ P4 model correspondence and mutation quality > proves explicit formal requirements through fresh trace and passing test reports  1187ms\n   ✓ P4 model correspondence and mutation quality > validates model correspondence against the exact merged .NET command  787ms\n   ✓ P4 model correspondence and mutation quality > fails closed when formal or generated trace evidence becomes stale  790ms\n   ✓ P4 model correspondence and mutation quality > accepts current deterministic killed mutants and binds both evidence heads  950ms\n   ✓ P4 model correspondence and mutation quality > fails closed when strict mode has no mutation report  793ms\n   ✓ P4 model correspondence and mutation quality > rejects survived mutants  951ms\n   ✓ P4 model correspondence and mutation quality > rejects skipped mutants  817ms\n   ✓ P4 model correspondence and mutation quality > rejects duplicate, unlinked, and stale mutation evidence  2527ms\n ✓ tests/attestation-evidence-stability.test.ts (4 tests) 9078ms\n   ✓ attestation evidence-head stability across no-op gate re-runs > TEST-ATTESTATION-EVIDENCE-STABILITY-002 keeps a signed attestation valid across a no-op gate re-run with reordered mutants  2322ms\n   ✓ attestation evidence-head stability across no-op gate re-runs > TEST-ATTESTATION-EVIDENCE-STABILITY-003 keeps all ten evidenceHeads entries stable across full, --changed, and --feature no-op re-runs  6746ms\n ✓ tests/workflow-evidence-waiver.test.ts (11 tests) 7771ms\n   ✓ TEST-WORKFLOW-EVIDENCE-WAIVER-002 rejects CLI calls with disallowed codes, missing confirmation, missing options, bad timestamps, and invalid --index values  2366ms\n   ✓ TEST-WORKFLOW-EVIDENCE-WAIVER-004 records a genesis waiver, downgrades only the exact colliding scope, and surfaces workflowWaivers in gate/status  1159ms\n   ✓ TEST-WORKFLOW-EVIDENCE-WAIVER-006 reports malformed workflow-waiver evidence separately and rejects further appends until repaired  987ms\n   ✓ TEST-WORKFLOW-EVIDENCE-WAIVER-007 passes the workflow gate when every workflow error is waived, while leaving non-waived diagnostics as errors  1407ms\n   ✓ TEST-WORKFLOW-EVIDENCE-WAIVER-011 keeps malformed workflow waiver diagnostics non-blocking when the workflow check itself has no error-severity diagnostics  763ms\n ✓ tests/approval-domain-scoping.test.ts (24 tests) 7796ms\n   ✓ approval domain scoping (manifest binding, REQ-011/012/013/014) > TEST-APPROVAL-DOMAIN-SCOPING-013 invalidates every domain approval when the constitution changes  352ms\n   ✓ approval domain scoping (distinct evidence storage, REQ-015) > TEST-APPROVAL-DOMAIN-SCOPING-015 stores each domain's evidence independently of other domains and repo-wide evidence  317ms\n   ✓ approval domain scoping (design/TDD prerequisite gating, REQ-016/017/018) > TEST-APPROVAL-DOMAIN-SCOPING-018 blocks TDD Red for a requirement until only its owning domain's design approves  495ms\n   ✓ approval domain scoping (gate/status scoping, REQ-019/020/021/022) > TEST-APPROVAL-DOMAIN-SCOPING-019 scopes gate --feature's approval check to the owning domain only  1418ms\n   ✓ approval domain scoping (gate/status scoping, REQ-019/020/021/022) > TEST-APPROVAL-DOMAIN-SCOPING-021 reports a per-domain breakdown in full-repo gate  1028ms\n   ✓ approval domain scoping (gate/status scoping, REQ-019/020/021/022) > TEST-APPROVAL-DOMAIN-SCOPING-022 requires every domain and release current for overall validity  400ms\n   ✓ approval domain scoping (consistent recomputation, REQ-023) and backward compatibility (REQ-024) > TEST-APPROVAL-DOMAIN-SCOPING-023 computes the identical manifest hash at every evaluation site  302ms\n ✓ tests/change-record-recordedat-order.test.ts (3 tests) 7535ms\n   ✓ TEST-CHANGE-RECORD-RECORDEDAT-ORDER-001 documents that order (not recordedAt) is the verified chronology field, in --help and README  559ms\n   ✓ TEST-CHANGE-RECORD-RECORDEDAT-ORDER-002 reports exactly one warning-severity CHANGE_RECORDEDAT_OUT_OF_ORDER diagnostic for an inverted consecutive order pair, and none when recordedAt is monotonic  3789ms\n   ✓ TEST-CHANGE-RECORD-RECORDEDAT-ORDER-003 excludes entries with a duplicated order, a missing order, or a non-canonical recordedAt from the inversion comparison, while still flagging an unrelated valid inversion  3186ms\n ✓ tests/trace-graph.test.ts (62 tests) 7260ms\n   ✓ compiler graph > indexes static, re-export, dynamic, require, symbols and call targets  646ms\n   ✓ compiler graph > resolves tsconfig path aliases and JS directory imports  495ms\n   ✓ compiler graph > resolves nearest nested tsconfig paths  429ms\n   ✓ compiler graph > resolves NodeNext import/require conditions according to usage  478ms\n   ✓ compiler graph > finds cycles, self cycles and enforces architecture globs  421ms\n   ✓ compiler graph > reports unresolved local and nonliteral imports honestly  437ms\n   ✓ compiler graph > refuses stale caches after source and config changes  1128ms\n ✓ tests/cli-workflow-ux.test.ts (6 tests) 5961ms\n   ✓ cli workflow ux improvements (v0.1.9) > TEST-CLI-WORKFLOW-UX-001 excludes nested MUSUBIX3 workspaces from ancestor scans  928ms\n   ✓ cli workflow ux improvements (v0.1.9) > TEST-CLI-WORKFLOW-UX-002 states bidirectional candidate semantics for trace impact text output  1365ms\n   ✓ cli workflow ux improvements (v0.1.9) > TEST-CLI-WORKFLOW-UX-005 scopes gate status to one feature, isolating unrelated failures  3128ms\n ✓ tests/approval.test.ts (8 tests) 5630ms\n   ✓ artifact-bound approval evidence > TEST-HUMAN-APPROVAL-GATES-006 recomputes quality before release approval  3489ms\n   ✓ artifact-bound approval evidence > TEST-HUMAN-APPROVAL-GATES-007 rejects invalid artifacts and reports malformed evidence  877ms\n   ✓ approval transition gates > TEST-HUMAN-APPROVAL-GATES-005 blocks TDD Red until design approval is current  334ms\n ✓ tests/tdd-cycle-void.test.ts (13 tests) 5167ms\n   ✓ TEST-TDD-CYCLE-VOID-001 rejects voiding a cycle whose latest Green is already valid  313ms\n   ✓ TEST-TDD-CYCLE-VOID-002 rejects voiding when no earlier non-voided valid fallback cycle exists  569ms\n   ✓ TEST-TDD-CYCLE-VOID-003 requires a non-empty approver and reason  318ms\n   ✓ TEST-TDD-CYCLE-VOID-004 records the void as a hash-chained, ordered, identity-bound entry without disturbing other evidence  318ms\n   ✓ TEST-TDD-CYCLE-VOID-005 treats a void payload with a mismatched cycleId chain record as not validly linked  338ms\n   ✓ TEST-TDD-CYCLE-VOID-006 reports malformed void evidence for a duplicated void chain record  391ms\n   ✓ TEST-TDD-CYCLE-VOID-007 still raises TDD_GREEN_MISSING alongside the malformed-void diagnostic  372ms\n   ✓ TEST-TDD-CYCLE-VOID-008 suppresses missing-phase diagnostics independently for each validly voided trailing cycle  469ms\n   ✓ TEST-TDD-CYCLE-VOID-009 leaves diagnostics for a non-voided cycle unaffected by voiding a different cycle  425ms\n   ✓ TEST-TDD-CYCLE-VOID-010 computes TDD_TEST_STALE against the nearest earlier non-voided valid cycle after voiding  438ms\n   ✓ TEST-TDD-CYCLE-VOID-011 rejects re-voiding but allows voiding a fresh later cycle  510ms\n   ✓ TEST-TDD-CYCLE-VOID-012 routes tdd migrate around a validly voided latest cycle  367ms\n   ✓ TEST-TDD-CYCLE-VOID-013 surfaces scoped void evidence in tdd validate output, keyed to its own cycle  338ms\n ✓ tests/change-acceptance-heuristic.test.ts (6 tests) 4935ms\n   ✓ TEST-CHANGE-ACCEPTANCE-HEURISTIC-001 recognizes report/error/naming vocabulary as measurable acceptance  1101ms\n   ✓ TEST-CHANGE-ACCEPTANCE-HEURISTIC-002 recognizes exit/configur vocabulary as measurable acceptance  675ms\n   ✓ TEST-CHANGE-ACCEPTANCE-HEURISTIC-003 recognizes contain/unaffected/stale vocabulary as measurable acceptance  688ms\n   ✓ TEST-CHANGE-ACCEPTANCE-HEURISTIC-004 still rejects whole-value placeholders and too-short text  807ms\n   ✓ TEST-CHANGE-ACCEPTANCE-HEURISTIC-005 still rejects placeholder-prefixed text even when it contains a newly recognized keyword  929ms\n   ✓ TEST-CHANGE-ACCEPTANCE-HEURISTIC-006 still rejects long non-placeholder prose containing no recognized keyword  734ms\n ✓ tests/evidence-writer-lock-integration.test.ts (18 tests) 3765ms\n   ✓ evidence writer lock integration > TEST-EVIDENCE-WRITER-LOCK-010 preserves typed CLI lock errors and recovers a dead Linux owner  795ms\n   ✓ evidence writer lock integration > TEST-EVIDENCE-WRITER-LOCK-020 initializes a nonexistent root under the writer lock  520ms\n   ✓ evidence writer lock integration > TEST-EVIDENCE-WRITER-LOCK-016 gives exactly one process ownership at a shared barrier  468ms\n   ✓ evidence writer lock integration > TEST-EVIDENCE-WRITER-LOCK-017 keeps exempt CLI operations independent of a foreign lock  1276ms\n   ✓ evidence writer lock integration > TEST-EVIDENCE-WRITER-LOCK-018 blocks graph gate before replacing the code graph cache  427ms\n ✓ tests/p3-codegraph-policy.test.ts (4 tests) 3201ms\n   ✓ P3 unresolved dynamic module loading policy > keeps unresolved computed imports and requires as compatible warnings by default  793ms\n   ✓ P3 unresolved dynamic module loading policy > upgrades unresolved computed loading to gate-blocking errors in strict mode  1280ms\n   ✓ P3 unresolved dynamic module loading policy > rejects weakening a strict trusted Code Graph baseline  747ms\n   ✓ P3 unresolved dynamic module loading policy > allows statically resolvable cache-busting imports in strict mode  380ms\n ✓ tests/evidence-history-merge.test.ts (5 tests) 2806ms\n   ✓ TEST-EVIDENCE-HISTORY-MERGE-001 preserves base order, deduplicates the ancestor, and appends incoming history  719ms\n   ✓ TEST-EVIDENCE-HISTORY-MERGE-002 rebuilds order references and the TDD hash chain into a valid candidate  646ms\n   ✓ TEST-EVIDENCE-HISTORY-MERGE-003 rejects divergent payloads for the same cycle phase without writing  403ms\n   ✓ TEST-EVIDENCE-HISTORY-MERGE-004 restores byte-identical evidence after an injected replacement failure  528ms\n   ✓ TEST-EVIDENCE-HISTORY-MERGE-005 dry-run returns the merge plan without writing any evidence file  509ms\n ✓ tests/tdd-adoption-warning.test.ts (7 tests) 2383ms\n   ✓ TEST-TDD-ADOPTION-WARNING-001 warns exactly once, listing other uncovered mandatory requirements, on the project-first Red  319ms\n   ✓ prints the warning message via the default (non-JSON) CLI output without changing exit code  718ms\n   ✓ TEST-TDD-ADOPTION-WARNING-002 documents the project-wide adoption semantics in --help and README  544ms\n ✓ tests/bounded-file-read-concurrency.test.ts (4 tests) 2994ms\n   ✓ bounded file-read concurrency for large projects > TEST-BOUNDED-FILE-READ-CONCURRENCY-002 snapshots a large path list without exceeding the OS file-descriptor limit  1020ms\n   ✓ bounded file-read concurrency for large projects > TEST-BOUNDED-FILE-READ-CONCURRENCY-003 bounds concurrent reads while Code Graph loads a language with many source files  918ms\n   ✓ bounded file-read concurrency for large projects > TEST-BOUNDED-FILE-READ-CONCURRENCY-004 bounds concurrent reads while knowledge build loads many Markdown documents  1038ms\n ✓ tests/workflow-waiver-bulk-recording.test.ts (4 tests) 1461ms\n   ✓ TEST-WORKFLOW-WAIVER-BULK-002 rejects the whole bulk invocation without writing when any precondition fails  669ms\n   ✓ TEST-WORKFLOW-WAIVER-BULK-003 reports zero recorded waivers without writing when nothing currently qualifies  562ms\n ✓ tests/command-working-directory.test.ts (3 tests) 1583ms\n   ✓ TEST-COMMAND-WORKING-DIRECTORY-001 runs a configured command with its own working directory  1236ms\n ✓ tests/p2-improvements.test.ts (18 tests) 979ms\n   ✓ P2 dynamic graph and manifest entrypoints > resolves safe local cache-busting imports and package entrypoints without hiding arbitrary dynamics  726ms\n ✓ tests/php-verification.test.ts (11 tests) 885ms\n   ✓ TDD output reuse detection > uses the structured report, not console output, so quiet runners are not false positives  332ms\n ✓ tests/tdd-green-requirement-scoping.test.ts (2 tests) 723ms\n   ✓ TEST-TDD-GREEN-REQUIREMENT-SCOPING-001 completes an older pending cycle for the same test ID after a newer one starts  373ms\n   ✓ rejects Green for a requirement ID with no matching pending cycle without blocking a later correct Green  349ms\n ✓ tests/tdd-fingerprint-migration.test.ts (2 tests) 879ms\n   ✓ TEST-TDD-FINGERPRINT-MIGRATION-001 migrates a cycle recorded under the superseded algorithm without a fresh Red/Green  505ms\n   ✓ TEST-TDD-FINGERPRINT-MIGRATION-002 refuses to migrate a cycle whose test genuinely drifted  373ms\n ✓ tests/p3-attestation-oidc.test.ts (10 tests) 582ms\n ✓ tests/tdd-fingerprint-scoping.test.ts (2 tests) 660ms\n   ✓ TEST-TDD-FINGERPRINT-SCOPING-001 keeps a nested test non-stale when a later sibling test is appended  350ms\n   ✓ preserves the existing fingerprint for a top-level test declaration  309ms\n ✓ tests/p3-workflow-provenance.test.ts (14 tests) 456ms\n ✓ tests/tdd-superseded-cycle-scoping.test.ts (2 tests) 642ms\n   ✓ TEST-TDD-SUPERSEDED-CYCLE-SCOPING-001 does not block gate on a superseded incomplete Red cycle  372ms\n ✓ tests/model-correspondence-evidence-guidance.test.ts (2 tests) 343ms\n   ✓ TEST-MODEL-CORRESPONDENCE-EVIDENCE-GUIDANCE-002 documents the `evidence refresh` prerequisite in --help  321ms\n ✓ tests/p4-workflow-streaming.test.ts (10 tests) 385ms\n ✓ tests/upgrade-workflow.test.ts (2 tests) 207ms\n ✓ tests/formal-knowledge.test.ts (21 tests) 268ms\n ✓ tests/adapter-pattern-recognition.test.ts (2 tests) 171ms\n ✓ tests/evidence-history-merge-recovery.test.ts (7 tests) 163ms\n ✓ tests/workflow-multi-session-verification.test.ts (3 tests) 117ms\n ✓ tests/p3-formal.test.ts (10 tests | 2 skipped) 125ms\n ✓ tests/evidence-writer-lock.test.ts (5 tests) 62ms\n ✓ tests/scaffold-artifact.test.ts (6 tests) 70ms\n ✓ tests/design-adr-none-exemption.test.ts (3 tests) 9ms\n ✓ tests/domain.test.ts (46 tests) 29ms\n ✓ tests/ears-id-diagnostic-messages.test.ts (3 tests) 5ms\n ✓ tests/tdd-red-collection-guidance.test.ts (1 test) 2ms\n ↓ tests/adapter-integration.test.ts (6 tests | 6 skipped)\n\n Test Files  45 passed | 1 skipped (46)\n      Tests  505 passed | 8 skipped (513)\n   Start at  09:04:00\n   Duration  140.34s (transform 940ms, setup 0ms, collect 18.43s, tests 253.76s, environment 6ms, prepare 2.14s)\n\n",
+      "stdout": "\n> musubix3@0.1.20 test\n> vitest run\n\n\n RUN  v3.2.7 /home/nahisaho/GitHub/musubix3\n\n ✓ tests/cli-package.test.ts (14 tests) 32532ms\n   ✓ CLI contracts > prints version/help and JSON validation with nonzero failure  1385ms\n   ✓ CLI contracts > returns structured errors for missing files, invalid solver and unknown commands  969ms\n   ✓ CLI contracts > supports init alias, dry-run, status and native-bin symlink invocation  1570ms\n   ✓ CLI contracts > requires explicit confirmation before recording human approval  2253ms\n   ✓ CLI contracts > runs full workflow and reports JSON evidence  11084ms\n   ✓ CLI contracts > reports and enforces strict Code Graph mode through CLI gates and status  2925ms\n   ✓ CLI contracts > enforces strict workflow session identity from config and CLI  2605ms\n   ✓ CLI contracts > derives the configured GitHub OIDC audience without reading a private key  475ms\n   ✓ CLI contracts > records a staged change checkpoint through the CLI  2646ms\n   ✓ CLI contracts > returns exit 1 for incomplete starter gates and contradictory requirements  1725ms\n   ✓ CLI contracts > executes a complete CLI TDD cycle and exposes it to the gate  3135ms\n   ✓ distribution contracts > TEST-SESSION-SCOPED-DEVELOPMENT-002 reuses evidence only for an explicit change ID  905ms\n   ✓ distribution contracts > validates native manifests and packed hidden skills/built engine/assets  834ms\n ✓ tests/gate-install.test.ts (73 tests) 33926ms\n   ✓ quality semantics > runs actual commands and persists freshness-aware successful evidence  1232ms\n   ✓ quality semantics > fails a structured test command that reports only skipped tests  773ms\n   ✓ quality semantics > fails an exit-zero command whose structured test reports failed  710ms\n   ✓ quality semantics > fails an exit-zero command whose structured test reports error  736ms\n   ✓ quality semantics > keeps optional structured-test failures out of identity diagnostics  763ms\n   ✓ quality semantics > does not accept passing entries from a rejected optional report as test identity evidence  818ms\n   ✓ quality semantics > fails a structured test command that reports zero tests  699ms\n   ✓ quality semantics > supports a required formal gate with persisted modeled coverage  729ms\n   ✓ quality semantics > requires annotated test IDs to pass in a fresh structured command report  1350ms\n   ✓ quality semantics > records a verified Red-Green-Refactor cycle without allowing test mutation  1026ms\n   ✓ quality semantics > chains immutable TDD phase records and detects mutation, deletion and reordering  418ms\n   ✓ quality semantics > proves staged change order with artifact fingerprints and TDD evidence  4339ms\n   ✓ quality semantics > rejects unrelated source changes as implementation evidence for a requirement  2876ms\n   ✓ quality semantics > rejects reused TDD output and reconciles required workflow with actual Skill calls  1489ms\n   ✓ quality semantics > fails a required formal gate below the modeled fraction threshold  682ms\n   ✓ quality semantics > fails missing required commands, while retaining skipped status  691ms\n   ✓ quality semantics > fails real nonzero exits and timeouts  1210ms\n   ✓ quality semantics > uses coverage thresholds without disguising missing coverage  682ms\n   ✓ quality semantics > rejects quality policy weakening against the trusted baseline  710ms\n   ✓ quality semantics > requires independent approval when the policy baseline changes  748ms\n   ✓ quality semantics > fails if verification mutates its own input snapshot  663ms\n   ✓ quality semantics > ignores standard Cargo and Maven target output without weakening source stability  661ms\n   ✓ quality semantics > keeps source directories named target inside the stability snapshot  669ms\n   ✓ quality semantics > ignores manifest-scoped .NET bin and obj output without hiding source directories  765ms\n   ✓ quality semantics > ignores manifest-scoped ecosystem caches without hiding same-named source directories  867ms\n   ✓ quality semantics > ignores Python bytecode caches without hiding Python source  711ms\n   ✓ quality semantics > ignores the conventional project-local NuGet package cache  655ms\n   ✓ quality semantics > ignores Python virtual environments identified by pyvenv.cfg without hiding similarly named source  696ms\n   ✓ quality semantics > does not exclude a source tree when pyvenv.cfg is not a regular file  715ms\n   ✓ quality semantics > does not exclude an arbitrary source tree with a regular pyvenv.cfg marker  692ms\n   ✓ quality semantics > changed mode captures changes and still runs actual commands  646ms\n   ✓ quality semantics > preserves the latest changed-run evidence across a later full gate  1226ms\n ✓ tests/change-requirement-batches.test.ts (10 tests) 26504ms\n   ✓ TEST-CHANGE-REQUIREMENT-BATCHES-001 completes an interleaved Red-Implement-Green loop per requirement batch  5282ms\n   ✓ TEST-CHANGE-REQUIREMENT-BATCHES-002 rejects Implementation for a batch before its own Red and Green before its own Implementation  2969ms\n   ✓ TEST-CHANGE-REQUIREMENT-BATCHES-003 rejects Quality until every requirement has Green coverage  4602ms\n   ✓ TEST-CHANGE-REQUIREMENT-BATCHES-006 recognizes every requirement in one authoritative @verifies declaration  3476ms\n   ✓ TEST-CHANGE-REQUIREMENT-BATCHES-007 uses trace-compatible polyglot comment blocks for authoritative tests  3748ms\n   ✓ suppresses fully superseded batch diagnostics in validation and waiver recording  6424ms\n ✓ tests/change-evidence-waiver.test.ts (15 tests) 30641ms\n   ✓ TEST-CHANGE-EVIDENCE-WAIVER-001 rejects a waiver for any code outside the twelve-code allow-list  2344ms\n   ✓ TEST-CHANGE-EVIDENCE-WAIVER-002 rejects a waiver when no matching diagnostic is currently reported  2009ms\n   ✓ TEST-CHANGE-EVIDENCE-WAIVER-003 requires a non-empty approver and reason  1878ms\n   ✓ TEST-CHANGE-EVIDENCE-WAIVER-004 binds requirement-scoping to each code's own granularity  1842ms\n   ✓ TEST-CHANGE-EVIDENCE-WAIVER-005 records the waiver as a hash-chained, ordered, identity-bound entry, and starts non-stale  2031ms\n   ✓ TEST-CHANGE-EVIDENCE-WAIVER-006 downgrades only the exact waived instance, never any other change/requirement/code  1975ms\n   ✓ TEST-CHANGE-EVIDENCE-WAIVER-007 rejects a duplicate waiver for an already validly waived, non-stale scope  1950ms\n   ✓ TEST-CHANGE-EVIDENCE-WAIVER-008 treats a waiver as stale once its snapshot payload changes, reporting it error again plus a stale diagnostic  2961ms\n   ✓ TEST-CHANGE-EVIDENCE-WAIVER-009 reports malformed waiver evidence without downgrading the targeted diagnostic  2063ms\n   ✓ TEST-CHANGE-EVIDENCE-WAIVER-010 surfaces active waivers for audit visibility, excluding stale/malformed ones  2384ms\n   ✓ TEST-CHANGE-EVIDENCE-WAIVER-011 attaches structured changeId/requirementId targets to every waivable diagnostic  2030ms\n   ✓ TEST-CHANGE-EVIDENCE-WAIVER-012 redefines change-history/change-completeness validity as free of error-severity diagnostics  4138ms\n   ✓ TEST-CHANGE-EVIDENCE-WAIVER-014 waives detail-scoped CHANGE_PHASE_MISSING using the phase:<name> grammar  969ms\n   ✓ TEST-CHANGE-EVIDENCE-WAIVER-015 waives batch-scoped CHANGE_TESTS_UNCHANGED using the bare batchKey grammar  1842ms\n ✓ tests/p3-performance-provenance.test.ts (9 tests) 13754ms\n   ✓ P3 deterministic performance provenance > binds every observation to the exact successful command and fresh report  1343ms\n   ✓ P3 deterministic performance provenance > detects report tampering and makes prior quality status stale  990ms\n   ✓ P3 deterministic performance provenance > rejects duplicate counter reports and withholds provenance from rejected test reports  2749ms\n   ✓ P3 deterministic performance provenance > rejects failed executions, missing provenance, and configuration drift  3207ms\n   ✓ P3 deterministic performance provenance > binds semantic provenance records into the attestation performance head  889ms\n   ✓ P3 deterministic performance provenance > keeps semantic performance and quality heads stable across gate-sign-gate runs  1733ms\n   ✓ P3 deterministic performance provenance > attests stable quality verdicts and widened formal verdict fields  1019ms\n   ✓ P3 deterministic performance provenance > persists stdout adapter reports and detects later tampering  898ms\n   ✓ P3 deterministic performance provenance > fails attestation verification when the bound report is changed after signing  924ms\n ✓ tests/change-record-fail-fast.test.ts (10 tests) 21584ms\n   ✓ TEST-CHANGE-RECORD-FAIL-FAST-001 rejects an unchanged requirements phase at record time, leaving evidence untouched  2300ms\n   ✓ TEST-CHANGE-RECORD-FAIL-FAST-002 rejects an unchanged design phase at record time, leaving evidence untouched  2327ms\n   ✓ TEST-CHANGE-RECORD-FAIL-FAST-003 rejects an unchanged tests fingerprint at Red record time, leaving evidence untouched  2843ms\n   ✓ TEST-CHANGE-RECORD-FAIL-FAST-004 rejects an unchanged implementation fingerprint at Implementation record time, leaving evidence untouched  3226ms\n   ✓ TEST-CHANGE-RECORD-FAIL-FAST-005 rejects an unchanged per-requirement relevant-implementation fingerprint, naming the unchanged requirement  3173ms\n   ✓ TEST-CHANGE-RECORD-FAIL-FAST-011 leaves both changes.json and order.json byte-identical across every rejection kind, including the evidence-order sequence  2659ms\n   ✓ TEST-CHANGE-RECORD-FAIL-FAST-006 allows an explicitly overridden unchanged requirements phase and persists the marker  1527ms\n   ✓ TEST-CHANGE-RECORD-FAIL-FAST-007 suppresses only CHANGE_REQUIREMENTS_UNCHANGED for a marked override, not the other unchanged diagnostics  1060ms\n   ✓ TEST-CHANGE-RECORD-FAIL-FAST-008 previews a phase recording with --dry-run without persisting it, in both outcomes  1923ms\n   ✓ TEST-CHANGE-RECORD-FAIL-FAST-009 documents the fail-fast rejection, --allow-unchanged, and --dry-run in --help  543ms\n ✓ tests/p4-correspondence-mutation.test.ts (12 tests) 9547ms\n   ✓ P4 model correspondence and mutation quality > proves explicit formal requirements through fresh trace and passing test reports  1256ms\n   ✓ P4 model correspondence and mutation quality > validates model correspondence against the exact merged .NET command  838ms\n   ✓ P4 model correspondence and mutation quality > fails closed when formal or generated trace evidence becomes stale  850ms\n   ✓ P4 model correspondence and mutation quality > accepts current deterministic killed mutants and binds both evidence heads  929ms\n   ✓ P4 model correspondence and mutation quality > fails closed when strict mode has no mutation report  811ms\n   ✓ P4 model correspondence and mutation quality > rejects survived mutants  937ms\n   ✓ P4 model correspondence and mutation quality > rejects skipped mutants  878ms\n   ✓ P4 model correspondence and mutation quality > rejects duplicate, unlinked, and stale mutation evidence  2491ms\n ✓ tests/attestation-evidence-stability.test.ts (4 tests) 9002ms\n   ✓ attestation evidence-head stability across no-op gate re-runs > TEST-ATTESTATION-EVIDENCE-STABILITY-002 keeps a signed attestation valid across a no-op gate re-run with reordered mutants  2316ms\n   ✓ attestation evidence-head stability across no-op gate re-runs > TEST-ATTESTATION-EVIDENCE-STABILITY-003 keeps all ten evidenceHeads entries stable across full, --changed, and --feature no-op re-runs  6676ms\n ✓ tests/approval-domain-scoping.test.ts (24 tests) 7905ms\n   ✓ approval domain scoping (manifest binding, REQ-011/012/013/014) > TEST-APPROVAL-DOMAIN-SCOPING-011 binds the requirements manifest to only the owning domain's artifacts  307ms\n   ✓ approval domain scoping (manifest binding, REQ-011/012/013/014) > TEST-APPROVAL-DOMAIN-SCOPING-013 invalidates every domain approval when the constitution changes  367ms\n   ✓ approval domain scoping (distinct evidence storage, REQ-015) > TEST-APPROVAL-DOMAIN-SCOPING-015 stores each domain's evidence independently of other domains and repo-wide evidence  326ms\n   ✓ approval domain scoping (design/TDD prerequisite gating, REQ-016/017/018) > TEST-APPROVAL-DOMAIN-SCOPING-016 blocks a design-owning domain's requirement until only that domain approves  332ms\n   ✓ approval domain scoping (design/TDD prerequisite gating, REQ-016/017/018) > TEST-APPROVAL-DOMAIN-SCOPING-018 blocks TDD Red for a requirement until only its owning domain's design approves  494ms\n   ✓ approval domain scoping (gate/status scoping, REQ-019/020/021/022) > TEST-APPROVAL-DOMAIN-SCOPING-019 scopes gate --feature's approval check to the owning domain only  1431ms\n   ✓ approval domain scoping (gate/status scoping, REQ-019/020/021/022) > TEST-APPROVAL-DOMAIN-SCOPING-021 reports a per-domain breakdown in full-repo gate  1008ms\n   ✓ approval domain scoping (gate/status scoping, REQ-019/020/021/022) > TEST-APPROVAL-DOMAIN-SCOPING-022 requires every domain and release current for overall validity  404ms\n   ✓ approval domain scoping (consistent recomputation, REQ-023) and backward compatibility (REQ-024) > TEST-APPROVAL-DOMAIN-SCOPING-023 computes the identical manifest hash at every evaluation site  308ms\n ✓ tests/change-record-recordedat-order.test.ts (3 tests) 7810ms\n   ✓ TEST-CHANGE-RECORD-RECORDEDAT-ORDER-001 documents that order (not recordedAt) is the verified chronology field, in --help and README  596ms\n   ✓ TEST-CHANGE-RECORD-RECORDEDAT-ORDER-002 reports exactly one warning-severity CHANGE_RECORDEDAT_OUT_OF_ORDER diagnostic for an inverted consecutive order pair, and none when recordedAt is monotonic  3966ms\n   ✓ TEST-CHANGE-RECORD-RECORDEDAT-ORDER-003 excludes entries with a duplicated order, a missing order, or a non-canonical recordedAt from the inversion comparison, while still flagging an unrelated valid inversion  3246ms\n ✓ tests/trace-graph.test.ts (62 tests) 7056ms\n   ✓ compiler graph > indexes static, re-export, dynamic, require, symbols and call targets  665ms\n   ✓ compiler graph > resolves tsconfig path aliases and JS directory imports  478ms\n   ✓ compiler graph > resolves nearest nested tsconfig paths  404ms\n   ✓ compiler graph > resolves NodeNext import/require conditions according to usage  427ms\n   ✓ compiler graph > finds cycles, self cycles and enforces architecture globs  457ms\n   ✓ compiler graph > reports unresolved local and nonliteral imports honestly  444ms\n   ✓ compiler graph > refuses stale caches after source and config changes  908ms\n ✓ tests/workflow-evidence-waiver.test.ts (11 tests) 8000ms\n   ✓ TEST-WORKFLOW-EVIDENCE-WAIVER-002 rejects CLI calls with disallowed codes, missing confirmation, missing options, bad timestamps, and invalid --index values  2298ms\n   ✓ TEST-WORKFLOW-EVIDENCE-WAIVER-004 records a genesis waiver, downgrades only the exact colliding scope, and surfaces workflowWaivers in gate/status  1194ms\n   ✓ TEST-WORKFLOW-EVIDENCE-WAIVER-006 reports malformed workflow-waiver evidence separately and rejects further appends until repaired  971ms\n   ✓ TEST-WORKFLOW-EVIDENCE-WAIVER-007 passes the workflow gate when every workflow error is waived, while leaving non-waived diagnostics as errors  1579ms\n   ✓ TEST-WORKFLOW-EVIDENCE-WAIVER-011 keeps malformed workflow waiver diagnostics non-blocking when the workflow check itself has no error-severity diagnostics  798ms\n ✓ tests/approval.test.ts (8 tests) 5616ms\n   ✓ artifact-bound approval evidence > TEST-HUMAN-APPROVAL-GATES-006 recomputes quality before release approval  3495ms\n   ✓ artifact-bound approval evidence > TEST-HUMAN-APPROVAL-GATES-007 rejects invalid artifacts and reports malformed evidence  855ms\n   ✓ approval transition gates > TEST-HUMAN-APPROVAL-GATES-005 blocks TDD Red until design approval is current  326ms\n ✓ tests/cli-workflow-ux.test.ts (6 tests) 5614ms\n   ✓ cli workflow ux improvements (v0.1.9) > TEST-CLI-WORKFLOW-UX-001 excludes nested MUSUBIX3 workspaces from ancestor scans  990ms\n   ✓ cli workflow ux improvements (v0.1.9) > TEST-CLI-WORKFLOW-UX-002 states bidirectional candidate semantics for trace impact text output  1340ms\n   ✓ cli workflow ux improvements (v0.1.9) > TEST-CLI-WORKFLOW-UX-005 scopes gate status to one feature, isolating unrelated failures  2769ms\n ✓ tests/tdd-cycle-void.test.ts (13 tests) 5167ms\n   ✓ TEST-TDD-CYCLE-VOID-001 rejects voiding a cycle whose latest Green is already valid  361ms\n   ✓ TEST-TDD-CYCLE-VOID-002 rejects voiding when no earlier non-voided valid fallback cycle exists  573ms\n   ✓ TEST-TDD-CYCLE-VOID-003 requires a non-empty approver and reason  339ms\n   ✓ TEST-TDD-CYCLE-VOID-004 records the void as a hash-chained, ordered, identity-bound entry without disturbing other evidence  335ms\n   ✓ TEST-TDD-CYCLE-VOID-005 treats a void payload with a mismatched cycleId chain record as not validly linked  361ms\n   ✓ TEST-TDD-CYCLE-VOID-006 reports malformed void evidence for a duplicated void chain record  365ms\n   ✓ TEST-TDD-CYCLE-VOID-007 still raises TDD_GREEN_MISSING alongside the malformed-void diagnostic  359ms\n   ✓ TEST-TDD-CYCLE-VOID-008 suppresses missing-phase diagnostics independently for each validly voided trailing cycle  465ms\n   ✓ TEST-TDD-CYCLE-VOID-009 leaves diagnostics for a non-voided cycle unaffected by voiding a different cycle  399ms\n   ✓ TEST-TDD-CYCLE-VOID-010 computes TDD_TEST_STALE against the nearest earlier non-voided valid cycle after voiding  372ms\n   ✓ TEST-TDD-CYCLE-VOID-011 rejects re-voiding but allows voiding a fresh later cycle  506ms\n   ✓ TEST-TDD-CYCLE-VOID-012 routes tdd migrate around a validly voided latest cycle  362ms\n   ✓ TEST-TDD-CYCLE-VOID-013 surfaces scoped void evidence in tdd validate output, keyed to its own cycle  368ms\n ✓ tests/evidence-writer-lock-integration.test.ts (18 tests) 4496ms\n   ✓ evidence writer lock integration > TEST-EVIDENCE-WRITER-LOCK-010 preserves typed CLI lock errors and recovers a dead Linux owner  904ms\n   ✓ evidence writer lock integration > TEST-EVIDENCE-WRITER-LOCK-020 initializes a nonexistent root under the writer lock  604ms\n   ✓ evidence writer lock integration > TEST-EVIDENCE-WRITER-LOCK-016 gives exactly one process ownership at a shared barrier  526ms\n   ✓ evidence writer lock integration > TEST-EVIDENCE-WRITER-LOCK-017 keeps exempt CLI operations independent of a foreign lock  1669ms\n   ✓ evidence writer lock integration > TEST-EVIDENCE-WRITER-LOCK-018 blocks graph gate before replacing the code graph cache  476ms\n ✓ tests/change-acceptance-heuristic.test.ts (6 tests) 5970ms\n   ✓ TEST-CHANGE-ACCEPTANCE-HEURISTIC-001 recognizes report/error/naming vocabulary as measurable acceptance  1209ms\n   ✓ TEST-CHANGE-ACCEPTANCE-HEURISTIC-002 recognizes exit/configur vocabulary as measurable acceptance  843ms\n   ✓ TEST-CHANGE-ACCEPTANCE-HEURISTIC-003 recognizes contain/unaffected/stale vocabulary as measurable acceptance  830ms\n   ✓ TEST-CHANGE-ACCEPTANCE-HEURISTIC-004 still rejects whole-value placeholders and too-short text  1241ms\n   ✓ TEST-CHANGE-ACCEPTANCE-HEURISTIC-005 still rejects placeholder-prefixed text even when it contains a newly recognized keyword  1103ms\n   ✓ TEST-CHANGE-ACCEPTANCE-HEURISTIC-006 still rejects long non-placeholder prose containing no recognized keyword  745ms\n ✓ tests/p3-codegraph-policy.test.ts (4 tests) 3621ms\n   ✓ P3 unresolved dynamic module loading policy > keeps unresolved computed imports and requires as compatible warnings by default  854ms\n   ✓ P3 unresolved dynamic module loading policy > upgrades unresolved computed loading to gate-blocking errors in strict mode  1444ms\n   ✓ P3 unresolved dynamic module loading policy > rejects weakening a strict trusted Code Graph baseline  884ms\n   ✓ P3 unresolved dynamic module loading policy > allows statically resolvable cache-busting imports in strict mode  438ms\n ✓ tests/evidence-history-merge.test.ts (5 tests) 3038ms\n   ✓ TEST-EVIDENCE-HISTORY-MERGE-001 preserves base order, deduplicates the ancestor, and appends incoming history  762ms\n   ✓ TEST-EVIDENCE-HISTORY-MERGE-002 rebuilds order references and the TDD hash chain into a valid candidate  738ms\n   ✓ TEST-EVIDENCE-HISTORY-MERGE-003 rejects divergent payloads for the same cycle phase without writing  433ms\n   ✓ TEST-EVIDENCE-HISTORY-MERGE-004 restores byte-identical evidence after an injected replacement failure  571ms\n   ✓ TEST-EVIDENCE-HISTORY-MERGE-005 dry-run returns the merge plan without writing any evidence file  533ms\n ✓ tests/bounded-file-read-concurrency.test.ts (4 tests) 3205ms\n   ✓ bounded file-read concurrency for large projects > TEST-BOUNDED-FILE-READ-CONCURRENCY-002 snapshots a large path list without exceeding the OS file-descriptor limit  1074ms\n   ✓ bounded file-read concurrency for large projects > TEST-BOUNDED-FILE-READ-CONCURRENCY-003 bounds concurrent reads while Code Graph loads a language with many source files  950ms\n   ✓ bounded file-read concurrency for large projects > TEST-BOUNDED-FILE-READ-CONCURRENCY-004 bounds concurrent reads while knowledge build loads many Markdown documents  1163ms\n ✓ tests/tdd-adoption-warning.test.ts (7 tests) 2567ms\n   ✓ TEST-TDD-ADOPTION-WARNING-001 warns exactly once, listing other uncovered mandatory requirements, on the project-first Red  336ms\n   ✓ prints the warning message via the default (non-JSON) CLI output without changing exit code  757ms\n   ✓ TEST-TDD-ADOPTION-WARNING-002 documents the project-wide adoption semantics in --help and README  620ms\n ✓ tests/workflow-waiver-bulk-recording.test.ts (4 tests) 1529ms\n   ✓ TEST-WORKFLOW-WAIVER-BULK-002 rejects the whole bulk invocation without writing when any precondition fails  690ms\n   ✓ TEST-WORKFLOW-WAIVER-BULK-003 reports zero recorded waivers without writing when nothing currently qualifies  599ms\n ✓ tests/command-working-directory.test.ts (3 tests) 1689ms\n   ✓ TEST-COMMAND-WORKING-DIRECTORY-001 runs a configured command with its own working directory  1340ms\n ✓ tests/php-verification.test.ts (11 tests) 1022ms\n   ✓ non-TypeScript TDD test fingerprints > fingerprints an indented block annotation instead of hashing an empty slice  343ms\n   ✓ TDD output reuse detection > uses the structured report, not console output, so quiet runners are not false positives  381ms\n ✓ tests/p2-improvements.test.ts (18 tests) 1280ms\n   ✓ P2 dynamic graph and manifest entrypoints > resolves safe local cache-busting imports and package entrypoints without hiding arbitrary dynamics  996ms\n ✓ tests/p3-attestation-oidc.test.ts (10 tests) 666ms\n ✓ tests/tdd-fingerprint-migration.test.ts (2 tests) 863ms\n   ✓ TEST-TDD-FINGERPRINT-MIGRATION-001 migrates a cycle recorded under the superseded algorithm without a fresh Red/Green  505ms\n   ✓ TEST-TDD-FINGERPRINT-MIGRATION-002 refuses to migrate a cycle whose test genuinely drifted  356ms\n ✓ tests/tdd-green-requirement-scoping.test.ts (2 tests) 784ms\n   ✓ TEST-TDD-GREEN-REQUIREMENT-SCOPING-001 completes an older pending cycle for the same test ID after a newer one starts  425ms\n   ✓ rejects Green for a requirement ID with no matching pending cycle without blocking a later correct Green  358ms\n ✓ tests/tdd-fingerprint-scoping.test.ts (2 tests) 798ms\n   ✓ TEST-TDD-FINGERPRINT-SCOPING-001 keeps a nested test non-stale when a later sibling test is appended  423ms\n   ✓ preserves the existing fingerprint for a top-level test declaration  373ms\n ✓ tests/p3-workflow-provenance.test.ts (14 tests) 578ms\n ✓ tests/tdd-superseded-cycle-scoping.test.ts (2 tests) 744ms\n   ✓ TEST-TDD-SUPERSEDED-CYCLE-SCOPING-001 does not block gate on a superseded incomplete Red cycle  434ms\n   ✓ still raises TDD_TEST_STALE for the latest cycle when the test changes afterwards  310ms\n ✓ tests/p4-workflow-streaming.test.ts (10 tests) 464ms\n ✓ tests/model-correspondence-evidence-guidance.test.ts (2 tests) 398ms\n   ✓ TEST-MODEL-CORRESPONDENCE-EVIDENCE-GUIDANCE-002 documents the `evidence refresh` prerequisite in --help  375ms\n ✓ tests/formal-knowledge.test.ts (21 tests) 297ms\n ✓ tests/upgrade-workflow.test.ts (2 tests) 227ms\n ✓ tests/adapter-pattern-recognition.test.ts (2 tests) 189ms\n ✓ tests/evidence-history-merge-recovery.test.ts (7 tests) 186ms\n ✓ tests/p3-formal.test.ts (10 tests | 2 skipped) 143ms\n ✓ tests/workflow-multi-session-verification.test.ts (3 tests) 128ms\n ✓ tests/scaffold-artifact.test.ts (6 tests) 65ms\n ✓ tests/evidence-writer-lock.test.ts (5 tests) 58ms\n ✓ tests/design-adr-none-exemption.test.ts (3 tests) 6ms\n ✓ tests/domain.test.ts (46 tests) 33ms\n ✓ tests/ears-id-diagnostic-messages.test.ts (3 tests) 5ms\n ✓ tests/tdd-red-collection-guidance.test.ts (1 test) 3ms\n ↓ tests/adapter-integration.test.ts (6 tests | 6 skipped)\n\n Test Files  45 passed | 1 skipped (46)\n      Tests  505 passed | 8 skipped (513)\n   Start at  09:57:31\n   Duration  144.26s (transform 944ms, setup 0ms, collect 19.67s, tests 259.71s, environment 7ms, prepare 2.23s)\n\n",
       "stderr": ""
     },
     {
@@ -4169,9 +4169,9 @@
       "required": true,
       "status": "pass",
       "summary": "npm: completed, exit 0.",
-      "durationMs": 1008,
+      "durationMs": 957,
       "exitCode": 0,
-      "stdout": "\n> musubix3@0.1.19 pack:check\n> node scripts/check-package.mjs\n\nPackage verified: musubix3-0.1.19.tgz, 134 files, 9 skills.\n",
+      "stdout": "\n> musubix3@0.1.20 pack:check\n> node scripts/check-package.mjs\n\nPackage verified: musubix3-0.1.20.tgz, 134 files, 9 skills.\n",
       "stderr": ""
     },
     {
@@ -4179,7 +4179,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 6597,
+      "durationMs": 6867,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/cli-workflow-ux-tests/aggregate.json\n",
       "stderr": ""
@@ -4189,7 +4189,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 2443,
+      "durationMs": 2221,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/tdd-fingerprint-scoping-tests/aggregate.json\n",
       "stderr": ""
@@ -4199,7 +4199,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 2454,
+      "durationMs": 2380,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/tdd-fingerprint-migration-tests/aggregate.json\n",
       "stderr": ""
@@ -4209,7 +4209,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 2210,
+      "durationMs": 2111,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/tdd-superseded-cycle-scoping-tests/aggregate.json\n",
       "stderr": ""
@@ -4219,7 +4219,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 6196,
+      "durationMs": 6388,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/tdd-cycle-void-tests/aggregate.json\n",
       "stderr": ""
@@ -4229,7 +4229,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 24920,
+      "durationMs": 26344,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/change-requirement-batches-tests/aggregate.json\n",
       "stderr": ""
@@ -4239,7 +4239,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 19302,
+      "durationMs": 18751,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/change-record-fail-fast-tests/aggregate.json\n",
       "stderr": ""
@@ -4249,7 +4249,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 5876,
+      "durationMs": 5742,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/change-acceptance-heuristic-tests/aggregate.json\n",
       "stderr": ""
@@ -4259,7 +4259,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 29960,
+      "durationMs": 27379,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/change-evidence-waiver-tests/aggregate.json\n",
       "stderr": ""
@@ -4269,7 +4269,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 4562,
+      "durationMs": 4205,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/evidence-history-merge-tests/aggregate.json\n",
       "stderr": ""
@@ -4279,7 +4279,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 9245,
+      "durationMs": 8702,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/workflow-evidence-waiver-tests/aggregate.json\n",
       "stderr": ""
@@ -4289,7 +4289,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 2931,
+      "durationMs": 2746,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/workflow-waiver-bulk-recording-tests/aggregate.json\n",
       "stderr": ""
@@ -4299,7 +4299,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 2092,
+      "durationMs": 2098,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/tdd-green-requirement-scoping-tests/aggregate.json\n",
       "stderr": ""
@@ -4309,7 +4309,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 1479,
+      "durationMs": 1524,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/ears-id-diagnostic-messages-tests/aggregate.json\n",
       "stderr": ""
@@ -4319,7 +4319,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 1610,
+      "durationMs": 1714,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/adapter-pattern-recognition-tests/aggregate.json\n",
       "stderr": ""
@@ -4329,7 +4329,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 1759,
+      "durationMs": 1628,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/workflow-multi-session-verification-tests/aggregate.json\n",
       "stderr": ""
@@ -4339,7 +4339,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 1935,
+      "durationMs": 1982,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/workflow-session-shutdown-tests/aggregate.json\n",
       "stderr": ""
@@ -4349,7 +4349,7 @@
       "required": false,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 2862,
+      "durationMs": 2804,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/command-working-directory-tests/aggregate.json\n",
       "stderr": ""
@@ -4359,7 +4359,7 @@
       "required": false,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 818,
+      "durationMs": 759,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/design-adr-none-exemption-tests/aggregate.json\n",
       "stderr": ""
@@ -4369,7 +4369,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 1548,
+      "durationMs": 1470,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/tdd-red-collection-guidance-tests/aggregate.json\n",
       "stderr": ""
@@ -4379,7 +4379,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 4125,
+      "durationMs": 4111,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/bounded-file-read-concurrency-tests/aggregate.json\n",
       "stderr": ""
@@ -4389,7 +4389,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 9647,
+      "durationMs": 9799,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/attestation-evidence-stability-tests/aggregate.json\n",
       "stderr": ""
@@ -4399,7 +4399,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 8544,
+      "durationMs": 8636,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/change-record-recordedat-order-tests/aggregate.json\n",
       "stderr": ""
@@ -4409,7 +4409,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 1633,
+      "durationMs": 1695,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/upgrade-workflow-tests/aggregate.json\n",
       "stderr": ""
@@ -4419,7 +4419,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 1798,
+      "durationMs": 1837,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/model-correspondence-evidence-guidance-tests/aggregate.json\n",
       "stderr": ""
@@ -4429,7 +4429,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 3635,
+      "durationMs": 3531,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/tdd-adoption-warning-tests/aggregate.json\n",
       "stderr": ""
@@ -4439,7 +4439,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 4469,
+      "durationMs": 4602,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/evidence-writer-lock-tests/aggregate.json\n",
       "stderr": ""
@@ -4547,14 +4547,8 @@
   "mode": "changed",
   "feature": null,
   "changed": [
-    ".gitignore",
-    ".musubix/changes/CHANGE-0017.md",
-    ".musubix/config.json",
-    ".musubix/decisions/ADR-0031.md",
-    ".musubix/evidence/approvals/design.json",
+    ".github/plugin/marketplace.json",
     ".musubix/evidence/approvals/release.json",
-    ".musubix/evidence/approvals/requirements.json",
-    ".musubix/evidence/changes.json",
     ".musubix/evidence/formal.json",
     ".musubix/evidence/model-correspondence.json",
     ".musubix/evidence/native/adapter-pattern-recognition-tests/aggregate.json",
@@ -4572,14 +4566,6 @@
     ".musubix/evidence/native/design-adr-none-exemption-tests/aggregate.json",
     ".musubix/evidence/native/ears-id-diagnostic-messages-tests/aggregate.json",
     ".musubix/evidence/native/evidence-history-merge-tests/aggregate.json",
-    ".musubix/evidence/native/evidence-writer-lock-tests/TEST-EVIDENCE-WRITER-LOCK-001.json",
-    ".musubix/evidence/native/evidence-writer-lock-tests/TEST-EVIDENCE-WRITER-LOCK-002.json",
-    ".musubix/evidence/native/evidence-writer-lock-tests/TEST-EVIDENCE-WRITER-LOCK-003.json",
-    ".musubix/evidence/native/evidence-writer-lock-tests/TEST-EVIDENCE-WRITER-LOCK-004.json",
-    ".musubix/evidence/native/evidence-writer-lock-tests/TEST-EVIDENCE-WRITER-LOCK-005.json",
-    ".musubix/evidence/native/evidence-writer-lock-tests/TEST-EVIDENCE-WRITER-LOCK-014.json",
-    ".musubix/evidence/native/evidence-writer-lock-tests/TEST-EVIDENCE-WRITER-LOCK-015.json",
-    ".musubix/evidence/native/evidence-writer-lock-tests/TEST-EVIDENCE-WRITER-LOCK-022.json",
     ".musubix/evidence/native/evidence-writer-lock-tests/aggregate.json",
     ".musubix/evidence/native/model-correspondence-evidence-guidance-tests/aggregate.json",
     ".musubix/evidence/native/requirements-design-scaffold-tests/aggregate.json",
@@ -4596,10 +4582,8 @@
     ".musubix/evidence/native/workflow-multi-session-verification-tests/aggregate.json",
     ".musubix/evidence/native/workflow-session-shutdown-tests/aggregate.json",
     ".musubix/evidence/native/workflow-waiver-bulk-recording-tests/aggregate.json",
-    ".musubix/evidence/order.json",
     ".musubix/evidence/performance.json",
     ".musubix/evidence/quality.json",
-    ".musubix/evidence/tdd.json",
     ".musubix/evidence/workflow-waivers.json",
     ".musubix/evidence/workflow.json",
     ".musubix/features/adapter-pattern-recognition/trace.json",
@@ -4616,8 +4600,6 @@
     ".musubix/features/design-adr-none-exemption/trace.json",
     ".musubix/features/ears-id-diagnostic-messages/trace.json",
     ".musubix/features/evidence-history-merge/trace.json",
-    ".musubix/features/evidence-writer-lock/design.md",
-    ".musubix/features/evidence-writer-lock/requirements.md",
     ".musubix/features/evidence-writer-lock/trace.json",
     ".musubix/features/human-approval-gates/trace.json",
     ".musubix/features/model-correspondence-evidence-guidance/trace.json",
@@ -4635,121 +4617,29 @@
     ".musubix/features/workflow-multi-session-verification/trace.json",
     ".musubix/features/workflow-session-shutdown/trace.json",
     ".musubix/features/workflow-waiver-bulk-recording/trace.json",
+    "CHANGELOG.md",
     "README-ja.md",
     "README.md",
-    "packages/analysis/src/adapters.ts",
-    "packages/analysis/src/approval-record.ts",
-    "packages/analysis/src/change-waiver.ts",
-    "packages/analysis/src/change.ts",
-    "packages/analysis/src/evidence-merge.ts",
-    "packages/analysis/src/evidence-writer-lock.ts",
-    "packages/analysis/src/files.ts",
-    "packages/analysis/src/formal.ts",
-    "packages/analysis/src/gate.ts",
-    "packages/analysis/src/graph.ts",
-    "packages/analysis/src/index.ts",
-    "packages/analysis/src/knowledge.ts",
-    "packages/analysis/src/model-correspondence.ts",
-    "packages/analysis/src/mutation.ts",
-    "packages/analysis/src/order.ts",
-    "packages/analysis/src/performance.ts",
-    "packages/analysis/src/tdd.ts",
-    "packages/analysis/src/trace.ts",
-    "packages/analysis/src/workflow.ts",
-    "packages/cli/src/install.ts",
+    "package-lock.json",
+    "package.json",
+    "packages/analysis/package.json",
+    "packages/cli/package.json",
     "packages/cli/src/main.ts",
-    "tests/evidence-writer-lock-integration.test.ts",
-    "tests/evidence-writer-lock.test.ts"
+    "packages/domain/package.json",
+    "plugin.json",
+    "tests/cli-package.test.ts"
   ],
   "impacted": [
-    "packages/analysis/src/adapters.ts",
-    "packages/analysis/src/approval-domains.ts",
-    "packages/analysis/src/approval-record.ts",
-    "packages/analysis/src/approval.ts",
-    "packages/analysis/src/attestation.ts",
-    "packages/analysis/src/change-evidence.ts",
-    "packages/analysis/src/change-waiver.ts",
-    "packages/analysis/src/change.ts",
-    "packages/analysis/src/config.ts",
-    "packages/analysis/src/evidence-merge.ts",
-    "packages/analysis/src/evidence-writer-lock.ts",
-    "packages/analysis/src/files.ts",
-    "packages/analysis/src/formal.ts",
-    "packages/analysis/src/gate.ts",
-    "packages/analysis/src/graph.ts",
-    "packages/analysis/src/index.ts",
-    "packages/analysis/src/knowledge.ts",
-    "packages/analysis/src/model-correspondence.ts",
-    "packages/analysis/src/mutation.ts",
-    "packages/analysis/src/order.ts",
-    "packages/analysis/src/performance.ts",
-    "packages/analysis/src/scaffold-artifact.ts",
-    "packages/analysis/src/tdd.ts",
-    "packages/analysis/src/trace.ts",
-    "packages/analysis/src/workflow-types.ts",
-    "packages/analysis/src/workflow-waiver.ts",
-    "packages/analysis/src/workflow.ts",
-    "packages/cli/src/install.ts",
     "packages/cli/src/main.ts",
-    "tests/adapter-integration.test.ts",
-    "tests/adapter-pattern-recognition.test.ts",
-    "tests/approval-domain-scoping.test.ts",
-    "tests/approval.test.ts",
-    "tests/attestation-evidence-stability.test.ts",
-    "tests/bounded-file-read-concurrency.test.ts",
-    "tests/change-acceptance-heuristic.test.ts",
-    "tests/change-evidence-waiver.test.ts",
-    "tests/change-record-fail-fast.test.ts",
-    "tests/change-record-recordedat-order.test.ts",
-    "tests/change-requirement-batches.test.ts",
     "tests/cli-package.test.ts",
-    "tests/cli-workflow-ux.test.ts",
-    "tests/command-working-directory.test.ts",
-    "tests/domain.test.ts",
-    "tests/ears-id-diagnostic-messages.test.ts",
-    "tests/evidence-history-merge-recovery.test.ts",
-    "tests/evidence-history-merge.test.ts",
-    "tests/evidence-writer-lock-integration.test.ts",
-    "tests/evidence-writer-lock.test.ts",
-    "tests/formal-knowledge.test.ts",
-    "tests/gate-install.test.ts",
-    "tests/helpers.ts",
-    "tests/model-correspondence-evidence-guidance.test.ts",
-    "tests/p2-improvements.test.ts",
-    "tests/p3-attestation-oidc.test.ts",
-    "tests/p3-codegraph-policy.test.ts",
-    "tests/p3-formal.test.ts",
-    "tests/p3-performance-provenance.test.ts",
-    "tests/p3-workflow-provenance.test.ts",
-    "tests/p4-correspondence-mutation.test.ts",
-    "tests/p4-workflow-streaming.test.ts",
-    "tests/php-verification.test.ts",
-    "tests/scaffold-artifact.test.ts",
-    "tests/tdd-adoption-warning.test.ts",
-    "tests/tdd-cycle-void.test.ts",
-    "tests/tdd-fingerprint-migration.test.ts",
-    "tests/tdd-fingerprint-scoping.test.ts",
-    "tests/tdd-green-requirement-scoping.test.ts",
-    "tests/tdd-red-collection-guidance.test.ts",
-    "tests/tdd-superseded-cycle-scoping.test.ts",
-    "tests/trace-graph.test.ts",
-    "tests/upgrade-workflow.test.ts",
-    "tests/workflow-evidence-waiver.test.ts",
-    "tests/workflow-multi-session-verification.test.ts",
-    "tests/workflow-waiver-bulk-recording.test.ts"
+    "tests/evidence-writer-lock-integration.test.ts"
   ],
   "lastChangeAnalysis": {
     "baseline": "HEAD",
-    "head": "873809f013e3bebc410a7e4f78fca42dae70e9ac",
+    "head": "9238c04d84544352d824142b513f7c6e6a8798a9",
     "changed": [
-      ".gitignore",
-      ".musubix/changes/CHANGE-0017.md",
-      ".musubix/config.json",
-      ".musubix/decisions/ADR-0031.md",
-      ".musubix/evidence/approvals/design.json",
+      ".github/plugin/marketplace.json",
       ".musubix/evidence/approvals/release.json",
-      ".musubix/evidence/approvals/requirements.json",
-      ".musubix/evidence/changes.json",
       ".musubix/evidence/formal.json",
       ".musubix/evidence/model-correspondence.json",
       ".musubix/evidence/native/adapter-pattern-recognition-tests/aggregate.json",
@@ -4767,14 +4657,6 @@
       ".musubix/evidence/native/design-adr-none-exemption-tests/aggregate.json",
       ".musubix/evidence/native/ears-id-diagnostic-messages-tests/aggregate.json",
       ".musubix/evidence/native/evidence-history-merge-tests/aggregate.json",
-      ".musubix/evidence/native/evidence-writer-lock-tests/TEST-EVIDENCE-WRITER-LOCK-001.json",
-      ".musubix/evidence/native/evidence-writer-lock-tests/TEST-EVIDENCE-WRITER-LOCK-002.json",
-      ".musubix/evidence/native/evidence-writer-lock-tests/TEST-EVIDENCE-WRITER-LOCK-003.json",
-      ".musubix/evidence/native/evidence-writer-lock-tests/TEST-EVIDENCE-WRITER-LOCK-004.json",
-      ".musubix/evidence/native/evidence-writer-lock-tests/TEST-EVIDENCE-WRITER-LOCK-005.json",
-      ".musubix/evidence/native/evidence-writer-lock-tests/TEST-EVIDENCE-WRITER-LOCK-014.json",
-      ".musubix/evidence/native/evidence-writer-lock-tests/TEST-EVIDENCE-WRITER-LOCK-015.json",
-      ".musubix/evidence/native/evidence-writer-lock-tests/TEST-EVIDENCE-WRITER-LOCK-022.json",
       ".musubix/evidence/native/evidence-writer-lock-tests/aggregate.json",
       ".musubix/evidence/native/model-correspondence-evidence-guidance-tests/aggregate.json",
       ".musubix/evidence/native/requirements-design-scaffold-tests/aggregate.json",
@@ -4791,10 +4673,8 @@
       ".musubix/evidence/native/workflow-multi-session-verification-tests/aggregate.json",
       ".musubix/evidence/native/workflow-session-shutdown-tests/aggregate.json",
       ".musubix/evidence/native/workflow-waiver-bulk-recording-tests/aggregate.json",
-      ".musubix/evidence/order.json",
       ".musubix/evidence/performance.json",
       ".musubix/evidence/quality.json",
-      ".musubix/evidence/tdd.json",
       ".musubix/evidence/workflow-waivers.json",
       ".musubix/evidence/workflow.json",
       ".musubix/features/adapter-pattern-recognition/trace.json",
@@ -4811,8 +4691,6 @@
       ".musubix/features/design-adr-none-exemption/trace.json",
       ".musubix/features/ears-id-diagnostic-messages/trace.json",
       ".musubix/features/evidence-history-merge/trace.json",
-      ".musubix/features/evidence-writer-lock/design.md",
-      ".musubix/features/evidence-writer-lock/requirements.md",
       ".musubix/features/evidence-writer-lock/trace.json",
       ".musubix/features/human-approval-gates/trace.json",
       ".musubix/features/model-correspondence-evidence-guidance/trace.json",
@@ -4830,114 +4708,28 @@
       ".musubix/features/workflow-multi-session-verification/trace.json",
       ".musubix/features/workflow-session-shutdown/trace.json",
       ".musubix/features/workflow-waiver-bulk-recording/trace.json",
+      "CHANGELOG.md",
       "README-ja.md",
       "README.md",
-      "packages/analysis/src/adapters.ts",
-      "packages/analysis/src/approval-record.ts",
-      "packages/analysis/src/change-waiver.ts",
-      "packages/analysis/src/change.ts",
-      "packages/analysis/src/evidence-merge.ts",
-      "packages/analysis/src/evidence-writer-lock.ts",
-      "packages/analysis/src/files.ts",
-      "packages/analysis/src/formal.ts",
-      "packages/analysis/src/gate.ts",
-      "packages/analysis/src/graph.ts",
-      "packages/analysis/src/index.ts",
-      "packages/analysis/src/knowledge.ts",
-      "packages/analysis/src/model-correspondence.ts",
-      "packages/analysis/src/mutation.ts",
-      "packages/analysis/src/order.ts",
-      "packages/analysis/src/performance.ts",
-      "packages/analysis/src/tdd.ts",
-      "packages/analysis/src/trace.ts",
-      "packages/analysis/src/workflow.ts",
-      "packages/cli/src/install.ts",
+      "package-lock.json",
+      "package.json",
+      "packages/analysis/package.json",
+      "packages/cli/package.json",
       "packages/cli/src/main.ts",
-      "tests/evidence-writer-lock-integration.test.ts",
-      "tests/evidence-writer-lock.test.ts"
+      "packages/domain/package.json",
+      "plugin.json",
+      "tests/cli-package.test.ts"
     ],
     "impacted": [
-      "packages/analysis/src/adapters.ts",
-      "packages/analysis/src/approval-domains.ts",
-      "packages/analysis/src/approval-record.ts",
-      "packages/analysis/src/approval.ts",
-      "packages/analysis/src/attestation.ts",
-      "packages/analysis/src/change-evidence.ts",
-      "packages/analysis/src/change-waiver.ts",
-      "packages/analysis/src/change.ts",
-      "packages/analysis/src/config.ts",
-      "packages/analysis/src/evidence-merge.ts",
-      "packages/analysis/src/evidence-writer-lock.ts",
-      "packages/analysis/src/files.ts",
-      "packages/analysis/src/formal.ts",
-      "packages/analysis/src/gate.ts",
-      "packages/analysis/src/graph.ts",
-      "packages/analysis/src/index.ts",
-      "packages/analysis/src/knowledge.ts",
-      "packages/analysis/src/model-correspondence.ts",
-      "packages/analysis/src/mutation.ts",
-      "packages/analysis/src/order.ts",
-      "packages/analysis/src/performance.ts",
-      "packages/analysis/src/scaffold-artifact.ts",
-      "packages/analysis/src/tdd.ts",
-      "packages/analysis/src/trace.ts",
-      "packages/analysis/src/workflow-types.ts",
-      "packages/analysis/src/workflow-waiver.ts",
-      "packages/analysis/src/workflow.ts",
-      "packages/cli/src/install.ts",
       "packages/cli/src/main.ts",
-      "tests/adapter-integration.test.ts",
-      "tests/adapter-pattern-recognition.test.ts",
-      "tests/approval-domain-scoping.test.ts",
-      "tests/approval.test.ts",
-      "tests/attestation-evidence-stability.test.ts",
-      "tests/bounded-file-read-concurrency.test.ts",
-      "tests/change-acceptance-heuristic.test.ts",
-      "tests/change-evidence-waiver.test.ts",
-      "tests/change-record-fail-fast.test.ts",
-      "tests/change-record-recordedat-order.test.ts",
-      "tests/change-requirement-batches.test.ts",
       "tests/cli-package.test.ts",
-      "tests/cli-workflow-ux.test.ts",
-      "tests/command-working-directory.test.ts",
-      "tests/domain.test.ts",
-      "tests/ears-id-diagnostic-messages.test.ts",
-      "tests/evidence-history-merge-recovery.test.ts",
-      "tests/evidence-history-merge.test.ts",
-      "tests/evidence-writer-lock-integration.test.ts",
-      "tests/evidence-writer-lock.test.ts",
-      "tests/formal-knowledge.test.ts",
-      "tests/gate-install.test.ts",
-      "tests/helpers.ts",
-      "tests/model-correspondence-evidence-guidance.test.ts",
-      "tests/p2-improvements.test.ts",
-      "tests/p3-attestation-oidc.test.ts",
-      "tests/p3-codegraph-policy.test.ts",
-      "tests/p3-formal.test.ts",
-      "tests/p3-performance-provenance.test.ts",
-      "tests/p3-workflow-provenance.test.ts",
-      "tests/p4-correspondence-mutation.test.ts",
-      "tests/p4-workflow-streaming.test.ts",
-      "tests/php-verification.test.ts",
-      "tests/scaffold-artifact.test.ts",
-      "tests/tdd-adoption-warning.test.ts",
-      "tests/tdd-cycle-void.test.ts",
-      "tests/tdd-fingerprint-migration.test.ts",
-      "tests/tdd-fingerprint-scoping.test.ts",
-      "tests/tdd-green-requirement-scoping.test.ts",
-      "tests/tdd-red-collection-guidance.test.ts",
-      "tests/tdd-superseded-cycle-scoping.test.ts",
-      "tests/trace-graph.test.ts",
-      "tests/upgrade-workflow.test.ts",
-      "tests/workflow-evidence-waiver.test.ts",
-      "tests/workflow-multi-session-verification.test.ts",
-      "tests/workflow-waiver-bulk-recording.test.ts"
+      "tests/evidence-writer-lock-integration.test.ts"
     ],
-    "generatedAt": "2026-09-22T00:08:40.970Z"
+    "generatedAt": "2026-09-22T01:02:21.672Z"
   },
   "fingerprints": {
     ".github/copilot-instructions.md": "dae40a397cbcefef73a48c723277665ad4ec25fcbca71c6488003c861537bf2e",
-    ".github/plugin/marketplace.json": "88f4fa4d1ce574d5e9364349e8e32563ec123b96f8bfa1751a3359befdd167b2",
+    ".github/plugin/marketplace.json": "d4aa0cc912a5bd3c558d5d7a04885fcaebf6553aaa8da071e8c3c7814d63e393",
     ".github/workflows/ci.yml": "7e33bf761781450ff6bbc26107436fbe7ec75afa11592451a3e914fe4b0a8f91",
     ".github/workflows/npm-publish.yml": "8f96f689963fd720ea9155203e2933aebf1f160a8d0b94911113b1ca81859610",
     ".github/workflows/release.yml": "72a39d142fc225994a182b0293631ec75329ae30fbf183f81d5c8ec07012e7ad",
@@ -5056,7 +4848,7 @@
     "assets/constitution.md": "f8b47fdc486f395bab05223a94821b145cf8df70ffde2c838a28f8d71fe0fa92",
     "assets/design.md": "abcbee85062b3a7f06d0f1034abe89fe27d911abf8397f98024249f60eb8a9de",
     "assets/requirements.md": "f6ce0617c425a351ac1995a50b37a8b7f6c5b3e8ea2d6087d0898d4fde40f5ed",
-    "CHANGELOG.md": "587ba9ddd6db4db2e77b992e5f1e78ad25df5cf51ca3d2795c0174f668b47459",
+    "CHANGELOG.md": "cc82ce0ea933081d797c4d5d6d22c67d33486cc51da4406cdfce1ee5698b4e5b",
     "CONTRIBUTING.md": "85991c36ca1c77a693bee59b695281aebc0096f141d3010e4513b25ff04b6d43",
     "docs/github-copilot-musubix3-large-scale-development.md": "1059d4c33abc9c488ec987b83422c5d77ef8d8eb02ac8a9f2f932f696c2e3243",
     "docs/MUSUBIX2-TO-MUSUBIX3.md": "996080fd00559a961902d49ccc3fe6e761d4e687af486a5f550cd9f00faf2b36",
@@ -5066,9 +4858,9 @@
     "docs/qiita-musubix3-stepwise-natural-language.md": "2a1e560ffb322d93991a858ae5834a3e0088d808250f052deb08740d0eaa879e",
     "lean-toolchain": "3aac669c7a910ec2389f4e4f921b605adf6ebf2d1e0c9b9cd0be4d33f3f5db71",
     "LICENSE": "3363377bb6dce0fc69aff81727073c71f93a9dcfce3d42c7f64bcebef644b726",
-    "package-lock.json": "d0d369af232593497810383feea394311073b2bf8ce53373ff11bfbb991342bf",
-    "package.json": "faa9a826be73f8ec1423e9f0ca82f3bd17d15835aff2106e3c423cef403eb831",
-    "packages/analysis/package.json": "d644498d53611abc6317ded7eba0c6ab5ed564cb3e4191d48d130f00c472fa66",
+    "package-lock.json": "a4eaee927b9c9b38da02e3ca9dbcfb2ca62a24e98a85b841b8ae34576f38fbde",
+    "package.json": "acbbab5522b17d76444c42d64bf6abb4b41f146994757b6a247c49988fe8e3d6",
+    "packages/analysis/package.json": "814dafb76c924358ea2bc0b715c1fe537ec947355bee228f64460f57c8041794",
     "packages/analysis/src/adapters.ts": "c377a988a65f710edc5a77d555a1b15e8376fc725543d8ee41db4c3ba719b3bd",
     "packages/analysis/src/approval-domains.ts": "bc45836374021f86c4c2085184185546cc4291880aea32b9084188545b9394b4",
     "packages/analysis/src/approval-record.ts": "08b934d8c43b6d9b298ec4615b2bcabefbaf7cd143152fe6e1e08ea95cdd288d",
@@ -5099,19 +4891,19 @@
     "packages/analysis/src/workflow-types.ts": "427c3450352eb7799e2b49933e267f9888e87d51dc5c6482b5b1378620205309",
     "packages/analysis/src/workflow-waiver.ts": "7c09999654d03fbc96879f3e6726d505706cdcba36940c00d46ac208d94f972f",
     "packages/analysis/src/workflow.ts": "f2f89fa9d2d5e6406ac58bb943c60a1ac209b6917edb850d36d725bb37d9ac4f",
-    "packages/cli/package.json": "026ddb62bab773d1cbee63603b7a7276bbc99253c0ae45e2a1fcdfb37f2831b9",
+    "packages/cli/package.json": "3b6f4b369d74ae2f958dffc23bd662dee82867d2458147b0d08191a4333d6083",
     "packages/cli/src/install.ts": "346a6e66a29505010681ac32ea17651339cef3cfc1143422174981438e17bbf1",
-    "packages/cli/src/main.ts": "f74ac155c4f9ebaabc0fe4e6f26410f3f75d0241eabf62fbebbcb4fb3a40113e",
-    "packages/domain/package.json": "b93e9ac120c8697ec4a17588f641accaf4dfd9806523d1fbf0d1ac79844ad60d",
+    "packages/cli/src/main.ts": "bc67d0044ae088d009c3fa4665e0293be9ed1d1d79b4e19de78de2b81d51d5b2",
+    "packages/domain/package.json": "c9a3ff0fddd58032f1ab5e195410aaa4bedea3bd3372ba322495c272f081f590",
     "packages/domain/src/constitution.ts": "514278499642ff46ed902864b9192f566b116b4f92eb3fafa6b62588335e170a",
     "packages/domain/src/design.ts": "fc1ca4d3249abc9705ba4b6f296e0f4fa3b3d6ff6d5d82e51c99f49fc7a93ac9",
     "packages/domain/src/index.ts": "43243e9279e3826b23cd8d8b4365854974112ce4cf17cfb0f0ee32e6b28e9cc6",
     "packages/domain/src/markdown.ts": "5c6b96486a2e31944d7d128d241f1772d0926f34464fa2b59c20748a6754487a",
     "packages/domain/src/requirements.ts": "65ea1e6d3bbd29e929c785037b930e5f5eb5535b607403e5f30c3657d36e9175",
     "packages/domain/src/types.ts": "0f0cbd43bdee4db03b83e4869e9791531a63e9b63aa7a09661f62ad1bbc75cb3",
-    "plugin.json": "1171ad47616635eb71e4c13b6b66f4e35132aeba342ea982f037dd19b2c29eab",
-    "README-ja.md": "1da7313ae1a5b6eb3f9a8dcf245fd8d0ffb29e30b34d2402d5c476d591146764",
-    "README.md": "652d2715f0aeeb4bf4fef58205fbae31f3caa0e95630f652e5b526f4cbea8a45",
+    "plugin.json": "5235ff8c037ce0b2872d02c511a13d07f5cf28ea8b1513dd90bc81583523a1bc",
+    "README-ja.md": "8ab677c743f8983f53bf1a47f85aa456a342a2697e7c9a274effb7fda7ddf8f5",
+    "README.md": "8d89728599b78ea8fba1398e3244792c7e34e2bd808b90543bb222645f1ceba6",
     "release-assets/musubix3.cdx.json": "11c67e452d573aae119e08e8e6b0a03d22e152a3526fbf53b0c3186dac4cbd39",
     "release-assets/SHA256SUMS": "38c8d757e3bb0fcff9187743685db047883e3f7b27ab13022f5d3bfad7c004e7",
     "scripts/check-package.mjs": "72210ce36b88fb9fe9e435e8f1a1709e623c25cfc9c81628cce7a1a87f80bee0",
@@ -5130,7 +4922,7 @@
     "tests/change-record-fail-fast.test.ts": "2f69f19332049c206f39b42c3bc2b505ce63173db798d74c5a9ace7064cdfe78",
     "tests/change-record-recordedat-order.test.ts": "5ad61cf31e273dc9cdfe190b21dcc8ffc49d327592e01b6eb0251f4cdda7b149",
     "tests/change-requirement-batches.test.ts": "919b14e0fc9174e82b916dac0448ba2f9acf57f038f0ec820ed0aa6a397f77bd",
-    "tests/cli-package.test.ts": "49ff7dc11787413186ac46267b402468407ca681f5093326e0fee892b08ec512",
+    "tests/cli-package.test.ts": "9050cda19c56670ea496754575b9bcfeda3e5d3f6753136f745d5714877adb59",
     "tests/cli-workflow-ux.test.ts": "53bdc5375bef05b365d725f5a8948393d68ae8cd1116fad8ff36ca3de127a177",
     "tests/command-working-directory.test.ts": "82dc863b1fcc5cd8a5ea1534238ef2f61f15e5d6c5e25d61fce43a7efe9bbc02",
     "tests/design-adr-none-exemption.test.ts": "f8a4771eb8b71a8c83b9ef782e9ed8646ef408aa4169298ab7a02553aa1c9ed7",
@@ -6726,8 +6518,8 @@
       "declarationRecordedAt": "2026-09-09T08:13:50.542Z",
       "code": "WORKFLOW_SKILL_NOT_INVOKED",
       "approver": "@nahisaho",
-      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-      "waiverRecordedAt": "2026-09-21T23:43:40.264Z"
+      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+      "waiverRecordedAt": "2026-09-22T00:32:53.652Z"
     },
     {
       "skill": "sdd-knowledge",
@@ -6735,8 +6527,8 @@
       "declarationRecordedAt": "2026-09-09T08:34:15.566Z",
       "code": "WORKFLOW_SKILL_NOT_INVOKED",
       "approver": "@nahisaho",
-      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-      "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+      "waiverRecordedAt": "2026-09-22T00:32:53.653Z"
     },
     {
       "skill": "sdd-change",
@@ -6744,8 +6536,8 @@
       "declarationRecordedAt": "2026-09-10T14:20:57.674Z",
       "code": "WORKFLOW_SKILL_NOT_INVOKED",
       "approver": "@nahisaho",
-      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-      "waiverRecordedAt": "2026-09-21T23:43:40.264Z"
+      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+      "waiverRecordedAt": "2026-09-22T00:32:53.652Z"
     },
     {
       "skill": "sdd-change",
@@ -6753,8 +6545,8 @@
       "declarationRecordedAt": "2026-09-10T20:46:25.535Z",
       "code": "WORKFLOW_SKILL_NOT_INVOKED",
       "approver": "@nahisaho",
-      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-      "waiverRecordedAt": "2026-09-21T23:43:40.264Z"
+      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+      "waiverRecordedAt": "2026-09-22T00:32:53.652Z"
     },
     {
       "skill": "sdd-traceability",
@@ -6762,8 +6554,8 @@
       "declarationRecordedAt": "2026-09-12T08:17:13.982Z",
       "code": "WORKFLOW_SKILL_NOT_INVOKED",
       "approver": "@nahisaho",
-      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-      "waiverRecordedAt": "2026-09-21T23:43:40.266Z"
+      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+      "waiverRecordedAt": "2026-09-22T00:32:53.654Z"
     },
     {
       "skill": "sdd-implementation",
@@ -6771,8 +6563,8 @@
       "declarationRecordedAt": "2026-09-12T09:06:37.401Z",
       "code": "WORKFLOW_SKILL_NOT_INVOKED",
       "approver": "@nahisaho",
-      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-      "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+      "waiverRecordedAt": "2026-09-22T00:32:53.653Z"
     },
     {
       "skill": "sdd-requirements",
@@ -6780,8 +6572,8 @@
       "declarationRecordedAt": "2026-09-12T12:49:41.740Z",
       "code": "WORKFLOW_SKILL_NOT_INVOKED",
       "approver": "@nahisaho",
-      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-      "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+      "waiverRecordedAt": "2026-09-22T00:32:53.653Z"
     },
     {
       "skill": "sdd-requirements",
@@ -6789,8 +6581,8 @@
       "declarationRecordedAt": "2026-09-12T13:34:32.146Z",
       "code": "WORKFLOW_SKILL_NOT_INVOKED",
       "approver": "@nahisaho",
-      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-      "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+      "waiverRecordedAt": "2026-09-22T00:32:53.653Z"
     },
     {
       "skill": "sdd-design",
@@ -6798,8 +6590,8 @@
       "declarationRecordedAt": "2026-09-12T14:09:13.298Z",
       "code": "WORKFLOW_SKILL_NOT_INVOKED",
       "approver": "@nahisaho",
-      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-      "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+      "waiverRecordedAt": "2026-09-22T00:32:53.652Z"
     },
     {
       "skill": "sdd-change",
@@ -6807,8 +6599,8 @@
       "declarationRecordedAt": "2026-09-12T01:54:09.875Z",
       "code": "WORKFLOW_SKILL_NOT_INVOKED",
       "approver": "@nahisaho",
-      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-      "waiverRecordedAt": "2026-09-21T23:43:40.264Z"
+      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+      "waiverRecordedAt": "2026-09-22T00:32:53.652Z"
     },
     {
       "skill": "sdd-design",
@@ -6816,8 +6608,8 @@
       "declarationRecordedAt": "2026-09-12T11:45:42.068Z",
       "code": "WORKFLOW_SKILL_NOT_INVOKED",
       "approver": "@nahisaho",
-      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-      "waiverRecordedAt": "2026-09-21T23:43:40.264Z"
+      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+      "waiverRecordedAt": "2026-09-22T00:32:53.652Z"
     },
     {
       "skill": "sdd-design",
@@ -6825,8 +6617,8 @@
       "declarationRecordedAt": "2026-09-12T12:56:56.282Z",
       "code": "WORKFLOW_SKILL_NOT_INVOKED",
       "approver": "@nahisaho",
-      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-      "waiverRecordedAt": "2026-09-21T23:43:40.264Z"
+      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+      "waiverRecordedAt": "2026-09-22T00:32:53.652Z"
     },
     {
       "skill": "sdd-formal-codegraph",
@@ -6834,8 +6626,8 @@
       "declarationRecordedAt": "2026-09-12T13:58:40.073Z",
       "code": "WORKFLOW_SKILL_NOT_INVOKED",
       "approver": "@nahisaho",
-      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-      "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+      "waiverRecordedAt": "2026-09-22T00:32:53.652Z"
     },
     {
       "skill": "sdd-implementation",
@@ -6843,8 +6635,8 @@
       "declarationRecordedAt": "2026-09-12T07:38:19.409Z",
       "code": "WORKFLOW_SKILL_NOT_INVOKED",
       "approver": "@nahisaho",
-      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-      "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+      "waiverRecordedAt": "2026-09-22T00:32:53.653Z"
     },
     {
       "skill": "sdd-implementation",
@@ -6852,8 +6644,8 @@
       "declarationRecordedAt": "2026-09-12T12:20:15.709Z",
       "code": "WORKFLOW_SKILL_NOT_INVOKED",
       "approver": "@nahisaho",
-      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-      "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+      "waiverRecordedAt": "2026-09-22T00:32:53.653Z"
     },
     {
       "skill": "sdd-implementation",
@@ -6861,8 +6653,8 @@
       "declarationRecordedAt": "2026-09-12T13:10:29.870Z",
       "code": "WORKFLOW_SKILL_NOT_INVOKED",
       "approver": "@nahisaho",
-      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-      "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+      "waiverRecordedAt": "2026-09-22T00:32:53.653Z"
     },
     {
       "skill": "sdd-implementation",
@@ -6870,8 +6662,8 @@
       "declarationRecordedAt": "2026-09-12T14:48:12.220Z",
       "code": "WORKFLOW_SKILL_NOT_INVOKED",
       "approver": "@nahisaho",
-      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-      "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+      "waiverRecordedAt": "2026-09-22T00:32:53.653Z"
     },
     {
       "skill": "sdd-implementation",
@@ -6879,8 +6671,8 @@
       "declarationRecordedAt": "2026-09-13T05:13:10.791Z",
       "code": "WORKFLOW_SKILL_NOT_INVOKED",
       "approver": "@nahisaho",
-      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-      "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+      "waiverRecordedAt": "2026-09-22T00:32:53.653Z"
     },
     {
       "skill": "sdd-quality",
@@ -6888,8 +6680,8 @@
       "declarationRecordedAt": "2026-09-12T09:50:01.519Z",
       "code": "WORKFLOW_SKILL_NOT_INVOKED",
       "approver": "@nahisaho",
-      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-      "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+      "waiverRecordedAt": "2026-09-22T00:32:53.653Z"
     },
     {
       "skill": "sdd-requirements",
@@ -6897,8 +6689,8 @@
       "declarationRecordedAt": "2026-09-12T08:27:46.747Z",
       "code": "WORKFLOW_SKILL_NOT_INVOKED",
       "approver": "@nahisaho",
-      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-      "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+      "waiverRecordedAt": "2026-09-22T00:32:53.653Z"
     },
     {
       "skill": "sdd-requirements",
@@ -6906,8 +6698,8 @@
       "declarationRecordedAt": "2026-09-12T12:46:54.330Z",
       "code": "WORKFLOW_SKILL_NOT_INVOKED",
       "approver": "@nahisaho",
-      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-      "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+      "waiverRecordedAt": "2026-09-22T00:32:53.653Z"
     },
     {
       "skill": "sdd-requirements",
@@ -6915,8 +6707,8 @@
       "declarationRecordedAt": "2026-09-12T13:29:57.286Z",
       "code": "WORKFLOW_SKILL_NOT_INVOKED",
       "approver": "@nahisaho",
-      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-      "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+      "waiverRecordedAt": "2026-09-22T00:32:53.653Z"
     },
     {
       "skill": "sdd-requirements",
@@ -6924,8 +6716,8 @@
       "declarationRecordedAt": "2026-09-12T14:04:10.679Z",
       "code": "WORKFLOW_SKILL_NOT_INVOKED",
       "approver": "@nahisaho",
-      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-      "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+      "waiverRecordedAt": "2026-09-22T00:32:53.653Z"
     },
     {
       "skill": "sdd-requirements",
@@ -6933,8 +6725,8 @@
       "declarationRecordedAt": "2026-09-13T06:26:38.708Z",
       "code": "WORKFLOW_SKILL_NOT_INVOKED",
       "approver": "@nahisaho",
-      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-      "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+      "waiverRecordedAt": "2026-09-22T00:32:53.653Z"
     },
     {
       "skill": "sdd-requirements",
@@ -6942,8 +6734,8 @@
       "declarationRecordedAt": "2026-09-13T06:30:07.498Z",
       "code": "WORKFLOW_SKILL_NOT_INVOKED",
       "approver": "@nahisaho",
-      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-      "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+      "waiverRecordedAt": "2026-09-22T00:32:53.653Z"
     },
     {
       "skill": "sdd-requirements",
@@ -6951,8 +6743,8 @@
       "declarationRecordedAt": "2026-09-13T07:09:54.712Z",
       "code": "WORKFLOW_SKILL_NOT_INVOKED",
       "approver": "@nahisaho",
-      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-      "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+      "waiverRecordedAt": "2026-09-22T00:32:53.654Z"
     },
     {
       "skill": "sdd-requirements",
@@ -6960,8 +6752,8 @@
       "declarationRecordedAt": "2026-09-13T08:18:03.686Z",
       "code": "WORKFLOW_SKILL_NOT_INVOKED",
       "approver": "@nahisaho",
-      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-      "waiverRecordedAt": "2026-09-21T23:43:40.266Z"
+      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+      "waiverRecordedAt": "2026-09-22T00:32:53.654Z"
     },
     {
       "skill": "sdd-requirements",
@@ -6969,8 +6761,8 @@
       "declarationRecordedAt": "2026-09-13T09:49:05.953Z",
       "code": "WORKFLOW_SKILL_NOT_INVOKED",
       "approver": "@nahisaho",
-      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-      "waiverRecordedAt": "2026-09-21T23:43:40.266Z"
+      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+      "waiverRecordedAt": "2026-09-22T00:32:53.654Z"
     },
     {
       "skill": "sdd-traceability",
@@ -6978,8 +6770,8 @@
       "declarationRecordedAt": "2026-09-12T13:37:58.157Z",
       "code": "WORKFLOW_SKILL_NOT_INVOKED",
       "approver": "@nahisaho",
-      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-      "waiverRecordedAt": "2026-09-21T23:43:40.266Z"
+      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+      "waiverRecordedAt": "2026-09-22T00:32:53.654Z"
     },
     {
       "skill": "sdd-traceability",
@@ -6987,8 +6779,8 @@
       "declarationRecordedAt": "2026-09-12T13:58:38.736Z",
       "code": "WORKFLOW_SKILL_NOT_INVOKED",
       "approver": "@nahisaho",
-      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-      "waiverRecordedAt": "2026-09-21T23:43:40.266Z"
+      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+      "waiverRecordedAt": "2026-09-22T00:32:53.654Z"
     },
     {
       "skill": "sdd-requirements",
@@ -6996,8 +6788,8 @@
       "declarationRecordedAt": "2026-09-13T11:08:29.875Z",
       "code": "WORKFLOW_SKILL_NOT_INVOKED",
       "approver": "@nahisaho",
-      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-      "waiverRecordedAt": "2026-09-21T23:43:40.266Z"
+      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+      "waiverRecordedAt": "2026-09-22T00:32:53.654Z"
     },
     {
       "skill": "sdd-change",
@@ -7005,8 +6797,8 @@
       "declarationRecordedAt": "2026-09-21T12:40:15.639Z",
       "code": "WORKFLOW_INVOCATION_REUSED",
       "approver": "@nahisaho",
-      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-      "waiverRecordedAt": "2026-09-21T23:43:40.264Z"
+      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+      "waiverRecordedAt": "2026-09-22T00:32:53.652Z"
     },
     {
       "skill": "sdd-change",
@@ -7014,8 +6806,8 @@
       "declarationRecordedAt": "2026-09-21T23:34:17.583Z",
       "code": "WORKFLOW_INVOCATION_REUSED",
       "approver": "@nahisaho",
-      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-      "waiverRecordedAt": "2026-09-21T23:43:40.264Z"
+      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+      "waiverRecordedAt": "2026-09-22T00:32:53.652Z"
     },
     {
       "skill": "sdd-design",
@@ -7023,8 +6815,8 @@
       "declarationRecordedAt": "2026-09-21T14:46:04.097Z",
       "code": "WORKFLOW_INVOCATION_REUSED",
       "approver": "@nahisaho",
-      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-      "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+      "waiverRecordedAt": "2026-09-22T00:32:53.652Z"
     },
     {
       "skill": "sdd-implementation",
@@ -7032,8 +6824,8 @@
       "declarationRecordedAt": "2026-09-21T21:52:13.408Z",
       "code": "WORKFLOW_INVOCATION_REUSED",
       "approver": "@nahisaho",
-      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 session after compatible verification of the current transcript.",
-      "waiverRecordedAt": "2026-09-21T23:43:40.265Z"
+      "reason": "Reconcile historical self-reported workflow declarations from the resumed long-running Issue #28 and v0.1.20 release session after compatible verification of the current transcript.",
+      "waiverRecordedAt": "2026-09-22T00:32:53.653Z"
     }
   ],
   "waiverDiagnostics": []

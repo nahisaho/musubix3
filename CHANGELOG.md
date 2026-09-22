@@ -1,6 +1,28 @@
 # Changelog
 
-## Unreleased
+## 0.1.20 - 2026-09-22
+
+- Add `evidence merge` for append-only consolidation of `order.json`,
+  `tdd.json`, `changes.json`, and `change-waivers.json` from another project
+  root, with dry-run planning, crash-safe journaling, deterministic conflict
+  handling, and explicit recovery for interrupted merges.
+- Add project-wide evidence writer serialization with atomic lock publication,
+  coordinated readers, reentrant same-process ownership, and deterministic
+  multi-process contention handling. Stale-lock recovery validates Linux
+  process identity and lock inode metadata before removal; unsupported
+  platforms fail closed and require operator-reviewed manual removal using the
+  reported lock path and owner metadata. On Linux, operators can use
+  `evidence unlock --recover` for validated stale-lock removal (#28).
+- Protect direct analysis APIs and CLI writer paths, including adapter reports,
+  trace/cache outputs, approvals, workflow evidence, TDD evidence, and evidence
+  merge/recovery. Dry-run and exempt command modes remain explicitly classified,
+  and merge coordination checks the destination before the incoming project
+  (#28).
+- Add deterministic regression coverage for release-time inode replacement,
+  stale-lock recovery, destination-first merge conflicts, CLI classification,
+  exempt commands, graph cache protection, and direct adapter API access (#28).
+- Existing projects should rerun `musubix3 init` to add the writer-lock file
+  and its staging-file pattern to `.gitignore`.
 
 - Fix requirement-batch validation selecting stale legacy full-set evidence
   when later scoped Red/Implementation/Green evidence exists. Validation,

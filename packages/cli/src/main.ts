@@ -50,7 +50,7 @@ async function coordinatedReader<T>(root: string, operation: () => Promise<T>): 
 }
 
 export function createProgram(): Command {
-  const program = new Command().name('musubix3').description('Evidence-driven SDD for GitHub Copilot CLI / 根拠に基づく仕様駆動開発').version('0.1.19');
+  const program = new Command().name('musubix3').description('Evidence-driven SDD for GitHub Copilot CLI / 根拠に基づく仕様駆動開発').version('0.1.20');
   program.exitOverride();
   common(program.command('init').alias('install').description('Install repository skills and SDD artifacts (preserves existing files)'))
     .option('--dry-run', 'Preview without writing').option('--force', 'Replace bundled, managed paths only')

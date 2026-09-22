@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-22T00:03:03.215Z",
+  "generatedAt": "2026-09-22T00:56:33.522Z",
   "nodes": [
     {
       "id": "CODE-SESSION-SCOPED-DEVELOPMENT-001",
@@ -8672,7 +8672,7 @@
     "packages/analysis/src/workflow-waiver.ts": "7c09999654d03fbc96879f3e6726d505706cdcba36940c00d46ac208d94f972f",
     "packages/analysis/src/workflow.ts": "f2f89fa9d2d5e6406ac58bb943c60a1ac209b6917edb850d36d725bb37d9ac4f",
     "packages/cli/src/install.ts": "346a6e66a29505010681ac32ea17651339cef3cfc1143422174981438e17bbf1",
-    "packages/cli/src/main.ts": "f74ac155c4f9ebaabc0fe4e6f26410f3f75d0241eabf62fbebbcb4fb3a40113e",
+    "packages/cli/src/main.ts": "bc67d0044ae088d009c3fa4665e0293be9ed1d1d79b4e19de78de2b81d51d5b2",
     "packages/domain/src/constitution.ts": "514278499642ff46ed902864b9192f566b116b4f92eb3fafa6b62588335e170a",
     "packages/domain/src/design.ts": "fc1ca4d3249abc9705ba4b6f296e0f4fa3b3d6ff6d5d82e51c99f49fc7a93ac9",
     "packages/domain/src/index.ts": "43243e9279e3826b23cd8d8b4365854974112ce4cf17cfb0f0ee32e6b28e9cc6",
@@ -8695,7 +8695,7 @@
     "tests/change-record-fail-fast.test.ts": "2f69f19332049c206f39b42c3bc2b505ce63173db798d74c5a9ace7064cdfe78",
     "tests/change-record-recordedat-order.test.ts": "5ad61cf31e273dc9cdfe190b21dcc8ffc49d327592e01b6eb0251f4cdda7b149",
     "tests/change-requirement-batches.test.ts": "919b14e0fc9174e82b916dac0448ba2f9acf57f038f0ec820ed0aa6a397f77bd",
-    "tests/cli-package.test.ts": "49ff7dc11787413186ac46267b402468407ca681f5093326e0fee892b08ec512",
+    "tests/cli-package.test.ts": "9050cda19c56670ea496754575b9bcfeda3e5d3f6753136f745d5714877adb59",
     "tests/cli-workflow-ux.test.ts": "53bdc5375bef05b365d725f5a8948393d68ae8cd1116fad8ff36ca3de127a177",
     "tests/command-working-directory.test.ts": "82dc863b1fcc5cd8a5ea1534238ef2f61f15e5d6c5e25d61fce43a7efe9bbc02",
     "tests/design-adr-none-exemption.test.ts": "f8a4771eb8b71a8c83b9ef782e9ed8646ef408aa4169298ab7a02553aa1c9ed7",
