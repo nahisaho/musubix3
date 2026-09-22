@@ -19446,6 +19446,775 @@
           "order": 1008
         }
       }
+    },
+    {
+      "changeId": "CHANGE-0021",
+      "requirementIds": [
+        "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-001",
+        "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-002",
+        "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-003"
+      ],
+      "phases": {
+        "impact": {
+          "phase": "impact",
+          "recordedAt": "2026-09-22T12:50:28.448Z",
+          "fingerprints": {
+            "impact": "62ea631e237cb86baab54088eca145c797f26074559e257a4a9f3a1777a2260a",
+            "requirements": "5f9b78218903966a952f4896290e4cce51f7a41be718c57df5fc63ec62477168",
+            "design": "3504c0c36663cefe00cbe2f6f6979d0688e0fa8091eb9d088a45936b93c937a3",
+            "implementation": "32c714ec8e3afd0d34bdc3d50f0ab62bf95253f019203f69b93c4afc652a339f",
+            "tests": "5fc64c72d60f29a34c4e94c343033db44d3485185d659c33a1e2700cd321c616",
+            "tdd": "18635c2a3797cd208087be7365f617ad6e978adada0638e98fc7e7e62d3bf4ad",
+            "requirementImplementations": {
+              "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-001": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-002": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-003": {
+                "paths": [],
+                "fingerprints": {}
+              }
+            }
+          },
+          "order": 1010
+        },
+        "requirements": {
+          "phase": "requirements",
+          "recordedAt": "2026-09-22T13:02:58.935Z",
+          "fingerprints": {
+            "impact": "b6f61608eaa54764cf4ef35c583f6572e2460a870c1e9c458b219fdb9af78838",
+            "requirements": "ad3f2af0cf1612ed60dce095d83de4ea02a2bcbd50a1e6861c5958919f7a074c",
+            "design": "3504c0c36663cefe00cbe2f6f6979d0688e0fa8091eb9d088a45936b93c937a3",
+            "implementation": "32c714ec8e3afd0d34bdc3d50f0ab62bf95253f019203f69b93c4afc652a339f",
+            "tests": "5fc64c72d60f29a34c4e94c343033db44d3485185d659c33a1e2700cd321c616",
+            "tdd": "18635c2a3797cd208087be7365f617ad6e978adada0638e98fc7e7e62d3bf4ad",
+            "requirementImplementations": {
+              "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-001": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-002": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-003": {
+                "paths": [],
+                "fingerprints": {}
+              }
+            }
+          },
+          "order": 1011
+        },
+        "design": {
+          "phase": "design",
+          "recordedAt": "2026-09-22T13:21:37.583Z",
+          "fingerprints": {
+            "impact": "b6f61608eaa54764cf4ef35c583f6572e2460a870c1e9c458b219fdb9af78838",
+            "requirements": "ad3f2af0cf1612ed60dce095d83de4ea02a2bcbd50a1e6861c5958919f7a074c",
+            "design": "5c1453adb8b74dd336fb1579b3db51a005b4731681358667a7c1d7b9e6bfc458",
+            "implementation": "32c714ec8e3afd0d34bdc3d50f0ab62bf95253f019203f69b93c4afc652a339f",
+            "tests": "5fc64c72d60f29a34c4e94c343033db44d3485185d659c33a1e2700cd321c616",
+            "tdd": "18635c2a3797cd208087be7365f617ad6e978adada0638e98fc7e7e62d3bf4ad",
+            "requirementImplementations": {
+              "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-001": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-002": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-003": {
+                "paths": [],
+                "fingerprints": {}
+              }
+            }
+          },
+          "order": 1012
+        },
+        "red": {
+          "phase": "red",
+          "recordedAt": "2026-09-22T13:25:17.122Z",
+          "fingerprints": {
+            "impact": "b6f61608eaa54764cf4ef35c583f6572e2460a870c1e9c458b219fdb9af78838",
+            "requirements": "ad3f2af0cf1612ed60dce095d83de4ea02a2bcbd50a1e6861c5958919f7a074c",
+            "design": "5c1453adb8b74dd336fb1579b3db51a005b4731681358667a7c1d7b9e6bfc458",
+            "implementation": "32c714ec8e3afd0d34bdc3d50f0ab62bf95253f019203f69b93c4afc652a339f",
+            "tests": "948910fb6c192cac51fd37f283251d220e8011b591aa79cdf7abf6238bd694f2",
+            "tdd": "f5d922efe1172d9c1021369b5e834c0381cef24675f09346181c57b3b92ad807",
+            "requirementImplementations": {
+              "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-001": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-002": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-003": {
+                "paths": [],
+                "fingerprints": {}
+              }
+            }
+          },
+          "order": 1016
+        },
+        "implementation": {
+          "phase": "implementation",
+          "recordedAt": "2026-09-22T13:30:30.882Z",
+          "fingerprints": {
+            "impact": "b6f61608eaa54764cf4ef35c583f6572e2460a870c1e9c458b219fdb9af78838",
+            "requirements": "ad3f2af0cf1612ed60dce095d83de4ea02a2bcbd50a1e6861c5958919f7a074c",
+            "design": "5c1453adb8b74dd336fb1579b3db51a005b4731681358667a7c1d7b9e6bfc458",
+            "implementation": "96ab252e454819198903dffa1efd777cd80ff1c58aefac57df40cbe52d13ffc7",
+            "tests": "948910fb6c192cac51fd37f283251d220e8011b591aa79cdf7abf6238bd694f2",
+            "tdd": "f5d922efe1172d9c1021369b5e834c0381cef24675f09346181c57b3b92ad807",
+            "requirementImplementations": {
+              "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-001": {
+                "paths": [
+                  "scripts/check-github-actions.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-github-actions.mjs": "d28fe8459b67ce89676224e574f7246b13c7e85bc67dffd0ff9a98ef0614025f"
+                }
+              },
+              "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-002": {
+                "paths": [
+                  "scripts/check-github-actions.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-github-actions.mjs": "d28fe8459b67ce89676224e574f7246b13c7e85bc67dffd0ff9a98ef0614025f"
+                }
+              },
+              "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-003": {
+                "paths": [
+                  "scripts/check-github-actions.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-github-actions.mjs": "d28fe8459b67ce89676224e574f7246b13c7e85bc67dffd0ff9a98ef0614025f"
+                }
+              }
+            }
+          },
+          "order": 1017
+        },
+        "green": {
+          "phase": "green",
+          "recordedAt": "2026-09-22T13:31:20.388Z",
+          "fingerprints": {
+            "impact": "b6f61608eaa54764cf4ef35c583f6572e2460a870c1e9c458b219fdb9af78838",
+            "requirements": "ad3f2af0cf1612ed60dce095d83de4ea02a2bcbd50a1e6861c5958919f7a074c",
+            "design": "5c1453adb8b74dd336fb1579b3db51a005b4731681358667a7c1d7b9e6bfc458",
+            "implementation": "96ab252e454819198903dffa1efd777cd80ff1c58aefac57df40cbe52d13ffc7",
+            "tests": "948910fb6c192cac51fd37f283251d220e8011b591aa79cdf7abf6238bd694f2",
+            "tdd": "247f3e74bff1305359afbc5cb930894ccec8345e3fcee4b089c653ed099a38d8",
+            "requirementImplementations": {
+              "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-001": {
+                "paths": [
+                  "scripts/check-github-actions.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-github-actions.mjs": "d28fe8459b67ce89676224e574f7246b13c7e85bc67dffd0ff9a98ef0614025f"
+                }
+              },
+              "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-002": {
+                "paths": [
+                  "scripts/check-github-actions.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-github-actions.mjs": "d28fe8459b67ce89676224e574f7246b13c7e85bc67dffd0ff9a98ef0614025f"
+                }
+              },
+              "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-003": {
+                "paths": [
+                  "scripts/check-github-actions.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-github-actions.mjs": "d28fe8459b67ce89676224e574f7246b13c7e85bc67dffd0ff9a98ef0614025f"
+                }
+              }
+            }
+          },
+          "order": 1021
+        },
+        "quality": {
+          "phase": "quality",
+          "recordedAt": "2026-09-22T14:50:59.548Z",
+          "fingerprints": {
+            "impact": "2b2d865f2e44b376755dd0b8c3229358f7ef5fed2fe403c02ffb26f9b72f93af",
+            "requirements": "ad3f2af0cf1612ed60dce095d83de4ea02a2bcbd50a1e6861c5958919f7a074c",
+            "design": "5c1453adb8b74dd336fb1579b3db51a005b4731681358667a7c1d7b9e6bfc458",
+            "implementation": "8a5a44cde7249329662424111b82e74287c1c40c04f8a11609b9f5be90e2a7e7",
+            "tests": "d64dda8c845eab3c3afdb251829824e861281ecdcec355a3c78d94f2fdce7b6b",
+            "tdd": "9d556c1eae45ceba5896d51faaa7148c48ff83eb1a412bec0dd53b96d5b59196",
+            "requirementImplementations": {
+              "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-001": {
+                "paths": [
+                  "scripts/check-github-actions.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-github-actions.mjs": "ee5d54f1db66b54223396777ca8bc31ce8abd0052417c983f22ea589f32e33df"
+                }
+              },
+              "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-002": {
+                "paths": [
+                  "scripts/check-github-actions.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-github-actions.mjs": "ee5d54f1db66b54223396777ca8bc31ce8abd0052417c983f22ea589f32e33df"
+                }
+              },
+              "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-003": {
+                "paths": [
+                  "scripts/check-github-actions.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-github-actions.mjs": "ee5d54f1db66b54223396777ca8bc31ce8abd0052417c983f22ea589f32e33df"
+                }
+              }
+            }
+          },
+          "order": 1049
+        }
+      },
+      "tddBatches": [
+        {
+          "requirementIds": [
+            "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-003"
+          ],
+          "red": {
+            "phase": "red",
+            "recordedAt": "2026-09-22T14:01:55.525Z",
+            "fingerprints": {
+              "impact": "b6f61608eaa54764cf4ef35c583f6572e2460a870c1e9c458b219fdb9af78838",
+              "requirements": "ad3f2af0cf1612ed60dce095d83de4ea02a2bcbd50a1e6861c5958919f7a074c",
+              "design": "5c1453adb8b74dd336fb1579b3db51a005b4731681358667a7c1d7b9e6bfc458",
+              "implementation": "96ab252e454819198903dffa1efd777cd80ff1c58aefac57df40cbe52d13ffc7",
+              "tests": "94cf0b6f4db923022b5ebc6ab4c272d3db4f14ea0b5adb6ac1fb73885fd17e62",
+              "tdd": "2076467f65c12b77d3347c16f782a8423345f54a949b6f56942c5bdcb802153d",
+              "requirementImplementations": {
+                "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-003": {
+                  "paths": [
+                    "scripts/check-github-actions.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-github-actions.mjs": "d28fe8459b67ce89676224e574f7246b13c7e85bc67dffd0ff9a98ef0614025f"
+                  }
+                }
+              }
+            },
+            "order": 1024
+          },
+          "implementation": {
+            "phase": "implementation",
+            "recordedAt": "2026-09-22T14:03:03.161Z",
+            "fingerprints": {
+              "impact": "2b2d865f2e44b376755dd0b8c3229358f7ef5fed2fe403c02ffb26f9b72f93af",
+              "requirements": "ad3f2af0cf1612ed60dce095d83de4ea02a2bcbd50a1e6861c5958919f7a074c",
+              "design": "5c1453adb8b74dd336fb1579b3db51a005b4731681358667a7c1d7b9e6bfc458",
+              "implementation": "5a3868622b2ecf6892c8c1fe07573569049779965a5c6226dcc219f426f6dcfa",
+              "tests": "94cf0b6f4db923022b5ebc6ab4c272d3db4f14ea0b5adb6ac1fb73885fd17e62",
+              "tdd": "2076467f65c12b77d3347c16f782a8423345f54a949b6f56942c5bdcb802153d",
+              "requirementImplementations": {
+                "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-003": {
+                  "paths": [
+                    "scripts/check-github-actions.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-github-actions.mjs": "7b0ae77925e54b89634ccc4e18ca8480548814ae07b1030ce3f17202f06a3467"
+                  }
+                }
+              }
+            },
+            "order": 1025
+          },
+          "green": {
+            "phase": "green",
+            "recordedAt": "2026-09-22T14:03:11.023Z",
+            "fingerprints": {
+              "impact": "2b2d865f2e44b376755dd0b8c3229358f7ef5fed2fe403c02ffb26f9b72f93af",
+              "requirements": "ad3f2af0cf1612ed60dce095d83de4ea02a2bcbd50a1e6861c5958919f7a074c",
+              "design": "5c1453adb8b74dd336fb1579b3db51a005b4731681358667a7c1d7b9e6bfc458",
+              "implementation": "5a3868622b2ecf6892c8c1fe07573569049779965a5c6226dcc219f426f6dcfa",
+              "tests": "94cf0b6f4db923022b5ebc6ab4c272d3db4f14ea0b5adb6ac1fb73885fd17e62",
+              "tdd": "9728557720efc61b373da9a52a5f0ff1f7f1c88a56d8bbcfc1541c9f981333c1",
+              "requirementImplementations": {
+                "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-003": {
+                  "paths": [
+                    "scripts/check-github-actions.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-github-actions.mjs": "7b0ae77925e54b89634ccc4e18ca8480548814ae07b1030ce3f17202f06a3467"
+                  }
+                }
+              }
+            },
+            "order": 1027
+          }
+        },
+        {
+          "requirementIds": [
+            "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-002"
+          ],
+          "red": {
+            "phase": "red",
+            "recordedAt": "2026-09-22T14:14:33.477Z",
+            "fingerprints": {
+              "impact": "2b2d865f2e44b376755dd0b8c3229358f7ef5fed2fe403c02ffb26f9b72f93af",
+              "requirements": "ad3f2af0cf1612ed60dce095d83de4ea02a2bcbd50a1e6861c5958919f7a074c",
+              "design": "5c1453adb8b74dd336fb1579b3db51a005b4731681358667a7c1d7b9e6bfc458",
+              "implementation": "5a3868622b2ecf6892c8c1fe07573569049779965a5c6226dcc219f426f6dcfa",
+              "tests": "8a341c634860cf61defd5d07e6503feac2acfbc7865efb594db1d12c01f97300",
+              "tdd": "0b615dc39e184383eb18551ca070564f0c880da23e6f48e638d28bfc886d3aa5",
+              "requirementImplementations": {
+                "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-002": {
+                  "paths": [
+                    "scripts/check-github-actions.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-github-actions.mjs": "7b0ae77925e54b89634ccc4e18ca8480548814ae07b1030ce3f17202f06a3467"
+                  }
+                }
+              }
+            },
+            "order": 1030
+          }
+        },
+        {
+          "requirementIds": [
+            "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-002",
+            "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-003"
+          ],
+          "red": {
+            "phase": "red",
+            "recordedAt": "2026-09-22T14:15:11.438Z",
+            "fingerprints": {
+              "impact": "2b2d865f2e44b376755dd0b8c3229358f7ef5fed2fe403c02ffb26f9b72f93af",
+              "requirements": "ad3f2af0cf1612ed60dce095d83de4ea02a2bcbd50a1e6861c5958919f7a074c",
+              "design": "5c1453adb8b74dd336fb1579b3db51a005b4731681358667a7c1d7b9e6bfc458",
+              "implementation": "5a3868622b2ecf6892c8c1fe07573569049779965a5c6226dcc219f426f6dcfa",
+              "tests": "8a341c634860cf61defd5d07e6503feac2acfbc7865efb594db1d12c01f97300",
+              "tdd": "596abd53cb059f5f12edaadae9094321c30c4ca632f53923c0d685a182f9574f",
+              "requirementImplementations": {
+                "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-002": {
+                  "paths": [
+                    "scripts/check-github-actions.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-github-actions.mjs": "7b0ae77925e54b89634ccc4e18ca8480548814ae07b1030ce3f17202f06a3467"
+                  }
+                },
+                "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-003": {
+                  "paths": [
+                    "scripts/check-github-actions.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-github-actions.mjs": "7b0ae77925e54b89634ccc4e18ca8480548814ae07b1030ce3f17202f06a3467"
+                  }
+                }
+              }
+            },
+            "order": 1032
+          },
+          "implementation": {
+            "phase": "implementation",
+            "recordedAt": "2026-09-22T14:15:52.782Z",
+            "fingerprints": {
+              "impact": "2b2d865f2e44b376755dd0b8c3229358f7ef5fed2fe403c02ffb26f9b72f93af",
+              "requirements": "ad3f2af0cf1612ed60dce095d83de4ea02a2bcbd50a1e6861c5958919f7a074c",
+              "design": "5c1453adb8b74dd336fb1579b3db51a005b4731681358667a7c1d7b9e6bfc458",
+              "implementation": "a3df5bc62cb63ddbc89c5961dec8ad7cb16e7130740a36e50609b3d411bd59be",
+              "tests": "8a341c634860cf61defd5d07e6503feac2acfbc7865efb594db1d12c01f97300",
+              "tdd": "596abd53cb059f5f12edaadae9094321c30c4ca632f53923c0d685a182f9574f",
+              "requirementImplementations": {
+                "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-002": {
+                  "paths": [
+                    "scripts/check-github-actions.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-github-actions.mjs": "647926a02878b06914a7a899936733bf5c6a943eabdbbed6f8fcd060300e6381"
+                  }
+                },
+                "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-003": {
+                  "paths": [
+                    "scripts/check-github-actions.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-github-actions.mjs": "647926a02878b06914a7a899936733bf5c6a943eabdbbed6f8fcd060300e6381"
+                  }
+                }
+              }
+            },
+            "order": 1033
+          },
+          "green": {
+            "phase": "green",
+            "recordedAt": "2026-09-22T14:16:03.540Z",
+            "fingerprints": {
+              "impact": "2b2d865f2e44b376755dd0b8c3229358f7ef5fed2fe403c02ffb26f9b72f93af",
+              "requirements": "ad3f2af0cf1612ed60dce095d83de4ea02a2bcbd50a1e6861c5958919f7a074c",
+              "design": "5c1453adb8b74dd336fb1579b3db51a005b4731681358667a7c1d7b9e6bfc458",
+              "implementation": "a3df5bc62cb63ddbc89c5961dec8ad7cb16e7130740a36e50609b3d411bd59be",
+              "tests": "8a341c634860cf61defd5d07e6503feac2acfbc7865efb594db1d12c01f97300",
+              "tdd": "b883610f0f80540660bbd9cb37e9dce419db4f8df69a56f69f62351b014a7f17",
+              "requirementImplementations": {
+                "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-002": {
+                  "paths": [
+                    "scripts/check-github-actions.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-github-actions.mjs": "647926a02878b06914a7a899936733bf5c6a943eabdbbed6f8fcd060300e6381"
+                  }
+                },
+                "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-003": {
+                  "paths": [
+                    "scripts/check-github-actions.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-github-actions.mjs": "647926a02878b06914a7a899936733bf5c6a943eabdbbed6f8fcd060300e6381"
+                  }
+                }
+              }
+            },
+            "order": 1036
+          }
+        },
+        {
+          "requirementIds": [
+            "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-001",
+            "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-002"
+          ],
+          "red": {
+            "phase": "red",
+            "recordedAt": "2026-09-22T14:21:38.042Z",
+            "fingerprints": {
+              "impact": "2b2d865f2e44b376755dd0b8c3229358f7ef5fed2fe403c02ffb26f9b72f93af",
+              "requirements": "ad3f2af0cf1612ed60dce095d83de4ea02a2bcbd50a1e6861c5958919f7a074c",
+              "design": "5c1453adb8b74dd336fb1579b3db51a005b4731681358667a7c1d7b9e6bfc458",
+              "implementation": "a3df5bc62cb63ddbc89c5961dec8ad7cb16e7130740a36e50609b3d411bd59be",
+              "tests": "fb891679f438a8b3429d80d135caf7d9a35fbf70aece7dad3f7bc72210e94de8",
+              "tdd": "c72422a1c0aa2acbfbcd8ecc93176929d05f835e50d7489a333b5ab90463f291",
+              "requirementImplementations": {
+                "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-001": {
+                  "paths": [
+                    "scripts/check-github-actions.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-github-actions.mjs": "647926a02878b06914a7a899936733bf5c6a943eabdbbed6f8fcd060300e6381"
+                  }
+                },
+                "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-002": {
+                  "paths": [
+                    "scripts/check-github-actions.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-github-actions.mjs": "647926a02878b06914a7a899936733bf5c6a943eabdbbed6f8fcd060300e6381"
+                  }
+                }
+              }
+            },
+            "order": 1039
+          },
+          "implementation": {
+            "phase": "implementation",
+            "recordedAt": "2026-09-22T14:22:07.266Z",
+            "fingerprints": {
+              "impact": "2b2d865f2e44b376755dd0b8c3229358f7ef5fed2fe403c02ffb26f9b72f93af",
+              "requirements": "ad3f2af0cf1612ed60dce095d83de4ea02a2bcbd50a1e6861c5958919f7a074c",
+              "design": "5c1453adb8b74dd336fb1579b3db51a005b4731681358667a7c1d7b9e6bfc458",
+              "implementation": "132e4c5936c19f5e5630eb67d8ee51283c47a4cc9e1956b694ab9ae39e8b21d5",
+              "tests": "fb891679f438a8b3429d80d135caf7d9a35fbf70aece7dad3f7bc72210e94de8",
+              "tdd": "c72422a1c0aa2acbfbcd8ecc93176929d05f835e50d7489a333b5ab90463f291",
+              "requirementImplementations": {
+                "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-001": {
+                  "paths": [
+                    "scripts/check-github-actions.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-github-actions.mjs": "a9aaefc14a68bd9ecef7586ccd1cbf94fda077b8e27a9ff78e6f16866ad9cbcc"
+                  }
+                },
+                "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-002": {
+                  "paths": [
+                    "scripts/check-github-actions.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-github-actions.mjs": "a9aaefc14a68bd9ecef7586ccd1cbf94fda077b8e27a9ff78e6f16866ad9cbcc"
+                  }
+                }
+              }
+            },
+            "order": 1040
+          },
+          "green": {
+            "phase": "green",
+            "recordedAt": "2026-09-22T14:22:11.765Z",
+            "fingerprints": {
+              "impact": "2b2d865f2e44b376755dd0b8c3229358f7ef5fed2fe403c02ffb26f9b72f93af",
+              "requirements": "ad3f2af0cf1612ed60dce095d83de4ea02a2bcbd50a1e6861c5958919f7a074c",
+              "design": "5c1453adb8b74dd336fb1579b3db51a005b4731681358667a7c1d7b9e6bfc458",
+              "implementation": "132e4c5936c19f5e5630eb67d8ee51283c47a4cc9e1956b694ab9ae39e8b21d5",
+              "tests": "fb891679f438a8b3429d80d135caf7d9a35fbf70aece7dad3f7bc72210e94de8",
+              "tdd": "fb3e36cb04d026686f6af36abcd4b96cf3c54af3360fff8cb9227b48ebe4d1c7",
+              "requirementImplementations": {
+                "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-001": {
+                  "paths": [
+                    "scripts/check-github-actions.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-github-actions.mjs": "a9aaefc14a68bd9ecef7586ccd1cbf94fda077b8e27a9ff78e6f16866ad9cbcc"
+                  }
+                },
+                "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-002": {
+                  "paths": [
+                    "scripts/check-github-actions.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-github-actions.mjs": "a9aaefc14a68bd9ecef7586ccd1cbf94fda077b8e27a9ff78e6f16866ad9cbcc"
+                  }
+                }
+              }
+            },
+            "order": 1042
+          }
+        },
+        {
+          "requirementIds": [
+            "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-001"
+          ],
+          "red": {
+            "phase": "red",
+            "recordedAt": "2026-09-22T14:46:02.958Z",
+            "fingerprints": {
+              "impact": "2b2d865f2e44b376755dd0b8c3229358f7ef5fed2fe403c02ffb26f9b72f93af",
+              "requirements": "ad3f2af0cf1612ed60dce095d83de4ea02a2bcbd50a1e6861c5958919f7a074c",
+              "design": "5c1453adb8b74dd336fb1579b3db51a005b4731681358667a7c1d7b9e6bfc458",
+              "implementation": "132e4c5936c19f5e5630eb67d8ee51283c47a4cc9e1956b694ab9ae39e8b21d5",
+              "tests": "d64dda8c845eab3c3afdb251829824e861281ecdcec355a3c78d94f2fdce7b6b",
+              "tdd": "b8ad6f93f90665834925fad16284af54c04c5f16bf4d06463b727ad8d32567d6",
+              "requirementImplementations": {
+                "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-001": {
+                  "paths": [
+                    "scripts/check-github-actions.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-github-actions.mjs": "a9aaefc14a68bd9ecef7586ccd1cbf94fda077b8e27a9ff78e6f16866ad9cbcc"
+                  }
+                }
+              }
+            },
+            "order": 1045
+          },
+          "implementation": {
+            "phase": "implementation",
+            "recordedAt": "2026-09-22T14:47:23.585Z",
+            "fingerprints": {
+              "impact": "2b2d865f2e44b376755dd0b8c3229358f7ef5fed2fe403c02ffb26f9b72f93af",
+              "requirements": "ad3f2af0cf1612ed60dce095d83de4ea02a2bcbd50a1e6861c5958919f7a074c",
+              "design": "5c1453adb8b74dd336fb1579b3db51a005b4731681358667a7c1d7b9e6bfc458",
+              "implementation": "8a5a44cde7249329662424111b82e74287c1c40c04f8a11609b9f5be90e2a7e7",
+              "tests": "d64dda8c845eab3c3afdb251829824e861281ecdcec355a3c78d94f2fdce7b6b",
+              "tdd": "b8ad6f93f90665834925fad16284af54c04c5f16bf4d06463b727ad8d32567d6",
+              "requirementImplementations": {
+                "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-001": {
+                  "paths": [
+                    "scripts/check-github-actions.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-github-actions.mjs": "ee5d54f1db66b54223396777ca8bc31ce8abd0052417c983f22ea589f32e33df"
+                  }
+                }
+              }
+            },
+            "order": 1046
+          },
+          "green": {
+            "phase": "green",
+            "recordedAt": "2026-09-22T14:47:32.050Z",
+            "fingerprints": {
+              "impact": "2b2d865f2e44b376755dd0b8c3229358f7ef5fed2fe403c02ffb26f9b72f93af",
+              "requirements": "ad3f2af0cf1612ed60dce095d83de4ea02a2bcbd50a1e6861c5958919f7a074c",
+              "design": "5c1453adb8b74dd336fb1579b3db51a005b4731681358667a7c1d7b9e6bfc458",
+              "implementation": "8a5a44cde7249329662424111b82e74287c1c40c04f8a11609b9f5be90e2a7e7",
+              "tests": "d64dda8c845eab3c3afdb251829824e861281ecdcec355a3c78d94f2fdce7b6b",
+              "tdd": "9d556c1eae45ceba5896d51faaa7148c48ff83eb1a412bec0dd53b96d5b59196",
+              "requirementImplementations": {
+                "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-001": {
+                  "paths": [
+                    "scripts/check-github-actions.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-github-actions.mjs": "ee5d54f1db66b54223396777ca8bc31ce8abd0052417c983f22ea589f32e33df"
+                  }
+                }
+              }
+            },
+            "order": 1048
+          }
+        }
+      ],
+      "qualityHistory": [
+        {
+          "phase": "quality",
+          "recordedAt": "2026-09-22T13:54:42.525Z",
+          "fingerprints": {
+            "impact": "b6f61608eaa54764cf4ef35c583f6572e2460a870c1e9c458b219fdb9af78838",
+            "requirements": "ad3f2af0cf1612ed60dce095d83de4ea02a2bcbd50a1e6861c5958919f7a074c",
+            "design": "5c1453adb8b74dd336fb1579b3db51a005b4731681358667a7c1d7b9e6bfc458",
+            "implementation": "96ab252e454819198903dffa1efd777cd80ff1c58aefac57df40cbe52d13ffc7",
+            "tests": "948910fb6c192cac51fd37f283251d220e8011b591aa79cdf7abf6238bd694f2",
+            "tdd": "247f3e74bff1305359afbc5cb930894ccec8345e3fcee4b089c653ed099a38d8",
+            "requirementImplementations": {
+              "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-001": {
+                "paths": [
+                  "scripts/check-github-actions.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-github-actions.mjs": "d28fe8459b67ce89676224e574f7246b13c7e85bc67dffd0ff9a98ef0614025f"
+                }
+              },
+              "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-002": {
+                "paths": [
+                  "scripts/check-github-actions.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-github-actions.mjs": "d28fe8459b67ce89676224e574f7246b13c7e85bc67dffd0ff9a98ef0614025f"
+                }
+              },
+              "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-003": {
+                "paths": [
+                  "scripts/check-github-actions.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-github-actions.mjs": "d28fe8459b67ce89676224e574f7246b13c7e85bc67dffd0ff9a98ef0614025f"
+                }
+              }
+            }
+          },
+          "order": 1022
+        },
+        {
+          "phase": "quality",
+          "recordedAt": "2026-09-22T14:03:24.785Z",
+          "fingerprints": {
+            "impact": "2b2d865f2e44b376755dd0b8c3229358f7ef5fed2fe403c02ffb26f9b72f93af",
+            "requirements": "ad3f2af0cf1612ed60dce095d83de4ea02a2bcbd50a1e6861c5958919f7a074c",
+            "design": "5c1453adb8b74dd336fb1579b3db51a005b4731681358667a7c1d7b9e6bfc458",
+            "implementation": "5a3868622b2ecf6892c8c1fe07573569049779965a5c6226dcc219f426f6dcfa",
+            "tests": "94cf0b6f4db923022b5ebc6ab4c272d3db4f14ea0b5adb6ac1fb73885fd17e62",
+            "tdd": "9728557720efc61b373da9a52a5f0ff1f7f1c88a56d8bbcfc1541c9f981333c1",
+            "requirementImplementations": {
+              "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-001": {
+                "paths": [
+                  "scripts/check-github-actions.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-github-actions.mjs": "7b0ae77925e54b89634ccc4e18ca8480548814ae07b1030ce3f17202f06a3467"
+                }
+              },
+              "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-002": {
+                "paths": [
+                  "scripts/check-github-actions.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-github-actions.mjs": "7b0ae77925e54b89634ccc4e18ca8480548814ae07b1030ce3f17202f06a3467"
+                }
+              },
+              "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-003": {
+                "paths": [
+                  "scripts/check-github-actions.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-github-actions.mjs": "7b0ae77925e54b89634ccc4e18ca8480548814ae07b1030ce3f17202f06a3467"
+                }
+              }
+            }
+          },
+          "order": 1028
+        },
+        {
+          "phase": "quality",
+          "recordedAt": "2026-09-22T14:19:39.674Z",
+          "fingerprints": {
+            "impact": "2b2d865f2e44b376755dd0b8c3229358f7ef5fed2fe403c02ffb26f9b72f93af",
+            "requirements": "ad3f2af0cf1612ed60dce095d83de4ea02a2bcbd50a1e6861c5958919f7a074c",
+            "design": "5c1453adb8b74dd336fb1579b3db51a005b4731681358667a7c1d7b9e6bfc458",
+            "implementation": "a3df5bc62cb63ddbc89c5961dec8ad7cb16e7130740a36e50609b3d411bd59be",
+            "tests": "8a341c634860cf61defd5d07e6503feac2acfbc7865efb594db1d12c01f97300",
+            "tdd": "b883610f0f80540660bbd9cb37e9dce419db4f8df69a56f69f62351b014a7f17",
+            "requirementImplementations": {
+              "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-001": {
+                "paths": [
+                  "scripts/check-github-actions.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-github-actions.mjs": "647926a02878b06914a7a899936733bf5c6a943eabdbbed6f8fcd060300e6381"
+                }
+              },
+              "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-002": {
+                "paths": [
+                  "scripts/check-github-actions.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-github-actions.mjs": "647926a02878b06914a7a899936733bf5c6a943eabdbbed6f8fcd060300e6381"
+                }
+              },
+              "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-003": {
+                "paths": [
+                  "scripts/check-github-actions.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-github-actions.mjs": "647926a02878b06914a7a899936733bf5c6a943eabdbbed6f8fcd060300e6381"
+                }
+              }
+            }
+          },
+          "order": 1037
+        },
+        {
+          "phase": "quality",
+          "recordedAt": "2026-09-22T14:24:56.293Z",
+          "fingerprints": {
+            "impact": "2b2d865f2e44b376755dd0b8c3229358f7ef5fed2fe403c02ffb26f9b72f93af",
+            "requirements": "ad3f2af0cf1612ed60dce095d83de4ea02a2bcbd50a1e6861c5958919f7a074c",
+            "design": "5c1453adb8b74dd336fb1579b3db51a005b4731681358667a7c1d7b9e6bfc458",
+            "implementation": "132e4c5936c19f5e5630eb67d8ee51283c47a4cc9e1956b694ab9ae39e8b21d5",
+            "tests": "fb891679f438a8b3429d80d135caf7d9a35fbf70aece7dad3f7bc72210e94de8",
+            "tdd": "fb3e36cb04d026686f6af36abcd4b96cf3c54af3360fff8cb9227b48ebe4d1c7",
+            "requirementImplementations": {
+              "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-001": {
+                "paths": [
+                  "scripts/check-github-actions.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-github-actions.mjs": "a9aaefc14a68bd9ecef7586ccd1cbf94fda077b8e27a9ff78e6f16866ad9cbcc"
+                }
+              },
+              "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-002": {
+                "paths": [
+                  "scripts/check-github-actions.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-github-actions.mjs": "a9aaefc14a68bd9ecef7586ccd1cbf94fda077b8e27a9ff78e6f16866ad9cbcc"
+                }
+              },
+              "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-003": {
+                "paths": [
+                  "scripts/check-github-actions.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-github-actions.mjs": "a9aaefc14a68bd9ecef7586ccd1cbf94fda077b8e27a9ff78e6f16866ad9cbcc"
+                }
+              }
+            }
+          },
+          "order": 1043
+        }
+      ]
     }
   ]
 }

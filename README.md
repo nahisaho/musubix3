@@ -1134,6 +1134,14 @@ transcript/session fields into the Ed25519 signature.
 - Core CI covers Node 22 on Linux, Windows, and macOS, with additional Node 20
   and Node 24 Linux compatibility checks. Native adapters and formal solvers run
   once on Linux with pinned toolchains.
+- **GitHub-hosted runner policy:** the portability matrix intentionally uses
+  `ubuntu-latest`, `windows-latest`, and `macos-latest`; every other CI job and
+  the Release and npm publication workflows use `ubuntu-latest`. These are
+  floating GitHub-hosted labels, not pinned images. When the selected hosted
+  runner image changes, revalidate toolchain installation, typecheck, build,
+  tests, package checks, release preparation, provenance, and publication
+  controls. The actions' Node.js 24 implementation runtime is independent of
+  the Node.js 20/22/24 versions tested for this package.
   No formatting/lint framework is bundled; strict TypeScript and tests are used.
 
 ## Development and release checks

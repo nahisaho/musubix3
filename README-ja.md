@@ -944,6 +944,14 @@ CLI検証を呼び出す前に削除します。短命JWTは署名済みattestat
 - Core CIはNode 22をLinux、Windows、macOSで実行し、LinuxではNode 20と
   Node 24の互換性も追加確認します。native adapterとformal solverの統合は、
   固定toolchainを使ってLinuxで実行します。
+- **GitHub-hosted runner ポリシー:** portability matrix は意図的に
+  `ubuntu-latest`、`windows-latest`、`macos-latest` を使用し、それ以外の
+  CI job、Release workflow、npm publish workflow は `ubuntu-latest` を
+  使用します。これらは固定 image ではなく GitHub-hosted の floating label
+  です。選択される hosted runner image が変更された場合は、toolchain 導入、
+  typecheck、build、test、package check、release preparation、provenance、
+  publication control を再検証します。Action 自体の Node.js 24 runtime は、
+  package が検証する Node.js 20/22/24 とは別のものです。
   Windowsの実行ラッパーとprocess tree停止にはplatform固有の差があります。
   ESLintは追加せず、strict TypeScript と既存テストで検証します。
 
