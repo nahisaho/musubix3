@@ -373,6 +373,7 @@ npx musubix3 tdd green TEST-EXAMPLE-002 --requirement REQ-EXAMPLE-002 --command 
 | `attestation payload --provider <name> --run-id <id> --key-id <id> [--public-key-file <pem>] [--github-oidc-token-file <jwt>]` | 外部署名用の正規化CI payloadを出力 |
 | `attestation verify` | 静的鍵またはGitHub OIDC認可済みEd25519 provenanceを検証 |
 | `change-record <CHANGE-ID> <phase> --requirement <REQ-ID...>` | 段階的変更の成果物・TDD指紋を順序付きで記録。複数batchが同じrequirementを含む場合、検証はRedの`order`が最新のbatchを使用し、後発batchが未完了でも古い完了済み証跡へ暗黙にフォールバックしない |
+| `change quality-recover [--json]` | 中断したQuality refreshの2ファイルtransactionを復旧する。Quality後に新しい完全なcorrective batchがある場合、full-set Qualityを再記録すると以前のcheckpointをschema version 2の`qualityHistory`へ保持する。不完全・不要なrefreshは安定した`CHANGE_QUALITY_REFRESH_*`エラーで拒否する |
 | `config lint` | `args`が存在しないrepository相対パスを参照する設定済みコマンドを報告 |
 | `config scaffold` | 検出したGo/Rust/Maven/Python/Nodeツールチェーン向けのnative test-command候補を`.musubix/config.json`へ書き込まずに提案 |
 | `gate [--changed] [--feature <name>]` | 検証・実コマンドを集約し品質根拠を保存。`--feature`は requirements/design/trace/tdd/change-history/change-completeness の検査を1機能へ限定する診断用途で、repository全体のgateの代替ではない |
@@ -970,10 +971,17 @@ node scripts/release-version.mjs --check 1.2.3
 
 npm entrypoint では stdout をJSON reportだけにするため `--silent` を指定します。
 tag の `v` prefix と build metadata を含まない SemVer を指定します。
-リリース順序は version 同期、`CHANGELOG.md` の内容レビュー、
-`npm run build`、package 検査、commit、最後に一致する `v<version>` tag です。
-`release:prepare` は出力ディレクトリを変更する前に、すべての同期対象と
-tag が指す commit を検証します。
+リリース順序は version 同期、`CHANGELOG.md` の内容レビュー、`npm run build`、
+package 検査、明示的な release 承認、commit、一致する `v<version>` tag、
+最後に準備処理です。
+強制されるリリース順序は、最終リリースメタデータと `CHANGELOG.md`、
+検証とビルド、明示的な release 承認、commit と変更されていない `v<version>` tag の作成、
+最後に `release:prepare` です。承認後にcommit済みの
+release入力を変更した場合は、新しいtagを準備する前に検証と release 承認をやり直す必要があります。
+`release:prepare` は出力ディレクトリを変更する前に、すべての同期対象、
+tag が指すcommit、および承認済みtag manifestを検証します。Release workflowを
+手動実行する場合はworkflowのref selectorで対象tagを選び、同じtagを
+`release_tag`へ入力します。
 
 `packages/domain` は純粋な検証、`packages/analysis` は根拠・コンパイラ・
 ファイルシステム、`packages/cli` はコマンドと配置を担当します。

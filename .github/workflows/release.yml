@@ -24,9 +24,18 @@ jobs:
     env:
       RELEASE_TAG: ${{ github.event.inputs.release_tag || github.ref_name }}
     steps:
+      - name: Verify manual release ref
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          REF_TYPE: ${{ github.ref_type }}
+          REF_NAME: ${{ github.ref_name }}
+        run: |
+          test "$REF_TYPE" = "tag"
+          test "$REF_NAME" = "$RELEASE_TAG"
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           fetch-depth: 0
+          ref: ${{ github.ref }}
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: 22

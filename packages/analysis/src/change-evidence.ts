@@ -42,10 +42,11 @@ export interface ChangeRecord {
   requirementIds: string[];
   phases: Partial<Record<ChangePhase, ChangePhaseEvidence>>;
   tddBatches?: ChangeTddBatch[];
+  qualityHistory?: ChangePhaseEvidence[];
 }
 
 export interface ChangeEvidence {
-  schemaVersion: 1;
+  schemaVersion: 1 | 2;
   changes: ChangeRecord[];
 }
 
@@ -62,8 +63,44 @@ export async function loadChangeEvidence(root: string): Promise<ChangeEvidence |
   const path = '.musubix/evidence/changes.json';
   if (!await exists(within(root, path))) return null;
   const value = JSON.parse(await readText(root, path)) as ChangeEvidence;
-  if (value.schemaVersion !== 1 || !Array.isArray(value.changes)) throw new Error('Invalid change chronology evidence.');
+  if (!Number.isInteger(value.schemaVersion) || value.schemaVersion < 1 || !Array.isArray(value.changes)) {
+    throw new Error('Invalid change chronology evidence.');
+  }
+  if (value.schemaVersion > 2) {
+    throw new Error(`CHANGE_EVIDENCE_SCHEMA_UNSUPPORTED: schema version ${value.schemaVersion} is not supported.`);
+  }
   return value;
+}
+
+/** @id CODE-CHANGE-QUALITY-REFRESH-001
+ * @implements REQ-CHANGE-QUALITY-REFRESH-001 REQ-CHANGE-QUALITY-REFRESH-003
+ * @design DES-CHANGE-QUALITY-REFRESH-001
+ */
+export function qualityLineage(change: ChangeRecord): ChangePhaseEvidence[] {
+  const quality = change.phases.quality;
+  return [...(change.qualityHistory ?? []), ...(quality ? [quality] : [])];
+}
+
+export function qualityIdentity(ordinal: number): string {
+  if (!Number.isInteger(ordinal) || ordinal < 1) throw new Error('Quality ordinal must be a positive integer.');
+  return ordinal === 1 ? 'quality' : `quality:${ordinal}`;
+}
+
+export function qualityPayloadForIdentity(
+  change: ChangeRecord,
+  identity: string,
+): ChangePhaseEvidence | undefined {
+  const match = /^quality(?::([1-9]\d*))?$/.exec(identity);
+  if (!match) return undefined;
+  const ordinal = match[1] === undefined ? 1 : Number(match[1]);
+  const lineage = qualityLineage(change);
+  return lineage[ordinal - 1];
+}
+
+export function qualityOrderIdentity(change: ChangeRecord, checkpoint: ChangePhaseEvidence): string {
+  const index = qualityLineage(change).findIndex((entry) => entry === checkpoint);
+  if (index < 0) throw new Error('Quality checkpoint is not part of the supplied change lineage.');
+  return qualityIdentity(index + 1);
 }
 
 /** @id CODE-CHANGE-REQUIREMENT-BATCHES-001

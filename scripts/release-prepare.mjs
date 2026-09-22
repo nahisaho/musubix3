@@ -3,7 +3,7 @@ import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { basename, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import {
   inspectReleaseVersionSurfaces,
   parseReleaseVersionArguments,
@@ -11,6 +11,27 @@ import {
 } from './release-version.mjs';
 
 const root = resolve(fileURLToPath(new URL('..', import.meta.url)));
+const releaseStage = 'release';
+
+export class ReleaseApprovalValidationError extends Error {
+  constructor(report) {
+    super(`release approval is ${report.status}`);
+    this.name = 'ReleaseApprovalValidationError';
+    this.report = report;
+  }
+}
+
+async function releaseApprovalApi(directory) {
+  const path = resolve(directory, 'dist/packages/analysis/src/index.js');
+  try {
+    return await import(pathToFileURL(path).href);
+  } catch (cause) {
+    const error = new Error(`Built release approval API is unavailable at ${path}. Run npm run build before release preparation.`);
+    error.code = 'RELEASE_APPROVAL_BUILD_MISSING';
+    error.cause = cause;
+    throw error;
+  }
+}
 
 /** @id CODE-RELEASE-VERSION-SYNCHRONIZATION-005
  * @implements REQ-RELEASE-VERSION-SYNCHRONIZATION-006 REQ-RELEASE-VERSION-SYNCHRONIZATION-007
@@ -41,9 +62,23 @@ function npmInvocation(args, npmCli = process.env.npm_execpath) {
   return [process.execPath, [npmCli, ...args]];
 }
 
-export function prepareRelease(tag, outputDirectory, directory = root, dependencies = {}) {
-  verifyReleaseVersions(tag, directory);
+/** @id CODE-RELEASE-APPROVAL-ORDERING-003
+ * @implements REQ-RELEASE-APPROVAL-ORDERING-001 REQ-RELEASE-APPROVAL-ORDERING-002 REQ-RELEASE-APPROVAL-ORDERING-003 REQ-RELEASE-APPROVAL-ORDERING-004
+ * @design DES-RELEASE-APPROVAL-ORDERING-002 DES-RELEASE-APPROVAL-ORDERING-003
+ */
+export async function verifyReleaseApproval(tag, directory = root, dependencies = {}) {
+  const analysis = dependencies.analysis ?? await releaseApprovalApi(directory);
+  const config = dependencies.approvalConfig ?? (await analysis.loadConfig(directory)).approval;
+  return analysis.validateReleaseApprovalForTag(directory, tag, config);
+}
+
+export async function prepareRelease(tag, outputDirectory, directory = root, dependencies = {}) {
+  (dependencies.verifyReleaseVersions ?? verifyReleaseVersions)(tag, directory);
   const execute = dependencies.execFileSync ?? execFileSync;
+  const [npmForBuild, buildArgs] = npmInvocation(['run', 'build'], dependencies.npmExecPath);
+  execute(npmForBuild, buildArgs, { cwd: directory, encoding: 'utf8' });
+  const approval = await verifyReleaseApproval(tag, directory, dependencies);
+  if (!approval.valid) throw new ReleaseApprovalValidationError(approval);
   const [npm, packArgs] = npmInvocation([
     'pack', '--json', '--ignore-scripts', '--pack-destination', resolve(directory, outputDirectory),
   ], dependencies.npmExecPath);
@@ -79,14 +114,35 @@ function argument(name, fallback) {
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  const tag = argument('--tag', process.env.RELEASE_TAG);
-  const output = argument('--output', 'release-assets');
-  assert(tag, 'provide --tag or RELEASE_TAG');
-  try {
-    console.log(JSON.stringify(prepareRelease(tag, output), null, 2));
-  } catch (error) {
-    if (!(error instanceof ReleaseVersionValidationError)) throw error;
-    process.stderr.write(`${JSON.stringify(error.report)}\n`);
-    process.exitCode = 1;
-  }
+  const emitWarning = process.emitWarning.bind(process);
+  process.emitWarning = (warning, ...args) => {
+    const options = args[0];
+    const code = typeof options === 'object' && options !== null ? options.code : args[1];
+    if (code !== 'MODULE_TYPELESS_PACKAGE_JSON') emitWarning(warning, ...args);
+  };
+  const main = async () => {
+    const tag = argument('--tag', process.env.RELEASE_TAG);
+    const output = argument('--output', 'release-assets');
+    assert(tag, 'provide --tag or RELEASE_TAG');
+    const prepared = await prepareRelease(tag, output);
+    process.stdout.write(`${JSON.stringify(prepared, null, 2)}\n`);
+  };
+  await main().catch((error) => {
+    if (error instanceof ReleaseVersionValidationError || error instanceof ReleaseApprovalValidationError) {
+      process.stderr.write(`${JSON.stringify(error.report)}\n`);
+      process.exitCode = 1;
+      return;
+    }
+    if (error && typeof error === 'object' && typeof error.code === 'string'
+      && error.code.startsWith('RELEASE_APPROVAL_')) {
+      process.stderr.write(`${JSON.stringify({
+        valid: false,
+        stage: releaseStage,
+        error: { code: error.code, message: error.message },
+      })}\n`);
+      process.exitCode = 1;
+      return;
+    }
+    throw error;
+  });
 }

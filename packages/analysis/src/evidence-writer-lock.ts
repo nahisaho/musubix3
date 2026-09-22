@@ -47,7 +47,7 @@ export const EVIDENCE_OPERATION_CLASSIFICATION = {
     'gate', 'evidence refresh', 'tdd red', 'tdd green', 'tdd refactor', 'tdd migrate', 'tdd void',
     'change waiver record', 'workflow-record', 'workflow-verify',
     'workflow waiver record', 'workflow waiver record-all', 'approval record',
-    'evidence merge --recover', 'trace build', 'graph index', 'graph gate', 'knowledge build',
+    'evidence merge --recover', 'change quality-recover', 'trace build', 'graph index', 'graph gate', 'knowledge build',
     'formal check', 'formal generate',
   ],
   coordinatedReader: [
@@ -88,6 +88,7 @@ export const EVIDENCE_WRITER_ANALYSIS_ENTRIES = [
   'approval record',
   'change waiver record',
   'change-record',
+  'change quality-recover',
   'evidence merge',
   'evidence merge --recover',
   'evidence order append',

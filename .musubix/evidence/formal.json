@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-22T05:55:46.301Z",
-  "totalRequirements": 164,
+  "generatedAt": "2026-09-22T12:18:36.769Z",
+  "totalRequirements": 171,
   "modeledRequirements": 10,
-  "modeledFraction": 0.06097560975609756,
+  "modeledFraction": 0.05847953216374269,
   "result": {
     "valid": true,
     "abstraction": "Consistency of explicit branch-scoped conditional, exact unit-normalized integer numeric, bounded temporal interval, deterministic state-transition, and controlled unconditional Boolean constraints; not implementation correctness.",
@@ -116,6 +116,9 @@
       "REQ-CHANGE-EVIDENCE-WAIVER-013",
       "REQ-CHANGE-EVIDENCE-WAIVER-014",
       "REQ-CHANGE-EVIDENCE-WAIVER-015",
+      "REQ-CHANGE-QUALITY-REFRESH-001",
+      "REQ-CHANGE-QUALITY-REFRESH-002",
+      "REQ-CHANGE-QUALITY-REFRESH-003",
       "REQ-CHANGE-RECORD-FAIL-FAST-001",
       "REQ-CHANGE-RECORD-FAIL-FAST-002",
       "REQ-CHANGE-RECORD-FAIL-FAST-003",
@@ -163,6 +166,10 @@
       "REQ-HUMAN-APPROVAL-GATES-007",
       "REQ-HUMAN-APPROVAL-GATES-008",
       "REQ-MODEL-CORRESPONDENCE-EVIDENCE-GUIDANCE-001",
+      "REQ-RELEASE-APPROVAL-ORDERING-001",
+      "REQ-RELEASE-APPROVAL-ORDERING-002",
+      "REQ-RELEASE-APPROVAL-ORDERING-003",
+      "REQ-RELEASE-APPROVAL-ORDERING-004",
       "REQ-RELEASE-VERSION-SYNCHRONIZATION-001",
       "REQ-RELEASE-VERSION-SYNCHRONIZATION-002",
       "REQ-RELEASE-VERSION-SYNCHRONIZATION-003",
@@ -463,6 +470,21 @@
       {
         "code": "FORMAL_UNSUPPORTED",
         "severity": "warning",
+        "message": "REQ-CHANGE-QUALITY-REFRESH-001 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-CHANGE-QUALITY-REFRESH-002 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-CHANGE-QUALITY-REFRESH-003 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
         "message": "REQ-CHANGE-RECORD-FAIL-FAST-001 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
       },
       {
@@ -694,6 +716,26 @@
         "code": "FORMAL_UNSUPPORTED",
         "severity": "warning",
         "message": "REQ-MODEL-CORRESPONDENCE-EVIDENCE-GUIDANCE-001 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-RELEASE-APPROVAL-ORDERING-001 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-RELEASE-APPROVAL-ORDERING-002 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-RELEASE-APPROVAL-ORDERING-003 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-RELEASE-APPROVAL-ORDERING-004 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
       },
       {
         "code": "FORMAL_UNSUPPORTED",
@@ -1014,6 +1056,7 @@
     ".musubix/features/bounded-file-read-concurrency/requirements.md": "9e08acde7e29a8f14b23d908c465c629e49d00bc29ae9bda1466427362c815be",
     ".musubix/features/change-acceptance-heuristic/requirements.md": "82b9c8d839d6663f97b67bba2c01fc775e3253e444440eb2833f82cdd877bcf6",
     ".musubix/features/change-evidence-waiver/requirements.md": "33579a83e55ac3a9f07cd3b55ab3d96c0eaf3c0fc0646af0159cfb7e178762a2",
+    ".musubix/features/change-quality-refresh/requirements.md": "14202e150cc31cb45b8e0cc88124c8547fd93f733e1c929dee4382c30fffb5a9",
     ".musubix/features/change-record-fail-fast/requirements.md": "7488f2f96293ca03ca0690358aa528d1e329e70d39be3885540f54c81c14d94e",
     ".musubix/features/change-record-recordedat-order/requirements.md": "f43a1e3170ff7488fd2b3993ac9ba662b45ae159978513f929a99f59bdfcb83b",
     ".musubix/features/change-requirement-batches/requirements.md": "d4d2d1e9e12cd4e062ca3a14e4a28d9f011de634fb3c10defb53653260667110",
@@ -1025,6 +1068,7 @@
     ".musubix/features/evidence-writer-lock/requirements.md": "7494d9754b823f5b685919d1e37d870dbe2f4fd2146ffa093513dd1032c60a6e",
     ".musubix/features/human-approval-gates/requirements.md": "f2ae2380935831bb102cd6a7726f2a208ab1719e035157302ef51ed28f624fb0",
     ".musubix/features/model-correspondence-evidence-guidance/requirements.md": "d7ca8b823ddfd3265e89f2892003e5eb95faad7e9b3972b249de5f2902446511",
+    ".musubix/features/release-approval-ordering/requirements.md": "fecd1f0e25311d37dcea2b8582fbbdb08d628bda75035da8593f56e29499f980",
     ".musubix/features/release-version-synchronization/requirements.md": "afb3b57eb96d6e93e437e4a7c83f2f91a70af9c92967ce543ba399c244f6153f",
     ".musubix/features/requirements-design-scaffold/requirements.md": "0a968bc27756e715f68f22a8f6d65fc8fefce09ac79d1c8d0137282b821ebc45",
     ".musubix/features/session-scoped-development/requirements.md": "640aece168b4e6848c0d1e6371f0bfeb433fa8addfd064a77d050891d69d9a4f",

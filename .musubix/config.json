@@ -173,6 +173,18 @@
       "timeoutMs": 120000
     },
     {
+      "name": "change-quality-refresh-tests",
+      "command": "npx",
+      "args": [
+        "vitest",
+        "run",
+        "tests/change-quality-refresh.test.ts"
+      ],
+      "adapter": "vitest",
+      "required": true,
+      "timeoutMs": 120000
+    },
+    {
       "name": "change-record-fail-fast-tests",
       "command": "npx",
       "args": [
@@ -436,6 +448,18 @@
       "adapter": "vitest",
       "required": true,
       "timeoutMs": 120000
+    },
+    {
+      "name": "release-approval-ordering-tests",
+      "command": "npx",
+      "args": [
+        "vitest",
+        "run",
+        "tests/release-approval-ordering.test.ts"
+      ],
+      "adapter": "vitest",
+      "required": true,
+      "timeoutMs": 120000
     }
   ],
   "requiredChecks": [
@@ -475,7 +499,8 @@
   "workflow": {
     "mode": "compatible",
     "maxAgeSeconds": 3600,
-    "maxFutureSkewSeconds": 60
+    "maxFutureSkewSeconds": 60,
+    "maxTranscriptBytes": 120000000
   },
   "attestation": {
     "mode": "local",

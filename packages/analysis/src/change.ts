@@ -4,15 +4,20 @@ import { loadTddEvidence, validlyVoidedTddCycles } from './tdd.js';
 import { buildTrace, commentBlocks } from './trace.js';
 import { indexGraph } from './graph.js';
 import { validatePerformanceEvidence } from './performance.js';
-import { appendEvidenceOrder, evidenceOrderRecord, inspectEvidenceOrder } from './order.js';
+import {
+  appendEvidenceOrder, evidenceOrderRecord, inspectEvidenceOrder, loadEvidenceOrder, validateEvidenceOrderLog,
+  type EvidenceOrderLog, type EvidenceOrderRecord,
+} from './order.js';
 import { loadChangeWaiverEvidence, buildWaiverContext, diagnosticDetail, errorFor, reportWaiverEvidenceDiagnostics, waivedDiagnostic } from './change-waiver.js';
 import {
   batchFor, batchKey, changePhases, currentRequirementIdsForBatch, effectiveBatches, hasValidTddCycle,
   loadChangeEvidence, orderMigrationRequiredRequirementCondition,
+  qualityIdentity, qualityLineage,
   type ChangeCompleteness, type ChangeEvidence, type ChangeFingerprints, type ChangePhase,
   type ChangePhaseEvidence, type ChangeRecord, type ChangeTddBatch,
 } from './change-evidence.js';
 import { assertCoordinatedEvidenceRead, withEvidenceWriterLock } from './evidence-writer-lock.js';
+import { commitQualityRefresh } from './quality-refresh.js';
 
 export * from './change-evidence.js';
 
@@ -136,7 +141,7 @@ export async function recordChangePhase(
   changeId: string,
   phase: ChangePhase,
   requirementIds: string[],
-  options: { allowUnchanged?: boolean; dryRun?: boolean } = {},
+  options: { allowUnchanged?: boolean; dryRun?: boolean; qualityRefreshFaultAt?: string } = {},
 ): Promise<ChangeEvidence> {
   if (options.dryRun) {
     await assertCoordinatedEvidenceRead(root);
@@ -151,7 +156,7 @@ async function recordChangePhaseUnlocked(
   changeId: string,
   phase: ChangePhase,
   requirementIds: string[],
-  options: { allowUnchanged?: boolean; dryRun?: boolean },
+  options: { allowUnchanged?: boolean; dryRun?: boolean; qualityRefreshFaultAt?: string },
 ): Promise<ChangeEvidence> {
   if (!/^CHANGE-\d+$/.test(changeId)) throw new Error('Change ID must match CHANGE-<digits>.');
   if (!changePhases.includes(phase)) throw new Error('Unknown change phase.');
@@ -177,6 +182,10 @@ async function recordChangePhaseUnlocked(
   const normalizedRequirementIds = [...new Set(requirementIds)].sort();
   const isFullSet = JSON.stringify(normalizedRequirementIds) === JSON.stringify([...change.requirementIds].sort());
   const isBatchPhase = (tddBatchPhases as readonly string[]).includes(phase);
+
+  if (phase === 'quality' && change.phases.quality) {
+    return refreshQuality(root, changeId, normalizedRequirementIds, isFullSet, evidence, change, options);
+  }
 
   if (!isBatchPhase || isFullSet) {
     // impact/requirements/design/quality (always), and red/implementation/green
@@ -274,6 +283,119 @@ async function recordChangePhaseUnlocked(
   return evidence;
 }
 
+function validQualityCheckpoint(value: unknown): value is ChangePhaseEvidence & { order: number } {
+  if (!value || typeof value !== 'object') return false;
+  const checkpoint = value as ChangePhaseEvidence;
+  return checkpoint.phase === 'quality'
+    && typeof checkpoint.recordedAt === 'string'
+    && !!checkpoint.fingerprints && typeof checkpoint.fingerprints === 'object'
+    && Number.isInteger(checkpoint.order);
+}
+
+function validateQualityLineageForRefresh(
+  evidence: ChangeEvidence,
+  change: ChangeRecord,
+  order: EvidenceOrderLog,
+): void {
+  const history = change.qualityHistory;
+  if ((history !== undefined && (!Array.isArray(history) || history.length === 0))
+    || (evidence.schemaVersion === 1 && history !== undefined)) {
+    throw new Error('CHANGE_QUALITY_REFRESH_LINEAGE_INVALID: malformed Quality history.');
+  }
+  const lineage = qualityLineage(change);
+  if (!lineage.length || lineage.some((checkpoint) => !validQualityCheckpoint(checkpoint))) {
+    throw new Error('CHANGE_QUALITY_REFRESH_LINEAGE_INVALID: malformed Quality checkpoint.');
+  }
+  let previous = 0;
+  for (const [index, checkpoint] of lineage.entries()) {
+    const identity = qualityIdentity(index + 1);
+    const matches = [...order.records.values()].filter((record) =>
+      record.kind === 'change' && record.entityId === change.changeId && record.phase === identity);
+    if (matches.length !== 1 || matches[0]!.sequence !== checkpoint.order || checkpoint.order <= previous) {
+      throw new Error(`CHANGE_QUALITY_REFRESH_LINEAGE_INVALID: ${change.changeId}:${identity} is malformed.`);
+    }
+    previous = checkpoint.order;
+  }
+  const expected = new Set(lineage.map((_, index) => qualityIdentity(index + 1)));
+  if ([...order.records.values()].some((record) =>
+    record.kind === 'change' && record.entityId === change.changeId
+    && /^quality(?::\d+)?$/.test(record.phase) && !expected.has(record.phase))) {
+    throw new Error('CHANGE_QUALITY_REFRESH_LINEAGE_INVALID: orphan Quality order identity.');
+  }
+}
+
+function appendOrderCandidate(
+  order: EvidenceOrderLog,
+  changeId: string,
+  phase: string,
+): EvidenceOrderRecord {
+  const previous = order.records.at(-1);
+  const payload: Omit<EvidenceOrderRecord, 'recordSha256'> = {
+    sequence: order.records.length + 1,
+    kind: 'change',
+    entityId: changeId,
+    phase,
+    previousSha256: previous?.recordSha256 ?? null,
+  };
+  return { ...payload, recordSha256: digest(JSON.stringify(payload)) };
+}
+
+/** @id CODE-CHANGE-QUALITY-REFRESH-004
+ * @implements REQ-CHANGE-QUALITY-REFRESH-001 REQ-CHANGE-QUALITY-REFRESH-002 REQ-CHANGE-QUALITY-REFRESH-003
+ * @design DES-CHANGE-QUALITY-REFRESH-002
+ */
+async function refreshQuality(
+  root: string,
+  changeId: string,
+  normalizedRequirementIds: string[],
+  isFullSet: boolean,
+  evidence: ChangeEvidence,
+  change: ChangeRecord,
+  options: { dryRun?: boolean; qualityRefreshFaultAt?: string },
+): Promise<ChangeEvidence> {
+  if (!isFullSet) throw new Error('Every phase must use the same requirement IDs.');
+  const order = await loadEvidenceOrder(root) ?? { schemaVersion: 1, records: [] };
+  if (!validateEvidenceOrderLog(order).valid) {
+    throw new Error('CHANGE_QUALITY_REFRESH_LINEAGE_INVALID: monotonic evidence order is invalid.');
+  }
+  validateQualityLineageForRefresh(evidence, change, order);
+  const batches = effectiveBatches(change);
+  const current = normalizedRequirementIds.map((requirementId) => ({
+    requirementId,
+    batch: batchFor(batches, requirementId),
+  }));
+  const missing = current.filter(({ batch }) => !batch?.green).map(({ requirementId }) => requirementId);
+  if (missing.length) {
+    throw new Error(`CHANGE_QUALITY_REFRESH_GREEN_MISSING: current Green evidence is missing for ${missing.join(', ')}.`);
+  }
+  const authoritativeOrder = change.phases.quality!.order!;
+  if (!current.some(({ batch }) => batch!.green!.order! > authoritativeOrder)) {
+    throw new Error(`CHANGE_QUALITY_REFRESH_NOT_NEEDED: ${changeId} has no current Green after Quality.`);
+  }
+  const fingerprints = await currentFingerprints(root, changeId, change.requirementIds);
+  const candidate: ChangePhaseEvidence = {
+    phase: 'quality',
+    recordedAt: new Date().toISOString(),
+    fingerprints,
+  };
+  const projectedChange: ChangeRecord = {
+    ...change,
+    qualityHistory: [...(change.qualityHistory ?? []), change.phases.quality!],
+    phases: { ...change.phases, quality: candidate },
+  };
+  const projected: ChangeEvidence = {
+    schemaVersion: 2,
+    changes: evidence.changes.map((entry) => entry.changeId === changeId ? projectedChange : entry),
+  };
+  if (options.dryRun) return projected;
+  const identity = qualityIdentity(projectedChange.qualityHistory!.length + 1);
+  const orderRecord = appendOrderCandidate(order, changeId, identity);
+  const orderCandidate: EvidenceOrderLog = { ...order, records: [...order.records, orderRecord] };
+  candidate.order = orderRecord.sequence;
+  await commitQualityRefresh(root, orderCandidate, projected, options.qualityRefreshFaultAt);
+  return projected;
+}
+
 /** @id CODE-CHANGE-RECORD-RECORDEDAT-ORDER-001
  * @implements REQ-CHANGE-RECORD-RECORDEDAT-ORDER-002
  * @design DES-CHANGE-RECORD-RECORDEDAT-ORDER-002
@@ -289,6 +411,16 @@ function isCanonicalIsoRecordedAt(value: string): boolean {
 function collectRecordedAtEntries(change: ChangeRecord): { label: string; order: number; recordedAt: string }[] {
   const candidates: { label: string; order: number | undefined; recordedAt: string }[] = [];
   for (const singularPhase of singularPhases) {
+    if (singularPhase === 'quality' && change.phases.quality) {
+      for (const [index, checkpoint] of qualityLineage(change).entries()) {
+        candidates.push({
+          label: qualityIdentity(index + 1),
+          order: checkpoint.order,
+          recordedAt: checkpoint.recordedAt,
+        });
+      }
+      continue;
+    }
     const item = change.phases[singularPhase];
     if (item) candidates.push({ label: singularPhase, order: item.order, recordedAt: item.recordedAt });
   }
@@ -384,6 +516,7 @@ export async function validateChangeEvidence(root: string): Promise<{
     const batches = effectiveBatches(change);
     const fullSetKey = batchKey(change.requirementIds);
     for (const singularPhase of singularPhases) {
+      if (singularPhase === 'quality') continue;
       const item = change.phases[singularPhase];
       if (!item) {
         diagnostics.push(waivedDiagnostic(waiverContext, 'CHANGE_PHASE_MISSING',
@@ -398,6 +531,43 @@ export async function validateChangeEvidence(root: string): Promise<{
         if (!record || record.sequence !== item.order) {
           diagnostics.push(error('CHANGE_ORDER_MISMATCH', `${change.changeId}:${singularPhase} does not match the monotonic evidence order log.`));
         }
+      }
+    }
+    const quality = change.phases.quality;
+    if (!quality) {
+      diagnostics.push(waivedDiagnostic(waiverContext, 'CHANGE_PHASE_MISSING',
+        `${change.changeId} is missing quality.`, change.changeId, undefined,
+        diagnosticDetail('CHANGE_PHASE_MISSING', { phaseName: 'quality' })));
+    } else {
+      const history = change.qualityHistory;
+      const malformedShape = (history !== undefined && (!Array.isArray(history) || history.length === 0))
+        || (evidence.schemaVersion === 1 && history !== undefined);
+      const lineage = Array.isArray(history)
+        ? [...history, quality]
+        : [quality];
+      let previousOrder = 0;
+      let malformed = malformedShape;
+      const identities = new Set<string>();
+      for (const [index, checkpoint] of lineage.entries()) {
+        const identity = qualityIdentity(index + 1);
+        identities.add(identity);
+        if (!validQualityCheckpoint(checkpoint) || checkpoint.order <= previousOrder) {
+          malformed = true;
+          continue;
+        }
+        previousOrder = checkpoint.order;
+        const matches = [...order.records.values()].filter((record) =>
+          record.kind === 'change' && record.entityId === change.changeId && record.phase === identity);
+        if (matches.length !== 1 || matches[0]!.sequence !== checkpoint.order) malformed = true;
+      }
+      if ([...order.records.values()].some((record) =>
+        record.kind === 'change' && record.entityId === change.changeId
+        && /^quality(?::\d+)?$/.test(record.phase) && !identities.has(record.phase))) {
+        malformed = true;
+      }
+      if (malformed) {
+        diagnostics.push(error('CHANGE_QUALITY_HISTORY_MALFORMED',
+          `${change.changeId} has malformed Quality lineage or order pairing.`));
       }
     }
     if (change.phases.requirements?.order !== undefined && change.phases.impact?.order !== undefined
@@ -510,11 +680,11 @@ export async function validateChangeEvidence(root: string): Promise<{
           `${change.changeId}:${requirementId} references TDD evidence without monotonic order; regenerate the cycle.`,
           change.changeId, undefined, diagnosticDetail('CHANGE_ORDER_MIGRATION_REQUIRED', { requirementId })));
       }
-      if (red && !validCycle) {
+      if (red && !validCycle && !change.qualityHistory?.length) {
         diagnostics.push(waivedDiagnostic(waiverContext, 'CHANGE_RED_UNPROVEN',
           `${change.changeId} has no valid Red evidence for ${requirementId} before its Red phase.`, change.changeId, requirementId, undefined));
       }
-      if (green && !validCycle) {
+      if (green && !validCycle && !change.qualityHistory?.length) {
         diagnostics.push(waivedDiagnostic(waiverContext, 'CHANGE_GREEN_UNPROVEN',
           `${change.changeId} has no valid Green evidence for ${requirementId} before its Green phase.`, change.changeId, requirementId, undefined));
       }

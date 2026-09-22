@@ -21,6 +21,8 @@ Never record multiple declarations per invocation; use only the configured CLI.
 For broad work, use short stages: initialize, requirements, requirements approval, design, design approval, real Red, Green, integration, trace/formal, quality, release approval. Report each result before the next prompt.
 For a staged change, run `change-record <CHANGE-ID> <phase> --requirement <REQ-ID...>` after each phase in this exact order: `impact`, `requirements`, `design`, `red`, `implementation`, `green`, `quality`.
 `impact`/`requirements`/`design`/`quality` always use the full requirement ID set; `red`/`implementation`/`green` may instead use a non-empty subset as an independent per-requirement batch for an interleaved Red-Implementation-Green loop; `quality` still needs full cumulative Green coverage.
+After Quality, record a new corrective subset Red/Implementation/Green batch and invoke full-set `quality` again; schema v2 retains prior checkpoints in `qualityHistory`, and `change quality-recover` recovers interruptions.
+Refresh errors are `CHANGE_QUALITY_REFRESH_LINEAGE_INVALID`, `CHANGE_QUALITY_REFRESH_GREEN_MISSING`, `CHANGE_QUALITY_REFRESH_NOT_NEEDED`, and `CHANGE_QUALITY_REFRESH_RECOVERY_REQUIRED`; an already-used corrective subset requires a new reviewed staged change.
 List only requirements whose statement/acceptance changes, classify each, and
 document other impacts separately. Each needs fresh Red and Green.
 The CHANGE document must contain `Requirements:` with exactly those normative IDs.

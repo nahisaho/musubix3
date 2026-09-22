@@ -13,6 +13,7 @@ import {
   changePhases, recordChangePhase, recordWorkflow, runTddPhase, sanitizeWorkflowLogFile,
   validateTddEvidence, verifyWorkflowLogFile, migrateTddFingerprint, voidTddCycle, type ChangePhase, type TddPhase,
   mergeEvidenceHistories, recoverEvidenceMerge,
+  recoverQualityRefresh,
   attestationSigningPayload, createUnsignedAttestation, githubOidcAudience, verifyEvidenceAttestation,
   mutationDoctor, mutationIdentity, validateMutationEvidence, validateModelCorrespondenceEvidence, within,
   approvalManifest, approvalStages, recordApproval, requireApproval,   requireDomainOption, requireValidateDomainOption, resolveDesignFileDomain, resolveNamedDomain,
@@ -618,6 +619,17 @@ source, quarantining merge files, and rerunning structural validation.`))
       output(evidence, !!options.json, options.dryRun ? `Would record ${changeId}:${phase}.` : `Recorded ${changeId}:${phase}.`);
     });
   const change = program.command('change').description('Change chronology and waiver evidence');
+  /** @id CODE-CHANGE-QUALITY-REFRESH-005
+   * @implements REQ-CHANGE-QUALITY-REFRESH-003
+   * @design DES-CHANGE-QUALITY-REFRESH-002
+   */
+  common(change.command('quality-recover')
+    .description('Recover an interrupted two-file Quality refresh transaction'))
+    .action(async (options: { root: string; json?: boolean }) => {
+      const report = await recoverQualityRefresh(resolve(options.root));
+      output(report, !!options.json,
+        report.recovered ? `Quality refresh ${report.action}.` : 'No Quality refresh to recover.');
+    });
   const waiver = change.command('waiver').description('Record an audited, bounded downgrade of a recording-order-debt diagnostic');
   common(waiver.command('record <change-id> <code>')
     .description('Downgrade one currently-present waivable diagnostic from error to warning, as an appended, hash-chained record'))

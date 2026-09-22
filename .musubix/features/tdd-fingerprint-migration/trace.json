@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-22T05:55:40.836Z",
+  "generatedAt": "2026-09-22T12:18:30.720Z",
   "nodes": [
     {
       "id": "CODE-SESSION-SCOPED-DEVELOPMENT-001",
@@ -198,6 +198,18 @@
       "id": "ADR-0032",
       "kind": "adr",
       "path": ".musubix/decisions/ADR-0032.md",
+      "line": 1
+    },
+    {
+      "id": "ADR-0033",
+      "kind": "adr",
+      "path": ".musubix/decisions/ADR-0033.md",
+      "line": 1
+    },
+    {
+      "id": "ADR-0034",
+      "kind": "adr",
+      "path": ".musubix/decisions/ADR-0034.md",
       "line": 1
     },
     {
@@ -681,6 +693,45 @@
       "kind": "requirement",
       "path": ".musubix/features/change-evidence-waiver/requirements.md",
       "line": 370,
+      "mandatory": true
+    },
+    {
+      "id": "DES-CHANGE-QUALITY-REFRESH-001",
+      "kind": "design",
+      "path": ".musubix/features/change-quality-refresh/design.md",
+      "line": 7
+    },
+    {
+      "id": "DES-CHANGE-QUALITY-REFRESH-002",
+      "kind": "design",
+      "path": ".musubix/features/change-quality-refresh/design.md",
+      "line": 15
+    },
+    {
+      "id": "DES-CHANGE-QUALITY-REFRESH-003",
+      "kind": "design",
+      "path": ".musubix/features/change-quality-refresh/design.md",
+      "line": 23
+    },
+    {
+      "id": "REQ-CHANGE-QUALITY-REFRESH-001",
+      "kind": "requirement",
+      "path": ".musubix/features/change-quality-refresh/requirements.md",
+      "line": 13,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-CHANGE-QUALITY-REFRESH-002",
+      "kind": "requirement",
+      "path": ".musubix/features/change-quality-refresh/requirements.md",
+      "line": 42,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-CHANGE-QUALITY-REFRESH-003",
+      "kind": "requirement",
+      "path": ".musubix/features/change-quality-refresh/requirements.md",
+      "line": 85,
       "mandatory": true
     },
     {
@@ -1237,6 +1288,52 @@
       "path": ".musubix/features/model-correspondence-evidence-guidance/requirements.md",
       "line": 21,
       "mandatory": false
+    },
+    {
+      "id": "DES-RELEASE-APPROVAL-ORDERING-001",
+      "kind": "design",
+      "path": ".musubix/features/release-approval-ordering/design.md",
+      "line": 7
+    },
+    {
+      "id": "DES-RELEASE-APPROVAL-ORDERING-002",
+      "kind": "design",
+      "path": ".musubix/features/release-approval-ordering/design.md",
+      "line": 14
+    },
+    {
+      "id": "DES-RELEASE-APPROVAL-ORDERING-003",
+      "kind": "design",
+      "path": ".musubix/features/release-approval-ordering/design.md",
+      "line": 22
+    },
+    {
+      "id": "REQ-RELEASE-APPROVAL-ORDERING-001",
+      "kind": "requirement",
+      "path": ".musubix/features/release-approval-ordering/requirements.md",
+      "line": 7,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-RELEASE-APPROVAL-ORDERING-002",
+      "kind": "requirement",
+      "path": ".musubix/features/release-approval-ordering/requirements.md",
+      "line": 14,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-RELEASE-APPROVAL-ORDERING-003",
+      "kind": "requirement",
+      "path": ".musubix/features/release-approval-ordering/requirements.md",
+      "line": 21,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-RELEASE-APPROVAL-ORDERING-004",
+      "kind": "requirement",
+      "path": ".musubix/features/release-approval-ordering/requirements.md",
+      "line": 28,
+      "mandatory": true
     },
     {
       "id": "DES-RELEASE-VERSION-SYNCHRONIZATION-001",
@@ -1937,82 +2034,94 @@
       "line": 15
     },
     {
+      "id": "CODE-RELEASE-APPROVAL-ORDERING-001",
+      "kind": "code",
+      "path": "packages/analysis/src/approval.ts",
+      "line": 269
+    },
+    {
       "id": "CODE-APPROVAL-DOMAIN-SCOPING-003",
       "kind": "code",
       "path": "packages/analysis/src/approval.ts",
-      "line": 86
+      "line": 288
     },
     {
       "id": "CODE-HUMAN-APPROVAL-GATES-001",
       "kind": "code",
       "path": "packages/analysis/src/approval.ts",
-      "line": 113
+      "line": 315
     },
     {
       "id": "CODE-APPROVAL-DOMAIN-SCOPING-007",
       "kind": "code",
       "path": "packages/analysis/src/approval.ts",
-      "line": 119
+      "line": 321
+    },
+    {
+      "id": "CODE-RELEASE-APPROVAL-ORDERING-002",
+      "kind": "code",
+      "path": "packages/analysis/src/approval.ts",
+      "line": 402
     },
     {
       "id": "CODE-APPROVAL-DOMAIN-SCOPING-004",
       "kind": "code",
       "path": "packages/analysis/src/approval.ts",
-      "line": 201
+      "line": 535
     },
     {
       "id": "CODE-APPROVAL-DOMAIN-SCOPING-008",
       "kind": "code",
       "path": "packages/analysis/src/approval.ts",
-      "line": 237
+      "line": 571
     },
     {
       "id": "CODE-APPROVAL-DOMAIN-SCOPING-006",
       "kind": "code",
       "path": "packages/analysis/src/approval.ts",
-      "line": 261
+      "line": 595
     },
     {
       "id": "CODE-APPROVAL-DOMAIN-SCOPING-009",
       "kind": "code",
       "path": "packages/analysis/src/approval.ts",
-      "line": 272
+      "line": 606
     },
     {
       "id": "CODE-CLI-WORKFLOW-UX-003",
       "kind": "code",
       "path": "packages/analysis/src/approval.ts",
-      "line": 303
+      "line": 637
     },
     {
       "id": "CODE-APPROVAL-DOMAIN-SCOPING-005",
       "kind": "code",
       "path": "packages/analysis/src/approval.ts",
-      "line": 307
+      "line": 641
     },
     {
       "id": "CODE-APPROVAL-DOMAIN-SCOPING-010",
       "kind": "code",
       "path": "packages/analysis/src/approval.ts",
-      "line": 320
+      "line": 654
     },
     {
       "id": "CODE-APPROVAL-DOMAIN-SCOPING-011",
       "kind": "code",
       "path": "packages/analysis/src/approval.ts",
-      "line": 334
+      "line": 668
     },
     {
       "id": "CODE-APPROVAL-DOMAIN-SCOPING-012",
       "kind": "code",
       "path": "packages/analysis/src/approval.ts",
-      "line": 347
+      "line": 681
     },
     {
       "id": "CODE-APPROVAL-DOMAIN-SCOPING-013",
       "kind": "code",
       "path": "packages/analysis/src/approval.ts",
-      "line": 358
+      "line": 692
     },
     {
       "id": "CODE-ATTESTATION-EVIDENCE-STABILITY-002",
@@ -2021,40 +2130,46 @@
       "line": 67
     },
     {
+      "id": "CODE-CHANGE-QUALITY-REFRESH-001",
+      "kind": "code",
+      "path": "packages/analysis/src/change-evidence.ts",
+      "line": 75
+    },
+    {
       "id": "CODE-CHANGE-REQUIREMENT-BATCHES-001",
       "kind": "code",
       "path": "packages/analysis/src/change-evidence.ts",
-      "line": 69
+      "line": 106
     },
     {
       "id": "CODE-CHANGE-REQUIREMENT-BATCHES-003",
       "kind": "code",
       "path": "packages/analysis/src/change-evidence.ts",
-      "line": 85
+      "line": 122
     },
     {
       "id": "CODE-CHANGE-REQUIREMENT-BATCHES-004",
       "kind": "code",
       "path": "packages/analysis/src/change-evidence.ts",
-      "line": 128
+      "line": 165
     },
     {
       "id": "CODE-CHANGE-EVIDENCE-WAIVER-014",
       "kind": "code",
       "path": "packages/analysis/src/change-evidence.ts",
-      "line": 190
+      "line": 227
     },
     {
       "id": "CODE-CHANGE-EVIDENCE-WAIVER-015",
       "kind": "code",
       "path": "packages/analysis/src/change-evidence.ts",
-      "line": 201
+      "line": 238
     },
     {
       "id": "CODE-CHANGE-EVIDENCE-WAIVER-016",
       "kind": "code",
       "path": "packages/analysis/src/change-evidence.ts",
-      "line": 281
+      "line": 318
     },
     {
       "id": "CODE-CHANGE-EVIDENCE-WAIVER-001",
@@ -2156,49 +2271,55 @@
       "id": "CODE-CHANGE-ACCEPTANCE-HEURISTIC-001",
       "kind": "code",
       "path": "packages/analysis/src/change.ts",
-      "line": 19
+      "line": 24
     },
     {
       "id": "CODE-CHANGE-ACCEPTANCE-HEURISTIC-002",
       "kind": "code",
       "path": "packages/analysis/src/change.ts",
-      "line": 25
+      "line": 30
     },
     {
       "id": "CODE-CHANGE-RECORD-FAIL-FAST-001",
       "kind": "code",
       "path": "packages/analysis/src/change.ts",
-      "line": 91
+      "line": 96
     },
     {
       "id": "CODE-CHANGE-RECORD-FAIL-FAST-003",
       "kind": "code",
       "path": "packages/analysis/src/change.ts",
-      "line": 130
+      "line": 135
+    },
+    {
+      "id": "CODE-CHANGE-QUALITY-REFRESH-004",
+      "kind": "code",
+      "path": "packages/analysis/src/change.ts",
+      "line": 343
     },
     {
       "id": "CODE-CHANGE-RECORD-RECORDEDAT-ORDER-001",
       "kind": "code",
       "path": "packages/analysis/src/change.ts",
-      "line": 277
+      "line": 399
     },
     {
       "id": "CODE-CHANGE-RECORD-RECORDEDAT-ORDER-002",
       "kind": "code",
       "path": "packages/analysis/src/change.ts",
-      "line": 285
+      "line": 407
     },
     {
       "id": "CODE-CHANGE-RECORD-RECORDEDAT-ORDER-003",
       "kind": "code",
       "path": "packages/analysis/src/change.ts",
-      "line": 316
+      "line": 448
     },
     {
       "id": "CODE-CHANGE-REQUIREMENT-BATCHES-002",
       "kind": "code",
       "path": "packages/analysis/src/change.ts",
-      "line": 338
+      "line": 470
     },
     {
       "id": "CODE-APPROVAL-DOMAIN-SCOPING-001",
@@ -2234,25 +2355,25 @@
       "id": "CODE-EVIDENCE-HISTORY-MERGE-001",
       "kind": "code",
       "path": "packages/analysis/src/evidence-merge.ts",
-      "line": 409
+      "line": 461
     },
     {
       "id": "CODE-EVIDENCE-HISTORY-MERGE-002",
       "kind": "code",
       "path": "packages/analysis/src/evidence-merge.ts",
-      "line": 850
+      "line": 949
     },
     {
       "id": "CODE-EVIDENCE-HISTORY-MERGE-003",
       "kind": "code",
       "path": "packages/analysis/src/evidence-merge.ts",
-      "line": 937
+      "line": 1036
     },
     {
       "id": "CODE-EVIDENCE-HISTORY-MERGE-004",
       "kind": "code",
       "path": "packages/analysis/src/evidence-merge.ts",
-      "line": 1035
+      "line": 1134
     },
     {
       "id": "CODE-EVIDENCE-WRITER-LOCK-001",
@@ -2264,43 +2385,43 @@
       "id": "CODE-EVIDENCE-WRITER-LOCK-002",
       "kind": "code",
       "path": "packages/analysis/src/evidence-writer-lock.ts",
-      "line": 573
+      "line": 574
     },
     {
       "id": "CODE-EVIDENCE-WRITER-LOCK-003",
       "kind": "code",
       "path": "packages/analysis/src/evidence-writer-lock.ts",
-      "line": 777
+      "line": 778
     },
     {
       "id": "CODE-EVIDENCE-WRITER-LOCK-004",
       "kind": "code",
       "path": "packages/analysis/src/evidence-writer-lock.ts",
-      "line": 811
+      "line": 812
     },
     {
       "id": "CODE-EVIDENCE-WRITER-LOCK-005",
       "kind": "code",
       "path": "packages/analysis/src/evidence-writer-lock.ts",
-      "line": 826
+      "line": 827
     },
     {
       "id": "CODE-EVIDENCE-WRITER-LOCK-007",
       "kind": "code",
       "path": "packages/analysis/src/evidence-writer-lock.ts",
-      "line": 843
+      "line": 844
     },
     {
       "id": "CODE-EVIDENCE-WRITER-LOCK-008",
       "kind": "code",
       "path": "packages/analysis/src/evidence-writer-lock.ts",
-      "line": 873
+      "line": 874
     },
     {
       "id": "CODE-EVIDENCE-WRITER-LOCK-006",
       "kind": "code",
       "path": "packages/analysis/src/evidence-writer-lock.ts",
-      "line": 942
+      "line": 943
     },
     {
       "id": "CODE-CLI-WORKFLOW-UX-001",
@@ -2342,7 +2463,7 @@
       "id": "CODE-WORKFLOW-EVIDENCE-WAIVER-024",
       "kind": "code",
       "path": "packages/analysis/src/index.ts",
-      "line": 21
+      "line": 22
     },
     {
       "id": "CODE-BOUNDED-FILE-READ-CONCURRENCY-003",
@@ -2367,6 +2488,18 @@
       "kind": "code",
       "path": "packages/analysis/src/order.ts",
       "line": 76
+    },
+    {
+      "id": "CODE-CHANGE-QUALITY-REFRESH-002",
+      "kind": "code",
+      "path": "packages/analysis/src/quality-refresh.ts",
+      "line": 159
+    },
+    {
+      "id": "CODE-CHANGE-QUALITY-REFRESH-003",
+      "kind": "code",
+      "path": "packages/analysis/src/quality-refresh.ts",
+      "line": 258
     },
     {
       "id": "CODE-REQUIREMENTS-DESIGN-SCAFFOLD-001",
@@ -2594,37 +2727,43 @@
       "id": "CODE-CLI-WORKFLOW-UX-002",
       "kind": "code",
       "path": "packages/cli/src/main.ts",
-      "line": 160
+      "line": 161
     },
     {
       "id": "CODE-WORKFLOW-EVIDENCE-WAIVER-023",
       "kind": "code",
       "path": "packages/cli/src/main.ts",
-      "line": 468
+      "line": 469
     },
     {
       "id": "CODE-WORKFLOW-WAIVER-BULK-002",
       "kind": "code",
       "path": "packages/cli/src/main.ts",
-      "line": 504
+      "line": 505
     },
     {
       "id": "CODE-CHANGE-RECORD-RECORDEDAT-ORDER-004",
       "kind": "code",
       "path": "packages/cli/src/main.ts",
-      "line": 594
+      "line": 595
     },
     {
       "id": "CODE-CHANGE-RECORD-FAIL-FAST-002",
       "kind": "code",
       "path": "packages/cli/src/main.ts",
-      "line": 610
+      "line": 611
+    },
+    {
+      "id": "CODE-CHANGE-QUALITY-REFRESH-005",
+      "kind": "code",
+      "path": "packages/cli/src/main.ts",
+      "line": 622
     },
     {
       "id": "CODE-TDD-ADOPTION-WARNING-003",
       "kind": "code",
       "path": "packages/cli/src/main.ts",
-      "line": 701
+      "line": 713
     },
     {
       "id": "CODE-DESIGN-ADR-NONE-EXEMPTION-001",
@@ -2654,7 +2793,13 @@
       "id": "CODE-RELEASE-VERSION-SYNCHRONIZATION-005",
       "kind": "code",
       "path": "scripts/release-prepare.mjs",
-      "line": 15
+      "line": 36
+    },
+    {
+      "id": "CODE-RELEASE-APPROVAL-ORDERING-003",
+      "kind": "code",
+      "path": "scripts/release-prepare.mjs",
+      "line": 65
     },
     {
       "id": "CODE-RELEASE-VERSION-SYNCHRONIZATION-001",
@@ -3051,6 +3196,24 @@
       "kind": "test",
       "path": "tests/change-evidence-waiver.test.ts",
       "line": 323
+    },
+    {
+      "id": "TEST-CHANGE-QUALITY-REFRESH-001",
+      "kind": "test",
+      "path": "tests/change-quality-refresh.test.ts",
+      "line": 84
+    },
+    {
+      "id": "TEST-CHANGE-QUALITY-REFRESH-002",
+      "kind": "test",
+      "path": "tests/change-quality-refresh.test.ts",
+      "line": 102
+    },
+    {
+      "id": "TEST-CHANGE-QUALITY-REFRESH-003",
+      "kind": "test",
+      "path": "tests/change-quality-refresh.test.ts",
+      "line": 121
     },
     {
       "id": "TEST-CHANGE-RECORD-FAIL-FAST-001",
@@ -3479,6 +3642,48 @@
       "line": 324
     },
     {
+      "id": "TEST-RELEASE-APPROVAL-ORDERING-001",
+      "kind": "test",
+      "path": "tests/release-approval-ordering.test.ts",
+      "line": 79
+    },
+    {
+      "id": "TEST-RELEASE-APPROVAL-ORDERING-002",
+      "kind": "test",
+      "path": "tests/release-approval-ordering.test.ts",
+      "line": 133
+    },
+    {
+      "id": "TEST-RELEASE-APPROVAL-ORDERING-005",
+      "kind": "test",
+      "path": "tests/release-approval-ordering.test.ts",
+      "line": 193
+    },
+    {
+      "id": "TEST-RELEASE-APPROVAL-ORDERING-003",
+      "kind": "test",
+      "path": "tests/release-approval-ordering.test.ts",
+      "line": 220
+    },
+    {
+      "id": "TEST-RELEASE-APPROVAL-ORDERING-004",
+      "kind": "test",
+      "path": "tests/release-approval-ordering.test.ts",
+      "line": 267
+    },
+    {
+      "id": "TEST-RELEASE-APPROVAL-ORDERING-006",
+      "kind": "test",
+      "path": "tests/release-approval-ordering.test.ts",
+      "line": 298
+    },
+    {
+      "id": "TEST-RELEASE-APPROVAL-ORDERING-007",
+      "kind": "test",
+      "path": "tests/release-approval-ordering.test.ts",
+      "line": 331
+    },
+    {
       "id": "TEST-RELEASE-VERSION-SYNCHRONIZATION-001",
       "kind": "test",
       "path": "tests/release-version-synchronization.test.ts",
@@ -3500,25 +3705,25 @@
       "id": "TEST-RELEASE-VERSION-SYNCHRONIZATION-004",
       "kind": "test",
       "path": "tests/release-version-synchronization.test.ts",
-      "line": 473
+      "line": 475
     },
     {
       "id": "TEST-RELEASE-VERSION-SYNCHRONIZATION-005",
       "kind": "test",
       "path": "tests/release-version-synchronization.test.ts",
-      "line": 526
+      "line": 528
     },
     {
       "id": "TEST-RELEASE-VERSION-SYNCHRONIZATION-006",
       "kind": "test",
       "path": "tests/release-version-synchronization.test.ts",
-      "line": 626
+      "line": 628
     },
     {
       "id": "TEST-RELEASE-VERSION-SYNCHRONIZATION-007",
       "kind": "test",
       "path": "tests/release-version-synchronization.test.ts",
-      "line": 707
+      "line": 709
     },
     {
       "id": "TEST-REQUIREMENTS-DESIGN-SCAFFOLD-001",
@@ -4267,6 +4472,66 @@
       "relation": "decides"
     },
     {
+      "from": "DES-CHANGE-QUALITY-REFRESH-001",
+      "to": "REQ-CHANGE-QUALITY-REFRESH-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-CHANGE-QUALITY-REFRESH-001",
+      "to": "REQ-CHANGE-QUALITY-REFRESH-003",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0034",
+      "to": "DES-CHANGE-QUALITY-REFRESH-001",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-CHANGE-QUALITY-REFRESH-002",
+      "to": "REQ-CHANGE-QUALITY-REFRESH-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-CHANGE-QUALITY-REFRESH-002",
+      "to": "REQ-CHANGE-QUALITY-REFRESH-002",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-CHANGE-QUALITY-REFRESH-002",
+      "to": "REQ-CHANGE-QUALITY-REFRESH-003",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0034",
+      "to": "DES-CHANGE-QUALITY-REFRESH-002",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-CHANGE-QUALITY-REFRESH-002",
+      "to": "DES-CHANGE-QUALITY-REFRESH-001",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-CHANGE-QUALITY-REFRESH-003",
+      "to": "REQ-CHANGE-QUALITY-REFRESH-003",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0034",
+      "to": "DES-CHANGE-QUALITY-REFRESH-003",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-CHANGE-QUALITY-REFRESH-003",
+      "to": "DES-CHANGE-QUALITY-REFRESH-001",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-CHANGE-QUALITY-REFRESH-003",
+      "to": "DES-CHANGE-QUALITY-REFRESH-002",
+      "relation": "depends-on"
+    },
+    {
       "from": "DES-CHANGE-RECORD-FAIL-FAST-001",
       "to": "REQ-CHANGE-RECORD-FAIL-FAST-001",
       "relation": "satisfies"
@@ -4875,6 +5140,81 @@
       "from": "DES-MODEL-CORRESPONDENCE-EVIDENCE-GUIDANCE-002",
       "to": "REQ-MODEL-CORRESPONDENCE-EVIDENCE-GUIDANCE-002",
       "relation": "satisfies"
+    },
+    {
+      "from": "DES-RELEASE-APPROVAL-ORDERING-001",
+      "to": "REQ-RELEASE-APPROVAL-ORDERING-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-RELEASE-APPROVAL-ORDERING-001",
+      "to": "REQ-RELEASE-APPROVAL-ORDERING-002",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-RELEASE-APPROVAL-ORDERING-001",
+      "to": "REQ-RELEASE-APPROVAL-ORDERING-003",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0033",
+      "to": "DES-RELEASE-APPROVAL-ORDERING-001",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-RELEASE-APPROVAL-ORDERING-002",
+      "to": "REQ-RELEASE-APPROVAL-ORDERING-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-RELEASE-APPROVAL-ORDERING-002",
+      "to": "REQ-RELEASE-APPROVAL-ORDERING-002",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-RELEASE-APPROVAL-ORDERING-002",
+      "to": "REQ-RELEASE-APPROVAL-ORDERING-003",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0033",
+      "to": "DES-RELEASE-APPROVAL-ORDERING-002",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-RELEASE-APPROVAL-ORDERING-002",
+      "to": "DES-RELEASE-APPROVAL-ORDERING-001",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-RELEASE-APPROVAL-ORDERING-003",
+      "to": "REQ-RELEASE-APPROVAL-ORDERING-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-RELEASE-APPROVAL-ORDERING-003",
+      "to": "REQ-RELEASE-APPROVAL-ORDERING-002",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-RELEASE-APPROVAL-ORDERING-003",
+      "to": "REQ-RELEASE-APPROVAL-ORDERING-003",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-RELEASE-APPROVAL-ORDERING-003",
+      "to": "REQ-RELEASE-APPROVAL-ORDERING-004",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0033",
+      "to": "DES-RELEASE-APPROVAL-ORDERING-003",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-RELEASE-APPROVAL-ORDERING-003",
+      "to": "DES-RELEASE-APPROVAL-ORDERING-002",
+      "relation": "depends-on"
     },
     {
       "from": "DES-RELEASE-VERSION-SYNCHRONIZATION-001",
@@ -5777,6 +6117,26 @@
       "relation": "implements"
     },
     {
+      "from": "CODE-RELEASE-APPROVAL-ORDERING-001",
+      "to": "REQ-RELEASE-APPROVAL-ORDERING-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-RELEASE-APPROVAL-ORDERING-001",
+      "to": "REQ-RELEASE-APPROVAL-ORDERING-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-RELEASE-APPROVAL-ORDERING-001",
+      "to": "REQ-RELEASE-APPROVAL-ORDERING-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-RELEASE-APPROVAL-ORDERING-001",
+      "to": "DES-RELEASE-APPROVAL-ORDERING-001",
+      "relation": "implements"
+    },
+    {
       "from": "CODE-APPROVAL-DOMAIN-SCOPING-003",
       "to": "REQ-APPROVAL-DOMAIN-SCOPING-011",
       "relation": "implements"
@@ -5879,6 +6239,26 @@
     {
       "from": "CODE-APPROVAL-DOMAIN-SCOPING-007",
       "to": "DES-APPROVAL-DOMAIN-SCOPING-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-RELEASE-APPROVAL-ORDERING-002",
+      "to": "REQ-RELEASE-APPROVAL-ORDERING-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-RELEASE-APPROVAL-ORDERING-002",
+      "to": "REQ-RELEASE-APPROVAL-ORDERING-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-RELEASE-APPROVAL-ORDERING-002",
+      "to": "REQ-RELEASE-APPROVAL-ORDERING-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-RELEASE-APPROVAL-ORDERING-002",
+      "to": "DES-RELEASE-APPROVAL-ORDERING-001",
       "relation": "implements"
     },
     {
@@ -6054,6 +6434,21 @@
     {
       "from": "CODE-ATTESTATION-EVIDENCE-STABILITY-002",
       "to": "DES-ATTESTATION-EVIDENCE-STABILITY-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-QUALITY-REFRESH-001",
+      "to": "REQ-CHANGE-QUALITY-REFRESH-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-QUALITY-REFRESH-001",
+      "to": "REQ-CHANGE-QUALITY-REFRESH-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-QUALITY-REFRESH-001",
+      "to": "DES-CHANGE-QUALITY-REFRESH-001",
       "relation": "implements"
     },
     {
@@ -6489,6 +6884,26 @@
     {
       "from": "CODE-CHANGE-RECORD-FAIL-FAST-003",
       "to": "DES-CHANGE-RECORD-FAIL-FAST-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-QUALITY-REFRESH-004",
+      "to": "REQ-CHANGE-QUALITY-REFRESH-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-QUALITY-REFRESH-004",
+      "to": "REQ-CHANGE-QUALITY-REFRESH-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-QUALITY-REFRESH-004",
+      "to": "REQ-CHANGE-QUALITY-REFRESH-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-QUALITY-REFRESH-004",
+      "to": "DES-CHANGE-QUALITY-REFRESH-002",
       "relation": "implements"
     },
     {
@@ -6974,6 +7389,31 @@
     {
       "from": "CODE-CHANGE-EVIDENCE-WAIVER-013",
       "to": "DES-CHANGE-EVIDENCE-WAIVER-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-QUALITY-REFRESH-002",
+      "to": "REQ-CHANGE-QUALITY-REFRESH-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-QUALITY-REFRESH-002",
+      "to": "REQ-CHANGE-QUALITY-REFRESH-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-QUALITY-REFRESH-002",
+      "to": "DES-CHANGE-QUALITY-REFRESH-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-QUALITY-REFRESH-003",
+      "to": "REQ-CHANGE-QUALITY-REFRESH-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-QUALITY-REFRESH-003",
+      "to": "DES-CHANGE-QUALITY-REFRESH-002",
       "relation": "implements"
     },
     {
@@ -7717,6 +8157,16 @@
       "relation": "implements"
     },
     {
+      "from": "CODE-CHANGE-QUALITY-REFRESH-005",
+      "to": "REQ-CHANGE-QUALITY-REFRESH-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-CHANGE-QUALITY-REFRESH-005",
+      "to": "DES-CHANGE-QUALITY-REFRESH-002",
+      "relation": "implements"
+    },
+    {
       "from": "CODE-TDD-ADOPTION-WARNING-003",
       "to": "REQ-TDD-ADOPTION-WARNING-002",
       "relation": "implements"
@@ -7804,6 +8254,36 @@
     {
       "from": "CODE-RELEASE-VERSION-SYNCHRONIZATION-005",
       "to": "DES-RELEASE-VERSION-SYNCHRONIZATION-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-RELEASE-APPROVAL-ORDERING-003",
+      "to": "REQ-RELEASE-APPROVAL-ORDERING-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-RELEASE-APPROVAL-ORDERING-003",
+      "to": "REQ-RELEASE-APPROVAL-ORDERING-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-RELEASE-APPROVAL-ORDERING-003",
+      "to": "REQ-RELEASE-APPROVAL-ORDERING-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-RELEASE-APPROVAL-ORDERING-003",
+      "to": "REQ-RELEASE-APPROVAL-ORDERING-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-RELEASE-APPROVAL-ORDERING-003",
+      "to": "DES-RELEASE-APPROVAL-ORDERING-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-RELEASE-APPROVAL-ORDERING-003",
+      "to": "DES-RELEASE-APPROVAL-ORDERING-003",
       "relation": "implements"
     },
     {
@@ -8237,6 +8717,21 @@
       "relation": "verifies"
     },
     {
+      "from": "TEST-CHANGE-QUALITY-REFRESH-001",
+      "to": "REQ-CHANGE-QUALITY-REFRESH-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-CHANGE-QUALITY-REFRESH-002",
+      "to": "REQ-CHANGE-QUALITY-REFRESH-002",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-CHANGE-QUALITY-REFRESH-003",
+      "to": "REQ-CHANGE-QUALITY-REFRESH-003",
+      "relation": "verifies"
+    },
+    {
       "from": "TEST-CHANGE-RECORD-FAIL-FAST-001",
       "to": "REQ-CHANGE-RECORD-FAIL-FAST-001",
       "relation": "verifies"
@@ -8657,6 +9152,66 @@
       "relation": "verifies"
     },
     {
+      "from": "TEST-RELEASE-APPROVAL-ORDERING-001",
+      "to": "REQ-RELEASE-APPROVAL-ORDERING-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-RELEASE-APPROVAL-ORDERING-001",
+      "to": "REQ-RELEASE-APPROVAL-ORDERING-002",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-RELEASE-APPROVAL-ORDERING-002",
+      "to": "REQ-RELEASE-APPROVAL-ORDERING-002",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-RELEASE-APPROVAL-ORDERING-002",
+      "to": "REQ-RELEASE-APPROVAL-ORDERING-003",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-RELEASE-APPROVAL-ORDERING-005",
+      "to": "REQ-RELEASE-APPROVAL-ORDERING-002",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-RELEASE-APPROVAL-ORDERING-005",
+      "to": "REQ-RELEASE-APPROVAL-ORDERING-003",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-RELEASE-APPROVAL-ORDERING-003",
+      "to": "REQ-RELEASE-APPROVAL-ORDERING-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-RELEASE-APPROVAL-ORDERING-003",
+      "to": "REQ-RELEASE-APPROVAL-ORDERING-003",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-RELEASE-APPROVAL-ORDERING-004",
+      "to": "REQ-RELEASE-APPROVAL-ORDERING-004",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-RELEASE-APPROVAL-ORDERING-006",
+      "to": "REQ-RELEASE-APPROVAL-ORDERING-002",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-RELEASE-APPROVAL-ORDERING-007",
+      "to": "REQ-RELEASE-APPROVAL-ORDERING-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-RELEASE-APPROVAL-ORDERING-007",
+      "to": "REQ-RELEASE-APPROVAL-ORDERING-002",
+      "relation": "verifies"
+    },
+    {
       "from": "TEST-RELEASE-VERSION-SYNCHRONIZATION-001",
       "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-001",
       "relation": "verifies"
@@ -9074,7 +9629,7 @@
   ],
   "diagnostics": [],
   "fingerprints": {
-    ".github/skills/sdd-change/SKILL.md": "b9c7960768a2712d4da67cc8d5e28c99cb921a2b1dd718d99ce7e28d1db45e79",
+    ".github/skills/sdd-change/SKILL.md": "471aa19abcef418a8d8a1ad6620db6ec153b75f099073780e60759ae175558c8",
     ".github/skills/sdd-design/SKILL.md": "7f9a4fa13b420f8436b4b33704111f3b70248408fe209ab7ee98a258b2712d66",
     ".github/skills/sdd-formal-codegraph/SKILL.md": "67944f2599609922f4957a1d99fa0f2139a21c1eb08e7264b5d72e45c2204721",
     ".github/skills/sdd-implementation/SKILL.md": "5d0465684458547ea65a4502dcfbf842115f188af5a9b054fa440932ee8362ee",
@@ -9114,6 +9669,8 @@
     ".musubix/decisions/ADR-0030.md": "80b4d83140891df2ae9b8056d8ed4ec4b04bcb03544ca0523932a18465b088d2",
     ".musubix/decisions/ADR-0031.md": "5e224efdc547b469c255ed44dda4ad0e4bfc0e855e105d3968260998c095085b",
     ".musubix/decisions/ADR-0032.md": "31bfdd12d54dcf9b5335d10c38de351ab396ee0c1e9834b4a275fbc4de00d06d",
+    ".musubix/decisions/ADR-0033.md": "82855115e4da67d3c4ddbbb72435e9a852b405ab6db325c416f427e9cde30978",
+    ".musubix/decisions/ADR-0034.md": "3553589fd9d989c089351af9cea4f2fe671117006591dc1f6336b6b95196ebcd",
     ".musubix/features/adapter-pattern-recognition/design.md": "a8e0c4a11f626cb4a41c9b5b53359c072ec0c3161f704791f42ba8af38124a70",
     ".musubix/features/adapter-pattern-recognition/requirements.md": "5731561a0a04982b8a5c305bdeeae6084bcf0ee8846f295eaaaabc823d1f9793",
     ".musubix/features/approval-domain-scoping/design.md": "e8731f1e3094aa22192ae2ae5986fb4dc9a7698f7cfe66961e1342f6e0743bd9",
@@ -9126,6 +9683,8 @@
     ".musubix/features/change-acceptance-heuristic/requirements.md": "82b9c8d839d6663f97b67bba2c01fc775e3253e444440eb2833f82cdd877bcf6",
     ".musubix/features/change-evidence-waiver/design.md": "ceb448c69dd98a06c342f9a166ce95eed85e89ebb92c5fd3774960cb83282210",
     ".musubix/features/change-evidence-waiver/requirements.md": "33579a83e55ac3a9f07cd3b55ab3d96c0eaf3c0fc0646af0159cfb7e178762a2",
+    ".musubix/features/change-quality-refresh/design.md": "2e16e0799c111de3a740f18515be3798907031cfc64efa96a0c73a152db42427",
+    ".musubix/features/change-quality-refresh/requirements.md": "14202e150cc31cb45b8e0cc88124c8547fd93f733e1c929dee4382c30fffb5a9",
     ".musubix/features/change-record-fail-fast/design.md": "4fec24158324cd376089df5c0d1018c5c58c6da37eecf63b929bf9b63c3aa253",
     ".musubix/features/change-record-fail-fast/requirements.md": "7488f2f96293ca03ca0690358aa528d1e329e70d39be3885540f54c81c14d94e",
     ".musubix/features/change-record-recordedat-order/design.md": "dd13b47ff7a22763bf45114f4a789c3c566e71d5905bd1dbcebe1f093992e7ab",
@@ -9148,6 +9707,8 @@
     ".musubix/features/human-approval-gates/requirements.md": "f2ae2380935831bb102cd6a7726f2a208ab1719e035157302ef51ed28f624fb0",
     ".musubix/features/model-correspondence-evidence-guidance/design.md": "708350f1f2a95dd9ab36b3da739db89be8b4895085a3c0fdf6b64482fe04837a",
     ".musubix/features/model-correspondence-evidence-guidance/requirements.md": "d7ca8b823ddfd3265e89f2892003e5eb95faad7e9b3972b249de5f2902446511",
+    ".musubix/features/release-approval-ordering/design.md": "8e54722870ebfaa554667b5a7ead9a1e5a830bcc340b572f1de4280097a078f2",
+    ".musubix/features/release-approval-ordering/requirements.md": "fecd1f0e25311d37dcea2b8582fbbdb08d628bda75035da8593f56e29499f980",
     ".musubix/features/release-version-synchronization/design.md": "8df85935c9e2151cba0b0640fb5b25af81a529cfa7d2e7ec43f7730a44ebf42e",
     ".musubix/features/release-version-synchronization/requirements.md": "afb3b57eb96d6e93e437e4a7c83f2f91a70af9c92967ce543ba399c244f6153f",
     ".musubix/features/requirements-design-scaffold/design.md": "bbc705198e6631a77c4a2ff6999758dc9d2c457794e666aea50221743a691ecf",
@@ -9181,26 +9742,27 @@
     "packages/analysis/src/adapters.ts": "c377a988a65f710edc5a77d555a1b15e8376fc725543d8ee41db4c3ba719b3bd",
     "packages/analysis/src/approval-domains.ts": "bc45836374021f86c4c2085184185546cc4291880aea32b9084188545b9394b4",
     "packages/analysis/src/approval-record.ts": "08b934d8c43b6d9b298ec4615b2bcabefbaf7cd143152fe6e1e08ea95cdd288d",
-    "packages/analysis/src/approval.ts": "d9f57165ca455a0b49acdda7096e0df98a06cd5be33c3d20b2f06cf40917c69f",
+    "packages/analysis/src/approval.ts": "033bbf1b8e55e67dd0eeb0d73913ba4d767395486a1bbdf16c05a49f2f2041ac",
     "packages/analysis/src/attestation.ts": "c353b5d93f151665e1f5f0531b763db164cb54e5305a837efd47b2742eb3b949",
-    "packages/analysis/src/change-evidence.ts": "a4d3f08d27ea87cf0b888256429227963df0839b20e741f85c844ab7ca7fb717",
+    "packages/analysis/src/change-evidence.ts": "81d98d57b62478f0817bd109696d7a1a825a08dce075d1e88b7c47379941c4b8",
     "packages/analysis/src/change-waiver.ts": "6f57ff12e177c7e6ba85a43d027d1fb7cf5c14d9b6d5a1d67d67d2e9a77a04de",
-    "packages/analysis/src/change.ts": "dc3e06c496955fbdcb1b725625f7285ea48547ad676e446fdc264bbc8297e6ae",
+    "packages/analysis/src/change.ts": "45359fab8f407e837041593d96a637c22d3d47857cc08c7d9992dd877ccae45e",
     "packages/analysis/src/config.ts": "52d5212f4057df9ed5caac0a0025ce744864909abceea3c64d259479ddffb998",
-    "packages/analysis/src/evidence-merge-guard.ts": "cc0303770804e83c5daf231b4f137ebfd0e5238cc18db94a6f5b9568dfa2f20f",
-    "packages/analysis/src/evidence-merge.ts": "4c57a0aaeeb75842cc5a7d2881af483ab900a0e9a66520b8457110ea52e60241",
-    "packages/analysis/src/evidence-writer-lock.ts": "aef0bc397afddf04092a22099dc4bf37ce9867deec6638aff2b1f10b607e94b7",
+    "packages/analysis/src/evidence-merge-guard.ts": "1c0b4735d974f4c5fa0b9edaa5bde075baa5ca09de645d32db41f2e24e9421e1",
+    "packages/analysis/src/evidence-merge.ts": "93b05afe610ae1894fb31ce4984a921ba6094e5bb067d5e1a5bebba23de97790",
+    "packages/analysis/src/evidence-writer-lock.ts": "a6ff3d6f9a6fe6caf7911f103edd07d61518a6038d54c477fd1a4f797932c219",
     "packages/analysis/src/files.ts": "8c444fac80a0f26dc7341b43e84f3e3906e346ad5e442f2909da7f18e031c72d",
     "packages/analysis/src/formal.ts": "3b214da239fbf5f796f76fb5d9141cf60f9b946a51560cde5944e7e2f9ca4891",
     "packages/analysis/src/gate.ts": "a55ea88c4af2b52a3e67cc2e4987bc284bb737db7348c4b785bf73db80401422",
     "packages/analysis/src/graph.ts": "e79836480c0d7a005f23c59e12bc9a1fd4fc6932f5635addb46a45561ef28e6d",
-    "packages/analysis/src/index.ts": "6b563f16281a9522a14f5477d6bb2d8b3247f886f23739dbfb9db699de8ab6ca",
+    "packages/analysis/src/index.ts": "63d1c970c7dd266cc1702dc1cdea52cab3acf093f4e23e7d36cb0b07374ddb2e",
     "packages/analysis/src/knowledge.ts": "dfab1e023bcff8c937768746140d1ef3cdb7ffbe2bc8a2f1008a630298b41087",
     "packages/analysis/src/model-correspondence.ts": "c079c392ed21a76435868d70d942433feb7b3505020ff76bf60e4e55b0ea83c1",
     "packages/analysis/src/mutation.ts": "eabd67fe84a5bb1aa42743c364f34db66267fd7d42ce7d9093e31eeca8652bc4",
     "packages/analysis/src/order.ts": "62104804c8fd55ee418206ef3b7c14364d8f78c92661ea7f38d4daf150b2ce1d",
     "packages/analysis/src/performance.ts": "87e478fe5bfaa453a559392497994b815df436cb4e329dcd56e3419ca558386b",
     "packages/analysis/src/process.ts": "8184c7f7c4c58cdc6987fd9d2ec2c02ce8557f94b6aa30853a0c6056ba79cf4a",
+    "packages/analysis/src/quality-refresh.ts": "7f0627d0aa455a1de3bbcc924eaf9ca264bde2df80108046d6e4a2de33e100e7",
     "packages/analysis/src/scaffold-artifact.ts": "e5e6fa31fbd97ce4dcc294ab26966eb0a4a2507eb4025a7a8a522831e7fb886d",
     "packages/analysis/src/tdd.ts": "d56d5b760c570eaf2495d32afa6c15caa6bca6ed4f40d1bffeefbf1141cdb135",
     "packages/analysis/src/test-report.ts": "41c76811bfcb5e286bf097bf2f6aaf6cd5a414202efe8108f28219ecca063a01",
@@ -9209,7 +9771,7 @@
     "packages/analysis/src/workflow-waiver.ts": "7c09999654d03fbc96879f3e6726d505706cdcba36940c00d46ac208d94f972f",
     "packages/analysis/src/workflow.ts": "f2f89fa9d2d5e6406ac58bb943c60a1ac209b6917edb850d36d725bb37d9ac4f",
     "packages/cli/src/install.ts": "346a6e66a29505010681ac32ea17651339cef3cfc1143422174981438e17bbf1",
-    "packages/cli/src/main.ts": "bc67d0044ae088d009c3fa4665e0293be9ed1d1d79b4e19de78de2b81d51d5b2",
+    "packages/cli/src/main.ts": "16ef7bb4b26c8500a9cebf489ff497b5f2c8302b51d736bde90b4e9985572135",
     "packages/domain/src/constitution.ts": "514278499642ff46ed902864b9192f566b116b4f92eb3fafa6b62588335e170a",
     "packages/domain/src/design.ts": "fc1ca4d3249abc9705ba4b6f296e0f4fa3b3d6ff6d5d82e51c99f49fc7a93ac9",
     "packages/domain/src/index.ts": "43243e9279e3826b23cd8d8b4365854974112ce4cf17cfb0f0ee32e6b28e9cc6",
@@ -9218,7 +9780,7 @@
     "packages/domain/src/types.ts": "0f0cbd43bdee4db03b83e4869e9791531a63e9b63aa7a09661f62ad1bbc75cb3",
     "scripts/check-package.mjs": "f5cdb012f3ec097b52501dba3a2f106bf7a3b38468769f12977ccd14d9a4ee83",
     "scripts/release-attestation.mjs": "b15842f6f83eb768c361a5e054a984af0da846f3b6e789bc0c91127415576d15",
-    "scripts/release-prepare.mjs": "23028592e1f83b6aa4737717bf4abeb87845b9f06d16eb3b0bf35f92daf045ac",
+    "scripts/release-prepare.mjs": "866f10190cd7598256e87d6e073cc6cd85d071ce09fa777e2fb4e347466d309f",
     "scripts/release-publish.mjs": "be05292662e6f3a169f238231574c97dc70d41fc7a036bfe86b284e43eadaff4",
     "scripts/release-version.mjs": "24f8d0d1cd72408d5462238a99db3856639a94cb904337a8fabddad7af1cb6de",
     "scripts/smoke-package.mjs": "aecca89d02c2f7222567b8f86a6f6c7a8d3599d9c3539c38023012eee620a8d1",
@@ -9230,6 +9792,7 @@
     "tests/bounded-file-read-concurrency.test.ts": "85743bfec42baef1a8cebd36a6b9e85293f9fc29f4121b220398ce32794b3112",
     "tests/change-acceptance-heuristic.test.ts": "44e9ecd782a3cd38c5913b200272b083c90fc144c389740f4b8548eabec73a3e",
     "tests/change-evidence-waiver.test.ts": "254f82e14dac3beaed102979dd0e977ded31ebc20ffacb60aa798194b97bed80",
+    "tests/change-quality-refresh.test.ts": "854f6d0f2d6069c675867b3b5642e6e3252abff24f2ecb4f87ea77b7e6a16cf3",
     "tests/change-record-fail-fast.test.ts": "2f69f19332049c206f39b42c3bc2b505ce63173db798d74c5a9ace7064cdfe78",
     "tests/change-record-recordedat-order.test.ts": "5ad61cf31e273dc9cdfe190b21dcc8ffc49d327592e01b6eb0251f4cdda7b149",
     "tests/change-requirement-batches.test.ts": "919b14e0fc9174e82b916dac0448ba2f9acf57f038f0ec820ed0aa6a397f77bd",
@@ -9256,7 +9819,8 @@
     "tests/p4-correspondence-mutation.test.ts": "d8ab95e6cfcd01518bc130e190913e172c6eb7519cd98e37bac1525391ce43fa",
     "tests/p4-workflow-streaming.test.ts": "6389d083b5bca81f88bbed2f54228a17d711cb8fa16a30a68614eb59bfb1d8bf",
     "tests/php-verification.test.ts": "bc70946615f3faa3cb3b5467e552140ba2ec8e25fb4d5276f72f65393ed04315",
-    "tests/release-version-synchronization.test.ts": "f191822d89512632151e7de2e8867b78263809a86f86c8d52c9b5dd6fed87747",
+    "tests/release-approval-ordering.test.ts": "d72d2a37cfdb9b87bb0b804839d5910c5921edd26b967fdf2dd2a6d61a21d5af",
+    "tests/release-version-synchronization.test.ts": "6886bfb2f0029a5f685f8152e7fb918a532a65f5ec5d84ffad063894c2ef49cb",
     "tests/scaffold-artifact.test.ts": "a8f074cdd9279f1b7c540fa1a721642ca762de9cd155f0894526a8f3daabc7d6",
     "tests/tdd-adoption-warning.test.ts": "fa0fc6267ad829bb4955dc352e986585f92daecd17865da7036ff2b9087d57e7",
     "tests/tdd-cycle-void.test.ts": "e7ea6272d9b5e0ab5377df280ba01dd38c8d1496f3a0c0f36f2053ad1b660baf",

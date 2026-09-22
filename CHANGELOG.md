@@ -2,6 +2,11 @@
 
 ## 0.1.20 - 2026-09-22
 
+- Add repeatable Quality checkpoints after complete post-Quality corrective
+  batches. Schema version 2 retains ordinal Quality history, validation and
+  evidence merge pair every checkpoint deterministically, and
+  `change quality-recover` recovers the dedicated atomic `order.json` /
+  `changes.json` refresh transaction (#36).
 - Add `evidence merge` for append-only consolidation of `order.json`,
   `tdd.json`, `changes.json`, and `change-waivers.json` from another project
   root, with dry-run planning, crash-safe journaling, deterministic conflict

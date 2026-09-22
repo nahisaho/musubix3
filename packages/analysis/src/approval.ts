@@ -1,9 +1,11 @@
-import { basename } from 'node:path';
+import { lstat } from 'node:fs/promises';
+import { basename, dirname, resolve } from 'node:path';
 import {
   error, validateConstitution, validateDesign, validateRequirements, type Diagnostic,
 } from '../../domain/src/index.js';
 import type { ApprovalConfig } from './config.js';
 import { digest, exists, files, readText, snapshot, within } from './files.js';
+import { runProcess, type Runner } from './process.js';
 import {
   domainOwning, domainsConfigured, featureOwningDesignFile, featureOwningRequirement, resolveDomains,
   type ResolvedDomain,
@@ -60,6 +62,39 @@ export interface ApprovalValidation {
   diagnostics: Diagnostic[];
 }
 
+export interface ReleaseApprovalDrift {
+  path: string;
+  change: 'added' | 'modified' | 'deleted';
+  approvedSha256: string | null;
+  currentSha256: string | null;
+}
+
+export interface ReleaseApprovalReport {
+  valid: boolean;
+  stage: 'release';
+  status: 'approved' | 'missing' | 'stale';
+  diagnostics: ReleaseApprovalDrift[];
+}
+
+export class ReleaseApprovalPreconditionError extends Error {
+  constructor(
+    public readonly code: string,
+    message: string,
+  ) {
+    super(message);
+    this.name = 'ReleaseApprovalPreconditionError';
+  }
+}
+
+export class ReleaseApprovalSchemaError extends Error {
+  readonly code = 'RELEASE_APPROVAL_SCHEMA';
+
+  constructor(message: string) {
+    super(message);
+    this.name = 'ReleaseApprovalSchemaError';
+  }
+}
+
 export function approvalPath(stage: ApprovalStage, domain?: string): string {
   return domain ? `.musubix/evidence/approvals/domains/${domain}/${stage}.json` : `.musubix/evidence/approvals/${stage}.json`;
 }
@@ -81,6 +116,173 @@ function stagePaths(paths: string[], stage: ApprovalStage): string[] {
     !/^\.musubix\/features\/[^/]+\/trace\.json$/.test(path)
     && !path.endsWith('.tgz')
     && !/(?:^|\/)(?:logs?|session-logs)\//.test(path)).sort();
+}
+
+type GitPathEntry = {
+  path: string;
+  mode: string;
+};
+
+type ReleaseGitInventory = {
+  paths: string[];
+  structuralPaths: string[];
+};
+
+const projectExcludedDirectories = new Set([
+  '.git', 'node_modules', 'dist', 'build', 'coverage', '.test-work', '.next', 'vendor', '__pycache__',
+]);
+const pythonVirtualEnvironmentRoots = new Set(['.venv', 'venv']);
+
+function codePointOrder(left: string, right: string): number {
+  const leftPoints = [...left];
+  const rightPoints = [...right];
+  const length = Math.min(leftPoints.length, rightPoints.length);
+  for (let index = 0; index < length; index++) {
+    const difference = leftPoints[index]!.codePointAt(0)! - rightPoints[index]!.codePointAt(0)!;
+    if (difference !== 0) return difference;
+  }
+  return leftPoints.length - rightPoints.length;
+}
+
+function markerPath(directory: string, name: string): string {
+  return directory === '.' ? name : `${directory}/${name}`;
+}
+
+function releaseProjectPaths(entries: GitPathEntry[], includeSpecialModes: boolean): string[] {
+  const candidates = new Set(entries.map((entry) => entry.path));
+  const nestedWorkspaces = new Set<string>();
+  const dotnetDirectories = new Set<string>();
+  for (const path of candidates) {
+    const marker = '/.musubix/';
+    const index = path.indexOf(marker);
+    if (index > 0) nestedWorkspaces.add(path.slice(0, index));
+    if (/\.sln$/i.test(path) || /\.(?:cs|fs|vb)proj$/i.test(path)) {
+      dotnetDirectories.add(dirname(path));
+    }
+  }
+  const hasMarker = (directory: string, names: string[]): boolean =>
+    names.some((name) => candidates.has(markerPath(directory, name)));
+  const excludedByStructure = (path: string): boolean => {
+    if (path === '.musubix/cache' || path.startsWith('.musubix/cache/')
+      || path === '.musubix/evidence' || path.startsWith('.musubix/evidence/')
+      || path === '.nuget/packages' || path.startsWith('.nuget/packages/')) return true;
+    for (const root of nestedWorkspaces) {
+      if (path === root || path.startsWith(`${root}/`)) return true;
+    }
+    const segments = path.split('/');
+    for (let index = 0; index < segments.length - 1; index++) {
+      const name = segments[index]!;
+      if (projectExcludedDirectories.has(name)) return true;
+      const directory = segments.slice(0, index).join('/') || '.';
+      const childDirectory = segments.slice(0, index + 1).join('/');
+      if (pythonVirtualEnvironmentRoots.has(name)
+        && candidates.has(`${childDirectory}/pyvenv.cfg`)) return true;
+      if (name === 'target' && hasMarker(directory, ['Cargo.toml', 'pom.xml'])) return true;
+      if (name === '.gradle'
+        && hasMarker(directory, ['build.gradle', 'build.gradle.kts', 'settings.gradle', 'settings.gradle.kts'])) return true;
+      if (name === '.dart_tool' && hasMarker(directory, ['pubspec.yaml'])) return true;
+      if (name === '.build' && hasMarker(directory, ['Package.swift'])) return true;
+      if ((name === '.zig-cache' || name === 'zig-out')
+        && hasMarker(directory, ['build.zig', 'build.zig.zon'])) return true;
+      if (name === '.dotnet' && dotnetDirectories.has(directory)) return true;
+      if ((name === 'bin' || name === 'obj') && dotnetDirectories.has(directory)) return true;
+    }
+    return false;
+  };
+  return stagePaths(entries
+    .filter((entry) => includeSpecialModes || (entry.mode !== '120000' && entry.mode !== '160000'))
+    .map((entry) => entry.path)
+    .filter((path) => !excludedByStructure(path)), 'release')
+    .sort(codePointOrder);
+}
+
+async function gitResult(root: string, args: string[], runner: Runner): Promise<string> {
+  const result = await runner('git', args, { cwd: root, timeoutMs: 10_000 });
+  if (result.status !== 'completed' || result.exitCode !== 0) {
+    throw new ReleaseApprovalPreconditionError(
+      'RELEASE_APPROVAL_GIT',
+      `git ${args.join(' ')} failed: ${result.stderr.trim() || result.status}`,
+    );
+  }
+  return result.stdout;
+}
+
+async function exactGitRoot(root: string, runner: Runner): Promise<boolean> {
+  const result = await runner('git', ['rev-parse', '--show-toplevel'], { cwd: root, timeoutMs: 10_000 });
+  return result.status === 'completed'
+    && result.exitCode === 0
+    && resolve(result.stdout.trim()) === resolve(root);
+}
+
+async function regularFile(root: string, path: string): Promise<boolean> {
+  try {
+    return (await lstat(within(root, path))).isFile();
+  } catch (cause) {
+    if ((cause as NodeJS.ErrnoException).code === 'ENOENT') return false;
+    throw cause;
+  }
+}
+
+async function releaseCandidateInventory(root: string, runner: Runner): Promise<ReleaseGitInventory> {
+  const trackedOutput = await gitResult(root, ['ls-files', '-z', '-s', '--cached'], runner);
+  const tracked: GitPathEntry[] = [];
+  for (const record of trackedOutput.split('\0')) {
+    if (!record) continue;
+    const match = /^(\d{6}) [0-9a-f]+ ([0-3])\t([\s\S]+)$/.exec(record);
+    if (!match) throw new ReleaseApprovalPreconditionError('RELEASE_APPROVAL_GIT_OUTPUT', 'Malformed git ls-files output.');
+    if (match[2] !== '0') {
+      throw new ReleaseApprovalPreconditionError('RELEASE_APPROVAL_INDEX_CONFLICT', `Unmerged release input: ${match[3]}`);
+    }
+    tracked.push({ mode: match[1]!, path: match[3]! });
+  }
+  const untrackedOutput = await gitResult(root, ['ls-files', '-z', '--others', '--exclude-standard'], runner);
+  const untracked: GitPathEntry[] = [];
+  for (const path of untrackedOutput.split('\0')) {
+    if (path && await regularFile(root, path)) untracked.push({ mode: '100644', path });
+  }
+  const raw = [...tracked, ...untracked];
+  const present: GitPathEntry[] = [];
+  for (const entry of raw) {
+    if (await regularFile(root, entry.path)) present.push(entry);
+  }
+  return {
+    paths: releaseProjectPaths(present, false),
+    structuralPaths: releaseProjectPaths(raw, true),
+  };
+}
+
+async function releaseTagInventory(root: string, tag: string, runner: Runner): Promise<ReleaseGitInventory> {
+  const output = await gitResult(root, ['ls-tree', '-r', '-z', '--full-tree', tag], runner);
+  const entries: GitPathEntry[] = [];
+  for (const record of output.split('\0')) {
+    if (!record) continue;
+    const match = /^(\d{6}) (?:blob|commit) [0-9a-f]+\t([\s\S]+)$/.exec(record);
+    if (!match) throw new ReleaseApprovalPreconditionError('RELEASE_APPROVAL_GIT_OUTPUT', 'Malformed git ls-tree output.');
+    entries.push({ mode: match[1]!, path: match[2]! });
+  }
+  return {
+    paths: releaseProjectPaths(entries, false),
+    structuralPaths: releaseProjectPaths(entries, true),
+  };
+}
+
+/** @id CODE-RELEASE-APPROVAL-ORDERING-001
+ * @implements REQ-RELEASE-APPROVAL-ORDERING-001 REQ-RELEASE-APPROVAL-ORDERING-002 REQ-RELEASE-APPROVAL-ORDERING-003
+ * @design DES-RELEASE-APPROVAL-ORDERING-001
+ */
+export async function releaseCandidatePaths(root: string, runner: Runner = runProcess): Promise<string[]> {
+  if (!await exactGitRoot(root, runner)) return stagePaths(await files(root), 'release');
+  return (await releaseCandidateInventory(root, runner)).paths;
+}
+
+export async function releaseTaggedPaths(root: string, tag: string, runner: Runner = runProcess): Promise<string[]> {
+  if (!await exactGitRoot(root, runner)) {
+    throw new ReleaseApprovalPreconditionError(
+      'RELEASE_APPROVAL_GIT_ROOT',
+      'Tagged release approval validation requires the project root to equal the Git worktree root.',
+    );
+  }
+  return (await releaseTagInventory(root, tag, runner)).paths;
 }
 
 /** @id CODE-APPROVAL-DOMAIN-SCOPING-003
@@ -132,7 +334,8 @@ export async function approvalManifest(root: string, stage: ApprovalStage, domai
       artifactSha256: digest(JSON.stringify({ stage, domain: domain.name, features: domain.features, artifacts })),
     };
   }
-  const artifacts = await snapshot(root, stagePaths(await files(root), stage));
+  const paths = stage === 'release' ? await releaseCandidatePaths(root) : stagePaths(await files(root), stage);
+  const artifacts = await snapshot(root, paths);
   return { stage, artifacts, artifactSha256: digest(JSON.stringify({ stage, artifacts })) };
 }
 
@@ -150,7 +353,138 @@ export async function loadApproval(root: string, stage: ApprovalStage, domain?: 
     || (domain !== undefined && (value.domain !== domain || !Array.isArray(value.features) || value.features.some((f) => typeof f !== 'string')))) {
     throw new Error(`Invalid ${stage} approval evidence.`);
   }
-  return value as ApprovalEvidence;
+    return value as ApprovalEvidence;
+}
+
+function releaseDrift(
+    approved: Record<string, string>,
+    current: Record<string, string>,
+  ): ReleaseApprovalDrift[] {
+    const paths = [...new Set([...Object.keys(approved), ...Object.keys(current)])].sort(codePointOrder);
+    return paths.flatMap((path): ReleaseApprovalDrift[] => {
+      const approvedSha256 = approved[path] ?? null;
+      const currentSha256 = current[path] ?? null;
+      if (approvedSha256 === currentSha256) return [];
+      const change = approvedSha256 === null ? 'added' : currentSha256 === null ? 'deleted' : 'modified';
+      return [{ path, change, approvedSha256, currentSha256 }];
+    });
+  }
+
+type GitStatusRecord = {
+  status: string;
+  paths: string[];
+};
+
+async function gitStatus(root: string, runner: Runner): Promise<GitStatusRecord[]> {
+    const output = await gitResult(root, ['status', '--porcelain=v1', '-z', '--untracked-files=all', '--', '.'], runner);
+    const fields = output.split('\0');
+    const records: GitStatusRecord[] = [];
+    for (let index = 0; index < fields.length; index++) {
+      const field = fields[index];
+      if (!field) continue;
+      if (field.length < 4) {
+        throw new ReleaseApprovalPreconditionError('RELEASE_APPROVAL_GIT_OUTPUT', 'Malformed git status output.');
+      }
+      const status = field.slice(0, 2);
+      const paths = [field.slice(3)];
+      if (/[RC]/.test(status)) {
+        const previous = fields[++index];
+        if (!previous) {
+          throw new ReleaseApprovalPreconditionError('RELEASE_APPROVAL_GIT_OUTPUT', 'Malformed git rename status output.');
+        }
+        paths.push(previous);
+      }
+      records.push({ status, paths });
+    }
+    return records;
+  }
+
+/** @id CODE-RELEASE-APPROVAL-ORDERING-002
+ * @implements REQ-RELEASE-APPROVAL-ORDERING-001 REQ-RELEASE-APPROVAL-ORDERING-002 REQ-RELEASE-APPROVAL-ORDERING-003
+ * @design DES-RELEASE-APPROVAL-ORDERING-001
+ */
+export async function validateReleaseApprovalForTag(
+    root: string,
+    tag: string,
+    config: ApprovalConfig,
+    options: { runner?: Runner; githubSha?: string } = {},
+  ): Promise<ReleaseApprovalReport> {
+      const runner = options.runner ?? runProcess;
+    if (!await exactGitRoot(root, runner)) {
+      throw new ReleaseApprovalPreconditionError(
+        'RELEASE_APPROVAL_GIT_ROOT',
+        'Tagged release approval validation requires the project root to equal the Git worktree root.',
+      );
+    }
+    const tagCommit = (await gitResult(root, ['rev-parse', `${tag}^{commit}`], runner)).trim().toLowerCase();
+    const headCommit = (await gitResult(root, ['rev-parse', 'HEAD^{commit}'], runner)).trim().toLowerCase();
+    if (tagCommit !== headCommit) {
+      throw new ReleaseApprovalPreconditionError(
+        'RELEASE_APPROVAL_TAG_HEAD',
+        `Release tag ${tag} does not point to HEAD.`,
+      );
+    }
+    const githubSha = options.githubSha ?? process.env.GITHUB_SHA;
+    if (githubSha && tagCommit !== githubSha.toLowerCase()) {
+      throw new ReleaseApprovalPreconditionError(
+        'RELEASE_APPROVAL_TAG_GITHUB_SHA',
+        `Release tag ${tag} does not point to GITHUB_SHA.`,
+      );
+    }
+    let evidence: ApprovalEvidence | null;
+    try {
+      evidence = await loadApproval(root, 'release');
+    } catch (cause) {
+      throw new ReleaseApprovalSchemaError(cause instanceof Error ? cause.message : String(cause));
+    }
+    if (evidence && evidence.artifactSha256 !== digest(JSON.stringify({
+      stage: 'release',
+      artifacts: evidence.artifacts,
+    }))) {
+      throw new ReleaseApprovalSchemaError('Release approval artifactSha256 does not match its artifact manifest.');
+    }
+    if (!evidence && config.mode === 'required') {
+      return { valid: false, stage: 'release', status: 'missing', diagnostics: [] };
+    }
+
+    const [candidate, tagged, status] = await Promise.all([
+      releaseCandidateInventory(root, runner),
+      releaseTagInventory(root, tag, runner),
+      gitStatus(root, runner),
+    ]);
+    const releasePaths = new Set([
+      ...candidate.paths,
+      ...tagged.paths,
+      ...Object.keys(evidence?.artifacts ?? {}),
+    ]);
+    const structuralPaths = new Set([...candidate.structuralPaths, ...tagged.structuralPaths]);
+    const dirty = status.filter((record) =>
+      record.paths.some((path) =>
+        (record.status.includes('T') && structuralPaths.has(path)) || releasePaths.has(path)));
+    if (dirty.length) {
+      if (!evidence) {
+        throw new ReleaseApprovalPreconditionError(
+          'RELEASE_APPROVAL_DIRTY',
+          'Release-input working tree differs from the tagged commit.',
+        );
+      }
+      const current = await snapshot(root, candidate.paths);
+      const diagnostics = releaseDrift(evidence.artifacts, current);
+      if (!diagnostics.length) {
+        throw new ReleaseApprovalPreconditionError(
+          'RELEASE_APPROVAL_DIRTY',
+          'Release-input working tree differs from the tagged commit after approval.',
+        );
+      }
+      return { valid: false, stage: 'release', status: 'stale', diagnostics };
+    }
+
+    if (!evidence) return { valid: true, stage: 'release', status: 'missing', diagnostics: [] };
+    const current = await snapshot(root, tagged.paths);
+    const diagnostics = releaseDrift(evidence.artifacts, current);
+    return diagnostics.length
+      ? { valid: false, stage: 'release', status: 'stale', diagnostics }
+      : { valid: true, stage: 'release', status: 'approved', diagnostics: [] };
 }
 
 export async function validateApprovalStage(

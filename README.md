@@ -423,6 +423,7 @@ validation/gate or requested solver failure, **2** usage, I/O or malformed confi
 | `attestation payload --provider <name> --run-id <id> --key-id <id> [--public-key-file <pem>] [--github-oidc-token-file <jwt>]` | Emit canonical unsigned CI payload for external signing |
 | `attestation verify` | Verify static-key or GitHub OIDC-authorized Ed25519 provenance |
 | `change-record <CHANGE-ID> <phase> --requirement <REQ-ID...> [--allow-unchanged] [--dry-run]` | Record ordered artifact/TDD fingerprints for a staged change. `impact`/`requirements`/`design`/`quality` require the change's full requirement ID set; `red`/`implementation`/`green` also accept a proper non-empty subset, recorded as an independent per-requirement batch, so a multi-requirement change can be completed with an interleaved per-requirement Red-Implementation-Green loop instead of one global batch. When multiple batches contain the same requirement, validation uses the batch with the latest Red `order`; a later incomplete batch supersedes older evidence and must be completed rather than silently falling back. Rejects with a non-zero exit and a stable `*_UNCHANGED_AT_RECORD` diagnostic (leaving `changes.json`/`order.json` untouched) when a phase's fingerprint is byte-identical to the immediately preceding phase's, since that mistake is otherwise only caught much later by `trace check --strict`/`gate`, at which point the append-only evidence store makes it unfixable. `--allow-unchanged` bypasses this check for the `requirements` phase only (the one case `sdd-change` documents as legitimate: a defect fix that intentionally leaves its requirement unchanged) and persists a durable marker so later validation does not re-flag it. `--dry-run` previews the exact success/rejection outcome, including every existing check, without persisting anything. Each recorded phase/batch stores both `order` (the verified, `gate`-checked logical append sequence from `order.json` — the only field guaranteed correct and monotonic per change) and `recordedAt` (an independently captured wall-clock timestamp with no ordering guarantee relative to `order`); `gate` reports a non-blocking `CHANGE_RECORDEDAT_OUT_OF_ORDER` warning when a change's `recordedAt` values disagree with its `order` sequence |
+| `change quality-recover [--json]` | Recover an interrupted atomic Quality refresh. A repeated full-set Quality after a newer complete corrective batch retains earlier checkpoints in schema-version-2 `qualityHistory`; incomplete/current or unnecessary refreshes fail with stable `CHANGE_QUALITY_REFRESH_*` errors. |
 | `config lint` | Report configured commands whose `args` reference repository-relative paths that do not exist |
 | `config scaffold` | Propose native test-command entries for detected Go/Rust/Maven/Python/Node toolchains without writing `.musubix/config.json` |
 | `gate [--changed] [--feature <name>]` | Fresh full checks plus actual configured commands; persist evidence. `--feature` scopes requirements/design/trace/tdd/change-history/change-completeness checks to one feature as a diagnostic view; never a substitute for the repository-wide gate |
@@ -1160,9 +1161,16 @@ node scripts/release-version.mjs --check 1.2.3
 Use `--silent` with the npm entrypoint so stdout contains only its JSON report.
 Supply a bare SemVer version, without the tag's `v` prefix or build metadata.
 The release order is version synchronization, authored `CHANGELOG.md` review,
-`npm run build`, package validation, commit, and finally the matching `v<version>`
-tag. `release:prepare` validates every synchronized surface and the tag commit
-before changing its output directory.
+`npm run build`, package validation, explicit release approval, commit, and the
+matching `v<version>` tag before preparation.
+The enforced release order is final release metadata and `CHANGELOG.md`,
+validation and build, explicit release approval, commit and create the unchanged `v<version>` tag,
+then `release:prepare`. Any committed release-input change
+after approval requires renewed validation and release approval before a new tag
+is prepared. `release:prepare` validates every synchronized surface, the tag
+commit, and the approved tagged manifest before changing its output directory.
+For a manual Release workflow dispatch, select the target tag in the workflow
+ref selector and enter that identical tag as `release_tag`.
 
 Workspaces: `packages/domain` (pure validators), `packages/analysis` (evidence,
 compiler and filesystem services), `packages/cli` (thin command/installation layer).

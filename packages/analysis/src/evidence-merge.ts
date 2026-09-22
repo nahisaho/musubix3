@@ -11,6 +11,7 @@ import {
 import {
   assertEvidenceMergeReady,
   assertEvidenceMergeStartable,
+  evidenceJournals,
 } from './evidence-merge-guard.js';
 import {
   assertCoordinatedEvidenceRead,
@@ -20,6 +21,9 @@ import {
   batchKey,
   effectiveBatches,
   loadChangeEvidence,
+  qualityIdentity,
+  qualityLineage,
+  qualityPayloadForIdentity,
   type ChangeEvidence,
   type ChangePhase,
   type ChangePhaseEvidence,
@@ -224,6 +228,10 @@ function payloadFor(history: EvidenceHistory, record: EvidenceOrderRecord): Payl
   }
   const change = history.changes.changes.find((entry) => entry.changeId === record.entityId);
   if (!change) return undefined;
+  if (/^quality(?::[1-9]\d*)?$/.test(record.phase)) {
+    const value = qualityPayloadForIdentity(change, record.phase);
+    return value ? { kind: 'change', identity: `${record.entityId}:${record.phase}`, value } : undefined;
+  }
   const value = batchPhase(record, change);
   return value ? { kind: 'change', identity: `${record.entityId}:${record.phase}`, value } : undefined;
 }
@@ -334,7 +342,51 @@ function validateInputEntities(history: EvidenceHistory): EvidenceMergeDiagnosti
     }
   }
   for (const change of history.changes.changes) {
-    for (const phase of CHANGE_PHASES) {
+    if (history.changes.schemaVersion === 1 && change.qualityHistory !== undefined) {
+      diagnostics.push(mergeDiagnostic('EVIDENCE_MERGE_CONFLICT',
+        'Schema version 1 cannot contain Quality history.', CHANGES_PATH, change.changeId));
+    }
+    const historyShapeValid = change.qualityHistory === undefined
+      || (Array.isArray(change.qualityHistory) && change.qualityHistory.length > 0);
+    if (!historyShapeValid) {
+      diagnostics.push(mergeDiagnostic('EVIDENCE_MERGE_CONFLICT',
+        'Quality history must be a non-empty array when present.', CHANGES_PATH, change.changeId));
+    }
+    if (Array.isArray(change.qualityHistory) && change.qualityHistory.length > 0 && !change.phases.quality) {
+      diagnostics.push(mergeDiagnostic('EVIDENCE_MERGE_CONFLICT',
+        'Quality history requires an authoritative Quality checkpoint.', CHANGES_PATH, change.changeId));
+    }
+    const lineage = Array.isArray(change.qualityHistory)
+      ? [...change.qualityHistory, ...(change.phases.quality ? [change.phases.quality] : [])]
+      : [...(change.phases.quality ? [change.phases.quality] : [])];
+    const qualityIdentities = new Set<string>();
+    let previousQualityOrder = 0;
+    for (const [index, value] of lineage.entries()) {
+      const identity = qualityIdentity(index + 1);
+      qualityIdentities.add(identity);
+      if (value.phase !== 'quality' || typeof value.recordedAt !== 'string'
+        || !value.fingerprints || !Number.isInteger(value.order) || value.order! <= previousQualityOrder) {
+        diagnostics.push(mergeDiagnostic('EVIDENCE_MERGE_CONFLICT',
+          'Quality lineage checkpoint is malformed.', CHANGES_PATH, `${change.changeId}:${identity}`));
+        continue;
+      }
+      previousQualityOrder = value.order!;
+      const matches = history.order.records.filter((record) =>
+        record.sequence === value.order && record.kind === 'change'
+        && record.entityId === change.changeId && record.phase === identity);
+      if (matches.length !== 1) {
+        diagnostics.push(mergeDiagnostic('EVIDENCE_MERGE_CONFLICT',
+          'Quality checkpoint does not pair to exactly one order record.',
+          CHANGES_PATH, `${change.changeId}:${identity}`));
+      }
+    }
+    if (history.order.records.some((record) =>
+      record.kind === 'change' && record.entityId === change.changeId
+      && /^quality(?::\d+)?$/.test(record.phase) && !qualityIdentities.has(record.phase))) {
+      diagnostics.push(mergeDiagnostic('EVIDENCE_MERGE_CONFLICT',
+        'Quality order identity is orphaned or malformed.', CHANGES_PATH, change.changeId));
+    }
+    for (const phase of CHANGE_PHASES.filter((entry) => entry !== 'quality')) {
       const value = change.phases[phase];
       if (value && !Number.isInteger(value.order)) {
         diagnostics.push(mergeDiagnostic('EVIDENCE_MERGE_CONFLICT',
@@ -624,10 +676,14 @@ function mergeChanges(plan: MergePlan, diagnostics: EvidenceMergeDiagnostic[]): 
   const changes = structuredClone(plan.base.changes.changes);
   const byId = new Map(changes.map((change) => [change.changeId, change]));
   for (const change of changes) {
-    for (const phase of CHANGE_PHASES) {
+    for (const phase of CHANGE_PHASES.filter((entry) => entry !== 'quality')) {
       const item = change.phases[phase];
       if (item) change.phases[phase] = rewriteChangePhase(item, 'base', plan);
     }
+    if (change.qualityHistory) {
+      change.qualityHistory = change.qualityHistory.map((item) => rewriteChangePhase(item, 'base', plan));
+    }
+    if (change.phases.quality) change.phases.quality = rewriteChangePhase(change.phases.quality, 'base', plan);
     for (const batch of change.tddBatches ?? []) {
       for (const phase of BATCH_PHASES) {
         const item = batch[phase];
@@ -639,10 +695,14 @@ function mergeChanges(plan: MergePlan, diagnostics: EvidenceMergeDiagnostic[]): 
     const target = byId.get(sourceChange.changeId);
     if (!target) {
       const clone = structuredClone(sourceChange);
-      for (const phase of CHANGE_PHASES) {
+      for (const phase of CHANGE_PHASES.filter((entry) => entry !== 'quality')) {
         const item = clone.phases[phase];
         if (item) clone.phases[phase] = rewriteChangePhase(item, 'incoming', plan);
       }
+      if (clone.qualityHistory) {
+        clone.qualityHistory = clone.qualityHistory.map((item) => rewriteChangePhase(item, 'incoming', plan));
+      }
+      if (clone.phases.quality) clone.phases.quality = rewriteChangePhase(clone.phases.quality, 'incoming', plan);
       for (const batch of clone.tddBatches ?? []) {
         for (const phase of BATCH_PHASES) {
           const item = batch[phase];
@@ -658,13 +718,27 @@ function mergeChanges(plan: MergePlan, diagnostics: EvidenceMergeDiagnostic[]): 
         CHANGES_PATH, sourceChange.changeId));
       continue;
     }
-    for (const phase of CHANGE_PHASES) {
+    for (const phase of CHANGE_PHASES.filter((entry) => entry !== 'quality')) {
       const left = target.phases[phase];
       const right = sourceChange.phases[phase];
       if (left && right && !semanticEqual(left, right)) {
         diagnostics.push(mergeDiagnostic('EVIDENCE_MERGE_CONFLICT', 'Matching change phase has divergent payloads.',
           CHANGES_PATH, `${sourceChange.changeId}:${phase}`));
       } else if (!left && right) target.phases[phase] = rewriteChangePhase(right, 'incoming', plan);
+    }
+    const leftLineage = qualityLineage(target);
+    const rightLineage = qualityLineage(sourceChange);
+    const shared = Math.min(leftLineage.length, rightLineage.length);
+    const prefix = Array.from({ length: shared }, (_, index) =>
+      semanticEqual(leftLineage[index], rightLineage[index])).every(Boolean);
+    if (!prefix) {
+      diagnostics.push(mergeDiagnostic('EVIDENCE_MERGE_CONFLICT',
+        'Quality lineages diverge at the same ordinal.', CHANGES_PATH, sourceChange.changeId));
+    } else if (rightLineage.length > leftLineage.length) {
+      const rewritten = rightLineage.map((item) => rewriteChangePhase(item, 'incoming', plan));
+      target.phases.quality = rewritten.at(-1)!;
+      if (rewritten.length > 1) target.qualityHistory = rewritten.slice(0, -1);
+      else delete target.qualityHistory;
     }
     for (const incomingBatch of sourceChange.tddBatches ?? []) {
       const targetBatches = target.tddBatches ??= [];
@@ -685,7 +759,12 @@ function mergeChanges(plan: MergePlan, diagnostics: EvidenceMergeDiagnostic[]): 
       }
     }
   }
-  return { ...plan.base.changes, schemaVersion: 1, changes };
+  const hasHistory = changes.some((change) => (change.qualityHistory?.length ?? 0) > 0);
+  return {
+    ...plan.base.changes,
+    schemaVersion: hasHistory || plan.base.changes.schemaVersion === 2 || plan.incoming.changes.schemaVersion === 2 ? 2 : 1,
+    changes,
+  };
 }
 
 function mergeWaivers(plan: MergePlan): ChangeWaiverEvidence {
@@ -783,7 +862,7 @@ function validateCandidateReferences(
     diagnostics.push(mergeDiagnostic('TDD_CHAIN_ORPHAN', 'Rebuilt TDD chain entry has no phase payload.', TDD_PATH, identity));
   }
   for (const change of changes.changes) {
-    for (const phase of CHANGE_PHASES) {
+    for (const phase of CHANGE_PHASES.filter((entry) => entry !== 'quality')) {
       const value = change.phases[phase];
       if (!value) continue;
       const record = value.order === undefined ? undefined : orderAt.get(value.order);
@@ -791,6 +870,26 @@ function validateCandidateReferences(
         diagnostics.push(mergeDiagnostic('CHANGE_ORDER_MISMATCH', 'Rebuilt change phase does not match its order record.',
           CHANGES_PATH, `${change.changeId}:${phase}`));
       }
+    }
+    const qualityIdentities = new Set<string>();
+    let previousQualityOrder = 0;
+    for (const [index, value] of qualityLineage(change).entries()) {
+      const identity = qualityIdentity(index + 1);
+      qualityIdentities.add(identity);
+      const record = value.order === undefined ? undefined : orderAt.get(value.order);
+      if (!record || record.kind !== 'change' || record.entityId !== change.changeId
+        || record.phase !== identity || value.order! <= previousQualityOrder) {
+        diagnostics.push(mergeDiagnostic('CHANGE_QUALITY_HISTORY_MALFORMED',
+          'Rebuilt Quality checkpoint does not match its ordinal order record.',
+          CHANGES_PATH, `${change.changeId}:${identity}`));
+      }
+      previousQualityOrder = value.order ?? previousQualityOrder;
+    }
+    if (order.records.some((record) =>
+      record.kind === 'change' && record.entityId === change.changeId
+      && /^quality(?::\d+)?$/.test(record.phase) && !qualityIdentities.has(record.phase))) {
+      diagnostics.push(mergeDiagnostic('CHANGE_QUALITY_HISTORY_MALFORMED',
+        'Rebuilt Quality order record is orphaned.', CHANGES_PATH, change.changeId));
     }
     const fullSetKey = batchKey(change.requirementIds);
     if (change.phases.requirements?.order !== undefined && change.phases.impact?.order !== undefined
@@ -1174,6 +1273,13 @@ export async function recoverEvidenceMerge(root: string): Promise<EvidenceMergeR
 }
 
 async function recoverEvidenceMergeUnlocked(root: string): Promise<EvidenceMergeRecoveryReport> {
+  const journals = await evidenceJournals(root);
+  if (journals.merge && journals.qualityRefresh) {
+    throw new Error('EVIDENCE_MERGE_RECOVERY_UNSAFE: merge and Quality-refresh journals coexist.');
+  }
+  if (journals.qualityRefresh) {
+    throw new Error('CHANGE_QUALITY_REFRESH_RECOVERY_REQUIRED: run change quality-recover.');
+  }
   const journalAbsolute = await safePath(root, JOURNAL_PATH);
   const evidenceDir = await safePath(root, EVIDENCE_DIR);
   let staging: string[] = [];

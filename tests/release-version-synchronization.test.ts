@@ -426,21 +426,23 @@ describe('release version synchronization', () => {
     };
     const releaseModule = await import(pathToFileURL(resolve(repository, 'scripts/release-prepare.mjs')).href) as {
       verifyReleaseVersions(tag: string, directory: string): unknown;
-      prepareRelease(tag: string, output: string, directory: string): unknown;
+      prepareRelease(tag: string, output: string, directory: string): Promise<unknown>;
     };
     const expected = versionModule.runReleaseVersion(['--check', '0.1.20'], root);
 
     for (const invoke of [
       () => checkModule.checkPackage(root),
       () => releaseModule.verifyReleaseVersions('v0.1.20', root),
-      () => releaseModule.prepareRelease('v0.1.20', 'release-assets', root),
     ]) {
       expect(invoke).toThrowError(expect.objectContaining({ report: expected }));
     }
+    await expect(releaseModule.prepareRelease('v0.1.20', 'release-assets', root)).rejects.toEqual(
+      expect.objectContaining({ report: expected }),
+    );
     expect(await treeDigests(resolve(root, 'release-assets'))).toEqual(outputBefore);
 
     for (const tag of ['0.1.20', 'vv0.1.20', 'refs/tags/v0.1.20', 'v01.2.3']) {
-      expect(() => releaseModule.prepareRelease(tag, 'release-assets', root)).toThrowError(
+      await expect(releaseModule.prepareRelease(tag, 'release-assets', root)).rejects.toEqual(
         expect.objectContaining({
           report: expect.objectContaining({
             expectedVersion: null,
@@ -714,11 +716,28 @@ describe('release version synchronization', () => {
       prepareRelease(tag: string, output: string, directory: string, dependencies?: {
         execFileSync?: typeof execFileSync;
         npmExecPath?: string;
-      }): {
+        analysis?: {
+          loadConfig(root: string): Promise<{ approval: { mode: 'required'; domains: [] } }>;
+          validateReleaseApprovalForTag(): Promise<{
+            valid: true;
+            stage: 'release';
+            status: 'approved';
+            diagnostics: [];
+          }>;
+        };
+      }): Promise<{
         tarball: string;
         sbom: string;
         checksums: string;
-      };
+      }>;
+    };
+    const approvedAnalysis = {
+      async loadConfig() {
+        return { approval: { mode: 'required' as const, domains: [] as [] } };
+      },
+      async validateReleaseApprovalForTag() {
+        return { valid: true as const, stage: 'release' as const, status: 'approved' as const, diagnostics: [] as [] };
+      },
     };
 
     const symlinkRoot = await releaseFixture();
@@ -754,9 +773,9 @@ describe('release version synchronization', () => {
     delete process.env.npm_execpath;
     delete process.env.GITHUB_SHA;
     try {
-      expect(() => releaseModule.prepareRelease(
-        'v0.1.20', 'release-assets', prerequisiteRoot,
-      )).toThrow('Run release preparation through npm so npm_execpath is available.');
+      await expect(releaseModule.prepareRelease(
+        'v0.1.20', 'release-assets', prerequisiteRoot, { analysis: approvedAnalysis },
+      )).rejects.toThrow('Run release preparation through npm so npm_execpath is available.');
     } finally {
       if (previousNpmExecPath === undefined) delete process.env.npm_execpath;
       else process.env.npm_execpath = previousNpmExecPath;
@@ -769,6 +788,7 @@ describe('release version synchronization', () => {
     const invocations: string[][] = [];
     const execute = ((command: string, args: string[]) => {
       invocations.push([command, ...args]);
+      if (args.includes('build')) return '';
       if (args.includes('pack')) {
         writeFileSync(resolve(successRoot, 'release-assets/musubix3-0.1.20.tgz'), 'tarball');
         return JSON.stringify([{ filename: 'musubix3-0.1.20.tgz' }]);
@@ -779,17 +799,18 @@ describe('release version synchronization', () => {
     const previousSuccessSha = process.env.GITHUB_SHA;
     delete process.env.GITHUB_SHA;
     try {
-      const prepared = releaseModule.prepareRelease(
+      const prepared = await releaseModule.prepareRelease(
         'v0.1.20',
         'release-assets',
         successRoot,
-        { execFileSync: execute, npmExecPath: '/test/npm-cli.js' },
+        { analysis: approvedAnalysis, execFileSync: execute, npmExecPath: '/test/npm-cli.js' },
       );
       expect(prepared.tarball).toMatch(/\.tgz$/);
       expect(prepared.sbom).toMatch(/musubix3\.cdx\.json$/);
       expect(prepared.checksums).toMatch(/SHA256SUMS$/);
       expect(await readText(successRoot, 'release-assets/SHA256SUMS')).toContain('musubix3-0.1.20.tgz');
       expect(invocations).toEqual([
+        [process.execPath, '/test/npm-cli.js', 'run', 'build'],
         [process.execPath, '/test/npm-cli.js', 'pack', '--json', '--ignore-scripts', '--pack-destination',
           resolve(successRoot, 'release-assets')],
         [process.execPath, '/test/npm-cli.js', 'sbom', '--sbom-format', 'cyclonedx'],

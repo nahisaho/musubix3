@@ -2,6 +2,7 @@ import { lstat, readdir } from 'node:fs/promises';
 import { relative, resolve, sep } from 'node:path';
 
 const JOURNAL_PATH = '.musubix/evidence/.merge-transaction.json';
+const QUALITY_REFRESH_JOURNAL_PATH = '.musubix/evidence/.quality-refresh-transaction.json';
 const EVIDENCE_DIR = '.musubix/evidence';
 
 async function pathExists(path: string): Promise<boolean> {
@@ -15,9 +16,25 @@ async function pathExists(path: string): Promise<boolean> {
 }
 
 export async function assertEvidenceMergeReady(root: string): Promise<void> {
+  if (await pathExists(resolve(root, QUALITY_REFRESH_JOURNAL_PATH))) {
+    throw new Error('CHANGE_QUALITY_REFRESH_RECOVERY_REQUIRED: run change quality-recover.');
+  }
   if (await pathExists(resolve(root, JOURNAL_PATH))) {
     throw new Error('EVIDENCE_MERGE_RECOVERY_REQUIRED: run evidence merge --recover.');
   }
+}
+
+export async function assertNoEvidenceMergeJournal(root: string): Promise<void> {
+  if (await pathExists(resolve(root, JOURNAL_PATH))) {
+    throw new Error('EVIDENCE_MERGE_RECOVERY_REQUIRED: run evidence merge --recover.');
+  }
+}
+
+export async function evidenceJournals(root: string): Promise<{ merge: boolean; qualityRefresh: boolean }> {
+  return {
+    merge: await pathExists(resolve(root, JOURNAL_PATH)),
+    qualityRefresh: await pathExists(resolve(root, QUALITY_REFRESH_JOURNAL_PATH)),
+  };
 }
 
 export async function assertEvidenceMergeStartable(root: string): Promise<void> {
