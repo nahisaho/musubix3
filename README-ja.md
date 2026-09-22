@@ -958,6 +958,23 @@ npm run pack:check
 npm run pack:smoke
 ```
 
+ビルド前に、機械管理されるすべてのリリース version を同期します。
+
+```sh
+npm run --silent release:version -- 1.2.3
+npm run --silent release:version -- --check 1.2.3
+# 同等の直接実行:
+node scripts/release-version.mjs 1.2.3
+node scripts/release-version.mjs --check 1.2.3
+```
+
+npm entrypoint では stdout をJSON reportだけにするため `--silent` を指定します。
+tag の `v` prefix と build metadata を含まない SemVer を指定します。
+リリース順序は version 同期、`CHANGELOG.md` の内容レビュー、
+`npm run build`、package 検査、commit、最後に一致する `v<version>` tag です。
+`release:prepare` は出力ディレクトリを変更する前に、すべての同期対象と
+tag が指す commit を検証します。
+
 `packages/domain` は純粋な検証、`packages/analysis` は根拠・コンパイラ・
 ファイルシステム、`packages/cli` はコマンドと配置を担当します。
 ビルド出力は `dist/packages/**`。npm パッケージには隠しSkills、プラグイン定義、

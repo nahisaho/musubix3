@@ -4,22 +4,27 @@ import { execFileSync } from 'node:child_process';
 import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { basename, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import {
+  inspectReleaseVersionSurfaces,
+  parseReleaseVersionArguments,
+  ReleaseVersionValidationError,
+} from './release-version.mjs';
 
 const root = resolve(fileURLToPath(new URL('..', import.meta.url)));
 
-export function expectedReleaseTag(pkg) {
-  assert.match(pkg.version, /^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/, 'package.json has an invalid semver version');
-  return `v${pkg.version}`;
-}
-
+/** @id CODE-RELEASE-VERSION-SYNCHRONIZATION-005
+ * @implements REQ-RELEASE-VERSION-SYNCHRONIZATION-006 REQ-RELEASE-VERSION-SYNCHRONIZATION-007
+ * @design DES-RELEASE-VERSION-SYNCHRONIZATION-004
+ */
 export function verifyReleaseVersions(tag, directory = root) {
-  const pkg = JSON.parse(readFileSync(resolve(directory, 'package.json'), 'utf8'));
-  const plugin = JSON.parse(readFileSync(resolve(directory, 'plugin.json'), 'utf8'));
-  const marketplace = JSON.parse(readFileSync(resolve(directory, '.github/plugin/marketplace.json'), 'utf8'));
-  assert.equal(tag, expectedReleaseTag(pkg), `release tag ${tag} does not match package version ${pkg.version}`);
-  assert.equal(plugin.version, pkg.version, 'plugin.json version does not match package.json');
-  assert.equal(marketplace.metadata.version, pkg.version, 'marketplace metadata version does not match package.json');
-  assert.equal(marketplace.plugins[0]?.version, pkg.version, 'marketplace plugin version does not match package.json');
+  const tagMatch = /^v(.+)$/.exec(tag ?? '');
+  const parsed = parseReleaseVersionArguments(tagMatch ? [tagMatch[1]] : []);
+  if (!tagMatch || 'valid' in parsed) {
+    const invalid = parseReleaseVersionArguments([]);
+    throw new ReleaseVersionValidationError(invalid);
+  }
+  const inspected = inspectReleaseVersionSurfaces(directory, parsed.expectedVersion);
+  if (!inspected.report.valid) throw new ReleaseVersionValidationError(inspected.report);
   if (process.env.GITHUB_SHA) {
     const taggedSha = execFileSync('git', ['rev-list', '-n', '1', tag], {
       cwd: directory,
@@ -28,28 +33,32 @@ export function verifyReleaseVersions(tag, directory = root) {
     assert.equal(taggedSha, process.env.GITHUB_SHA.toLowerCase(),
       `release tag ${tag} does not point to GITHUB_SHA`);
   }
-  return pkg;
+  return JSON.parse(readFileSync(resolve(directory, 'package.json'), 'utf8'));
 }
 
-function npmInvocation(args) {
-  const npmCli = process.env.npm_execpath;
+function npmInvocation(args, npmCli = process.env.npm_execpath) {
   assert(npmCli, 'Run release preparation through npm so npm_execpath is available.');
   return [process.execPath, [npmCli, ...args]];
 }
 
-export function prepareRelease(tag, outputDirectory, directory = root) {
+export function prepareRelease(tag, outputDirectory, directory = root, dependencies = {}) {
   verifyReleaseVersions(tag, directory);
+  const execute = dependencies.execFileSync ?? execFileSync;
+  const [npm, packArgs] = npmInvocation([
+    'pack', '--json', '--ignore-scripts', '--pack-destination', resolve(directory, outputDirectory),
+  ], dependencies.npmExecPath);
+  const [npmForSbom, sbomArgs] = npmInvocation([
+    'sbom', '--sbom-format', 'cyclonedx',
+  ], dependencies.npmExecPath);
   const output = resolve(directory, outputDirectory);
   rmSync(output, { recursive: true, force: true });
   mkdirSync(output, { recursive: true });
 
-  const [npm, packArgs] = npmInvocation([
-    'pack', '--json', '--ignore-scripts', '--pack-destination', output,
-  ]);
-  const pack = JSON.parse(execFileSync(npm, packArgs, { cwd: directory, encoding: 'utf8' }))[0];
+  const pack = JSON.parse(execute(npm, packArgs, {
+    cwd: directory, encoding: 'utf8',
+  }))[0];
   const tarball = resolve(output, basename(pack.filename));
-  const [npmForSbom, sbomArgs] = npmInvocation(['sbom', '--sbom-format', 'cyclonedx']);
-  const sbom = execFileSync(npmForSbom, sbomArgs, {
+  const sbom = execute(npmForSbom, sbomArgs, {
     cwd: directory,
     encoding: 'utf8',
     maxBuffer: 16 * 1024 * 1024,
@@ -73,5 +82,11 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
   const tag = argument('--tag', process.env.RELEASE_TAG);
   const output = argument('--output', 'release-assets');
   assert(tag, 'provide --tag or RELEASE_TAG');
-  console.log(JSON.stringify(prepareRelease(tag, output), null, 2));
+  try {
+    console.log(JSON.stringify(prepareRelease(tag, output), null, 2));
+  } catch (error) {
+    if (!(error instanceof ReleaseVersionValidationError)) throw error;
+    process.stderr.write(`${JSON.stringify(error.report)}\n`);
+    process.exitCode = 1;
+  }
 }

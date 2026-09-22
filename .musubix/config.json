@@ -91,6 +91,16 @@
       "timeoutMs": 120000
     },
     {
+      "name": "pack-smoke",
+      "command": "npm",
+      "args": [
+        "run",
+        "pack:smoke"
+      ],
+      "required": true,
+      "timeoutMs": 180000
+    },
+    {
       "name": "cli-workflow-ux-tests",
       "command": "npx",
       "args": [
@@ -410,6 +420,18 @@
         "run",
         "tests/evidence-writer-lock.test.ts",
         "tests/evidence-writer-lock-integration.test.ts"
+      ],
+      "adapter": "vitest",
+      "required": true,
+      "timeoutMs": 120000
+    },
+    {
+      "name": "release-version-synchronization-tests",
+      "command": "npx",
+      "args": [
+        "vitest",
+        "run",
+        "tests/release-version-synchronization.test.ts"
       ],
       "adapter": "vitest",
       "required": true,

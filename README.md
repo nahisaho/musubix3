@@ -1147,6 +1147,23 @@ npm run pack:check
 npm run pack:smoke
 ```
 
+Synchronize every mechanically managed release-version surface before building:
+
+```sh
+npm run --silent release:version -- 1.2.3
+npm run --silent release:version -- --check 1.2.3
+# Equivalent direct entrypoints:
+node scripts/release-version.mjs 1.2.3
+node scripts/release-version.mjs --check 1.2.3
+```
+
+Use `--silent` with the npm entrypoint so stdout contains only its JSON report.
+Supply a bare SemVer version, without the tag's `v` prefix or build metadata.
+The release order is version synchronization, authored `CHANGELOG.md` review,
+`npm run build`, package validation, commit, and finally the matching `v<version>`
+tag. `release:prepare` validates every synchronized surface and the tag commit
+before changing its output directory.
+
 Workspaces: `packages/domain` (pure validators), `packages/analysis` (evidence,
 compiler and filesystem services), `packages/cli` (thin command/installation layer).
 One build emits `dist/packages/**`. Published contents explicitly include hidden

@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-22T00:56:40.057Z",
-  "totalRequirements": 156,
+  "generatedAt": "2026-09-22T05:55:46.301Z",
+  "totalRequirements": 164,
   "modeledRequirements": 10,
-  "modeledFraction": 0.0641025641025641,
+  "modeledFraction": 0.06097560975609756,
   "result": {
     "valid": true,
     "abstraction": "Consistency of explicit branch-scoped conditional, exact unit-normalized integer numeric, bounded temporal interval, deterministic state-transition, and controlled unconditional Boolean constraints; not implementation correctness.",
@@ -163,6 +163,14 @@
       "REQ-HUMAN-APPROVAL-GATES-007",
       "REQ-HUMAN-APPROVAL-GATES-008",
       "REQ-MODEL-CORRESPONDENCE-EVIDENCE-GUIDANCE-001",
+      "REQ-RELEASE-VERSION-SYNCHRONIZATION-001",
+      "REQ-RELEASE-VERSION-SYNCHRONIZATION-002",
+      "REQ-RELEASE-VERSION-SYNCHRONIZATION-003",
+      "REQ-RELEASE-VERSION-SYNCHRONIZATION-004",
+      "REQ-RELEASE-VERSION-SYNCHRONIZATION-005",
+      "REQ-RELEASE-VERSION-SYNCHRONIZATION-006",
+      "REQ-RELEASE-VERSION-SYNCHRONIZATION-007",
+      "REQ-RELEASE-VERSION-SYNCHRONIZATION-008",
       "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-001",
       "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-002",
       "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-003",
@@ -690,6 +698,46 @@
       {
         "code": "FORMAL_UNSUPPORTED",
         "severity": "warning",
+        "message": "REQ-RELEASE-VERSION-SYNCHRONIZATION-001 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-RELEASE-VERSION-SYNCHRONIZATION-002 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-RELEASE-VERSION-SYNCHRONIZATION-003 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-RELEASE-VERSION-SYNCHRONIZATION-004 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-RELEASE-VERSION-SYNCHRONIZATION-005 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-RELEASE-VERSION-SYNCHRONIZATION-006 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-RELEASE-VERSION-SYNCHRONIZATION-007 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-RELEASE-VERSION-SYNCHRONIZATION-008 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
         "message": "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-001 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
       },
       {
@@ -977,6 +1025,7 @@
     ".musubix/features/evidence-writer-lock/requirements.md": "7494d9754b823f5b685919d1e37d870dbe2f4fd2146ffa093513dd1032c60a6e",
     ".musubix/features/human-approval-gates/requirements.md": "f2ae2380935831bb102cd6a7726f2a208ab1719e035157302ef51ed28f624fb0",
     ".musubix/features/model-correspondence-evidence-guidance/requirements.md": "d7ca8b823ddfd3265e89f2892003e5eb95faad7e9b3972b249de5f2902446511",
+    ".musubix/features/release-version-synchronization/requirements.md": "afb3b57eb96d6e93e437e4a7c83f2f91a70af9c92967ce543ba399c244f6153f",
     ".musubix/features/requirements-design-scaffold/requirements.md": "0a968bc27756e715f68f22a8f6d65fc8fefce09ac79d1c8d0137282b821ebc45",
     ".musubix/features/session-scoped-development/requirements.md": "640aece168b4e6848c0d1e6371f0bfeb433fa8addfd064a77d050891d69d9a4f",
     ".musubix/features/tdd-adoption-warning/requirements.md": "9c81cc8bbb20ede59840340de1321972679d00aa97105e8fe5069f22bf4efd12",

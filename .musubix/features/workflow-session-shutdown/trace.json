@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-22T00:56:33.522Z",
+  "generatedAt": "2026-09-22T05:55:40.836Z",
   "nodes": [
     {
       "id": "CODE-SESSION-SCOPED-DEVELOPMENT-001",
@@ -192,6 +192,12 @@
       "id": "ADR-0031",
       "kind": "adr",
       "path": ".musubix/decisions/ADR-0031.md",
+      "line": 1
+    },
+    {
+      "id": "ADR-0032",
+      "kind": "adr",
+      "path": ".musubix/decisions/ADR-0032.md",
       "line": 1
     },
     {
@@ -1231,6 +1237,92 @@
       "path": ".musubix/features/model-correspondence-evidence-guidance/requirements.md",
       "line": 21,
       "mandatory": false
+    },
+    {
+      "id": "DES-RELEASE-VERSION-SYNCHRONIZATION-001",
+      "kind": "design",
+      "path": ".musubix/features/release-version-synchronization/design.md",
+      "line": 7
+    },
+    {
+      "id": "DES-RELEASE-VERSION-SYNCHRONIZATION-002",
+      "kind": "design",
+      "path": ".musubix/features/release-version-synchronization/design.md",
+      "line": 14
+    },
+    {
+      "id": "DES-RELEASE-VERSION-SYNCHRONIZATION-003",
+      "kind": "design",
+      "path": ".musubix/features/release-version-synchronization/design.md",
+      "line": 22
+    },
+    {
+      "id": "DES-RELEASE-VERSION-SYNCHRONIZATION-004",
+      "kind": "design",
+      "path": ".musubix/features/release-version-synchronization/design.md",
+      "line": 30
+    },
+    {
+      "id": "DES-RELEASE-VERSION-SYNCHRONIZATION-005",
+      "kind": "design",
+      "path": ".musubix/features/release-version-synchronization/design.md",
+      "line": 38
+    },
+    {
+      "id": "REQ-RELEASE-VERSION-SYNCHRONIZATION-001",
+      "kind": "requirement",
+      "path": ".musubix/features/release-version-synchronization/requirements.md",
+      "line": 19,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-RELEASE-VERSION-SYNCHRONIZATION-002",
+      "kind": "requirement",
+      "path": ".musubix/features/release-version-synchronization/requirements.md",
+      "line": 26,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-RELEASE-VERSION-SYNCHRONIZATION-003",
+      "kind": "requirement",
+      "path": ".musubix/features/release-version-synchronization/requirements.md",
+      "line": 33,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-RELEASE-VERSION-SYNCHRONIZATION-004",
+      "kind": "requirement",
+      "path": ".musubix/features/release-version-synchronization/requirements.md",
+      "line": 40,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-RELEASE-VERSION-SYNCHRONIZATION-005",
+      "kind": "requirement",
+      "path": ".musubix/features/release-version-synchronization/requirements.md",
+      "line": 47,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-RELEASE-VERSION-SYNCHRONIZATION-006",
+      "kind": "requirement",
+      "path": ".musubix/features/release-version-synchronization/requirements.md",
+      "line": 54,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-RELEASE-VERSION-SYNCHRONIZATION-007",
+      "kind": "requirement",
+      "path": ".musubix/features/release-version-synchronization/requirements.md",
+      "line": 61,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-RELEASE-VERSION-SYNCHRONIZATION-008",
+      "kind": "requirement",
+      "path": ".musubix/features/release-version-synchronization/requirements.md",
+      "line": 68,
+      "mandatory": true
     },
     {
       "id": "DES-REQUIREMENTS-DESIGN-SCAFFOLD-001",
@@ -2553,6 +2645,36 @@
       "line": 4
     },
     {
+      "id": "CODE-RELEASE-VERSION-SYNCHRONIZATION-004",
+      "kind": "code",
+      "path": "scripts/check-package.mjs",
+      "line": 13
+    },
+    {
+      "id": "CODE-RELEASE-VERSION-SYNCHRONIZATION-005",
+      "kind": "code",
+      "path": "scripts/release-prepare.mjs",
+      "line": 15
+    },
+    {
+      "id": "CODE-RELEASE-VERSION-SYNCHRONIZATION-001",
+      "kind": "code",
+      "path": "scripts/release-version.mjs",
+      "line": 299
+    },
+    {
+      "id": "CODE-RELEASE-VERSION-SYNCHRONIZATION-003",
+      "kind": "code",
+      "path": "scripts/release-version.mjs",
+      "line": 461
+    },
+    {
+      "id": "CODE-RELEASE-VERSION-SYNCHRONIZATION-002",
+      "kind": "code",
+      "path": "scripts/release-version.mjs",
+      "line": 539
+    },
+    {
       "id": "TEST-ADAPTER-PATTERN-RECOGNITION-001",
       "kind": "test",
       "path": "tests/adapter-pattern-recognition.test.ts",
@@ -3355,6 +3477,48 @@
       "kind": "test",
       "path": "tests/p3-workflow-provenance.test.ts",
       "line": 324
+    },
+    {
+      "id": "TEST-RELEASE-VERSION-SYNCHRONIZATION-001",
+      "kind": "test",
+      "path": "tests/release-version-synchronization.test.ts",
+      "line": 122
+    },
+    {
+      "id": "TEST-RELEASE-VERSION-SYNCHRONIZATION-002",
+      "kind": "test",
+      "path": "tests/release-version-synchronization.test.ts",
+      "line": 297
+    },
+    {
+      "id": "TEST-RELEASE-VERSION-SYNCHRONIZATION-003",
+      "kind": "test",
+      "path": "tests/release-version-synchronization.test.ts",
+      "line": 415
+    },
+    {
+      "id": "TEST-RELEASE-VERSION-SYNCHRONIZATION-004",
+      "kind": "test",
+      "path": "tests/release-version-synchronization.test.ts",
+      "line": 473
+    },
+    {
+      "id": "TEST-RELEASE-VERSION-SYNCHRONIZATION-005",
+      "kind": "test",
+      "path": "tests/release-version-synchronization.test.ts",
+      "line": 526
+    },
+    {
+      "id": "TEST-RELEASE-VERSION-SYNCHRONIZATION-006",
+      "kind": "test",
+      "path": "tests/release-version-synchronization.test.ts",
+      "line": 626
+    },
+    {
+      "id": "TEST-RELEASE-VERSION-SYNCHRONIZATION-007",
+      "kind": "test",
+      "path": "tests/release-version-synchronization.test.ts",
+      "line": 707
     },
     {
       "id": "TEST-REQUIREMENTS-DESIGN-SCAFFOLD-001",
@@ -4711,6 +4875,166 @@
       "from": "DES-MODEL-CORRESPONDENCE-EVIDENCE-GUIDANCE-002",
       "to": "REQ-MODEL-CORRESPONDENCE-EVIDENCE-GUIDANCE-002",
       "relation": "satisfies"
+    },
+    {
+      "from": "DES-RELEASE-VERSION-SYNCHRONIZATION-001",
+      "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-RELEASE-VERSION-SYNCHRONIZATION-001",
+      "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-003",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-RELEASE-VERSION-SYNCHRONIZATION-001",
+      "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-004",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-RELEASE-VERSION-SYNCHRONIZATION-001",
+      "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-005",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-RELEASE-VERSION-SYNCHRONIZATION-001",
+      "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-008",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0032",
+      "to": "DES-RELEASE-VERSION-SYNCHRONIZATION-001",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-RELEASE-VERSION-SYNCHRONIZATION-002",
+      "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-002",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-RELEASE-VERSION-SYNCHRONIZATION-002",
+      "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-005",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0032",
+      "to": "DES-RELEASE-VERSION-SYNCHRONIZATION-002",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-RELEASE-VERSION-SYNCHRONIZATION-002",
+      "to": "DES-RELEASE-VERSION-SYNCHRONIZATION-001",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-RELEASE-VERSION-SYNCHRONIZATION-003",
+      "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-003",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-RELEASE-VERSION-SYNCHRONIZATION-003",
+      "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-004",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0032",
+      "to": "DES-RELEASE-VERSION-SYNCHRONIZATION-003",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-RELEASE-VERSION-SYNCHRONIZATION-003",
+      "to": "DES-RELEASE-VERSION-SYNCHRONIZATION-002",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-RELEASE-VERSION-SYNCHRONIZATION-004",
+      "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-RELEASE-VERSION-SYNCHRONIZATION-004",
+      "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-004",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-RELEASE-VERSION-SYNCHRONIZATION-004",
+      "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-006",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-RELEASE-VERSION-SYNCHRONIZATION-004",
+      "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-007",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-RELEASE-VERSION-SYNCHRONIZATION-004",
+      "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-008",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0032",
+      "to": "DES-RELEASE-VERSION-SYNCHRONIZATION-004",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-RELEASE-VERSION-SYNCHRONIZATION-004",
+      "to": "DES-RELEASE-VERSION-SYNCHRONIZATION-001",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-RELEASE-VERSION-SYNCHRONIZATION-004",
+      "to": "DES-RELEASE-VERSION-SYNCHRONIZATION-003",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-RELEASE-VERSION-SYNCHRONIZATION-005",
+      "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-RELEASE-VERSION-SYNCHRONIZATION-005",
+      "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-002",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-RELEASE-VERSION-SYNCHRONIZATION-005",
+      "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-003",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-RELEASE-VERSION-SYNCHRONIZATION-005",
+      "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-004",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-RELEASE-VERSION-SYNCHRONIZATION-005",
+      "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-005",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-RELEASE-VERSION-SYNCHRONIZATION-005",
+      "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-006",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-RELEASE-VERSION-SYNCHRONIZATION-005",
+      "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-007",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-RELEASE-VERSION-SYNCHRONIZATION-005",
+      "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-008",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0032",
+      "to": "DES-RELEASE-VERSION-SYNCHRONIZATION-005",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-RELEASE-VERSION-SYNCHRONIZATION-005",
+      "to": "DES-RELEASE-VERSION-SYNCHRONIZATION-004",
+      "relation": "depends-on"
     },
     {
       "from": "DES-REQUIREMENTS-DESIGN-SCAFFOLD-001",
@@ -7458,6 +7782,131 @@
       "relation": "implements"
     },
     {
+      "from": "CODE-RELEASE-VERSION-SYNCHRONIZATION-004",
+      "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-006",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-RELEASE-VERSION-SYNCHRONIZATION-004",
+      "to": "DES-RELEASE-VERSION-SYNCHRONIZATION-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-RELEASE-VERSION-SYNCHRONIZATION-005",
+      "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-006",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-RELEASE-VERSION-SYNCHRONIZATION-005",
+      "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-007",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-RELEASE-VERSION-SYNCHRONIZATION-005",
+      "to": "DES-RELEASE-VERSION-SYNCHRONIZATION-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-RELEASE-VERSION-SYNCHRONIZATION-001",
+      "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-RELEASE-VERSION-SYNCHRONIZATION-001",
+      "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-RELEASE-VERSION-SYNCHRONIZATION-001",
+      "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-RELEASE-VERSION-SYNCHRONIZATION-001",
+      "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-RELEASE-VERSION-SYNCHRONIZATION-001",
+      "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-005",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-RELEASE-VERSION-SYNCHRONIZATION-001",
+      "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-008",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-RELEASE-VERSION-SYNCHRONIZATION-001",
+      "to": "DES-RELEASE-VERSION-SYNCHRONIZATION-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-RELEASE-VERSION-SYNCHRONIZATION-001",
+      "to": "DES-RELEASE-VERSION-SYNCHRONIZATION-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-RELEASE-VERSION-SYNCHRONIZATION-003",
+      "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-RELEASE-VERSION-SYNCHRONIZATION-003",
+      "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-RELEASE-VERSION-SYNCHRONIZATION-003",
+      "to": "DES-RELEASE-VERSION-SYNCHRONIZATION-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-RELEASE-VERSION-SYNCHRONIZATION-002",
+      "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-RELEASE-VERSION-SYNCHRONIZATION-002",
+      "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-RELEASE-VERSION-SYNCHRONIZATION-002",
+      "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-RELEASE-VERSION-SYNCHRONIZATION-002",
+      "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-RELEASE-VERSION-SYNCHRONIZATION-002",
+      "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-005",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-RELEASE-VERSION-SYNCHRONIZATION-002",
+      "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-008",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-RELEASE-VERSION-SYNCHRONIZATION-002",
+      "to": "DES-RELEASE-VERSION-SYNCHRONIZATION-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-RELEASE-VERSION-SYNCHRONIZATION-002",
+      "to": "DES-RELEASE-VERSION-SYNCHRONIZATION-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-RELEASE-VERSION-SYNCHRONIZATION-002",
+      "to": "DES-RELEASE-VERSION-SYNCHRONIZATION-004",
+      "relation": "implements"
+    },
+    {
       "from": "TEST-ADAPTER-PATTERN-RECOGNITION-001",
       "to": "REQ-ADAPTER-PATTERN-RECOGNITION-001",
       "relation": "verifies"
@@ -8208,6 +8657,91 @@
       "relation": "verifies"
     },
     {
+      "from": "TEST-RELEASE-VERSION-SYNCHRONIZATION-001",
+      "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-RELEASE-VERSION-SYNCHRONIZATION-001",
+      "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-002",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-RELEASE-VERSION-SYNCHRONIZATION-001",
+      "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-004",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-RELEASE-VERSION-SYNCHRONIZATION-001",
+      "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-005",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-RELEASE-VERSION-SYNCHRONIZATION-001",
+      "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-008",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-RELEASE-VERSION-SYNCHRONIZATION-002",
+      "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-003",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-RELEASE-VERSION-SYNCHRONIZATION-002",
+      "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-004",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-RELEASE-VERSION-SYNCHRONIZATION-003",
+      "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-006",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-RELEASE-VERSION-SYNCHRONIZATION-003",
+      "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-007",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-RELEASE-VERSION-SYNCHRONIZATION-004",
+      "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-003",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-RELEASE-VERSION-SYNCHRONIZATION-005",
+      "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-004",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-RELEASE-VERSION-SYNCHRONIZATION-005",
+      "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-008",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-RELEASE-VERSION-SYNCHRONIZATION-006",
+      "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-002",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-RELEASE-VERSION-SYNCHRONIZATION-006",
+      "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-003",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-RELEASE-VERSION-SYNCHRONIZATION-006",
+      "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-005",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-RELEASE-VERSION-SYNCHRONIZATION-007",
+      "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-006",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-RELEASE-VERSION-SYNCHRONIZATION-007",
+      "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-007",
+      "relation": "verifies"
+    },
+    {
       "from": "TEST-REQUIREMENTS-DESIGN-SCAFFOLD-001",
       "to": "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-001",
       "relation": "verifies"
@@ -8579,6 +9113,7 @@
     ".musubix/decisions/ADR-0029.md": "ad78f16771e42db6742c0aadbbe2e1e7d4640f4447995f7f801c994b5b424485",
     ".musubix/decisions/ADR-0030.md": "80b4d83140891df2ae9b8056d8ed4ec4b04bcb03544ca0523932a18465b088d2",
     ".musubix/decisions/ADR-0031.md": "5e224efdc547b469c255ed44dda4ad0e4bfc0e855e105d3968260998c095085b",
+    ".musubix/decisions/ADR-0032.md": "31bfdd12d54dcf9b5335d10c38de351ab396ee0c1e9834b4a275fbc4de00d06d",
     ".musubix/features/adapter-pattern-recognition/design.md": "a8e0c4a11f626cb4a41c9b5b53359c072ec0c3161f704791f42ba8af38124a70",
     ".musubix/features/adapter-pattern-recognition/requirements.md": "5731561a0a04982b8a5c305bdeeae6084bcf0ee8846f295eaaaabc823d1f9793",
     ".musubix/features/approval-domain-scoping/design.md": "e8731f1e3094aa22192ae2ae5986fb4dc9a7698f7cfe66961e1342f6e0743bd9",
@@ -8613,6 +9148,8 @@
     ".musubix/features/human-approval-gates/requirements.md": "f2ae2380935831bb102cd6a7726f2a208ab1719e035157302ef51ed28f624fb0",
     ".musubix/features/model-correspondence-evidence-guidance/design.md": "708350f1f2a95dd9ab36b3da739db89be8b4895085a3c0fdf6b64482fe04837a",
     ".musubix/features/model-correspondence-evidence-guidance/requirements.md": "d7ca8b823ddfd3265e89f2892003e5eb95faad7e9b3972b249de5f2902446511",
+    ".musubix/features/release-version-synchronization/design.md": "8df85935c9e2151cba0b0640fb5b25af81a529cfa7d2e7ec43f7730a44ebf42e",
+    ".musubix/features/release-version-synchronization/requirements.md": "afb3b57eb96d6e93e437e4a7c83f2f91a70af9c92967ce543ba399c244f6153f",
     ".musubix/features/requirements-design-scaffold/design.md": "bbc705198e6631a77c4a2ff6999758dc9d2c457794e666aea50221743a691ecf",
     ".musubix/features/requirements-design-scaffold/requirements.md": "0a968bc27756e715f68f22a8f6d65fc8fefce09ac79d1c8d0137282b821ebc45",
     ".musubix/features/session-scoped-development/design.md": "66a65a3fdc1747569f42b42798a88377ae2ff93e32ff2cc5e0bae5c62c2e9a42",
@@ -8679,10 +9216,11 @@
     "packages/domain/src/markdown.ts": "5c6b96486a2e31944d7d128d241f1772d0926f34464fa2b59c20748a6754487a",
     "packages/domain/src/requirements.ts": "65ea1e6d3bbd29e929c785037b930e5f5eb5535b607403e5f30c3657d36e9175",
     "packages/domain/src/types.ts": "0f0cbd43bdee4db03b83e4869e9791531a63e9b63aa7a09661f62ad1bbc75cb3",
-    "scripts/check-package.mjs": "72210ce36b88fb9fe9e435e8f1a1709e623c25cfc9c81628cce7a1a87f80bee0",
+    "scripts/check-package.mjs": "f5cdb012f3ec097b52501dba3a2f106bf7a3b38468769f12977ccd14d9a4ee83",
     "scripts/release-attestation.mjs": "b15842f6f83eb768c361a5e054a984af0da846f3b6e789bc0c91127415576d15",
-    "scripts/release-prepare.mjs": "f868e935c6d6d6e04fc486d56f5cfb2af7c3c4de493c1b2f8620447399ff0d6b",
+    "scripts/release-prepare.mjs": "23028592e1f83b6aa4737717bf4abeb87845b9f06d16eb3b0bf35f92daf045ac",
     "scripts/release-publish.mjs": "be05292662e6f3a169f238231574c97dc70d41fc7a036bfe86b284e43eadaff4",
+    "scripts/release-version.mjs": "24f8d0d1cd72408d5462238a99db3856639a94cb904337a8fabddad7af1cb6de",
     "scripts/smoke-package.mjs": "aecca89d02c2f7222567b8f86a6f6c7a8d3599d9c3539c38023012eee620a8d1",
     "tests/adapter-integration.test.ts": "42c350b4c3498d2dca32943731521ae8c2d52921f560039c0f7719b060bd4972",
     "tests/adapter-pattern-recognition.test.ts": "df7446c88eecf17cff42a5bf2cb6adc4924d62c5ed4536ad62bc8d38eb5bd40c",
@@ -8718,6 +9256,7 @@
     "tests/p4-correspondence-mutation.test.ts": "d8ab95e6cfcd01518bc130e190913e172c6eb7519cd98e37bac1525391ce43fa",
     "tests/p4-workflow-streaming.test.ts": "6389d083b5bca81f88bbed2f54228a17d711cb8fa16a30a68614eb59bfb1d8bf",
     "tests/php-verification.test.ts": "bc70946615f3faa3cb3b5467e552140ba2ec8e25fb4d5276f72f65393ed04315",
+    "tests/release-version-synchronization.test.ts": "f191822d89512632151e7de2e8867b78263809a86f86c8d52c9b5dd6fed87747",
     "tests/scaffold-artifact.test.ts": "a8f074cdd9279f1b7c540fa1a721642ca762de9cd155f0894526a8f3daabc7d6",
     "tests/tdd-adoption-warning.test.ts": "fa0fc6267ad829bb4955dc352e986585f92daecd17865da7036ff2b9087d57e7",
     "tests/tdd-cycle-void.test.ts": "e7ea6272d9b5e0ab5377df280ba01dd38c8d1496f3a0c0f36f2053ad1b660baf",

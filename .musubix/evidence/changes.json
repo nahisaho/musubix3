@@ -16091,6 +16091,673 @@
           "order": 875
         }
       }
+    },
+    {
+      "changeId": "CHANGE-0018",
+      "requirementIds": [
+        "REQ-RELEASE-VERSION-SYNCHRONIZATION-001",
+        "REQ-RELEASE-VERSION-SYNCHRONIZATION-002",
+        "REQ-RELEASE-VERSION-SYNCHRONIZATION-003",
+        "REQ-RELEASE-VERSION-SYNCHRONIZATION-004",
+        "REQ-RELEASE-VERSION-SYNCHRONIZATION-005",
+        "REQ-RELEASE-VERSION-SYNCHRONIZATION-006",
+        "REQ-RELEASE-VERSION-SYNCHRONIZATION-007",
+        "REQ-RELEASE-VERSION-SYNCHRONIZATION-008"
+      ],
+      "phases": {
+        "impact": {
+          "phase": "impact",
+          "recordedAt": "2026-09-22T01:31:24.153Z",
+          "fingerprints": {
+            "impact": "bf1a9f2aaa1a34188f9a702145c2f6c3d85da2e3810063f2f2f186e667d72924",
+            "requirements": "7a468c4c8ac762a988e601e4a8c4394fb35b5bc77c2819b92ce411624a5487c2",
+            "design": "a66bf68c8191275be9638b4a248bc78c7e1328ec0ef5eac53cbc8d7bd3ad679f",
+            "implementation": "3bb065d563de2811dd25ceec510cf399f81ab0c775b4c45bbf666ea246297833",
+            "tests": "686189ac296a9886acded758f06fdd97f044a600a18340a98d6135f53983d786",
+            "tdd": "ed110d8027168fa775fbc08d079191bfab683858b838e47bac63ccd66f54506c",
+            "requirementImplementations": {
+              "REQ-RELEASE-VERSION-SYNCHRONIZATION-001": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-RELEASE-VERSION-SYNCHRONIZATION-002": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-RELEASE-VERSION-SYNCHRONIZATION-003": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-RELEASE-VERSION-SYNCHRONIZATION-004": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-RELEASE-VERSION-SYNCHRONIZATION-005": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-RELEASE-VERSION-SYNCHRONIZATION-006": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-RELEASE-VERSION-SYNCHRONIZATION-007": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-RELEASE-VERSION-SYNCHRONIZATION-008": {
+                "paths": [],
+                "fingerprints": {}
+              }
+            }
+          },
+          "order": 885
+        },
+        "requirements": {
+          "phase": "requirements",
+          "recordedAt": "2026-09-22T03:33:39.970Z",
+          "fingerprints": {
+            "impact": "575cf422ef57d20fc976f111785aec0cba74408818739496e299676e6d889416",
+            "requirements": "f005cdc2819b5cccb91252e612193dfebde3ab872b2bd06ac95dbe7f81e265fa",
+            "design": "3b8212db415c9106af5760f8f09f1aaa64fb5e160db23d025e9131f9c9fccd7b",
+            "implementation": "3810a841f77752346bac38643d7ca6596a148f184657be4f9abc2c472434fb62",
+            "tests": "0cc1c6e1f28b5ad3143c33f3af75d74c63a236eda6908cd7883790bcb18a4249",
+            "tdd": "ed110d8027168fa775fbc08d079191bfab683858b838e47bac63ccd66f54506c",
+            "requirementImplementations": {
+              "REQ-RELEASE-VERSION-SYNCHRONIZATION-001": {
+                "paths": [
+                  "scripts/check-package.mjs",
+                  "scripts/release-prepare.mjs",
+                  "scripts/release-version.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-package.mjs": "f5cdb012f3ec097b52501dba3a2f106bf7a3b38468769f12977ccd14d9a4ee83",
+                  "scripts/release-prepare.mjs": "23028592e1f83b6aa4737717bf4abeb87845b9f06d16eb3b0bf35f92daf045ac",
+                  "scripts/release-version.mjs": "c585b3d75d2654b3cf7920175ff6e6c3d9ed07a06b44e6c7dbe892fcfe04f774"
+                }
+              },
+              "REQ-RELEASE-VERSION-SYNCHRONIZATION-002": {
+                "paths": [
+                  "scripts/release-version.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/release-version.mjs": "c585b3d75d2654b3cf7920175ff6e6c3d9ed07a06b44e6c7dbe892fcfe04f774"
+                }
+              },
+              "REQ-RELEASE-VERSION-SYNCHRONIZATION-003": {
+                "paths": [
+                  "scripts/release-version.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/release-version.mjs": "c585b3d75d2654b3cf7920175ff6e6c3d9ed07a06b44e6c7dbe892fcfe04f774"
+                }
+              },
+              "REQ-RELEASE-VERSION-SYNCHRONIZATION-004": {
+                "paths": [
+                  "scripts/check-package.mjs",
+                  "scripts/release-prepare.mjs",
+                  "scripts/release-version.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-package.mjs": "f5cdb012f3ec097b52501dba3a2f106bf7a3b38468769f12977ccd14d9a4ee83",
+                  "scripts/release-prepare.mjs": "23028592e1f83b6aa4737717bf4abeb87845b9f06d16eb3b0bf35f92daf045ac",
+                  "scripts/release-version.mjs": "c585b3d75d2654b3cf7920175ff6e6c3d9ed07a06b44e6c7dbe892fcfe04f774"
+                }
+              },
+              "REQ-RELEASE-VERSION-SYNCHRONIZATION-005": {
+                "paths": [
+                  "scripts/release-version.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/release-version.mjs": "c585b3d75d2654b3cf7920175ff6e6c3d9ed07a06b44e6c7dbe892fcfe04f774"
+                }
+              },
+              "REQ-RELEASE-VERSION-SYNCHRONIZATION-006": {
+                "paths": [
+                  "scripts/check-package.mjs",
+                  "scripts/release-prepare.mjs",
+                  "scripts/release-version.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-package.mjs": "f5cdb012f3ec097b52501dba3a2f106bf7a3b38468769f12977ccd14d9a4ee83",
+                  "scripts/release-prepare.mjs": "23028592e1f83b6aa4737717bf4abeb87845b9f06d16eb3b0bf35f92daf045ac",
+                  "scripts/release-version.mjs": "c585b3d75d2654b3cf7920175ff6e6c3d9ed07a06b44e6c7dbe892fcfe04f774"
+                }
+              },
+              "REQ-RELEASE-VERSION-SYNCHRONIZATION-007": {
+                "paths": [
+                  "scripts/check-package.mjs",
+                  "scripts/release-prepare.mjs",
+                  "scripts/release-version.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-package.mjs": "f5cdb012f3ec097b52501dba3a2f106bf7a3b38468769f12977ccd14d9a4ee83",
+                  "scripts/release-prepare.mjs": "23028592e1f83b6aa4737717bf4abeb87845b9f06d16eb3b0bf35f92daf045ac",
+                  "scripts/release-version.mjs": "c585b3d75d2654b3cf7920175ff6e6c3d9ed07a06b44e6c7dbe892fcfe04f774"
+                }
+              },
+              "REQ-RELEASE-VERSION-SYNCHRONIZATION-008": {
+                "paths": [
+                  "scripts/check-package.mjs",
+                  "scripts/release-prepare.mjs",
+                  "scripts/release-version.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-package.mjs": "f5cdb012f3ec097b52501dba3a2f106bf7a3b38468769f12977ccd14d9a4ee83",
+                  "scripts/release-prepare.mjs": "23028592e1f83b6aa4737717bf4abeb87845b9f06d16eb3b0bf35f92daf045ac",
+                  "scripts/release-version.mjs": "c585b3d75d2654b3cf7920175ff6e6c3d9ed07a06b44e6c7dbe892fcfe04f774"
+                }
+              }
+            }
+          },
+          "order": 886
+        },
+        "design": {
+          "phase": "design",
+          "recordedAt": "2026-09-22T04:41:04.929Z",
+          "fingerprints": {
+            "impact": "b96722c2eea8354ac6cc92ecc7cf106092c5a1d22f20cde58c324c4da47bae2f",
+            "requirements": "f005cdc2819b5cccb91252e612193dfebde3ab872b2bd06ac95dbe7f81e265fa",
+            "design": "1366f9d2e5cb84fcdc7cc8c78e9846c9da2ec2b06ac8d5628012bed2d300c21b",
+            "implementation": "6018b7cdd6b56cc443946e3f86e33329db61b2968c56f04b3efff3b2bfaf308a",
+            "tests": "be24ee716b6f543af1b238407d9b85200fb342d9daa350e4d0b6f08f08a5c404",
+            "tdd": "ed110d8027168fa775fbc08d079191bfab683858b838e47bac63ccd66f54506c",
+            "requirementImplementations": {
+              "REQ-RELEASE-VERSION-SYNCHRONIZATION-001": {
+                "paths": [
+                  "scripts/check-package.mjs",
+                  "scripts/release-prepare.mjs",
+                  "scripts/release-version.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-package.mjs": "f5cdb012f3ec097b52501dba3a2f106bf7a3b38468769f12977ccd14d9a4ee83",
+                  "scripts/release-prepare.mjs": "23028592e1f83b6aa4737717bf4abeb87845b9f06d16eb3b0bf35f92daf045ac",
+                  "scripts/release-version.mjs": "24f8d0d1cd72408d5462238a99db3856639a94cb904337a8fabddad7af1cb6de"
+                }
+              },
+              "REQ-RELEASE-VERSION-SYNCHRONIZATION-002": {
+                "paths": [
+                  "scripts/release-version.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/release-version.mjs": "24f8d0d1cd72408d5462238a99db3856639a94cb904337a8fabddad7af1cb6de"
+                }
+              },
+              "REQ-RELEASE-VERSION-SYNCHRONIZATION-003": {
+                "paths": [
+                  "scripts/release-version.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/release-version.mjs": "24f8d0d1cd72408d5462238a99db3856639a94cb904337a8fabddad7af1cb6de"
+                }
+              },
+              "REQ-RELEASE-VERSION-SYNCHRONIZATION-004": {
+                "paths": [
+                  "scripts/check-package.mjs",
+                  "scripts/release-prepare.mjs",
+                  "scripts/release-version.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-package.mjs": "f5cdb012f3ec097b52501dba3a2f106bf7a3b38468769f12977ccd14d9a4ee83",
+                  "scripts/release-prepare.mjs": "23028592e1f83b6aa4737717bf4abeb87845b9f06d16eb3b0bf35f92daf045ac",
+                  "scripts/release-version.mjs": "24f8d0d1cd72408d5462238a99db3856639a94cb904337a8fabddad7af1cb6de"
+                }
+              },
+              "REQ-RELEASE-VERSION-SYNCHRONIZATION-005": {
+                "paths": [
+                  "scripts/release-version.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/release-version.mjs": "24f8d0d1cd72408d5462238a99db3856639a94cb904337a8fabddad7af1cb6de"
+                }
+              },
+              "REQ-RELEASE-VERSION-SYNCHRONIZATION-006": {
+                "paths": [
+                  "scripts/check-package.mjs",
+                  "scripts/release-prepare.mjs",
+                  "scripts/release-version.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-package.mjs": "f5cdb012f3ec097b52501dba3a2f106bf7a3b38468769f12977ccd14d9a4ee83",
+                  "scripts/release-prepare.mjs": "23028592e1f83b6aa4737717bf4abeb87845b9f06d16eb3b0bf35f92daf045ac",
+                  "scripts/release-version.mjs": "24f8d0d1cd72408d5462238a99db3856639a94cb904337a8fabddad7af1cb6de"
+                }
+              },
+              "REQ-RELEASE-VERSION-SYNCHRONIZATION-007": {
+                "paths": [
+                  "scripts/check-package.mjs",
+                  "scripts/release-prepare.mjs",
+                  "scripts/release-version.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-package.mjs": "f5cdb012f3ec097b52501dba3a2f106bf7a3b38468769f12977ccd14d9a4ee83",
+                  "scripts/release-prepare.mjs": "23028592e1f83b6aa4737717bf4abeb87845b9f06d16eb3b0bf35f92daf045ac",
+                  "scripts/release-version.mjs": "24f8d0d1cd72408d5462238a99db3856639a94cb904337a8fabddad7af1cb6de"
+                }
+              },
+              "REQ-RELEASE-VERSION-SYNCHRONIZATION-008": {
+                "paths": [
+                  "scripts/check-package.mjs",
+                  "scripts/release-prepare.mjs",
+                  "scripts/release-version.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-package.mjs": "f5cdb012f3ec097b52501dba3a2f106bf7a3b38468769f12977ccd14d9a4ee83",
+                  "scripts/release-prepare.mjs": "23028592e1f83b6aa4737717bf4abeb87845b9f06d16eb3b0bf35f92daf045ac",
+                  "scripts/release-version.mjs": "24f8d0d1cd72408d5462238a99db3856639a94cb904337a8fabddad7af1cb6de"
+                }
+              }
+            }
+          },
+          "order": 887
+        },
+        "quality": {
+          "phase": "quality",
+          "recordedAt": "2026-09-22T05:39:49.926Z",
+          "fingerprints": {
+            "impact": "a4e50d5a1f36c0efdfd6123a7bbfea8939332e9e15737f2aec53b6c83b300a8b",
+            "requirements": "f005cdc2819b5cccb91252e612193dfebde3ab872b2bd06ac95dbe7f81e265fa",
+            "design": "1366f9d2e5cb84fcdc7cc8c78e9846c9da2ec2b06ac8d5628012bed2d300c21b",
+            "implementation": "6018b7cdd6b56cc443946e3f86e33329db61b2968c56f04b3efff3b2bfaf308a",
+            "tests": "47119679af72e64ac65262cb34f40d59d9ec94b553f20dd486957cf43d6dc6dc",
+            "tdd": "da8a6af050afd1b654f210f8098847cb8177857a64f405af90c872e6dc79d061",
+            "requirementImplementations": {
+              "REQ-RELEASE-VERSION-SYNCHRONIZATION-001": {
+                "paths": [
+                  "scripts/check-package.mjs",
+                  "scripts/release-prepare.mjs",
+                  "scripts/release-version.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-package.mjs": "f5cdb012f3ec097b52501dba3a2f106bf7a3b38468769f12977ccd14d9a4ee83",
+                  "scripts/release-prepare.mjs": "23028592e1f83b6aa4737717bf4abeb87845b9f06d16eb3b0bf35f92daf045ac",
+                  "scripts/release-version.mjs": "24f8d0d1cd72408d5462238a99db3856639a94cb904337a8fabddad7af1cb6de"
+                }
+              },
+              "REQ-RELEASE-VERSION-SYNCHRONIZATION-002": {
+                "paths": [
+                  "scripts/release-version.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/release-version.mjs": "24f8d0d1cd72408d5462238a99db3856639a94cb904337a8fabddad7af1cb6de"
+                }
+              },
+              "REQ-RELEASE-VERSION-SYNCHRONIZATION-003": {
+                "paths": [
+                  "scripts/release-version.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/release-version.mjs": "24f8d0d1cd72408d5462238a99db3856639a94cb904337a8fabddad7af1cb6de"
+                }
+              },
+              "REQ-RELEASE-VERSION-SYNCHRONIZATION-004": {
+                "paths": [
+                  "scripts/check-package.mjs",
+                  "scripts/release-prepare.mjs",
+                  "scripts/release-version.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-package.mjs": "f5cdb012f3ec097b52501dba3a2f106bf7a3b38468769f12977ccd14d9a4ee83",
+                  "scripts/release-prepare.mjs": "23028592e1f83b6aa4737717bf4abeb87845b9f06d16eb3b0bf35f92daf045ac",
+                  "scripts/release-version.mjs": "24f8d0d1cd72408d5462238a99db3856639a94cb904337a8fabddad7af1cb6de"
+                }
+              },
+              "REQ-RELEASE-VERSION-SYNCHRONIZATION-005": {
+                "paths": [
+                  "scripts/release-version.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/release-version.mjs": "24f8d0d1cd72408d5462238a99db3856639a94cb904337a8fabddad7af1cb6de"
+                }
+              },
+              "REQ-RELEASE-VERSION-SYNCHRONIZATION-006": {
+                "paths": [
+                  "scripts/check-package.mjs",
+                  "scripts/release-prepare.mjs",
+                  "scripts/release-version.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-package.mjs": "f5cdb012f3ec097b52501dba3a2f106bf7a3b38468769f12977ccd14d9a4ee83",
+                  "scripts/release-prepare.mjs": "23028592e1f83b6aa4737717bf4abeb87845b9f06d16eb3b0bf35f92daf045ac",
+                  "scripts/release-version.mjs": "24f8d0d1cd72408d5462238a99db3856639a94cb904337a8fabddad7af1cb6de"
+                }
+              },
+              "REQ-RELEASE-VERSION-SYNCHRONIZATION-007": {
+                "paths": [
+                  "scripts/check-package.mjs",
+                  "scripts/release-prepare.mjs",
+                  "scripts/release-version.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-package.mjs": "f5cdb012f3ec097b52501dba3a2f106bf7a3b38468769f12977ccd14d9a4ee83",
+                  "scripts/release-prepare.mjs": "23028592e1f83b6aa4737717bf4abeb87845b9f06d16eb3b0bf35f92daf045ac",
+                  "scripts/release-version.mjs": "24f8d0d1cd72408d5462238a99db3856639a94cb904337a8fabddad7af1cb6de"
+                }
+              },
+              "REQ-RELEASE-VERSION-SYNCHRONIZATION-008": {
+                "paths": [
+                  "scripts/check-package.mjs",
+                  "scripts/release-prepare.mjs",
+                  "scripts/release-version.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-package.mjs": "f5cdb012f3ec097b52501dba3a2f106bf7a3b38468769f12977ccd14d9a4ee83",
+                  "scripts/release-prepare.mjs": "23028592e1f83b6aa4737717bf4abeb87845b9f06d16eb3b0bf35f92daf045ac",
+                  "scripts/release-version.mjs": "24f8d0d1cd72408d5462238a99db3856639a94cb904337a8fabddad7af1cb6de"
+                }
+              }
+            }
+          },
+          "order": 928
+        }
+      },
+      "tddBatches": [
+        {
+          "requirementIds": [
+            "REQ-RELEASE-VERSION-SYNCHRONIZATION-001",
+            "REQ-RELEASE-VERSION-SYNCHRONIZATION-002",
+            "REQ-RELEASE-VERSION-SYNCHRONIZATION-004",
+            "REQ-RELEASE-VERSION-SYNCHRONIZATION-005",
+            "REQ-RELEASE-VERSION-SYNCHRONIZATION-008"
+          ],
+          "red": {
+            "phase": "red",
+            "recordedAt": "2026-09-22T05:31:35.163Z",
+            "fingerprints": {
+              "impact": "a4e50d5a1f36c0efdfd6123a7bbfea8939332e9e15737f2aec53b6c83b300a8b",
+              "requirements": "f005cdc2819b5cccb91252e612193dfebde3ab872b2bd06ac95dbe7f81e265fa",
+              "design": "1366f9d2e5cb84fcdc7cc8c78e9846c9da2ec2b06ac8d5628012bed2d300c21b",
+              "implementation": "3bb065d563de2811dd25ceec510cf399f81ab0c775b4c45bbf666ea246297833",
+              "tests": "47119679af72e64ac65262cb34f40d59d9ec94b553f20dd486957cf43d6dc6dc",
+              "tdd": "8062f638f0d4ce764047b509d4008734d1ffa39ea5efbe8880c8973b28541878",
+              "requirementImplementations": {
+                "REQ-RELEASE-VERSION-SYNCHRONIZATION-001": {
+                  "paths": [],
+                  "fingerprints": {}
+                },
+                "REQ-RELEASE-VERSION-SYNCHRONIZATION-002": {
+                  "paths": [],
+                  "fingerprints": {}
+                },
+                "REQ-RELEASE-VERSION-SYNCHRONIZATION-004": {
+                  "paths": [],
+                  "fingerprints": {}
+                },
+                "REQ-RELEASE-VERSION-SYNCHRONIZATION-005": {
+                  "paths": [],
+                  "fingerprints": {}
+                },
+                "REQ-RELEASE-VERSION-SYNCHRONIZATION-008": {
+                  "paths": [],
+                  "fingerprints": {}
+                }
+              }
+            },
+            "order": 905
+          },
+          "implementation": {
+            "phase": "implementation",
+            "recordedAt": "2026-09-22T05:31:53.288Z",
+            "fingerprints": {
+              "impact": "a4e50d5a1f36c0efdfd6123a7bbfea8939332e9e15737f2aec53b6c83b300a8b",
+              "requirements": "f005cdc2819b5cccb91252e612193dfebde3ab872b2bd06ac95dbe7f81e265fa",
+              "design": "1366f9d2e5cb84fcdc7cc8c78e9846c9da2ec2b06ac8d5628012bed2d300c21b",
+              "implementation": "6018b7cdd6b56cc443946e3f86e33329db61b2968c56f04b3efff3b2bfaf308a",
+              "tests": "47119679af72e64ac65262cb34f40d59d9ec94b553f20dd486957cf43d6dc6dc",
+              "tdd": "8062f638f0d4ce764047b509d4008734d1ffa39ea5efbe8880c8973b28541878",
+              "requirementImplementations": {
+                "REQ-RELEASE-VERSION-SYNCHRONIZATION-001": {
+                  "paths": [
+                    "scripts/check-package.mjs",
+                    "scripts/release-prepare.mjs",
+                    "scripts/release-version.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-package.mjs": "f5cdb012f3ec097b52501dba3a2f106bf7a3b38468769f12977ccd14d9a4ee83",
+                    "scripts/release-prepare.mjs": "23028592e1f83b6aa4737717bf4abeb87845b9f06d16eb3b0bf35f92daf045ac",
+                    "scripts/release-version.mjs": "24f8d0d1cd72408d5462238a99db3856639a94cb904337a8fabddad7af1cb6de"
+                  }
+                },
+                "REQ-RELEASE-VERSION-SYNCHRONIZATION-002": {
+                  "paths": [
+                    "scripts/release-version.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/release-version.mjs": "24f8d0d1cd72408d5462238a99db3856639a94cb904337a8fabddad7af1cb6de"
+                  }
+                },
+                "REQ-RELEASE-VERSION-SYNCHRONIZATION-004": {
+                  "paths": [
+                    "scripts/check-package.mjs",
+                    "scripts/release-prepare.mjs",
+                    "scripts/release-version.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-package.mjs": "f5cdb012f3ec097b52501dba3a2f106bf7a3b38468769f12977ccd14d9a4ee83",
+                    "scripts/release-prepare.mjs": "23028592e1f83b6aa4737717bf4abeb87845b9f06d16eb3b0bf35f92daf045ac",
+                    "scripts/release-version.mjs": "24f8d0d1cd72408d5462238a99db3856639a94cb904337a8fabddad7af1cb6de"
+                  }
+                },
+                "REQ-RELEASE-VERSION-SYNCHRONIZATION-005": {
+                  "paths": [
+                    "scripts/release-version.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/release-version.mjs": "24f8d0d1cd72408d5462238a99db3856639a94cb904337a8fabddad7af1cb6de"
+                  }
+                },
+                "REQ-RELEASE-VERSION-SYNCHRONIZATION-008": {
+                  "paths": [
+                    "scripts/check-package.mjs",
+                    "scripts/release-prepare.mjs",
+                    "scripts/release-version.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-package.mjs": "f5cdb012f3ec097b52501dba3a2f106bf7a3b38468769f12977ccd14d9a4ee83",
+                    "scripts/release-prepare.mjs": "23028592e1f83b6aa4737717bf4abeb87845b9f06d16eb3b0bf35f92daf045ac",
+                    "scripts/release-version.mjs": "24f8d0d1cd72408d5462238a99db3856639a94cb904337a8fabddad7af1cb6de"
+                  }
+                }
+              }
+            },
+            "order": 907
+          },
+          "green": {
+            "phase": "green",
+            "recordedAt": "2026-09-22T05:33:16.379Z",
+            "fingerprints": {
+              "impact": "a4e50d5a1f36c0efdfd6123a7bbfea8939332e9e15737f2aec53b6c83b300a8b",
+              "requirements": "f005cdc2819b5cccb91252e612193dfebde3ab872b2bd06ac95dbe7f81e265fa",
+              "design": "1366f9d2e5cb84fcdc7cc8c78e9846c9da2ec2b06ac8d5628012bed2d300c21b",
+              "implementation": "6018b7cdd6b56cc443946e3f86e33329db61b2968c56f04b3efff3b2bfaf308a",
+              "tests": "47119679af72e64ac65262cb34f40d59d9ec94b553f20dd486957cf43d6dc6dc",
+              "tdd": "da8a6af050afd1b654f210f8098847cb8177857a64f405af90c872e6dc79d061",
+              "requirementImplementations": {
+                "REQ-RELEASE-VERSION-SYNCHRONIZATION-001": {
+                  "paths": [
+                    "scripts/check-package.mjs",
+                    "scripts/release-prepare.mjs",
+                    "scripts/release-version.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-package.mjs": "f5cdb012f3ec097b52501dba3a2f106bf7a3b38468769f12977ccd14d9a4ee83",
+                    "scripts/release-prepare.mjs": "23028592e1f83b6aa4737717bf4abeb87845b9f06d16eb3b0bf35f92daf045ac",
+                    "scripts/release-version.mjs": "24f8d0d1cd72408d5462238a99db3856639a94cb904337a8fabddad7af1cb6de"
+                  }
+                },
+                "REQ-RELEASE-VERSION-SYNCHRONIZATION-002": {
+                  "paths": [
+                    "scripts/release-version.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/release-version.mjs": "24f8d0d1cd72408d5462238a99db3856639a94cb904337a8fabddad7af1cb6de"
+                  }
+                },
+                "REQ-RELEASE-VERSION-SYNCHRONIZATION-004": {
+                  "paths": [
+                    "scripts/check-package.mjs",
+                    "scripts/release-prepare.mjs",
+                    "scripts/release-version.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-package.mjs": "f5cdb012f3ec097b52501dba3a2f106bf7a3b38468769f12977ccd14d9a4ee83",
+                    "scripts/release-prepare.mjs": "23028592e1f83b6aa4737717bf4abeb87845b9f06d16eb3b0bf35f92daf045ac",
+                    "scripts/release-version.mjs": "24f8d0d1cd72408d5462238a99db3856639a94cb904337a8fabddad7af1cb6de"
+                  }
+                },
+                "REQ-RELEASE-VERSION-SYNCHRONIZATION-005": {
+                  "paths": [
+                    "scripts/release-version.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/release-version.mjs": "24f8d0d1cd72408d5462238a99db3856639a94cb904337a8fabddad7af1cb6de"
+                  }
+                },
+                "REQ-RELEASE-VERSION-SYNCHRONIZATION-008": {
+                  "paths": [
+                    "scripts/check-package.mjs",
+                    "scripts/release-prepare.mjs",
+                    "scripts/release-version.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-package.mjs": "f5cdb012f3ec097b52501dba3a2f106bf7a3b38468769f12977ccd14d9a4ee83",
+                    "scripts/release-prepare.mjs": "23028592e1f83b6aa4737717bf4abeb87845b9f06d16eb3b0bf35f92daf045ac",
+                    "scripts/release-version.mjs": "24f8d0d1cd72408d5462238a99db3856639a94cb904337a8fabddad7af1cb6de"
+                  }
+                }
+              }
+            },
+            "order": 926
+          }
+        },
+        {
+          "requirementIds": [
+            "REQ-RELEASE-VERSION-SYNCHRONIZATION-003",
+            "REQ-RELEASE-VERSION-SYNCHRONIZATION-006",
+            "REQ-RELEASE-VERSION-SYNCHRONIZATION-007"
+          ],
+          "red": {
+            "phase": "red",
+            "recordedAt": "2026-09-22T05:31:44.390Z",
+            "fingerprints": {
+              "impact": "a4e50d5a1f36c0efdfd6123a7bbfea8939332e9e15737f2aec53b6c83b300a8b",
+              "requirements": "f005cdc2819b5cccb91252e612193dfebde3ab872b2bd06ac95dbe7f81e265fa",
+              "design": "1366f9d2e5cb84fcdc7cc8c78e9846c9da2ec2b06ac8d5628012bed2d300c21b",
+              "implementation": "3bb065d563de2811dd25ceec510cf399f81ab0c775b4c45bbf666ea246297833",
+              "tests": "47119679af72e64ac65262cb34f40d59d9ec94b553f20dd486957cf43d6dc6dc",
+              "tdd": "8062f638f0d4ce764047b509d4008734d1ffa39ea5efbe8880c8973b28541878",
+              "requirementImplementations": {
+                "REQ-RELEASE-VERSION-SYNCHRONIZATION-003": {
+                  "paths": [],
+                  "fingerprints": {}
+                },
+                "REQ-RELEASE-VERSION-SYNCHRONIZATION-006": {
+                  "paths": [],
+                  "fingerprints": {}
+                },
+                "REQ-RELEASE-VERSION-SYNCHRONIZATION-007": {
+                  "paths": [],
+                  "fingerprints": {}
+                }
+              }
+            },
+            "order": 906
+          },
+          "implementation": {
+            "phase": "implementation",
+            "recordedAt": "2026-09-22T05:32:02.151Z",
+            "fingerprints": {
+              "impact": "a4e50d5a1f36c0efdfd6123a7bbfea8939332e9e15737f2aec53b6c83b300a8b",
+              "requirements": "f005cdc2819b5cccb91252e612193dfebde3ab872b2bd06ac95dbe7f81e265fa",
+              "design": "1366f9d2e5cb84fcdc7cc8c78e9846c9da2ec2b06ac8d5628012bed2d300c21b",
+              "implementation": "6018b7cdd6b56cc443946e3f86e33329db61b2968c56f04b3efff3b2bfaf308a",
+              "tests": "47119679af72e64ac65262cb34f40d59d9ec94b553f20dd486957cf43d6dc6dc",
+              "tdd": "8062f638f0d4ce764047b509d4008734d1ffa39ea5efbe8880c8973b28541878",
+              "requirementImplementations": {
+                "REQ-RELEASE-VERSION-SYNCHRONIZATION-003": {
+                  "paths": [
+                    "scripts/release-version.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/release-version.mjs": "24f8d0d1cd72408d5462238a99db3856639a94cb904337a8fabddad7af1cb6de"
+                  }
+                },
+                "REQ-RELEASE-VERSION-SYNCHRONIZATION-006": {
+                  "paths": [
+                    "scripts/check-package.mjs",
+                    "scripts/release-prepare.mjs",
+                    "scripts/release-version.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-package.mjs": "f5cdb012f3ec097b52501dba3a2f106bf7a3b38468769f12977ccd14d9a4ee83",
+                    "scripts/release-prepare.mjs": "23028592e1f83b6aa4737717bf4abeb87845b9f06d16eb3b0bf35f92daf045ac",
+                    "scripts/release-version.mjs": "24f8d0d1cd72408d5462238a99db3856639a94cb904337a8fabddad7af1cb6de"
+                  }
+                },
+                "REQ-RELEASE-VERSION-SYNCHRONIZATION-007": {
+                  "paths": [
+                    "scripts/check-package.mjs",
+                    "scripts/release-prepare.mjs",
+                    "scripts/release-version.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-package.mjs": "f5cdb012f3ec097b52501dba3a2f106bf7a3b38468769f12977ccd14d9a4ee83",
+                    "scripts/release-prepare.mjs": "23028592e1f83b6aa4737717bf4abeb87845b9f06d16eb3b0bf35f92daf045ac",
+                    "scripts/release-version.mjs": "24f8d0d1cd72408d5462238a99db3856639a94cb904337a8fabddad7af1cb6de"
+                  }
+                }
+              }
+            },
+            "order": 908
+          },
+          "green": {
+            "phase": "green",
+            "recordedAt": "2026-09-22T05:33:25.718Z",
+            "fingerprints": {
+              "impact": "a4e50d5a1f36c0efdfd6123a7bbfea8939332e9e15737f2aec53b6c83b300a8b",
+              "requirements": "f005cdc2819b5cccb91252e612193dfebde3ab872b2bd06ac95dbe7f81e265fa",
+              "design": "1366f9d2e5cb84fcdc7cc8c78e9846c9da2ec2b06ac8d5628012bed2d300c21b",
+              "implementation": "6018b7cdd6b56cc443946e3f86e33329db61b2968c56f04b3efff3b2bfaf308a",
+              "tests": "47119679af72e64ac65262cb34f40d59d9ec94b553f20dd486957cf43d6dc6dc",
+              "tdd": "da8a6af050afd1b654f210f8098847cb8177857a64f405af90c872e6dc79d061",
+              "requirementImplementations": {
+                "REQ-RELEASE-VERSION-SYNCHRONIZATION-003": {
+                  "paths": [
+                    "scripts/release-version.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/release-version.mjs": "24f8d0d1cd72408d5462238a99db3856639a94cb904337a8fabddad7af1cb6de"
+                  }
+                },
+                "REQ-RELEASE-VERSION-SYNCHRONIZATION-006": {
+                  "paths": [
+                    "scripts/check-package.mjs",
+                    "scripts/release-prepare.mjs",
+                    "scripts/release-version.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-package.mjs": "f5cdb012f3ec097b52501dba3a2f106bf7a3b38468769f12977ccd14d9a4ee83",
+                    "scripts/release-prepare.mjs": "23028592e1f83b6aa4737717bf4abeb87845b9f06d16eb3b0bf35f92daf045ac",
+                    "scripts/release-version.mjs": "24f8d0d1cd72408d5462238a99db3856639a94cb904337a8fabddad7af1cb6de"
+                  }
+                },
+                "REQ-RELEASE-VERSION-SYNCHRONIZATION-007": {
+                  "paths": [
+                    "scripts/check-package.mjs",
+                    "scripts/release-prepare.mjs",
+                    "scripts/release-version.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-package.mjs": "f5cdb012f3ec097b52501dba3a2f106bf7a3b38468769f12977ccd14d9a4ee83",
+                    "scripts/release-prepare.mjs": "23028592e1f83b6aa4737717bf4abeb87845b9f06d16eb3b0bf35f92daf045ac",
+                    "scripts/release-version.mjs": "24f8d0d1cd72408d5462238a99db3856639a94cb904337a8fabddad7af1cb6de"
+                  }
+                }
+              }
+            },
+            "order": 927
+          }
+        }
+      ]
     }
   ]
 }
