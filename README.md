@@ -407,6 +407,7 @@ validation/gate or requested solver failure, **2** usage, I/O or malformed confi
 | `formal check <file> [--solver auto\|none\|z3\|lean]` | Check the explicit Boolean/conditional/numeric/temporal/transition model |
 | `model-correspondence validate` | Revalidate Formal JSON → generated trace → authoritative passing test evidence (run `evidence refresh` first to generate its evidence file) |
 | `evidence refresh [--changed]` | Regenerate derived evidence through the same fail-closed gate pipeline |
+| `evidence unlock --recover` | Recover only a demonstrably dead same-host evidence-writer lock. Live, cross-host, malformed, PID-reused, unsupported-platform, and indeterminate owners are refused without mutation. |
 | `evidence merge --incoming <directory> [--dry-run]` | Merge the current root's valid order/TDD/change/waiver history with another valid project history. Base records remain first; exact duplicates are deduplicated; ambiguous payloads, chronology inversions, and post-Quality batch additions fail without writes. Dry-run performs the same planning and validation. The incoming directory is never modified. |
 | `evidence merge --recover` | Recover an interrupted evidence merge from its journal. Prepared transactions roll back; committed transactions verify and roll forward. If recovery reports `EVIDENCE_MERGE_RECOVERY_UNSAFE`, back up `.musubix/evidence`, restore or verify `order.json`, `tdd.json`, `changes.json`, and `change-waivers.json` from a trusted source, quarantine merge journal/temporary files, then rerun validation. |
 | `mutation validate` | Revalidate requirement-scoped schema-v1 killed-mutant evidence |
@@ -426,6 +427,41 @@ validation/gate or requested solver failure, **2** usage, I/O or malformed confi
 | `config scaffold` | Propose native test-command entries for detected Go/Rust/Maven/Python/Node toolchains without writing `.musubix/config.json` |
 | `gate [--changed] [--feature <name>]` | Fresh full checks plus actual configured commands; persist evidence. `--feature` scopes requirements/design/trace/tdd/change-history/change-completeness checks to one feature as a diagnostic view; never a substitute for the repository-wide gate |
 | `status` | Artifact counts and readiness/staleness summary |
+
+### Evidence writer coordination
+
+Commands that mutate evidence or generated project state use one fail-fast lock
+at `<realpath(project-root)>/.musubix/evidence/.writer-lock.json`. This includes
+init/upgrade writes, gate and evidence refresh, TDD/change/workflow/approval
+recording, trace/graph/knowledge/formal generation, and evidence merge/recovery.
+Complete owner metadata is staged, flushed, and published with a same-directory
+exclusive hard link, so the canonical lock is never visible as empty or partial.
+Filesystems that cannot provide this atomic publication fail with
+`EVIDENCE_WRITER_LOCK_ACQUIRE_FAILED`; there is no non-atomic fallback.
+
+Coordinated readers such as status, approval preparation/validation, trace and
+graph inspection, knowledge queries, TDD validation, attestation payload/verify,
+and merge dry-run fail immediately with `EVIDENCE_WRITER_LOCKED` when an
+unrelated owner exists. They do not wait or hold a read lease. Nested analysis
+operations in one owner async context reuse the lock; child processes and worker
+threads do not inherit that context. A configured command that recursively runs
+a musubix3 writer or coordinated reader against the same root therefore fails
+fast and must be removed from that command chain. Programs that write project
+files directly outside musubix3 are not coordinated.
+
+An abrupt exit can leave the lock. Run `evidence unlock --recover`; automatic
+recovery is currently Linux-only and requires matching hostname, boot identity,
+PID namespace, and a demonstrably absent owner PID. Live, PID-reused,
+cross-host, malformed, changed, unsupported, or indeterminate locks are left
+untouched with the exact path and inspection guidance. There is no force mode.
+The canonical lock and `.writer-lock.<transactionId>.json` staging files are
+ignored and excluded from generated inputs. After confirming no related process
+is active, an abandoned staging file may be removed by its exact path.
+
+Writer-lock checks precede merge-journal checks. When both an abandoned writer
+lock and pending merge journal exist, run `evidence unlock --recover` first and
+`evidence merge --recover` second. Unlock recovery never reads or modifies the
+merge journal.
 
 ### Evidence-history merge
 

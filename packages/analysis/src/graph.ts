@@ -3,6 +3,7 @@ import { dirname, isAbsolute, posix, relative, resolve } from 'node:path';
 import { error, type Diagnostic } from '../../domain/src/index.js';
 import type { Config } from './config.js';
 import { FILE_READ_CONCURRENCY, files, isSource, isTraceSource, mapWithConcurrency, portable, readText, snapshot, writeJson } from './files.js';
+import { withEvidenceWriterLock } from './evidence-writer-lock.js';
 
 export interface ImportEdge {
   from: string;
@@ -44,6 +45,11 @@ export async function graphInputs(root: string): Promise<string[]> {
  * @design DES-BOUNDED-FILE-READ-CONCURRENCY-002
  */
 export async function indexGraph(root: string, persist = true): Promise<CodeGraph> {
+  if (persist) return withEvidenceWriterLock(root, 'graph index', () => indexGraphUnlocked(root, true));
+  return indexGraphUnlocked(root, false);
+}
+
+async function indexGraphUnlocked(root: string, persist: boolean): Promise<CodeGraph> {
   const paths = await graphInputs(root);
   const typedSources = paths.filter(isSource);
   const rustSources = paths.filter((path) => path.endsWith('.rs'));

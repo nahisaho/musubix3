@@ -1,5 +1,6 @@
 import { error, type Diagnostic } from '../../domain/src/index.js';
 import { digest, exists, readText, within, writeJson } from './files.js';
+import { withEvidenceWriterLock } from './evidence-writer-lock.js';
 
 export type EvidenceOrderKind = 'change' | 'tdd';
 
@@ -168,6 +169,13 @@ export async function inspectEvidenceOrder(root: string): Promise<ReturnType<typ
 }
 
 export async function appendEvidenceOrder(
+  root: string,
+  input: Pick<EvidenceOrderRecord, 'kind' | 'entityId' | 'phase'> & Partial<Pick<EvidenceOrderRecord, 'testId' | 'code' | 'requirementId' | 'detail'>>,
+): Promise<EvidenceOrderRecord> {
+  return withEvidenceWriterLock(root, 'evidence order append', () => appendEvidenceOrderUnlocked(root, input));
+}
+
+async function appendEvidenceOrderUnlocked(
   root: string,
   input: Pick<EvidenceOrderRecord, 'kind' | 'entityId' | 'phase'> & Partial<Pick<EvidenceOrderRecord, 'testId' | 'code' | 'requirementId' | 'detail'>>,
 ): Promise<EvidenceOrderRecord> {

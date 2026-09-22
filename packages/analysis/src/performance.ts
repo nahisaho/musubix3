@@ -4,6 +4,7 @@ import { loadConfig, type CommandConfig } from './config.js';
 import { digest, exists, files, readText, safePath, within, writeJson } from './files.js';
 import type { ProcessResult } from './process.js';
 import { parseMusubixTestReport, type MusubixTestReport } from './tdd.js';
+import { withEvidenceWriterLock } from './evidence-writer-lock.js';
 
 type TestResult = MusubixTestReport['tests'][number];
 export type PerformanceReportSourceKind = 'file' | 'directory' | 'stdout';
@@ -208,6 +209,15 @@ export async function writePerformanceEvidence(
   executions: PerformanceExecution[],
   runId: string,
 ): Promise<PerformanceEvidence> {
+  return withEvidenceWriterLock(root, 'performance evidence generate', () =>
+    writePerformanceEvidenceUnlocked(root, executions, runId));
+}
+
+async function writePerformanceEvidenceUnlocked(
+  root: string,
+  executions: PerformanceExecution[],
+  runId: string,
+): Promise<PerformanceEvidence> {
   const evidence = performanceEvidence(await requirementsWithBudgets(root), executions, runId);
   await writeJson(root, '.musubix/evidence/performance.json', evidence);
   return evidence;
@@ -267,7 +277,7 @@ async function currentReport(
   const absolute = await safePath(root, execution.reportPath);
   const invocation = command.adapter ? adapterInvocation(command.adapter, command.name) : null;
   const text = invocation
-    ? await readAdapterOutput(invocation, absolute, '')
+    ? await readAdapterOutput(invocation, absolute, '', root)
     : await exists(absolute) ? await readText(root, execution.reportPath) : null;
   if (text === null) return null;
   const report = command.testReport

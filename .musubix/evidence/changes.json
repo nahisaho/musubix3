@@ -15764,6 +15764,333 @@
           "order": 837
         }
       }
+    },
+    {
+      "changeId": "CHANGE-0017",
+      "requirementIds": [
+        "REQ-EVIDENCE-WRITER-LOCK-001",
+        "REQ-EVIDENCE-WRITER-LOCK-002",
+        "REQ-EVIDENCE-WRITER-LOCK-003",
+        "REQ-EVIDENCE-WRITER-LOCK-004",
+        "REQ-EVIDENCE-WRITER-LOCK-005"
+      ],
+      "phases": {
+        "impact": {
+          "phase": "impact",
+          "recordedAt": "2026-09-21T13:59:32.241Z",
+          "fingerprints": {
+            "impact": "228a43574ed47de6419df44b6a3e981565b4b09a0580d23a9d1435403fb4af8d",
+            "requirements": "aab0ff68acbed6ab82c243bf404206dd1aadb29d8817a723c969a9f69baedfaa",
+            "design": "e62d07d72f85766cf005b6e31b2321bff77e0e6cce3112ef9cf525903c54b885",
+            "implementation": "23f29acf790338bc701a04402d47fdbaadf501585b78c3de7765962900f5b197",
+            "tests": "c2b98cfee46fdea84dc9acd8e2343c8d771e3ea5d30cfe6f906254da767c7fbc",
+            "tdd": "0300c06c3a1b09d303e3bb398ca08b1c1564da02fe23b984e992d4121291d758",
+            "requirementImplementations": {
+              "REQ-EVIDENCE-WRITER-LOCK-001": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-EVIDENCE-WRITER-LOCK-002": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-EVIDENCE-WRITER-LOCK-003": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-EVIDENCE-WRITER-LOCK-004": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-EVIDENCE-WRITER-LOCK-005": {
+                "paths": [],
+                "fingerprints": {}
+              }
+            }
+          },
+          "order": 854
+        },
+        "requirements": {
+          "phase": "requirements",
+          "recordedAt": "2026-09-21T14:07:08.961Z",
+          "fingerprints": {
+            "impact": "82997dc2d2cf2bb501adfb7255147965548e01b1582c18df5601b3da77134cc5",
+            "requirements": "6e47c99f6999a937de0ad6247dca0d3dae5482c43f9d41e8997bd8788607f46a",
+            "design": "e62d07d72f85766cf005b6e31b2321bff77e0e6cce3112ef9cf525903c54b885",
+            "implementation": "23f29acf790338bc701a04402d47fdbaadf501585b78c3de7765962900f5b197",
+            "tests": "c2b98cfee46fdea84dc9acd8e2343c8d771e3ea5d30cfe6f906254da767c7fbc",
+            "tdd": "0300c06c3a1b09d303e3bb398ca08b1c1564da02fe23b984e992d4121291d758",
+            "requirementImplementations": {
+              "REQ-EVIDENCE-WRITER-LOCK-001": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-EVIDENCE-WRITER-LOCK-002": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-EVIDENCE-WRITER-LOCK-003": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-EVIDENCE-WRITER-LOCK-004": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-EVIDENCE-WRITER-LOCK-005": {
+                "paths": [],
+                "fingerprints": {}
+              }
+            }
+          },
+          "order": 855
+        },
+        "design": {
+          "phase": "design",
+          "recordedAt": "2026-09-21T14:46:02.714Z",
+          "fingerprints": {
+            "impact": "c5b26675f6880b522fca39584d1b14287ead05cf569d42c68e30ef0dfdc6326c",
+            "requirements": "e20ef4a65ae4cd8334148a95187d6a316518fbf8887e67d2134061106fbb10dc",
+            "design": "0ecc9fd0db3458c1055a5d6d2cb711cb56637d4b7d185991604ced754162ae9c",
+            "implementation": "23f29acf790338bc701a04402d47fdbaadf501585b78c3de7765962900f5b197",
+            "tests": "c2b98cfee46fdea84dc9acd8e2343c8d771e3ea5d30cfe6f906254da767c7fbc",
+            "tdd": "0300c06c3a1b09d303e3bb398ca08b1c1564da02fe23b984e992d4121291d758",
+            "requirementImplementations": {
+              "REQ-EVIDENCE-WRITER-LOCK-001": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-EVIDENCE-WRITER-LOCK-002": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-EVIDENCE-WRITER-LOCK-003": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-EVIDENCE-WRITER-LOCK-004": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-EVIDENCE-WRITER-LOCK-005": {
+                "paths": [],
+                "fingerprints": {}
+              }
+            }
+          },
+          "order": 856
+        },
+        "red": {
+          "phase": "red",
+          "recordedAt": "2026-09-21T21:13:39.800Z",
+          "fingerprints": {
+            "impact": "c5b26675f6880b522fca39584d1b14287ead05cf569d42c68e30ef0dfdc6326c",
+            "requirements": "e20ef4a65ae4cd8334148a95187d6a316518fbf8887e67d2134061106fbb10dc",
+            "design": "0ecc9fd0db3458c1055a5d6d2cb711cb56637d4b7d185991604ced754162ae9c",
+            "implementation": "23f29acf790338bc701a04402d47fdbaadf501585b78c3de7765962900f5b197",
+            "tests": "1dd58c5cbb525ca2702ba2dcc11e99a335bb3bd09ca82cbbcc7551dddaecd9e4",
+            "tdd": "0486b1e5006c37ce36a00083bdf0613d17d45f52f548cc51eb9835704bb8c7fc",
+            "requirementImplementations": {
+              "REQ-EVIDENCE-WRITER-LOCK-001": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-EVIDENCE-WRITER-LOCK-002": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-EVIDENCE-WRITER-LOCK-003": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-EVIDENCE-WRITER-LOCK-004": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-EVIDENCE-WRITER-LOCK-005": {
+                "paths": [],
+                "fingerprints": {}
+              }
+            }
+          },
+          "order": 862
+        },
+        "implementation": {
+          "phase": "implementation",
+          "recordedAt": "2026-09-21T21:16:31.245Z",
+          "fingerprints": {
+            "impact": "c5b26675f6880b522fca39584d1b14287ead05cf569d42c68e30ef0dfdc6326c",
+            "requirements": "e20ef4a65ae4cd8334148a95187d6a316518fbf8887e67d2134061106fbb10dc",
+            "design": "0ecc9fd0db3458c1055a5d6d2cb711cb56637d4b7d185991604ced754162ae9c",
+            "implementation": "0b9de7d3182ef1dcd02493bca467d3f690d79aae59e3451531e2a97c0fa8e5f9",
+            "tests": "1dd58c5cbb525ca2702ba2dcc11e99a335bb3bd09ca82cbbcc7551dddaecd9e4",
+            "tdd": "0486b1e5006c37ce36a00083bdf0613d17d45f52f548cc51eb9835704bb8c7fc",
+            "requirementImplementations": {
+              "REQ-EVIDENCE-WRITER-LOCK-001": {
+                "paths": [
+                  "packages/analysis/src/evidence-writer-lock.ts"
+                ],
+                "fingerprints": {
+                  "packages/analysis/src/evidence-writer-lock.ts": "d55610403f8016c6a554e93e9cb97489c12b25fadb6d349d01b44cea22c81a65"
+                }
+              },
+              "REQ-EVIDENCE-WRITER-LOCK-002": {
+                "paths": [
+                  "packages/analysis/src/evidence-writer-lock.ts"
+                ],
+                "fingerprints": {
+                  "packages/analysis/src/evidence-writer-lock.ts": "d55610403f8016c6a554e93e9cb97489c12b25fadb6d349d01b44cea22c81a65"
+                }
+              },
+              "REQ-EVIDENCE-WRITER-LOCK-003": {
+                "paths": [
+                  "packages/analysis/src/evidence-writer-lock.ts"
+                ],
+                "fingerprints": {
+                  "packages/analysis/src/evidence-writer-lock.ts": "d55610403f8016c6a554e93e9cb97489c12b25fadb6d349d01b44cea22c81a65"
+                }
+              },
+              "REQ-EVIDENCE-WRITER-LOCK-004": {
+                "paths": [
+                  "packages/analysis/src/evidence-writer-lock.ts"
+                ],
+                "fingerprints": {
+                  "packages/analysis/src/evidence-writer-lock.ts": "d55610403f8016c6a554e93e9cb97489c12b25fadb6d349d01b44cea22c81a65"
+                }
+              },
+              "REQ-EVIDENCE-WRITER-LOCK-005": {
+                "paths": [
+                  "packages/analysis/src/evidence-writer-lock.ts"
+                ],
+                "fingerprints": {
+                  "packages/analysis/src/evidence-writer-lock.ts": "d55610403f8016c6a554e93e9cb97489c12b25fadb6d349d01b44cea22c81a65"
+                }
+              }
+            }
+          },
+          "order": 863
+        },
+        "green": {
+          "phase": "green",
+          "recordedAt": "2026-09-21T21:16:51.025Z",
+          "fingerprints": {
+            "impact": "c5b26675f6880b522fca39584d1b14287ead05cf569d42c68e30ef0dfdc6326c",
+            "requirements": "e20ef4a65ae4cd8334148a95187d6a316518fbf8887e67d2134061106fbb10dc",
+            "design": "0ecc9fd0db3458c1055a5d6d2cb711cb56637d4b7d185991604ced754162ae9c",
+            "implementation": "0b9de7d3182ef1dcd02493bca467d3f690d79aae59e3451531e2a97c0fa8e5f9",
+            "tests": "1dd58c5cbb525ca2702ba2dcc11e99a335bb3bd09ca82cbbcc7551dddaecd9e4",
+            "tdd": "ab90124d1b51e3953b9810bdc67544295aa6af24770aa425e5a75a93ffdf3166",
+            "requirementImplementations": {
+              "REQ-EVIDENCE-WRITER-LOCK-001": {
+                "paths": [
+                  "packages/analysis/src/evidence-writer-lock.ts"
+                ],
+                "fingerprints": {
+                  "packages/analysis/src/evidence-writer-lock.ts": "d55610403f8016c6a554e93e9cb97489c12b25fadb6d349d01b44cea22c81a65"
+                }
+              },
+              "REQ-EVIDENCE-WRITER-LOCK-002": {
+                "paths": [
+                  "packages/analysis/src/evidence-writer-lock.ts"
+                ],
+                "fingerprints": {
+                  "packages/analysis/src/evidence-writer-lock.ts": "d55610403f8016c6a554e93e9cb97489c12b25fadb6d349d01b44cea22c81a65"
+                }
+              },
+              "REQ-EVIDENCE-WRITER-LOCK-003": {
+                "paths": [
+                  "packages/analysis/src/evidence-writer-lock.ts"
+                ],
+                "fingerprints": {
+                  "packages/analysis/src/evidence-writer-lock.ts": "d55610403f8016c6a554e93e9cb97489c12b25fadb6d349d01b44cea22c81a65"
+                }
+              },
+              "REQ-EVIDENCE-WRITER-LOCK-004": {
+                "paths": [
+                  "packages/analysis/src/evidence-writer-lock.ts"
+                ],
+                "fingerprints": {
+                  "packages/analysis/src/evidence-writer-lock.ts": "d55610403f8016c6a554e93e9cb97489c12b25fadb6d349d01b44cea22c81a65"
+                }
+              },
+              "REQ-EVIDENCE-WRITER-LOCK-005": {
+                "paths": [
+                  "packages/analysis/src/evidence-writer-lock.ts"
+                ],
+                "fingerprints": {
+                  "packages/analysis/src/evidence-writer-lock.ts": "d55610403f8016c6a554e93e9cb97489c12b25fadb6d349d01b44cea22c81a65"
+                }
+              }
+            }
+          },
+          "order": 869
+        },
+        "quality": {
+          "phase": "quality",
+          "recordedAt": "2026-09-21T21:58:53.194Z",
+          "fingerprints": {
+            "impact": "c5b26675f6880b522fca39584d1b14287ead05cf569d42c68e30ef0dfdc6326c",
+            "requirements": "e20ef4a65ae4cd8334148a95187d6a316518fbf8887e67d2134061106fbb10dc",
+            "design": "0ecc9fd0db3458c1055a5d6d2cb711cb56637d4b7d185991604ced754162ae9c",
+            "implementation": "6cf1fb4080769bae391e4b626cb17f909db41788055f8314bd8b8bd94ec991df",
+            "tests": "35e165fb9a9b514ec946fbfdfff7898f401626568af2366b35caea89e7dd975e",
+            "tdd": "39b5808cbb5437c533dec9ca318ffb0e6bd6680126fd1f68733d15dc25b60064",
+            "requirementImplementations": {
+              "REQ-EVIDENCE-WRITER-LOCK-001": {
+                "paths": [
+                  "packages/analysis/src/evidence-merge-guard.ts",
+                  "packages/analysis/src/evidence-writer-lock.ts"
+                ],
+                "fingerprints": {
+                  "packages/analysis/src/evidence-merge-guard.ts": "cc0303770804e83c5daf231b4f137ebfd0e5238cc18db94a6f5b9568dfa2f20f",
+                  "packages/analysis/src/evidence-writer-lock.ts": "3bb4f7f626cfaf3159a9914a0cfa42dc231c4d7f5533113196f3a6b6d0058394"
+                }
+              },
+              "REQ-EVIDENCE-WRITER-LOCK-002": {
+                "paths": [
+                  "packages/analysis/src/evidence-merge-guard.ts",
+                  "packages/analysis/src/evidence-writer-lock.ts"
+                ],
+                "fingerprints": {
+                  "packages/analysis/src/evidence-merge-guard.ts": "cc0303770804e83c5daf231b4f137ebfd0e5238cc18db94a6f5b9568dfa2f20f",
+                  "packages/analysis/src/evidence-writer-lock.ts": "3bb4f7f626cfaf3159a9914a0cfa42dc231c4d7f5533113196f3a6b6d0058394"
+                }
+              },
+              "REQ-EVIDENCE-WRITER-LOCK-003": {
+                "paths": [
+                  "packages/analysis/src/evidence-merge-guard.ts",
+                  "packages/analysis/src/evidence-writer-lock.ts"
+                ],
+                "fingerprints": {
+                  "packages/analysis/src/evidence-merge-guard.ts": "cc0303770804e83c5daf231b4f137ebfd0e5238cc18db94a6f5b9568dfa2f20f",
+                  "packages/analysis/src/evidence-writer-lock.ts": "3bb4f7f626cfaf3159a9914a0cfa42dc231c4d7f5533113196f3a6b6d0058394"
+                }
+              },
+              "REQ-EVIDENCE-WRITER-LOCK-004": {
+                "paths": [
+                  "packages/analysis/src/evidence-merge-guard.ts",
+                  "packages/analysis/src/evidence-writer-lock.ts"
+                ],
+                "fingerprints": {
+                  "packages/analysis/src/evidence-merge-guard.ts": "cc0303770804e83c5daf231b4f137ebfd0e5238cc18db94a6f5b9568dfa2f20f",
+                  "packages/analysis/src/evidence-writer-lock.ts": "3bb4f7f626cfaf3159a9914a0cfa42dc231c4d7f5533113196f3a6b6d0058394"
+                }
+              },
+              "REQ-EVIDENCE-WRITER-LOCK-005": {
+                "paths": [
+                  "packages/analysis/src/evidence-merge-guard.ts",
+                  "packages/analysis/src/evidence-writer-lock.ts"
+                ],
+                "fingerprints": {
+                  "packages/analysis/src/evidence-merge-guard.ts": "cc0303770804e83c5daf231b4f137ebfd0e5238cc18db94a6f5b9568dfa2f20f",
+                  "packages/analysis/src/evidence-writer-lock.ts": "3bb4f7f626cfaf3159a9914a0cfa42dc231c4d7f5533113196f3a6b6d0058394"
+                }
+              }
+            }
+          },
+          "order": 875
+        }
+      }
     }
   ]
 }

@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 import { Command, CommanderError, InvalidArgumentError } from 'commander';
+import { realpathSync } from 'node:fs';
 import { basename, relative, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import {
   c4Diagram, validateConstitution, validateDesign, validateRequirements, type Diagnostic,
 } from '../../domain/src/index.js';
@@ -18,6 +19,8 @@ import {
   validateApprovals, validateApprovalsForDomain, type ApprovalStage,
   scaffoldCommands, scaffoldRequirements, scaffoldDesign,
   recordChangeWaiver, recordWorkflowWaiver, recordAllWorkflowWaivers,
+  assertCoordinatedEvidenceRead, EvidenceProtectedOutputError, EvidenceWriterLockError,
+  recoverEvidenceWriterLock, withEvidenceWriterLock,
 } from '../../analysis/src/index.js';
 import { install, pluginInstall, upgradeSkills } from './install.js';
 
@@ -39,6 +42,11 @@ function common(command: Command): Command {
 
 function pathQuery(root: string, query: string): string {
   return portable(relative(root, resolve(root, query)));
+}
+
+async function coordinatedReader<T>(root: string, operation: () => Promise<T>): Promise<T> {
+  await assertCoordinatedEvidenceRead(root);
+  return operation();
 }
 
 export function createProgram(): Command {
@@ -100,24 +108,28 @@ export function createProgram(): Command {
   }
   common(design.command('validate <file>')).action(async (file: string, options: { root: string; json?: boolean }) => {
     const root = resolve(options.root);
-    if (await exists(within(root, '.musubix/config.json'))) {
-      const config = await loadConfig(root);
-      const domain = await resolveDesignFileDomain(root, config.approval, portable(relative(root, resolve(root, file))));
-      await requireApproval(root, 'requirements', config.approval, domain);
-    }
-    result(await designResult(file, root), !!options.json);
+    await coordinatedReader(root, async () => {
+      if (await exists(within(root, '.musubix/config.json'))) {
+        const config = await loadConfig(root);
+        const domain = await resolveDesignFileDomain(root, config.approval, portable(relative(root, resolve(root, file))));
+        await requireApproval(root, 'requirements', config.approval, domain);
+      }
+      result(await designResult(file, root), !!options.json);
+    });
   });
   common(design.command('c4 <file>')).action(async (file: string, options: { root: string; json?: boolean }) => {
     const root = resolve(options.root);
-    if (await exists(within(root, '.musubix/config.json'))) {
-      const config = await loadConfig(root);
-      const domain = await resolveDesignFileDomain(root, config.approval, portable(relative(root, resolve(root, file))));
-      await requireApproval(root, 'requirements', config.approval, domain);
-    }
-    const report = await designResult(file, root);
-    if (!report.valid) { result(report, !!options.json); return; }
-    const diagram = c4Diagram(report.value);
-    output({ diagram }, !!options.json, diagram);
+    await coordinatedReader(root, async () => {
+      if (await exists(within(root, '.musubix/config.json'))) {
+        const config = await loadConfig(root);
+        const domain = await resolveDesignFileDomain(root, config.approval, portable(relative(root, resolve(root, file))));
+        await requireApproval(root, 'requirements', config.approval, domain);
+      }
+      const report = await designResult(file, root);
+      if (!report.valid) { result(report, !!options.json); return; }
+      const diagram = c4Diagram(report.value);
+      output({ diagram }, !!options.json, diagram);
+    });
   });
   common(design.command('scaffold <slug>')).action(async (slug: string, options: { root: string; json?: boolean }) => {
     const path = await scaffoldDesign(resolve(options.root), slug);
@@ -133,10 +145,12 @@ export function createProgram(): Command {
   common(trace.command('check')).option('--strict', 'Fail missing mandatory coverage')
     .action(async (options: { root: string; json?: boolean; strict?: boolean }) => {
       const root = resolve(options.root);
+      await assertCoordinatedEvidenceRead(root);
       result(await checkTrace(root, await loadTrace(root), !!options.strict), !!options.json);
     });
   common(trace.command('impact <id-or-path>')).action(async (query: string, options: { root: string; json?: boolean }) => {
     const root = resolve(options.root);
+    await assertCoordinatedEvidenceRead(root);
     const graph = await loadTrace(root);
     const freshness = await checkTrace(root, graph);
     const stale = freshness.diagnostics.some((d) => d.code.startsWith('TRACE_STALE'));
@@ -156,26 +170,33 @@ export function createProgram(): Command {
   common(graph.command('index')).option('--changed', 'Report changed files; conservatively refresh full graph')
     .action(async (options: { root: string; json?: boolean; changed?: boolean }) => {
       const root = resolve(options.root);
-      const changed = options.changed ? await changedFiles(root) : null;
-      const indexed = await indexGraph(root);
-      output({ ...indexed, changed }, !!options.json, `Graph: ${indexed.files.length} files, ${indexed.imports.length} imports, ${indexed.symbols.length} symbols.`);
-      if (indexed.diagnostics.some((d) => d.severity === 'error')) process.exitCode = 1;
+      await withEvidenceWriterLock(root, 'graph index', async () => {
+        const changed = options.changed ? await changedFiles(root) : null;
+        const indexed = await indexGraph(root);
+        output({ ...indexed, changed }, !!options.json, `Graph: ${indexed.files.length} files, ${indexed.imports.length} imports, ${indexed.symbols.length} symbols.`);
+        if (indexed.diagnostics.some((d) => d.severity === 'error')) process.exitCode = 1;
+      });
     });
   common(graph.command('impact <symbol-or-path>')).action(async (query: string, options: { root: string; json?: boolean }) => {
     const root = resolve(options.root);
+    await assertCoordinatedEvidenceRead(root);
     const indexed = await loadGraph(root);
     const normalized = indexed.files.includes(pathQuery(root, query)) ? pathQuery(root, query) : query;
     output(graphImpact(indexed, normalized), !!options.json);
   });
   common(graph.command('cycles')).action(async (options: { root: string; json?: boolean }) => {
-    const found = cycles(await loadGraph(resolve(options.root)));
+    const root = resolve(options.root);
+    await assertCoordinatedEvidenceRead(root);
+    const found = cycles(await loadGraph(root));
     output({ cycles: found }, !!options.json);
     if (found.length) process.exitCode = 1;
   });
   common(graph.command('gate')).action(async (options: { root: string; json?: boolean }) => {
     const root = resolve(options.root);
-    const config = await loadConfig(root);
-    result(graphGate(await indexGraph(root), config.architecture, config.codeGraph), !!options.json);
+    await withEvidenceWriterLock(root, 'graph gate', async () => {
+      const config = await loadConfig(root);
+      result(graphGate(await indexGraph(root), config.architecture, config.codeGraph), !!options.json);
+    });
   });
 
   const knowledge = program.command('knowledge').description('Local artifact and Git evidence retrieval (TF-IDF, not GraphRAG)');
@@ -187,7 +208,9 @@ export function createProgram(): Command {
     .action(async (query: string[], options: { root: string; json?: boolean; limit: string }) => {
       const limit = Number(options.limit);
       if (!Number.isInteger(limit) || limit < 1 || limit > 100) throw new Error('--limit must be 1..100.');
-      output(await queryKnowledge(resolve(options.root), query.join(' '), limit), !!options.json);
+      const root = resolve(options.root);
+      await assertCoordinatedEvidenceRead(root);
+      output(await queryKnowledge(root, query.join(' '), limit), !!options.json);
     });
   const formal = program.command('formal').description('Honest consistency checking of an explicit abstraction');
   common(formal.command('check <file>'))
@@ -202,12 +225,12 @@ export function createProgram(): Command {
       const timeoutMs = Number(options.timeout);
       if (!Number.isInteger(timeoutMs) || timeoutMs < 100 || timeoutMs > 300_000) throw new Error('--timeout must be 100..300000 milliseconds.');
       const root = resolve(options.root);
-      const report = await formalCheck(await readText(root, file), root, {
-        solver: options.solver as Solver,
-        timeoutMs,
-        ...(options.z3Command ? { z3Command: options.z3Command } : {}),
-        ...(options.leanCommand ? { leanCommand: options.leanCommand } : {}),
-      });
+      const report = await withEvidenceWriterLock(root, 'formal check', async () => formalCheck(await readText(root, file), root, {
+          solver: options.solver as Solver,
+          timeoutMs,
+          ...(options.z3Command ? { z3Command: options.z3Command } : {}),
+          ...(options.leanCommand ? { leanCommand: options.leanCommand } : {}),
+        }));
       output(report, !!options.json);
       if (!report.valid) process.exitCode = 1;
     });
@@ -217,7 +240,8 @@ export function createProgram(): Command {
       if (!['both', 'smt2', 'lean'].includes(options.format)) throw new Error('Unknown format; use both, smt2, or lean.');
       const root = resolve(options.root);
       const formats = options.format === 'both' ? ['smt2', 'lean'] as const : [options.format as 'smt2' | 'lean'];
-      const report = await generateFormalArtifacts(await readText(root, file), root, [...formats]);
+      const report = await withEvidenceWriterLock(root, 'formal generate', async () =>
+        generateFormalArtifacts(await readText(root, file), root, [...formats]));
       output(report, !!options.json, report.artifacts.map((entry) => `${entry.format}: ${entry.path}`).join('\n'));
       if (!report.valid) process.exitCode = 1;
     });
@@ -270,6 +294,19 @@ export function createProgram(): Command {
   common(evidence.command('refresh'))
     .option('--changed', 'Preserve changed-file impact context while refreshing all checks')
     .action(executeGate);
+  common(evidence.command('unlock')
+    .description('Inspect and recover an abandoned project evidence-writer lock')
+    .requiredOption('--recover', 'Recover only a demonstrably dead same-host owner')
+    .addHelpText('after', `
+Recovery never steals a live, remote, malformed, PID-reused, or indeterminate
+lock. Inspect the reported owner and exact lock path before any targeted manual
+removal. If a merge journal is also pending, recover this writer lock first,
+then run evidence merge --recover.`))
+    .action(async (options: { root: string; json?: boolean; recover: boolean }) => {
+      if (!options.recover) throw new Error('--recover is required.');
+      const report = await recoverEvidenceWriterLock(resolve(options.root));
+      output(report, !!options.json, report.action);
+    });
   common(evidence.command('merge')
     .description('Deterministically merge another valid append-only evidence history into the current root')
     .option('--incoming <directory>', 'Project directory containing the incoming .musubix/evidence history')
@@ -323,7 +360,9 @@ source, quarantining merge files, and rerunning structural validation.`))
       : 'No supported project ecosystem was detected.');
   });
   common(mutation.command('validate')).action(async (options: { root: string; json?: boolean }) => {
-    const report = await validateMutationEvidence(resolve(options.root));
+    const root = resolve(options.root);
+    await assertCoordinatedEvidenceRead(root);
+    const report = await validateMutationEvidence(root);
     if (!options.json && !report.present) {
       console.log('No mutation evidence at .musubix/evidence/mutation.json; the gate converts a configured mutationReport into that file. Compatible mode does not require it.');
     }
@@ -346,7 +385,9 @@ source, quarantining merge files, and rerunning structural validation.`))
       /* @id CODE-MODEL-CORRESPONDENCE-EVIDENCE-GUIDANCE-002 */
       .description('Validate model correspondence evidence (run `npx musubix3 evidence refresh` first to generate .musubix/evidence/model-correspondence.json)'),
   ).action(async (options: { root: string; json?: boolean }) => {
-    const report = await validateModelCorrespondenceEvidence(resolve(options.root));
+    const root = resolve(options.root);
+    await assertCoordinatedEvidenceRead(root);
+    const report = await validateModelCorrespondenceEvidence(root);
     result(report, !!options.json);
   });
   common(program.command('workflow-record <skill> <phase>').description('Record a self-reported workflow declaration'))
@@ -371,31 +412,33 @@ source, quarantining merge files, and rerunning structural validation.`))
     .option('--session-id <uuid>', 'Require the terminal result to identify this Copilot session')
     .action(async (logs: string[], options: { root: string; json?: boolean; strict?: boolean; sessionId?: string }) => {
       const root = resolve(options.root);
-      const paths = logs.map((log) => resolve(log));
-      for (const path of paths) {
-        const info = await stat(path);
-        if (!info.isFile()) throw new Error('Workflow log must be a file.');
-      }
-      const configured = (await loadConfig(root)).workflow;
-      const mode = options.strict || options.sessionId ? 'strict' : configured.mode;
-      const expectedSessionId = options.sessionId ?? configured.expectedSessionId;
-      const manifest = await verifyWorkflowLogFile(root, paths.length === 1 ? paths[0]! : paths, {
-        mode,
-        ...(expectedSessionId ? { expectedSessionId } : {}),
-        ...(configured.maxAgeSeconds === undefined ? {} : { maxAgeSeconds: configured.maxAgeSeconds }),
-        ...(configured.maxFutureSkewSeconds === undefined
-          ? {}
-          : { maxFutureSkewSeconds: configured.maxFutureSkewSeconds }),
-        ...(configured.maxEventSkewMs === undefined ? {} : { maxEventSkewMs: configured.maxEventSkewMs }),
-        ...(configured.maxTranscriptBytes === undefined ? {} : { maxBytes: configured.maxTranscriptBytes }),
-        ...(configured.maxTranscriptLineBytes === undefined ? {} : { maxLineBytes: configured.maxTranscriptLineBytes }),
+      await withEvidenceWriterLock(root, 'workflow-verify', async () => {
+        const paths = logs.map((log) => resolve(log));
+        for (const path of paths) {
+          const info = await stat(path);
+          if (!info.isFile()) throw new Error('Workflow log must be a file.');
+        }
+        const configured = (await loadConfig(root)).workflow;
+        const mode = options.strict || options.sessionId ? 'strict' : configured.mode;
+        const expectedSessionId = options.sessionId ?? configured.expectedSessionId;
+        const manifest = await verifyWorkflowLogFile(root, paths.length === 1 ? paths[0]! : paths, {
+          mode,
+          ...(expectedSessionId ? { expectedSessionId } : {}),
+          ...(configured.maxAgeSeconds === undefined ? {} : { maxAgeSeconds: configured.maxAgeSeconds }),
+          ...(configured.maxFutureSkewSeconds === undefined
+            ? {}
+            : { maxFutureSkewSeconds: configured.maxFutureSkewSeconds }),
+          ...(configured.maxEventSkewMs === undefined ? {} : { maxEventSkewMs: configured.maxEventSkewMs }),
+          ...(configured.maxTranscriptBytes === undefined ? {} : { maxBytes: configured.maxTranscriptBytes }),
+          ...(configured.maxTranscriptLineBytes === undefined ? {} : { maxLineBytes: configured.maxTranscriptLineBytes }),
+        });
+        output(
+          manifest,
+          !!options.json,
+          `Verified ${manifest.verification?.invocations.length ?? 0} Copilot Skill invocation event(s)`
+            + `${manifest.verification?.sessionId ? ` in session ${manifest.verification.sessionId}` : ''}.`,
+        );
       });
-      output(
-        manifest,
-        !!options.json,
-        `Verified ${manifest.verification?.invocations.length ?? 0} Copilot Skill invocation event(s)`
-          + `${manifest.verification?.sessionId ? ` in session ${manifest.verification.sessionId}` : ''}.`,
-      );
     });
   common(program.command('workflow-sanitize <log> <output-file>').description('Write a privacy-minimized Skill lifecycle transcript'))
     .option('--session-id <uuid>', 'Replace the terminal session ID with a review-safe UUID')
@@ -505,6 +548,7 @@ source, quarantining merge files, and rerunning structural validation.`))
     }) => {
       if (!['github', 'azure-pipelines', 'generic'].includes(options.provider)) throw new Error('Unknown attestation provider.');
       const root = resolve(options.root);
+      await assertCoordinatedEvidenceRead(root);
       const configured = (await loadConfig(root)).attestation.githubOidc;
       if (configured?.mode === 'strict' && options.provider !== 'github') {
         throw new Error('Strict GitHub OIDC attestation requires --provider github.');
@@ -542,6 +586,7 @@ source, quarantining merge files, and rerunning structural validation.`))
     });
   common(attestation.command('verify')).action(async (options: { root: string; json?: boolean }) => {
     const root = resolve(options.root);
+    await assertCoordinatedEvidenceRead(root);
     const report = await verifyEvidenceAttestation(root, (await loadConfig(root)).attestation);
     output(report, !!options.json, `${report.status}: ${report.valid ? 'valid' : 'invalid'}`);
     if (!report.valid) process.exitCode = 1;
@@ -594,6 +639,7 @@ source, quarantining merge files, and rerunning structural validation.`))
     .action(async (stage: string, options: { root: string; json?: boolean; domain?: string }) => {
       if (!approvalStages.includes(stage as ApprovalStage)) throw new Error(`stage must be one of: ${approvalStages.join(', ')}`);
       const root = resolve(options.root);
+      await assertCoordinatedEvidenceRead(root);
       const config = await loadConfig(root);
       requireDomainOption(config.approval, stage as ApprovalStage, options.domain);
       const domain = options.domain ? await resolveNamedDomain(root, config.approval, options.domain) : undefined;
@@ -613,14 +659,17 @@ source, quarantining merge files, and rerunning structural validation.`))
       }
       if (options.confirm !== true) throw new Error('--confirm is required to record human approval.');
       const root = resolve(options.root);
-      const config = await loadConfig(root);
-      const evidence = await recordApproval(root, stage as ApprovalStage, options.approver, options.artifactSha256, config.approval, options.domain);
-      output(evidence, !!options.json, `Recorded explicit ${stage} approval by ${evidence.approver} for ${evidence.artifactSha256}.`);
+      await withEvidenceWriterLock(root, 'approval record', async () => {
+        const config = await loadConfig(root);
+        const evidence = await recordApproval(root, stage as ApprovalStage, options.approver, options.artifactSha256, config.approval, options.domain);
+        output(evidence, !!options.json, `Recorded explicit ${stage} approval by ${evidence.approver} for ${evidence.artifactSha256}.`);
+      });
     });
   common(approval.command('validate'))
     .option('--domain <name>', 'Limit the report to one approval domain')
     .action(async (options: { root: string; json?: boolean; domain?: string }) => {
       const root = resolve(options.root);
+      await assertCoordinatedEvidenceRead(root);
       const config = await loadConfig(root);
       requireValidateDomainOption(config.approval, options.domain);
       const report = options.domain
@@ -642,7 +691,9 @@ source, quarantining merge files, and rerunning structural validation.`))
     + 'See README.md "Adapter test-ID declaration reference" for the full table and worked examples.',
   );
   common(tdd.command('validate')).action(async (options: { root: string; json?: boolean }) => {
-    const report = await validateTddEvidence(resolve(options.root));
+    const root = resolve(options.root);
+    await assertCoordinatedEvidenceRead(root);
+    const report = await validateTddEvidence(root);
     result(report, !!options.json);
   });
   for (const phase of ['red', 'green', 'refactor'] as const) {
@@ -721,7 +772,9 @@ source, quarantining merge files, and rerunning structural validation.`))
     });
   common(program.command('status').description('One-shot artifact and gate readiness summary'))
     .action(async (options: { root: string; json?: boolean }) => {
-      const status = await projectStatus(resolve(options.root));
+      const root = resolve(options.root);
+      await assertCoordinatedEvidenceRead(root);
+      const status = await projectStatus(root);
       const approvalSummary = status.approvals
         ? status.approvals.stages.map((stage) => `${stage.stage}=${stage.status}`).join(', ')
         : 'unconfigured';
@@ -736,11 +789,37 @@ async function main(): Promise<void> {
   } catch (cause) {
     if (cause instanceof CommanderError && cause.exitCode === 0) return;
     const message = cause instanceof Error ? cause.message : String(cause);
-    if (process.argv.includes('--json')) console.log(JSON.stringify({ error: { code: 'CLI_ERROR', message } }));
+    if (process.argv.includes('--json')) {
+      if (cause instanceof EvidenceWriterLockError) {
+        const underlying = cause.cause instanceof Error
+          ? {
+              name: cause.cause.name,
+              message: cause.cause.message,
+              ...('code' in cause.cause ? { code: String((cause.cause as NodeJS.ErrnoException).code) } : {}),
+            }
+          : cause.cause === undefined ? undefined : { message: String(cause.cause) };
+        console.log(JSON.stringify({
+          error: {
+            code: cause.code,
+            message,
+            lockPath: cause.lockPath,
+            ...(cause.owner === undefined ? {} : { owner: cause.owner }),
+            ...(underlying === undefined ? {} : { cause: underlying }),
+            ...(cause.guidance === undefined ? {} : { guidance: cause.guidance }),
+          },
+        }));
+      } else if (cause instanceof EvidenceProtectedOutputError) {
+        console.log(JSON.stringify({ error: { code: cause.code, message, path: cause.path } }));
+      } else {
+        console.log(JSON.stringify({ error: { code: 'CLI_ERROR', message } }));
+      }
+    }
     else console.error(`musubix3: ${message}`);
     process.exitCode = 2;
   }
 }
 
-await main();
+if (process.argv[1] !== undefined && pathToFileURL(realpathSync(process.argv[1])).href === import.meta.url) {
+  await main();
+}
 import { readFile, stat } from 'node:fs/promises';

@@ -4,6 +4,7 @@ import { loadConfig } from './config.js';
 import { digest, exists, files, readText, within, writeJson } from './files.js';
 import { runProcess, type ProcessResult, type Runner } from './process.js';
 import { checkTrace, loadTrace, type TraceGraph } from './trace.js';
+import { withEvidenceWriterLock } from './evidence-writer-lock.js';
 
 export type MutationStatus = 'killed' | 'survived' | 'skipped' | 'error';
 
@@ -144,6 +145,15 @@ export function createMutationExecution(input: Omit<MutationExecution, 'recordSh
 }
 
 export async function writeMutationEvidence(
+  root: string,
+  executions: MutationExecution[],
+  runId: string,
+): Promise<MutationEvidence> {
+  return withEvidenceWriterLock(root, 'mutation evidence generate', () =>
+    writeMutationEvidenceUnlocked(root, executions, runId));
+}
+
+async function writeMutationEvidenceUnlocked(
   root: string,
   executions: MutationExecution[],
   runId: string,

@@ -13,6 +13,10 @@ import {
   assertEvidenceMergeStartable,
 } from './evidence-merge-guard.js';
 import {
+  assertCoordinatedEvidenceRead,
+  withEvidenceWriterLock,
+} from './evidence-writer-lock.js';
+import {
   batchKey,
   effectiveBatches,
   loadChangeEvidence,
@@ -1037,6 +1041,22 @@ export async function mergeEvidenceHistories(
   incoming: string,
   options: EvidenceMergeOptions = {},
 ): Promise<EvidenceMergeReport> {
+  if (options.dryRun) {
+    await assertCoordinatedEvidenceRead(root);
+    await assertCoordinatedEvidenceRead(incoming);
+    return mergeEvidenceHistoriesUnlocked(root, incoming, options);
+  }
+  return withEvidenceWriterLock(root, 'evidence merge', async () => {
+    await assertCoordinatedEvidenceRead(incoming);
+    return mergeEvidenceHistoriesUnlocked(root, incoming, options);
+  });
+}
+
+async function mergeEvidenceHistoriesUnlocked(
+  root: string,
+  incoming: string,
+  options: EvidenceMergeOptions,
+): Promise<EvidenceMergeReport> {
   await assertEvidenceMergeStartable(root);
   const plan = await planEvidenceMerge(resolve(root), resolve(incoming));
   const candidates = buildCandidates(plan);
@@ -1150,6 +1170,10 @@ function validateJournalCandidates(journal: MergeJournal): void {
 }
 
 export async function recoverEvidenceMerge(root: string): Promise<EvidenceMergeRecoveryReport> {
+  return withEvidenceWriterLock(root, 'evidence merge --recover', () => recoverEvidenceMergeUnlocked(root));
+}
+
+async function recoverEvidenceMergeUnlocked(root: string): Promise<EvidenceMergeRecoveryReport> {
   const journalAbsolute = await safePath(root, JOURNAL_PATH);
   const evidenceDir = await safePath(root, EVIDENCE_DIR);
   let staging: string[] = [];

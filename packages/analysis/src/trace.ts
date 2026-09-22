@@ -2,6 +2,7 @@ import ts from 'typescript';
 import { dirname, basename } from 'node:path';
 import { error, ids, validateDesign, validateRequirements, type Diagnostic } from '../../domain/src/index.js';
 import { exists, files, isArtifact, isSkillSource, isSource, isTraceSource, readText, snapshot, within, writeJson } from './files.js';
+import { withEvidenceWriterLock } from './evidence-writer-lock.js';
 
 export interface TraceNode {
   id: string;
@@ -174,6 +175,11 @@ export function commentBlocks(text: string, path: string): { text: string; line:
 }
 
 export async function buildTrace(root: string, persist = true): Promise<TraceGraph> {
+  if (persist) return withEvidenceWriterLock(root, 'trace build', () => buildTraceUnlocked(root, true));
+  return buildTraceUnlocked(root, false);
+}
+
+async function buildTraceUnlocked(root: string, persist: boolean): Promise<TraceGraph> {
   const paths = await traceInputs(root);
   const graph: TraceGraph = { schemaVersion: 1, generatedAt: new Date().toISOString(), nodes: [], edges: [], diagnostics: [], fingerprints: await snapshot(root, paths) };
   const add = (node: TraceNode): void => {

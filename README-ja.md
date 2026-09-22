@@ -357,6 +357,7 @@ npx musubix3 tdd green TEST-EXAMPLE-002 --requirement REQ-EXAMPLE-002 --command 
 | `formal check <file> [--solver auto\|none\|z3\|lean]` | 明示的なBoolean・条件・数値・時間・状態遷移モデルを検査 |
 | `model-correspondence validate` | Formal JSON→生成trace→正本passing testの証拠を再検証 |
 | `evidence refresh [--changed]` | 同じfail-closed gate pipelineで派生証拠を再生成 |
+| `evidence unlock --recover` | 同一hostでowner processが確実に終了したevidence writer lockだけを復旧する。live、別host、不正metadata、PID再利用、未対応platform、判定不能なownerは変更せず拒否する |
 | `evidence merge --incoming <directory> [--dry-run]` | 現在rootの有効なorder/TDD/change/waiver履歴へ、別projectの有効な履歴を統合する。base recordを先に保持し、完全重複をdedupeし、payload競合・chronology逆転・Quality後のbatch追加は書込みなしで拒否する。dry-runも同じ計画・検証を行い、incoming directoryは変更しない |
 | `evidence merge --recover` | journalから中断したevidence mergeを復旧する。prepared transactionはrollback、committed transactionは検証してroll-forwardする。`EVIDENCE_MERGE_RECOVERY_UNSAFE`の場合は`.musubix/evidence`をバックアップし、信頼できるsourceから`order.json`、`tdd.json`、`changes.json`、`change-waivers.json`を復元または検証し、merge journal/tempを隔離してから再検証する |
 | `mutation validate` | 要求scopeのschema-v1 killed-mutant証拠を再検証 |
@@ -376,6 +377,41 @@ npx musubix3 tdd green TEST-EXAMPLE-002 --requirement REQ-EXAMPLE-002 --command 
 | `config scaffold` | 検出したGo/Rust/Maven/Python/Nodeツールチェーン向けのnative test-command候補を`.musubix/config.json`へ書き込まずに提案 |
 | `gate [--changed] [--feature <name>]` | 検証・実コマンドを集約し品質根拠を保存。`--feature`は requirements/design/trace/tdd/change-history/change-completeness の検査を1機能へ限定する診断用途で、repository全体のgateの代替ではない |
 | `status` | 成果物数と準備状況・陳腐化を表示 |
+
+### Evidence writer coordination
+
+証拠または生成済みproject stateを変更するcommandは、
+`<realpath(project-root)>/.musubix/evidence/.writer-lock.json` の単一の
+fail-fast lockを使用します。対象はinit/upgradeの書込み、gate/evidence
+refresh、TDD/change/workflow/approval記録、trace/graph/knowledge/formal生成、
+evidence merge/recoveryです。完全なowner metadataを同一directoryのstaging
+fileへ書込み・flushした後、排他的hard linkで公開するため、canonical lockが
+空または部分的な状態で見えることはありません。このatomic publicationを
+提供できないfilesystemでは`EVIDENCE_WRITER_LOCK_ACQUIRE_FAILED`となり、
+非atomicなfallbackは行いません。
+
+status、approval prepare/validate、trace/graph inspection、knowledge query、
+TDD validate、attestation payload/verify、merge dry-runなどのcoordinated
+readerは、無関係なownerが存在すると`EVIDENCE_WRITER_LOCKED`で即時失敗し、
+待機もread lease保持もしません。同じowner async context内のnested analysis
+operationはlockを再利用しますが、child processとworker threadはcontextを
+継承しません。したがって設定commandが同じrootへmusubix3 writer/readerを
+再帰実行するとfail-fastになるため、そのcommand chainを修正してください。
+musubix3外からproject fileを直接変更するprogramはcoordination対象外です。
+
+異常終了でlockが残った場合は`evidence unlock --recover`を実行します。
+自動復旧は現在Linux限定で、hostname、boot identity、PID namespaceが一致し、
+owner PIDが確実に存在しない場合だけ削除します。live、PID再利用、別host、
+不正・変更済みmetadata、未対応platform、判定不能なlockは正確なpathと確認手順を
+表示して保持し、force modeはありません。canonical lockと
+`.writer-lock.<transactionId>.json` staging fileはGitおよび生成入力から除外
+されます。関連processが存在しないことを確認した後に限り、残存staging fileを
+正確なpath指定で削除できます。
+
+writer-lock checkはmerge journal checkより先に実行されます。abandoned writer
+lockとpending merge journalが両方ある場合は、先に
+`evidence unlock --recover`、次に`evidence merge --recover`を実行します。
+unlock recoveryはmerge journalを読み書きしません。
 
 ### Evidence history の統合
 

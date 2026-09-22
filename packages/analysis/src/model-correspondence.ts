@@ -6,6 +6,7 @@ import type { FormalResult } from './formal.js';
 import type { PerformanceExecution } from './performance.js';
 import { parseMusubixTestReport } from './tdd.js';
 import { checkTrace, loadTrace, type TraceGraph } from './trace.js';
+import { withEvidenceWriterLock } from './evidence-writer-lock.js';
 
 export interface CorrespondenceTestEvidence {
   testId: string;
@@ -115,6 +116,17 @@ export async function writeModelCorrespondenceEvidence(
   executions: PerformanceExecution[],
   runId: string,
 ): Promise<ModelCorrespondenceEvidence> {
+  return withEvidenceWriterLock(root, 'model-correspondence evidence generate', () =>
+    writeModelCorrespondenceEvidenceUnlocked(root, trace, formalEvidence, executions, runId));
+}
+
+async function writeModelCorrespondenceEvidenceUnlocked(
+  root: string,
+  trace: TraceGraph,
+  formalEvidence: FormalEvidenceShape,
+  executions: PerformanceExecution[],
+  runId: string,
+): Promise<ModelCorrespondenceEvidence> {
   const requirements = await explicitRequirements(root);
   const fingerprints = await snapshot(root, [...new Set(trace.nodes
     .filter((node) => node.kind === 'test').map((node) => node.path))]);
@@ -203,7 +215,7 @@ async function currentReport(root: string, commandName: string, reportPath: stri
     : configuredArgs;
   const absolute = within(root, reportPath);
   const text = invocation
-    ? await readAdapterOutput(invocation, absolute, '')
+    ? await readAdapterOutput(invocation, absolute, '', root)
     : await exists(absolute) ? await readText(root, reportPath) : null;
   if (text === null) return null;
   const report = command.testReport

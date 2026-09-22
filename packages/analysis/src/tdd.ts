@@ -9,6 +9,7 @@ import { adapterInvocation, clearAdapterOutput, mergeAdapterArgs, normalizeAdapt
 import { appendEvidenceOrder, evidenceOrderRecord, inspectEvidenceOrder, type validateEvidenceOrderLog } from './order.js';
 import { requireApproval, resolveRequirementDomain } from './approval.js';
 import type { MusubixTestReport } from './test-report.js';
+import { withEvidenceWriterLock } from './evidence-writer-lock.js';
 export type { MusubixTestReport } from './test-report.js';
 
 export type TddPhase = 'red' | 'green' | 'refactor';
@@ -204,6 +205,10 @@ export interface TddMigrationResult {
 }
 
 export async function migrateTddFingerprint(root: string, testId: string, approver: string): Promise<TddMigrationResult> {
+  return withEvidenceWriterLock(root, 'tdd migrate', () => migrateTddFingerprintUnlocked(root, testId, approver));
+}
+
+async function migrateTddFingerprintUnlocked(root: string, testId: string, approver: string): Promise<TddMigrationResult> {
   if (!approver) throw new Error('An approver is required to migrate TDD fingerprint evidence.');
   const evidence = await loadTddEvidence(root);
   if (!evidence) throw new Error('No TDD evidence found.');
@@ -373,6 +378,10 @@ export interface TddVoidResult {
  * @design DES-TDD-CYCLE-VOID-001, DES-TDD-CYCLE-VOID-005
  */
 export async function voidTddCycle(root: string, testId: string, approver: string, reason: string): Promise<TddVoidResult> {
+  return withEvidenceWriterLock(root, 'tdd void', () => voidTddCycleUnlocked(root, testId, approver, reason));
+}
+
+async function voidTddCycleUnlocked(root: string, testId: string, approver: string, reason: string): Promise<TddVoidResult> {
   if (!approver?.trim()) throw new Error('An approver is required to void a TDD cycle.');
   if (!reason?.trim()) throw new Error('A reason is required to void a TDD cycle.');
   const evidence = await loadTddEvidence(root);
@@ -411,6 +420,18 @@ export async function runTddPhase(
   requirementId: string,
   commandName: string,
   runner: Runner = runProcess,
+): Promise<TddPhaseEvidence> {
+  return withEvidenceWriterLock(root, `tdd ${phase}`, () =>
+    runTddPhaseUnlocked(root, phase, testId, requirementId, commandName, runner));
+}
+
+async function runTddPhaseUnlocked(
+  root: string,
+  phase: TddPhase,
+  testId: string,
+  requirementId: string,
+  commandName: string,
+  runner: Runner,
 ): Promise<TddPhaseEvidence> {
   const config = await loadConfig(root);
   if (phase === 'red') {
@@ -472,7 +493,7 @@ export async function runTddPhase(
     ? render(command.tddReport.path, testId, test.path, '')
     : adapter!.reportPath;
   const reportAbsolute = await safePath(root, reportPath);
-  if (adapter) await clearAdapterOutput(adapter, reportAbsolute);
+  if (adapter) await clearAdapterOutput(adapter, reportAbsolute, root);
   else if (await exists(reportAbsolute)) await unlink(reportAbsolute);
   const targetedArgs = command.tddArgs
     ? command.tddArgs.map((arg) => render(arg, testId, test.path, reportPath))
@@ -487,7 +508,7 @@ export async function runTddPhase(
   let reportText: string | null = null;
   let testStatus: TddPhaseEvidence['testStatus'];
   if (adapter) {
-    reportText = await readAdapterOutput(adapter, reportAbsolute, execution.stdout);
+    reportText = await readAdapterOutput(adapter, reportAbsolute, execution.stdout, root);
   } else if (await exists(reportAbsolute)) {
     reportText = await readText(root, reportPath);
   }

@@ -1,6 +1,7 @@
 import { dirname } from 'node:path';
 import { FILE_READ_CONCURRENCY, files, mapWithConcurrency, readText, snapshot, writeJson } from './files.js';
 import { runProcess, type Runner } from './process.js';
+import { withEvidenceWriterLock } from './evidence-writer-lock.js';
 
 export interface KnowledgeDocument {
   id: string;
@@ -60,6 +61,10 @@ async function artifactPaths(root: string): Promise<string[]> {
  * @design DES-BOUNDED-FILE-READ-CONCURRENCY-003
  */
 export async function buildKnowledge(root: string, runner: Runner = runProcess): Promise<KnowledgeIndex> {
+  return withEvidenceWriterLock(root, 'knowledge build', () => buildKnowledgeUnlocked(root, runner));
+}
+
+async function buildKnowledgeUnlocked(root: string, runner: Runner): Promise<KnowledgeIndex> {
   const paths = await artifactPaths(root);
   const documents: KnowledgeDocument[] = await mapWithConcurrency(paths, FILE_READ_CONCURRENCY, async (path) => ({ id: path, path, text: await readText(root, path), kind: 'artifact' as const }));
   const log = await runner('git', ['log', '-100', '--format=%x1e%H%x1f%an', '--name-only', '--no-renames'], { cwd: root, timeoutMs: 10_000 });

@@ -1,7 +1,12 @@
-import { dirname, posix } from 'node:path';
+import { dirname, posix, sep } from 'node:path';
 import { mkdir, readdir, readFile, rm, unlink, writeFile } from 'node:fs/promises';
 import { exists } from './files.js';
 import { assertAbsoluteEvidencePathReady } from './evidence-merge-guard.js';
+import {
+  assertCoordinatedEvidenceRead,
+  assertEvidenceWriterOwned,
+  withEvidenceWriterLock,
+} from './evidence-writer-lock.js';
 import type { CommandConfig } from './config.js';
 import type { MusubixTestReport } from './test-report.js';
 
@@ -180,7 +185,13 @@ export function adapterInvocation(
   };
 }
 
-export async function clearAdapterOutput(invocation: AdapterInvocation, absolutePath: string): Promise<void> {
+function adapterProjectRoot(absolutePath: string): string | undefined {
+  const marker = `${sep}.musubix${sep}`;
+  const index = absolutePath.lastIndexOf(marker);
+  return index < 0 ? undefined : absolutePath.slice(0, index);
+}
+
+async function clearAdapterOutputUnlocked(invocation: AdapterInvocation, absolutePath: string): Promise<void> {
   await assertAbsoluteEvidencePathReady(absolutePath);
   if (await exists(absolutePath)) {
     if (invocation.source === 'directory') await rm(absolutePath, { recursive: true });
@@ -189,7 +200,20 @@ export async function clearAdapterOutput(invocation: AdapterInvocation, absolute
   await mkdir(invocation.source === 'directory' ? absolutePath : dirname(absolutePath), { recursive: true });
 }
 
-export async function readAdapterOutput(invocation: AdapterInvocation, absolutePath: string, stdout: string): Promise<string | null> {
+export async function clearAdapterOutput(invocation: AdapterInvocation, absolutePath: string, root?: string): Promise<void> {
+  const projectRoot = root ?? adapterProjectRoot(absolutePath);
+  if (projectRoot === undefined) return clearAdapterOutputUnlocked(invocation, absolutePath);
+  return withEvidenceWriterLock(projectRoot, 'adapter output clear', async () => {
+    await assertEvidenceWriterOwned(projectRoot);
+    await clearAdapterOutputUnlocked(invocation, absolutePath);
+  });
+}
+
+async function readAdapterOutputUnlocked(
+  invocation: AdapterInvocation,
+  absolutePath: string,
+  stdout: string,
+): Promise<string | null> {
   await assertAbsoluteEvidencePathReady(absolutePath);
   if (invocation.source === 'stdout') {
     if (stdout) {
@@ -213,6 +237,18 @@ export async function readAdapterOutput(invocation: AdapterInvocation, absoluteP
   const entries = await xmlFiles(absolutePath);
   if (!entries.length) return null;
   return (await Promise.all(entries.map((entry) => readFile(entry, 'utf8')))).join('\n');
+}
+
+export async function readAdapterOutput(invocation: AdapterInvocation, absolutePath: string, stdout: string, root?: string): Promise<string | null> {
+  const projectRoot = root ?? adapterProjectRoot(absolutePath);
+  if (projectRoot !== undefined && invocation.source === 'stdout' && stdout) {
+    return withEvidenceWriterLock(projectRoot, 'adapter output capture', async () => {
+      await assertEvidenceWriterOwned(projectRoot);
+      return readAdapterOutputUnlocked(invocation, absolutePath, stdout);
+    });
+  }
+  if (projectRoot !== undefined) await assertCoordinatedEvidenceRead(projectRoot);
+  return readAdapterOutputUnlocked(invocation, absolutePath, stdout);
 }
 
 /* @id CODE-ADAPTER-PATTERN-RECOGNITION-001

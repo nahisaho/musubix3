@@ -401,6 +401,19 @@
       "adapter": "vitest",
       "required": true,
       "timeoutMs": 120000
+    },
+    {
+      "name": "evidence-writer-lock-tests",
+      "command": "npx",
+      "args": [
+        "vitest",
+        "run",
+        "tests/evidence-writer-lock.test.ts",
+        "tests/evidence-writer-lock-integration.test.ts"
+      ],
+      "adapter": "vitest",
+      "required": true,
+      "timeoutMs": 120000
     }
   ],
   "requiredChecks": [

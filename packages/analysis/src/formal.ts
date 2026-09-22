@@ -2,6 +2,7 @@ import { createHash } from 'node:crypto';
 import { error, validateRequirements, type Diagnostic, type FormalConstraint, type Requirement } from '../../domain/src/index.js';
 import { runProcess, type ProcessResult, type Runner } from './process.js';
 import { writeText } from './files.js';
+import { withEvidenceWriterLock } from './evidence-writer-lock.js';
 
 export type Solver = 'auto' | 'none' | 'z3' | 'lean';
 export type FormalFormat = 'smt2' | 'lean';
@@ -509,6 +510,14 @@ export async function generateFormalArtifacts(
   root: string,
   formats: FormalFormat[] = ['smt2', 'lean'],
 ): Promise<FormalGenerationResult> {
+  return withEvidenceWriterLock(root, 'formal generate', () => generateFormalArtifactsUnlocked(text, root, formats));
+}
+
+async function generateFormalArtifactsUnlocked(
+  text: string,
+  root: string,
+  formats: FormalFormat[],
+): Promise<FormalGenerationResult> {
   const model = buildModel(text);
   const artifacts: FormalArtifact[] = [];
   if (model.validRequirements && (model.literals.length || model.constraints.length)) {
@@ -633,6 +642,15 @@ export async function formalCheck(
   root: string,
   solverOrOptions: Solver | FormalCheckOptions = 'auto',
   runner: Runner = runProcess,
+): Promise<FormalResult> {
+  return withEvidenceWriterLock(root, 'formal check', () => formalCheckUnlocked(text, root, solverOrOptions, runner));
+}
+
+async function formalCheckUnlocked(
+  text: string,
+  root: string,
+  solverOrOptions: Solver | FormalCheckOptions,
+  runner: Runner,
 ): Promise<FormalResult> {
   const options = typeof solverOrOptions === 'string' ? { solver: solverOrOptions } : solverOrOptions;
   const requested = options.solver ?? 'auto';

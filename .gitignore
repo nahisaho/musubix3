@@ -10,6 +10,8 @@ release-assets/
 
 # musubix3 generated caches
 /.musubix/cache/
+/.musubix/evidence/.writer-lock.json
+/.musubix/evidence/.writer-lock.*.json
 
 # Marketplace example generated artifacts
 /examples/marketplace-platform/apps/storefront/.next/

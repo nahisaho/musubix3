@@ -12,6 +12,7 @@ import {
 } from './change-evidence.js';
 import { loadTddEvidence, validlyVoidedTddCycles, type TddEvidence } from './tdd.js';
 import { appendEvidenceOrder, evidenceOrderRecord, inspectEvidenceOrder } from './order.js';
+import { withEvidenceWriterLock } from './evidence-writer-lock.js';
 
 const WAIVER_PATH = '.musubix/evidence/change-waivers.json';
 const GENESIS_SHA256 = '0'.repeat(64);
@@ -582,6 +583,19 @@ export function reportWaiverEvidenceDiagnostics(
  * @design DES-CHANGE-EVIDENCE-WAIVER-001
  */
 export async function recordChangeWaiver(
+  root: string,
+  changeId: string,
+  code: string,
+  requirementId: string | undefined,
+  detail: string | undefined,
+  approver: string,
+  reason: string,
+): Promise<{ recorded: boolean; changeId: string; code: string; requirementId?: string; detail?: string }> {
+  return withEvidenceWriterLock(root, 'change waiver record', () =>
+    recordChangeWaiverUnlocked(root, changeId, code, requirementId, detail, approver, reason));
+}
+
+async function recordChangeWaiverUnlocked(
   root: string,
   changeId: string,
   code: string,

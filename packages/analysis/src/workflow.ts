@@ -5,7 +5,7 @@ import { dirname } from 'node:path';
 import { error, type Diagnostic } from '../../domain/src/index.js';
 import { loadConfig } from './config.js';
 import { digest, exists, safePath, writeJson } from './files.js';
-import { assertAbsoluteEvidencePathReady } from './evidence-merge-guard.js';
+import { assertEvidenceOutputUnprotected, withEvidenceWriterLock } from './evidence-writer-lock.js';
 import {
   CURRENT_SNAPSHOT_VERSION, WORKFLOW_WAIVABLE_CODES, WORKFLOW_WAIVER_PATH, authoritativeIndex, buildWorkflowWaiverContext,
   deriveWorkflowWaiverAudit, loadWorkflowWaiverEvidence, nonStale, payloadShaOf, resolveEvent,
@@ -47,6 +47,13 @@ export async function recordWorkflow(
   root: string,
   event: Omit<WorkflowEvent, 'version' | 'recordedAt' | 'commandSha256'> & { command?: string },
 ): Promise<WorkflowManifest> {
+  return withEvidenceWriterLock(root, 'workflow-record', () => recordWorkflowUnlocked(root, event));
+}
+
+async function recordWorkflowUnlocked(
+  root: string,
+  event: Omit<WorkflowEvent, 'version' | 'recordedAt' | 'commandSha256'> & { command?: string },
+): Promise<WorkflowManifest> {
   if (!/^[a-z0-9-]+$/.test(event.skill)) throw new Error('Workflow skill must be a lowercase kebab-case identifier.');
   if (!/^[a-z0-9-]+$/.test(event.phase)) throw new Error('Workflow phase must be a lowercase kebab-case identifier.');
   const current = await loadWorkflow(root) ?? { schemaVersion: 1, events: [] };
@@ -70,9 +77,10 @@ export async function verifyWorkflowLog(
   logText: string,
   options: WorkflowVerificationOptions = { mode: 'compatible' },
 ): Promise<WorkflowManifest> {
-  return verifyWorkflowChunks(root, (async function* () {
-    yield Buffer.from(logText);
-  })(), options);
+  return withEvidenceWriterLock(root, 'workflow-verify', () =>
+    verifyWorkflowChunks(root, (async function* () {
+      yield Buffer.from(logText);
+    })(), options));
 }
 
 /* @id CODE-WORKFLOW-MULTI-SESSION-001
@@ -83,6 +91,15 @@ export async function verifyWorkflowLogFile(
   root: string,
   path: string | string[],
   options: WorkflowVerificationOptions = { mode: 'compatible' },
+): Promise<WorkflowManifest> {
+  return withEvidenceWriterLock(root, 'workflow-verify', () => verifyWorkflowLogFileUnlocked(root, path, options));
+}
+
+async function verifyWorkflowLogFileUnlocked(
+  root: string,
+  path: string | string[],
+  options: WorkflowVerificationOptions,
+  persist = true,
 ): Promise<WorkflowManifest> {
   const paths = Array.isArray(path) ? path : [path];
   if (!paths.length) throw new Error('Workflow verification requires at least one transcript file.');
@@ -148,7 +165,7 @@ export async function verifyWorkflowLogFile(
       // stream, and therefore its sourceSha256, is unchanged.
       if (index < orderedPaths.length - 1 && !endedWithNewline) yield Buffer.from('\n');
     }
-  })(), options);
+  })(), options, persist);
 }
 
 export async function sanitizeWorkflowLogFile(
@@ -164,17 +181,17 @@ export async function sanitizeWorkflowLogFile(
     throw new Error('Replacement workflow session ID must be a UUID.');
   }
   // Fail closed on the complete source before removing privacy-sensitive non-Skill events.
-  const validated = await verifyWorkflowLogFile(root, inputPath, {
+  const validated = await verifyWorkflowLogFileUnlocked(root, inputPath, {
     mode: 'strict',
     ...(maxEventSkewMs === undefined ? {} : { maxEventSkewMs }),
     ...(maxTranscriptBytes === undefined ? {} : { maxBytes: maxTranscriptBytes }),
     ...(maxTranscriptLineBytes === undefined ? {} : { maxLineBytes: maxTranscriptLineBytes }),
-  });
+  }, false);
   const expectedSourceSha256 = validated.verification!.sourceSha256;
   const maxBytes = maxTranscriptBytes ?? workflowVerificationLimits.maxBytes;
   const maxLineBytes = maxTranscriptLineBytes ?? workflowVerificationLimits.maxLineBytes;
   const target = await safePath(root, outputPath);
-  await assertAbsoluteEvidencePathReady(target);
+  await assertEvidenceOutputUnprotected(root, target);
   await mkdir(dirname(target), { recursive: true });
   const staging = `${target}.${process.pid}.${crypto.randomUUID()}.writing`;
   const output = await open(staging, 'wx');
@@ -359,8 +376,14 @@ async function verifyWorkflowChunks(
   root: string,
   chunks: AsyncIterable<Uint8Array>,
   options: WorkflowVerificationOptions,
+  persist = true,
 ): Promise<WorkflowManifest> {
-  const current = await loadWorkflow(root);
+  const current = persist
+    ? await loadWorkflow(root)
+    : await (async (): Promise<WorkflowManifest | null> => {
+        const path = await safePath(root, '.musubix/evidence/workflow.json');
+        return await exists(path) ? JSON.parse(await readFile(path, 'utf8')) as WorkflowManifest : null;
+      })();
   if (!current?.events.length) throw new Error('No workflow declarations are available to verify.');
   if (!['compatible', 'strict'].includes(options.mode)) throw new Error('Workflow verification mode must be compatible or strict.');
   if (options.expectedSessionId && !uuid.test(options.expectedSessionId)) throw new Error('Expected workflow session ID must be a UUID.');
@@ -646,7 +669,7 @@ async function verifyWorkflowChunks(
     verifiedAt: (options.now ?? (() => new Date()))().toISOString(),
     invocations,
   };
-  await writeJson(root, '.musubix/evidence/workflow.json', current);
+  if (persist) await writeJson(root, '.musubix/evidence/workflow.json', current);
   return current;
 }
 
@@ -851,6 +874,20 @@ export async function recordWorkflowWaiver(
   approver: string,
   reason: string,
 ): Promise<{ recorded: boolean; skill: string; phase: string; declarationRecordedAt: string; index?: number; code: string }> {
+  return withEvidenceWriterLock(root, 'workflow waiver record', () =>
+    recordWorkflowWaiverUnlocked(root, code, skill, phase, recordedAt, index, approver, reason));
+}
+
+async function recordWorkflowWaiverUnlocked(
+  root: string,
+  code: string,
+  skill: string,
+  phase: string,
+  recordedAt: string,
+  index: number | undefined,
+  approver: string,
+  reason: string,
+): Promise<{ recorded: boolean; skill: string; phase: string; declarationRecordedAt: string; index?: number; code: string }> {
   if (Number.isNaN(Date.parse(recordedAt))) {
     throw new Error(`${recordedAt} is not a valid --recorded-at timestamp.`);
   }
@@ -945,6 +982,15 @@ export async function recordWorkflowWaiver(
  * @design DES-WORKFLOW-WAIVER-BULK-001
  */
 export async function recordAllWorkflowWaivers(
+  root: string,
+  approver: string,
+  reason: string,
+): Promise<{ recorded: number; waivers: Array<{ skill: string; phase: string; declarationRecordedAt: string; index?: number; code: string }> }> {
+  return withEvidenceWriterLock(root, 'workflow waiver record-all', () =>
+    recordAllWorkflowWaiversUnlocked(root, approver, reason));
+}
+
+async function recordAllWorkflowWaiversUnlocked(
   root: string,
   approver: string,
   reason: string,

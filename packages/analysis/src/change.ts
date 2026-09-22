@@ -12,6 +12,7 @@ import {
   type ChangeCompleteness, type ChangeEvidence, type ChangeFingerprints, type ChangePhase,
   type ChangePhaseEvidence, type ChangeRecord, type ChangeTddBatch,
 } from './change-evidence.js';
+import { assertCoordinatedEvidenceRead, withEvidenceWriterLock } from './evidence-writer-lock.js';
 
 export * from './change-evidence.js';
 
@@ -67,7 +68,7 @@ async function requirementImplementationFingerprints(
 
 async function currentFingerprints(root: string, changeId: string, requirementIds: string[]): Promise<ChangeFingerprints> {
   const paths = await files(root);
-  const trace = await buildTrace(root);
+  const trace = await buildTrace(root, false);
   const codePaths = trace.nodes.filter((node) => node.kind === 'code').map((node) => node.path);
   const testPaths = trace.nodes.filter((node) => node.kind === 'test').map((node) => node.path);
   const tddPath = '.musubix/evidence/tdd.json';
@@ -136,6 +137,21 @@ export async function recordChangePhase(
   phase: ChangePhase,
   requirementIds: string[],
   options: { allowUnchanged?: boolean; dryRun?: boolean } = {},
+): Promise<ChangeEvidence> {
+  if (options.dryRun) {
+    await assertCoordinatedEvidenceRead(root);
+    return recordChangePhaseUnlocked(root, changeId, phase, requirementIds, options);
+  }
+  return withEvidenceWriterLock(root, 'change-record', () =>
+    recordChangePhaseUnlocked(root, changeId, phase, requirementIds, options));
+}
+
+async function recordChangePhaseUnlocked(
+  root: string,
+  changeId: string,
+  phase: ChangePhase,
+  requirementIds: string[],
+  options: { allowUnchanged?: boolean; dryRun?: boolean },
 ): Promise<ChangeEvidence> {
   if (!/^CHANGE-\d+$/.test(changeId)) throw new Error('Change ID must match CHANGE-<digits>.');
   if (!changePhases.includes(phase)) throw new Error('Unknown change phase.');

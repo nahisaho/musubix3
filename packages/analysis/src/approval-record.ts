@@ -6,6 +6,7 @@ import {
 } from './approval.js';
 import { writeJson } from './files.js';
 import { runGate } from './gate.js';
+import { withEvidenceWriterLock } from './evidence-writer-lock.js';
 
 /** @id CODE-HUMAN-APPROVAL-GATES-002
  * @implements REQ-HUMAN-APPROVAL-GATES-001 REQ-HUMAN-APPROVAL-GATES-006
@@ -17,6 +18,18 @@ import { runGate } from './gate.js';
  * @design DES-APPROVAL-DOMAIN-SCOPING-004
  */
 export async function recordApproval(
+  root: string,
+  stage: ApprovalStage,
+  approver: string,
+  expectedArtifactSha256: string,
+  config: ApprovalConfig,
+  domainName?: string,
+): Promise<ApprovalEvidence> {
+  return withEvidenceWriterLock(root, 'approval record', () =>
+    recordApprovalUnlocked(root, stage, approver, expectedArtifactSha256, config, domainName));
+}
+
+async function recordApprovalUnlocked(
   root: string,
   stage: ApprovalStage,
   approver: string,

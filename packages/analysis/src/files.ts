@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto';
 import { lstat, mkdir, readdir, readFile, rename, unlink, writeFile } from 'node:fs/promises';
 import { dirname, isAbsolute, relative, resolve, sep } from 'node:path';
-import { assertEvidencePathReady } from './evidence-merge-guard.js';
+import { assertProtectedPathReady, withProtectedEvidenceWrite } from './evidence-writer-lock.js';
 
 const excluded = new Set(['.git', 'node_modules', 'dist', 'build', 'coverage', '.test-work', '.next', 'vendor', '__pycache__']);
 const pythonVirtualEnvironmentRoots = new Set(['.venv', 'venv']);
@@ -111,12 +111,16 @@ export async function files(root: string): Promise<string[]> {
 }
 
 export async function readText(root: string, path: string): Promise<string> {
-  await assertEvidencePathReady(root, path);
+  await assertProtectedPathReady(root, path, 'read');
   return readFile(await safePath(root, path), 'utf8');
 }
 
 export async function writeText(root: string, path: string, text: string): Promise<void> {
-  await assertEvidencePathReady(root, path);
+  return withProtectedEvidenceWrite(root, path, () => writeTextOwned(root, path, text));
+}
+
+async function writeTextOwned(root: string, path: string, text: string): Promise<void> {
+  await assertProtectedPathReady(root, path, 'write');
   const target = await safePath(root, path);
   await mkdir(dirname(target), { recursive: true });
   // Same-directory atomic replacement; no operating-system temporary directories.

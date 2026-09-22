@@ -29,6 +29,7 @@ import {
   domainOwning, domainsConfigured, resolveDomains, validateApprovals, validateApprovalsForFeatureGate,
   type ApprovalValidation,
 } from './approval.js';
+import { withEvidenceWriterLock } from './evidence-writer-lock.js';
 
 export interface GateReport {
   schemaVersion: 1;
@@ -100,6 +101,17 @@ export async function runGate(root: string, options: {
   environment?: NodeJS.ProcessEnv;
   attestationOptions?: AttestationVerificationOptions;
 } = {}): Promise<GateReport> {
+  return withEvidenceWriterLock(root, 'gate', () => runGateUnlocked(root, options));
+}
+
+async function runGateUnlocked(root: string, options: {
+  changed?: boolean;
+  feature?: string;
+  runner?: Runner;
+  config?: Config;
+  environment?: NodeJS.ProcessEnv;
+  attestationOptions?: AttestationVerificationOptions;
+}): Promise<GateReport> {
   const config = options.config ?? await loadConfig(root);
   const runner = options.runner ?? runProcess;
   const gateRunId = randomUUID();
@@ -278,7 +290,7 @@ export async function runGate(root: string, options: {
       adapterOutput = invocation;
       reportPath = invocation.reportPath;
       adapterArgs = invocation.args;
-      await clearAdapterOutput(invocation, await safePath(root, reportPath));
+      await clearAdapterOutput(invocation, await safePath(root, reportPath), root);
     } else if (command.mutationReport) {
       reportPath = command.mutationReport.path;
       const absolute = await safePath(root, reportPath);
@@ -300,7 +312,7 @@ export async function runGate(root: string, options: {
     commandChecks.push(commandCheck);
     if (reportPath && result.status === 'completed' && result.exitCode === 0) {
       const reportText = adapterOutput
-        ? await readAdapterOutput(adapterOutput, await safePath(root, reportPath), result.stdout)
+        ? await readAdapterOutput(adapterOutput, await safePath(root, reportPath), result.stdout, root)
         : await exists(within(root, reportPath)) ? await readText(root, reportPath) : null;
       if (reportText === null) {
         const diagnostic: Diagnostic = {

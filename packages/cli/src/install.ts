@@ -1,6 +1,19 @@
 import { readdir, mkdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
-import { buildTrace, defaultConfig, defaultPolicyBaseline, exists, readText, safePath, writeJson, writeText, runProcess, type Runner } from '../../analysis/src/index.js';
+import {
+  assertCoordinatedEvidenceRead,
+  buildTrace,
+  defaultConfig,
+  defaultPolicyBaseline,
+  exists,
+  readText,
+  safePath,
+  writeJson,
+  writeText,
+  runProcess,
+  withEvidenceWriterLock,
+  type Runner,
+} from '../../analysis/src/index.js';
 
 export const skillNames = ['sdd-change', 'sdd-requirements', 'sdd-design', 'sdd-implementation', 'sdd-traceability', 'sdd-quality', 'sdd-knowledge', 'sdd-formal-codegraph', 'sdd-issue-report'] as const;
 
@@ -11,6 +24,14 @@ export interface InstallAction {
 
 export async function install(root: string, packageRoot: string, options: { dryRun?: boolean; force?: boolean; feature?: string } = {}): Promise<{ dryRun: boolean; actions: InstallAction[] }> {
   root = resolve(root);
+  if (options.dryRun) {
+    if (await exists(root)) await assertCoordinatedEvidenceRead(root);
+    return installUnlocked(root, packageRoot, options);
+  }
+  return withEvidenceWriterLock(root, 'init', () => installUnlocked(root, packageRoot, options));
+}
+
+async function installUnlocked(root: string, packageRoot: string, options: { dryRun?: boolean; force?: boolean; feature?: string }): Promise<{ dryRun: boolean; actions: InstallAction[] }> {
   const feature = options.feature ?? 'example';
   if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(feature)) throw new Error('Feature slug must be lowercase kebab-case.');
   const planned = new Map<string, string>();
@@ -45,8 +66,15 @@ export async function install(root: string, packageRoot: string, options: { dryR
   }
   const ignorePath = await safePath(root, '.gitignore');
   const oldIgnore = await exists(ignorePath) ? await readText(root, '.gitignore') : '';
-  if (!oldIgnore.split(/\r?\n/).some((line) => line.trim() === '/.musubix/cache/')) {
-    writes.set('.gitignore', `${oldIgnore}${oldIgnore && !oldIgnore.endsWith('\n') ? '\n' : ''}\n# musubix3 generated caches\n/.musubix/cache/\n`);
+  const requiredIgnores = [
+    '/.musubix/cache/',
+    '/.musubix/evidence/.writer-lock.json',
+    '/.musubix/evidence/.writer-lock.*.json',
+  ];
+  const ignored = new Set(oldIgnore.split(/\r?\n/).map((line) => line.trim()));
+  const missingIgnores = requiredIgnores.filter((entry) => !ignored.has(entry));
+  if (missingIgnores.length > 0) {
+    writes.set('.gitignore', `${oldIgnore}${oldIgnore && !oldIgnore.endsWith('\n') ? '\n' : ''}\n# musubix3 generated coordination files\n${missingIgnores.join('\n')}\n`);
     actions.push({ path: '.gitignore', action: oldIgnore ? 'merge' : 'create' });
   } else actions.push({ path: '.gitignore', action: 'unchanged' });
   const tracePath = `.musubix/features/${feature}/trace.json`;
@@ -73,6 +101,14 @@ export async function install(root: string, packageRoot: string, options: { dryR
  */
 export async function upgradeSkills(root: string, packageRoot: string, options: { dryRun?: boolean } = {}): Promise<{ dryRun: boolean; actions: InstallAction[] }> {
   root = resolve(root);
+  if (options.dryRun) {
+    await assertCoordinatedEvidenceRead(root);
+    return upgradeSkillsUnlocked(root, packageRoot, options);
+  }
+  return withEvidenceWriterLock(root, 'upgrade', () => upgradeSkillsUnlocked(root, packageRoot, options));
+}
+
+async function upgradeSkillsUnlocked(root: string, packageRoot: string, options: { dryRun?: boolean }): Promise<{ dryRun: boolean; actions: InstallAction[] }> {
   const planned = new Map<string, string>();
   for (const name of skillNames) {
     const directory = `.github/skills/${name}`;
