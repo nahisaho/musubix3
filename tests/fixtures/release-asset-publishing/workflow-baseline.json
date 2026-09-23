@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "approvedChange": "CHANGE-0023",
+  "workflows": [
+    {
+      "path": ".github/workflows/release.yml",
+      "sourceSha256": "30aaa213cf5ed8158e374f5e9b71ac8dd3a7eb1c0551d5e274b9e6f8b3183f6a"
+    },
+    {
+      "path": ".github/workflows/npm-publish.yml",
+      "sourceSha256": "4ccb354eb54c11ac9e8bf9b7d7925aad95d78292f985cad5e57367108733e616"
+    }
+  ]
+}

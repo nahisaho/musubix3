@@ -484,6 +484,18 @@
       "adapter": "vitest",
       "required": true,
       "timeoutMs": 120000
+    },
+    {
+      "name": "release-asset-publishing-tests",
+      "command": "npx",
+      "args": [
+        "vitest",
+        "run",
+        "tests/release-asset-publishing.test.ts"
+      ],
+      "adapter": "vitest",
+      "required": true,
+      "timeoutMs": 120000
     }
   ],
   "requiredChecks": [

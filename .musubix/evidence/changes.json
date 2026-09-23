@@ -21898,6 +21898,881 @@
           "order": 1141
         }
       ]
+    },
+    {
+      "changeId": "CHANGE-0023",
+      "requirementIds": [
+        "REQ-RELEASE-ASSET-PUBLISHING-001",
+        "REQ-RELEASE-ASSET-PUBLISHING-002",
+        "REQ-RELEASE-ASSET-PUBLISHING-003",
+        "REQ-RELEASE-ASSET-PUBLISHING-004"
+      ],
+      "phases": {
+        "impact": {
+          "phase": "impact",
+          "recordedAt": "2026-09-22T22:20:15.688Z",
+          "fingerprints": {
+            "impact": "52627feee8013c6d8cdc85845b4da318d96caeb21c2ee69f316a992251fbd5b7",
+            "requirements": "4f604ec40aa2b5cc18f65e1767f1f735e0b722d33d76596bb7d2876a3a8f2a6e",
+            "design": "1709135a73679f9d247d3a29030f6a473cb39081d71579a173ad9269d67aae4d",
+            "implementation": "7d900231eed8eb1f523c1506c32dde6db0194c4ef47a1f4a8aec5381d3a629c2",
+            "tests": "fb9ffc2995244b0b8e3683acf6f59e6a40d8e39ddaa6bc3f85915bf81c937b28",
+            "tdd": "54c04711dffff4e7c484b1ab83637ba6ff68e8b438135eeacc9fbeae1c4c7cb7",
+            "requirementImplementations": {
+              "REQ-RELEASE-ASSET-PUBLISHING-001": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-RELEASE-ASSET-PUBLISHING-002": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-RELEASE-ASSET-PUBLISHING-003": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-RELEASE-ASSET-PUBLISHING-004": {
+                "paths": [],
+                "fingerprints": {}
+              }
+            }
+          },
+          "order": 1150
+        },
+        "requirements": {
+          "phase": "requirements",
+          "recordedAt": "2026-09-22T22:24:45.705Z",
+          "fingerprints": {
+            "impact": "52a453341cafc140cec216692c896eecd82d8d0d6f6abd4820466f5ec729a932",
+            "requirements": "622153fb6d2047fc206a1d174ab12b8c4b8ee1a493d9931df93511843b15c878",
+            "design": "1709135a73679f9d247d3a29030f6a473cb39081d71579a173ad9269d67aae4d",
+            "implementation": "7d900231eed8eb1f523c1506c32dde6db0194c4ef47a1f4a8aec5381d3a629c2",
+            "tests": "fb9ffc2995244b0b8e3683acf6f59e6a40d8e39ddaa6bc3f85915bf81c937b28",
+            "tdd": "54c04711dffff4e7c484b1ab83637ba6ff68e8b438135eeacc9fbeae1c4c7cb7",
+            "requirementImplementations": {
+              "REQ-RELEASE-ASSET-PUBLISHING-001": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-RELEASE-ASSET-PUBLISHING-002": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-RELEASE-ASSET-PUBLISHING-003": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-RELEASE-ASSET-PUBLISHING-004": {
+                "paths": [],
+                "fingerprints": {}
+              }
+            }
+          },
+          "order": 1151
+        },
+        "design": {
+          "phase": "design",
+          "recordedAt": "2026-09-22T22:28:54.611Z",
+          "fingerprints": {
+            "impact": "347097bc00dc5151b87a5eeed2025a95c467a81047df3ad058d10c81f807fbb7",
+            "requirements": "eee5f444ce38f8f5bc90b2c980b1eaa7ffee5109b17049a599b07b46d86cabf7",
+            "design": "c5077ae0d8a33b82a40c0000040b7170278abbe21d3616d01aedefabdf7dbb36",
+            "implementation": "7d900231eed8eb1f523c1506c32dde6db0194c4ef47a1f4a8aec5381d3a629c2",
+            "tests": "fb9ffc2995244b0b8e3683acf6f59e6a40d8e39ddaa6bc3f85915bf81c937b28",
+            "tdd": "54c04711dffff4e7c484b1ab83637ba6ff68e8b438135eeacc9fbeae1c4c7cb7",
+            "requirementImplementations": {
+              "REQ-RELEASE-ASSET-PUBLISHING-001": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-RELEASE-ASSET-PUBLISHING-002": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-RELEASE-ASSET-PUBLISHING-003": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-RELEASE-ASSET-PUBLISHING-004": {
+                "paths": [],
+                "fingerprints": {}
+              }
+            }
+          },
+          "order": 1152
+        },
+        "red": {
+          "phase": "red",
+          "recordedAt": "2026-09-22T22:50:37.719Z",
+          "fingerprints": {
+            "impact": "644ed82bf182cdc3aaaaf96cf7edeb950cfe2266644cd7c4bdeab5c069bd07bd",
+            "requirements": "76c61ae71980972fc615ad0de8fd792566e79fec94575d44511140d6a5786986",
+            "design": "b8c41e7adb0e35db7b7729e0a687a43ebeca66f49c4c1357b5b4dfb1a869ead5",
+            "implementation": "7d900231eed8eb1f523c1506c32dde6db0194c4ef47a1f4a8aec5381d3a629c2",
+            "tests": "39ae3cce16a67da69a0974e52a23e1a068e61bf112454ee29c97228fbb823905",
+            "tdd": "066c3b27be49c6dea70908ea6c06df1392557cd46f4eaae52d55b58cc990438b",
+            "requirementImplementations": {
+              "REQ-RELEASE-ASSET-PUBLISHING-001": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-RELEASE-ASSET-PUBLISHING-002": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-RELEASE-ASSET-PUBLISHING-003": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-RELEASE-ASSET-PUBLISHING-004": {
+                "paths": [],
+                "fingerprints": {}
+              }
+            }
+          },
+          "order": 1157
+        },
+        "implementation": {
+          "phase": "implementation",
+          "recordedAt": "2026-09-22T22:57:38.455Z",
+          "fingerprints": {
+            "impact": "644ed82bf182cdc3aaaaf96cf7edeb950cfe2266644cd7c4bdeab5c069bd07bd",
+            "requirements": "76c61ae71980972fc615ad0de8fd792566e79fec94575d44511140d6a5786986",
+            "design": "b8c41e7adb0e35db7b7729e0a687a43ebeca66f49c4c1357b5b4dfb1a869ead5",
+            "implementation": "5a00ad27d20d567422f17e5e0efb12b2eb10f7e753407981968685dbb5221dc3",
+            "tests": "b1b4c61ea56bd811ee11bd68c2d3d8621d7ec7f32ca6de56c49cebc99ad74afa",
+            "tdd": "cd6a615357cf8fee8f0fceb8a0b704ed24247968f82e5a2ca8f95e78515a6f6e",
+            "requirementImplementations": {
+              "REQ-RELEASE-ASSET-PUBLISHING-001": {
+                "paths": [
+                  "scripts/release-publish.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/release-publish.mjs": "e36208de41a34c68613fe39f193877ba9bca43029d3d0e6aa46088b5ea0d400f"
+                }
+              },
+              "REQ-RELEASE-ASSET-PUBLISHING-002": {
+                "paths": [
+                  "scripts/release-publish.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/release-publish.mjs": "e36208de41a34c68613fe39f193877ba9bca43029d3d0e6aa46088b5ea0d400f"
+                }
+              },
+              "REQ-RELEASE-ASSET-PUBLISHING-003": {
+                "paths": [
+                  "scripts/release-publish.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/release-publish.mjs": "e36208de41a34c68613fe39f193877ba9bca43029d3d0e6aa46088b5ea0d400f"
+                }
+              },
+              "REQ-RELEASE-ASSET-PUBLISHING-004": {
+                "paths": [
+                  "scripts/release-publish.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/release-publish.mjs": "e36208de41a34c68613fe39f193877ba9bca43029d3d0e6aa46088b5ea0d400f"
+                }
+              }
+            }
+          },
+          "order": 1159
+        },
+        "green": {
+          "phase": "green",
+          "recordedAt": "2026-09-22T22:57:52.382Z",
+          "fingerprints": {
+            "impact": "644ed82bf182cdc3aaaaf96cf7edeb950cfe2266644cd7c4bdeab5c069bd07bd",
+            "requirements": "76c61ae71980972fc615ad0de8fd792566e79fec94575d44511140d6a5786986",
+            "design": "b8c41e7adb0e35db7b7729e0a687a43ebeca66f49c4c1357b5b4dfb1a869ead5",
+            "implementation": "5a00ad27d20d567422f17e5e0efb12b2eb10f7e753407981968685dbb5221dc3",
+            "tests": "b1b4c61ea56bd811ee11bd68c2d3d8621d7ec7f32ca6de56c49cebc99ad74afa",
+            "tdd": "1be250fe465e5248ee6c714a819edac44d2fa8f7608aa4f70609cdc55299e2ca",
+            "requirementImplementations": {
+              "REQ-RELEASE-ASSET-PUBLISHING-001": {
+                "paths": [
+                  "scripts/release-publish.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/release-publish.mjs": "e36208de41a34c68613fe39f193877ba9bca43029d3d0e6aa46088b5ea0d400f"
+                }
+              },
+              "REQ-RELEASE-ASSET-PUBLISHING-002": {
+                "paths": [
+                  "scripts/release-publish.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/release-publish.mjs": "e36208de41a34c68613fe39f193877ba9bca43029d3d0e6aa46088b5ea0d400f"
+                }
+              },
+              "REQ-RELEASE-ASSET-PUBLISHING-003": {
+                "paths": [
+                  "scripts/release-publish.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/release-publish.mjs": "e36208de41a34c68613fe39f193877ba9bca43029d3d0e6aa46088b5ea0d400f"
+                }
+              },
+              "REQ-RELEASE-ASSET-PUBLISHING-004": {
+                "paths": [
+                  "scripts/release-publish.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/release-publish.mjs": "e36208de41a34c68613fe39f193877ba9bca43029d3d0e6aa46088b5ea0d400f"
+                }
+              }
+            }
+          },
+          "order": 1164
+        },
+        "quality": {
+          "phase": "quality",
+          "recordedAt": "2026-09-23T00:40:09.895Z",
+          "fingerprints": {
+            "impact": "781ae306b4ec1685c2d8361b60e837d4c2a2ff18ef1486f0b123365d80273b91",
+            "requirements": "76c61ae71980972fc615ad0de8fd792566e79fec94575d44511140d6a5786986",
+            "design": "b8c41e7adb0e35db7b7729e0a687a43ebeca66f49c4c1357b5b4dfb1a869ead5",
+            "implementation": "c8c422c820154f091a5e320ebfdafb3803a9ae523ae55b6fc3fc64cbc7f14661",
+            "tests": "8e604ee54408cfb47a1a4bbdb517ab7e838487073c810c2a71cef0337416eb0c",
+            "tdd": "acfe9ccf785a43a90711e2fdba250a480e91b5a53e2de735b0ab3c9bcf94a43c",
+            "requirementImplementations": {
+              "REQ-RELEASE-ASSET-PUBLISHING-001": {
+                "paths": [
+                  "scripts/release-publish.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/release-publish.mjs": "021ae204cca11fd66d583e27df16e9ead16d77df0503d717d63bda14ecf144f3"
+                }
+              },
+              "REQ-RELEASE-ASSET-PUBLISHING-002": {
+                "paths": [
+                  "scripts/release-publish.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/release-publish.mjs": "021ae204cca11fd66d583e27df16e9ead16d77df0503d717d63bda14ecf144f3"
+                }
+              },
+              "REQ-RELEASE-ASSET-PUBLISHING-003": {
+                "paths": [
+                  "scripts/release-publish.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/release-publish.mjs": "021ae204cca11fd66d583e27df16e9ead16d77df0503d717d63bda14ecf144f3"
+                }
+              },
+              "REQ-RELEASE-ASSET-PUBLISHING-004": {
+                "paths": [
+                  "scripts/release-publish.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/release-publish.mjs": "021ae204cca11fd66d583e27df16e9ead16d77df0503d717d63bda14ecf144f3"
+                }
+              }
+            }
+          },
+          "order": 1208
+        }
+      },
+      "tddBatches": [
+        {
+          "requirementIds": [
+            "REQ-RELEASE-ASSET-PUBLISHING-004"
+          ],
+          "red": {
+            "phase": "red",
+            "recordedAt": "2026-09-22T23:02:38.423Z",
+            "fingerprints": {
+              "impact": "644ed82bf182cdc3aaaaf96cf7edeb950cfe2266644cd7c4bdeab5c069bd07bd",
+              "requirements": "76c61ae71980972fc615ad0de8fd792566e79fec94575d44511140d6a5786986",
+              "design": "b8c41e7adb0e35db7b7729e0a687a43ebeca66f49c4c1357b5b4dfb1a869ead5",
+              "implementation": "ebb42d246cfb5339a506e26f8d7f65868643c9525f062a98a3a4284d4468fc4e",
+              "tests": "01671d8ae899c4ac0ed6c18b3d7372d32c547f42a7f2124199196844c6e1d230",
+              "tdd": "c525c8ee41d131741347fc5bf3692af2fd8a843f103d18dfaf26e7f5a941586c",
+              "requirementImplementations": {
+                "REQ-RELEASE-ASSET-PUBLISHING-004": {
+                  "paths": [
+                    "scripts/release-publish.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/release-publish.mjs": "e36208de41a34c68613fe39f193877ba9bca43029d3d0e6aa46088b5ea0d400f"
+                  }
+                }
+              }
+            },
+            "order": 1166
+          },
+          "implementation": {
+            "phase": "implementation",
+            "recordedAt": "2026-09-22T23:04:08.758Z",
+            "fingerprints": {
+              "impact": "644ed82bf182cdc3aaaaf96cf7edeb950cfe2266644cd7c4bdeab5c069bd07bd",
+              "requirements": "76c61ae71980972fc615ad0de8fd792566e79fec94575d44511140d6a5786986",
+              "design": "b8c41e7adb0e35db7b7729e0a687a43ebeca66f49c4c1357b5b4dfb1a869ead5",
+              "implementation": "225e366e1d2c464706fa77054e516cb091baa4fbe1831e1629cb7a5e71789f28",
+              "tests": "01671d8ae899c4ac0ed6c18b3d7372d32c547f42a7f2124199196844c6e1d230",
+              "tdd": "c525c8ee41d131741347fc5bf3692af2fd8a843f103d18dfaf26e7f5a941586c",
+              "requirementImplementations": {
+                "REQ-RELEASE-ASSET-PUBLISHING-004": {
+                  "paths": [
+                    "scripts/check-github-actions.mjs",
+                    "scripts/release-publish.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-github-actions.mjs": "795743cfa559d4b6bf2c5cb4816e0efd8a8bc28845dcebac69fe529b74fb7ab9",
+                    "scripts/release-publish.mjs": "e36208de41a34c68613fe39f193877ba9bca43029d3d0e6aa46088b5ea0d400f"
+                  }
+                }
+              }
+            },
+            "order": 1167
+          },
+          "green": {
+            "phase": "green",
+            "recordedAt": "2026-09-22T23:04:14.249Z",
+            "fingerprints": {
+              "impact": "644ed82bf182cdc3aaaaf96cf7edeb950cfe2266644cd7c4bdeab5c069bd07bd",
+              "requirements": "76c61ae71980972fc615ad0de8fd792566e79fec94575d44511140d6a5786986",
+              "design": "b8c41e7adb0e35db7b7729e0a687a43ebeca66f49c4c1357b5b4dfb1a869ead5",
+              "implementation": "225e366e1d2c464706fa77054e516cb091baa4fbe1831e1629cb7a5e71789f28",
+              "tests": "01671d8ae899c4ac0ed6c18b3d7372d32c547f42a7f2124199196844c6e1d230",
+              "tdd": "5ce059d0b40937fae58c7ee822eab456c0ffac5c1fafeaee149808cad58971db",
+              "requirementImplementations": {
+                "REQ-RELEASE-ASSET-PUBLISHING-004": {
+                  "paths": [
+                    "scripts/check-github-actions.mjs",
+                    "scripts/release-publish.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-github-actions.mjs": "795743cfa559d4b6bf2c5cb4816e0efd8a8bc28845dcebac69fe529b74fb7ab9",
+                    "scripts/release-publish.mjs": "e36208de41a34c68613fe39f193877ba9bca43029d3d0e6aa46088b5ea0d400f"
+                  }
+                }
+              }
+            },
+            "order": 1169
+          }
+        },
+        {
+          "requirementIds": [
+            "REQ-RELEASE-ASSET-PUBLISHING-003"
+          ],
+          "red": {
+            "phase": "red",
+            "recordedAt": "2026-09-22T23:11:55.829Z",
+            "fingerprints": {
+              "impact": "644ed82bf182cdc3aaaaf96cf7edeb950cfe2266644cd7c4bdeab5c069bd07bd",
+              "requirements": "76c61ae71980972fc615ad0de8fd792566e79fec94575d44511140d6a5786986",
+              "design": "b8c41e7adb0e35db7b7729e0a687a43ebeca66f49c4c1357b5b4dfb1a869ead5",
+              "implementation": "225e366e1d2c464706fa77054e516cb091baa4fbe1831e1629cb7a5e71789f28",
+              "tests": "b13f4257e6b3391917be8b3a5b62baeb2d63e9fa015eb3092db28d8cb10a71df",
+              "tdd": "5bca5afef03891c0b95440d2746de9a323a376264a636926bf83a1f9fc316cb6",
+              "requirementImplementations": {
+                "REQ-RELEASE-ASSET-PUBLISHING-003": {
+                  "paths": [
+                    "scripts/release-publish.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/release-publish.mjs": "e36208de41a34c68613fe39f193877ba9bca43029d3d0e6aa46088b5ea0d400f"
+                  }
+                }
+              }
+            },
+            "order": 1172
+          },
+          "implementation": {
+            "phase": "implementation",
+            "recordedAt": "2026-09-22T23:13:21.733Z",
+            "fingerprints": {
+              "impact": "644ed82bf182cdc3aaaaf96cf7edeb950cfe2266644cd7c4bdeab5c069bd07bd",
+              "requirements": "76c61ae71980972fc615ad0de8fd792566e79fec94575d44511140d6a5786986",
+              "design": "b8c41e7adb0e35db7b7729e0a687a43ebeca66f49c4c1357b5b4dfb1a869ead5",
+              "implementation": "efd1d007f21484c423bf4f790e8670afee80df4dc90fe464c8ecf7a8df4c2bf7",
+              "tests": "b13f4257e6b3391917be8b3a5b62baeb2d63e9fa015eb3092db28d8cb10a71df",
+              "tdd": "5bca5afef03891c0b95440d2746de9a323a376264a636926bf83a1f9fc316cb6",
+              "requirementImplementations": {
+                "REQ-RELEASE-ASSET-PUBLISHING-003": {
+                  "paths": [
+                    "scripts/release-publish.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/release-publish.mjs": "bf47eafd7e1af195e26c6833ee0de2d9514a51adcd6b3a5904b5f8cfa3c236e3"
+                  }
+                }
+              }
+            },
+            "order": 1173
+          },
+          "green": {
+            "phase": "green",
+            "recordedAt": "2026-09-22T23:13:29.807Z",
+            "fingerprints": {
+              "impact": "644ed82bf182cdc3aaaaf96cf7edeb950cfe2266644cd7c4bdeab5c069bd07bd",
+              "requirements": "76c61ae71980972fc615ad0de8fd792566e79fec94575d44511140d6a5786986",
+              "design": "b8c41e7adb0e35db7b7729e0a687a43ebeca66f49c4c1357b5b4dfb1a869ead5",
+              "implementation": "efd1d007f21484c423bf4f790e8670afee80df4dc90fe464c8ecf7a8df4c2bf7",
+              "tests": "b13f4257e6b3391917be8b3a5b62baeb2d63e9fa015eb3092db28d8cb10a71df",
+              "tdd": "708220e0881080a37ed796f9ecb814b3fd91139a8457ae6620f34a53c0469bc1",
+              "requirementImplementations": {
+                "REQ-RELEASE-ASSET-PUBLISHING-003": {
+                  "paths": [
+                    "scripts/release-publish.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/release-publish.mjs": "bf47eafd7e1af195e26c6833ee0de2d9514a51adcd6b3a5904b5f8cfa3c236e3"
+                  }
+                }
+              }
+            },
+            "order": 1175
+          }
+        },
+        {
+          "requirementIds": [
+            "REQ-RELEASE-ASSET-PUBLISHING-001"
+          ],
+          "red": {
+            "phase": "red",
+            "recordedAt": "2026-09-22T23:57:26.785Z",
+            "fingerprints": {
+              "impact": "644ed82bf182cdc3aaaaf96cf7edeb950cfe2266644cd7c4bdeab5c069bd07bd",
+              "requirements": "76c61ae71980972fc615ad0de8fd792566e79fec94575d44511140d6a5786986",
+              "design": "b8c41e7adb0e35db7b7729e0a687a43ebeca66f49c4c1357b5b4dfb1a869ead5",
+              "implementation": "67bffcafd37422bb492cae33dadf197c46bc795d7176be93a5d2e8ed83ee7bff",
+              "tests": "741e2ba84c35b5d8436ad5bd6efeb9a123e88f378f502e334871ae497b89b5ad",
+              "tdd": "ed324d3b8a5508602359d4ea8adb37cb5fc532702e4313f3d0653dfee59eb8b2",
+              "requirementImplementations": {
+                "REQ-RELEASE-ASSET-PUBLISHING-001": {
+                  "paths": [
+                    "scripts/release-publish.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/release-publish.mjs": "e760cf9f4194bf1d791388a81d7286f00aa97b157e91743d8b658b31e6fcfaf1"
+                  }
+                }
+              }
+            },
+            "order": 1184
+          },
+          "implementation": {
+            "phase": "implementation",
+            "recordedAt": "2026-09-22T23:58:14.478Z",
+            "fingerprints": {
+              "impact": "644ed82bf182cdc3aaaaf96cf7edeb950cfe2266644cd7c4bdeab5c069bd07bd",
+              "requirements": "76c61ae71980972fc615ad0de8fd792566e79fec94575d44511140d6a5786986",
+              "design": "b8c41e7adb0e35db7b7729e0a687a43ebeca66f49c4c1357b5b4dfb1a869ead5",
+              "implementation": "c8c422c820154f091a5e320ebfdafb3803a9ae523ae55b6fc3fc64cbc7f14661",
+              "tests": "741e2ba84c35b5d8436ad5bd6efeb9a123e88f378f502e334871ae497b89b5ad",
+              "tdd": "ed324d3b8a5508602359d4ea8adb37cb5fc532702e4313f3d0653dfee59eb8b2",
+              "requirementImplementations": {
+                "REQ-RELEASE-ASSET-PUBLISHING-001": {
+                  "paths": [
+                    "scripts/release-publish.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/release-publish.mjs": "021ae204cca11fd66d583e27df16e9ead16d77df0503d717d63bda14ecf144f3"
+                  }
+                }
+              }
+            },
+            "order": 1185
+          },
+          "green": {
+            "phase": "green",
+            "recordedAt": "2026-09-22T23:58:21.789Z",
+            "fingerprints": {
+              "impact": "644ed82bf182cdc3aaaaf96cf7edeb950cfe2266644cd7c4bdeab5c069bd07bd",
+              "requirements": "76c61ae71980972fc615ad0de8fd792566e79fec94575d44511140d6a5786986",
+              "design": "b8c41e7adb0e35db7b7729e0a687a43ebeca66f49c4c1357b5b4dfb1a869ead5",
+              "implementation": "c8c422c820154f091a5e320ebfdafb3803a9ae523ae55b6fc3fc64cbc7f14661",
+              "tests": "741e2ba84c35b5d8436ad5bd6efeb9a123e88f378f502e334871ae497b89b5ad",
+              "tdd": "a21ee66fa425b0b691c734d134331f75276f35122c059703e661cea456ba7394",
+              "requirementImplementations": {
+                "REQ-RELEASE-ASSET-PUBLISHING-001": {
+                  "paths": [
+                    "scripts/release-publish.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/release-publish.mjs": "021ae204cca11fd66d583e27df16e9ead16d77df0503d717d63bda14ecf144f3"
+                  }
+                }
+              }
+            },
+            "order": 1187
+          }
+        },
+        {
+          "requirementIds": [
+            "REQ-RELEASE-ASSET-PUBLISHING-001",
+            "REQ-RELEASE-ASSET-PUBLISHING-004"
+          ],
+          "red": {
+            "phase": "red",
+            "recordedAt": "2026-09-23T00:21:31.310Z",
+            "fingerprints": {
+              "impact": "d3412774d1d120eff3fb70e5a15b85e31c603b721ca0e5cd84f18dd64d5ecba2",
+              "requirements": "76c61ae71980972fc615ad0de8fd792566e79fec94575d44511140d6a5786986",
+              "design": "b8c41e7adb0e35db7b7729e0a687a43ebeca66f49c4c1357b5b4dfb1a869ead5",
+              "implementation": "67bffcafd37422bb492cae33dadf197c46bc795d7176be93a5d2e8ed83ee7bff",
+              "tests": "b21a5c846cf6d69ecb0b199838842d50ad141e35c3a23f3a2be969bee7807a9d",
+              "tdd": "afc860558923e0026e43e3bf51bc0a1e44c03ace063081265caa8642506bdfff",
+              "requirementImplementations": {
+                "REQ-RELEASE-ASSET-PUBLISHING-001": {
+                  "paths": [
+                    "scripts/release-publish.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/release-publish.mjs": "e760cf9f4194bf1d791388a81d7286f00aa97b157e91743d8b658b31e6fcfaf1"
+                  }
+                },
+                "REQ-RELEASE-ASSET-PUBLISHING-004": {
+                  "paths": [
+                    "scripts/release-publish.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/release-publish.mjs": "e760cf9f4194bf1d791388a81d7286f00aa97b157e91743d8b658b31e6fcfaf1"
+                  }
+                }
+              }
+            },
+            "order": 1189
+          },
+          "implementation": {
+            "phase": "implementation",
+            "recordedAt": "2026-09-23T00:22:44.842Z",
+            "fingerprints": {
+              "impact": "d3412774d1d120eff3fb70e5a15b85e31c603b721ca0e5cd84f18dd64d5ecba2",
+              "requirements": "76c61ae71980972fc615ad0de8fd792566e79fec94575d44511140d6a5786986",
+              "design": "b8c41e7adb0e35db7b7729e0a687a43ebeca66f49c4c1357b5b4dfb1a869ead5",
+              "implementation": "c8c422c820154f091a5e320ebfdafb3803a9ae523ae55b6fc3fc64cbc7f14661",
+              "tests": "b21a5c846cf6d69ecb0b199838842d50ad141e35c3a23f3a2be969bee7807a9d",
+              "tdd": "afc860558923e0026e43e3bf51bc0a1e44c03ace063081265caa8642506bdfff",
+              "requirementImplementations": {
+                "REQ-RELEASE-ASSET-PUBLISHING-001": {
+                  "paths": [
+                    "scripts/release-publish.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/release-publish.mjs": "021ae204cca11fd66d583e27df16e9ead16d77df0503d717d63bda14ecf144f3"
+                  }
+                },
+                "REQ-RELEASE-ASSET-PUBLISHING-004": {
+                  "paths": [
+                    "scripts/release-publish.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/release-publish.mjs": "021ae204cca11fd66d583e27df16e9ead16d77df0503d717d63bda14ecf144f3"
+                  }
+                }
+              }
+            },
+            "order": 1190
+          },
+          "green": {
+            "phase": "green",
+            "recordedAt": "2026-09-23T00:22:46.852Z",
+            "fingerprints": {
+              "impact": "d3412774d1d120eff3fb70e5a15b85e31c603b721ca0e5cd84f18dd64d5ecba2",
+              "requirements": "76c61ae71980972fc615ad0de8fd792566e79fec94575d44511140d6a5786986",
+              "design": "b8c41e7adb0e35db7b7729e0a687a43ebeca66f49c4c1357b5b4dfb1a869ead5",
+              "implementation": "c8c422c820154f091a5e320ebfdafb3803a9ae523ae55b6fc3fc64cbc7f14661",
+              "tests": "b21a5c846cf6d69ecb0b199838842d50ad141e35c3a23f3a2be969bee7807a9d",
+              "tdd": "b168142bdcce78b647ebc23ea958092eb211e0da01186d5f4d011c4399e3e09d",
+              "requirementImplementations": {
+                "REQ-RELEASE-ASSET-PUBLISHING-001": {
+                  "paths": [
+                    "scripts/release-publish.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/release-publish.mjs": "021ae204cca11fd66d583e27df16e9ead16d77df0503d717d63bda14ecf144f3"
+                  }
+                },
+                "REQ-RELEASE-ASSET-PUBLISHING-004": {
+                  "paths": [
+                    "scripts/release-publish.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/release-publish.mjs": "021ae204cca11fd66d583e27df16e9ead16d77df0503d717d63bda14ecf144f3"
+                  }
+                }
+              }
+            },
+            "order": 1192
+          }
+        },
+        {
+          "requirementIds": [
+            "REQ-RELEASE-ASSET-PUBLISHING-002",
+            "REQ-RELEASE-ASSET-PUBLISHING-003"
+          ],
+          "red": {
+            "phase": "red",
+            "recordedAt": "2026-09-23T00:24:32.615Z",
+            "fingerprints": {
+              "impact": "d3412774d1d120eff3fb70e5a15b85e31c603b721ca0e5cd84f18dd64d5ecba2",
+              "requirements": "76c61ae71980972fc615ad0de8fd792566e79fec94575d44511140d6a5786986",
+              "design": "b8c41e7adb0e35db7b7729e0a687a43ebeca66f49c4c1357b5b4dfb1a869ead5",
+              "implementation": "f9563c2cb0268bb484d503c17719d7c55c8da03a8d509a77ccf946638847ba6d",
+              "tests": "8e604ee54408cfb47a1a4bbdb517ab7e838487073c810c2a71cef0337416eb0c",
+              "tdd": "9448a3dcc32743203f1d68be65ab39d4c192fdb6c9eb80a8e5bbf622079b739e",
+              "requirementImplementations": {
+                "REQ-RELEASE-ASSET-PUBLISHING-002": {
+                  "paths": [
+                    "scripts/release-publish.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/release-publish.mjs": "f4cf4aabc37f36bca4924201a6abc29219a44e30d71c32f01743964d69e48da4"
+                  }
+                },
+                "REQ-RELEASE-ASSET-PUBLISHING-003": {
+                  "paths": [
+                    "scripts/release-publish.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/release-publish.mjs": "f4cf4aabc37f36bca4924201a6abc29219a44e30d71c32f01743964d69e48da4"
+                  }
+                }
+              }
+            },
+            "order": 1194
+          },
+          "implementation": {
+            "phase": "implementation",
+            "recordedAt": "2026-09-23T00:25:33.834Z",
+            "fingerprints": {
+              "impact": "d3412774d1d120eff3fb70e5a15b85e31c603b721ca0e5cd84f18dd64d5ecba2",
+              "requirements": "76c61ae71980972fc615ad0de8fd792566e79fec94575d44511140d6a5786986",
+              "design": "b8c41e7adb0e35db7b7729e0a687a43ebeca66f49c4c1357b5b4dfb1a869ead5",
+              "implementation": "c8c422c820154f091a5e320ebfdafb3803a9ae523ae55b6fc3fc64cbc7f14661",
+              "tests": "8e604ee54408cfb47a1a4bbdb517ab7e838487073c810c2a71cef0337416eb0c",
+              "tdd": "9448a3dcc32743203f1d68be65ab39d4c192fdb6c9eb80a8e5bbf622079b739e",
+              "requirementImplementations": {
+                "REQ-RELEASE-ASSET-PUBLISHING-002": {
+                  "paths": [
+                    "scripts/release-publish.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/release-publish.mjs": "021ae204cca11fd66d583e27df16e9ead16d77df0503d717d63bda14ecf144f3"
+                  }
+                },
+                "REQ-RELEASE-ASSET-PUBLISHING-003": {
+                  "paths": [
+                    "scripts/release-publish.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/release-publish.mjs": "021ae204cca11fd66d583e27df16e9ead16d77df0503d717d63bda14ecf144f3"
+                  }
+                }
+              }
+            },
+            "order": 1195
+          },
+          "green": {
+            "phase": "green",
+            "recordedAt": "2026-09-23T00:25:40.400Z",
+            "fingerprints": {
+              "impact": "d3412774d1d120eff3fb70e5a15b85e31c603b721ca0e5cd84f18dd64d5ecba2",
+              "requirements": "76c61ae71980972fc615ad0de8fd792566e79fec94575d44511140d6a5786986",
+              "design": "b8c41e7adb0e35db7b7729e0a687a43ebeca66f49c4c1357b5b4dfb1a869ead5",
+              "implementation": "c8c422c820154f091a5e320ebfdafb3803a9ae523ae55b6fc3fc64cbc7f14661",
+              "tests": "8e604ee54408cfb47a1a4bbdb517ab7e838487073c810c2a71cef0337416eb0c",
+              "tdd": "f0d12fe788a3b473e4489db2df26b8da0e174597ed3654f8603d44e64ed5aee0",
+              "requirementImplementations": {
+                "REQ-RELEASE-ASSET-PUBLISHING-002": {
+                  "paths": [
+                    "scripts/release-publish.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/release-publish.mjs": "021ae204cca11fd66d583e27df16e9ead16d77df0503d717d63bda14ecf144f3"
+                  }
+                },
+                "REQ-RELEASE-ASSET-PUBLISHING-003": {
+                  "paths": [
+                    "scripts/release-publish.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/release-publish.mjs": "021ae204cca11fd66d583e27df16e9ead16d77df0503d717d63bda14ecf144f3"
+                  }
+                }
+              }
+            },
+            "order": 1197
+          }
+        },
+        {
+          "requirementIds": [
+            "REQ-RELEASE-ASSET-PUBLISHING-001",
+            "REQ-RELEASE-ASSET-PUBLISHING-002",
+            "REQ-RELEASE-ASSET-PUBLISHING-004"
+          ],
+          "red": {
+            "phase": "red",
+            "recordedAt": "2026-09-23T00:39:10.146Z",
+            "fingerprints": {
+              "impact": "781ae306b4ec1685c2d8361b60e837d4c2a2ff18ef1486f0b123365d80273b91",
+              "requirements": "76c61ae71980972fc615ad0de8fd792566e79fec94575d44511140d6a5786986",
+              "design": "b8c41e7adb0e35db7b7729e0a687a43ebeca66f49c4c1357b5b4dfb1a869ead5",
+              "implementation": "50fdce8c3ae3fe4f6dab7bbe7eded04acb5246ab0a9f76c7b721f2bc00cf57f2",
+              "tests": "8e604ee54408cfb47a1a4bbdb517ab7e838487073c810c2a71cef0337416eb0c",
+              "tdd": "f5d1279dbff91385eb4210aa7a8ab6b508ef6343d7e1c682dfc0fc24357193e3",
+              "requirementImplementations": {
+                "REQ-RELEASE-ASSET-PUBLISHING-001": {
+                  "paths": [
+                    "scripts/release-publish.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/release-publish.mjs": "dfc40667a76dcadc13e906c7ce1095e85c7d9772c664988ee2e5a820c1fea27a"
+                  }
+                },
+                "REQ-RELEASE-ASSET-PUBLISHING-002": {
+                  "paths": [
+                    "scripts/release-publish.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/release-publish.mjs": "dfc40667a76dcadc13e906c7ce1095e85c7d9772c664988ee2e5a820c1fea27a"
+                  }
+                },
+                "REQ-RELEASE-ASSET-PUBLISHING-004": {
+                  "paths": [
+                    "scripts/release-publish.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/release-publish.mjs": "dfc40667a76dcadc13e906c7ce1095e85c7d9772c664988ee2e5a820c1fea27a"
+                  }
+                }
+              }
+            },
+            "order": 1202
+          },
+          "implementation": {
+            "phase": "implementation",
+            "recordedAt": "2026-09-23T00:39:23.274Z",
+            "fingerprints": {
+              "impact": "781ae306b4ec1685c2d8361b60e837d4c2a2ff18ef1486f0b123365d80273b91",
+              "requirements": "76c61ae71980972fc615ad0de8fd792566e79fec94575d44511140d6a5786986",
+              "design": "b8c41e7adb0e35db7b7729e0a687a43ebeca66f49c4c1357b5b4dfb1a869ead5",
+              "implementation": "c8c422c820154f091a5e320ebfdafb3803a9ae523ae55b6fc3fc64cbc7f14661",
+              "tests": "8e604ee54408cfb47a1a4bbdb517ab7e838487073c810c2a71cef0337416eb0c",
+              "tdd": "f5d1279dbff91385eb4210aa7a8ab6b508ef6343d7e1c682dfc0fc24357193e3",
+              "requirementImplementations": {
+                "REQ-RELEASE-ASSET-PUBLISHING-001": {
+                  "paths": [
+                    "scripts/release-publish.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/release-publish.mjs": "021ae204cca11fd66d583e27df16e9ead16d77df0503d717d63bda14ecf144f3"
+                  }
+                },
+                "REQ-RELEASE-ASSET-PUBLISHING-002": {
+                  "paths": [
+                    "scripts/release-publish.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/release-publish.mjs": "021ae204cca11fd66d583e27df16e9ead16d77df0503d717d63bda14ecf144f3"
+                  }
+                },
+                "REQ-RELEASE-ASSET-PUBLISHING-004": {
+                  "paths": [
+                    "scripts/release-publish.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/release-publish.mjs": "021ae204cca11fd66d583e27df16e9ead16d77df0503d717d63bda14ecf144f3"
+                  }
+                }
+              }
+            },
+            "order": 1203
+          },
+          "green": {
+            "phase": "green",
+            "recordedAt": "2026-09-23T00:39:35.775Z",
+            "fingerprints": {
+              "impact": "781ae306b4ec1685c2d8361b60e837d4c2a2ff18ef1486f0b123365d80273b91",
+              "requirements": "76c61ae71980972fc615ad0de8fd792566e79fec94575d44511140d6a5786986",
+              "design": "b8c41e7adb0e35db7b7729e0a687a43ebeca66f49c4c1357b5b4dfb1a869ead5",
+              "implementation": "c8c422c820154f091a5e320ebfdafb3803a9ae523ae55b6fc3fc64cbc7f14661",
+              "tests": "8e604ee54408cfb47a1a4bbdb517ab7e838487073c810c2a71cef0337416eb0c",
+              "tdd": "acfe9ccf785a43a90711e2fdba250a480e91b5a53e2de735b0ab3c9bcf94a43c",
+              "requirementImplementations": {
+                "REQ-RELEASE-ASSET-PUBLISHING-001": {
+                  "paths": [
+                    "scripts/release-publish.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/release-publish.mjs": "021ae204cca11fd66d583e27df16e9ead16d77df0503d717d63bda14ecf144f3"
+                  }
+                },
+                "REQ-RELEASE-ASSET-PUBLISHING-002": {
+                  "paths": [
+                    "scripts/release-publish.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/release-publish.mjs": "021ae204cca11fd66d583e27df16e9ead16d77df0503d717d63bda14ecf144f3"
+                  }
+                },
+                "REQ-RELEASE-ASSET-PUBLISHING-004": {
+                  "paths": [
+                    "scripts/release-publish.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/release-publish.mjs": "021ae204cca11fd66d583e27df16e9ead16d77df0503d717d63bda14ecf144f3"
+                  }
+                }
+              }
+            },
+            "order": 1207
+          }
+        }
+      ],
+      "qualityHistory": [
+        {
+          "phase": "quality",
+          "recordedAt": "2026-09-23T00:31:53.478Z",
+          "fingerprints": {
+            "impact": "781ae306b4ec1685c2d8361b60e837d4c2a2ff18ef1486f0b123365d80273b91",
+            "requirements": "76c61ae71980972fc615ad0de8fd792566e79fec94575d44511140d6a5786986",
+            "design": "b8c41e7adb0e35db7b7729e0a687a43ebeca66f49c4c1357b5b4dfb1a869ead5",
+            "implementation": "c8c422c820154f091a5e320ebfdafb3803a9ae523ae55b6fc3fc64cbc7f14661",
+            "tests": "8e604ee54408cfb47a1a4bbdb517ab7e838487073c810c2a71cef0337416eb0c",
+            "tdd": "f0d12fe788a3b473e4489db2df26b8da0e174597ed3654f8603d44e64ed5aee0",
+            "requirementImplementations": {
+              "REQ-RELEASE-ASSET-PUBLISHING-001": {
+                "paths": [
+                  "scripts/release-publish.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/release-publish.mjs": "021ae204cca11fd66d583e27df16e9ead16d77df0503d717d63bda14ecf144f3"
+                }
+              },
+              "REQ-RELEASE-ASSET-PUBLISHING-002": {
+                "paths": [
+                  "scripts/release-publish.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/release-publish.mjs": "021ae204cca11fd66d583e27df16e9ead16d77df0503d717d63bda14ecf144f3"
+                }
+              },
+              "REQ-RELEASE-ASSET-PUBLISHING-003": {
+                "paths": [
+                  "scripts/release-publish.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/release-publish.mjs": "021ae204cca11fd66d583e27df16e9ead16d77df0503d717d63bda14ecf144f3"
+                }
+              },
+              "REQ-RELEASE-ASSET-PUBLISHING-004": {
+                "paths": [
+                  "scripts/release-publish.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/release-publish.mjs": "021ae204cca11fd66d583e27df16e9ead16d77df0503d717d63bda14ecf144f3"
+                }
+              }
+            }
+          },
+          "order": 1198
+        }
+      ]
     }
   ]
 }

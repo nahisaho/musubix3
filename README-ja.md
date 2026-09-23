@@ -1025,6 +1025,28 @@ secretも利用できます。npm publishがpendingまたは失敗してもGitHu
 workflow refとして選び、同じ値を`release_tag`へ指定します。tagがOIDCに束縛された
 `GITHUB_SHA`を指していなければworkflowは拒否します。
 
+npm publishはstableな`vMAJOR.MINOR.PATCH` tagだけを受け付けます。保護された
+2つのGitHub Actions publish経路は、そのtagをcheckoutし、non-draftのGitHub
+Releaseを新しい空ディレクトリへdownloadしてから、共通validatorを通してnpm
+provenance publishを実行します。validatorはhistorical assetや追加assetを拒否し、
+SHA256SUMSの厳密な形式、tarball内の`musubix3` package version、全local fileと
+現在のuploaded GitHub Release asset digestの一致を検証します。`release:prepare`
+の直接出力には後段のstrict CI attestationがないためpublishできません。
+
+local operatorは同じreleaseを検証できますが、provenance publishはできません。
+
+```bash
+gh auth status
+mkdir release-assets-verify
+gh release download v1.2.3 --repo nahisaho/musubix3 --dir release-assets-verify
+npm run --silent release:publish -- --verify-only --tag v1.2.3 \
+  --repository nahisaho/musubix3 --directory release-assets-verify
+```
+
+release asset出力に`digest`と`state`を含むGitHub CLIを使用してください。
+provenance publishは保護された`npm-publish` GitHub Actions environmentだけで
+実行されます。
+
 release attestationは、ephemeral Ed25519公開鍵をcustom audienceへ束縛した
 GitHub Actions OIDC tokenを使用します。署名対象にはrepository、Git commit、
 run ID、workflow/ref identity、workspace snapshot、存在するmusubix evidence headが

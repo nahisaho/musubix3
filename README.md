@@ -1217,6 +1217,29 @@ For manual dispatch, select the release tag as the workflow ref and provide the
 same value as `release_tag`; the workflow rejects tags that do not point to the
 OIDC-bound `GITHUB_SHA`.
 
+npm publishing accepts stable `vMAJOR.MINOR.PATCH` tags only. Both protected
+GitHub Actions publish paths check out that tag, download its non-draft GitHub
+Release into a new empty directory, and use the shared validator before npm
+provenance publishing. The validator rejects historical or additional assets,
+verifies the exact SHA256SUMS syntax and embedded `musubix3` package version,
+and requires every local file digest to match the current uploaded GitHub
+Release asset digest. Direct `release:prepare` output is not publishable because
+the strict CI attestation is added later.
+
+Local operators can verify, but cannot provenance-publish, the same release:
+
+```bash
+gh auth status
+mkdir release-assets-verify
+gh release download v1.2.3 --repo nahisaho/musubix3 --dir release-assets-verify
+npm run --silent release:publish -- --verify-only --tag v1.2.3 \
+  --repository nahisaho/musubix3 --directory release-assets-verify
+```
+
+Use a GitHub CLI version whose release asset output includes `digest` and
+`state`. Provenance-enabled publishing remains restricted to the protected
+`npm-publish` GitHub Actions environment.
+
 The release attestation uses a real GitHub Actions OIDC token whose custom
 audience binds an ephemeral Ed25519 public key. Its signature covers repository,
 Git commit, run ID, workflow/ref identity, current workspace snapshot, and any

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-22T22:02:00.628Z",
+  "generatedAt": "2026-09-23T01:09:45.187Z",
   "nodes": [
     {
       "id": "CODE-SESSION-SCOPED-DEVELOPMENT-001",
@@ -222,6 +222,12 @@
       "id": "ADR-0036",
       "kind": "adr",
       "path": ".musubix/decisions/ADR-0036.md",
+      "line": 1
+    },
+    {
+      "id": "ADR-0037",
+      "kind": "adr",
+      "path": ".musubix/decisions/ADR-0037.md",
       "line": 1
     },
     {
@@ -1430,6 +1436,70 @@
       "kind": "requirement",
       "path": ".musubix/features/release-approval-ordering/requirements.md",
       "line": 28,
+      "mandatory": true
+    },
+    {
+      "id": "DES-RELEASE-ASSET-PUBLISHING-001",
+      "kind": "design",
+      "path": ".musubix/features/release-asset-publishing/design.md",
+      "line": 7
+    },
+    {
+      "id": "DES-RELEASE-ASSET-PUBLISHING-002",
+      "kind": "design",
+      "path": ".musubix/features/release-asset-publishing/design.md",
+      "line": 14
+    },
+    {
+      "id": "DES-RELEASE-ASSET-PUBLISHING-003",
+      "kind": "design",
+      "path": ".musubix/features/release-asset-publishing/design.md",
+      "line": 22
+    },
+    {
+      "id": "DES-RELEASE-ASSET-PUBLISHING-004",
+      "kind": "design",
+      "path": ".musubix/features/release-asset-publishing/design.md",
+      "line": 30
+    },
+    {
+      "id": "DES-RELEASE-ASSET-PUBLISHING-005",
+      "kind": "design",
+      "path": ".musubix/features/release-asset-publishing/design.md",
+      "line": 38
+    },
+    {
+      "id": "DES-RELEASE-ASSET-PUBLISHING-006",
+      "kind": "design",
+      "path": ".musubix/features/release-asset-publishing/design.md",
+      "line": 46
+    },
+    {
+      "id": "REQ-RELEASE-ASSET-PUBLISHING-001",
+      "kind": "requirement",
+      "path": ".musubix/features/release-asset-publishing/requirements.md",
+      "line": 18,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-RELEASE-ASSET-PUBLISHING-002",
+      "kind": "requirement",
+      "path": ".musubix/features/release-asset-publishing/requirements.md",
+      "line": 25,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-RELEASE-ASSET-PUBLISHING-003",
+      "kind": "requirement",
+      "path": ".musubix/features/release-asset-publishing/requirements.md",
+      "line": 32,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-RELEASE-ASSET-PUBLISHING-004",
+      "kind": "requirement",
+      "path": ".musubix/features/release-asset-publishing/requirements.md",
+      "line": 39,
       "mandatory": true
     },
     {
@@ -2884,19 +2954,19 @@
       "id": "CODE-GITHUB-ACTIONS-NODE24-RUNTIME-001",
       "kind": "code",
       "path": "scripts/check-github-actions.mjs",
-      "line": 70
+      "line": 71
     },
     {
       "id": "CODE-GITHUB-ACTIONS-NODE24-RUNTIME-002",
       "kind": "code",
       "path": "scripts/check-github-actions.mjs",
-      "line": 247
+      "line": 248
     },
     {
       "id": "CODE-GITHUB-ACTIONS-NODE24-RUNTIME-003",
       "kind": "code",
       "path": "scripts/check-github-actions.mjs",
-      "line": 320
+      "line": 343
     },
     {
       "id": "CODE-NPM-AUDIT-REMEDIATION-001",
@@ -2933,6 +3003,36 @@
       "kind": "code",
       "path": "scripts/release-prepare.mjs",
       "line": 65
+    },
+    {
+      "id": "CODE-RELEASE-ASSET-PUBLISHING-001",
+      "kind": "code",
+      "path": "scripts/release-publish.mjs",
+      "line": 58
+    },
+    {
+      "id": "CODE-RELEASE-ASSET-PUBLISHING-002",
+      "kind": "code",
+      "path": "scripts/release-publish.mjs",
+      "line": 151
+    },
+    {
+      "id": "CODE-RELEASE-ASSET-PUBLISHING-003",
+      "kind": "code",
+      "path": "scripts/release-publish.mjs",
+      "line": 252
+    },
+    {
+      "id": "CODE-RELEASE-ASSET-PUBLISHING-004",
+      "kind": "code",
+      "path": "scripts/release-publish.mjs",
+      "line": 383
+    },
+    {
+      "id": "CODE-RELEASE-ASSET-PUBLISHING-005",
+      "kind": "code",
+      "path": "scripts/release-publish.mjs",
+      "line": 421
     },
     {
       "id": "CODE-RELEASE-VERSION-SYNCHRONIZATION-001",
@@ -3857,6 +3957,72 @@
       "kind": "test",
       "path": "tests/release-approval-ordering.test.ts",
       "line": 331
+    },
+    {
+      "id": "TEST-RELEASE-ASSET-PUBLISHING-001",
+      "kind": "test",
+      "path": "tests/release-asset-publishing.test.ts",
+      "line": 220
+    },
+    {
+      "id": "TEST-RELEASE-ASSET-PUBLISHING-002",
+      "kind": "test",
+      "path": "tests/release-asset-publishing.test.ts",
+      "line": 249
+    },
+    {
+      "id": "TEST-RELEASE-ASSET-PUBLISHING-003",
+      "kind": "test",
+      "path": "tests/release-asset-publishing.test.ts",
+      "line": 270
+    },
+    {
+      "id": "TEST-RELEASE-ASSET-PUBLISHING-004",
+      "kind": "test",
+      "path": "tests/release-asset-publishing.test.ts",
+      "line": 314
+    },
+    {
+      "id": "TEST-RELEASE-ASSET-PUBLISHING-005",
+      "kind": "test",
+      "path": "tests/release-asset-publishing.test.ts",
+      "line": 517
+    },
+    {
+      "id": "TEST-RELEASE-ASSET-PUBLISHING-006",
+      "kind": "test",
+      "path": "tests/release-asset-publishing.test.ts",
+      "line": 529
+    },
+    {
+      "id": "TEST-RELEASE-ASSET-PUBLISHING-007",
+      "kind": "test",
+      "path": "tests/release-asset-publishing.test.ts",
+      "line": 560
+    },
+    {
+      "id": "TEST-RELEASE-ASSET-PUBLISHING-008",
+      "kind": "test",
+      "path": "tests/release-asset-publishing.test.ts",
+      "line": 594
+    },
+    {
+      "id": "TEST-RELEASE-ASSET-PUBLISHING-009",
+      "kind": "test",
+      "path": "tests/release-asset-publishing.test.ts",
+      "line": 607
+    },
+    {
+      "id": "TEST-RELEASE-ASSET-PUBLISHING-010",
+      "kind": "test",
+      "path": "tests/release-asset-publishing.test.ts",
+      "line": 623
+    },
+    {
+      "id": "TEST-RELEASE-ASSET-PUBLISHING-011",
+      "kind": "test",
+      "path": "tests/release-asset-publishing.test.ts",
+      "line": 641
     },
     {
       "id": "TEST-RELEASE-VERSION-SYNCHRONIZATION-001",
@@ -5494,6 +5660,121 @@
     {
       "from": "DES-RELEASE-APPROVAL-ORDERING-003",
       "to": "DES-RELEASE-APPROVAL-ORDERING-002",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-RELEASE-ASSET-PUBLISHING-001",
+      "to": "REQ-RELEASE-ASSET-PUBLISHING-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0037",
+      "to": "DES-RELEASE-ASSET-PUBLISHING-001",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-RELEASE-ASSET-PUBLISHING-002",
+      "to": "REQ-RELEASE-ASSET-PUBLISHING-002",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-RELEASE-ASSET-PUBLISHING-002",
+      "to": "REQ-RELEASE-ASSET-PUBLISHING-003",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0037",
+      "to": "DES-RELEASE-ASSET-PUBLISHING-002",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-RELEASE-ASSET-PUBLISHING-002",
+      "to": "DES-RELEASE-ASSET-PUBLISHING-001",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-RELEASE-ASSET-PUBLISHING-003",
+      "to": "REQ-RELEASE-ASSET-PUBLISHING-003",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-RELEASE-ASSET-PUBLISHING-003",
+      "to": "REQ-RELEASE-ASSET-PUBLISHING-004",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0037",
+      "to": "DES-RELEASE-ASSET-PUBLISHING-003",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-RELEASE-ASSET-PUBLISHING-003",
+      "to": "DES-RELEASE-ASSET-PUBLISHING-002",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-RELEASE-ASSET-PUBLISHING-004",
+      "to": "REQ-RELEASE-ASSET-PUBLISHING-003",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-RELEASE-ASSET-PUBLISHING-004",
+      "to": "REQ-RELEASE-ASSET-PUBLISHING-004",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0037",
+      "to": "DES-RELEASE-ASSET-PUBLISHING-004",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-RELEASE-ASSET-PUBLISHING-004",
+      "to": "DES-RELEASE-ASSET-PUBLISHING-003",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-RELEASE-ASSET-PUBLISHING-005",
+      "to": "REQ-RELEASE-ASSET-PUBLISHING-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-RELEASE-ASSET-PUBLISHING-005",
+      "to": "REQ-RELEASE-ASSET-PUBLISHING-003",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-RELEASE-ASSET-PUBLISHING-005",
+      "to": "REQ-RELEASE-ASSET-PUBLISHING-004",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0037",
+      "to": "DES-RELEASE-ASSET-PUBLISHING-005",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-RELEASE-ASSET-PUBLISHING-005",
+      "to": "DES-RELEASE-ASSET-PUBLISHING-004",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-RELEASE-ASSET-PUBLISHING-006",
+      "to": "REQ-RELEASE-ASSET-PUBLISHING-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-RELEASE-ASSET-PUBLISHING-006",
+      "to": "REQ-RELEASE-ASSET-PUBLISHING-004",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0037",
+      "to": "DES-RELEASE-ASSET-PUBLISHING-006",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-RELEASE-ASSET-PUBLISHING-006",
+      "to": "DES-RELEASE-ASSET-PUBLISHING-005",
       "relation": "depends-on"
     },
     {
@@ -8647,6 +8928,86 @@
       "relation": "implements"
     },
     {
+      "from": "CODE-RELEASE-ASSET-PUBLISHING-001",
+      "to": "REQ-RELEASE-ASSET-PUBLISHING-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-RELEASE-ASSET-PUBLISHING-001",
+      "to": "DES-RELEASE-ASSET-PUBLISHING-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-RELEASE-ASSET-PUBLISHING-002",
+      "to": "REQ-RELEASE-ASSET-PUBLISHING-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-RELEASE-ASSET-PUBLISHING-002",
+      "to": "REQ-RELEASE-ASSET-PUBLISHING-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-RELEASE-ASSET-PUBLISHING-002",
+      "to": "DES-RELEASE-ASSET-PUBLISHING-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-RELEASE-ASSET-PUBLISHING-003",
+      "to": "REQ-RELEASE-ASSET-PUBLISHING-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-RELEASE-ASSET-PUBLISHING-003",
+      "to": "REQ-RELEASE-ASSET-PUBLISHING-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-RELEASE-ASSET-PUBLISHING-003",
+      "to": "DES-RELEASE-ASSET-PUBLISHING-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-RELEASE-ASSET-PUBLISHING-004",
+      "to": "REQ-RELEASE-ASSET-PUBLISHING-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-RELEASE-ASSET-PUBLISHING-004",
+      "to": "REQ-RELEASE-ASSET-PUBLISHING-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-RELEASE-ASSET-PUBLISHING-004",
+      "to": "DES-RELEASE-ASSET-PUBLISHING-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-RELEASE-ASSET-PUBLISHING-005",
+      "to": "REQ-RELEASE-ASSET-PUBLISHING-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-RELEASE-ASSET-PUBLISHING-005",
+      "to": "REQ-RELEASE-ASSET-PUBLISHING-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-RELEASE-ASSET-PUBLISHING-005",
+      "to": "REQ-RELEASE-ASSET-PUBLISHING-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-RELEASE-ASSET-PUBLISHING-005",
+      "to": "DES-RELEASE-ASSET-PUBLISHING-005",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-RELEASE-ASSET-PUBLISHING-005",
+      "to": "DES-RELEASE-ASSET-PUBLISHING-006",
+      "relation": "implements"
+    },
+    {
       "from": "CODE-RELEASE-VERSION-SYNCHRONIZATION-001",
       "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-001",
       "relation": "implements"
@@ -9607,6 +9968,71 @@
       "relation": "verifies"
     },
     {
+      "from": "TEST-RELEASE-ASSET-PUBLISHING-001",
+      "to": "REQ-RELEASE-ASSET-PUBLISHING-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-RELEASE-ASSET-PUBLISHING-002",
+      "to": "REQ-RELEASE-ASSET-PUBLISHING-002",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-RELEASE-ASSET-PUBLISHING-003",
+      "to": "REQ-RELEASE-ASSET-PUBLISHING-003",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-RELEASE-ASSET-PUBLISHING-004",
+      "to": "REQ-RELEASE-ASSET-PUBLISHING-004",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-RELEASE-ASSET-PUBLISHING-005",
+      "to": "REQ-RELEASE-ASSET-PUBLISHING-004",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-RELEASE-ASSET-PUBLISHING-006",
+      "to": "REQ-RELEASE-ASSET-PUBLISHING-003",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-RELEASE-ASSET-PUBLISHING-007",
+      "to": "REQ-RELEASE-ASSET-PUBLISHING-004",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-RELEASE-ASSET-PUBLISHING-008",
+      "to": "REQ-RELEASE-ASSET-PUBLISHING-004",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-RELEASE-ASSET-PUBLISHING-009",
+      "to": "REQ-RELEASE-ASSET-PUBLISHING-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-RELEASE-ASSET-PUBLISHING-010",
+      "to": "REQ-RELEASE-ASSET-PUBLISHING-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-RELEASE-ASSET-PUBLISHING-010",
+      "to": "REQ-RELEASE-ASSET-PUBLISHING-004",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-RELEASE-ASSET-PUBLISHING-011",
+      "to": "REQ-RELEASE-ASSET-PUBLISHING-002",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-RELEASE-ASSET-PUBLISHING-011",
+      "to": "REQ-RELEASE-ASSET-PUBLISHING-003",
+      "relation": "verifies"
+    },
+    {
       "from": "TEST-RELEASE-VERSION-SYNCHRONIZATION-001",
       "to": "REQ-RELEASE-VERSION-SYNCHRONIZATION-001",
       "relation": "verifies"
@@ -10068,6 +10494,7 @@
     ".musubix/decisions/ADR-0034.md": "3553589fd9d989c089351af9cea4f2fe671117006591dc1f6336b6b95196ebcd",
     ".musubix/decisions/ADR-0035.md": "14befbc7cb086ab8e9da1779546c274b795e58d084441b1c0823a82681e5a896",
     ".musubix/decisions/ADR-0036.md": "c4ed0289564d2b19e3c28e06e4784d792c694ff2be59d97c8f24431157d3faa3",
+    ".musubix/decisions/ADR-0037.md": "b64626a843de7f90ec4540c72fc2eab5daeb5a7d3854e8de2e80f1f44b88a5e4",
     ".musubix/features/adapter-pattern-recognition/design.md": "a8e0c4a11f626cb4a41c9b5b53359c072ec0c3161f704791f42ba8af38124a70",
     ".musubix/features/adapter-pattern-recognition/requirements.md": "5731561a0a04982b8a5c305bdeeae6084bcf0ee8846f295eaaaabc823d1f9793",
     ".musubix/features/approval-domain-scoping/design.md": "e8731f1e3094aa22192ae2ae5986fb4dc9a7698f7cfe66961e1342f6e0743bd9",
@@ -10110,6 +10537,8 @@
     ".musubix/features/npm-audit-remediation/requirements.md": "6811ea7e5dca6ead582e50fe390084c87703ef385e345f90da5aafca7cbd7e94",
     ".musubix/features/release-approval-ordering/design.md": "8e54722870ebfaa554667b5a7ead9a1e5a830bcc340b572f1de4280097a078f2",
     ".musubix/features/release-approval-ordering/requirements.md": "fecd1f0e25311d37dcea2b8582fbbdb08d628bda75035da8593f56e29499f980",
+    ".musubix/features/release-asset-publishing/design.md": "69766428ee31af1c2367974594dfa316956c0d2d375516dd3a6ae5f5cf34383d",
+    ".musubix/features/release-asset-publishing/requirements.md": "c37233799a8d4ad3311f21334620f44599438c5c6358c34360b20785a1d2e978",
     ".musubix/features/release-version-synchronization/design.md": "8df85935c9e2151cba0b0640fb5b25af81a529cfa7d2e7ec43f7730a44ebf42e",
     ".musubix/features/release-version-synchronization/requirements.md": "afb3b57eb96d6e93e437e4a7c83f2f91a70af9c92967ce543ba399c244f6153f",
     ".musubix/features/requirements-design-scaffold/design.md": "bbc705198e6631a77c4a2ff6999758dc9d2c457794e666aea50221743a691ecf",
@@ -10179,12 +10608,12 @@
     "packages/domain/src/markdown.ts": "5c6b96486a2e31944d7d128d241f1772d0926f34464fa2b59c20748a6754487a",
     "packages/domain/src/requirements.ts": "65ea1e6d3bbd29e929c785037b930e5f5eb5535b607403e5f30c3657d36e9175",
     "packages/domain/src/types.ts": "0f0cbd43bdee4db03b83e4869e9791531a63e9b63aa7a09661f62ad1bbc75cb3",
-    "scripts/check-github-actions.mjs": "36c6fc9ff5e6070bf15fa6d232ffd8d72f14a7d651636d3b88c560c78677d4cb",
+    "scripts/check-github-actions.mjs": "3113dd9208894426629d8322d0dee51ca44c618fefbc5ee82818a4f2f9215567",
     "scripts/check-npm-audit-remediation.mjs": "fad3268d94c49e04cb59252a1f6830faf6c75cceb9c163cf379f74921ff2ff0c",
     "scripts/check-package.mjs": "f5cdb012f3ec097b52501dba3a2f106bf7a3b38468769f12977ccd14d9a4ee83",
     "scripts/release-attestation.mjs": "b15842f6f83eb768c361a5e054a984af0da846f3b6e789bc0c91127415576d15",
     "scripts/release-prepare.mjs": "866f10190cd7598256e87d6e073cc6cd85d071ce09fa777e2fb4e347466d309f",
-    "scripts/release-publish.mjs": "be05292662e6f3a169f238231574c97dc70d41fc7a036bfe86b284e43eadaff4",
+    "scripts/release-publish.mjs": "021ae204cca11fd66d583e27df16e9ead16d77df0503d717d63bda14ecf144f3",
     "scripts/release-version.mjs": "24f8d0d1cd72408d5462238a99db3856639a94cb904337a8fabddad7af1cb6de",
     "scripts/smoke-package.mjs": "aecca89d02c2f7222567b8f86a6f6c7a8d3599d9c3539c38023012eee620a8d1",
     "tests/adapter-integration.test.ts": "42c350b4c3498d2dca32943731521ae8c2d52921f560039c0f7719b060bd4972",
@@ -10225,6 +10654,7 @@
     "tests/p4-workflow-streaming.test.ts": "6389d083b5bca81f88bbed2f54228a17d711cb8fa16a30a68614eb59bfb1d8bf",
     "tests/php-verification.test.ts": "bc70946615f3faa3cb3b5467e552140ba2ec8e25fb4d5276f72f65393ed04315",
     "tests/release-approval-ordering.test.ts": "d72d2a37cfdb9b87bb0b804839d5910c5921edd26b967fdf2dd2a6d61a21d5af",
+    "tests/release-asset-publishing.test.ts": "cf2f5921615f741a06f1b48fd3632c4ffebbb5d64c46db8443f853c8d6086334",
     "tests/release-version-synchronization.test.ts": "6886bfb2f0029a5f685f8152e7fb918a532a65f5ec5d84ffad063894c2ef49cb",
     "tests/scaffold-artifact.test.ts": "a8f074cdd9279f1b7c540fa1a721642ca762de9cd155f0894526a8f3daabc7d6",
     "tests/tdd-adoption-warning.test.ts": "fa0fc6267ad829bb4955dc352e986585f92daecd17865da7036ff2b9087d57e7",

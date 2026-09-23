@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-22T22:02:05.365Z",
-  "totalRequirements": 178,
+  "generatedAt": "2026-09-23T01:09:52.185Z",
+  "totalRequirements": 182,
   "modeledRequirements": 10,
-  "modeledFraction": 0.056179775280898875,
+  "modeledFraction": 0.054945054945054944,
   "result": {
     "valid": true,
     "abstraction": "Consistency of explicit branch-scoped conditional, exact unit-normalized integer numeric, bounded temporal interval, deterministic state-transition, and controlled unconditional Boolean constraints; not implementation correctness.",
@@ -177,6 +177,10 @@
       "REQ-RELEASE-APPROVAL-ORDERING-002",
       "REQ-RELEASE-APPROVAL-ORDERING-003",
       "REQ-RELEASE-APPROVAL-ORDERING-004",
+      "REQ-RELEASE-ASSET-PUBLISHING-001",
+      "REQ-RELEASE-ASSET-PUBLISHING-002",
+      "REQ-RELEASE-ASSET-PUBLISHING-003",
+      "REQ-RELEASE-ASSET-PUBLISHING-004",
       "REQ-RELEASE-VERSION-SYNCHRONIZATION-001",
       "REQ-RELEASE-VERSION-SYNCHRONIZATION-002",
       "REQ-RELEASE-VERSION-SYNCHRONIZATION-003",
@@ -782,6 +786,26 @@
       {
         "code": "FORMAL_UNSUPPORTED",
         "severity": "warning",
+        "message": "REQ-RELEASE-ASSET-PUBLISHING-001 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-RELEASE-ASSET-PUBLISHING-002 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-RELEASE-ASSET-PUBLISHING-003 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-RELEASE-ASSET-PUBLISHING-004 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
         "message": "REQ-RELEASE-VERSION-SYNCHRONIZATION-001 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
       },
       {
@@ -1113,6 +1137,7 @@
     ".musubix/features/model-correspondence-evidence-guidance/requirements.md": "d7ca8b823ddfd3265e89f2892003e5eb95faad7e9b3972b249de5f2902446511",
     ".musubix/features/npm-audit-remediation/requirements.md": "6811ea7e5dca6ead582e50fe390084c87703ef385e345f90da5aafca7cbd7e94",
     ".musubix/features/release-approval-ordering/requirements.md": "fecd1f0e25311d37dcea2b8582fbbdb08d628bda75035da8593f56e29499f980",
+    ".musubix/features/release-asset-publishing/requirements.md": "c37233799a8d4ad3311f21334620f44599438c5c6358c34360b20785a1d2e978",
     ".musubix/features/release-version-synchronization/requirements.md": "afb3b57eb96d6e93e437e4a7c83f2f91a70af9c92967ce543ba399c244f6153f",
     ".musubix/features/requirements-design-scaffold/requirements.md": "0a968bc27756e715f68f22a8f6d65fc8fefce09ac79d1c8d0137282b821ebc45",
     ".musubix/features/session-scoped-development/requirements.md": "640aece168b4e6848c0d1e6371f0bfeb433fa8addfd064a77d050891d69d9a4f",
