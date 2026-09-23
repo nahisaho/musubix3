@@ -72,22 +72,18 @@ Actions.
   findings after qualifying both privileged checkout refs as `refs/tags/...`
   and replacing permissive workflow normalization with exact reviewed source
   hashes.
-- The current changed gate fails its required `workflow` check because all 75
-  declarations are unreconciled (`WORKFLOW_INVOCATION_UNVERIFIED`) and fails
-  its required `approval` check because release approval is stale. The previous
-  HEAD evidence passed workflow reconciliation.
-- The recorded quality evidence predates this corrected CHANGE record;
-  `status` reports `gate.status: stale` because only
-  `.musubix/changes/CHANGE-0023.md` differs from its fingerprint, so quality
-  evidence must be regenerated before release approval.
-- Reconciliation of the Issue #31 session remains unproven: `workflow-sanitize`
-  rejects its transcript because a terminal `session.shutdown` is followed by
-  later events. That failure must not be bypassed by truncating the transcript.
-- The changed workflow declarations also invalidate 63 previously recorded
-  workflow waivers. After successful compatible verification resolves
-  `WORKFLOW_INVOCATION_UNVERIFIED`, those declaration-scoped waivers require
-  explicit human review and re-recording before release approval can make the
-  gate ready.
+- The required workflow check passes for 77 declarations across eight Skills
+  with zero waiver diagnostics. It passes on human-approved waivers rather than
+  machine binding; the changed gate fails only its required approval check
+  because release approval is stale.
+- The release-candidate quality run is performed after the final CHANGE
+  correction and must fingerprint this exact record before release approval.
+- A fresh closed Copilot session
+  (`f709d6cb-404a-4558-9da3-158ed4376a53`) was strictly verified with exit code
+  zero and four sanitized events; its transcript SHA-256 is
+  `70942ceeab2a35a101fe46e5ad4e853a3875f867bd38fc92fd9e8b74e1b4e269`.
+- Human approver `nahisaho` re-recorded 76 declaration-scoped workflow waivers
+  at `2026-09-23T01:30:05Z`; waiver diagnostics are zero.
 
 ## Residual risks
 
@@ -103,9 +99,16 @@ Actions.
   tarballs.
 - GitHub CLI capability is documented rather than version-pinned. A runner
   lacking `assets.digest` or `assets.state` support fails closed before npm.
-- Workflow reconciliation and 63 stale waiver replacements are unresolved
-  release-readiness blockers; `status.next` listing release approval actions
-  does not override `gate.ready: false`.
+- Of the 77 workflow declarations, 76 completed declarations pass via human
+  waivers and one failed `sdd-change` declaration is excluded from completed
+  binding. The strictly verified session's sole invocation postdates every
+  declaration, so no declaration is machine-bound to invocation evidence.
+- Strict workflow verification expires after the configured one-hour maximum
+  age. Any later workflow declaration invalidates its event-set hash and
+  requires a fresh closed-session verification plus explicit review of the new
+  declaration-scoped waiver before release approval.
+- The only unresolved required blocker is stale release approval;
+  `gate.ready: false` until it is re-recorded against the current manifest.
 - The rewritten privileged npm publishing path has not executed against a real
   release. Deferred release/npm-publish evidence and post-merge CI evidence
   remain pending until the next approved publication and default-branch run.
