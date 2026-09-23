@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-23T02:11:20.368Z",
+  "generatedAt": "2026-09-23T04:41:54.299Z",
   "nodes": [
     {
       "id": "CODE-SESSION-SCOPED-DEVELOPMENT-001",
@@ -1152,25 +1152,25 @@
       "id": "DES-EVIDENCE-WRITER-LOCK-002",
       "kind": "design",
       "path": ".musubix/features/evidence-writer-lock/design.md",
-      "line": 56
+      "line": 79
     },
     {
       "id": "DES-EVIDENCE-WRITER-LOCK-003",
       "kind": "design",
       "path": ".musubix/features/evidence-writer-lock/design.md",
-      "line": 112
+      "line": 135
     },
     {
       "id": "DES-EVIDENCE-WRITER-LOCK-004",
       "kind": "design",
       "path": ".musubix/features/evidence-writer-lock/design.md",
-      "line": 168
+      "line": 191
     },
     {
       "id": "DES-EVIDENCE-WRITER-LOCK-005",
       "kind": "design",
       "path": ".musubix/features/evidence-writer-lock/design.md",
-      "line": 213
+      "line": 236
     },
     {
       "id": "REQ-EVIDENCE-WRITER-LOCK-001",
@@ -2552,43 +2552,43 @@
       "id": "CODE-EVIDENCE-WRITER-LOCK-002",
       "kind": "code",
       "path": "packages/analysis/src/evidence-writer-lock.ts",
-      "line": 574
+      "line": 605
     },
     {
       "id": "CODE-EVIDENCE-WRITER-LOCK-003",
       "kind": "code",
       "path": "packages/analysis/src/evidence-writer-lock.ts",
-      "line": 778
+      "line": 819
     },
     {
       "id": "CODE-EVIDENCE-WRITER-LOCK-004",
       "kind": "code",
       "path": "packages/analysis/src/evidence-writer-lock.ts",
-      "line": 812
+      "line": 853
     },
     {
       "id": "CODE-EVIDENCE-WRITER-LOCK-005",
       "kind": "code",
       "path": "packages/analysis/src/evidence-writer-lock.ts",
-      "line": 827
+      "line": 868
     },
     {
       "id": "CODE-EVIDENCE-WRITER-LOCK-007",
       "kind": "code",
       "path": "packages/analysis/src/evidence-writer-lock.ts",
-      "line": 844
+      "line": 885
     },
     {
       "id": "CODE-EVIDENCE-WRITER-LOCK-008",
       "kind": "code",
       "path": "packages/analysis/src/evidence-writer-lock.ts",
-      "line": 874
+      "line": 915
     },
     {
       "id": "CODE-EVIDENCE-WRITER-LOCK-006",
       "kind": "code",
       "path": "packages/analysis/src/evidence-writer-lock.ts",
-      "line": 943
+      "line": 984
     },
     {
       "id": "CODE-CLI-WORKFLOW-UX-001",
@@ -2900,37 +2900,37 @@
       "id": "CODE-WORKFLOW-EVIDENCE-WAIVER-023",
       "kind": "code",
       "path": "packages/cli/src/main.ts",
-      "line": 469
+      "line": 473
     },
     {
       "id": "CODE-WORKFLOW-WAIVER-BULK-002",
       "kind": "code",
       "path": "packages/cli/src/main.ts",
-      "line": 505
+      "line": 509
     },
     {
       "id": "CODE-CHANGE-RECORD-RECORDEDAT-ORDER-004",
       "kind": "code",
       "path": "packages/cli/src/main.ts",
-      "line": 595
+      "line": 599
     },
     {
       "id": "CODE-CHANGE-RECORD-FAIL-FAST-002",
       "kind": "code",
       "path": "packages/cli/src/main.ts",
-      "line": 611
+      "line": 615
     },
     {
       "id": "CODE-CHANGE-QUALITY-REFRESH-005",
       "kind": "code",
       "path": "packages/cli/src/main.ts",
-      "line": 622
+      "line": 626
     },
     {
       "id": "CODE-TDD-ADOPTION-WARNING-003",
       "kind": "code",
       "path": "packages/cli/src/main.ts",
-      "line": 713
+      "line": 717
     },
     {
       "id": "CODE-DESIGN-ADR-NONE-EXEMPTION-001",
@@ -3785,58 +3785,76 @@
       "line": 452
     },
     {
+      "id": "TEST-EVIDENCE-WRITER-LOCK-025",
+      "kind": "test",
+      "path": "tests/evidence-writer-lock-integration.test.ts",
+      "line": 521
+    },
+    {
       "id": "TEST-EVIDENCE-WRITER-LOCK-018",
       "kind": "test",
       "path": "tests/evidence-writer-lock-integration.test.ts",
-      "line": 514
+      "line": 541
     },
     {
       "id": "TEST-EVIDENCE-WRITER-LOCK-019",
       "kind": "test",
       "path": "tests/evidence-writer-lock-integration.test.ts",
-      "line": 538
+      "line": 565
     },
     {
       "id": "TEST-EVIDENCE-WRITER-LOCK-022",
       "kind": "test",
       "path": "tests/evidence-writer-lock-integration.test.ts",
-      "line": 560
+      "line": 587
     },
     {
       "id": "TEST-EVIDENCE-WRITER-LOCK-023",
       "kind": "test",
       "path": "tests/evidence-writer-lock-integration.test.ts",
-      "line": 581
+      "line": 608
     },
     {
       "id": "TEST-EVIDENCE-WRITER-LOCK-001",
       "kind": "test",
       "path": "tests/evidence-writer-lock.test.ts",
-      "line": 41
+      "line": 50
     },
     {
       "id": "TEST-EVIDENCE-WRITER-LOCK-002",
       "kind": "test",
       "path": "tests/evidence-writer-lock.test.ts",
-      "line": 56
+      "line": 65
     },
     {
       "id": "TEST-EVIDENCE-WRITER-LOCK-003",
       "kind": "test",
       "path": "tests/evidence-writer-lock.test.ts",
-      "line": 78
+      "line": 87
     },
     {
       "id": "TEST-EVIDENCE-WRITER-LOCK-004",
       "kind": "test",
       "path": "tests/evidence-writer-lock.test.ts",
-      "line": 95
+      "line": 104
     },
     {
       "id": "TEST-EVIDENCE-WRITER-LOCK-005",
       "kind": "test",
       "path": "tests/evidence-writer-lock.test.ts",
-      "line": 108
+      "line": 117
+    },
+    {
+      "id": "TEST-EVIDENCE-WRITER-LOCK-024",
+      "kind": "test",
+      "path": "tests/evidence-writer-lock.test.ts",
+      "line": 143
+    },
+    {
+      "id": "TEST-EVIDENCE-WRITER-LOCK-026",
+      "kind": "test",
+      "path": "tests/evidence-writer-lock.test.ts",
+      "line": 207
     },
     {
       "id": "TEST-GITHUB-ACTIONS-NODE24-RUNTIME-001",
@@ -9788,6 +9806,11 @@
       "relation": "verifies"
     },
     {
+      "from": "TEST-EVIDENCE-WRITER-LOCK-025",
+      "to": "REQ-EVIDENCE-WRITER-LOCK-001",
+      "relation": "verifies"
+    },
+    {
       "from": "TEST-EVIDENCE-WRITER-LOCK-018",
       "to": "REQ-EVIDENCE-WRITER-LOCK-001",
       "relation": "verifies"
@@ -9840,6 +9863,16 @@
     {
       "from": "TEST-EVIDENCE-WRITER-LOCK-005",
       "to": "REQ-EVIDENCE-WRITER-LOCK-005",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-EVIDENCE-WRITER-LOCK-024",
+      "to": "REQ-EVIDENCE-WRITER-LOCK-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-EVIDENCE-WRITER-LOCK-026",
+      "to": "REQ-EVIDENCE-WRITER-LOCK-001",
       "relation": "verifies"
     },
     {
@@ -10488,7 +10521,7 @@
     ".musubix/decisions/ADR-0028.md": "e9507066f52f57e58105e16ceac3196fad091912edbe1a5c89e2705664c4bb22",
     ".musubix/decisions/ADR-0029.md": "ad78f16771e42db6742c0aadbbe2e1e7d4640f4447995f7f801c994b5b424485",
     ".musubix/decisions/ADR-0030.md": "80b4d83140891df2ae9b8056d8ed4ec4b04bcb03544ca0523932a18465b088d2",
-    ".musubix/decisions/ADR-0031.md": "5e224efdc547b469c255ed44dda4ad0e4bfc0e855e105d3968260998c095085b",
+    ".musubix/decisions/ADR-0031.md": "94c1d13ac65ce7b782a0668bf22bde6ef0e1a005b45b74aeb84ea7aefc9eff05",
     ".musubix/decisions/ADR-0032.md": "31bfdd12d54dcf9b5335d10c38de351ab396ee0c1e9834b4a275fbc4de00d06d",
     ".musubix/decisions/ADR-0033.md": "82855115e4da67d3c4ddbbb72435e9a852b405ab6db325c416f427e9cde30978",
     ".musubix/decisions/ADR-0034.md": "3553589fd9d989c089351af9cea4f2fe671117006591dc1f6336b6b95196ebcd",
@@ -10525,8 +10558,8 @@
     ".musubix/features/ears-id-diagnostic-messages/requirements.md": "49afd4e574f1179a31707323fbbcfffabf1051f666ad1fcba60b39b2e7da3808",
     ".musubix/features/evidence-history-merge/design.md": "9c469da087e4f259c57af526e82609ca84b05e94c790e1b6f7c54cb8709d42d7",
     ".musubix/features/evidence-history-merge/requirements.md": "7fa32ee9bc9dd11e25bcdaff1959ab4d17156f9965c5904f4a0cf2283d5cd988",
-    ".musubix/features/evidence-writer-lock/design.md": "caa4c26903eef9ee527bb0506690727a605f4d8ed29e15521860ce264607b975",
-    ".musubix/features/evidence-writer-lock/requirements.md": "7494d9754b823f5b685919d1e37d870dbe2f4fd2146ffa093513dd1032c60a6e",
+    ".musubix/features/evidence-writer-lock/design.md": "e525060ea482fa12b1b9db64a89401cbd8982053d75fd03e09a223cf08715860",
+    ".musubix/features/evidence-writer-lock/requirements.md": "081b0067d99ea395f7e720672ccb8670371e8e242c6abadeaf9aa1eb52456632",
     ".musubix/features/github-actions-node24-runtime/design.md": "c0da79c8b255c9fb7b3801e6594bc4d2597d3375ee7a7538a56ddf5474face34",
     ".musubix/features/github-actions-node24-runtime/requirements.md": "dbab6b6b0fd7ceacc8109b0b101670e57ee237c90f49d925c9e08a1fad2c3dec",
     ".musubix/features/human-approval-gates/design.md": "ce1e316afee28082001ddedbce734a7766562889bd28f3eea610909c8d736206",
@@ -10580,7 +10613,7 @@
     "packages/analysis/src/config.ts": "52d5212f4057df9ed5caac0a0025ce744864909abceea3c64d259479ddffb998",
     "packages/analysis/src/evidence-merge-guard.ts": "1c0b4735d974f4c5fa0b9edaa5bde075baa5ca09de645d32db41f2e24e9421e1",
     "packages/analysis/src/evidence-merge.ts": "93b05afe610ae1894fb31ce4984a921ba6094e5bb067d5e1a5bebba23de97790",
-    "packages/analysis/src/evidence-writer-lock.ts": "a6ff3d6f9a6fe6caf7911f103edd07d61518a6038d54c477fd1a4f797932c219",
+    "packages/analysis/src/evidence-writer-lock.ts": "2f6300b42247a37061fedbd70a43a2f4abd67df7692c89b44ee54b41bc5ab11e",
     "packages/analysis/src/files.ts": "8c444fac80a0f26dc7341b43e84f3e3906e346ad5e442f2909da7f18e031c72d",
     "packages/analysis/src/formal.ts": "3b214da239fbf5f796f76fb5d9141cf60f9b946a51560cde5944e7e2f9ca4891",
     "packages/analysis/src/gate.ts": "a55ea88c4af2b52a3e67cc2e4987bc284bb737db7348c4b785bf73db80401422",
@@ -10601,7 +10634,7 @@
     "packages/analysis/src/workflow-waiver.ts": "7c09999654d03fbc96879f3e6726d505706cdcba36940c00d46ac208d94f972f",
     "packages/analysis/src/workflow.ts": "f2f89fa9d2d5e6406ac58bb943c60a1ac209b6917edb850d36d725bb37d9ac4f",
     "packages/cli/src/install.ts": "346a6e66a29505010681ac32ea17651339cef3cfc1143422174981438e17bbf1",
-    "packages/cli/src/main.ts": "16ef7bb4b26c8500a9cebf489ff497b5f2c8302b51d736bde90b4e9985572135",
+    "packages/cli/src/main.ts": "25ae53c6cac1eea57020a33397138c9913831d11b4d255867785a1f09a013244",
     "packages/domain/src/constitution.ts": "514278499642ff46ed902864b9192f566b116b4f92eb3fafa6b62588335e170a",
     "packages/domain/src/design.ts": "fc1ca4d3249abc9705ba4b6f296e0f4fa3b3d6ff6d5d82e51c99f49fc7a93ac9",
     "packages/domain/src/index.ts": "43243e9279e3826b23cd8d8b4365854974112ce4cf17cfb0f0ee32e6b28e9cc6",
@@ -10636,8 +10669,8 @@
     "tests/ears-id-diagnostic-messages.test.ts": "b87dbcbbd8a1c6d2c8fddd2ad0c7483da022281b4fae2f968972413933ee009a",
     "tests/evidence-history-merge-recovery.test.ts": "2389fa9fdc2fe1a064a00df536c0e5d281da86bb9820f12e118f0886f38103f4",
     "tests/evidence-history-merge.test.ts": "18e2b5adb0b67e459099350e592f55ee629bf1c2732454776fd5bb591d4cfadd",
-    "tests/evidence-writer-lock-integration.test.ts": "90f7fa2956d6c9c90de59466c0adcc298bc59fc921c7d88e3ac625b380d030f8",
-    "tests/evidence-writer-lock.test.ts": "bf966654908f0933952c9f731e96f2a4f90b2343b2503e079362928500930e11",
+    "tests/evidence-writer-lock-integration.test.ts": "09506f00e26dbfa0ebd3cbce21b6f463879ae2ee19ea73663c1a222844ea1407",
+    "tests/evidence-writer-lock.test.ts": "a9f8f88ffb673937c3b7a649297a4c3dbe732462e624e3928d225d33f693ab20",
     "tests/formal-knowledge.test.ts": "325ff2567b72708b83d3eab7b2986e7ceb7beb252ed21276b0db7436ffa367a4",
     "tests/gate-install.test.ts": "d2d1f923f594f15776c1ecb64325775a1c3770de557d2a2c0342ec4144538822",
     "tests/github-actions-node24-runtime.test.ts": "9a444869a4d0dcdb76fb34fc5e017eb8f4f39896ec7b8aa8e0d36e8a6552e28d",

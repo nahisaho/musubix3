@@ -6,13 +6,16 @@ with `realpath`, creates `.musubix/evidence` when needed, constructs complete
 owner metadata, writes and fsyncs a same-directory transaction-qualified
 staging file, and publishes it without replacement by hard-linking it to
 `.musubix/evidence/.writer-lock.json`. Interpret `EEXIST` as contention; map
-other publication failures to `EVIDENCE_WRITER_LOCK_ACQUIRE_FAILED`. After a
-successful link and directory fsync, unlink the staging name; every losing or
-failed acquisition also removes only its own staging name in `finally`. On
+other publication failures to `EVIDENCE_WRITER_LOCK_ACQUIRE_FAILED`. Keep the
+span from exclusive staging-file creation through file sync, hard-link
+publication, and synchronous containing-directory synchronization await-free.
+After a successful link and synchronization, unlink the staging name; every
+losing or failed acquisition also removes only its own staging name in
+`finally`. On
 release at a zero reference count, re-open and validate the lock, require the
 canonical root, transaction ID, and device/inode identity observed for that
-opened file to remain unchanged immediately before unlink, unlink it, and fsync
-the evidence directory.
+opened file to remain unchanged immediately before unlink, unlink it, and
+synchronize the evidence directory asynchronously.
 Exclude the canonical lock and publication staging prefix from Git inputs,
 approval manifests, attestation inputs, trace inputs, evidence hashes, and
 generated-artifact scans.
@@ -21,16 +24,36 @@ dependencies?: EvidenceWriterLockDependencies): Promise<EvidenceWriterLease>`;
 `EvidenceWriterLease.release(): Promise<void>`; `readEvidenceWriterLock(root:
 string): Promise<EvidenceWriterLockState>`; metadata schema
 `{ schemaVersion, canonicalRoot, command, pid, hostname, acquiredAt,
-transactionId, processFingerprint }`; test dependencies for release-time owner
-reads and device/inode observations; private lease state containing the
-device/inode identity captured from the published canonical lock and booleans
-recording whether this acquisition created the project root, `.musubix`, or
-`.musubix/evidence`.
+transactionId, processFingerprint }`; optional
+`EvidenceWriterLockDependencies` members `platform?: () => NodeJS.Platform`,
+`syncEvidenceDirectory?: (path: string, policy:
+EvidenceDirectorySyncPolicy) => Promise<void>`, and
+`syncEvidenceDirectorySync?: (path: string, policy:
+EvidenceDirectorySyncPolicy) => void`, where `EvidenceDirectorySyncPolicy` is
+`'allow-unsupported' | 'strict'`, in addition to release-time owner reads and
+device/inode observations; private lease state
+containing the device/inode identity captured from the published canonical lock
+and booleans recording whether this acquisition created the project root,
+`.musubix`, or `.musubix/evidence`. Production defaults are selected with `??`;
+tests construct optional dependency objects with conditional spread rather than
+passing explicit `undefined`.
 Constraints: The lock manager uses direct private filesystem primitives and
 must not call guarded evidence helpers. Publication must never expose a
 zero-length or partially written canonical lock. The staging file and hard link
 must be on the same filesystem. Unsupported hard-link or durability behavior is
-an acquisition failure, not a fallback to non-atomic `open` plus `write`.
+an acquisition failure, not a fallback to non-atomic `open` plus `write`, except
+that shared capability classification treats only Windows `EPERM`, `EINVAL`,
+and `ENOTSUP` from syncing an already-open directory handle as unsupported.
+`syncDirectory` and `syncDirectorySync` take one
+`EvidenceDirectorySyncPolicy`; suppression is exactly
+`policy === 'allow-unsupported'`, and the same policy value is forwarded to the
+injected callback. The synchronous publication and asynchronous release call
+sites pass `allow-unsupported`; recovery synchronization passes `strict`. The
+helper never suppresses staging-file synchronization, directory open or close,
+hard-link, metadata verification, unlink, non-Windows, or other filesystem-code
+failures. The injected `platform`
+governs directory-sync capability only; owner metadata and recovery support
+continue to use the existing `processFingerprint` dependency.
 Release never removes absent, unreadable, mismatched, malformed, or replaced
 metadata. A release failure after successful work is primary; after failed work
 it is attached as structured secondary context without replacing the operation
@@ -215,7 +238,13 @@ Responsibilities: Add `evidence unlock --recover`, JSON and human renderers for
 lock owner/recovery results, and command help. Add deterministic process tests
 using a barrier-controlled helper process, plus unit tests with injected
 identity/liveness, release metadata-read/device-inode, and acquisition-fault
-probes. Cover exhaustive CLI leaf/mode classification, one-winner contention,
+probes, including unsupported-platform fingerprint refusal. Platform
+classification and synchronous/asynchronous evidence-directory synchronization
+are also injectable. Cover Windows publication and release
+directory-sync `EPERM`, `EINVAL`, and `ENOTSUP` as successful unsupported-
+capability outcomes; cover every other platform/code and every file-sync,
+open/close, link, metadata, and unlink failure as fail-closed. Cover exhaustive
+CLI leaf/mode classification, one-winner contention,
 zero loser side effects, `status` coordinated-reader rejection, `graph gate`
 ownership before codegraph replacement, same-token reentrancy
 and concurrent siblings, context loss, handled-failure release, independent
@@ -225,7 +254,18 @@ zero-reference release, release mismatch after successful and failed work,
 final transaction-ID/device-inode rechecks, incoming-root contention, and
 lock/journal precedence. Also cover exempt protected-output rejection and
 foreign-lock behavior for `requirements validate`, `workflow-sanitize` to an
-unprotected output, and `evidence unlock --recover`.
+unprotected output, and `evidence unlock --recover`, with
+`EVIDENCE_WRITER_LOCKED` on recovery-capable platforms and
+`EVIDENCE_WRITER_LOCK_RECOVERY_UNSAFE` on macOS and Windows before liveness
+classification. The injected unsupported-platform test is the deterministic
+proof; TEST-EVIDENCE-WRITER-LOCK-017 retains a platform-conditional real-CLI
+assertion only as platform confirmation.
+Add a deterministic policy-observation test proving publication and release
+pass `allow-unsupported`, recovery passes `strict`, and a hypothetical Windows
+`EPERM` at the recovery synchronization site remains fail-closed as
+`EVIDENCE_WRITER_LOCK_RECOVERY_UNSAFE`; assert the stable code rather than the
+pre-existing post-unlink narrative, and do not imply that production Windows
+recovery can pass fingerprint validation.
 Update README.md, README-ja.md, and `.gitignore`; the ignore rules cover the
 canonical lock, transaction-qualified lock-publication temporaries, and merge
 transaction staging files.
@@ -235,11 +275,16 @@ and a structured underlying `cause` for acquisition failures; test-only
 dependencies are supplied through analysis APIs rather than environment-
 variable timing sleeps. Bare `evidence unlock` is rejected by Commander as a
 missing required recovery mode and performs no inspection or mutation.
+Add a documentation-coverage test annotated
+`@verifies REQ-EVIDENCE-WRITER-LOCK-001` that asserts the Windows durability and
+inspection-only recovery boundary in README.md, README-ja.md, and
+`evidence unlock --help`.
 Constraints: Tests synchronize with IPC or filesystem barriers and do not use
 elapsed-time races as correctness evidence. Human output never recommends
 force stealing. Documentation states the exact lock path, command
 classification, fail-fast behavior, filesystem atomicity assumption,
-external-command limitation,
+the Windows directory-entry durability boundary and inspection-only automatic
+recovery behavior, external-command limitation,
 exact unlock-then-merge recovery order, unsafe cross-host/malformed/PID-reuse
 handling, targeted manual remediation, and abandoned publication-staging-file
 semantics. It also states the Linux-only automatic

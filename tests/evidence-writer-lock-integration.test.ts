@@ -500,15 +500,42 @@ describe('evidence writer lock integration', () => {
         cli, 'evidence', 'unlock', '--recover', '--root', root, '--json',
       ], { cwd: root, timeoutMs: 10_000 });
       expect(recovery.exitCode).toBe(2);
-      expect(JSON.parse(recovery.stdout)).toMatchObject({
-        error: {
-          code: 'EVIDENCE_WRITER_LOCKED',
-          owner: { transactionId: lease.owner.transactionId },
-        },
-      });
+      const recoveryError = JSON.parse(recovery.stdout) as {
+        error: { code: string; owner?: { transactionId: string } };
+      };
+      expect(recoveryError.error.code).toBe(
+        process.platform === 'linux'
+          ? 'EVIDENCE_WRITER_LOCKED'
+          : 'EVIDENCE_WRITER_LOCK_RECOVERY_UNSAFE',
+      );
+      if (process.platform === 'linux') {
+        expect(recoveryError.error.owner).toMatchObject({
+          transactionId: lease.owner.transactionId,
+        });
+      }
     } finally {
       await lease.release();
     }
+  });
+
+  /** @id TEST-EVIDENCE-WRITER-LOCK-025
+   * @verifies REQ-EVIDENCE-WRITER-LOCK-001
+   */
+  it('TEST-EVIDENCE-WRITER-LOCK-025 documents the Windows durability boundary', async () => {
+    const [english, japanese, help] = await Promise.all([
+      readFile(resolve('README.md'), 'utf8'),
+      readFile(resolve('README-ja.md'), 'utf8'),
+      runProcess(process.execPath, [cli, 'evidence', 'unlock', '--help'], {
+        cwd: process.cwd(),
+        timeoutMs: 10_000,
+      }),
+    ]);
+    expect(english).toContain('Windows directory synchronization rejects EPERM, EINVAL, or ENOTSUP');
+    expect(english).toContain('automatic recovery remains inspection-only on Windows and macOS');
+    expect(japanese).toContain('Windows の directory synchronization が EPERM、EINVAL、ENOTSUP');
+    expect(japanese).toContain('Windows と macOS の自動復旧は inspection-only');
+    expect(help.stdout).toContain('Windows directory synchronization');
+    expect(help.stdout).toContain('inspection-only');
   });
 
   /** @id TEST-EVIDENCE-WRITER-LOCK-018

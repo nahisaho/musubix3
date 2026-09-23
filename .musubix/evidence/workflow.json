@@ -624,28 +624,36 @@
       "phase": "complete",
       "status": "completed",
       "recordedAt": "2026-09-23T01:53:35.150Z"
+    },
+    {
+      "skill": "sdd-change",
+      "version": "0.1.8",
+      "provenance": "self-reported",
+      "phase": "complete",
+      "status": "completed",
+      "recordedAt": "2026-09-23T04:37:40.787Z"
     }
   ],
   "verification": {
     "mode": "strict",
-    "sourceSha256": "c050caaa68e3432ab80b7deb0cfbbdd798943edcd0b6bdcc9374ddb3888ab854",
-    "transcriptSha256": "27cdaeac38fc7661e9b65bbf8f3259150bd129cc2a5b508ec1f9ba7a6b931a26",
-    "sessionId": "8459d774-4f43-4af6-9e42-c264fcf35063",
+    "sourceSha256": "f6b225c5f6a4b75422748c4be5757f4dee2f6f34341decc1dad7f5f72a98a9fc",
+    "transcriptSha256": "1b74b48edd11f6ceb63a180fee4570007608de6520b870a27642c694c37b1312",
+    "sessionId": "1de8f368-71c8-4d2d-b956-33d326dc4795",
     "exitCode": 0,
-    "terminalAt": "2026-09-23T01:54:13.549Z",
-    "eventCount": 4,
-    "sourceBytes": 547,
+    "terminalAt": "2026-09-23T04:38:04.015Z",
+    "eventCount": 3,
+    "sourceBytes": 443,
     "maxTranscriptBytes": 120000000,
     "maximumLineBytes": 178,
     "maxTranscriptLineBytes": 1000000,
-    "eventsSha256": "3741935464f8760bc2dd45b070b0973953a9a82ad6b7d19e81a44f77ae94122d",
-    "verifiedAt": "2026-09-23T01:54:17.655Z",
+    "eventsSha256": "3483d759cbbad0fcdf92ba890a1699885fa6fcfc1adf7b7b9afec23435b0e0be",
+    "verifiedAt": "2026-09-23T04:38:31.916Z",
     "invocations": [
       {
         "skill": "sdd-change",
-        "toolCallId": "call_5epGQO8fu7t0je3SOXoWICIM",
-        "invokedAt": "2026-09-23T01:53:44.574Z",
-        "completedAt": "2026-09-23T01:53:44.579Z",
+        "toolCallId": "call_ZQKfhT2MyyrN5oVQw9ztKCld",
+        "invokedAt": "2026-09-23T04:37:56.366Z",
+        "completedAt": "2026-09-23T04:37:56.378Z",
         "status": "completed"
       }
     ]

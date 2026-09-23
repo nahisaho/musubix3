@@ -390,6 +390,12 @@ fileへ書込み・flushした後、排他的hard linkで公開するため、ca
 空または部分的な状態で見えることはありません。このatomic publicationを
 提供できないfilesystemでは`EVIDENCE_WRITER_LOCK_ACQUIRE_FAILED`となり、
 非atomicなfallbackは行いません。
+staging fileの同期とatomic publicationまたは検証済みreleaseが成功した後、
+Windows の directory synchronization が EPERM、EINVAL、ENOTSUP
+のいずれかを返す場合に限り、そのdirectory entryのdurability操作を未対応
+capabilityとして扱います。file同期、publication、metadata、unlink、
+open/close、その他のerror、およびWindows以外のplatformはfail-closedの
+ままです。
 
 status、approval prepare/validate、trace/graph inspection、knowledge query、
 TDD validate、attestation payload/verify、merge dry-runなどのcoordinated
@@ -404,7 +410,8 @@ musubix3外からproject fileを直接変更するprogramはcoordination対象�
 自動復旧は現在Linux限定で、hostname、boot identity、PID namespaceが一致し、
 owner PIDが確実に存在しない場合だけ削除します。live、PID再利用、別host、
 不正・変更済みmetadata、未対応platform、判定不能なlockは正確なpathと確認手順を
-表示して保持し、force modeはありません。canonical lockと
+表示して保持し、force modeはありません。必要なidentity probeを提供できないため、
+Windows と macOS の自動復旧は inspection-only です。canonical lockと
 `.writer-lock.<transactionId>.json` staging fileはGitおよび生成入力から除外
 されます。関連processが存在しないことを確認した後に限り、残存staging fileを
 正確なpath指定で削除できます。

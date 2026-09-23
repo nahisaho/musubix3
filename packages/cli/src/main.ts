@@ -302,7 +302,11 @@ export function createProgram(): Command {
 Recovery never steals a live, remote, malformed, PID-reused, or indeterminate
 lock. Inspect the reported owner and exact lock path before any targeted manual
 removal. If a merge journal is also pending, recover this writer lock first,
-then run evidence merge --recover.`))
+then run evidence merge --recover.
+
+Windows directory synchronization may be unavailable after atomic publication
+or verified release. Automatic recovery remains inspection-only on Windows and
+macOS.`))
     .action(async (options: { root: string; json?: boolean; recover: boolean }) => {
       if (!options.recover) throw new Error('--recover is required.');
       const report = await recoverEvidenceWriterLock(resolve(options.root));

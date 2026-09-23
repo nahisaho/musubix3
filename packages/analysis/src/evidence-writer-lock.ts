@@ -182,11 +182,16 @@ export interface EvidenceWriterLockIdentity {
   ino: number;
 }
 
+export type EvidenceDirectorySyncPolicy = 'allow-unsupported' | 'strict';
+
 export interface EvidenceWriterLockDependencies {
   hostname?: () => string;
+  platform?: () => NodeJS.Platform;
   processFingerprint?: () => Promise<EvidenceWriterProcessFingerprint>;
   lockOwner?: (path: string) => Promise<EvidenceWriterLockOwner>;
   lockIdentity?: (path: string) => Promise<EvidenceWriterLockIdentity>;
+  syncEvidenceDirectory?: (path: string, policy: EvidenceDirectorySyncPolicy) => Promise<void>;
+  syncEvidenceDirectorySync?: (path: string, policy: EvidenceDirectorySyncPolicy) => void;
 }
 
 export interface EvidenceWriterRecoveryDependencies extends EvidenceWriterLockDependencies {
@@ -270,19 +275,45 @@ function evidenceDirectory(canonicalRoot: string): string {
   return resolve(canonicalRoot, '.musubix/evidence');
 }
 
-async function syncDirectory(path: string): Promise<void> {
+const WINDOWS_UNSUPPORTED_DIRECTORY_SYNC_ERRORS = new Set(['EPERM', 'EINVAL', 'ENOTSUP']);
+
+function isUnsupportedDirectorySync(cause: unknown, platform: NodeJS.Platform): boolean {
+  return platform === 'win32' && WINDOWS_UNSUPPORTED_DIRECTORY_SYNC_ERRORS.has(errno(cause) ?? '');
+}
+
+async function syncDirectory(
+  path: string,
+  platform: NodeJS.Platform,
+  policy: EvidenceDirectorySyncPolicy,
+  synchronize?: (path: string, policy: EvidenceDirectorySyncPolicy) => Promise<void>,
+): Promise<void> {
   const handle = await open(path, 'r');
   try {
-    await handle.sync();
+    try {
+      if (synchronize) await synchronize(path, policy);
+      else await handle.sync();
+    } catch (cause) {
+      if (policy !== 'allow-unsupported' || !isUnsupportedDirectorySync(cause, platform)) throw cause;
+    }
   } finally {
     await handle.close();
   }
 }
 
-function syncDirectorySync(path: string): void {
+function syncDirectorySync(
+  path: string,
+  platform: NodeJS.Platform,
+  policy: EvidenceDirectorySyncPolicy,
+  synchronize?: (path: string, policy: EvidenceDirectorySyncPolicy) => void,
+): void {
   const descriptor = openSync(path, 'r');
   try {
-    fsyncSync(descriptor);
+    try {
+      if (synchronize) synchronize(path, policy);
+      else fsyncSync(descriptor);
+    } catch (cause) {
+      if (policy !== 'allow-unsupported' || !isUnsupportedDirectorySync(cause, platform)) throw cause;
+    }
   } finally {
     closeSync(descriptor);
   }
@@ -633,7 +664,12 @@ export async function acquireEvidenceWriterLock(
       }
       throw cause;
     }
-    syncDirectorySync(directory);
+    syncDirectorySync(
+      directory,
+      (dependencies.platform ?? (() => process.platform))(),
+      'allow-unsupported',
+      dependencies.syncEvidenceDirectorySync,
+    );
     publishedIdentity = await (dependencies.lockIdentity ?? defaultLockIdentity)(canonicalLockPath);
   } catch (cause) {
     if (published) {
@@ -704,7 +740,12 @@ export async function acquireEvidenceWriterLock(
           );
         }
         await unlink(canonicalLockPath);
-        await syncDirectory(directory);
+        await syncDirectory(
+          directory,
+          (dependencies.platform ?? (() => process.platform))(),
+          'allow-unsupported',
+          dependencies.syncEvidenceDirectory,
+        );
         released = true;
       } catch (cause) {
         if (cause instanceof EvidenceWriterLockError) throw cause;
@@ -1012,7 +1053,12 @@ export async function recoverEvidenceWriterLock(
 
   try {
     await unlink(path);
-    await syncDirectory(evidenceDirectory(canonicalRoot));
+    await syncDirectory(
+      evidenceDirectory(canonicalRoot),
+      (dependencies.platform ?? (() => process.platform))(),
+      'strict',
+      dependencies.syncEvidenceDirectory,
+    );
   } catch (cause) {
     throw recoveryUnsafe(path, owner, 'the verified lock could not be removed.', cause);
   }

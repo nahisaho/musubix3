@@ -439,6 +439,12 @@ Complete owner metadata is staged, flushed, and published with a same-directory
 exclusive hard link, so the canonical lock is never visible as empty or partial.
 Filesystems that cannot provide this atomic publication fail with
 `EVIDENCE_WRITER_LOCK_ACQUIRE_FAILED`; there is no non-atomic fallback.
+When Windows directory synchronization rejects EPERM, EINVAL, or ENOTSUP after
+successful staging-file synchronization and atomic publication or verified
+release, musubix3 treats only that directory-entry durability operation as an
+unsupported capability. File synchronization, publication, metadata, unlink,
+open/close, every other error, and every non-Windows platform remain
+fail-closed.
 
 Coordinated readers such as status, approval preparation/validation, trace and
 graph inspection, knowledge queries, TDD validation, attestation payload/verify,
@@ -455,6 +461,7 @@ recovery is currently Linux-only and requires matching hostname, boot identity,
 PID namespace, and a demonstrably absent owner PID. Live, PID-reused,
 cross-host, malformed, changed, unsupported, or indeterminate locks are left
 untouched with the exact path and inspection guidance. There is no force mode.
+Because the required identity probes are unavailable, automatic recovery remains inspection-only on Windows and macOS.
 The canonical lock and `.writer-lock.<transactionId>.json` staging files are
 ignored and excluded from generated inputs. After confirming no related process
 is active, an abandoned staging file may be removed by its exact path.

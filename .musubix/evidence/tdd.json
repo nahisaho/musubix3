@@ -14492,6 +14492,92 @@
         "diagnostics": [],
         "order": 1206
       }
+    },
+    {
+      "cycleId": "921e1a8a-94a7-46ea-b1d0-767306fa8d75",
+      "requirementId": "REQ-EVIDENCE-WRITER-LOCK-001",
+      "testId": "TEST-EVIDENCE-WRITER-LOCK-024",
+      "testPath": "tests/evidence-writer-lock.test.ts",
+      "commandName": "evidence-writer-lock-tests",
+      "red": {
+        "phase": "red",
+        "valid": true,
+        "scoped": true,
+        "resultObserved": true,
+        "testStatus": "failed",
+        "reportSha256": "126fe2cf5a484f27c2c31ee9f64248b024227b207f1f03465d0507d0110b6a6d",
+        "commandSha256": "7a4f5e044f3ec2b25dcadd26032256203e4248faf06cdd8a8a7560ea78fe75d8",
+        "outputSha256": "b61a3b2096e7ea77cf7adb50dc7044652deafd117cde90227eaa8a2771f3d53a",
+        "exitCode": 1,
+        "durationMs": 1585,
+        "testFingerprint": "4919fe604d1c1ee192c72e3defa2feae92590702b0928ecf05cf031474929a82",
+        "sourceFingerprint": "bc1068e9447e5644edb985c13b44bde5ffe3e462bbf60f00550a9d8fb7221f9f",
+        "executionId": "cb6801e4-4362-484e-ad67-12a637bdd851",
+        "recordedAt": "2026-09-23T03:07:05.915Z",
+        "diagnostics": [],
+        "order": 1212
+      },
+      "green": {
+        "phase": "green",
+        "valid": true,
+        "scoped": true,
+        "resultObserved": true,
+        "testStatus": "passed",
+        "reportSha256": "d394e48980d2900fe14687c546402deb595dee667dc44c4f82392efaf44edf8c",
+        "commandSha256": "7a4f5e044f3ec2b25dcadd26032256203e4248faf06cdd8a8a7560ea78fe75d8",
+        "outputSha256": "b61a3b2096e7ea77cf7adb50dc7044652deafd117cde90227eaa8a2771f3d53a",
+        "exitCode": 0,
+        "durationMs": 1452,
+        "testFingerprint": "4919fe604d1c1ee192c72e3defa2feae92590702b0928ecf05cf031474929a82",
+        "sourceFingerprint": "e7d31c1c49f55ed877abdf9214634ea3e4d5200b3ec4f8ae8a2851fda911ea57",
+        "executionId": "a2b53828-5a70-4e39-8fb5-90759f1b262c",
+        "recordedAt": "2026-09-23T03:08:38.214Z",
+        "diagnostics": [],
+        "order": 1215
+      }
+    },
+    {
+      "cycleId": "9d6babc3-077c-4979-b4ad-892c38778425",
+      "requirementId": "REQ-EVIDENCE-WRITER-LOCK-001",
+      "testId": "TEST-EVIDENCE-WRITER-LOCK-026",
+      "testPath": "tests/evidence-writer-lock.test.ts",
+      "commandName": "evidence-writer-lock-tests",
+      "red": {
+        "phase": "red",
+        "valid": true,
+        "scoped": true,
+        "resultObserved": true,
+        "testStatus": "failed",
+        "reportSha256": "231b2cd0f6790801a37352beda6a67cb25d228fe396e1e8079a010c38af3b9c7",
+        "commandSha256": "466436af4d8566762f0447ac5f85287a60091ebb35517fe619275cdc4ac7edc0",
+        "outputSha256": "3da1fd58e2c803daab3335f6aea74a1566ab949698a375e0cdc90aa1dec13098",
+        "exitCode": 1,
+        "durationMs": 1481,
+        "testFingerprint": "ea7380f080dbcb48e4db0bd9be8373b9e34663972b6614b8c7050f72aa77794d",
+        "sourceFingerprint": "9fc6799e5b4b5184503b8e0788a7c2ff73f8f31e0cd8b9fd42539a0f182a1bf2",
+        "executionId": "7469ffa2-4aab-4c09-907b-a70291c4a19b",
+        "recordedAt": "2026-09-23T03:57:20.189Z",
+        "diagnostics": [],
+        "order": 1221
+      },
+      "green": {
+        "phase": "green",
+        "valid": true,
+        "scoped": true,
+        "resultObserved": true,
+        "testStatus": "passed",
+        "reportSha256": "2f23db3c70978eaa83fedf4e3bea4fef5684f1e886d07f5f866de24365cddc38",
+        "commandSha256": "466436af4d8566762f0447ac5f85287a60091ebb35517fe619275cdc4ac7edc0",
+        "outputSha256": "3da1fd58e2c803daab3335f6aea74a1566ab949698a375e0cdc90aa1dec13098",
+        "exitCode": 0,
+        "durationMs": 1700,
+        "testFingerprint": "ea7380f080dbcb48e4db0bd9be8373b9e34663972b6614b8c7050f72aa77794d",
+        "sourceFingerprint": "c79d919e0a806576bff0ee11f92dacc89417ae0fe790b5f606c4b677570a0be6",
+        "executionId": "fea039f6-3983-47fc-84c7-86f0813ea98f",
+        "recordedAt": "2026-09-23T03:57:55.677Z",
+        "diagnostics": [],
+        "order": 1224
+      }
     }
   ],
   "chain": [
@@ -22606,6 +22692,54 @@
       "phaseEvidenceSha256": "d82fdd13148f86a7250634874b5e6aae3c4946c96c35f884b3a34ff9b9776e7e",
       "previousSha256": "3fb2e39138be4ede76d53204e9bf0e6cf130c3ec84587f750244a60b49012de0",
       "recordSha256": "c03b5fe239216365b46cd1c1e0e5c5e081d96b90fd1dcacb0538dca2414d07c8"
+    },
+    {
+      "sequence": 677,
+      "cycleId": "921e1a8a-94a7-46ea-b1d0-767306fa8d75",
+      "requirementId": "REQ-EVIDENCE-WRITER-LOCK-001",
+      "testId": "TEST-EVIDENCE-WRITER-LOCK-024",
+      "testPath": "tests/evidence-writer-lock.test.ts",
+      "commandName": "evidence-writer-lock-tests",
+      "phase": "red",
+      "phaseEvidenceSha256": "fbab880da51e627924a34726f17d001a14d4d5f87e92e9626df91077d37c570a",
+      "previousSha256": "c03b5fe239216365b46cd1c1e0e5c5e081d96b90fd1dcacb0538dca2414d07c8",
+      "recordSha256": "590f65d52a75f0c5e49d74d26fe9310aa0604b9a8c4109aab74be04151c7c0c7"
+    },
+    {
+      "sequence": 678,
+      "cycleId": "921e1a8a-94a7-46ea-b1d0-767306fa8d75",
+      "requirementId": "REQ-EVIDENCE-WRITER-LOCK-001",
+      "testId": "TEST-EVIDENCE-WRITER-LOCK-024",
+      "testPath": "tests/evidence-writer-lock.test.ts",
+      "commandName": "evidence-writer-lock-tests",
+      "phase": "green",
+      "phaseEvidenceSha256": "74ed2c3e2a971aece2c0cd0557ea484fa013c5b7381311c27cd9cc26ce5ad01f",
+      "previousSha256": "590f65d52a75f0c5e49d74d26fe9310aa0604b9a8c4109aab74be04151c7c0c7",
+      "recordSha256": "035820c76b300b660719c92842a9ca8e56b5cc95612e3b03e81af912936f719b"
+    },
+    {
+      "sequence": 679,
+      "cycleId": "9d6babc3-077c-4979-b4ad-892c38778425",
+      "requirementId": "REQ-EVIDENCE-WRITER-LOCK-001",
+      "testId": "TEST-EVIDENCE-WRITER-LOCK-026",
+      "testPath": "tests/evidence-writer-lock.test.ts",
+      "commandName": "evidence-writer-lock-tests",
+      "phase": "red",
+      "phaseEvidenceSha256": "8a9a0218e14b01677b965046bfaa7693186b59cd13f63af2b168ff77c3cf4c17",
+      "previousSha256": "035820c76b300b660719c92842a9ca8e56b5cc95612e3b03e81af912936f719b",
+      "recordSha256": "901a3403ae7c87e50330b1877779553fa7c74c0c35f4c86a5b92a63ce988a6d1"
+    },
+    {
+      "sequence": 680,
+      "cycleId": "9d6babc3-077c-4979-b4ad-892c38778425",
+      "requirementId": "REQ-EVIDENCE-WRITER-LOCK-001",
+      "testId": "TEST-EVIDENCE-WRITER-LOCK-026",
+      "testPath": "tests/evidence-writer-lock.test.ts",
+      "commandName": "evidence-writer-lock-tests",
+      "phase": "green",
+      "phaseEvidenceSha256": "d75480f05e74a99d069a83ad44c0b6b1967015a583dd7afcc9f46fe6c8ef51e4",
+      "previousSha256": "901a3403ae7c87e50330b1877779553fa7c74c0c35f4c86a5b92a63ce988a6d1",
+      "recordSha256": "cfbfd4a17f922d60cc4a71d17c419762256a446c0dc60f9b960738eab6bbec1c"
     }
   ]
 }
