@@ -25,6 +25,14 @@ try {
   assert.equal(JSON.parse(run(['init', '--dry-run', '--json'])).dryRun, true);
   assert(!existsSync(resolve(consumer, '.musubix')));
   run(['init', '--json']);
+  /** @id CODE-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-004
+   * @implements REQ-EVIDENCE-WRITER-LOCK-006
+   * @design DES-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-003
+   */
+  for (const skill of ['sdd-change', 'sdd-implementation', 'sdd-quality']) {
+    const path = `.github/skills/${skill}/SKILL.md`;
+    assert.equal(readFileSync(resolve(consumer, path), 'utf8'), readFileSync(resolve(root, path), 'utf8'));
+  }
   assert(existsSync(resolve(consumer, '.github/skills/sdd-formal-codegraph/SKILL.md')));
   assert.equal(JSON.parse(run(['status', '--json'])).initialized, true);
   execFileSync(process.execPath, ['--input-type=module', '-e', "const {validateRequirements}=await import('musubix3/domain'); if (!validateRequirements('## REQ-SMOKE-001: Smoke\\nStatement: The system shall respond.').valid) process.exit(1);"], { cwd: consumer, stdio: 'pipe' });

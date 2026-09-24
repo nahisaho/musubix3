@@ -444,7 +444,8 @@
         "vitest",
         "run",
         "tests/evidence-writer-lock.test.ts",
-        "tests/evidence-writer-lock-integration.test.ts"
+        "tests/evidence-writer-lock-integration.test.ts",
+        "tests/evidence-writer-lock-skill-guidance.test.ts"
       ],
       "adapter": "vitest",
       "required": true,

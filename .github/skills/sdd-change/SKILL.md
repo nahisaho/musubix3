@@ -7,14 +7,18 @@ description: "Use as the MANDATORY first Skill for requests to develop, build, c
  * @implements REQ-SESSION-SCOPED-DEVELOPMENT-001 REQ-SESSION-SCOPED-DEVELOPMENT-002
  * @design DES-SESSION-SCOPED-DEVELOPMENT-001
  */
-Mandatory entrypoint: every new natural-language development request is a new change, even in an existing Copilot session; never reuse prior requirements, approvals, TDD, or change evidence unless the user explicitly names the existing change ID and asks to continue it. never start implementation before validating requirements/design; skip only for verified approved artifacts of that explicitly continued change.
-Never infer approval; show `approval prepare <stage>` and record only its reviewed hash with `approval record <stage> --approver <name> --artifact-sha256 <hash> --confirm`.
+/* @id CODE-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-001
+ * @implements REQ-EVIDENCE-WRITER-LOCK-006
+ * @design DES-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-001
+ */
+Mandatory entrypoint: every new natural-language development request is a new change, even in an existing Copilot session; never reuse prior requirements, approvals, TDD, or change evidence unless the user explicitly names the existing change ID and asks to continue it. never start implementation before validating requirements/design; skip only for verified approved artifacts of that explicitly continued change. Never infer approval; show `approval prepare <stage>` and record only its reviewed hash with `approval record <stage> --approver <name> --artifact-sha256 <hash> --confirm`.
 Whenever an AI deliverable is documentation (requirements, design, ADRs, the CHANGE document, or release/quality evidence), run Copilot's native `rubber-duck` review agent on it before that phase's human approval, fixing every issue and re-reviewing until none remain.
 Follow the user's input language. Use native Copilot planning, editing, research, review, security review and subagents.
 Record exactly one final invocation outcome with `npx musubix3 workflow-record sdd-change complete --status <status>`; `change-record` separately proves phases.
-Run `workflow-sanitize <copilot.jsonl> <safe.jsonl>` before review, then
-`workflow-verify <safe.jsonl>`; it validates source-order lifecycles without
-assuming globally monotonic clocks unless `maxEventSkewMs` is explicitly set.
+If `EVIDENCE_WRITER_LOCKED` blocks a command, stop the blocked command and inspect its reported owner metadata and exact canonical `.musubix/evidence/.writer-lock.json` path. On Linux, only after confirming the recorded owner is no longer active, run `npx musubix3 evidence unlock --recover`.
+Never blindly delete the lock, force-steal it, poll, or start automatic retry loops. If recovery returns `EVIDENCE_WRITER_LOCK_RECOVERY_UNSAFE`, including on Linux, or required probes are unavailable on macOS/Windows, stop automation: operator review must confirm no related process is active before targeted manual removal of only the exact reported path.
+Retry only after the active owner releases the lock, recovery succeeds, or the reviewed manual procedure completes.
+Run `workflow-sanitize <copilot.jsonl> <safe.jsonl>` before review, then `workflow-verify <safe.jsonl>`; it validates source-order lifecycles without assuming globally monotonic clocks unless `maxEventSkewMs` is explicitly set.
 Baseline-protect transcript byte limits; never truncate/edit to bypass them.
 For strict evidence, bind an expected UUID; GitHub origin needs strict OIDC.
 Never record multiple declarations per invocation; use only the configured CLI.
@@ -23,13 +27,11 @@ For a staged change, run `change-record <CHANGE-ID> <phase> --requirement <REQ-I
 `impact`/`requirements`/`design`/`quality` always use the full requirement ID set; `red`/`implementation`/`green` may instead use a non-empty subset as an independent per-requirement batch for an interleaved Red-Implementation-Green loop; `quality` still needs full cumulative Green coverage.
 After Quality, record a new corrective subset Red/Implementation/Green batch and invoke full-set `quality` again; schema v2 retains prior checkpoints in `qualityHistory`, and `change quality-recover` recovers interruptions.
 Refresh errors are `CHANGE_QUALITY_REFRESH_LINEAGE_INVALID`, `CHANGE_QUALITY_REFRESH_GREEN_MISSING`, `CHANGE_QUALITY_REFRESH_NOT_NEEDED`, and `CHANGE_QUALITY_REFRESH_RECOVERY_REQUIRED`; an already-used corrective subset requires a new reviewed staged change.
-List only requirements whose statement/acceptance changes, classify each, and
-document other impacts separately. Each needs fresh Red and Green.
+List only requirements whose statement/acceptance changes, classify each, and document other impacts separately. Each needs fresh Red and Green.
 The CHANGE document must contain `Requirements:` with exactly those normative IDs.
 Persisted monotonic order, not wall-clock time, proves these phase boundaries.
 ## 1. Classify and inspect / 分類と事前確認
-1. Classify the request as a feature, behavior change, defect correction,
-   refactoring, or documentation-only change. For a new program/feature, create
+1. Classify the request as a feature, behavior change, defect correction, refactoring, or documentation-only change. For a new program/feature, create
    a fresh feature slug and CHANGE artifact; prior session context is not approval.
 2. Read the constitution and relevant requirements, designs, ADRs, code and tests, but treat prior-session artifacts as historical context unless continuation is explicit.
 3. Run `trace impact`; when code exists run `graph index` and `graph impact`.

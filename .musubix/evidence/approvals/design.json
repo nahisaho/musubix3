@@ -70,6 +70,8 @@
     ".musubix/features/ears-id-diagnostic-messages/requirements.md": "49afd4e574f1179a31707323fbbcfffabf1051f666ad1fcba60b39b2e7da3808",
     ".musubix/features/evidence-history-merge/design.md": "123823f034c53b76326f17e619a34a849c5672e179d77761550a21513f5d04ec",
     ".musubix/features/evidence-history-merge/requirements.md": "7fa32ee9bc9dd11e25bcdaff1959ab4d17156f9965c5904f4a0cf2283d5cd988",
+    ".musubix/features/evidence-writer-lock-skill-guidance/design.md": "8999bbe16cf32b807b09d2b402a8fc43fe633832a4df943e38e4ae50b91262e0",
+    ".musubix/features/evidence-writer-lock-skill-guidance/requirements.md": "8372387ec47f8d9e4877815fe47d4a5c2b71411166fc249a4fac8131bde7732b",
     ".musubix/features/evidence-writer-lock/design.md": "1889cea7999a543de177518ebb7f31bbdc1c5fd298eed93f235b95f0809d956f",
     ".musubix/features/evidence-writer-lock/requirements.md": "4bc22eb3ad47ba2c41747ce5e9e992f85ef34a79e0397d5bfcd7c8739cd13a70",
     ".musubix/features/gate-command-timeout-margin/design.md": "a8ea53c4ba2c30c2ade92bbbbbff6f75a13d5e8bae215a9e1e7966cf4e2a1b91",
@@ -117,7 +119,7 @@
     ".musubix/features/workflow-waiver-bulk-recording/design.md": "c956f35169212cedc0fc66a11902200c7dda10230fc326075644d908f29580ae",
     ".musubix/features/workflow-waiver-bulk-recording/requirements.md": "361cfba519d4ab189a2091cf7b99133b9c005f69fb28aa2d77bba17bd7ee7b33"
   },
-  "artifactSha256": "69881de74b0bf8bab7e3b7ff7a4580ede7a63eac960bd63be6e86519e0e1766d",
+  "artifactSha256": "fd38d679048652d74d58c51d964bab6fcbb281ea21d0a49110048c9180b20a5a",
   "approver": "nahisaho",
-  "approvedAt": "2026-09-24T05:12:26.555Z"
+  "approvedAt": "2026-09-24T08:59:12.897Z"
 }

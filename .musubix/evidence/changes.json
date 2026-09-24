@@ -35712,6 +35712,159 @@
           "order": 1464
         }
       }
+    },
+    {
+      "changeId": "CHANGE-0038",
+      "requirementIds": [
+        "REQ-EVIDENCE-WRITER-LOCK-006"
+      ],
+      "phases": {
+        "impact": {
+          "phase": "impact",
+          "recordedAt": "2026-09-24T07:31:00.347Z",
+          "fingerprints": {
+            "impact": "eab8e57b51d880a42ff31393dd6f159de323f918b0f960ea6b68663bfe4680b9",
+            "requirements": "264301e8891177ca5ea3973d97b3c915a09aa923786d9d8740c554ea9a5c699d",
+            "design": "82ac42bb2b03a7185b655a158d5a36353925456c31480f3058a90d792f7b1ed3",
+            "implementation": "275da6c98102f2f0f895b7184e5ba8213f86da255f465e556a513e5f85585cec",
+            "tests": "03ba0ab1a1501e5c9b9b3d34c05814aae5b8b0e285d0906fa757a407173832a5",
+            "tdd": "e50b3221a5384d92cf441945587e5fc1d4dbf86cd33bbb4f720760e292332e96",
+            "requirementImplementations": {
+              "REQ-EVIDENCE-WRITER-LOCK-006": {
+                "paths": [],
+                "fingerprints": {}
+              }
+            }
+          },
+          "order": 1465
+        },
+        "requirements": {
+          "phase": "requirements",
+          "recordedAt": "2026-09-24T07:33:17.660Z",
+          "fingerprints": {
+            "impact": "13fff85475de7e7e526148b17ab56bbd87a63ad408b71305d600f64ff4dbb1c7",
+            "requirements": "c669e674d7a7e6bc0efe2fadc41a61fa38c9a66813b50375ac9726ebf31ecf50",
+            "design": "82ac42bb2b03a7185b655a158d5a36353925456c31480f3058a90d792f7b1ed3",
+            "implementation": "275da6c98102f2f0f895b7184e5ba8213f86da255f465e556a513e5f85585cec",
+            "tests": "03ba0ab1a1501e5c9b9b3d34c05814aae5b8b0e285d0906fa757a407173832a5",
+            "tdd": "e50b3221a5384d92cf441945587e5fc1d4dbf86cd33bbb4f720760e292332e96",
+            "requirementImplementations": {
+              "REQ-EVIDENCE-WRITER-LOCK-006": {
+                "paths": [],
+                "fingerprints": {}
+              }
+            }
+          },
+          "order": 1466
+        },
+        "design": {
+          "phase": "design",
+          "recordedAt": "2026-09-24T08:11:27.389Z",
+          "fingerprints": {
+            "impact": "062d01cf1745384566acc5fd8afccb102659fec526619bccfed23020914a9548",
+            "requirements": "c669e674d7a7e6bc0efe2fadc41a61fa38c9a66813b50375ac9726ebf31ecf50",
+            "design": "66d516203783aabc91f624a0f39bddb67c03c99754662e509a2f582335920ce5",
+            "implementation": "275da6c98102f2f0f895b7184e5ba8213f86da255f465e556a513e5f85585cec",
+            "tests": "03ba0ab1a1501e5c9b9b3d34c05814aae5b8b0e285d0906fa757a407173832a5",
+            "tdd": "e50b3221a5384d92cf441945587e5fc1d4dbf86cd33bbb4f720760e292332e96",
+            "requirementImplementations": {
+              "REQ-EVIDENCE-WRITER-LOCK-006": {
+                "paths": [],
+                "fingerprints": {}
+              }
+            }
+          },
+          "order": 1467
+        },
+        "red": {
+          "phase": "red",
+          "recordedAt": "2026-09-24T08:18:35.065Z",
+          "fingerprints": {
+            "impact": "062d01cf1745384566acc5fd8afccb102659fec526619bccfed23020914a9548",
+            "requirements": "c669e674d7a7e6bc0efe2fadc41a61fa38c9a66813b50375ac9726ebf31ecf50",
+            "design": "66d516203783aabc91f624a0f39bddb67c03c99754662e509a2f582335920ce5",
+            "implementation": "275da6c98102f2f0f895b7184e5ba8213f86da255f465e556a513e5f85585cec",
+            "tests": "cb8393cc1de2f3a40e756cc6ec04b3f9427e699912ac37656696778c38d53cc5",
+            "tdd": "b497c3dc8072fd70eb4a87105088f47699fe950aec5835db7634abfe689194c0",
+            "requirementImplementations": {
+              "REQ-EVIDENCE-WRITER-LOCK-006": {
+                "paths": [],
+                "fingerprints": {}
+              }
+            }
+          },
+          "order": 1472
+        },
+        "implementation": {
+          "phase": "implementation",
+          "recordedAt": "2026-09-24T08:19:02.874Z",
+          "fingerprints": {
+            "impact": "062d01cf1745384566acc5fd8afccb102659fec526619bccfed23020914a9548",
+            "requirements": "c669e674d7a7e6bc0efe2fadc41a61fa38c9a66813b50375ac9726ebf31ecf50",
+            "design": "66d516203783aabc91f624a0f39bddb67c03c99754662e509a2f582335920ce5",
+            "implementation": "65a8880b473eeaee5f24de576bd796219633c8c76a72cc46880062a6c0dced69",
+            "tests": "cb8393cc1de2f3a40e756cc6ec04b3f9427e699912ac37656696778c38d53cc5",
+            "tdd": "b497c3dc8072fd70eb4a87105088f47699fe950aec5835db7634abfe689194c0",
+            "requirementImplementations": {
+              "REQ-EVIDENCE-WRITER-LOCK-006": {
+                "paths": [
+                  "scripts/smoke-package.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/smoke-package.mjs": "5b3e1e0e9fc6efe7e549976d16b084880fc75f86d787b6133f1f4e07d43e95e9"
+                }
+              }
+            }
+          },
+          "order": 1473
+        },
+        "green": {
+          "phase": "green",
+          "recordedAt": "2026-09-24T08:19:19.026Z",
+          "fingerprints": {
+            "impact": "062d01cf1745384566acc5fd8afccb102659fec526619bccfed23020914a9548",
+            "requirements": "c669e674d7a7e6bc0efe2fadc41a61fa38c9a66813b50375ac9726ebf31ecf50",
+            "design": "66d516203783aabc91f624a0f39bddb67c03c99754662e509a2f582335920ce5",
+            "implementation": "65a8880b473eeaee5f24de576bd796219633c8c76a72cc46880062a6c0dced69",
+            "tests": "cb8393cc1de2f3a40e756cc6ec04b3f9427e699912ac37656696778c38d53cc5",
+            "tdd": "7a7886fb9773d0a9818b6656990c2627b821b759401aebf47ba622e26f2672c1",
+            "requirementImplementations": {
+              "REQ-EVIDENCE-WRITER-LOCK-006": {
+                "paths": [
+                  "scripts/smoke-package.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/smoke-package.mjs": "5b3e1e0e9fc6efe7e549976d16b084880fc75f86d787b6133f1f4e07d43e95e9"
+                }
+              }
+            }
+          },
+          "order": 1475
+        },
+        "quality": {
+          "phase": "quality",
+          "recordedAt": "2026-09-24T08:59:35.953Z",
+          "fingerprints": {
+            "impact": "a2058fa1e2d0aa10d4291aee5a61ec7538bdf3d60e2765db7c96cb079cdaa277",
+            "requirements": "c669e674d7a7e6bc0efe2fadc41a61fa38c9a66813b50375ac9726ebf31ecf50",
+            "design": "4317a0d2e550afd6d1a75080b062f19ea9f703d74953c4880c545eaafaa47c1c",
+            "implementation": "65a8880b473eeaee5f24de576bd796219633c8c76a72cc46880062a6c0dced69",
+            "tests": "cb8393cc1de2f3a40e756cc6ec04b3f9427e699912ac37656696778c38d53cc5",
+            "tdd": "7a7886fb9773d0a9818b6656990c2627b821b759401aebf47ba622e26f2672c1",
+            "requirementImplementations": {
+              "REQ-EVIDENCE-WRITER-LOCK-006": {
+                "paths": [
+                  "scripts/smoke-package.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/smoke-package.mjs": "5b3e1e0e9fc6efe7e549976d16b084880fc75f86d787b6133f1f4e07d43e95e9"
+                }
+              }
+            }
+          },
+          "order": 1476
+        }
+      }
     }
   ]
 }

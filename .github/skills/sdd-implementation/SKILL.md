@@ -4,13 +4,15 @@ description: "Use when implementing approved SDD requirements and designs with e
 ---
 # Implementation / 実装
 
-Follow the user's input language (日本語 / English). Use Copilot's native planning,
-editing and subagents for implementation; do not introduce code generators,
-generic test generators or a second orchestration/task system.
-Run only the repository's exact `musubix3` CLI. Never fall back to similarly
-named npm packages; report a blocker if the executable is unavailable.
-After the work, run `npx musubix3 workflow-record sdd-implementation complete
---status completed` exactly once.
+/* @id CODE-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-002
+ * @implements REQ-EVIDENCE-WRITER-LOCK-006
+ * @design DES-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-001
+ */
+Follow the user's input language (日本語 / English). Use Copilot's native planning, editing and subagents for implementation; do not introduce code generators, generic test generators or a second orchestration/task system.
+Run only the repository's exact `musubix3` CLI. Never fall back to similarly named npm packages; report a blocker if the executable is unavailable. After the work, run `npx musubix3 workflow-record sdd-implementation complete --status completed` exactly once.
+If `EVIDENCE_WRITER_LOCKED` blocks a command, stop the blocked command and inspect its reported owner metadata and exact canonical `.musubix/evidence/.writer-lock.json` path. On Linux, only after confirming the recorded owner is no longer active, run `npx musubix3 evidence unlock --recover`.
+Never blindly delete the lock, force-steal it, poll, or start automatic retry loops. If recovery returns `EVIDENCE_WRITER_LOCK_RECOVERY_UNSAFE`, including on Linux, or required probes are unavailable on macOS/Windows, stop automation: operator review must confirm no related process is active before targeted manual removal of only the exact reported path.
+Retry only after the active owner releases the lock, recovery succeeds, or the reviewed manual procedure completes.
 
 1. Before editing implementation code, verify that approved requirements and
    design artifacts exist, both validators pass, and `approval validate` reports

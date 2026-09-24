@@ -16097,6 +16097,123 @@
         "diagnostics": [],
         "order": 1462
       }
+    },
+    {
+      "cycleId": "566a8d5a-2cd2-433a-9802-86ba904dd123",
+      "requirementId": "REQ-EVIDENCE-WRITER-LOCK-006",
+      "testId": "TEST-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-001",
+      "testPath": "tests/evidence-writer-lock-skill-guidance.test.ts",
+      "commandName": "evidence-writer-lock-tests",
+      "red": {
+        "phase": "red",
+        "valid": false,
+        "scoped": true,
+        "resultObserved": false,
+        "reportSha256": "327d001c651bd15da7a612d34375e7eb04676db009b22cfd8e9b0f4d4b2c8045",
+        "commandSha256": "3160106980eaf7a53b0d15506df2a8949d491c8887c9abee554c32e276902489",
+        "outputSha256": "0ce07196ddd81a0804266d139c4f6efa3004085109cd1b8aa5224e46aa3a8fa8",
+        "exitCode": 1,
+        "durationMs": 2633,
+        "testFingerprint": "d367090cb17466933d3a58a98095b3693daf143b2a62cfaeacf2ec138aaf3080",
+        "sourceFingerprint": "ef9aac71e6269b273ca3a274b3705b1d86c0a0e67abbbfc2674e006f014227bd",
+        "executionId": "b9644364-53e1-498c-901a-e0a5433a51b6",
+        "recordedAt": "2026-09-24T08:15:46.611Z",
+        "diagnostics": [
+          {
+            "code": "TDD_REPORT_INVALID",
+            "severity": "error",
+            "message": "No annotated TEST-* identities were found in the vitest report.\nSuite failure: Cannot find module '../packages/analysis/src/fs.js' imported from /home/nahisaho/GitHub/musubix3/tests/evidence-writer-lock-skill-guidance.test.ts",
+            "path": ".musubix/evidence/native/evidence-writer-lock-tests/TEST-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-001.json"
+          }
+        ],
+        "order": 1468
+      }
+    },
+    {
+      "cycleId": "e647fc9b-b70b-4c3a-9e75-50a01a095fc4",
+      "requirementId": "REQ-EVIDENCE-WRITER-LOCK-006",
+      "testId": "TEST-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-001",
+      "testPath": "tests/evidence-writer-lock-skill-guidance.test.ts",
+      "commandName": "evidence-writer-lock-tests",
+      "red": {
+        "phase": "red",
+        "valid": true,
+        "scoped": true,
+        "resultObserved": true,
+        "testStatus": "failed",
+        "reportSha256": "cdac4c27439004c3f335e1ee9f34170f99d4aac7a35e514a00d85a61b05b0dba",
+        "commandSha256": "3160106980eaf7a53b0d15506df2a8949d491c8887c9abee554c32e276902489",
+        "outputSha256": "0ce07196ddd81a0804266d139c4f6efa3004085109cd1b8aa5224e46aa3a8fa8",
+        "exitCode": 1,
+        "durationMs": 1797,
+        "testFingerprint": "d367090cb17466933d3a58a98095b3693daf143b2a62cfaeacf2ec138aaf3080",
+        "sourceFingerprint": "ef9aac71e6269b273ca3a274b3705b1d86c0a0e67abbbfc2674e006f014227bd",
+        "executionId": "929387da-69a5-4a3e-a298-0a730f15bd84",
+        "recordedAt": "2026-09-24T08:16:07.833Z",
+        "diagnostics": [],
+        "order": 1469
+      },
+      "green": {
+        "phase": "green",
+        "valid": true,
+        "scoped": true,
+        "resultObserved": true,
+        "testStatus": "passed",
+        "reportSha256": "a64cda3a9d9f3b867bcf72206ce5a513ab84e264b7714ee59f7b071ef2c06da2",
+        "commandSha256": "3160106980eaf7a53b0d15506df2a8949d491c8887c9abee554c32e276902489",
+        "outputSha256": "0ce07196ddd81a0804266d139c4f6efa3004085109cd1b8aa5224e46aa3a8fa8",
+        "exitCode": 0,
+        "durationMs": 1855,
+        "testFingerprint": "d367090cb17466933d3a58a98095b3693daf143b2a62cfaeacf2ec138aaf3080",
+        "sourceFingerprint": "58549f8db5835749fbd365622cbf0ba97ce737fb5d594f70a4bc1f56c3b1a77e",
+        "executionId": "4892e389-a4be-410d-9a3e-4091da1ef864",
+        "recordedAt": "2026-09-24T08:17:00.225Z",
+        "diagnostics": [],
+        "order": 1470
+      }
+    },
+    {
+      "cycleId": "ed87acdd-fce9-4ac3-8823-2f9b165c0fb8",
+      "requirementId": "REQ-EVIDENCE-WRITER-LOCK-006",
+      "testId": "TEST-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-001",
+      "testPath": "tests/evidence-writer-lock-skill-guidance.test.ts",
+      "commandName": "evidence-writer-lock-tests",
+      "red": {
+        "phase": "red",
+        "valid": true,
+        "scoped": true,
+        "resultObserved": true,
+        "testStatus": "failed",
+        "reportSha256": "26bad0932ba0a6b75a7ccd56dc57ff10b7acea340987363ccc9f0f1779c83bcb",
+        "commandSha256": "3160106980eaf7a53b0d15506df2a8949d491c8887c9abee554c32e276902489",
+        "outputSha256": "0ce07196ddd81a0804266d139c4f6efa3004085109cd1b8aa5224e46aa3a8fa8",
+        "exitCode": 1,
+        "durationMs": 1730,
+        "testFingerprint": "d367090cb17466933d3a58a98095b3693daf143b2a62cfaeacf2ec138aaf3080",
+        "sourceFingerprint": "ef9aac71e6269b273ca3a274b3705b1d86c0a0e67abbbfc2674e006f014227bd",
+        "executionId": "f4311e15-484e-49ab-85fd-1ec58d1ab359",
+        "recordedAt": "2026-09-24T08:18:30.418Z",
+        "diagnostics": [],
+        "order": 1471
+      },
+      "green": {
+        "phase": "green",
+        "valid": true,
+        "scoped": true,
+        "resultObserved": true,
+        "testStatus": "passed",
+        "reportSha256": "cedb851fcfea1f59a8895400113ddbd077187d1bd6be037ea4437b313d3917cf",
+        "commandSha256": "3160106980eaf7a53b0d15506df2a8949d491c8887c9abee554c32e276902489",
+        "outputSha256": "0ce07196ddd81a0804266d139c4f6efa3004085109cd1b8aa5224e46aa3a8fa8",
+        "exitCode": 0,
+        "durationMs": 2655,
+        "testFingerprint": "d367090cb17466933d3a58a98095b3693daf143b2a62cfaeacf2ec138aaf3080",
+        "sourceFingerprint": "58549f8db5835749fbd365622cbf0ba97ce737fb5d594f70a4bc1f56c3b1a77e",
+        "executionId": "c7cedc84-59bf-4868-b84b-4bd05777a66a",
+        "recordedAt": "2026-09-24T08:19:14.426Z",
+        "diagnostics": [],
+        "order": 1474
+      }
     }
   ],
   "chain": [
@@ -25099,6 +25216,66 @@
       "phaseEvidenceSha256": "02708337ba8127f9b0e0f1795897c2de99c3062fcf703c9bee2c73823d0af666",
       "previousSha256": "0ffabce21fec9cdc192fa1f8eb202976b75f069bb8e4b45aa7d650c15c0559f1",
       "recordSha256": "b3e8273276b803c75abd99d4ae517a41c8880cceb2101e57dc2417592d538ccd"
+    },
+    {
+      "sequence": 751,
+      "cycleId": "566a8d5a-2cd2-433a-9802-86ba904dd123",
+      "requirementId": "REQ-EVIDENCE-WRITER-LOCK-006",
+      "testId": "TEST-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-001",
+      "testPath": "tests/evidence-writer-lock-skill-guidance.test.ts",
+      "commandName": "evidence-writer-lock-tests",
+      "phase": "red",
+      "phaseEvidenceSha256": "365f9abd9a8fc01cf6bd9a24cb486c36dcf99493cd47a212cd56d25aa1d03cfe",
+      "previousSha256": "b3e8273276b803c75abd99d4ae517a41c8880cceb2101e57dc2417592d538ccd",
+      "recordSha256": "27d4c351990d49930cdc0df2ae3709f231cd21c6d713ab22f86bc4bd62200df9"
+    },
+    {
+      "sequence": 752,
+      "cycleId": "e647fc9b-b70b-4c3a-9e75-50a01a095fc4",
+      "requirementId": "REQ-EVIDENCE-WRITER-LOCK-006",
+      "testId": "TEST-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-001",
+      "testPath": "tests/evidence-writer-lock-skill-guidance.test.ts",
+      "commandName": "evidence-writer-lock-tests",
+      "phase": "red",
+      "phaseEvidenceSha256": "50b5ff4ad7bf404624fbdf5a9ef41e8b262b96ef1518819f557034cc209245d6",
+      "previousSha256": "27d4c351990d49930cdc0df2ae3709f231cd21c6d713ab22f86bc4bd62200df9",
+      "recordSha256": "3df530a9a64ee2b1a6c356cd30a7817d2d05ae439eba43d9ed4a1ee91cb533a8"
+    },
+    {
+      "sequence": 753,
+      "cycleId": "e647fc9b-b70b-4c3a-9e75-50a01a095fc4",
+      "requirementId": "REQ-EVIDENCE-WRITER-LOCK-006",
+      "testId": "TEST-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-001",
+      "testPath": "tests/evidence-writer-lock-skill-guidance.test.ts",
+      "commandName": "evidence-writer-lock-tests",
+      "phase": "green",
+      "phaseEvidenceSha256": "c2c4fddd09cb91c60c55c4f17cacfcd9d57c367a1364a72131e98f91731f0c61",
+      "previousSha256": "3df530a9a64ee2b1a6c356cd30a7817d2d05ae439eba43d9ed4a1ee91cb533a8",
+      "recordSha256": "30904efd6c3bf7feb2bf674189b429db3ba43c179c46ac1ec750d8eb3b8950cd"
+    },
+    {
+      "sequence": 754,
+      "cycleId": "ed87acdd-fce9-4ac3-8823-2f9b165c0fb8",
+      "requirementId": "REQ-EVIDENCE-WRITER-LOCK-006",
+      "testId": "TEST-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-001",
+      "testPath": "tests/evidence-writer-lock-skill-guidance.test.ts",
+      "commandName": "evidence-writer-lock-tests",
+      "phase": "red",
+      "phaseEvidenceSha256": "dcbc9e13efa23d3b3dcb1b36ff9526b0245ffcab64dfd1d64b6d1b1ffa0ab8d9",
+      "previousSha256": "30904efd6c3bf7feb2bf674189b429db3ba43c179c46ac1ec750d8eb3b8950cd",
+      "recordSha256": "4bb5303507dee0caa6ab625c9320525e166b4321bf5d0d9be702ad47c57bfc1e"
+    },
+    {
+      "sequence": 755,
+      "cycleId": "ed87acdd-fce9-4ac3-8823-2f9b165c0fb8",
+      "requirementId": "REQ-EVIDENCE-WRITER-LOCK-006",
+      "testId": "TEST-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-001",
+      "testPath": "tests/evidence-writer-lock-skill-guidance.test.ts",
+      "commandName": "evidence-writer-lock-tests",
+      "phase": "green",
+      "phaseEvidenceSha256": "45747a624e46f7701d36eb401bd66709cf174ed2576af769ca31f39e07fdeb76",
+      "previousSha256": "4bb5303507dee0caa6ab625c9320525e166b4321bf5d0d9be702ad47c57bfc1e",
+      "recordSha256": "dba79be0d618b791a4aa7b6174eb5046c48b41fae13cb7a9a0be7376ea300967"
     }
   ]
 }

@@ -3,13 +3,16 @@ name: sdd-quality
 description: "Use when deciding release readiness from actual checks, measurable policy, architecture and trace evidence, including incremental change checks. 品質ゲート・リリース判定時に使用。"
 ---
 # Quality / 品質
-Follow the user's input language. Native review/security review remain separate.
-After the work, run `npx musubix3 workflow-record sdd-quality complete --status
-completed` exactly once.
-1. Inspect config/baseline first. Execute only trusted argument-array commands;
-   never edit baseline without independent approval or substitute another CLI.
-2. Configure real tests/build/typecheck commands and timeouts. Use an explicit
-   custom report or a built-in Vitest/Jest, pytest, Go test, Cargo, JUnit or .NET
+/* @id CODE-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-003
+ * @implements REQ-EVIDENCE-WRITER-LOCK-006
+ * @design DES-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-001
+ */
+Follow the user's input language. Native review/security review remain separate. After the work, run `npx musubix3 workflow-record sdd-quality complete --status completed` exactly once.
+If `EVIDENCE_WRITER_LOCKED` blocks a command, stop the blocked command and inspect its reported owner metadata and exact canonical `.musubix/evidence/.writer-lock.json` path. On Linux, only after confirming the recorded owner is no longer active, run `npx musubix3 evidence unlock --recover`.
+Never blindly delete the lock, force-steal it, poll, or start automatic retry loops. If recovery returns `EVIDENCE_WRITER_LOCK_RECOVERY_UNSAFE`, including on Linux, or required probes are unavailable on macOS/Windows, stop automation: operator review must confirm no related process is active before targeted manual removal of only the exact reported path.
+Retry only after the active owner releases the lock, recovery succeeds, or the reviewed manual procedure completes.
+1. Inspect config/baseline first. Execute only trusted argument-array commands; never edit baseline without independent approval or substitute another CLI.
+2. Configure real tests/build/typecheck commands and timeouts. Use an explicit custom report or a built-in Vitest/Jest, pytest, Go test, Cargo, JUnit or .NET
    adapter. Require executable native adapter contracts in CI; JUnit targets use
    an exact `@Tag("TEST-*")`, and pytest requires `pytest-json-report`. Review
    `requiredChecks`, `qualityProfile`, coverage thresholds and architecture rules.

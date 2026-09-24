@@ -1,11 +1,29 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-24T07:02:46.432Z",
+  "generatedAt": "2026-09-24T11:33:11.721Z",
   "nodes": [
     {
       "id": "CODE-SESSION-SCOPED-DEVELOPMENT-001",
       "kind": "code",
       "path": ".github/skills/sdd-change/SKILL.md",
+      "line": 6
+    },
+    {
+      "id": "CODE-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-001",
+      "kind": "code",
+      "path": ".github/skills/sdd-change/SKILL.md",
+      "line": 10
+    },
+    {
+      "id": "CODE-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-002",
+      "kind": "code",
+      "path": ".github/skills/sdd-implementation/SKILL.md",
+      "line": 7
+    },
+    {
+      "id": "CODE-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-003",
+      "kind": "code",
+      "path": ".github/skills/sdd-quality/SKILL.md",
       "line": 6
     },
     {
@@ -1211,6 +1229,31 @@
       "kind": "requirement",
       "path": ".musubix/features/evidence-writer-lock/requirements.md",
       "line": 40,
+      "mandatory": true
+    },
+    {
+      "id": "DES-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-001",
+      "kind": "design",
+      "path": ".musubix/features/evidence-writer-lock-skill-guidance/design.md",
+      "line": 7
+    },
+    {
+      "id": "DES-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-002",
+      "kind": "design",
+      "path": ".musubix/features/evidence-writer-lock-skill-guidance/design.md",
+      "line": 42
+    },
+    {
+      "id": "DES-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-003",
+      "kind": "design",
+      "path": ".musubix/features/evidence-writer-lock-skill-guidance/design.md",
+      "line": 70
+    },
+    {
+      "id": "REQ-EVIDENCE-WRITER-LOCK-006",
+      "kind": "requirement",
+      "path": ".musubix/features/evidence-writer-lock-skill-guidance/requirements.md",
+      "line": 9,
       "mandatory": true
     },
     {
@@ -3120,6 +3163,12 @@
       "line": 539
     },
     {
+      "id": "CODE-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-004",
+      "kind": "code",
+      "path": "scripts/smoke-package.mjs",
+      "line": 28
+    },
+    {
       "id": "TEST-ADAPTER-PATTERN-RECOGNITION-001",
       "kind": "test",
       "path": "tests/adapter-pattern-recognition.test.ts",
@@ -3984,6 +4033,12 @@
       "line": 614
     },
     {
+      "id": "TEST-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-001",
+      "kind": "test",
+      "path": "tests/evidence-writer-lock-skill-guidance.test.ts",
+      "line": 11
+    },
+    {
       "id": "TEST-EVIDENCE-WRITER-LOCK-001",
       "kind": "test",
       "path": "tests/evidence-writer-lock.test.ts",
@@ -4580,6 +4635,36 @@
     {
       "from": "CODE-SESSION-SCOPED-DEVELOPMENT-001",
       "to": "DES-SESSION-SCOPED-DEVELOPMENT-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-001",
+      "to": "REQ-EVIDENCE-WRITER-LOCK-006",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-001",
+      "to": "DES-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-002",
+      "to": "REQ-EVIDENCE-WRITER-LOCK-006",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-002",
+      "to": "DES-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-003",
+      "to": "REQ-EVIDENCE-WRITER-LOCK-006",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-003",
+      "to": "DES-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-001",
       "relation": "implements"
     },
     {
@@ -5630,6 +5715,46 @@
     {
       "from": "DES-EVIDENCE-WRITER-LOCK-005",
       "to": "DES-EVIDENCE-WRITER-LOCK-004",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-001",
+      "to": "REQ-EVIDENCE-WRITER-LOCK-006",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0031",
+      "to": "DES-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-001",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-002",
+      "to": "REQ-EVIDENCE-WRITER-LOCK-006",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0031",
+      "to": "DES-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-002",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-002",
+      "to": "DES-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-001",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-003",
+      "to": "REQ-EVIDENCE-WRITER-LOCK-006",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0031",
+      "to": "DES-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-003",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-003",
+      "to": "DES-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-001",
       "relation": "depends-on"
     },
     {
@@ -9538,6 +9663,16 @@
       "relation": "implements"
     },
     {
+      "from": "CODE-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-004",
+      "to": "REQ-EVIDENCE-WRITER-LOCK-006",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-004",
+      "to": "DES-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-003",
+      "relation": "implements"
+    },
+    {
       "from": "TEST-ADAPTER-PATTERN-RECOGNITION-001",
       "to": "REQ-ADAPTER-PATTERN-RECOGNITION-001",
       "relation": "verifies"
@@ -10338,6 +10473,11 @@
       "relation": "verifies"
     },
     {
+      "from": "TEST-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-001",
+      "to": "REQ-EVIDENCE-WRITER-LOCK-006",
+      "relation": "verifies"
+    },
+    {
       "from": "TEST-EVIDENCE-WRITER-LOCK-001",
       "to": "REQ-EVIDENCE-WRITER-LOCK-001",
       "relation": "verifies"
@@ -11090,13 +11230,13 @@
   ],
   "diagnostics": [],
   "fingerprints": {
-    ".github/skills/sdd-change/SKILL.md": "471aa19abcef418a8d8a1ad6620db6ec153b75f099073780e60759ae175558c8",
+    ".github/skills/sdd-change/SKILL.md": "163c120ce082c9420d1033c1776877d2a3507c7a12fe4cccb8c18ab0ec0c2df1",
     ".github/skills/sdd-design/SKILL.md": "7f9a4fa13b420f8436b4b33704111f3b70248408fe209ab7ee98a258b2712d66",
     ".github/skills/sdd-formal-codegraph/SKILL.md": "67944f2599609922f4957a1d99fa0f2139a21c1eb08e7264b5d72e45c2204721",
-    ".github/skills/sdd-implementation/SKILL.md": "5d0465684458547ea65a4502dcfbf842115f188af5a9b054fa440932ee8362ee",
+    ".github/skills/sdd-implementation/SKILL.md": "1ddb56e14043ca5c94ace3a0bc7a932c071c610e74f0299be07f91adc699cd12",
     ".github/skills/sdd-issue-report/SKILL.md": "c9f3d50f90565052134cf3c7758cef4cc855f83f29168b321482995446c7f090",
     ".github/skills/sdd-knowledge/SKILL.md": "162be3e509c58216f27fe0e270b847aaa09cdc1f3aae8f46e32e9a2e6b00af69",
-    ".github/skills/sdd-quality/SKILL.md": "6763203bdaec03d79f4e486b812f53cb9a1355f7a1b855e4fb6247e826c3a448",
+    ".github/skills/sdd-quality/SKILL.md": "82b418b0ad799d14acdb3486c80817d8ebe34deb779965d94350fc3f15d20e0a",
     ".github/skills/sdd-requirements/SKILL.md": "b31117f90b5c9f88f795a25de76913d92119e4dc7c287d9db2f47d14d8520a38",
     ".github/skills/sdd-traceability/SKILL.md": "ec1321579a91a9b6bc71e67c67e6d172b93aba652b7d6d8c2fc4c23b3e9987af",
     ".musubix/decisions/ADR-0002.md": "da556c6ef7efcee366a8c6497179bad96c093145366b6422548b0e3df2cba348",
@@ -11168,6 +11308,8 @@
     ".musubix/features/evidence-history-merge/requirements.md": "7fa32ee9bc9dd11e25bcdaff1959ab4d17156f9965c5904f4a0cf2283d5cd988",
     ".musubix/features/evidence-writer-lock/design.md": "1889cea7999a543de177518ebb7f31bbdc1c5fd298eed93f235b95f0809d956f",
     ".musubix/features/evidence-writer-lock/requirements.md": "4bc22eb3ad47ba2c41747ce5e9e992f85ef34a79e0397d5bfcd7c8739cd13a70",
+    ".musubix/features/evidence-writer-lock-skill-guidance/design.md": "8999bbe16cf32b807b09d2b402a8fc43fe633832a4df943e38e4ae50b91262e0",
+    ".musubix/features/evidence-writer-lock-skill-guidance/requirements.md": "8372387ec47f8d9e4877815fe47d4a5c2b71411166fc249a4fac8131bde7732b",
     ".musubix/features/gate-command-timeout-margin/design.md": "a8ea53c4ba2c30c2ade92bbbbbff6f75a13d5e8bae215a9e1e7966cf4e2a1b91",
     ".musubix/features/gate-command-timeout-margin/requirements.md": "44cab1571eadf8ec0d4b33993891f9caf6ef2a95379ab475550b06a1cc4a0b5f",
     ".musubix/features/github-actions-node24-runtime/design.md": "2a0a2aa7b4237a66469ec0683c2621a5499e4946e430760b2cbea393ecd3c8f4",
@@ -11259,7 +11401,7 @@
     "scripts/release-prepare.mjs": "e166ac42868ce134ad9d3e68a92e14831f2ad243b51f2c0782a47e49fe55a640",
     "scripts/release-publish.mjs": "021ae204cca11fd66d583e27df16e9ead16d77df0503d717d63bda14ecf144f3",
     "scripts/release-version.mjs": "24f8d0d1cd72408d5462238a99db3856639a94cb904337a8fabddad7af1cb6de",
-    "scripts/smoke-package.mjs": "aecca89d02c2f7222567b8f86a6f6c7a8d3599d9c3539c38023012eee620a8d1",
+    "scripts/smoke-package.mjs": "5b3e1e0e9fc6efe7e549976d16b084880fc75f86d787b6133f1f4e07d43e95e9",
     "tests/adapter-integration.test.ts": "42c350b4c3498d2dca32943731521ae8c2d52921f560039c0f7719b060bd4972",
     "tests/adapter-pattern-recognition.test.ts": "df7446c88eecf17cff42a5bf2cb6adc4924d62c5ed4536ad62bc8d38eb5bd40c",
     "tests/approval-domain-scoping.test.ts": "130399e4bb168e0f15d7385b9704e7b0fb9a1f7d59f862204ffbcb67354c6043",
@@ -11281,6 +11423,7 @@
     "tests/evidence-history-merge-recovery.test.ts": "01821174b200d2b394129cb5d0d5e4de8c1eaa9069e797d7c759f4826d0b7a83",
     "tests/evidence-history-merge.test.ts": "3712cdb32da2e280eb0bdcebb52cefa4841702592dda80279dab71eae2bb4df6",
     "tests/evidence-writer-lock-integration.test.ts": "ad5a6d651dcb2f0fc81bfd93e8a640632a1fb2d73e2c49db59adbdbced087dc8",
+    "tests/evidence-writer-lock-skill-guidance.test.ts": "8789e47256f8cd99ba931c326264beaa4f288d0dadf999cdba865ba648475afb",
     "tests/evidence-writer-lock.test.ts": "87e516ef8434489740c73b0a2e6695e2a0de28a5424a668b9b56c2304e093439",
     "tests/formal-knowledge.test.ts": "325ff2567b72708b83d3eab7b2986e7ceb7beb252ed21276b0db7436ffa367a4",
     "tests/gate-install.test.ts": "d2d1f923f594f15776c1ecb64325775a1c3770de557d2a2c0342ec4144538822",
