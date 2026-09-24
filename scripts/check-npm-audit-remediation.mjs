@@ -15,6 +15,10 @@ function diagnostic(code, message, path) {
   return { code, message, ...(path ? { path } : {}) };
 }
 
+function hasCarriageReturn(bytes) {
+  return bytes.includes(13);
+}
+
 function report(diagnostics) {
   process.stdout.write(`${JSON.stringify({ valid: diagnostics.length === 0, diagnostics })}\n`);
   if (diagnostics.length) process.exitCode = 1;
@@ -72,9 +76,17 @@ function runCount(job, command) {
 function checkEvidence() {
   const diagnostics = [];
   const change = readFileSync(changePath, 'utf8').replace(/\s+/g, ' ');
+  const lockBytes = readFileSync(rootPath('package-lock.json'));
   const lockSha256 = createHash('sha256')
-    .update(readFileSync(rootPath('package-lock.json')))
+    .update(lockBytes)
     .digest('hex');
+  if (hasCarriageReturn(lockBytes)) {
+    diagnostics.push(diagnostic(
+      'AUDIT_EVIDENCE',
+      'package-lock.json must use LF bytes so its reviewed SHA-256 is checkout-host independent.',
+      rootPath('package-lock.json'),
+    ));
+  }
   const anchors = [
     'Advisory: GHSA-82fw-gwwq-j7x9 / CVE-2026-84373',
     'GHSA-82fw-gwwq-j7x9',

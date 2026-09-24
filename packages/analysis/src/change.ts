@@ -11,7 +11,9 @@ import {
 import { loadChangeWaiverEvidence, buildWaiverContext, diagnosticDetail, errorFor, reportWaiverEvidenceDiagnostics, waivedDiagnostic } from './change-waiver.js';
 import {
   batchFor, batchKey, changePhases, currentRequirementIdsForBatch, effectiveBatches, hasValidTddCycle,
-  loadChangeEvidence, orderMigrationRequiredRequirementCondition,
+  designUnchangedCondition, implementationUnchangedCondition, loadChangeEvidence,
+  orderMigrationRequiredBatchItemCondition, orderMigrationRequiredRequirementCondition, relevantImplementationUnchangedCondition,
+  requirementsUnchangedCondition, testChangedAfterRedCondition, testsUnchangedCondition,
   qualityIdentity, qualityLineage,
   type ChangeCompleteness, type ChangeEvidence, type ChangeFingerprints, type ChangePhase,
   type ChangePhaseEvidence, type ChangeRecord, type ChangeTddBatch,
@@ -480,7 +482,7 @@ export async function validateChangeEvidence(root: string): Promise<{
   const evidence = await loadChangeEvidence(root);
   const tdd = await loadTddEvidence(root);
   const waiverContext = await buildWaiverContext(root, evidence, tdd);
-  const waiverDiagnostics = reportWaiverEvidenceDiagnostics(waiverContext, evidence, tdd);
+  const waiverDiagnostics = reportWaiverEvidenceDiagnostics(waiverContext);
   const documents = (await files(root))
     .filter((path) => /^\.musubix\/changes\/CHANGE-\d+\.md$/.test(path))
     .map((path) => path.split('/').at(-1)!.replace(/\.md$/, ''));
@@ -593,7 +595,7 @@ export async function validateChangeEvidence(root: string): Promise<{
       for (const batchPhase of tddBatchPhases) {
         const item = batch[batchPhase];
         if (!item) continue;
-        if (!Number.isInteger(item.order)) {
+        if (orderMigrationRequiredBatchItemCondition(batch, batchPhase)) {
           diagnostics.push(waivedDiagnostic(waiverContext, 'CHANGE_ORDER_MIGRATION_REQUIRED',
             `${change.changeId}:${batchPhase} lacks monotonic order evidence; regenerate this change chronology.`,
             change.changeId, undefined, diagnosticDetail('CHANGE_ORDER_MIGRATION_REQUIRED', { batchPhaseName: batchPhase, batch })));
@@ -625,12 +627,11 @@ export async function validateChangeEvidence(root: string): Promise<{
     const impact = change.phases.impact;
     const requirements = change.phases.requirements;
     const design = change.phases.design;
-    if (impact && requirements && !requirements.allowUnchanged
-      && impact.fingerprints.requirements === requirements.fingerprints.requirements) {
+    if (requirementsUnchangedCondition(change)) {
       diagnostics.push(waivedDiagnostic(waiverContext, 'CHANGE_REQUIREMENTS_UNCHANGED',
         `${change.changeId} did not change requirements after impact analysis.`, change.changeId, undefined, undefined));
     }
-    if (requirements && design && requirements.fingerprints.design === design.fingerprints.design) {
+    if (designUnchangedCondition(change)) {
       diagnostics.push(waivedDiagnostic(waiverContext, 'CHANGE_DESIGN_UNCHANGED',
         `${change.changeId} did not change design after requirements.`, change.changeId, undefined, undefined));
     }
@@ -640,11 +641,11 @@ export async function validateChangeEvidence(root: string): Promise<{
       const red = batch.red;
       const implementation = batch.implementation;
       const green = batch.green;
-      if (design && red && design.fingerprints.tests === red.fingerprints.tests) {
+      if (testsUnchangedCondition(change, batch)) {
         diagnostics.push(waivedDiagnostic(waiverContext, 'CHANGE_TESTS_UNCHANGED',
           `${change.changeId} did not add or change tests before Red.`, change.changeId, undefined, diagnosticDetail('CHANGE_TESTS_UNCHANGED', { batch })));
       }
-      if (red && implementation && red.fingerprints.implementation === implementation.fingerprints.implementation) {
+      if (implementationUnchangedCondition(batch)) {
         diagnostics.push(waivedDiagnostic(waiverContext, 'CHANGE_IMPLEMENTATION_UNCHANGED',
           `${change.changeId} did not change implementation after Red.`, change.changeId, undefined, diagnosticDetail('CHANGE_IMPLEMENTATION_UNCHANGED', { batch })));
       }
@@ -657,14 +658,14 @@ export async function validateChangeEvidence(root: string): Promise<{
               'CHANGE_IMPLEMENTATION_SCOPE_MISSING',
               `${change.changeId} has no Code Graph implementation scope for ${requirementId}.`,
             ));
-          } else if (JSON.stringify(before.fingerprints) === JSON.stringify(after.fingerprints)) {
+          } else if (relevantImplementationUnchangedCondition(batch, requirementId)) {
             diagnostics.push(waivedDiagnostic(waiverContext, 'CHANGE_RELEVANT_IMPLEMENTATION_UNCHANGED',
               `${change.changeId} did not change implementation related to ${requirementId} after Red.`,
               change.changeId, requirementId, diagnosticDetail('CHANGE_RELEVANT_IMPLEMENTATION_UNCHANGED', { batch })));
           }
         }
       }
-      if (red && green && red.fingerprints.tests !== green.fingerprints.tests) {
+      if (testChangedAfterRedCondition(batch)) {
         diagnostics.push(waivedDiagnostic(waiverContext, 'CHANGE_TEST_CHANGED_AFTER_RED',
           `${change.changeId} changed tests between Red and Green.`, change.changeId, undefined, diagnosticDetail('CHANGE_TEST_CHANGED_AFTER_RED', { batch })));
       }
@@ -703,7 +704,7 @@ export async function validateChangeCompleteness(root: string): Promise<{
   const tdd = await loadTddEvidence(root);
   const waiverContext = await buildWaiverContext(root, evidence, tdd);
   const validlyVoided = validlyVoidedTddCycles(tdd, waiverContext.order);
-  const waiverDiagnostics = reportWaiverEvidenceDiagnostics(waiverContext, evidence, tdd);
+  const waiverDiagnostics = reportWaiverEvidenceDiagnostics(waiverContext);
   if (!evidence?.changes.length) {
     return {
       present: false,

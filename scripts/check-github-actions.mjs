@@ -1,4 +1,5 @@
 import { createHash } from 'node:crypto';
+import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { parse } from 'yaml';
@@ -29,6 +30,10 @@ function currentPath(path) {
 
 function diagnostic(code, message, path) {
   return { code, message, ...(path ? { path } : {}) };
+}
+
+function hasCarriageReturn(bytes) {
+  return bytes.includes(13);
 }
 
 function report(diagnostics) {
@@ -220,6 +225,44 @@ function sourceSha256(source) {
   return createHash('sha256').update(source).digest('hex');
 }
 
+function checkoutByteDiagnostics() {
+  const diagnostics = [];
+  const environment = { ...process.env, GIT_ATTR_NOSYSTEM: '1', GIT_CONFIG_NOSYSTEM: '1' };
+  const attributeFiles = execFileSync(
+    'git',
+    ['ls-files', '--cached', '--others', '--exclude-standard', '--', '*.gitattributes', '**/.gitattributes'],
+    { encoding: 'utf8', env: environment },
+  ).trim().split(/\r?\n/).filter(Boolean);
+  if (JSON.stringify(attributeFiles) !== JSON.stringify(['.gitattributes'])
+    || readFileSync('.gitattributes', 'utf8') !== '* text=auto eol=lf\n') {
+    diagnostics.push(diagnostic(
+      'WORKFLOW_TEXT_ATTRIBUTES',
+      'The root .gitattributes must be the only attribute file and contain exactly * text=auto eol=lf.',
+      '.gitattributes',
+    ));
+    return diagnostics;
+  }
+  const paths = [...workflowPaths, 'package-lock.json'];
+  const attributes = execFileSync(
+    'git',
+    ['check-attr', 'text', 'eol', '--', ...paths],
+    { encoding: 'utf8', env: environment },
+  );
+  for (const path of paths) {
+    if (!attributes.includes(`${path}: text: auto`)
+      || !attributes.includes(`${path}: eol: lf`)
+      || hasCarriageReturn(readFileSync(path))
+      || hasCarriageReturn(execFileSync('git', ['show', `HEAD:${path}`]))) {
+      diagnostics.push(diagnostic(
+        'WORKFLOW_TEXT_ATTRIBUTES',
+        `Reviewed source bytes must use effective text=auto, eol=lf, and contain no carriage returns: ${path}.`,
+        path,
+      ));
+    }
+  }
+  return diagnostics;
+}
+
 function artifactContract(workflow) {
   const jobs = workflow.jobs ?? {};
   const steps = (job) => jobs[job]?.steps ?? [];
@@ -246,11 +289,11 @@ function artifactContract(workflow) {
 }
 
 /** @id CODE-GITHUB-ACTIONS-NODE24-RUNTIME-002
- * @implements REQ-GITHUB-ACTIONS-NODE24-RUNTIME-002
- * @design DES-GITHUB-ACTIONS-NODE24-RUNTIME-002
+ * @implements REQ-GITHUB-ACTIONS-NODE24-RUNTIME-002 REQ-RELEASE-ASSET-PUBLISHING-004
+ * @design DES-GITHUB-ACTIONS-NODE24-RUNTIME-002 DES-RELEASE-ASSET-PUBLISHING-006
  */
 function checkWorkflows() {
-  const diagnostics = [];
+  const diagnostics = workflowRoot ? [] : checkoutByteDiagnostics();
   const fixture = readJson(fixturePath);
   const releasePublishingFixture = readJson(releasePublishingFixturePath);
   const expected = {

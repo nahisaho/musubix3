@@ -1,4 +1,4 @@
-import { link, mkdir, open, readFile, realpath, rename, rm, unlink, writeFile } from 'node:fs/promises';
+import { link, mkdir, open, readFile, rename, rm, unlink, writeFile } from 'node:fs/promises';
 import { dirname, isAbsolute, relative, resolve, sep } from 'node:path';
 import { error, type Diagnostic } from '../../domain/src/index.js';
 import {
@@ -15,6 +15,7 @@ import {
 } from './evidence-merge-guard.js';
 import {
   assertCoordinatedEvidenceRead,
+  resolveEvidenceWriterCoordinatedRoot,
   withEvidenceWriterLock,
 } from './evidence-writer-lock.js';
 import {
@@ -463,7 +464,8 @@ async function validateIncomingWorktree(root: string, base: EvidenceHistory, inc
  * @design DES-EVIDENCE-HISTORY-MERGE-001
  */
 async function planEvidenceMerge(root: string, incomingRoot: string): Promise<MergePlan> {
-  const [baseReal, incomingReal] = await Promise.all([realpath(root), realpath(incomingRoot)]);
+  const baseReal = resolveEvidenceWriterCoordinatedRoot(root);
+  const incomingReal = resolveEvidenceWriterCoordinatedRoot(incomingRoot);
   const nested = (parent: string, child: string): boolean => {
     const rel = relative(parent, child);
     return rel === '' || (rel !== '..' && !rel.startsWith(`..${sep}`) && !isAbsolute(rel));
@@ -984,8 +986,8 @@ function buildCandidates(plan: MergePlan): Candidates {
   };
 }
 
-async function fsyncPath(path: string): Promise<void> {
-  const handle = await open(path, 'r');
+async function fsyncFile(path: string): Promise<void> {
+  const handle = await open(path, 'r+');
   try {
     await handle.sync();
   } finally {
@@ -993,11 +995,18 @@ async function fsyncPath(path: string): Promise<void> {
   }
 }
 
-async function fsyncDirectory(path: string): Promise<void> {
+export async function fsyncEvidenceMergeDirectory(
+  path: string,
+  openDirectory: typeof open = open,
+): Promise<void> {
+  let handle: Awaited<ReturnType<typeof open>> | undefined;
   try {
-    await fsyncPath(path);
+    handle = await openDirectory(path, 'r');
+    await handle.sync();
   } catch (cause) {
     if (!['EISDIR', 'EPERM', 'EACCES', 'EINVAL'].includes((cause as NodeJS.ErrnoException).code ?? '')) throw cause;
+  } finally {
+    await handle?.close();
   }
 }
 
@@ -1021,16 +1030,16 @@ async function restoreJournal(root: string, journal: MergeJournal): Promise<void
     if (target.existed) {
       const staging = `${absolute}.${journal.transactionId}.restore`;
       await writeFile(staging, Buffer.from(target.originalBase64, 'base64'));
-      await fsyncPath(staging);
+      await fsyncFile(staging);
       await rename(staging, absolute);
     } else {
       await removeIfPresent(absolute);
     }
     await removeIfPresent(await safePath(root, target.temporaryPath));
   }
-  await fsyncDirectory(evidenceDirectory);
+  await fsyncEvidenceMergeDirectory(evidenceDirectory);
   await removeIfPresent(await safePath(root, JOURNAL_PATH));
-  await fsyncDirectory(evidenceDirectory);
+  await fsyncEvidenceMergeDirectory(evidenceDirectory);
 }
 
 /** @id CODE-EVIDENCE-HISTORY-MERGE-003
@@ -1060,7 +1069,7 @@ async function applyCandidates(root: string, candidates: Candidates, faultAt?: s
   await mkdir(dirname(journalAbsolute), { recursive: true });
   if (faultAt === 'journal:staging') throw new Error('Injected evidence merge failure at journal:staging.');
   await writeFile(stagingJournal, json(journal), { flag: 'wx' });
-  await fsyncPath(stagingJournal);
+  await fsyncFile(stagingJournal);
   if (faultAt === 'journal:publication') {
     throw new Error('EVIDENCE_MERGE_RECOVERY_REQUIRED: injected failure at journal:publication.');
   }
@@ -1074,28 +1083,28 @@ async function applyCandidates(root: string, candidates: Candidates, faultAt?: s
     }
     throw cause;
   }
-  await fsyncDirectory(dirname(journalAbsolute));
+  await fsyncEvidenceMergeDirectory(dirname(journalAbsolute));
   try {
     for (let index = 0; index < targets.length; index++) {
       if (faultAt === `temporary:${index}`) throw new Error(`Injected evidence merge failure at temporary:${index}.`);
       const target = targets[index]!;
       const temporary = await safePath(root, target.temporaryPath);
       await writeFile(temporary, Buffer.from(target.candidateBase64, 'base64'), { flag: 'wx' });
-      await fsyncPath(temporary);
+      await fsyncFile(temporary);
     }
     for (let index = 0; index < targets.length; index++) {
       if (faultAt === `replace:${index}`) throw new Error(`Injected evidence merge failure at replace:${index}.`);
       const target = targets[index]!;
       await rename(await safePath(root, target.temporaryPath), await safePath(root, target.path));
     }
-    await fsyncDirectory(dirname(journalAbsolute));
+    await fsyncEvidenceMergeDirectory(dirname(journalAbsolute));
     journal.state = 'committed';
     const commitStaging = await safePath(root, `${STAGING_PREFIX}${transactionId}.commit.json`);
     await writeFile(commitStaging, json(journal), { flag: 'wx' });
-    await fsyncPath(commitStaging);
+    await fsyncFile(commitStaging);
     if (faultAt === 'commit-marker') throw new Error('Injected evidence merge failure at commit-marker.');
     await rename(commitStaging, journalAbsolute);
-    await fsyncDirectory(dirname(journalAbsolute));
+    await fsyncEvidenceMergeDirectory(dirname(journalAbsolute));
     if (faultAt === 'cleanup') throw new Error('EVIDENCE_MERGE_RECOVERY_REQUIRED: injected failure at cleanup.');
     await removeIfPresent(journalAbsolute);
   } catch (cause) {
@@ -1332,18 +1341,18 @@ async function recoverEvidenceMergeUnlocked(root: string): Promise<EvidenceMerge
     if (digest(actual) !== target.candidateSha256) {
       const stagingPath = `${absolute}.${journal.transactionId}.recover`;
       await writeFile(stagingPath, Buffer.from(target.candidateBase64, 'base64'));
-      await fsyncPath(stagingPath);
+      await fsyncFile(stagingPath);
       await rename(stagingPath, absolute);
-      await fsyncDirectory(evidenceDir);
+      await fsyncEvidenceMergeDirectory(evidenceDir);
     }
     const verified = await readFile(absolute, 'utf8');
     if (digest(verified) !== target.candidateSha256) {
       throw unsafeRecovery('Candidate verification failed after rewrite.', inventory);
     }
   }
-  await fsyncDirectory(evidenceDir);
+  await fsyncEvidenceMergeDirectory(evidenceDir);
   await removeIfPresent(journalAbsolute);
   for (const entry of staging) await removeIfPresent(resolve(evidenceDir, entry));
-  await fsyncDirectory(evidenceDir);
+  await fsyncEvidenceMergeDirectory(evidenceDir);
   return { recovered: true, action: 'rolled-forward', discardedStaging: staging.length > 0 };
 }

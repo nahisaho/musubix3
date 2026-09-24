@@ -1,16 +1,24 @@
 import { resolve } from 'node:path';
 import { expect, it } from 'vitest';
 import type { Diagnostic } from '../packages/domain/src/index.js';
-import type { WorkflowEvent, WorkflowManifest } from '../packages/analysis/src/index.js';
+import type {
+  WorkflowEvent,
+  WorkflowManifest,
+  WorkflowWaiverContext,
+  WorkflowWaiverRecord,
+} from '../packages/analysis/src/index.js';
 import {
   activeWorkflowWaivers,
   canonicalJson,
+  CURRENT_SNAPSHOT_VERSION,
   currentCodeFor,
   digest,
   loadWorkflow,
   loadWorkflowWaiverEvidence,
+  payloadShaOf,
   projectStatus,
   readText,
+  recordStale,
   recordWorkflowWaiver,
   runGate,
   runProcess,
@@ -432,6 +440,155 @@ it('TEST-WORKFLOW-EVIDENCE-WAIVER-008 marks stale waivers separately, allows sam
 
   await expect(recordWorkflowWaiver(root, 'WORKFLOW_SKILL_NOT_INVOKED', 'sdd-change', 'complete', declarationOneAt, undefined, 'nahisaho', 'duplicate active'))
     .rejects.toThrow(/already has an active waiver/);
+});
+
+/** @id TEST-WORKFLOW-EVIDENCE-WAIVER-012
+ * @verifies REQ-WORKFLOW-EVIDENCE-WAIVER-012
+ */
+it('TEST-WORKFLOW-EVIDENCE-WAIVER-012 keeps stale workflow-waiver audit visible for version, changed-code, and resolved outcomes while restoring scoped errors', async () => {
+  const event = completedDeclaration('sdd-change', 'complete', declarationOneAt);
+  const scope = {
+    skill: 'sdd-change',
+    phase: 'complete',
+    declarationRecordedAt: declarationOneAt,
+  };
+
+  const versionRoot = await project();
+  await writeWorkflowEvidence(versionRoot, [event], [
+    invocation('other-skill', 'call-1', '2020-01-01T00:00:01.000Z', 'completed', '2020-01-01T00:00:02.000Z'),
+  ]);
+  await recordWorkflowWaiver(versionRoot, 'WORKFLOW_SKILL_NOT_INVOKED', scope.skill, scope.phase, scope.declarationRecordedAt, undefined, 'nahisaho', 'version');
+  const versionStored = JSON.parse(await readText(versionRoot, '.musubix/evidence/workflow-waivers.json'));
+  versionStored.waivers[0].snapshotVersion += 1;
+  versionStored.waivers[0].payloadSha256 = payloadShaOf(versionStored.waivers[0]);
+  await writeJson(versionRoot, '.musubix/evidence/workflow-waivers.json', versionStored);
+
+  const versionGate = await runGate(versionRoot);
+  const versionWorkflow = versionGate.checks.find((check) => check.name === 'workflow')?.diagnostics ?? [];
+  for (const code of ['WORKFLOW_SKILL_NOT_INVOKED', 'WORKFLOW_BINDING_MISSING']) {
+    expect(findScopeDiagnostics(versionWorkflow, code, scope)).toEqual([
+      expect.objectContaining({ severity: 'error' }),
+    ]);
+    expect(findScopeDiagnostics(versionWorkflow, code, scope)[0]).not.toHaveProperty('waiver');
+  }
+  expect(versionGate.waiverDiagnostics).toContainEqual({
+    code: 'WORKFLOW_WAIVER_STALE',
+    severity: 'error',
+    message: expect.any(String),
+    path: '.musubix/evidence/workflow-waivers.json',
+    ...scope,
+  });
+
+  const changedCodeRoot = await project();
+  await writeWorkflowEvidence(changedCodeRoot, [event], [
+    invocation('other-skill', 'call-1', '2020-01-01T00:00:01.000Z', 'completed', '2020-01-01T00:00:02.000Z'),
+  ]);
+  await recordWorkflowWaiver(changedCodeRoot, 'WORKFLOW_SKILL_NOT_INVOKED', scope.skill, scope.phase, scope.declarationRecordedAt, undefined, 'nahisaho', 'changed code');
+  await writeWorkflowEvidence(changedCodeRoot, [event], [
+    invocation('sdd-change', 'call-2', '2020-01-01T00:00:01.000Z', 'incomplete'),
+  ], 'changed');
+  const changedCodeGate = await runGate(changedCodeRoot);
+  expect(findScopeDiagnostics(
+    changedCodeGate.checks.find((check) => check.name === 'workflow')?.diagnostics ?? [],
+    'WORKFLOW_INVOCATION_INCOMPLETE',
+    scope,
+  )[0]).toMatchObject({ severity: 'error' });
+  expect(findDiagnostics(changedCodeGate.waiverDiagnostics, 'WORKFLOW_WAIVER_STALE')).toHaveLength(1);
+
+  const resolvedRoot = await project();
+  await writeWorkflowEvidence(resolvedRoot, [event], [
+    invocation('other-skill', 'call-1', '2020-01-01T00:00:01.000Z', 'completed', '2020-01-01T00:00:02.000Z'),
+  ]);
+  await recordWorkflowWaiver(resolvedRoot, 'WORKFLOW_SKILL_NOT_INVOKED', scope.skill, scope.phase, scope.declarationRecordedAt, undefined, 'nahisaho', 'resolved');
+  await writeWorkflowEvidence(resolvedRoot, [event], [
+    invocation('sdd-change', 'call-2', '2020-01-01T00:00:01.000Z', 'completed', '2020-01-01T00:00:02.000Z'),
+  ], 'resolved');
+  const resolvedGate = await runGate(resolvedRoot);
+  expect(resolvedGate.checks.find((check) => check.name === 'workflow')).toMatchObject({ status: 'pass' });
+  expect(findDiagnostics(resolvedGate.waiverDiagnostics, 'WORKFLOW_WAIVER_STALE')).toHaveLength(1);
+});
+
+/** @id TEST-WORKFLOW-EVIDENCE-WAIVER-013
+ * @verifies REQ-WORKFLOW-EVIDENCE-WAIVER-012
+ */
+it('TEST-WORKFLOW-EVIDENCE-WAIVER-013 evaluates only authoritative workflow-waiver records and preserves audit order and shape', async () => {
+  const root = await project();
+  const event = completedDeclaration('sdd-change', 'complete', declarationOneAt);
+  const other = completedDeclaration('sdd-design', 'complete', declarationTwoAt);
+  await writeWorkflowEvidence(root, [event, other], [
+    invocation('other-skill', 'call-1', '2020-01-01T00:00:01.000Z', 'completed', '2020-01-01T00:00:02.000Z'),
+  ], 'first');
+  await recordWorkflowWaiver(root, 'WORKFLOW_SKILL_NOT_INVOKED', 'sdd-change', 'complete', declarationOneAt, undefined, 'nahisaho', 'superseded');
+  await writeWorkflowEvidence(root, [event, other], [
+    invocation('other-skill', 'call-2', '2020-01-01T00:00:03.000Z', 'completed', '2020-01-01T00:00:04.000Z'),
+  ], 'second');
+  await recordWorkflowWaiver(root, 'WORKFLOW_SKILL_NOT_INVOKED', 'sdd-change', 'complete', declarationOneAt, undefined, 'nahisaho', 'authoritative');
+  expect(findDiagnostics(await workflowWaiverEvidenceDiagnostics(root), 'WORKFLOW_WAIVER_STALE')).toEqual([]);
+
+  const stored = JSON.parse(await readText(root, '.musubix/evidence/workflow-waivers.json'));
+  stored.waivers[1].snapshotVersion += 1;
+  stored.waivers[1].payloadSha256 = payloadShaOf(stored.waivers[1]);
+  await writeJson(root, '.musubix/evidence/workflow-waivers.json', stored);
+  expect(findDiagnostics(await workflowWaiverEvidenceDiagnostics(root), 'WORKFLOW_WAIVER_STALE')).toEqual([
+    {
+      code: 'WORKFLOW_WAIVER_STALE',
+      severity: 'error',
+      message: expect.any(String),
+      path: '.musubix/evidence/workflow-waivers.json',
+      skill: 'sdd-change',
+      phase: 'complete',
+      declarationRecordedAt: declarationOneAt,
+    },
+  ]);
+
+  const orderedRoot = await project();
+  await writeWorkflowEvidence(orderedRoot, [event, other], [
+    invocation('other-skill', 'call-3', '2020-01-01T00:00:01.000Z', 'completed', '2020-01-01T00:00:02.000Z'),
+  ]);
+  await recordWorkflowWaiver(orderedRoot, 'WORKFLOW_SKILL_NOT_INVOKED', 'sdd-change', 'complete', declarationOneAt, undefined, 'nahisaho', 'first');
+  await recordWorkflowWaiver(orderedRoot, 'WORKFLOW_SKILL_NOT_INVOKED', 'sdd-design', 'complete', declarationTwoAt, undefined, 'nahisaho', 'second');
+  const ordered = JSON.parse(await readText(orderedRoot, '.musubix/evidence/workflow-waivers.json'));
+  ordered.waivers[0].skill = 'missing-skill';
+  ordered.waivers[0].payloadSha256 = payloadShaOf(ordered.waivers[0]);
+  ordered.waivers[1].previousSha256 = ordered.waivers[0].payloadSha256;
+  ordered.waivers[1].snapshotVersion += 1;
+  ordered.waivers[1].payloadSha256 = payloadShaOf(ordered.waivers[1]);
+  await writeJson(orderedRoot, '.musubix/evidence/workflow-waivers.json', ordered);
+  expect((await workflowWaiverEvidenceDiagnostics(orderedRoot)).map((diagnostic) => diagnostic.code)).toEqual([
+    'WORKFLOW_WAIVER_EVIDENCE_MALFORMED',
+    'WORKFLOW_WAIVER_STALE',
+  ]);
+});
+
+/** @id TEST-WORKFLOW-EVIDENCE-WAIVER-014
+ * @verifies REQ-WORKFLOW-EVIDENCE-WAIVER-012
+ */
+it('TEST-WORKFLOW-EVIDENCE-WAIVER-014 evaluates current, version-stale, and hash-stale records through the shared predicate', () => {
+  const snapshotHash = 'a'.repeat(64);
+  const record: WorkflowWaiverRecord = {
+    skill: 'sdd-change',
+    phase: 'complete',
+    declarationRecordedAt: declarationOneAt,
+    code: 'WORKFLOW_SKILL_NOT_INVOKED',
+    approver: 'nahisaho',
+    reason: 'predicate test',
+    waiverRecordedAt: declarationTwoAt,
+    sequence: 1,
+    snapshotVersion: CURRENT_SNAPSHOT_VERSION,
+    snapshotHash,
+    previousSha256: '0'.repeat(64),
+    payloadSha256: 'b'.repeat(64),
+  };
+  const context: WorkflowWaiverContext = {
+    loaded: null,
+    workflow: null,
+    linkage: [],
+    currentHash: [snapshotHash],
+  };
+
+  expect(recordStale(record, 0, context)).toBe(false);
+  expect(recordStale({ ...record, snapshotVersion: CURRENT_SNAPSHOT_VERSION + 1 }, 0, context)).toBe(true);
+  expect(recordStale({ ...record, snapshotHash: 'c'.repeat(64) }, 0, context)).toBe(true);
 });
 
 /** @id TEST-WORKFLOW-EVIDENCE-WAIVER-009

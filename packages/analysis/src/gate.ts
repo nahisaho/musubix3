@@ -6,9 +6,10 @@ import { digest, evidenceInputPaths, exists, files, readText, safePath, snapshot
 import { graphGate, graphImpact, indexGraph } from './graph.js';
 import { formalCheck, type FormalResult } from './formal.js';
 import { validateWorkflow } from './workflow.js';
-import { parseMusubixTestReport, validateTddEvidence, type MusubixTestReport } from './tdd.js';
+import { loadTddEvidence, parseMusubixTestReport, validateTddEvidence, type MusubixTestReport } from './tdd.js';
 import { validateChangeCompleteness, validateChangeEvidence } from './change.js';
-import { activeWaivers, waiverEvidenceDiagnostics } from './change-waiver.js';
+import { loadChangeEvidence } from './change-evidence.js';
+import { activeWaivers, buildWaiverContext, waiverEvidenceDiagnostics } from './change-waiver.js';
 import { deriveWorkflowWaiverAudit } from './workflow-waiver.js';
 import { changedFiles, runProcess, type Runner } from './process.js';
 import { buildTrace, checkTrace } from './trace.js';
@@ -51,7 +52,7 @@ export interface GateReport {
   fingerprints: Record<string, string>;
   waivers?: Array<{ changeId: string; code: string; requirementId?: string; detail?: string; approver: string; reason: string; recordedAt: string }>;
   workflowWaivers?: Array<{ skill: string; phase: string; declarationRecordedAt: string; index?: number; code: string; approver: string; reason: string; waiverRecordedAt: string }>;
-  waiverDiagnostics?: Diagnostic[];
+  waiverDiagnostics: Diagnostic[];
 }
 
 export interface FormalEvidence {
@@ -633,7 +634,19 @@ async function runGateUnlocked(root: string, options: {
   }
   const featureScopedCheckNames = new Set(['requirements', 'design', 'trace', 'tdd', 'change-history', 'change-completeness']);
   if (domainsOn) featureScopedCheckNames.add('approval');
-  const [waivers, changeWaiverDiagnostics] = await Promise.all([activeWaivers(root), waiverEvidenceDiagnostics(root)]);
+  /** @id CODE-CHANGE-EVIDENCE-WAIVER-023
+   * @implements REQ-CHANGE-EVIDENCE-WAIVER-011 REQ-WORKFLOW-EVIDENCE-WAIVER-012
+   * @design DES-CHANGE-EVIDENCE-WAIVER-005 DES-WORKFLOW-EVIDENCE-WAIVER-007
+   */
+  const changeWaiverContext = await buildWaiverContext(
+    root,
+    await loadChangeEvidence(root),
+    await loadTddEvidence(root),
+  );
+  const [waivers, changeWaiverDiagnostics] = await Promise.all([
+    activeWaivers(root, changeWaiverContext),
+    waiverEvidenceDiagnostics(root, changeWaiverContext),
+  ]);
   const waiverDiagnostics = [...changeWaiverDiagnostics, ...workflowWaiverDiagnostics];
   const report: GateReport = {
     schemaVersion: 1,
@@ -703,7 +716,15 @@ export async function projectStatus(root: string): Promise<{
    */
   const workflow = await validateWorkflow(root);
   const { workflowWaivers, workflowWaiverDiagnostics } = deriveWorkflowWaiverAudit(workflow.workflowWaiverContext);
-  const [waivers, changeWaiverDiagnostics] = await Promise.all([activeWaivers(root), waiverEvidenceDiagnostics(root)]);
+  const changeWaiverContext = await buildWaiverContext(
+    root,
+    await loadChangeEvidence(root),
+    await loadTddEvidence(root),
+  );
+  const [waivers, changeWaiverDiagnostics] = await Promise.all([
+    activeWaivers(root, changeWaiverContext),
+    waiverEvidenceDiagnostics(root, changeWaiverContext),
+  ]);
   const waiverDiagnostics = [...changeWaiverDiagnostics, ...workflowWaiverDiagnostics];
   return {
     initialized,

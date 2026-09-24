@@ -6,7 +6,7 @@ import { describe, expect, it } from 'vitest';
 import {
   digest, readText, writeJson, writeText, type ApprovalConfig, type ApprovalManifest,
 } from '../packages/analysis/src/index.js';
-import { fixture, repository } from './helpers.js';
+import { caseSafeEnvironment, fixture, repository } from './helpers.js';
 
 type ReleaseApprovalDrift = {
   path: string;
@@ -250,7 +250,10 @@ export async function validateReleaseApprovalForTag() {
     ], {
       cwd: root,
       encoding: 'utf8',
-      env: { ...process.env, npm_execpath: resolve(root, 'npm-cli.cjs'), GITHUB_SHA: '' },
+      env: caseSafeEnvironment({
+        npm_execpath: resolve(root, 'npm-cli.cjs'),
+        GITHUB_SHA: '',
+      }),
     });
 
     expect(result.status).toBe(1);

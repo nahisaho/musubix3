@@ -15,6 +15,16 @@ export function digestChainRecord(value: unknown): string {
 }
 
 export const repository = resolve('.');
+
+export function caseSafeEnvironment(overrides: NodeJS.ProcessEnv): NodeJS.ProcessEnv {
+  const keys = new Set(Object.keys(overrides).map((key) => key.toLowerCase()));
+  return {
+    ...Object.fromEntries(
+      Object.entries(process.env).filter(([key]) => !keys.has(key.toLowerCase())),
+    ),
+    ...overrides,
+  };
+}
 const roots: string[] = [];
 afterEach(async () => {
   await Promise.all(roots.splice(0).map((root) => rm(root, { recursive: true, force: true })));

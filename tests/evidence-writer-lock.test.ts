@@ -119,6 +119,7 @@ it('TEST-EVIDENCE-WRITER-LOCK-004 releases its own lock after a handled operatio
  */
 it('TEST-EVIDENCE-WRITER-LOCK-005 explicitly recovers only a demonstrably dead same-host owner', async () => {
   const root = await fixture();
+  const observed: EvidenceDirectorySyncPolicy[] = [];
   const fingerprint = {
     platform: 'linux' as const,
     bootId: 'boot-test',
@@ -134,9 +135,13 @@ it('TEST-EVIDENCE-WRITER-LOCK-005 explicitly recovers only a demonstrably dead s
     hostname,
     processFingerprint: async () => fingerprint,
     processState: async () => 'dead',
+    syncEvidenceDirectory: async (_path, policy) => {
+      observed.push(policy);
+    },
   });
 
   expect(report).toEqual({ action: 'recovered', recovered: true });
+  expect(observed).toEqual(['strict']);
   await expect(readFile(lockPath(root), 'utf8')).rejects.toMatchObject({ code: 'ENOENT' });
 });
 

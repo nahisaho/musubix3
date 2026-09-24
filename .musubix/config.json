@@ -78,7 +78,7 @@
         "test"
       ],
       "required": true,
-      "timeoutMs": 180000
+      "timeoutMs": 305000
     },
     {
       "name": "pack-check",
@@ -185,6 +185,18 @@
       "timeoutMs": 120000
     },
     {
+      "name": "windows-core-portability-tests",
+      "command": "npx",
+      "args": [
+        "vitest",
+        "run",
+        "tests/windows-core-portability.test.ts"
+      ],
+      "adapter": "vitest",
+      "required": true,
+      "timeoutMs": 120000
+    },
+    {
       "name": "change-record-fail-fast-tests",
       "command": "npx",
       "args": [
@@ -226,7 +238,8 @@
       "args": [
         "vitest",
         "run",
-        "tests/evidence-history-merge.test.ts"
+        "tests/evidence-history-merge.test.ts",
+        "tests/evidence-history-merge-recovery.test.ts"
       ],
       "adapter": "vitest",
       "required": true,

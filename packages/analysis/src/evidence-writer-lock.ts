@@ -22,7 +22,6 @@ import {
   open,
   readFile,
   readlink,
-  realpath,
   rmdir,
   unlink,
 } from 'node:fs/promises';
@@ -187,6 +186,7 @@ export type EvidenceDirectorySyncPolicy = 'allow-unsupported' | 'strict';
 export interface EvidenceWriterLockDependencies {
   hostname?: () => string;
   platform?: () => NodeJS.Platform;
+  resolveCanonicalRoot?: (root: string) => string;
   processFingerprint?: () => Promise<EvidenceWriterProcessFingerprint>;
   lockOwner?: (path: string) => Promise<EvidenceWriterLockOwner>;
   lockIdentity?: (path: string) => Promise<EvidenceWriterLockIdentity>;
@@ -223,6 +223,8 @@ interface EvidenceWriterLeaseState {
 interface EvidenceWriterContext {
   token: symbol;
   leases: Map<string, EvidenceWriterLeaseState>;
+  resolveCanonicalRoot: (root: string) => string;
+  canonicalRoots: Map<string, string>;
 }
 
 interface ErrorOptions {
@@ -261,6 +263,28 @@ export class EvidenceProtectedOutputError extends Error {
 
 const ownerContext = new AsyncLocalStorage<EvidenceWriterContext>();
 
+export function resolveEvidenceWriterCanonicalRoot(root: string): string {
+  return realpathSync.native(resolve(root));
+}
+
+function contextCanonicalRoot(root: string): string {
+  const context = ownerContext.getStore();
+  if (context === undefined) return resolveEvidenceWriterCanonicalRoot(root);
+  const absolute = resolve(root);
+  const cached = context.canonicalRoots.get(absolute);
+  if (cached !== undefined) return cached;
+  const canonicalRoot = context.resolveCanonicalRoot(absolute);
+  if (context.resolveCanonicalRoot(absolute) !== canonicalRoot) {
+    throw new Error(`Canonical evidence root changed during coordination: ${absolute}`);
+  }
+  context.canonicalRoots.set(absolute, canonicalRoot);
+  return canonicalRoot;
+}
+
+export function resolveEvidenceWriterCoordinatedRoot(root: string): string {
+  return contextCanonicalRoot(root);
+}
+
 function errno(cause: unknown): string | undefined {
   return cause instanceof Error && 'code' in cause
     ? String((cause as NodeJS.ErrnoException).code)
@@ -298,6 +322,18 @@ async function syncDirectory(
   } finally {
     await handle.close();
   }
+}
+
+async function syncRecoveredEvidenceDirectoryStrict(
+  canonicalRoot: string,
+  dependencies: EvidenceWriterRecoveryDependencies,
+): Promise<void> {
+  await syncDirectory(
+    evidenceDirectory(canonicalRoot),
+    (dependencies.platform ?? (() => process.platform))(),
+    'strict',
+    dependencies.syncEvidenceDirectory,
+  );
 }
 
 function syncDirectorySync(
@@ -543,7 +579,7 @@ function configuredReportPattern(path: string): RegExp {
 }
 
 async function configuredReportPath(root: string, path: string): Promise<boolean> {
-  const canonicalRoot = await realpath(root);
+  const canonicalRoot = contextCanonicalRoot(root);
   const rel = relative(canonicalRoot, resolve(canonicalRoot, path)).split(sep).join('/');
   try {
     const raw = JSON.parse(await readFile(resolve(canonicalRoot, '.musubix/config.json'), 'utf8')) as unknown;
@@ -564,10 +600,13 @@ async function configuredReportPath(root: string, path: string): Promise<boolean
   }
 }
 
-function canonicalizeRootForAcquisition(root: string): { canonicalRoot: string; rootExisted: boolean } {
+function canonicalizeRootForAcquisition(
+  root: string,
+  resolveCanonicalRoot: (root: string) => string = resolveEvidenceWriterCanonicalRoot,
+): { canonicalRoot: string; rootExisted: boolean } {
   const absolute = resolve(root);
   try {
-    return { canonicalRoot: realpathSync(absolute), rootExisted: true };
+    return { canonicalRoot: resolveCanonicalRoot(absolute), rootExisted: true };
   } catch (cause) {
     if (errno(cause) !== 'ENOENT') throw cause;
   }
@@ -577,7 +616,7 @@ function canonicalizeRootForAcquisition(root: string): { canonicalRoot: string; 
     if (parent === ancestor) throw new Error(`No existing ancestor for project root: ${absolute}`);
     ancestor = parent;
   }
-  const canonicalAncestor = realpathSync(ancestor);
+  const canonicalAncestor = resolveCanonicalRoot(ancestor);
   return {
     canonicalRoot: resolve(canonicalAncestor, relative(ancestor, absolute)),
     rootExisted: false,
@@ -826,9 +865,13 @@ export async function withEvidenceWriterLock<T>(
   operation: () => Promise<T>,
   dependencies: EvidenceWriterLockDependencies = {},
 ): Promise<T> {
+  const existing = ownerContext.getStore();
+  const resolveCanonicalRoot = existing?.resolveCanonicalRoot
+    ?? dependencies.resolveCanonicalRoot
+    ?? resolveEvidenceWriterCanonicalRoot;
   let canonicalRoot: string;
   try {
-    ({ canonicalRoot } = canonicalizeRootForAcquisition(root));
+    ({ canonicalRoot } = canonicalizeRootForAcquisition(root, resolveCanonicalRoot));
   } catch (cause) {
     throw new EvidenceWriterLockError(
       'EVIDENCE_WRITER_LOCK_ACQUIRE_FAILED',
@@ -836,13 +879,14 @@ export async function withEvidenceWriterLock<T>(
       { lockPath: lockPath(resolve(root)), cause },
     );
   }
-  const existing = ownerContext.getStore();
   if (existing !== undefined) {
     return useContextLease(existing, canonicalRoot, command, operation, dependencies);
   }
   const context: EvidenceWriterContext = {
     token: Symbol('evidence-writer-owner'),
     leases: new Map(),
+    resolveCanonicalRoot,
+    canonicalRoots: new Map(),
   };
   return ownerContext.run(
     context,
@@ -855,7 +899,7 @@ export async function withEvidenceWriterLock<T>(
  * @design DES-EVIDENCE-WRITER-LOCK-001
  */
 export async function readEvidenceWriterLock(root: string): Promise<EvidenceWriterLockState> {
-  const canonicalRoot = await realpath(root);
+  const canonicalRoot = contextCanonicalRoot(root);
   const path = lockPath(canonicalRoot);
   try {
     return { locked: true, lockPath: path, owner: await readOwner(path) };
@@ -870,7 +914,7 @@ export async function readEvidenceWriterLock(root: string): Promise<EvidenceWrit
  * @design DES-EVIDENCE-WRITER-LOCK-002
  */
 export async function assertEvidenceWriterOwned(root: string): Promise<void> {
-  const canonicalRoot = await realpath(root);
+  const canonicalRoot = contextCanonicalRoot(root);
   const state = activeLease(canonicalRoot);
   if (state === undefined) {
     throw new EvidenceWriterLockError(
@@ -889,7 +933,7 @@ export async function assertEvidenceWriterOwned(root: string): Promise<void> {
 export async function assertCoordinatedEvidenceRead(root: string): Promise<void> {
   let canonicalRoot: string;
   try {
-    canonicalRoot = await realpath(root);
+    canonicalRoot = contextCanonicalRoot(root);
   } catch (cause) {
     throw new EvidenceWriterLockError(
       'EVIDENCE_WRITER_LOCK_ACQUIRE_FAILED',
@@ -933,7 +977,7 @@ export async function withProtectedEvidenceWrite<T>(
   operation: () => Promise<T>,
 ): Promise<T> {
   if (!protectedPath(root, path) && !await configuredReportPath(root, path)) return operation();
-  const canonicalRoot = await realpath(root);
+  const canonicalRoot = contextCanonicalRoot(root);
   if (activeLease(canonicalRoot) !== undefined) return operation();
   return withEvidenceWriterLock(root, 'protected write', operation);
 }
@@ -989,7 +1033,8 @@ export async function recoverEvidenceWriterLock(
   root: string,
   dependencies: EvidenceWriterRecoveryDependencies = {},
 ): Promise<EvidenceWriterRecoveryReport> {
-  const canonicalRoot = await realpath(root);
+  const canonicalRoot = (dependencies.resolveCanonicalRoot
+    ?? resolveEvidenceWriterCanonicalRoot)(root);
   const path = lockPath(canonicalRoot);
   let owner: EvidenceWriterLockOwner;
   let initialIdentity: EvidenceWriterLockIdentity;
@@ -1053,12 +1098,7 @@ export async function recoverEvidenceWriterLock(
 
   try {
     await unlink(path);
-    await syncDirectory(
-      evidenceDirectory(canonicalRoot),
-      (dependencies.platform ?? (() => process.platform))(),
-      'strict',
-      dependencies.syncEvidenceDirectory,
-    );
+    await syncRecoveredEvidenceDirectoryStrict(canonicalRoot, dependencies);
   } catch (cause) {
     throw recoveryUnsafe(path, owner, 'the verified lock could not be removed.', cause);
   }

@@ -57,7 +57,13 @@ export function verifyReleaseVersions(tag, directory = root) {
   return JSON.parse(readFileSync(resolve(directory, 'package.json'), 'utf8'));
 }
 
-function npmInvocation(args, npmCli = process.env.npm_execpath) {
+function caseInsensitiveEnvironmentValue(environment, name) {
+  if (environment[name]) return environment[name];
+  const match = Object.keys(environment).find((key) => key.toLowerCase() === name.toLowerCase());
+  return match ? environment[match] : undefined;
+}
+
+function npmInvocation(args, npmCli = caseInsensitiveEnvironmentValue(process.env, 'npm_execpath')) {
   assert(npmCli, 'Run release preparation through npm so npm_execpath is available.');
   return [process.execPath, [npmCli, ...args]];
 }

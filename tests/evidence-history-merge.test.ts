@@ -143,3 +143,25 @@ it('TEST-EVIDENCE-HISTORY-MERGE-005 dry-run returns the merge plan without writi
   await expect(Promise.all(paths.map((path) => analysis.readText(base, `.musubix/evidence/${path}`))))
     .resolves.toEqual(before);
 });
+
+/** @id TEST-EVIDENCE-HISTORY-MERGE-009
+ * @verifies REQ-EVIDENCE-WRITER-LOCK-001
+ */
+it('TEST-EVIDENCE-HISTORY-MERGE-009 uses the injected canonical resolver for base and incoming planning', async () => {
+  const { base, incoming } = await historyWithCommonCycle();
+  const calls: string[] = [];
+  const resolveCanonicalRoot = (root: string): string => {
+    calls.push(root);
+    return root;
+  };
+
+  await analysis.withEvidenceWriterLock(
+    base,
+    'merge resolver test',
+    () => mergeApi.mergeEvidenceHistories(base, incoming, { dryRun: true }),
+    { resolveCanonicalRoot },
+  );
+
+  expect(calls.filter((root) => root === base)).toHaveLength(3);
+  expect(calls.filter((root) => root === incoming)).toHaveLength(2);
+});

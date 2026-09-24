@@ -281,9 +281,11 @@ WorkflowWaivableCode | null` scanning `rawDiagnostics` for an entry whose
 `skill`/`phase`/`declarationRecordedAt`/`index` fields equal the given
 scope, returning that `code` or `null` when none matches — this is the
 **only** place REQ-012's "no diagnostic currently raised" case is decided,
-and it always inspects the complete raw-diagnostic set
-(DES-WORKFLOW-EVIDENCE-WAIVER-005's phase 1 output), never a partial or
-in-progress one. Implement `function snapshotHashFor(workflow:
+and it always inspects a complete, code- and scope-preserving diagnostic set,
+never a partial or in-progress one. DES-005's phase-1 raw diagnostics and the
+post-transformation diagnostics used by `recordWorkflowWaiver` are both
+conforming inputs because waiver transformation changes only severity and
+attached waiver metadata. Implement `function snapshotHashFor(workflow:
 WorkflowManifest | null, rawDiagnostics: Diagnostic[], record:
 WorkflowWaiverRecord): string` as `digest(canonicalJson(snapshotPayload(
 workflow, record.skill, record.phase, record.declarationRecordedAt,
@@ -297,6 +299,19 @@ its scope's diagnostic disappears even though the record's own persisted
 `code` field is untouched. A waiver record is non-stale exactly when
 `record.snapshotVersion === CURRENT_SNAPSHOT_VERSION && record.snapshotHash
 === snapshotHashFor(workflow, rawDiagnostics, record)`.
+The stale branch is therefore the disjunction of version mismatch and hash
+mismatch; it does not require a currently raised workflow reason diagnostic.
+Define that rule once as module-local
+`recordStale(context: WorkflowWaiverContext, index: number): boolean`.
+Severity transformation, active-waiver listing, and stale-audit derivation
+must call this predicate verbatim rather than restating either half.
+The payload object uses exactly these literal keys in this order before
+canonical key sorting: `skill`, `phase`, `status`, `recordedAt`, `version`,
+`commandSha256`, `index`, `workflowEvidenceHead`, and `code`. Its
+`skill`/`phase`/`status`/`recordedAt`/`version` values come from the resolved
+event. Calling `snapshotPayload` with a scope that does not resolve to an event
+is a programming error and throws; every conforming caller must establish valid
+linkage first.
 Interfaces: `snapshotPayload(workflow, skill, phase, declarationRecordedAt, index, code)`;
 `currentCodeFor(rawDiagnostics, skill, phase, declarationRecordedAt, index)`;
 `snapshotHashFor(workflow, rawDiagnostics, record)` (module-local, not exported).
@@ -389,8 +404,8 @@ resolve `authoritativeIndex(context, diagnostic.skill!, diagnostic.phase!,
 diagnostic.declarationRecordedAt!, diagnostic.index)`; when `-1`, return
 the diagnostic unchanged; otherwise, when
 `context.loaded && !context.loaded.malformed &&
-context.currentHash[authoritative] === /* the record's own snapshotHash, version-checked */`
-(i.e. non-stale per DES-WORKFLOW-EVIDENCE-WAIVER-004), return `{
+!recordStale(context, authoritative)` (the single predicate from
+DES-WORKFLOW-EVIDENCE-WAIVER-004), return `{
 ...diagnostic, severity: 'warning', waiver: { approver: record.approver,
 reason: record.reason, recordedAt: record.waiverRecordedAt,
 waiverRecordedAt: record.waiverRecordedAt } }` (using the
@@ -402,6 +417,11 @@ diagnostic (`WORKFLOW_INVOCATION_UNVERIFIED`, strict-mode diagnostics,
 `WORKFLOW_VERIFICATION_STALE`, tool-call-scoped `WORKFLOW_INVOCATION_REUSED`),
 pass it through unchanged — never through `waivedWorkflowDiagnostic`, per
 REQ-WORKFLOW-EVIDENCE-WAIVER-001's exclusion list. `validateWorkflow`'s
+unchanged-error branch owns REQ-WORKFLOW-EVIDENCE-WAIVER-012's restoration
+rule: when the authoritative record is stale, both the still-raised
+allow-listed reason diagnostic and its paired `WORKFLOW_BINDING_MISSING`
+remain `error` and receive no `waiver` object.
+`validateWorkflow`'s
 returned `verified`/`present`/`events`/`skills` fields are computed exactly
 as today from the *final* (post-transformation) `diagnostics` array
 (`verified: !diagnostics.length` is unaffected by this change — REQ-015's
@@ -439,7 +459,7 @@ and then have a separate caller step load it again, which is precisely
 why `workflowWaiverContext` is exposed on the
 return value instead of being recomputed by callers (DES-WORKFLOW-EVIDENCE-WAIVER-007).
 Depends-On: DES-WORKFLOW-EVIDENCE-WAIVER-002, DES-WORKFLOW-EVIDENCE-WAIVER-003, DES-WORKFLOW-EVIDENCE-WAIVER-004
-Requirements: REQ-WORKFLOW-EVIDENCE-WAIVER-001, REQ-WORKFLOW-EVIDENCE-WAIVER-009, REQ-WORKFLOW-EVIDENCE-WAIVER-010, REQ-WORKFLOW-EVIDENCE-WAIVER-016
+Requirements: REQ-WORKFLOW-EVIDENCE-WAIVER-001, REQ-WORKFLOW-EVIDENCE-WAIVER-009, REQ-WORKFLOW-EVIDENCE-WAIVER-010, REQ-WORKFLOW-EVIDENCE-WAIVER-012, REQ-WORKFLOW-EVIDENCE-WAIVER-016
 ADRs: ADR-0026
 
 ## DES-WORKFLOW-EVIDENCE-WAIVER-006: `workflow waiver record` command
@@ -581,9 +601,9 @@ duplicate the single load `validateWorkflow`/`validateLoadedWorkflow`
 via that function's own returned `workflowWaiverContext` field: every
 caller below obtains its `context` from that one existing call, never
 from a second, independent load of `workflow.json`/`workflow-waivers.json`.
-It iterates distinct
-`scopeKey(...)` groups over `context.loaded?.waivers ?? []` once to populate both
-returned arrays together: `workflowWaivers` gets one entry
+It scans `context.loaded?.waivers ?? []` once in ascending persisted array
+position, using per-scope memoization to populate both returned arrays together:
+`workflowWaivers` gets one entry
 per scope for its authoritative, validly-linked, non-stale record only
 (REQ-014's authoritative-only rule); `workflowWaiverDiagnostics` gets
 `WORKFLOW_WAIVER_EVIDENCE_MALFORMED` for the whole document or any
@@ -601,11 +621,23 @@ non-object element contributes no recovered fields at all) — implemented
 via a module-local `function recoverableScopeFields(record: unknown):
 Partial<{ skill: string; phase: string; declarationRecordedAt: string;
 index: number; code: string }>` that independently type-checks each field
-in isolation (never assuming any other field's validity) and is used only
-to enrich this diagnostic's own metadata; its output is never consulted by
+in isolation (never assuming any other field's validity); the recovered record
+`code` is interpolated into the diagnostic message and destructured out before
+the remaining recovered scope fields enrich diagnostic metadata, so it can
+never overwrite `WORKFLOW_WAIVER_EVIDENCE_MALFORMED`. This output is never consulted by
 `waiverLinkage`, `authoritativeIndex`, or any other structural/staleness
-decision in this module, and `WORKFLOW_WAIVER_STALE` for each scope's stale authoritative
-record (per REQ-012) — both diagnostics are computed purely from `context`
+decision in this module, and `WORKFLOW_WAIVER_STALE` for each scope whose authoritative record satisfies
+`recordStale(context, authoritativeIndex)` (per REQ-012). The derivation emits
+at most one valid-scope outcome when it encounters that scope's first validly
+linked record; that outcome is computed from the greatest-sequence
+authoritative record. A stale outcome contains only the standard diagnostic
+fields plus the authoritative record's `skill`, `phase`,
+`declarationRecordedAt`, and conditionally present `index`; it never copies the
+record's reason code, sequence, snapshot fields, chain hashes, approval
+metadata, reason, or a `waiver` object. Both
+`WORKFLOW_WAIVER_STALE` and `WORKFLOW_WAIVER_EVIDENCE_MALFORMED` use
+`path: WORKFLOW_WAIVER_PATH`, whose value is exactly
+`.musubix/evidence/workflow-waivers.json`. These diagnostics are computed purely from `context`
 and have no other side effect; neither
 is ever consulted by `aggregateStatus` or by this component's own `runGate`
 status change below. Also implement thin convenience wrappers
@@ -634,9 +666,9 @@ Modify `packages/analysis/src/gate.ts`'s `runGate` function's existing
 'workflow', ... })`) to change `status: !workflow.present ? 'skipped' :
 workflow.verified ? 'pass' : 'fail'` to `status: !workflow.present ?
 'skipped' : countErrors(workflow.diagnostics) === 0 ? 'pass' : 'fail'`
-(reusing `runGate`'s existing local `countErrors` helper, identically to
-how `tdd`/`change-history`/`change-completeness` already compute `status`
-in this same function) — this is REQ-015's redefinition, made correct by
+(reusing `runGate`'s existing local `countErrors` helper with REQ-015's
+error-only semantics; this applies unconditionally because `workflow` is not
+a feature-scoped check) — this is REQ-015's redefinition, made correct by
 DES-005 already downgrading waived diagnostics' severity inside
 `workflow.diagnostics` itself, so no additional waiver-aware branching is
 needed at this call site beyond the existing `countErrors` pattern. Also
@@ -696,3 +728,72 @@ exclusively `runGate`'s, unchanged by this addition.
 Depends-On: DES-WORKFLOW-EVIDENCE-WAIVER-002, DES-WORKFLOW-EVIDENCE-WAIVER-003, DES-WORKFLOW-EVIDENCE-WAIVER-004, DES-WORKFLOW-EVIDENCE-WAIVER-005
 Requirements: REQ-WORKFLOW-EVIDENCE-WAIVER-008, REQ-WORKFLOW-EVIDENCE-WAIVER-012, REQ-WORKFLOW-EVIDENCE-WAIVER-014, REQ-WORKFLOW-EVIDENCE-WAIVER-015
 ADRs: ADR-0026
+
+## DES-WORKFLOW-EVIDENCE-WAIVER-008: CHANGE-0034 supplemental regression coverage
+
+Responsibilities: Add two focused tests in
+`tests/workflow-evidence-waiver.test.ts`. `TEST-WORKFLOW-EVIDENCE-WAIVER-012`
+verifies that a non-current
+  `snapshotVersion` is stale even when the hash is current, that a still-raised
+  allow-listed reason and its paired `WORKFLOW_BINDING_MISSING` return to
+  `error` without `waiver`, that a changed scope reports its newly current
+  reason at `error` without continuing the superseded reason as downgraded, and
+  that a fully resolved scope reports workflow `pass` while retaining
+  unconditional top-level stale audit visibility.
+`TEST-WORKFLOW-EVIDENCE-WAIVER-013` verifies authoritative-only evaluation,
+  both superseded/authoritative mismatch combinations, exact stale diagnostic
+  field omissions, cardinality, and first-valid-scope ordering among malformed
+  records.
+Interfaces: Existing workflow-waiver fixture helpers; `runGate`;
+`validateWorkflow`; `workflowWaiverEvidenceDiagnostics`; authoritative trace
+links `TEST-WORKFLOW-EVIDENCE-WAIVER-012` and
+`TEST-WORKFLOW-EVIDENCE-WAIVER-013`.
+Constraints: These new test IDs receive their own genuine Red/Green cycles. A
+deterministic test-only temporary implementation fault may invert or bypass the
+shared `recordStale` predicate to prove the tests detect nonconformance; the
+fault must be removed before Green, and a passing execution must never be
+recorded as Red. The tests mutate only temporary project evidence, assert exact
+cardinality/structured fields rather than
+message substrings for stale diagnostics, must assert the exact
+`.musubix/evidence/workflow-waivers.json` path, and must preserve the existing
+TEST-008 authoritative fixture unchanged.
+Depends-On: DES-WORKFLOW-EVIDENCE-WAIVER-004, DES-WORKFLOW-EVIDENCE-WAIVER-005, DES-WORKFLOW-EVIDENCE-WAIVER-007
+Requirements: REQ-WORKFLOW-EVIDENCE-WAIVER-012
+ADRs: ADR-0026
+
+## DES-WORKFLOW-EVIDENCE-WAIVER-009: CHANGE-0035 TDD evidence rebinding
+
+Responsibilities: Bind the supplemental staleness assertions to genuine,
+test-scoped Red/Green evidence after CHANGE-0034's invalid passing-Red attempt.
+Keep `TEST-WORKFLOW-EVIDENCE-WAIVER-012` authoritative for version drift,
+changed-code severity restoration, and resolved-scope audit visibility. Keep
+`TEST-WORKFLOW-EVIDENCE-WAIVER-013` authoritative for supersession,
+authoritative-record staleness, diagnostic shape, cardinality, and persisted
+array ordering. Add `TEST-WORKFLOW-EVIDENCE-WAIVER-014` after the CHANGE-0035
+Design checkpoint to directly assert that `recordStale` returns false for the
+current snapshot and true for independent version and hash drift.
+Interfaces: `recordStale(record, index, context)` as the single shared predicate;
+`TEST-WORKFLOW-EVIDENCE-WAIVER-012`;
+`TEST-WORKFLOW-EVIDENCE-WAIVER-013`;
+`TEST-WORKFLOW-EVIDENCE-WAIVER-014`; the configured
+`workflow-evidence-waiver-tests` TDD command and structured per-test reports.
+Constraints: Record Red only while a deterministic temporary implementation
+fault makes the selected authoritative tests fail. Restore the approved predicate
+before Green. Do not edit any of the three authoritative tests between its Red
+and Green.
+Do not reuse Red/Green cycles recorded before CHANGE-0035 Requirements; acquire
+fresh cycles after CHANGE-0035 Design so each Red is inside the CHANGE-0035 TDD
+order window and each Green follows the CHANGE-0035 Implementation phase.
+Only after all three final Green observations are appended, and before CHANGE-0035
+Quality, record all three CHANGE-0034 TDD-debt waivers and replace all three
+stale CHANGE-0033 TDD-debt waivers, all scoped to
+REQ-WORKFLOW-EVIDENCE-WAIVER-012. Recording the TDD-debt waivers earlier is
+invalid because their snapshots include the requirement's TDD evidence head and
+would become stale on the next cycle append.
+The later valid cycles supersede the invalid passing-Red attempt without
+deleting or rewriting append-only TDD evidence. CHANGE-0035 records its own
+Impact/Requirements/Design/Red/Implementation/Green/Quality chronology because
+CHANGE-0034 already consumed the same full requirement set through Quality.
+Depends-On: DES-WORKFLOW-EVIDENCE-WAIVER-004, DES-WORKFLOW-EVIDENCE-WAIVER-008
+Requirements: REQ-WORKFLOW-EVIDENCE-WAIVER-012
+ADRs: ADR-0025, ADR-0026

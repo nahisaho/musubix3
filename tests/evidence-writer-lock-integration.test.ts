@@ -22,6 +22,7 @@ import {
   recoverEvidenceWriterLock,
   runProcess,
   withEvidenceWriterLock,
+  type EvidenceDirectorySyncPolicy,
 } from '../packages/analysis/src/index.js';
 import { fixture } from './helpers.js';
 
@@ -212,6 +213,7 @@ describe('evidence writer lock integration', () => {
    */
   it('TEST-EVIDENCE-WRITER-LOCK-011 preserves a pending merge journal while writer-lock recovery is required', async () => {
     const root = await fixture();
+    const observed: EvidenceDirectorySyncPolicy[] = [];
     const fingerprint = {
       platform: 'linux' as const,
       bootId: 'boot-test',
@@ -265,10 +267,14 @@ describe('evidence writer lock integration', () => {
       hostname,
       processFingerprint: async () => fingerprint,
       processState: async () => 'dead',
+      syncEvidenceDirectory: async (_path, policy) => {
+        observed.push(policy);
+      },
     })).resolves.toEqual({
       action: 'recovered',
       recovered: true,
     });
+    expect(observed).toEqual(['strict']);
     expect(await readFile(journalPath, 'utf8')).toBe(before);
     await expect(recoverEvidenceMerge(root)).resolves.toMatchObject({
       recovered: true,

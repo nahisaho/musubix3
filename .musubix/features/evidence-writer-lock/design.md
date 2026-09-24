@@ -1,8 +1,9 @@
 # Fail-fast evidence writer coordination design
 
 ## DES-EVIDENCE-WRITER-LOCK-001: Atomic root-scoped lock lifecycle
-Responsibilities: Add a low-level lock manager that resolves the project root
-with `realpath`, creates `.musubix/evidence` when needed, constructs complete
+Responsibilities: Add a low-level lock manager that resolves every coordinated
+project root with one operating-system-native realpath helper, creates
+`.musubix/evidence` when needed, constructs complete
 owner metadata, writes and fsyncs a same-directory transaction-qualified
 staging file, and publishes it without replacement by hard-linking it to
 `.musubix/evidence/.writer-lock.json`. Interpret `EEXIST` as contention; map
@@ -21,11 +22,14 @@ approval manifests, attestation inputs, trace inputs, evidence hashes, and
 generated-artifact scans.
 Interfaces: `acquireEvidenceWriterLock(root: string, command: string,
 dependencies?: EvidenceWriterLockDependencies): Promise<EvidenceWriterLease>`;
+`resolveEvidenceWriterCanonicalRoot(root: string): string` is the shared
+production resolver exported for coordination modules;
 `EvidenceWriterLease.release(): Promise<void>`; `readEvidenceWriterLock(root:
 string): Promise<EvidenceWriterLockState>`; metadata schema
 `{ schemaVersion, canonicalRoot, command, pid, hostname, acquiredAt,
 transactionId, processFingerprint }`; optional
 `EvidenceWriterLockDependencies` members `platform?: () => NodeJS.Platform`,
+`resolveCanonicalRoot?: (root: string) => string`,
 `syncEvidenceDirectory?: (path: string, policy:
 EvidenceDirectorySyncPolicy) => Promise<void>`, and
 `syncEvidenceDirectorySync?: (path: string, policy:
@@ -37,7 +41,17 @@ and booleans recording whether this acquisition created the project root,
 `.musubix`, or `.musubix/evidence`. Production defaults are selected with `??`;
 tests construct optional dependency objects with conditional spread rather than
 passing explicit `undefined`.
-Constraints: The lock manager uses direct private filesystem primitives and
+Constraints: `resolveEvidenceWriterCanonicalRoot` uses `realpathSync.native`,
+returns one existing-root string, and propagates `ENOENT`; only
+`canonicalizeRootForAcquisition` performs the existing native ancestor walk and
+returns `{ canonicalRoot, rootExisted }` for a missing root. Outside an owner
+context, readers, recovery, and standalone lock inspection use the exported
+production resolver. Inside a context, the resolved string and optional
+injected resolver are stored and reused
+by acquisition, lease lookup, nested guards, coordinated readers, and incoming
+root coordination; no call site independently switches to promise `realpath`.
+Injected resolvers are context-scoped and use conditional optional-property
+construction. The lock manager uses direct private filesystem primitives and
 must not call guarded evidence helpers. Publication must never expose a
 zero-length or partially written canonical lock. The staging file and hard link
 must be on the same filesystem. Unsupported hard-link or durability behavior is
@@ -78,7 +92,8 @@ ADRs: ADR-0031
 
 ## DES-EVIDENCE-WRITER-LOCK-002: Async owner context and guarded access
 Responsibilities: Add an `AsyncLocalStorage` owner context containing an
-unforgeable symbol token and a canonical-root lease map. Provide one coordinator
+unforgeable symbol token, the resolved canonical-root helper, and a
+canonical-root lease map. Provide one coordinator
 that synchronously installs a root-keyed in-flight acquisition promise before
 the first `await`, lets later same-token sibling requests await that promise,
 increments a reference count for every successful reentrant/sibling lease, and
@@ -95,7 +110,7 @@ Interfaces: `withEvidenceWriterLock<T>(root: string, command: string, operation:
 Promise<void>`; `assertCoordinatedEvidenceRead(root: string): Promise<void>`;
 `assertProtectedPathReady(root: string, path: string, access: 'read' | 'write'):
 Promise<void>`; internal `EvidenceWriterContext` and root-keyed
-`EvidenceWriterLeaseState`.
+`EvidenceWriterLeaseState`; the context-bound resolver is used by every guard.
 Constraints: Tokens are never serialized or accepted from callers. Same-process
 calls outside the active async context are unrelated contenders. Context loss
 on an owner-required path reports `EVIDENCE_WRITER_CONTEXT_LOST`; it never
@@ -103,6 +118,8 @@ silently reacquires or bypasses the guard. Child processes and worker threads
 do not inherit ownership. A different canonical root receives an independent
 lease. Every guard canonicalizes its root through a shared positive `realpath`
 cache scoped to the current owner/reader operation before comparing ownership;
+the cache delegates to the same native resolver captured by the operation
+context rather than calling a different realpath API;
 the cache never stores failed lookups and is discarded when the operation
 finishes, so a later symlink retarget is resolved again. Absolute-path guards derive the same
 canonical root rather than slicing an unresolved path. The protected-path
@@ -239,8 +256,11 @@ lock owner/recovery results, and command help. Add deterministic process tests
 using a barrier-controlled helper process, plus unit tests with injected
 identity/liveness, release metadata-read/device-inode, and acquisition-fault
 probes, including unsupported-platform fingerprint refusal. Platform
-classification and synchronous/asynchronous evidence-directory synchronization
-are also injectable. Cover Windows publication and release
+classification, canonical-root resolution, and synchronous/asynchronous
+evidence-directory synchronization are also injectable. Recovery fixtures that
+simulate Linux record one directory-sync invocation with policy `strict`;
+Linux integration retains a non-injected real-filesystem recovery path. Cover
+Windows publication and release
 directory-sync `EPERM`, `EINVAL`, and `ENOTSUP` as successful unsupported-
 capability outcomes; cover every other platform/code and every file-sync,
 open/close, link, metadata, and unlink failure as fail-closed. Cover exhaustive
