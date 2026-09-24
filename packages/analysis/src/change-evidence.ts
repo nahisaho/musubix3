@@ -243,6 +243,10 @@ export function batchForKey(batches: ChangeTddBatch[], key: string): ChangeTddBa
   return batches.find((batch) => batchKey(batch.requirementIds) === key);
 }
 
+export function batchesForKey<T extends { requirementIds: string[] }>(batches: T[], key: string): T[] {
+  return batches.filter((batch) => batchKey(batch.requirementIds) === key);
+}
+
 // Pure, side-effect-free re-derivations of the exact "would this diagnostic
 // currently fire" conditions used by change.ts's validators. Kept here (with
 // no dependency on change.ts or change-waiver.ts) so change-waiver.ts can
@@ -345,10 +349,38 @@ export function orderMigrationRequiredPhaseCondition(change: ChangeRecord, phase
   return !!item && !Number.isInteger(item.order);
 }
 
-export function orderMigrationRequiredBatchCondition(change: ChangeRecord, batchPhaseName: string, key: string): boolean {
-  const batch = batchForKey(effectiveBatches(change), key);
-  const item = batch?.[batchPhaseName as TddBatchPhaseName];
+/** @id CODE-CHANGE-EVIDENCE-WAIVER-022
+ * @implements REQ-CHANGE-EVIDENCE-WAIVER-011
+ * @design DES-CHANGE-EVIDENCE-WAIVER-004
+ */
+type BatchOrderState = Pick<ChangeTddBatch, 'requirementIds'>
+  & Partial<Record<'red' | 'implementation' | 'green', { order?: number }>>;
+
+export function orderMigrationRequiredBatchItemCondition(
+  batch: BatchOrderState,
+  batchPhaseName: string,
+): boolean {
+  const item = batch[batchPhaseName as TddBatchPhaseName];
   return !!item && !Number.isInteger(item.order);
+}
+
+export function orderMigrationRequiredBatchCondition(
+  change: Pick<ChangeRecord, 'changeId' | 'requirementIds' | 'phases'> & { tddBatches?: BatchOrderState[] },
+  batchPhaseName: string,
+  key: string,
+): boolean {
+  const batches = [...(change.tddBatches ?? [])];
+  if (change.phases.red || change.phases.implementation || change.phases.green) {
+    const legacyBatch: BatchOrderState = {
+      requirementIds: [...change.requirementIds],
+      ...(change.phases.red ? { red: change.phases.red } : {}),
+      ...(change.phases.implementation ? { implementation: change.phases.implementation } : {}),
+      ...(change.phases.green ? { green: change.phases.green } : {}),
+    };
+    batches.unshift(legacyBatch);
+  }
+  return batchesForKey(batches, key)
+    .some((batch) => orderMigrationRequiredBatchItemCondition(batch, batchPhaseName));
 }
 
 export function orderMigrationRequiredRequirementCondition(

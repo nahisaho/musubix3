@@ -38,6 +38,26 @@ function runCheck(
   }
 }
 
+function runGateCommandTimeoutMarginCheck(): CheckReport {
+  try {
+    const stdout = execFileSync(
+      process.execPath,
+      ['scripts/check-gate-command-timeout-margin.mjs'],
+      { cwd: process.cwd(), encoding: 'utf8' },
+    );
+    return JSON.parse(stdout) as CheckReport;
+  } catch (error) {
+    const stdout = error instanceof Error && 'stdout' in error && typeof error.stdout === 'string'
+      ? error.stdout
+      : '';
+    if (stdout) return JSON.parse(stdout) as CheckReport;
+    return {
+      valid: false,
+      diagnostics: [{ code: 'CHECK_EXECUTION', message: 'Checker did not return JSON.' }],
+    };
+  }
+}
+
 function withFixture(run: (root: string) => void): void {
   const root = mkdtempSync(join(tmpdir(), 'musubix3-audit-'));
   try {
@@ -99,6 +119,16 @@ function expectEvidenceDiagnostic(mutate: (change: string) => string): void {
 }
 
 describe('npm audit remediation', () => {
+  /** @id TEST-GATE-COMMAND-TIMEOUT-MARGIN-001
+   * @verifies REQ-GATE-COMMAND-TIMEOUT-MARGIN-001
+   */
+  it('TEST-GATE-COMMAND-TIMEOUT-MARGIN-001 preserves full-test policy with the rebaselined 305-second timeout margin', () => {
+    const config = readJson('.musubix/config.json');
+    const commands = config.commands as Array<{ name?: string; timeoutMs?: number }>;
+    expect(commands.find((command) => command.name === 'test')?.timeoutMs).toBe(305000);
+    expect(runGateCommandTimeoutMarginCheck()).toEqual({ valid: true, diagnostics: [] });
+  });
+
   /** @id TEST-NPM-AUDIT-REMEDIATION-001
    * @verifies REQ-NPM-AUDIT-REMEDIATION-001
    */

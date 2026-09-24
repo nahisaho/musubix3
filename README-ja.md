@@ -390,6 +390,12 @@ fileへ書込み・flushした後、排他的hard linkで公開するため、ca
 空または部分的な状態で見えることはありません。このatomic publicationを
 提供できないfilesystemでは`EVIDENCE_WRITER_LOCK_ACQUIRE_FAILED`となり、
 非atomicなfallbackは行いません。
+staging fileの同期とatomic publicationまたは検証済みreleaseが成功した後、
+Windows の directory synchronization が EPERM、EINVAL、ENOTSUP
+のいずれかを返す場合に限り、そのdirectory entryのdurability操作を未対応
+capabilityとして扱います。file同期、publication、metadata、unlink、
+open/close、その他のerror、およびWindows以外のplatformはfail-closedの
+ままです。
 
 status、approval prepare/validate、trace/graph inspection、knowledge query、
 TDD validate、attestation payload/verify、merge dry-runなどのcoordinated
@@ -404,7 +410,8 @@ musubix3外からproject fileを直接変更するprogramはcoordination対象�
 自動復旧は現在Linux限定で、hostname、boot identity、PID namespaceが一致し、
 owner PIDが確実に存在しない場合だけ削除します。live、PID再利用、別host、
 不正・変更済みmetadata、未対応platform、判定不能なlockは正確なpathと確認手順を
-表示して保持し、force modeはありません。canonical lockと
+表示して保持し、force modeはありません。必要なidentity probeを提供できないため、
+Windows と macOS の自動復旧は inspection-only です。canonical lockと
 `.writer-lock.<transactionId>.json` staging fileはGitおよび生成入力から除外
 されます。関連processが存在しないことを確認した後に限り、残存staging fileを
 正確なpath指定で削除できます。
@@ -1024,6 +1031,28 @@ secretも利用できます。npm publishがpendingまたは失敗してもGitHu
 成功に見せかけず、各jobの状態を独立して確認できます。手動実行ではrelease tagを
 workflow refとして選び、同じ値を`release_tag`へ指定します。tagがOIDCに束縛された
 `GITHUB_SHA`を指していなければworkflowは拒否します。
+
+npm publishはstableな`vMAJOR.MINOR.PATCH` tagだけを受け付けます。保護された
+2つのGitHub Actions publish経路は、そのtagをcheckoutし、non-draftのGitHub
+Releaseを新しい空ディレクトリへdownloadしてから、共通validatorを通してnpm
+provenance publishを実行します。validatorはhistorical assetや追加assetを拒否し、
+SHA256SUMSの厳密な形式、tarball内の`musubix3` package version、全local fileと
+現在のuploaded GitHub Release asset digestの一致を検証します。`release:prepare`
+の直接出力には後段のstrict CI attestationがないためpublishできません。
+
+local operatorは同じreleaseを検証できますが、provenance publishはできません。
+
+```bash
+gh auth status
+mkdir release-assets-verify
+gh release download v1.2.3 --repo nahisaho/musubix3 --dir release-assets-verify
+npm run --silent release:publish -- --verify-only --tag v1.2.3 \
+  --repository nahisaho/musubix3 --directory release-assets-verify
+```
+
+release asset出力に`digest`と`state`を含むGitHub CLIを使用してください。
+provenance publishは保護された`npm-publish` GitHub Actions environmentだけで
+実行されます。
 
 release attestationは、ephemeral Ed25519公開鍵をcustom audienceへ束縛した
 GitHub Actions OIDC tokenを使用します。署名対象にはrepository、Git commit、

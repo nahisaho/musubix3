@@ -22,38 +22,36 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     environment: npm-publish
+    env:
+      GH_TOKEN: ${{ github.token }}
+      RELEASE_TAG: ${{ inputs.release_tag }}
     steps:
+      - name: Verify stable GitHub Release tag
+        run: |
+          [[ "$RELEASE_TAG" =~ ^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$ ]]
+          test "$(gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/$RELEASE_TAG" --jq .ref)" = "refs/tags/$RELEASE_TAG"
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+        with:
+          ref: refs/tags/${{ inputs.release_tag }}
       - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
         with:
           node-version: 22
+          cache: npm
           registry-url: https://registry.npmjs.org
       - name: Install npm with provenance support
         run: npm install --global npm@11.6.0
+      - run: npm ci
       - name: Verify npm authentication
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npm whoami
-      - name: Download and verify immutable release assets
-        env:
-          GH_TOKEN: ${{ github.token }}
-          RELEASE_TAG: ${{ inputs.release_tag }}
+      - name: Download exact GitHub Release assets
         run: |
-          [[ "$RELEASE_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$ ]]
           mkdir release-assets
           gh release download "$RELEASE_TAG" \
             --repo "$GITHUB_REPOSITORY" \
             --dir release-assets
-          (cd release-assets && sha256sum --check SHA256SUMS)
-          version="${RELEASE_TAG#v}"
-          tarball="release-assets/musubix3-${version}.tgz"
-          test -f "$tarball"
-          package_version="$(
-            tar -xOf "$tarball" package/package.json |
-              node -e "let text=''; process.stdin.on('data', chunk => text += chunk).on('end', () => process.stdout.write(JSON.parse(text).version))"
-          )"
-          test "$package_version" = "$version"
       - name: Publish exact release tarball
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          RELEASE_TAG: ${{ inputs.release_tag }}
-        run: npm publish "./release-assets/musubix3-${RELEASE_TAG#v}.tgz" --provenance --access public
+        run: npm run --silent release:publish -- --tag "$RELEASE_TAG" --repository "$GITHUB_REPOSITORY" --directory release-assets

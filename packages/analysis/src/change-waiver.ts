@@ -1,14 +1,15 @@
 import { error, type Diagnostic } from '../../domain/src/index.js';
 import { digest, exists, readText, within, writeJson } from './files.js';
 import {
-  batchFor, batchForKey, batchKey, completenessTddUnsatisfiedCondition, designUnchangedCondition,
+  batchFor, batchesForKey, batchKey, completenessTddUnsatisfiedCondition, designUnchangedCondition,
   currentRequirementIdsForBatch, effectiveBatches, greenUnprovenCondition,
   implementationUnchangedCondition, loadChangeEvidence,
-  orderMigrationRequiredBatchCondition, orderMigrationRequiredPhaseCondition, orderMigrationRequiredRequirementCondition,
+  orderMigrationRequiredBatchCondition,
+  orderMigrationRequiredPhaseCondition, orderMigrationRequiredRequirementCondition,
   phaseMissingCondition, recordMissingCondition, redUnprovenCondition, relevantImplementationUnchangedCondition,
   requirementsUnchangedCondition, testChangedAfterRedCondition, testsUnchangedCondition,
   voidedCycleOrdersInCurrentWindow,
-  type ChangeEvidence, type ChangePhase, type ChangeRecord, type ChangeTddBatch,
+  type ChangeEvidence, type ChangePhase, type ChangeTddBatch,
 } from './change-evidence.js';
 import { loadTddEvidence, validlyVoidedTddCycles, type TddEvidence } from './tdd.js';
 import { appendEvidenceOrder, evidenceOrderRecord, inspectEvidenceOrder } from './order.js';
@@ -169,6 +170,14 @@ export type ParsedDetail =
   | { kind: 'requirement'; requirementId: string }
   | { kind: 'batchKey'; batchKey: string };
 
+function validBatchKey(key: string): boolean {
+  const ids = key.split(',');
+  return ids.length > 0
+    && ids.every((id) => id.length > 0)
+    && new Set(ids).size === ids.length
+    && batchKey(ids) === key;
+}
+
 /** @id CODE-CHANGE-EVIDENCE-WAIVER-019
  * @implements REQ-CHANGE-EVIDENCE-WAIVER-016
  * @design DES-CHANGE-EVIDENCE-WAIVER-002
@@ -177,19 +186,60 @@ export type ParsedDetail =
  */
 export function parseDetail(code: WaivableCode, detail: string | undefined): ParsedDetail | null {
   if (detail === undefined) return null;
-  if (detail.startsWith('phase:')) return { kind: 'phase', phaseName: detail.slice('phase:'.length) };
+  if (detail.startsWith('phase:')) {
+    const phaseName = detail.slice('phase:'.length);
+    const allowed = code === 'CHANGE_PHASE_MISSING'
+      ? ['impact', 'requirements', 'design', 'quality', ...tddBatchPhaseNames]
+      : code === 'CHANGE_ORDER_MIGRATION_REQUIRED'
+        ? ['impact', 'requirements', 'design']
+        : [];
+    return allowed.includes(phaseName as never) ? { kind: 'phase', phaseName } : null;
+  }
   if (detail.startsWith('batch:')) {
+    if (code !== 'CHANGE_ORDER_MIGRATION_REQUIRED') return null;
     const rest = detail.slice('batch:'.length);
     const separator = rest.indexOf(':');
     if (separator === -1) return null;
-    return { kind: 'batch', batchPhaseName: rest.slice(0, separator), batchKey: rest.slice(separator + 1) };
+    const batchPhaseName = rest.slice(0, separator);
+    const key = rest.slice(separator + 1);
+    return (tddBatchPhaseNames as readonly string[]).includes(batchPhaseName) && validBatchKey(key)
+      ? { kind: 'batch', batchPhaseName, batchKey: key }
+      : null;
   }
-  if (detail.startsWith('requirement:')) return { kind: 'requirement', requirementId: detail.slice('requirement:'.length) };
+  if (detail.startsWith('requirement:')) {
+    if (code !== 'CHANGE_ORDER_MIGRATION_REQUIRED') return null;
+    const parsedRequirementId = detail.slice('requirement:'.length);
+    return parsedRequirementId ? { kind: 'requirement', requirementId: parsedRequirementId } : null;
+  }
   if (code === 'CHANGE_TESTS_UNCHANGED' || code === 'CHANGE_IMPLEMENTATION_UNCHANGED'
     || code === 'CHANGE_TEST_CHANGED_AFTER_RED' || code === 'CHANGE_RELEVANT_IMPLEMENTATION_UNCHANGED') {
-    return { kind: 'batchKey', batchKey: detail };
+    return validBatchKey(detail) ? { kind: 'batchKey', batchKey: detail } : null;
   }
   return null;
+}
+
+function compareSnapshotCycles<T>(
+  left: T,
+  right: T,
+  orderOf: (item: T) => unknown,
+  idOf: (item: T) => string | undefined,
+  serializedOf: (item: T) => unknown,
+): number {
+  const rank = (value: unknown): number => Number.isInteger(value) ? 0 : value === undefined || value === null ? 2 : 1;
+  const leftOrder = orderOf(left);
+  const rightOrder = orderOf(right);
+  const rankDifference = rank(leftOrder) - rank(rightOrder);
+  if (rankDifference !== 0) return rankDifference;
+  if (Number.isInteger(leftOrder) && Number.isInteger(rightOrder) && leftOrder !== rightOrder) {
+    return (leftOrder as number) - (rightOrder as number);
+  }
+  if (!Number.isInteger(leftOrder) && leftOrder != null && rightOrder != null) {
+    const orderComparison = canonicalJson(leftOrder).localeCompare(canonicalJson(rightOrder));
+    if (orderComparison !== 0) return orderComparison;
+  }
+  const idComparison = (idOf(left) ?? '').localeCompare(idOf(right) ?? '');
+  if (idComparison !== 0) return idComparison;
+  return canonicalJson(serializedOf(left)).localeCompare(canonicalJson(serializedOf(right)));
 }
 
 /** @id CODE-CHANGE-EVIDENCE-WAIVER-004
@@ -207,7 +257,6 @@ export async function snapshotPayload(
   detail?: string,
 ): Promise<unknown | null> {
   const changePath = `.musubix/changes/${changeId}.md`;
-  if (!await exists(within(root, changePath))) return null;
   const change = evidence?.changes.find((entry) => entry.changeId === changeId);
 
   if (code === 'CHANGE_REQUIREMENTS_UNCHANGED') {
@@ -228,6 +277,7 @@ export async function snapshotPayload(
     };
   }
   if (code === 'CHANGE_RECORD_MISSING') {
+    if (!await exists(within(root, changePath))) return null;
     return {
       documentDigest: digest(await readText(root, changePath)),
       everRecorded: [...order.records.values()].some((record) => record.kind === 'change' && record.entityId === changeId && record.phase !== 'waiver'),
@@ -243,16 +293,14 @@ export async function snapshotPayload(
       .filter((cycle) => cycle.requirementId === requirementId)
       .map((cycle) => ({
         cycleId: cycle.cycleId ?? '',
-        red: { valid: cycle.red.valid, order: cycle.red.order ?? null },
-        green: cycle.green ? { valid: cycle.green.valid, order: cycle.green.order ?? null } : null,
+        red: { valid: cycle.red.valid, order: cycle.red.order },
+        green: cycle.green ? { valid: cycle.green.valid, order: cycle.green.order } : null,
       }))
-      .sort((a, b) => {
-        const orderA = a.red.order ?? Number.MAX_SAFE_INTEGER;
-        const orderB = b.red.order ?? Number.MAX_SAFE_INTEGER;
-        if (orderA !== orderB) return orderA - orderB;
-        return a.cycleId < b.cycleId ? -1 : a.cycleId > b.cycleId ? 1 : 0;
-      })
-      .map(({ cycleId: _cycleId, ...rest }) => rest);
+      .sort((a, b) => compareSnapshotCycles(a, b, (item) => item.red.order, (item) => item.cycleId, ({ cycleId: _id, ...item }) => item))
+      .map(({ cycleId: _cycleId, ...rest }) => ({
+        red: { valid: rest.red.valid, order: rest.red.order ?? null },
+        green: rest.green ? { valid: rest.green.valid, order: rest.green.order ?? null } : null,
+      }));
     const validlyVoided = validlyVoidedTddCycles(tdd, order);
     const voidedCycleOrders = change
       ? voidedCycleOrdersInCurrentWindow(change, requirementId, tdd, validlyVoided)
@@ -301,20 +349,27 @@ export async function snapshotPayload(
       };
     }
     if (parsed.kind === 'batch') {
-      const batch = change ? batchForKey(effectiveBatches(change), parsed.batchKey) : undefined;
-      const item = batch?.[parsed.batchPhaseName as typeof tddBatchPhaseNames[number]];
-      return {
-        phaseItemPresent: item != null,
-        orderIsInteger: Number.isInteger(item?.order),
-        phaseOrder: Number.isInteger(item?.order) ? item!.order : null,
+      const matches = change ? batchesForKey(effectiveBatches(change), parsed.batchKey) : [];
+      const state = (batch: ChangeTddBatch | undefined) => {
+        const item = batch?.[parsed.batchPhaseName as typeof tddBatchPhaseNames[number]];
+        return {
+          phaseItemPresent: item != null,
+          orderIsInteger: Number.isInteger(item?.order),
+          phaseOrder: Number.isInteger(item?.order) ? item!.order : null,
+        };
       };
+      return matches.length <= 1 ? state(matches[0]) : { matchingBatches: matches.map((batch) => state(batch)) };
     }
     if (parsed.kind === 'requirement') {
       const validlyVoided = validlyVoidedTddCycles(tdd, order);
       const cycles = (tdd?.cycles ?? [])
         .filter((cycle) => cycle.requirementId === parsed.requirementId)
-        .map((cycle) => ({ redOrder: cycle.red.order ?? null, greenOrder: cycle.green?.order ?? null }))
-        .sort((a, b) => (a.redOrder ?? Number.MAX_SAFE_INTEGER) - (b.redOrder ?? Number.MAX_SAFE_INTEGER));
+        .map((cycle) => ({ cycleId: cycle.cycleId ?? '', redOrder: cycle.red.order, greenOrder: cycle.green?.order }))
+        .sort((a, b) => compareSnapshotCycles(a, b, (item) => item.redOrder, (item) => item.cycleId, ({ cycleId: _id, ...item }) => item))
+        .map(({ cycleId: _cycleId, redOrder, greenOrder }) => ({
+          redOrder: redOrder ?? null,
+          greenOrder: greenOrder ?? null,
+        }));
       const voidedCycleOrders = change
         ? voidedCycleOrdersInCurrentWindow(change, parsed.requirementId, tdd, validlyVoided)
         : [];
@@ -324,22 +379,59 @@ export async function snapshotPayload(
   }
 
   if (parsed.kind !== 'batchKey') return null;
-  const batch = change ? batchForKey(effectiveBatches(change), parsed.batchKey) : undefined;
+  const batches = change ? effectiveBatches(change) : [];
+  const matches = batchesForKey(batches, parsed.batchKey);
+  const batch = matches[0];
 
   if (code === 'CHANGE_TESTS_UNCHANGED') {
-    return { designTests: change?.phases.design?.fingerprints.tests ?? null, batchRedTests: batch?.red?.fingerprints.tests ?? null };
+    const designTests = change?.phases.design?.fingerprints.tests ?? null;
+    if (matches.length <= 1) return { designTests, batchRedTests: batch?.red?.fingerprints.tests ?? null };
+    return {
+      designTests,
+      matchingBatches: matches.map((candidate) => ({
+        ownedRequirementIds: change ? currentRequirementIdsForBatch(batches, candidate, change.requirementIds).sort() : [],
+        batchRedTests: candidate.red?.fingerprints.tests ?? null,
+      })),
+    };
   }
   if (code === 'CHANGE_IMPLEMENTATION_UNCHANGED') {
+    if (matches.length > 1) {
+      return {
+        matchingBatches: matches.map((candidate) => ({
+          ownedRequirementIds: change ? currentRequirementIdsForBatch(batches, candidate, change.requirementIds).sort() : [],
+          redImplementation: candidate.red?.fingerprints.implementation ?? null,
+          implementationImplementation: candidate.implementation?.fingerprints.implementation ?? null,
+        })),
+      };
+    }
     return {
       redImplementation: batch?.red?.fingerprints.implementation ?? null,
       implementationImplementation: batch?.implementation?.fingerprints.implementation ?? null,
     };
   }
   if (code === 'CHANGE_TEST_CHANGED_AFTER_RED') {
+    if (matches.length > 1) {
+      return {
+        matchingBatches: matches.map((candidate) => ({
+          ownedRequirementIds: change ? currentRequirementIdsForBatch(batches, candidate, change.requirementIds).sort() : [],
+          redTests: candidate.red?.fingerprints.tests ?? null,
+          greenTests: candidate.green?.fingerprints.tests ?? null,
+        })),
+      };
+    }
     return { redTests: batch?.red?.fingerprints.tests ?? null, greenTests: batch?.green?.fingerprints.tests ?? null };
   }
   if (code === 'CHANGE_RELEVANT_IMPLEMENTATION_UNCHANGED') {
     if (requirementId === undefined) return null;
+    if (matches.length > 1) {
+      return {
+        matchingBatches: matches.map((candidate) => ({
+          ownedRequirementIds: change ? currentRequirementIdsForBatch(batches, candidate, change.requirementIds).sort() : [],
+          redRequirementImplementation: candidate.red?.fingerprints.requirementImplementations?.[requirementId] ?? null,
+          implementationRequirementImplementation: candidate.implementation?.fingerprints.requirementImplementations?.[requirementId] ?? null,
+        })),
+      };
+    }
     return {
       redRequirementImplementation: batch?.red?.fingerprints.requirementImplementations?.[requirementId] ?? null,
       implementationRequirementImplementation: batch?.implementation?.fingerprints.requirementImplementations?.[requirementId] ?? null,
@@ -390,20 +482,15 @@ export function waiverChainValid(waivers: ChangeWaiverRecord[], index: number): 
  * @implements REQ-CHANGE-EVIDENCE-WAIVER-006 REQ-CHANGE-EVIDENCE-WAIVER-016
  * @design DES-CHANGE-EVIDENCE-WAIVER-002
  */
-export async function waiverLinkage(
-  root: string,
-  evidence: ChangeEvidence | null,
+export function waiverLinkage(
   order: Awaited<ReturnType<typeof inspectEvidenceOrder>>,
   waivers: ChangeWaiverRecord[],
   index: number,
-): Promise<{ valid: boolean; reason?: string }> {
+): { valid: boolean; reason?: string } {
   const record = waivers[index];
   if (!record) return { valid: false, reason: 'Waiver record does not exist.' };
   if (!waiverRecordShapeValid(record)) return { valid: false, reason: 'Waiver record has an invalid shape.' };
   if (!waiverChainValid(waivers, index)) return { valid: false, reason: 'Waiver record breaks the evidence chain.' };
-  if (!await exists(within(root, `.musubix/changes/${record.changeId}.md`))) {
-    return { valid: false, reason: `${record.changeId} has no change document.` };
-  }
   if (!(WAIVABLE_CODES as readonly string[]).includes(record.code)) {
     return { valid: false, reason: `${record.code} is not a waivable code.` };
   }
@@ -414,16 +501,11 @@ export async function waiverLinkage(
   if (requiresDetail(code) !== (record.detail !== undefined)) {
     return { valid: false, reason: `${code}'s detail scope does not match its regime.` };
   }
-  if (code === 'CHANGE_RECORD_MISSING') {
-    const stillMissing = evidence === null || !evidence.changes.some((entry) => entry.changeId === record.changeId);
-    if (!stillMissing) return { valid: false, reason: `${record.changeId} now has a chronology record.` };
-  } else {
-    if (evidence === null) return { valid: false, reason: 'No change evidence is available to link this waiver.' };
-    const change = evidence.changes.find((entry) => entry.changeId === record.changeId);
-    if (!change) return { valid: false, reason: `${record.changeId} is not a known change.` };
-    if (record.requirementId !== undefined && !change.requirementIds.includes(record.requirementId)) {
-      return { valid: false, reason: `${record.requirementId} is not declared by ${record.changeId}.` };
-    }
+  if (record.detail !== undefined && !parseDetail(code, record.detail)) {
+    return { valid: false, reason: `${record.detail} is not valid detail grammar for ${code}.` };
+  }
+  if (waivers.filter((candidate) => candidate.order === record.order).length !== 1) {
+    return { valid: false, reason: `Waiver order ${record.order} is claimed by more than one record.` };
   }
   if (!order.valid) return { valid: false, reason: 'Monotonic evidence order is invalid.' };
   const orderRecord = evidenceOrderRecord(order.records, 'change', record.changeId, 'waiver', {
@@ -438,11 +520,99 @@ export async function waiverLinkage(
   return { valid: true };
 }
 
+export type WaiverCondition = 'true' | 'false' | 'indeterminate';
+
+export interface WaiverScope {
+  changeId: string;
+  code: WaivableCode;
+  requirementId?: string;
+  detail?: string;
+}
+
 export interface WaiverContext {
   loaded: LoadedChangeWaiverEvidence | null;
   order: Awaited<ReturnType<typeof inspectEvidenceOrder>>;
   linkage: Array<{ valid: boolean; reason?: string }>;
   currentHash: Array<string | undefined>;
+  condition: Array<WaiverCondition | undefined>;
+}
+
+export async function evaluateWaiverCondition(
+  root: string,
+  evidence: ChangeEvidence | null,
+  tdd: TddEvidence | null,
+  order: Awaited<ReturnType<typeof inspectEvidenceOrder>>,
+  scope: WaiverScope,
+): Promise<WaiverCondition> {
+  const change = evidence?.changes.find((entry) => entry.changeId === scope.changeId);
+  if (scope.code === 'CHANGE_RECORD_MISSING') {
+    if (!await exists(within(root, `.musubix/changes/${scope.changeId}.md`))) return 'indeterminate';
+    return await recordMissingCondition(root, evidence, scope.changeId) ? 'true' : 'false';
+  }
+  if (!change) return 'indeterminate';
+  if (scope.requirementId !== undefined && !change.requirementIds.includes(scope.requirementId)) return 'indeterminate';
+
+  const validlyVoided = validlyVoidedTddCycles(tdd, order);
+  const result = (value: boolean): WaiverCondition => value ? 'true' : 'false';
+  switch (scope.code) {
+    case 'CHANGE_REQUIREMENTS_UNCHANGED':
+      return result(requirementsUnchangedCondition(change));
+    case 'CHANGE_DESIGN_UNCHANGED':
+      return result(designUnchangedCondition(change));
+    case 'CHANGE_RED_UNPROVEN':
+      return result(!change.qualityHistory?.length
+        && redUnprovenCondition(change, scope.requirementId!, tdd, validlyVoided));
+    case 'CHANGE_GREEN_UNPROVEN':
+      return result(!change.qualityHistory?.length
+        && greenUnprovenCondition(change, scope.requirementId!, tdd, validlyVoided));
+    case 'CHANGE_COMPLETENESS_TDD':
+      return result(completenessTddUnsatisfiedCondition(change, scope.requirementId!, tdd, validlyVoided));
+    default:
+      break;
+  }
+
+  const parsed = parseDetail(scope.code, scope.detail);
+  if (!parsed) return 'indeterminate';
+  if (scope.code === 'CHANGE_PHASE_MISSING') {
+    return parsed.kind === 'phase' ? result(phaseMissingCondition(change, parsed.phaseName)) : 'indeterminate';
+  }
+  if (scope.code === 'CHANGE_ORDER_MIGRATION_REQUIRED') {
+    if (parsed.kind === 'phase') return result(orderMigrationRequiredPhaseCondition(change, parsed.phaseName));
+    if (parsed.kind === 'requirement') {
+      if (!change.requirementIds.includes(parsed.requirementId)) return 'indeterminate';
+      return result(orderMigrationRequiredRequirementCondition(change, parsed.requirementId, tdd, validlyVoided));
+    }
+    if (parsed.kind === 'batch') {
+      const matches = batchesForKey(effectiveBatches(change), parsed.batchKey);
+      if (!matches.length) return 'indeterminate';
+      return result(orderMigrationRequiredBatchCondition(change, parsed.batchPhaseName, parsed.batchKey));
+    }
+    return 'indeterminate';
+  }
+  if (parsed.kind !== 'batchKey') return 'indeterminate';
+  const batches = effectiveBatches(change);
+  const matches = batchesForKey(batches, parsed.batchKey);
+  if (!matches.length) return 'indeterminate';
+  const owned = matches.filter((batch) => {
+    const requirementIds = currentRequirementIdsForBatch(batches, batch, change.requirementIds);
+    return scope.code === 'CHANGE_RELEVANT_IMPLEMENTATION_UNCHANGED'
+      ? scope.requirementId !== undefined && requirementIds.includes(scope.requirementId)
+      : requirementIds.length > 0;
+  });
+  if (!owned.length) return 'false';
+  if (scope.code === 'CHANGE_TESTS_UNCHANGED') {
+    return result(owned.some((batch) => testsUnchangedCondition(change, batch)));
+  }
+  if (scope.code === 'CHANGE_IMPLEMENTATION_UNCHANGED') {
+    return result(owned.some((batch) => implementationUnchangedCondition(batch)));
+  }
+  if (scope.code === 'CHANGE_TEST_CHANGED_AFTER_RED') {
+    return result(owned.some((batch) => testChangedAfterRedCondition(batch)));
+  }
+  if (scope.code === 'CHANGE_RELEVANT_IMPLEMENTATION_UNCHANGED') {
+    return result(owned.some((batch) => relevantImplementationUnchangedCondition(batch, scope.requirementId!)));
+  }
+  return 'indeterminate';
 }
 
 /** @id CODE-CHANGE-EVIDENCE-WAIVER-020
@@ -456,30 +626,50 @@ export async function buildWaiverContext(
   root: string,
   evidence: ChangeEvidence | null,
   tdd: TddEvidence | null,
+  precomputed: {
+    loaded?: LoadedChangeWaiverEvidence | null;
+    order?: Awaited<ReturnType<typeof inspectEvidenceOrder>>;
+  } = {},
 ): Promise<WaiverContext> {
-  const loaded = await loadChangeWaiverEvidence(root);
-  const order = await inspectEvidenceOrder(root);
+  const loaded = precomputed.loaded !== undefined ? precomputed.loaded : await loadChangeWaiverEvidence(root);
+  const order = precomputed.order ?? await inspectEvidenceOrder(root);
   const linkage: Array<{ valid: boolean; reason?: string }> = [];
   const currentHash: Array<string | undefined> = [];
+  const condition: Array<WaiverCondition | undefined> = [];
   if (loaded && !loaded.malformed) {
     for (let index = 0; index < loaded.waivers.length; index++) {
-      const recordLinkage = await waiverLinkage(root, evidence, order, loaded.waivers, index);
+      const recordLinkage = waiverLinkage(order, loaded.waivers, index);
       linkage.push(recordLinkage);
       if (recordLinkage.valid) {
         const record = loaded.waivers[index]!;
         currentHash.push(digest(canonicalJson(await snapshotPayload(
           root, evidence, tdd, order, record.changeId, record.code as WaivableCode, record.requirementId, record.detail,
         ))));
+        condition.push(await evaluateWaiverCondition(root, evidence, tdd, order, {
+          changeId: record.changeId,
+          code: record.code as WaivableCode,
+          ...(record.requirementId !== undefined ? { requirementId: record.requirementId } : {}),
+          ...(record.detail !== undefined ? { detail: record.detail } : {}),
+        }));
       } else {
         currentHash.push(undefined);
+        condition.push(undefined);
       }
     }
   }
-  return { loaded, order, linkage, currentHash };
+  return { loaded, order, linkage, currentHash, condition };
 }
 
-function nonStale(record: ChangeWaiverRecord, index: number, waiverContext: WaiverContext): boolean {
-  return record.snapshotVersion === CURRENT_SNAPSHOT_VERSION && record.snapshotHash === waiverContext.currentHash[index];
+export function isWaiverStale(waiverContext: WaiverContext, index: number): boolean {
+  const loaded = waiverContext.loaded;
+  if (!loaded || loaded.malformed) return true;
+  const record = loaded.waivers[index];
+  return !record
+    || record.snapshotVersion !== CURRENT_SNAPSHOT_VERSION
+    || record.snapshotHash !== waiverContext.currentHash[index]
+    || waiverContext.condition[index] === 'false'
+    || waiverContext.condition[index] === 'indeterminate'
+    || waiverContext.condition[index] === undefined;
 }
 
 function scopeMatches(record: ChangeWaiverRecord, changeId: string, code: string, requirementId: string | undefined, detail: string | undefined): boolean {
@@ -491,12 +681,9 @@ function scopeMatches(record: ChangeWaiverRecord, changeId: string, code: string
  * `changeId`/`code`/`requirementId`/`detail` scope group (REQ-006's
  * supersession rule), returning its index, or -1 if none match/link.
  */
-function authoritativeIndex(
+export function authoritativeWaiverIndex(
   waiverContext: WaiverContext,
-  changeId: string,
-  code: string,
-  requirementId: string | undefined,
-  detail: string | undefined,
+  scope: WaiverScope,
 ): number {
   const loaded = waiverContext.loaded;
   if (!loaded || loaded.malformed) return -1;
@@ -504,7 +691,7 @@ function authoritativeIndex(
   for (let index = 0; index < loaded.waivers.length; index++) {
     const record = loaded.waivers[index]!;
     if (!waiverContext.linkage[index]?.valid) continue;
-    if (!scopeMatches(record, changeId, code, requirementId, detail)) continue;
+    if (!scopeMatches(record, scope.changeId, scope.code, scope.requirementId, scope.detail)) continue;
     if (best === -1 || record.order > loaded.waivers[best]!.order) best = index;
   }
   return best;
@@ -525,10 +712,15 @@ export function waivedDiagnostic(
   const base = errorFor(code, message, { changeId, ...(requirementId !== undefined ? { requirementId } : {}), ...(detail !== undefined ? { detail } : {}) });
   const loaded = waiverContext.loaded;
   if (!loaded || loaded.malformed) return base;
-  const index = authoritativeIndex(waiverContext, changeId, code, requirementId, detail);
+  const index = authoritativeWaiverIndex(waiverContext, {
+    changeId,
+    code,
+    ...(requirementId !== undefined ? { requirementId } : {}),
+    ...(detail !== undefined ? { detail } : {}),
+  });
   if (index === -1) return base;
   const record = loaded.waivers[index]!;
-  if (!nonStale(record, index, waiverContext)) return base;
+  if (isWaiverStale(waiverContext, index)) return base;
   return {
     ...base,
     severity: 'warning',
@@ -540,11 +732,7 @@ export function waivedDiagnostic(
  * @implements REQ-CHANGE-EVIDENCE-WAIVER-006 REQ-CHANGE-EVIDENCE-WAIVER-007 REQ-CHANGE-EVIDENCE-WAIVER-011
  * @design DES-CHANGE-EVIDENCE-WAIVER-004
  */
-export function reportWaiverEvidenceDiagnostics(
-  waiverContext: WaiverContext,
-  _evidence: ChangeEvidence | null,
-  _tdd: TddEvidence | null,
-): Diagnostic[] {
+export function reportWaiverEvidenceDiagnostics(waiverContext: WaiverContext): Diagnostic[] {
   const loaded = waiverContext.loaded;
   if (!loaded) return [];
   if (loaded.malformed) {
@@ -568,11 +756,28 @@ export function reportWaiverEvidenceDiagnostics(
     const scopeKey = JSON.stringify([record.changeId, record.code, record.requirementId, record.detail]);
     if (groupsSeen.has(scopeKey)) continue;
     groupsSeen.add(scopeKey);
-    const authoritative = authoritativeIndex(waiverContext, record.changeId, record.code, record.requirementId, record.detail);
+    const authoritative = authoritativeWaiverIndex(waiverContext, {
+      changeId: record.changeId,
+      code: record.code as WaivableCode,
+      ...(record.requirementId !== undefined ? { requirementId: record.requirementId } : {}),
+      ...(record.detail !== undefined ? { detail: record.detail } : {}),
+    });
     if (authoritative === -1) continue;
     const authoritativeRecord = loaded.waivers[authoritative]!;
-    if (!nonStale(authoritativeRecord, authoritative, waiverContext)) {
-      diagnostics.push(error('CHANGE_WAIVER_STALE', `Waiver for ${label(authoritativeRecord)} is stale.`, WAIVER_PATH));
+    if (isWaiverStale(waiverContext, authoritative)) {
+      const condition = waiverContext.condition[authoritative];
+      const remediation = condition === 'false'
+        ? 'The target code is no longer reported for this scope (condition=false); a replacement waiver is not required.'
+        : condition === 'true'
+          ? 'The waived condition still exists (condition=true); resolve the debt or record an allowed replacement waiver.'
+          : 'The waived condition cannot be evaluated; restore an evaluable change, requirement, or batch scope before retrying.';
+      diagnostics.push({
+        ...error('CHANGE_WAIVER_STALE', `Waiver for ${label(authoritativeRecord)} is stale. ${remediation}`, WAIVER_PATH),
+        severity: condition === 'false' ? 'warning' : 'error',
+        changeId: authoritativeRecord.changeId,
+        ...(authoritativeRecord.requirementId !== undefined ? { requirementId: authoritativeRecord.requirementId } : {}),
+        ...(authoritativeRecord.detail !== undefined ? { detail: authoritativeRecord.detail } : {}),
+      });
     }
   }
   return diagnostics;
@@ -614,7 +819,7 @@ async function recordChangeWaiverUnlocked(
   for (let index = 0; index < existing.waivers.length; index++) {
     if (!waiverRecordShapeValid(existing.waivers[index])
       || !waiverChainValid(existing.waivers, index)
-      || !(await waiverLinkage(root, evidence, order, existing.waivers, index)).valid) {
+      || !waiverLinkage(order, existing.waivers, index).valid) {
       throw new Error('An existing waiver record is invalid; repair the evidence chain before recording a new waiver.');
     }
   }
@@ -635,88 +840,35 @@ async function recordChangeWaiverUnlocked(
   if (!approver.trim() || !reason.trim()) {
     throw new Error('A non-empty --approver and --reason are required.');
   }
-  if (!await exists(within(root, `.musubix/changes/${changeId}.md`))) {
-    throw new Error(`${changeId} has no change document.`);
-  }
-  const change: ChangeRecord | undefined = evidence?.changes.find((entry) => entry.changeId === changeId);
-  if (waivableCode !== 'CHANGE_RECORD_MISSING') {
-    if (!change) throw new Error(`${changeId} is not a known change.`);
-    if (requirementId !== undefined && !change.requirementIds.includes(requirementId)) {
-      throw new Error(`${requirementId} is not declared by ${changeId}.`);
-    }
-  }
   const tdd = await loadTddEvidence(root);
-  const validlyVoided = validlyVoidedTddCycles(tdd, order);
   const parsed = detail !== undefined ? parseDetail(waivableCode, detail) : null;
   if (requiresDetail(waivableCode) && !parsed) {
     throw new Error(`${detail} is not a valid --detail value for ${waivableCode}.`);
   }
-  const currentlyReported = await (async (): Promise<boolean> => {
-    switch (waivableCode) {
-      case 'CHANGE_REQUIREMENTS_UNCHANGED': return requirementsUnchangedCondition(change!);
-      case 'CHANGE_DESIGN_UNCHANGED': return designUnchangedCondition(change!);
-      case 'CHANGE_RED_UNPROVEN': return redUnprovenCondition(change!, requirementId!, tdd, validlyVoided);
-      case 'CHANGE_GREEN_UNPROVEN': return greenUnprovenCondition(change!, requirementId!, tdd, validlyVoided);
-      case 'CHANGE_COMPLETENESS_TDD': return completenessTddUnsatisfiedCondition(change!, requirementId!, tdd, validlyVoided);
-      case 'CHANGE_RECORD_MISSING': return recordMissingCondition(root, evidence, changeId);
-      case 'CHANGE_PHASE_MISSING':
-        return parsed?.kind === 'phase' ? phaseMissingCondition(change!, parsed.phaseName) : false;
-      case 'CHANGE_ORDER_MIGRATION_REQUIRED': {
-        if (!parsed) return false;
-        if (parsed.kind === 'phase') return orderMigrationRequiredPhaseCondition(change!, parsed.phaseName);
-        if (parsed.kind === 'batch') return orderMigrationRequiredBatchCondition(change!, parsed.batchPhaseName, parsed.batchKey);
-        if (parsed.kind === 'requirement') {
-          return orderMigrationRequiredRequirementCondition(change!, parsed.requirementId, tdd, validlyVoided);
-        }
-        return false;
-      }
-      case 'CHANGE_TESTS_UNCHANGED': {
-        if (parsed?.kind !== 'batchKey') return false;
-        const batches = effectiveBatches(change!);
-        const batch = batchForKey(batches, parsed.batchKey);
-        return !!batch
-          && currentRequirementIdsForBatch(batches, batch, change!.requirementIds).length > 0
-          && testsUnchangedCondition(change!, batch);
-      }
-      case 'CHANGE_IMPLEMENTATION_UNCHANGED': {
-        if (parsed?.kind !== 'batchKey') return false;
-        const batches = effectiveBatches(change!);
-        const batch = batchForKey(batches, parsed.batchKey);
-        return !!batch
-          && currentRequirementIdsForBatch(batches, batch, change!.requirementIds).length > 0
-          && implementationUnchangedCondition(batch);
-      }
-      case 'CHANGE_TEST_CHANGED_AFTER_RED': {
-        if (parsed?.kind !== 'batchKey') return false;
-        const batches = effectiveBatches(change!);
-        const batch = batchForKey(batches, parsed.batchKey);
-        return !!batch
-          && currentRequirementIdsForBatch(batches, batch, change!.requirementIds).length > 0
-          && testChangedAfterRedCondition(batch);
-      }
-      case 'CHANGE_RELEVANT_IMPLEMENTATION_UNCHANGED': {
-        if (parsed?.kind !== 'batchKey' || requirementId === undefined) return false;
-        const batches = effectiveBatches(change!);
-        const batch = batchForKey(batches, parsed.batchKey);
-        return !!batch
-          && currentRequirementIdsForBatch(batches, batch, change!.requirementIds).includes(requirementId)
-          && relevantImplementationUnchangedCondition(batch, requirementId);
-      }
-      default: return false;
+  const scope: WaiverScope = {
+    changeId,
+    code: waivableCode,
+    ...(requirementId !== undefined ? { requirementId } : {}),
+    ...(detail !== undefined ? { detail } : {}),
+  };
+  const condition = await evaluateWaiverCondition(root, evidence, tdd, order, scope);
+  if (condition === 'indeterminate') {
+    const change = evidence?.changes.find((entry) => entry.changeId === changeId);
+    if (requirementId !== undefined && change && !change.requirementIds.includes(requirementId)) {
+      throw new Error(`The ${waivableCode} scope cannot be evaluated because ${requirementId} is not declared by ${changeId}.`);
     }
-  })();
-  if (!currentlyReported) {
-    throw new Error(`No matching ${waivableCode} diagnostic is currently reported for ${changeId}${requirementId ? `:${requirementId}` : ''}${detail ? `:${detail}` : ''}.`);
+    throw new Error(`The ${waivableCode} scope for ${changeId}${requirementId ? `:${requirementId}` : ''}${detail ? `:${detail}` : ''} cannot be evaluated.`);
   }
-  for (let index = 0; index < existing.waivers.length; index++) {
-    const record = existing.waivers[index]!;
-    if (scopeMatches(record, changeId, waivableCode, requirementId, detail)
-      && (await waiverLinkage(root, evidence, order, existing.waivers, index)).valid) {
-      const hash = digest(canonicalJson(await snapshotPayload(root, evidence, tdd, order, changeId, waivableCode, requirementId, detail)));
-      if (record.snapshotVersion === CURRENT_SNAPSHOT_VERSION && record.snapshotHash === hash) {
-        throw new Error(`${changeId}:${waivableCode}${requirementId ? `:${requirementId}` : ''}${detail ? `:${detail}` : ''} already has an active waiver.`);
-      }
-    }
+  if (condition === 'false') {
+    throw new Error(`No matching ${waivableCode} diagnostic is currently reported for ${changeId}${requirementId ? `:${requirementId}` : ''}${detail ? `:${detail}` : ''}; the evaluated condition is false.`);
+  }
+  const waiverContext = await buildWaiverContext(root, evidence, tdd, {
+    loaded: existing,
+    order,
+  });
+  const authoritative = authoritativeWaiverIndex(waiverContext, scope);
+  if (authoritative !== -1 && !isWaiverStale(waiverContext, authoritative)) {
+    throw new Error(`${changeId}:${waivableCode}${requirementId ? `:${requirementId}` : ''}${detail ? `:${detail}` : ''} already has an active waiver.`);
   }
   const snapshotHash = digest(canonicalJson(await snapshotPayload(root, evidence, tdd, order, changeId, waivableCode, requirementId, detail)));
   const orderRecord = await appendEvidenceOrder(root, {
@@ -758,14 +910,16 @@ async function recordChangeWaiverUnlocked(
  * @implements REQ-CHANGE-EVIDENCE-WAIVER-006 REQ-CHANGE-EVIDENCE-WAIVER-012 REQ-CHANGE-EVIDENCE-WAIVER-016
  * @design DES-CHANGE-EVIDENCE-WAIVER-005
  */
-export async function activeWaivers(root: string): Promise<Array<{
+export async function activeWaivers(root: string, precomputed?: WaiverContext): Promise<Array<{
   changeId: string; code: string; requirementId?: string; detail?: string; approver: string; reason: string; recordedAt: string;
 }>> {
-  const loaded = await loadChangeWaiverEvidence(root);
+  const waiverContext = precomputed ?? await buildWaiverContext(
+    root,
+    await loadChangeEvidence(root),
+    await loadTddEvidence(root),
+  );
+  const loaded = waiverContext.loaded;
   if (!loaded || loaded.malformed) return [];
-  const evidence = await loadChangeEvidence(root);
-  const tdd = await loadTddEvidence(root);
-  const waiverContext = await buildWaiverContext(root, evidence, tdd);
   const results: Array<{ changeId: string; code: string; requirementId?: string; detail?: string; approver: string; reason: string; recordedAt: string }> = [];
   const groupsSeen = new Set<string>();
   for (let index = 0; index < loaded.waivers.length; index++) {
@@ -774,10 +928,15 @@ export async function activeWaivers(root: string): Promise<Array<{
     const scopeKey = JSON.stringify([record.changeId, record.code, record.requirementId, record.detail]);
     if (groupsSeen.has(scopeKey)) continue;
     groupsSeen.add(scopeKey);
-    const authoritative = authoritativeIndex(waiverContext, record.changeId, record.code, record.requirementId, record.detail);
+    const authoritative = authoritativeWaiverIndex(waiverContext, {
+      changeId: record.changeId,
+      code: record.code as WaivableCode,
+      ...(record.requirementId !== undefined ? { requirementId: record.requirementId } : {}),
+      ...(record.detail !== undefined ? { detail: record.detail } : {}),
+    });
     if (authoritative === -1) continue;
     const authoritativeRecord = loaded.waivers[authoritative]!;
-    if (!nonStale(authoritativeRecord, authoritative, waiverContext)) continue;
+    if (isWaiverStale(waiverContext, authoritative)) continue;
     results.push({
       changeId: authoritativeRecord.changeId,
       code: authoritativeRecord.code,
@@ -804,7 +963,7 @@ export async function evaluateChangeWaiverState(
   const linkage: Array<{ valid: boolean; reason?: string }> = [];
   const currentHash: Array<string | undefined> = [];
   for (let index = 0; index < waivers.waivers.length; index++) {
-    const recordLinkage = await waiverLinkage(root, evidence, order, waivers.waivers, index);
+    const recordLinkage = waiverLinkage(order, waivers.waivers, index);
     linkage.push(recordLinkage);
     if (recordLinkage.valid) {
       const record = waivers.waivers[index]!;
@@ -815,28 +974,46 @@ export async function evaluateChangeWaiverState(
       currentHash.push(undefined);
     }
   }
+  const condition: Array<WaiverCondition | undefined> = [];
+  for (let index = 0; index < waivers.waivers.length; index++) {
+    const record = waivers.waivers[index]!;
+    condition.push(linkage[index]?.valid
+      ? await evaluateWaiverCondition(root, evidence, tdd, order, {
+          changeId: record.changeId,
+          code: record.code as WaivableCode,
+          ...(record.requirementId !== undefined ? { requirementId: record.requirementId } : {}),
+          ...(record.detail !== undefined ? { detail: record.detail } : {}),
+        })
+      : undefined);
+  }
   const context: WaiverContext = {
     loaded: { schemaVersion: 1, waivers: waivers.waivers, malformed: false },
     order,
     linkage,
     currentHash,
+    condition,
   };
-  const stale = waivers.waivers.flatMap((record, index) =>
-    linkage[index]?.valid && !nonStale(record, index, context)
-      ? [{
-          changeId: record.changeId,
-          code: record.code,
-          ...(record.requirementId !== undefined ? { requirementId: record.requirementId } : {}),
-          ...(record.detail !== undefined ? { detail: record.detail } : {}),
-        }]
-      : []);
   const authoritative = new Map<string, string>();
+  const stale: Array<{ changeId: string; code: string; requirementId?: string; detail?: string }> = [];
   for (const record of waivers.waivers) {
     const scope = JSON.stringify([record.changeId, record.code, record.requirementId, record.detail]);
     if (authoritative.has(scope)) continue;
-    const index = authoritativeIndex(context, record.changeId, record.code, record.requirementId, record.detail);
+    const index = authoritativeWaiverIndex(context, {
+      changeId: record.changeId,
+      code: record.code as WaivableCode,
+      ...(record.requirementId !== undefined ? { requirementId: record.requirementId } : {}),
+      ...(record.detail !== undefined ? { detail: record.detail } : {}),
+    });
     if (index === -1) continue;
     const selected = waivers.waivers[index]!;
+    if (isWaiverStale(context, index)) {
+      stale.push({
+        changeId: selected.changeId,
+        code: selected.code,
+        ...(selected.requirementId !== undefined ? { requirementId: selected.requirementId } : {}),
+        ...(selected.detail !== undefined ? { detail: selected.detail } : {}),
+      });
+    }
     authoritative.set(scope, JSON.stringify([
       selected.changeId,
       selected.code,
@@ -856,10 +1033,11 @@ export async function evaluateChangeWaiverState(
  * @implements REQ-CHANGE-EVIDENCE-WAIVER-007 REQ-CHANGE-EVIDENCE-WAIVER-011
  * @design DES-CHANGE-EVIDENCE-WAIVER-005
  */
-export async function waiverEvidenceDiagnostics(root: string): Promise<Diagnostic[]> {
-  const loaded = await loadChangeWaiverEvidence(root);
-  const evidence = await loadChangeEvidence(root);
-  const tdd = await loadTddEvidence(root);
-  const waiverContext = await buildWaiverContext(root, evidence, tdd);
-  return reportWaiverEvidenceDiagnostics({ ...waiverContext, loaded }, evidence, tdd);
+export async function waiverEvidenceDiagnostics(root: string, precomputed?: WaiverContext): Promise<Diagnostic[]> {
+  const waiverContext = precomputed ?? await buildWaiverContext(
+    root,
+    await loadChangeEvidence(root),
+    await loadTddEvidence(root),
+  );
+  return reportWaiverEvidenceDiagnostics(waiverContext);
 }

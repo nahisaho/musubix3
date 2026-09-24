@@ -21,6 +21,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+    outputs:
+      stable_tag: ${{ steps.release-kind.outputs.stable }}
     env:
       RELEASE_TAG: ${{ github.event.inputs.release_tag || github.ref_name }}
     steps:
@@ -32,6 +34,14 @@ jobs:
         run: |
           test "$REF_TYPE" = "tag"
           test "$REF_NAME" = "$RELEASE_TAG"
+      - name: Classify stable npm release tag
+        id: release-kind
+        run: |
+          if [[ "$RELEASE_TAG" =~ ^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$ ]]; then
+            echo "stable=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "stable=false" >> "$GITHUB_OUTPUT"
+          fi
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
         with:
           fetch-depth: 0
@@ -162,15 +172,20 @@ jobs:
           fi
 
   npm-publish:
-    needs: [validate, attest]
-    if: inputs.publish_npm == true || vars.NPM_TRUSTED_PUBLISHING == 'true'
+    needs: [validate, attest, github-release]
+    if: needs.validate.outputs.stable_tag == 'true' && (inputs.publish_npm == true || vars.NPM_TRUSTED_PUBLISHING == 'true')
     runs-on: ubuntu-latest
     environment: npm-publish
     permissions:
       contents: read
       id-token: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      RELEASE_TAG: ${{ github.event.inputs.release_tag || github.ref_name }}
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+        with:
+          ref: refs/tags/${{ github.event.inputs.release_tag || github.ref_name }}
       - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
         with:
           node-version: 22
@@ -178,11 +193,14 @@ jobs:
           registry-url: https://registry.npmjs.org
       - name: Install npm with Trusted Publishing support
         run: npm install --global npm@11.6.0
-      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
-        with:
-          name: release-assets
-          path: release-assets
+      - run: npm ci
+      - name: Download exact GitHub Release assets
+        run: |
+          mkdir release-assets
+          gh release download "$RELEASE_TAG" \
+            --repo "$GITHUB_REPOSITORY" \
+            --dir release-assets
       - name: Publish npm package with provenance
-        run: npm run release:publish -- release-assets
+        run: npm run --silent release:publish -- --tag "$RELEASE_TAG" --repository "$GITHUB_REPOSITORY" --directory release-assets
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

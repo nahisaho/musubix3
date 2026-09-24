@@ -439,6 +439,12 @@ Complete owner metadata is staged, flushed, and published with a same-directory
 exclusive hard link, so the canonical lock is never visible as empty or partial.
 Filesystems that cannot provide this atomic publication fail with
 `EVIDENCE_WRITER_LOCK_ACQUIRE_FAILED`; there is no non-atomic fallback.
+When Windows directory synchronization rejects EPERM, EINVAL, or ENOTSUP after
+successful staging-file synchronization and atomic publication or verified
+release, musubix3 treats only that directory-entry durability operation as an
+unsupported capability. File synchronization, publication, metadata, unlink,
+open/close, every other error, and every non-Windows platform remain
+fail-closed.
 
 Coordinated readers such as status, approval preparation/validation, trace and
 graph inspection, knowledge queries, TDD validation, attestation payload/verify,
@@ -455,6 +461,7 @@ recovery is currently Linux-only and requires matching hostname, boot identity,
 PID namespace, and a demonstrably absent owner PID. Live, PID-reused,
 cross-host, malformed, changed, unsupported, or indeterminate locks are left
 untouched with the exact path and inspection guidance. There is no force mode.
+Because the required identity probes are unavailable, automatic recovery remains inspection-only on Windows and macOS.
 The canonical lock and `.writer-lock.<transactionId>.json` staging files are
 ignored and excluded from generated inputs. After confirming no related process
 is active, an abandoned staging file may be removed by its exact path.
@@ -1216,6 +1223,29 @@ failed npm publish does not prevent creation of the GitHub Release.
 For manual dispatch, select the release tag as the workflow ref and provide the
 same value as `release_tag`; the workflow rejects tags that do not point to the
 OIDC-bound `GITHUB_SHA`.
+
+npm publishing accepts stable `vMAJOR.MINOR.PATCH` tags only. Both protected
+GitHub Actions publish paths check out that tag, download its non-draft GitHub
+Release into a new empty directory, and use the shared validator before npm
+provenance publishing. The validator rejects historical or additional assets,
+verifies the exact SHA256SUMS syntax and embedded `musubix3` package version,
+and requires every local file digest to match the current uploaded GitHub
+Release asset digest. Direct `release:prepare` output is not publishable because
+the strict CI attestation is added later.
+
+Local operators can verify, but cannot provenance-publish, the same release:
+
+```bash
+gh auth status
+mkdir release-assets-verify
+gh release download v1.2.3 --repo nahisaho/musubix3 --dir release-assets-verify
+npm run --silent release:publish -- --verify-only --tag v1.2.3 \
+  --repository nahisaho/musubix3 --directory release-assets-verify
+```
+
+Use a GitHub CLI version whose release asset output includes `digest` and
+`state`. Provenance-enabled publishing remains restricted to the protected
+`npm-publish` GitHub Actions environment.
 
 The release attestation uses a real GitHub Actions OIDC token whose custom
 audience binds an ephemeral Ed25519 public key. Its signature covers repository,

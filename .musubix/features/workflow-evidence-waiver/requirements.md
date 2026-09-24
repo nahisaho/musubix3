@@ -28,14 +28,15 @@ which no invocation actually occurred; `validateWorkflow` cannot itself
 distinguish the two, so this change relies on the required human
 `--approver`/`--reason` review at waiver time, not on the diagnostic's
 mere presence, to establish that a specific instance is safe to downgrade.
-`packages/analysis/src/gate.ts` currently computes the `workflow`
+Before this feature, `packages/analysis/src/gate.ts` computed the `workflow`
 check's `status` from `workflow.verified` (`true` only when `diagnostics`
-is empty, with no severity concept). The `tdd`/`change-history`/
-`change-completeness` checks instead compute `status` from each validator's
-own `valid` result, and each of those validators already defines `valid` as
-the absence of any `error`-severity diagnostic (not the absence of any
-diagnostic regardless of severity), which is how `change-evidence-waiver`
-lets a validly waived, warning-severity diagnostic still report `pass`.
+was empty, with no severity concept). The `change-history` and
+`change-completeness` validators instead define `valid` as the absence of
+`error`-severity diagnostics; feature-scoped gate branches compute status
+from error counts in scoped diagnostics. These are the relevant precedents
+for allowing a validly waived warning to remain visible while reporting
+`pass`; `validateTddEvidence` retains its independent severity-blind `valid`
+contract.
 `packages/analysis/src/approval-record.ts` then hard-blocks `release`
 approval when any required check does not report `pass`, so a single unresolved
 reconciliation-debt diagnostic in `workflow` permanently blocks release
@@ -50,7 +51,8 @@ hash-chained, audited record in a new
 blanket disable of `workflow-verify` or of any other declaration's
 diagnostics. It then redefines the `workflow` check's `gate`/`status`
 computation to the same error-severity-based validity semantics already
-used by `tdd`/`change-history`/`change-completeness`, so a fully waived,
+used by `change-history`/`change-completeness` and feature-scoped gate
+branches, so a fully waived,
 non-stale set of diagnostics reports `pass`, which — because
 `approval-record.ts` already blocks purely on `status !== 'pass'` — resolves
 the release hard-block without any change to `approval-record.ts` itself.
@@ -59,14 +61,13 @@ other `skill`/`phase`/`recordedAt` scope, or for a genuinely fresh
 reconciliation failure once the waived evidence state changes; it must never
 allow a repository that has never attempted reconciliation at all
 (`WORKFLOW_INVOCATION_UNVERIFIED`) to reach `pass` merely by waiving; and,
-mirroring the existing `change-evidence-waiver` precedent exactly, malformed
-or stale waiver evidence must remain permanently visible in the separate,
-always-reported `waiverDiagnostics` audit array — it is deliberately never
-folded into `workflow.diagnostics` and therefore never blocks the `workflow`
-check's own `status`, exactly as `CHANGE_WAIVER_EVIDENCE_MALFORMED`/
-`CHANGE_WAIVER_STALE` never block `change-history`'s `status` today; this
-keeps the audit trail honest and inspectable without ever creating a
-structurally unrecoverable "permanently failing gate" state.
+mirroring the existing `change-evidence-waiver` precedent only for
+always-reported top-level `waiverDiagnostics` visibility, malformed or stale
+workflow-waiver evidence must remain permanently visible in that separate
+audit array. It is deliberately never folded into `workflow.diagnostics` and
+therefore never blocks the `workflow` check's own status, intentionally
+diverging from current change-waiver auditing, whose error-severity
+malformed/stale diagnostics participate in change-check validity.
 
 
 A native `rubber-duck` review of the first draft found three must-fix gaps
@@ -75,25 +76,28 @@ and the waiver record's own `recordedAt`; malformed/stale waiver diagnostics
 that were reported but never wired into the `workflow` check's own
 diagnostics/status, silently defeating REQ-008/012's intent; and an
 undefined canonical-JSON serialization for the hash chain) plus several
-should-fix gaps (an inaccurate claim that the precedent checks call
+should-fix gaps (an inaccurate claim that the precedent validators call
 `countErrors(...)` directly, unspecified behavior for an absent or corrupted
 `workflow-waivers.json` file, and unspecified timestamp format/ordering
 rules). A later review round found that an intermediate draft had wired
 `WORKFLOW_WAIVER_EVIDENCE_MALFORMED`/`WORKFLOW_WAIVER_STALE` directly into
 `workflow.diagnostics`, which would have let malformed/stale waiver
 evidence itself block the `workflow` check's `status` — contradicting the
-verified `change-evidence-waiver` precedent, where the analogous
-`CHANGE_WAIVER_EVIDENCE_MALFORMED`/`CHANGE_WAIVER_STALE` diagnostics are
-reported only in the separate `waiverDiagnostics` array and never affect
-`change-history`'s `status`. This draft corrects that regression: REQ-005
+chosen workflow-waiver non-blocking model: workflow-check validity is defined
+only by the reconciled invocation diagnostics in `workflow.diagnostics`,
+while waiver-file integrity remains a separate audit concern. The current change-waiver model
+instead includes its analogous diagnostics in change-check validity and is
+not the precedent for this decision. This draft corrects that regression: REQ-005
 renames the two `recordedAt` fields, REQ-008/REQ-012/REQ-015 keep the
 named malformed/stale diagnostics in the always-reported
 `waiverDiagnostics` array only — never in `workflow.diagnostics` and never
 affecting the `workflow` check's `status` — REQ-013 defines
 canonicalization by reusing the project's existing sorted-key recursive
 JSON serializer, REQ-006 specifies file-genesis and corrupted-file
-rejection, and REQ-002/REQ-005/REQ-011 specify timestamp format and
-deterministic sequence-based ordering.
+rejection, REQ-013 specifies canonical timestamp format while REQ-002
+requires `Date.parse` validity and byte-for-byte declaration-time equality,
+REQ-007/REQ-013 define deterministic sequence ordering, and REQ-011 consumes
+that ordering for replacement eligibility.
 
 ## REQ-WORKFLOW-EVIDENCE-WAIVER-001: Restrict waivable codes to the documented declaration-scoped allow-list
 Priority: must
@@ -255,15 +259,19 @@ Acceptance: Given `.musubix/evidence/workflow-waivers.json` is malformed
 JSON or has the wrong top-level shape, `gate --json`'s `waiverDiagnostics`
 array includes exactly one `WORKFLOW_WAIVER_EVIDENCE_MALFORMED` diagnostic
 naming the file, with no per-record `skill`/`phase`/`declarationRecordedAt`/
-`index`/`code` fields (none are recoverable from an unparseable
-document). Given the document parses (`waivers` is an array) but one
+`index` fields and no waiver-reason code named in the message (none are
+recoverable from an unparseable document); the diagnostic's own `code` is
+`WORKFLOW_WAIVER_EVIDENCE_MALFORMED`. Given the document parses (`waivers` is an array) but one
 specific element within it fails REQ-WORKFLOW-EVIDENCE-WAIVER-007 or is
 not even shaped like an object (for example `null` or a scalar),
 `waiverDiagnostics` includes one `WORKFLOW_WAIVER_EVIDENCE_MALFORMED`
 diagnostic identifying that element by its zero-based position in the
-`waivers` array, plus its `skill`/`phase`/`declarationRecordedAt`/`index`/
-`code` fields only when each is itself present and independently
-well-typed per REQ-WORKFLOW-EVIDENCE-WAIVER-013; and
+`waivers` array, plus its `skill`/`phase`/`declarationRecordedAt`/`index`
+fields only when each is itself present and independently well-typed per
+REQ-WORKFLOW-EVIDENCE-WAIVER-013; when the element's waiver-reason `code`
+is itself a well-typed string, the diagnostic names it in the message but
+does not replace the diagnostic's own `code:
+"WORKFLOW_WAIVER_EVIDENCE_MALFORMED"` field; and
 the `WORKFLOW_*` diagnostic it targeted still reports `severity: "error"`
 in `workflow.diagnostics`, exactly as if no waiver had been recorded for
 it. Because `waiverDiagnostics` is a separate top-level `gate --json`
@@ -272,14 +280,19 @@ a `WORKFLOW_WAIVER_EVIDENCE_MALFORMED` diagnostic never by itself changes
 the `workflow` check's `status`; it exists purely so a human reviewing
 `gate --json`/`status --json` output can see and repair the malformed
 audit trail, consistent with how `CHANGE_WAIVER_EVIDENCE_MALFORMED`
-already behaves for `change-evidence-waiver`. `status --json` computes
+is also exposed for `change-evidence-waiver` (while its effect on change-check
+validity is intentionally different). `status --json` computes
 `waiverDiagnostics` via the identical computation used by `gate --json`
 (both are built by `packages/analysis/src/gate.ts`'s shared workflow-waiver
-resolution logic, the same way `gate --json` and `status --json` already
-share `waiverEvidenceDiagnostics(root)` for `change-evidence-waiver`'s own
-`waiverDiagnostics`), so every `WORKFLOW_WAIVER_EVIDENCE_MALFORMED` case
+resolution logic; change-waiver audit diagnostics come from
+`waiverEvidenceDiagnostics(root)` in both surfaces per
+REQ-CHANGE-EVIDENCE-WAIVER-011), so every
+`WORKFLOW_WAIVER_EVIDENCE_MALFORMED` case
 above applies identically to `status --json`'s `waiverDiagnostics` array,
 not only to `gate --json`'s.
+The combined top-level `waiverDiagnostics` array concatenates the
+change-waiver subset first and the workflow-waiver subset second, preserving
+each subset's requirement-defined order.
 
 ## REQ-WORKFLOW-EVIDENCE-WAIVER-009: Downgrade a validly waived diagnostic instance, and its paired binding-missing diagnostic, to a warning, never suppress
 Priority: must
@@ -333,12 +346,12 @@ authoritative one for a scope is always determined by comparing
 `sequence` integers, never by comparing `waiverRecordedAt` timestamp
 strings.
 
-## REQ-WORKFLOW-EVIDENCE-WAIVER-012: Define the snapshot payload and invalidate a waiver when the reconciled outcome changes, reverting to error
+## REQ-WORKFLOW-EVIDENCE-WAIVER-012: Define the snapshot payload and invalidate a waiver when the reconciled outcome changes, reverting to error while the scoped diagnostic remains raised
 Priority: must
 Type: functional
 Pattern: state-driven
-Statement: While the authoritative waiver record's (per REQ-WORKFLOW-EVIDENCE-WAIVER-007) stored `snapshotVersion`/`snapshotHash` does not equal the current `snapshotVersion`/recomputed canonical-JSON SHA-256 hash of that scope's defined evidence fields, the system shall treat that record as stale and, when a diagnostic is still raised for that exact scope, report it with `severity: "error"` alongside a `WORKFLOW_WAIVER_STALE` `error`-severity diagnostic added to the `waiverDiagnostics` array (per REQ-WORKFLOW-EVIDENCE-WAIVER-008; never added to `workflow.diagnostics`) naming the stale waiver.
-Acceptance: The canonical snapshot payload is exactly: the declaration
+Statement: While the authoritative waiver record's (per REQ-WORKFLOW-EVIDENCE-WAIVER-007) stored `snapshotVersion`/`snapshotHash` does not equal the current `snapshotVersion`/recomputed canonical-JSON SHA-256 hash of that scope's defined evidence fields, the system shall treat that record as stale, add a `WORKFLOW_WAIVER_STALE` `error`-severity diagnostic to the `waiverDiagnostics` array (per REQ-WORKFLOW-EVIDENCE-WAIVER-008; never to `workflow.diagnostics`) naming the stale waiver, and, when an allow-listed declaration-scoped reason diagnostic (one of the five REQ-WORKFLOW-EVIDENCE-WAIVER-001 codes) is still raised for that exact scope, report that diagnostic and its paired `WORKFLOW_BINDING_MISSING` with `severity: "error"` and no attached `waiver` object.
+Acceptance: Given the repository's current workflow evidence and a validly linked waiver scope whose authoritative record has a non-current stored `snapshotVersion` or a recomputed `snapshotHash` different from its stored hash, `gate --json` reports `WORKFLOW_WAIVER_STALE` in `waiverDiagnostics` regardless of whether an allow-listed declaration-scoped reason diagnostic remains raised; while one remains raised, `gate --json` also reports it and its paired `WORKFLOW_BINDING_MISSING` with `severity: "error"` and no `waiver` object. The canonical snapshot payload is exactly: the declaration
 event's own `skill`/`phase`/`status`/`recordedAt`/`version`, the
 declaration event's own `commandSha256` when present or the explicit
 `null` sentinel when the event carries no `commandSha256` (since
@@ -392,13 +405,34 @@ visible in `waiverDiagnostics` indefinitely, purely as a historical audit
 trail — no acknowledgement action is required or defined, and a human may
 optionally record a new waiver for that scope (per
 REQ-WORKFLOW-EVIDENCE-WAIVER-011) only if a diagnostic is still currently
-raised for it. This non-blocking treatment of
-`WORKFLOW_WAIVER_EVIDENCE_MALFORMED`/`WORKFLOW_WAIVER_STALE` matches the
-existing, verified precedent: `CHANGE_WAIVER_EVIDENCE_MALFORMED`/
-`CHANGE_WAIVER_STALE` are likewise produced only by
-`waiverEvidenceDiagnostics` into `gate.ts`'s separate top-level
-`waiverDiagnostics` field, never into `validateChangeEvidence`'s own
-diagnostics that drive the `change-history` check's `status`.
+raised for it. This workflow-waiver treatment intentionally differs from change-waiver
+auditing: change-waiver malformed/stale blocking, severity, and validator
+behavior are owned by REQ-CHANGE-EVIDENCE-WAIVER-007/011/014.
+`WORKFLOW_WAIVER_EVIDENCE_MALFORMED` and historical
+`WORKFLOW_WAIVER_STALE` records remain visible in top-level
+`waiverDiagnostics` without affecting the `workflow` check's gate status
+under REQ-WORKFLOW-EVIDENCE-WAIVER-008/012/015; recording-time rejection of
+malformed workflow-waiver evidence under REQ-WORKFLOW-EVIDENCE-WAIVER-017
+remains required.
+Given a scope whose superseded lower-sequence record has a snapshot mismatch
+while its authoritative record matches the current snapshot, `gate --json`
+reports no `WORKFLOW_WAIVER_STALE` for that scope and reports its scoped
+diagnostics as `warning` with a `waiver` object. Given the inverse state, where
+the superseded record matches and the authoritative record has a snapshot
+mismatch, `gate --json` reports exactly one `WORKFLOW_WAIVER_STALE` entry for
+the scope; its presence is determined only by the authoritative record's
+snapshot state. Each `WORKFLOW_WAIVER_STALE`
+diagnostic carries the standard diagnostic `code`/`severity`/`message`/`path`
+fields plus the authoritative record's `skill`/`phase`/
+`declarationRecordedAt` and its `index` only when defined; it carries no
+waiver-reason `code`, `sequence`, `snapshotVersion`, `snapshotHash`,
+`previousHash`, record `hash`, approval metadata, reason, or attached `waiver`
+object, and its `path` is exactly
+`.musubix/evidence/workflow-waivers.json`. Within the workflow-waiver subset of top-level `waiverDiagnostics`,
+entries follow ascending persisted `waivers` array position: a malformed
+record's diagnostic occupies its own position, while the single audit outcome
+for a validly linked scope occupies that scope's first validly linked record
+position and uses the authoritative record's reported fields defined above.
 A future, incompatible change to this snapshot payload definition
 increments `snapshotVersion`, making every waiver recorded under a prior
 version stale regardless of field equality.
@@ -456,10 +490,10 @@ REQ-WORKFLOW-EVIDENCE-WAIVER-007) is likewise always excluded from this
 array regardless of its own validity or snapshot state. `status --json`
 computes its `workflowWaivers` array via the identical computation used
 for `gate --json`'s `workflowWaivers` array (both are built by
-`packages/analysis/src/gate.ts`'s shared workflow-waiver resolution logic,
-the same way `gate --json` and `status --json` already share
-`activeWaivers(root)`/`waiverEvidenceDiagnostics(root)` for
-`change-evidence-waiver`'s `waivers`/`waiverDiagnostics`), so `status
+`packages/analysis/src/gate.ts`'s shared workflow-waiver resolution logic).
+Separately, change-waiver audit arrays use
+`waiverEvidenceDiagnostics(root)` in both surfaces per
+REQ-CHANGE-EVIDENCE-WAIVER-011. Thus `status
 --json`'s `workflowWaivers` array satisfies every rule above identically
 to `gate --json`'s.
 
@@ -467,7 +501,7 @@ to `gate --json`'s.
 Priority: must
 Type: functional
 Pattern: ubiquitous
-Statement: The system shall compute the `workflow` check's `gate`/`status` result as `pass` when `workflow.present` is `true` and `workflow.diagnostics` contains no `error`-severity diagnostic, consistent with the effective error-severity-based validity semantics the `tdd`/`change-history`/`change-completeness` checks already use, rather than requiring `diagnostics.length === 0` regardless of severity; `WORKFLOW_WAIVER_EVIDENCE_MALFORMED`/`WORKFLOW_WAIVER_STALE` diagnostics (per REQ-WORKFLOW-EVIDENCE-WAIVER-008/012) are never included in `workflow.diagnostics` and therefore never affect this `status` computation.
+Statement: The system shall compute the `workflow` check's `gate`/`status` result as `pass` when `workflow.present` is `true` and `workflow.diagnostics` contains no `error`-severity diagnostic, consistent with the error-severity-based validity semantics used by the `change-history`/`change-completeness` validators and feature-scoped `countErrors` gate branches, rather than requiring `diagnostics.length === 0` regardless of severity; `WORKFLOW_WAIVER_EVIDENCE_MALFORMED`/`WORKFLOW_WAIVER_STALE` diagnostics (per REQ-WORKFLOW-EVIDENCE-WAIVER-008/012) are never included in `workflow.diagnostics` and therefore never affect this `status` computation.
 Acceptance: Given a repository whose only `workflow` diagnostics are
 validly waived, non-stale warnings (per REQ-WORKFLOW-EVIDENCE-WAIVER-009),
 `gate --json`'s `workflow` check reports `status: "pass"`, even while a
@@ -536,10 +570,11 @@ allowance. This applies in addition to, and independently of, the
 REQ-WORKFLOW-EVIDENCE-WAIVER-008, which reports the same corruption
 during `gate`/`status` runs rather than only at recording time. Once
 corrupted this way, `.musubix/evidence/workflow-waivers.json` has no
-in-tool automated repair: consistent with the identical, already-accepted
-limitation of the existing `change-evidence-waiver` precedent (whose
+in-tool automated repair. This absence of a repair command matches the
+existing `change-evidence-waiver` precedent (whose
 `recordChangeWaiver` likewise throws `"... is malformed; regenerate or
 repair it before recording a new waiver."` with no built-in repair
-command), recovery is an out-of-band, manual, human-reviewed edit or
+command), although the two features intentionally differ in whether malformed
+audit evidence affects gate-check validity. Recovery is an out-of-band, manual, human-reviewed edit or
 regeneration of the evidence file outside `workflow waiver record` itself,
 never an automated or partial in-place correction by this feature.

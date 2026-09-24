@@ -1,4 +1,5 @@
 import { createHash } from 'node:crypto';
+import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { parse } from 'yaml';
@@ -14,6 +15,7 @@ const actionWorkflowPaths = [
 ];
 const lockPath = 'scripts/github-actions-lock.json';
 const fixturePath = 'tests/fixtures/github-actions-node24-runtime/baseline.json';
+const releasePublishingFixturePath = 'tests/fixtures/release-asset-publishing/workflow-baseline.json';
 const workflowRoot = process.env.GITHUB_ACTIONS_WORKFLOW_ROOT;
 const changePath = process.env.GITHUB_ACTIONS_CHANGE_PATH ?? '.musubix/changes/CHANGE-0021.md';
 const shaPattern = /^[0-9a-f]{40}$/;
@@ -28,6 +30,10 @@ function currentPath(path) {
 
 function diagnostic(code, message, path) {
   return { code, message, ...(path ? { path } : {}) };
+}
+
+function hasCarriageReturn(bytes) {
+  return bytes.includes(13);
 }
 
 function report(diagnostics) {
@@ -219,6 +225,44 @@ function sourceSha256(source) {
   return createHash('sha256').update(source).digest('hex');
 }
 
+function checkoutByteDiagnostics() {
+  const diagnostics = [];
+  const environment = { ...process.env, GIT_ATTR_NOSYSTEM: '1', GIT_CONFIG_NOSYSTEM: '1' };
+  const attributeFiles = execFileSync(
+    'git',
+    ['ls-files', '--cached', '--others', '--exclude-standard', '--', '*.gitattributes', '**/.gitattributes'],
+    { encoding: 'utf8', env: environment },
+  ).trim().split(/\r?\n/).filter(Boolean);
+  if (JSON.stringify(attributeFiles) !== JSON.stringify(['.gitattributes'])
+    || readFileSync('.gitattributes', 'utf8') !== '* text=auto eol=lf\n') {
+    diagnostics.push(diagnostic(
+      'WORKFLOW_TEXT_ATTRIBUTES',
+      'The root .gitattributes must be the only attribute file and contain exactly * text=auto eol=lf.',
+      '.gitattributes',
+    ));
+    return diagnostics;
+  }
+  const paths = [...workflowPaths, 'package-lock.json'];
+  const attributes = execFileSync(
+    'git',
+    ['check-attr', 'text', 'eol', '--', ...paths],
+    { encoding: 'utf8', env: environment },
+  );
+  for (const path of paths) {
+    if (!attributes.includes(`${path}: text: auto`)
+      || !attributes.includes(`${path}: eol: lf`)
+      || hasCarriageReturn(readFileSync(path))
+      || hasCarriageReturn(execFileSync('git', ['show', `HEAD:${path}`]))) {
+      diagnostics.push(diagnostic(
+        'WORKFLOW_TEXT_ATTRIBUTES',
+        `Reviewed source bytes must use effective text=auto, eol=lf, and contain no carriage returns: ${path}.`,
+        path,
+      ));
+    }
+  }
+  return diagnostics;
+}
+
 function artifactContract(workflow) {
   const jobs = workflow.jobs ?? {};
   const steps = (job) => jobs[job]?.steps ?? [];
@@ -230,27 +274,28 @@ function artifactContract(workflow) {
   const attestationUpload = actionStep('attest', 'actions/upload-artifact', 'release-attestation');
   const releaseAssetsDownload = actionStep('github-release', 'actions/download-artifact', 'release-assets');
   const attestationDownload = actionStep('github-release', 'actions/download-artifact', 'release-attestation');
-  const publishDownload = actionStep('npm-publish', 'actions/download-artifact', 'release-assets');
   return {
     releaseUpload: releaseUpload?.with?.path,
     attestDownload: attestDownload?.with?.path,
     attestationUpload: attestationUpload?.with?.path,
     releaseAssetsDownload: releaseAssetsDownload?.with?.path,
     attestationDownload: attestationDownload?.with?.path,
-    publishDownload: publishDownload?.with?.path,
+    publishDownloadsGithubRelease: runText('npm-publish').includes('gh release download "$RELEASE_TAG"'),
     attestConsumesReleaseAssets: runText('attest').includes('release:attest -- release-assets'),
     githubReleaseConsumesAssets: runText('github-release').includes('release-assets/*'),
-    publishConsumesAssets: runText('npm-publish').includes('release:publish -- release-assets'),
+    publishConsumesAssets: runText('npm-publish').includes('npm run --silent release:publish --')
+      && runText('npm-publish').includes('--directory release-assets'),
   };
 }
 
 /** @id CODE-GITHUB-ACTIONS-NODE24-RUNTIME-002
- * @implements REQ-GITHUB-ACTIONS-NODE24-RUNTIME-002
- * @design DES-GITHUB-ACTIONS-NODE24-RUNTIME-002
+ * @implements REQ-GITHUB-ACTIONS-NODE24-RUNTIME-002 REQ-RELEASE-ASSET-PUBLISHING-004
+ * @design DES-GITHUB-ACTIONS-NODE24-RUNTIME-002 DES-RELEASE-ASSET-PUBLISHING-006
  */
 function checkWorkflows() {
-  const diagnostics = [];
+  const diagnostics = workflowRoot ? [] : checkoutByteDiagnostics();
   const fixture = readJson(fixturePath);
+  const releasePublishingFixture = readJson(releasePublishingFixturePath);
   const expected = {
     '.github/workflows/ci.yml': {
       blobId: '9d50637ca015041aa6ab5b9e18dd5b2b30811dad',
@@ -269,6 +314,21 @@ function checkWorkflows() {
     diagnostics.push(diagnostic('WORKFLOW_BASELINE_SCHEMA', 'Invalid workflow baseline fixture identity.', fixturePath));
     return diagnostics;
   }
+  const reviewedReleasePublishing = {
+    '.github/workflows/release.yml': '30aaa213cf5ed8158e374f5e9b71ac8dd3a7eb1c0551d5e274b9e6f8b3183f6a',
+    '.github/workflows/npm-publish.yml': '4ccb354eb54c11ac9e8bf9b7d7925aad95d78292f985cad5e57367108733e616',
+  };
+  if (releasePublishingFixture.schemaVersion !== 1
+    || releasePublishingFixture.approvedChange !== 'CHANGE-0023'
+    || JSON.stringify(Object.fromEntries(
+      (releasePublishingFixture.workflows ?? []).map(({ path, sourceSha256: hash }) => [path, hash]),
+    )) !== JSON.stringify(reviewedReleasePublishing)) {
+    diagnostics.push(diagnostic(
+      'WORKFLOW_REVIEWED_BASELINE',
+      'Invalid reviewed release publishing workflow baseline.',
+      releasePublishingFixturePath,
+    ));
+  }
   let changes;
   try {
     changes = parseInputChanges();
@@ -282,6 +342,12 @@ function checkWorkflows() {
       || record.sourceSha256 !== expected[path].sourceSha256
       || sourceSha256(record.source) !== record.sourceSha256) {
       diagnostics.push(diagnostic('WORKFLOW_BASELINE_PROVENANCE', `Invalid baseline provenance for ${path}.`, fixturePath));
+      continue;
+    }
+    if (Object.hasOwn(reviewedReleasePublishing, path)) {
+      if (sourceSha256(readFileSync(currentPath(path), 'utf8')) !== reviewedReleasePublishing[path]) {
+        diagnostics.push(diagnostic('WORKFLOW_PROTECTED_DRIFT', `Protected workflow behavior changed in ${path}.`, path));
+      }
       continue;
     }
     const baseline = normalizeUses(parse(record.source));
@@ -306,7 +372,7 @@ function checkWorkflows() {
     attestationUpload: 'release-assets/musubix3-attestation.json',
     releaseAssetsDownload: 'release-assets',
     attestationDownload: 'release-assets',
-    publishDownload: 'release-assets',
+    publishDownloadsGithubRelease: true,
     attestConsumesReleaseAssets: true,
     githubReleaseConsumesAssets: true,
     publishConsumesAssets: true,

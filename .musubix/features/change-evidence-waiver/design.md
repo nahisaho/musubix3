@@ -14,6 +14,15 @@ when present, after `scope.code`/`scope.requirementId`, in that fixed
 field order, so key arrays remain deterministic) to the JSON key array —
 every existing call site continues to omit `scope.detail` and therefore
 computes byte-identical keys to today.
+CHANGE-0029 owns the REQ-002/REQ-006 record-time and structural-linkage
+deltas; CHANGE-0028 owns REQ-011 stale classification and severity while
+CHANGE-0031 owns the corrective REQ-011 false-condition and duplicate-key
+snapshot coverage; CHANGE-0032 owns document-absent snapshot compatibility,
+shared batch predicate reuse, precise false-condition remediation, and
+true/indeterminate cross-validator coverage; CHANGE-0033 owns the direct
+batch-predicate, document-absence, and gate/status audit-count regression
+fixtures plus the shared gate/status audit derivation required by the final
+release review. All five changes share this integrated design.
 Because `validateEvidenceOrderLog`'s existing `EVIDENCE_ORDER_DUPLICATE`
 check and `appendEvidenceOrder`'s existing "already present" rejection both
 treat any two records sharing a `recordKey(...)` as illegally duplicated,
@@ -34,31 +43,26 @@ element appended, byte-identical to today). This is the only field
 `recordKey` derives from the record's own position rather than from
 caller-supplied scope, and it is scoped strictly to `phase === 'waiver'`
 so no existing non-waiver duplicate-detection behavior changes.
-This design also moves `batchKey(requirementIds: string[]): string` (today
-module-local/unexported in `change.ts`, at line 88) into
-`change-evidence.ts`, exported from there (a pure relocation — its exact
-`[...new Set(ids)].sort().join(',')` body is unchanged), and updates
-`change.ts`'s every existing call site to import it from
-`change-evidence.ts` instead of defining it locally. This relocation is
-required, not cosmetic: `change.ts` already imports from
-`change-evidence.ts` (`effectiveBatches`, `batchFor`,
-`ChangePhaseEvidence`, etc.), so a `batchForKey` living in
-`change-evidence.ts` cannot itself import `batchKey` from `change.ts`
-without creating the exact module-dependency cycle `change-evidence.ts`'s
-own header comment says it avoids; keeping the single canonical `batchKey`
-definition in `change-evidence.ts` (the lower-level, dependency-free
-module) and having `change.ts` depend on it — never the reverse — avoids
-that cycle. This design then adds `batchForKey(batches: ChangeTddBatch[], key: string): ChangeTddBatch | undefined`
-to `change-evidence.ts` alongside the relocated `batchKey`, returning
-`batches.find((batch) => batchKey(batch.requirementIds) === key)` — the
-direct-by-`detail`-value counterpart to the existing
-`batchFor(batches, requirementId)` selector (already exported from
-`change-evidence.ts` today, requiring no visibility change), used by DES-002's
-batch-scoped snapshot payloads (`CHANGE_TESTS_UNCHANGED`,
-`CHANGE_IMPLEMENTATION_UNCHANGED`, `CHANGE_TEST_CHANGED_AFTER_RED`, and the
-batch component of `CHANGE_RELEVANT_IMPLEMENTATION_UNCHANGED`), none of
-which have a `requirementId` alone sufficient to resolve the correct
-batch.
+`batchKey(requirementIds)`, `batchForKey(batches, key)`,
+`batchFor(batches, requirementId)`, and
+`currentRequirementIdsForBatch(...)` are already exported from
+`change-evidence.ts`; add and export
+`batchesForKey(batches, key)` beside them. Every change-waiver path imports them from that
+lower-level module, never from `change.ts`, preserving the existing
+cycle-free dependency direction. `batchesForKey` is the normative
+direct-by-`detail` selector for batch-scoped waiver paths and returns every
+matching effective batch. DES-002 uses its sole element for the existing flat
+zero/single-match payload shape, preserving every existing unambiguous
+snapshot hash, while `batchForKey` remains available for backward-compatible
+callers outside this new aggregation.
+`batchesForKey` is used by both
+the standalone condition evaluator and snapshot computation. When duplicate
+batch keys exist, snapshots include every matching batch in deterministic
+effective-batch order (and, for the four bare-`batchKey` codes, each batch's
+current owned requirement IDs) so a newly owning duplicate batch cannot reuse
+an earlier batch's waiver without making the snapshot stale. The evaluator
+aggregates all key matches under `currentRequirementIdsForBatch` ownership
+rather than requiring a unique match.
 `validateEvidenceOrderLog`'s existing per-record duplicate-key
 reconstruction (which today re-derives each stored record's scope as
 `{ code: record.code, requirementId: record.requirementId }` before
@@ -158,8 +162,10 @@ proceeds — this is the same rejection reported as
 onto; otherwise (loaded, well-formed at the top level), additionally
 require every existing `waivers[i]` to pass
 `waiverRecordShapeValid(waivers[i])`, `waiverChainValid(waivers, i)`
-(DES-002), and — once `evidence`/`order` are loaded further down this
-same function — `(await waiverLinkage(root, evidence, order, waivers, i)).valid`; if
+(DES-002), and — once `evidence`, `tdd`, and `order` are loaded through
+`loadChangeEvidence(root)`, `loadTddEvidence(root)`, and
+`inspectEvidenceOrder(root)` in this same function —
+`waiverLinkage(order, waivers, i).valid`; if
 any existing record fails any of these three checks, reject immediately
 with no evidence written or modified, exactly as in the malformed-file
 case above (this is the same shape/chain/linkage validation DES-004's
@@ -167,24 +173,31 @@ case above (this is the same shape/chain/linkage validation DES-004's
 path, so `recordChangeWaiver` never appends a new, valid-looking record
 onto a chain that already contains an invalid one). Only once the whole
 existing chain passes does `recordChangeWaiver` proceed with its existing
-`waivers` array. Once past that check, reject
-with no evidence written when: `code` is not in `WAIVABLE_CODES` (REQ-001);
+`waivers` array. Once past that check, reject with no evidence written
+when: `code` is not in `WAIVABLE_CODES` (REQ-001);
 `requirementId` presence does not equal `requiresRequirementId(code)`, or
 `detail` presence does not equal `requiresDetail(code)` (REQ-004); a
-present `requirementId` does not name a requirement declared for
-`changeId` (REQ-004); `approver`/`reason` are empty/whitespace-only
-(REQ-003; `--confirm` is enforced at the CLI layer, matching `tdd void`);
-re-running `validateChangeEvidence`/`validateChangeCompleteness` (this
-function calls both, reusing their existing exported public APIs — whose
-internal behavior is itself being extended by DES-004, so this call sees
-any already-recorded waivers' effects too) does not currently report a
-diagnostic with this exact `changeId`/`code`/`requirementId`/`detail`
-structured target (added by DES-003), where a present `detail` must
-equal the currently-reported diagnostic's own structured `detail` field
-computed per REQ-016's grammar (DES-003b) (REQ-002, REQ-016); or an
-existing waiver record for the identical
-`changeId`/`code`/`requirementId`/`detail` is validly linked (DES-002)
-and non-stale (DES-002's version+hash predicate) (REQ-010). Only once
+present `detail` does not parse according to REQ-016's grammar; or
+`approver`/`reason` are empty/whitespace-only (REQ-003; `--confirm` is
+enforced at the CLI layer, matching `tdd void`). Then evaluate DES-004's
+shared `evaluateWaiverCondition(...)` for this exact scope before any
+separate current change-entry, requirement-membership, or
+exact-diagnostic-absence rejection; it acts in place of those separate
+condition checks. Reject `indeterminate` with the
+distinct error that the scope cannot be evaluated, and reject `false` as
+no matching diagnostic; `true` proves the current structured target
+diagnostic. Thus absent change documents/entries, undeclared requirements,
+and syntactically valid absent batch keys follow the evaluator's
+code-relative `true`/`indeterminate` rules rather than being relabeled as
+linkage failures or collapsed into diagnostic absence (REQ-002, REQ-004,
+REQ-011, REQ-016).
+After the whole-chain precheck, build one `waiverContext`
+from the already-loaded `loaded` waiver evidence, `evidence`, `tdd`, and
+`order` via
+`buildWaiverContext(root, evidence, tdd, { loaded, order })`; resolve the requested scope with
+`authoritativeWaiverIndex(waiverContext, scope)`, and reject as a duplicate
+only when the returned index is not `-1` and
+`!isWaiverStale(waiverContext, index)` (DES-004, REQ-006, REQ-010). Only once
 every check passes: set `snapshotVersion` to `CURRENT_SNAPSHOT_VERSION`
 and compute `snapshotPayload(...)` (DES-002) and its hash as
 `snapshotHash`, call
@@ -234,7 +247,7 @@ placeholder `null`/`undefined` array element for an absent field, so
 every existing call site (which passes no `scope` argument, or passes
 `scope: {}`) computes a key array of the same length and same values as
 today, and only a waiver's specific `scope` values (plus its own
-`sequence`, for `phase: 'waiver'` only) change the key. `batchForKey` as
+`sequence`, for `phase: 'waiver'` only) change the key. `batchForKey` and `batchesForKey` as
 above, exported alongside `batchFor`/`effectiveBatches` from
 `change-evidence.ts`. CLI: `change
 waiver record <CHANGE-ID> <CODE> [--requirement <REQ-ID>] [--detail
@@ -252,7 +265,7 @@ A newly recorded waiver's
 immediately afterward, so it starts non-stale. `NEITHER_KEY_CODES`/
 `REQUIREMENT_ONLY_CODES`/`DETAIL_ONLY_CODES`/`BOTH_KEYS_CODES` must
 partition `WAIVABLE_CODES` exactly (no code in zero or more than one set).
-Requirements: REQ-CHANGE-EVIDENCE-WAIVER-001, REQ-CHANGE-EVIDENCE-WAIVER-002, REQ-CHANGE-EVIDENCE-WAIVER-003, REQ-CHANGE-EVIDENCE-WAIVER-004, REQ-CHANGE-EVIDENCE-WAIVER-005, REQ-CHANGE-EVIDENCE-WAIVER-010, REQ-CHANGE-EVIDENCE-WAIVER-015, REQ-CHANGE-EVIDENCE-WAIVER-016
+Requirements: REQ-CHANGE-EVIDENCE-WAIVER-001, REQ-CHANGE-EVIDENCE-WAIVER-002, REQ-CHANGE-EVIDENCE-WAIVER-003, REQ-CHANGE-EVIDENCE-WAIVER-004, REQ-CHANGE-EVIDENCE-WAIVER-005, REQ-CHANGE-EVIDENCE-WAIVER-010, REQ-CHANGE-EVIDENCE-WAIVER-011, REQ-CHANGE-EVIDENCE-WAIVER-015, REQ-CHANGE-EVIDENCE-WAIVER-016
 ADRs: ADR-0025
 
 ## DES-CHANGE-EVIDENCE-WAIVER-002: Snapshot payload definition, canonical `detail` grammar, and waiver linkage validation
@@ -263,23 +276,61 @@ for `CHANGE_RECORD_MISSING` below; `evidence` is now nullable because
 `CHANGE_RECORD_MISSING` fires even when `.musubix/evidence/changes.json`
 does not exist at all — `loadChangeEvidence` returns `null` in that case,
 per `change.ts`'s `!evidence?.changes.length` early-return branch — and a
-waiver must still be recordable/verifiable against that state), returning
-`null` only when `changeId`
-names no change document at `.musubix/changes/<changeId>.md` on disk
-(checked directly, via `exists`/`readText`, never via
-`evidence?.changes` — `CHANGE_RECORD_MISSING` is specifically the state
+waiver must still be recordable/verifiable against that state). The only
+state-dependent `null` is returned by the `CHANGE_RECORD_MISSING` branch when
+`changeId` names no change
+document at `.musubix/changes/<changeId>.md` on disk (checked directly, via
+`exists`/`readText`, never via `evidence?.changes`); the other eleven codes
+compute from chronology/TDD/order state even while the independent change
+document is absent, so their snapshots remain hash-sensitive in that state.
+Other `null` returns are internal-contract guards for invalid grammar or
+missing required scope keys and are unreachable for validly linked records.
+The former shared `null` result was an invalid sentinel rather than one of
+those eleven code-specific canonical payload shapes, so replacing it with the
+already-defined null/false/empty field derivations keeps
+`CURRENT_SNAPSHOT_VERSION` unchanged. Document-present payloads remain
+byte-identical; document-absent historical waivers become stale by hash
+mismatch.
+When the change-evidence entry is absent, the eleven branches return these
+exact canonical payloads:
+- `CHANGE_REQUIREMENTS_UNCHANGED`:
+  `{ impactRequirements: null, requirementsRequirements: null, allowUnchanged: null }`.
+- `CHANGE_DESIGN_UNCHANGED`:
+  `{ requirementsDesign: null, design: null }`.
+- `CHANGE_RED_UNPROVEN`/`CHANGE_GREEN_UNPROVEN`/
+  `CHANGE_COMPLETENESS_TDD`: `{ requirementsOrder: null, red: null,
+  implementation: null, green: null, cycles }`, where `cycles` still derives
+  from matching TDD evidence and `voidedCycleOrders` is omitted.
+- `CHANGE_PHASE_MISSING`: aggregate TDD phases use
+  `{ phasePresent: null, orderIsInteger: null, phaseOrder: null,
+  missingRequirementIds: null }`; singular phases use
+  `{ phasePresent: false, orderIsInteger: false, phaseOrder: null,
+  missingRequirementIds: null }`.
+- `CHANGE_ORDER_MIGRATION_REQUIRED`: `phase:` uses
+  `{ phasePresent: false, orderIsInteger: false, phaseOrder: null }`;
+  `batch:` uses `{ phaseItemPresent: false, orderIsInteger: false,
+  phaseOrder: null }`; `requirement:` retains TDD-derived `cycles` and omits
+  `voidedCycleOrders`.
+- `CHANGE_TESTS_UNCHANGED`: `{ designTests: null, batchRedTests: null }`.
+- `CHANGE_IMPLEMENTATION_UNCHANGED`:
+  `{ redImplementation: null, implementationImplementation: null }`.
+- `CHANGE_TEST_CHANGED_AFTER_RED`: `{ redTests: null, greenTests: null }`.
+- `CHANGE_RELEVANT_IMPLEMENTATION_UNCHANGED`:
+  `{ redRequirementImplementation: null,
+  implementationRequirementImplementation: null }`.
+`CHANGE_RECORD_MISSING` is specifically the state
 where the document exists but either `evidence` is entirely absent or
 `evidence.changes` does not name it, so a `null`-on-`evidence`-absence
 rule would make this code unsnapshottable in either sub-case, exactly the
-defect flagged in design review; every other code's
-predicate additionally requires a non-null `evidence` with a matching
-`evidence.changes` entry, checked inside that code's own branch below,
-never inside this shared early return, and every other code's own
-`snapshotPayload` branch below reads `evidence?.field` defensively and
-resolves to `null` throughout when `evidence` is null — that code's own
-diagnostic simply never fires in that state, so this defensive read is
-never exercised in practice, but keeps the function total rather than
-throwing).
+defect flagged in design review. For every other code,
+`evaluateWaiverCondition`, not `snapshotPayload`, enforces the non-null
+current-entry precondition before applying its code-specific predicate. Define
+`change = evidence?.changes.find((candidate) => candidate.changeId === changeId)`
+once. Every formula below is total over `change === undefined`: phase reads
+use `change?.phases`, `effectiveBatches(change)` is evaluated only when
+`change` exists and otherwise means `[]`, `change.requirementIds` otherwise
+means no declaration and produces the exact `null`/empty value fixed in the
+table above, and current-window void orders otherwise mean `[]`.
 For `CHANGE_REQUIREMENTS_UNCHANGED`: `{ impactRequirements: impact?.fingerprints.requirements ?? null, requirementsRequirements: requirements?.fingerprints.requirements ?? null, allowUnchanged: requirements?.allowUnchanged ?? null }`
 (`impact`/`requirements` resolved from `evidence?.changes.find((c) => c.changeId === changeId)?.phases`, `null` throughout when that change has no chronology entry at all, or when `evidence` itself is null — this code's own diagnostic never fires in that case, so `snapshotPayload` need not special-case it beyond `?.`/`?? null` propagation).
 For `CHANGE_DESIGN_UNCHANGED`: `{ requirementsDesign: requirements?.fingerprints.design ?? null, design: design?.fingerprints.design ?? null }`.
@@ -291,32 +342,37 @@ caller before `snapshotPayload` is invoked for these three codes —
 `requirementId` is always defined here; if it is `undefined` for one of
 these three codes, this is an internal-caller contract violation and
 `snapshotPayload` throws rather than silently proceeding): resolve
-`batch = batchFor(effectiveBatches(change), requirementId)` — `batchFor`
-is currently module-local (unexported) in `change.ts`; this design adds
-`export` to its existing declaration (a pure visibility change, no
-behavior change) so `change-waiver.ts` can import the exact same
-first-match selection the existing validator itself uses, with no new
-selection rule); build
-`{ requirementsOrder: change.phases.requirements?.order ?? null, red: batch?.red ? { fingerprints: batch.red.fingerprints, order: batch.red.order ?? null } : null, implementation: batch?.implementation ? { fingerprints: batch.implementation.fingerprints, order: batch.implementation.order ?? null } : null, green: batch?.green ? { fingerprints: batch.green.fingerprints, order: batch.green.order ?? null } : null, cycles: (tdd?.cycles ?? []).filter((c) => c.requirementId === requirementId).map((c) => ({ cycleId: c.cycleId, red: { valid: c.red.valid, order: c.red.order ?? null }, green: c.green ? { valid: c.green.valid, order: c.green.order ?? null } : null })).sort((a, b) => { const ao = a.red.order ?? Number.MAX_SAFE_INTEGER; const bo = b.red.order ?? Number.MAX_SAFE_INTEGER; return ao !== bo ? ao - bo : (a.cycleId < b.cycleId ? -1 : a.cycleId > b.cycleId ? 1 : 0); }).map(({ cycleId, ...rest }) => rest) }`
+`batch = change ? batchFor(effectiveBatches(change), requirementId) : undefined` using the
+existing export from `change-evidence.ts`, so `change-waiver.ts` consumes
+the validator's ownership selector: greatest integer `red.order`, falling
+back to the first applicable batch when none has an integer Red order); build
+`{ requirementsOrder, red, implementation, green, cycles:
+sortedCyclesForSnapshot(...).map(({ cycleId, ...rest }) => rest),
+...(voidedCycleOrders.length ? { voidedCycleOrders } : {}) }`
 — every field explicitly present as `null` when the corresponding phase or
 sub-field is absent (so a `CHANGE_RED_UNPROVEN` instance, which can fire
 with `implementation`/`green` still unrecorded, always has a fully
-constructible, deterministic payload), and `cycles` sorted by `red.order`
-ascending per REQ-CHANGE-EVIDENCE-WAIVER-011's acceptance criteria, with
-any cycle missing an `order` value sorted to the end
-(`Number.MAX_SAFE_INTEGER` sentinel) and `cycleId` (always present and
-unique) used only as the final deterministic tie-breaker for sort
-ordering, never as the primary sort key and never included in the
-serialized payload itself (`cycleId` is destructured off each entry
-immediately after sorting) — REQ-011's acceptance criteria enumerate the
-snapshot's contents as exactly each cycle's `red`/`green` `valid`/`order`
-values, so a cycle's `cycleId` must influence only the payload's
-deterministic order, not its hashed content, otherwise a benign
-cycle-identity change with no predicate-relevant value change would
-incorrectly stale an otherwise-untouched waiver.
+constructible, deterministic payload), and `cycles` sorted by one shared `sortedCyclesForSnapshot(items,
+orderSelector, idSelector, serializedSelector)` helper operating on raw cycle
+objects before absent values are normalized: integer selected orders
+ascending, then present non-integer orders by canonical JSON, then absent
+orders; ties use the selected ID (absent as `""`) ascending and then canonical
+JSON of the selected serialized object. `cycleId` is removed after sorting and
+is never hashed. The TDD-code flavor selects `red.order`; the
+`requirement:` flavor selects `redOrder`. New tie-break behavior can change
+hashes only for previously ambiguous equal/non-integer/absent-order lists and
+does not increment `CURRENT_SNAPSHOT_VERSION`; ordinary ordered payloads stay
+byte-identical. Quality verification recomputes every currently stored waiver
+payload and treats any unexpected hash drift outside these previously
+ambiguous tie cases and the intentional document-absent correction as a
+release blocker; an affected true-condition scope requires an explicitly
+approved replacement waiver. When
+`voidedCycleOrdersInCurrentWindow(...)` is non-empty, also include
+`voidedCycleOrders` as its already-sorted integer array; omit the key when
+empty to preserve existing hashes.
 For `CHANGE_RECORD_MISSING` (reachable in every case, since this
 function's only early `null` return is document-absence, not chronology
-absence): `{ documentDigest: digest(await readText(root, '.musubix/changes/' + changeId + '.md')), everRecorded: order.records.some((r) => r.kind === 'change' && r.entityId === changeId && r.phase !== 'waiver'), currentEntry: (() => { const entry = evidence?.changes.find((c) => c.changeId === changeId); return entry ? digest(canonicalJson(entry)) : null; })() }`
+absence): `{ documentDigest: digest(await readText(root, '.musubix/changes/' + changeId + '.md')), everRecorded: [...order.records.values()].some((r) => r.kind === 'change' && r.entityId === changeId && r.phase !== 'waiver'), currentEntry: change ? digest(canonicalJson(change)) : null }`
 — `everRecorded` is the monotonic, append-only-log-derived sentinel
 required to close the add-then-remove reactivation gap identified during
 requirements review: because `order.json` records are never
@@ -328,8 +384,8 @@ payload can never return to its exact original value once any
 non-`waiver` `change`-kind order record for this `changeId` has ever been
 appended. `currentEntry`'s digest additionally invalidates the waiver if
 the entry's own content later changes without disappearing.
-For `CHANGE_PHASE_MISSING`: resolve `item = change.phases[phaseNameFromDetail]` for the singular-phase names (`impact`/`requirements`/`design`/`quality`), or, for the TDD-batch-phase names (`red`/`implementation`/`green`), treat the phase as an aggregate with no single `item` (it is inherently multi-batch); build
-`{ phasePresent: isTddBatchPhaseName(phaseNameFromDetail) ? null : item !== undefined, orderIsInteger: isTddBatchPhaseName(phaseNameFromDetail) ? null : Number.isInteger(item?.order), phaseOrder: isTddBatchPhaseName(phaseNameFromDetail) ? null : (Number.isInteger(item?.order) ? item.order : null), missingRequirementIds: isTddBatchPhaseName(phaseNameFromDetail) ? [...change.requirementIds].filter((id) => !effectiveBatches(change).some((b) => b[phaseNameFromDetail] && b.requirementIds.includes(id))).sort() : null }`
+For `CHANGE_PHASE_MISSING`: resolve `item = change?.phases[phaseNameFromDetail]` for the singular-phase names (`impact`/`requirements`/`design`/`quality`), or, for the TDD-batch-phase names (`red`/`implementation`/`green`), treat the phase as an aggregate with no single `item` (it is inherently multi-batch); build
+`{ phasePresent: isTddBatchPhaseName(phaseNameFromDetail) ? null : item !== undefined, orderIsInteger: isTddBatchPhaseName(phaseNameFromDetail) ? null : Number.isInteger(item?.order), phaseOrder: isTddBatchPhaseName(phaseNameFromDetail) ? null : (Number.isInteger(item?.order) ? item.order : null), missingRequirementIds: isTddBatchPhaseName(phaseNameFromDetail) ? (change ? [...change.requirementIds].filter((id) => !effectiveBatches(change).some((b) => b[phaseNameFromDetail] && b.requirementIds.includes(id))).sort() : null) : null }`
 (`phaseNameFromDetail` parsed from the `phase:<name>` grammar below —
 `CHANGE_PHASE_MISSING` has no `batch:` flavor: both its singular-phase
 site — `impact`/`requirements`/`design`/`quality` — and its
@@ -351,7 +407,10 @@ which keep `CHANGE_PHASE_MISSING` firing) still changes the payload,
 closing the presence/order-integrality ambiguity flagged in design
 review). For `CHANGE_ORDER_MIGRATION_REQUIRED` when `detail` has the
 `phase:` prefix (the singular-phase flavor, `impact`/`requirements`/
-`design`/`quality` lacking monotonic order): `{ phasePresent: change.phases[phaseNameFromDetail] !== undefined, orderIsInteger: Number.isInteger(change.phases[phaseNameFromDetail]?.order), phaseOrder: Number.isInteger(change.phases[phaseNameFromDetail]?.order) ? change.phases[phaseNameFromDetail]!.order : null }`
+`design` lacking monotonic order): `{ phasePresent: change?.phases[phaseNameFromDetail] !== undefined, orderIsInteger: Number.isInteger(change?.phases[phaseNameFromDetail]?.order), phaseOrder: Number.isInteger(change?.phases[phaseNameFromDetail]?.order) ? change!.phases[phaseNameFromDetail]!.order : null }`.
+`phase:quality` is invalid for this code, because quality lineage has its own
+malformed-history diagnostic and never emits
+`CHANGE_ORDER_MIGRATION_REQUIRED`
 (this flavor only ever fires when the phase is present but its `order` is
 not an integer, so `phasePresent` is always `true` when this diagnostic
 fires — included anyway so the payload's shape is uniform with
@@ -363,37 +422,53 @@ For `CHANGE_ORDER_MIGRATION_REQUIRED` when `detail` has the `batch:`
 prefix (the batch-phase-item flavor — a specific batch's `red`/
 `implementation`/`green` item lacking monotonic order, genuinely one
 instance per batch per phase name, unlike `CHANGE_PHASE_MISSING` above):
-resolve `item = batchForKey(effectiveBatches(change), batchKeyFromDetail)?.[batchPhaseNameFromDetail]`, then
+resolve `batches = change ? effectiveBatches(change) : []` and all
+`matches = batchesForKey(batches, batchKeyFromDetail)`. With zero or one
+match, retain the existing flat payload
+from `item = matches[0]?.[batchPhaseNameFromDetail]`:
 `{ phaseItemPresent: item != null, orderIsInteger: Number.isInteger(item?.order), phaseOrder: Number.isInteger(item?.order) ? item.order : null }`
 (three explicit fields, not the single collapsed `phaseItemPresent`
 boolean a prior draft used, which could not distinguish "item present but
 unordered" — the exact firing condition — from "item present and now
 correctly ordered", making a genuine repair invisible to a stale-waiver
-check).
+check). With multiple matches, instead return
+`{ matchingBatches: matches.map((batch) => ({ phaseItemPresent,
+orderIsInteger, phaseOrder })) }` in effective-batch order.
 For `CHANGE_ORDER_MIGRATION_REQUIRED` when `detail` has the
-`requirement:` prefix (the per-requirement TDD-cycle-order flavor): `{ cycles: (tdd?.cycles ?? []).filter((c) => c.requirementId === requirementIdFromDetail).map((c) => ({ redOrder: c.red.order ?? null, greenOrder: c.green?.order ?? null })).sort((a, b) => (a.redOrder ?? Number.MAX_SAFE_INTEGER) - (b.redOrder ?? Number.MAX_SAFE_INTEGER)) }`.
-For `CHANGE_TESTS_UNCHANGED` (batch-scoped by bare `detail` as the batch
-key): resolve `batch = batchForKey(effectiveBatches(change), detail)`
-(DES-001's new selector — `batchFor`'s existing `requirementId` selector
-cannot resolve a batch from a bare batch-key `detail` value alone), then
-`{ designTests: change.phases.design?.fingerprints.tests ?? null, batchRedTests: batch?.red?.fingerprints.tests ?? null }`.
-For `CHANGE_IMPLEMENTATION_UNCHANGED` (batch-scoped, same `batch`
-resolution): `{ redImplementation: batch?.red?.fingerprints.implementation ?? null, implementationImplementation: batch?.implementation?.fingerprints.implementation ?? null }`.
-For `CHANGE_TEST_CHANGED_AFTER_RED` (batch-scoped, same `batch`
-resolution): `{ redTests: batch?.red?.fingerprints.tests ?? null, greenTests: batch?.green?.fingerprints.tests ?? null }`.
-For `CHANGE_RELEVANT_IMPLEMENTATION_UNCHANGED` (scoped by both
-`requirementId` and `detail` as the batch key, same `batch` resolution):
-`{ redRequirementImplementation: batch?.red?.fingerprints.requirementImplementations?.[requirementId] ?? null, implementationRequirementImplementation: batch?.implementation?.fingerprints.requirementImplementations?.[requirementId] ?? null }`.
+`requirement:` prefix (the per-requirement TDD-cycle-order flavor): use the
+same `sortedCyclesForSnapshot` helper over `{ cycleId, redOrder, greenOrder }`,
+remove `cycleId` after sorting, and return
+`{ cycles, ...(voidedCycleOrders.length ? { voidedCycleOrders } : {}) }`.
+For the four bare-batch-key codes below, resolve
+`batches = change ? effectiveBatches(change) : []` and
+`matches = batchesForKey(batches, detail)`. With zero or one
+match, preserve the existing flat payload exactly. With multiple matches,
+return a root object containing `matchingBatches:
+matches.map((batch) => ({ ownedRequirementIds:
+change ? currentRequirementIdsForBatch(batches, batch, change.requirementIds).sort() : [],
+...codeSpecificBatchFields }))` in effective-batch order. For
+`CHANGE_TESTS_UNCHANGED`, the root additionally retains `designTests` and
+`codeSpecificBatchFields` is `{ batchRedTests }`; for
+`CHANGE_IMPLEMENTATION_UNCHANGED`, it is
+`{ redImplementation, implementationImplementation }`; for
+`CHANGE_TEST_CHANGED_AFTER_RED`, it is `{ redTests, greenTests }`; and for
+`CHANGE_RELEVANT_IMPLEMENTATION_UNCHANGED`, it is
+`{ redRequirementImplementation, implementationRequirementImplementation }`.
+REQ-016's “batch phase source” grammar clause applies to the
+`CHANGE_ORDER_MIGRATION_REQUIRED` batch flavor; `CHANGE_PHASE_MISSING`
+continues to use `phase:<phaseName>` for its aggregate TDD-batch phases, as
+specified by its diagnostic sites and REQ-011 payload above.
 Then
 `digest(canonicalJson(await snapshotPayload(...)))`
 combined with `CURRENT_SNAPSHOT_VERSION` is the snapshot identity used by
 both DES-001 (at recording time) and DES-004 (at validation time) — the
 two call sites never diverge because both call this one function and
-compare against the same `CURRENT_SNAPSHOT_VERSION` constant. A waiver is
-non-stale only when **both**
+compare against the same `CURRENT_SNAPSHOT_VERSION` constant. The
+snapshot component is current only when **both**
 `record.snapshotVersion === CURRENT_SNAPSHOT_VERSION` **and**
 `record.snapshotHash === digest(canonicalJson(await snapshotPayload(...)))`
-hold; a future incompatible change to any code's payload definition
+hold; DES-004 combines this snapshot component with the tri-state condition
+through `isWaiverStale(...)`. A future incompatible change to any code's payload definition
 increments `CURRENT_SNAPSHOT_VERSION`, which alone makes every
 previously recorded waiver stale (REQ-011's version-bump acceptance
 criterion) regardless of whether its stored hash still happens to match
@@ -421,7 +496,13 @@ detail): { kind: 'phase' | 'batch' | 'requirement' | 'batchKey'; phaseName?: str
 is the inverse parser used by `snapshotPayload` above to recover
 `phaseName`/`batchKey`/`requirementId` from a stored or supplied `detail`
 string, returning `null` on any string not matching one of these four
-grammars for that code.
+grammars for that code. It is the sole code-aware grammar authority: enforce
+the per-code phase-name allow-lists, accept `batch:` only for
+`CHANGE_ORDER_MIGRATION_REQUIRED`, reject `phase:quality` for that code, and
+accept a batch key only when it is non-empty, comma-separated, duplicate-free,
+and already sorted by `batchKey`'s comparator. DES-001 validates supplied
+details through this function before evaluation, and `waiverLinkage` requires
+stored details to parse successfully.
 Implement `loadChangeWaiverEvidence`'s companion validators:
 `waiverRecordShapeValid(record: unknown): record is ChangeWaiverRecord`
 checking every field's type explicitly (`changeId`/`code`/`approver`/
@@ -434,31 +515,23 @@ equals `'0'.repeat(64)`);
 `waivers[index].previousSha256 === (index === 0 ? '0'.repeat(64) : waivers[index - 1].payloadSha256)`
 and that `waivers[index].payloadSha256` equals the recomputed hash from
 DES-001's exact destructure-omit rule. Implement
-`waiverLinkage(root: string, evidence: ChangeEvidence | null, order: Awaited<ReturnType<typeof inspectEvidenceOrder>>, waivers: ChangeWaiverRecord[], index: number): Promise<{ valid: boolean; reason?: string }>`
-(now takes `root` and is `async`, so it can perform the change-document
-existence check itself rather than assuming a caller already did — a
-prior draft incorrectly assumed the caller checked this) requiring,
-beyond shape and chain validity: the change document
-exists at `.musubix/changes/<record.changeId>.md` (checked here directly
-via `exists(within(root, ...))`, not delegated to any caller); `record.code`
+`waiverLinkage(order: Awaited<ReturnType<typeof inspectEvidenceOrder>>, waivers: ChangeWaiverRecord[], index: number): { valid: boolean; reason?: string }`
+requiring, beyond shape and chain validity: `record.code`
 is in `WAIVABLE_CODES`; `record.requirementId` presence
 equals `requiresRequirementId(record.code)` and `record.detail` presence
-equals `requiresDetail(record.code)` (DES-001's four regime sets); when
-`record.code === 'CHANGE_RECORD_MISSING'`,
-`evidence === null || !evidence.changes.some((c) => c.changeId === record.changeId)` (the
-change document exists — just checked above — but either the whole
-chronology file is absent (`evidence === null`, exactly the state
-`change.ts`'s `!evidence?.changes.length` early return produces) or it
-exists with no entry for this `changeId`; this is the exact inverse of
-every other code's existence rule, since the diagnostic itself only fires
-in one of these two absence states, and this is the only place in
-`waiverLinkage` where `evidence === null` is ever treated as satisfying a
-condition rather than immediately failing linkage); for every other
-code, `evidence !== null &&
-evidence.changes.some((c) => c.changeId === record.changeId && (record.requirementId === undefined || c.requirementIds.includes(record.requirementId)))`
-(every non-`CHANGE_RECORD_MISSING` code requires non-null `evidence` with
-a matching entry, exactly as before — only `CHANGE_RECORD_MISSING`'s
-branch above is exempt from requiring non-null `evidence`);
+equals `requiresDetail(record.code)` (DES-001's four regime sets); a present
+detail parses under that code's REQ-016 grammar; and no other waiver record
+claims the same stored `order` sequence.
+Current chronology membership, current requirement declaration, and whether
+the waived predicate still holds are deliberately not linkage conditions:
+they are mutable condition state evaluated by
+`evaluateWaiverCondition(...)`. This separation keeps a structurally valid
+historical waiver linked after its debt is resolved (including
+`CHANGE_RECORD_MISSING` after a chronology entry appears, or a
+requirement-scoped waiver after that requirement is removed), allowing the
+snapshot to become stale and the tri-state evaluator to classify the result
+as `false` or `indeterminate` instead of misreporting immutable evidence as
+malformed.
 `order.valid === true` for the whole log; and exactly one
 `order.records` entry exists via
 `evidenceOrderRecord(order.records, 'change', record.changeId, 'waiver', { code: record.code, requirementId: record.requirementId, detail: record.detail, sequence: record.order })`
@@ -484,7 +557,7 @@ Interfaces: `snapshotPayload(...)`, `diagnosticDetail(...)`,
 `waiverChainValid(...)`, `waiverLinkage(...)` exported from
 `change-waiver.ts`.
 Constraints: Must never report `valid: true` for a record failing any
-shape, chain, allow-list, granularity, change/requirement-existence, or
+shape, chain, allow-list, granularity, or
 order-linkage condition. Must use the exact same `snapshotPayload(...)`
 and `diagnosticDetail(...)` functions at recording time, emission time,
 and validation time — never independently reimplemented in more than one
@@ -506,11 +579,10 @@ fields are optional and no existing code path sets them). In
 (`packages/analysis/src/change.ts`), replace every direct `error(code,
 message)` call at the twelve allow-listed emission sites with a call
 through `errorFor(code, message, target)` (a thin wrapper around the
-existing `error(...)` helper that spreads `target` onto the returned
-diagnostic, computing `target.detail` via DES-002's
-`diagnosticDetail(code, context)` so the same function that defines the
-grammar also stamps it, never a second, independently maintained
-computation): `changeId` only, for `CHANGE_REQUIREMENTS_UNCHANGED`/
+existing `error(...)` helper that spreads the already-computed structured
+target onto the returned diagnostic). Each detail-bearing call site computes
+`target.detail` through DES-002's `diagnosticDetail(code, context)`, so the
+same function stamps every emitted detail and no second grammar exists: `changeId` only, for `CHANGE_REQUIREMENTS_UNCHANGED`/
 `CHANGE_DESIGN_UNCHANGED`/`CHANGE_RECORD_MISSING`; `changeId,
 requirementId`, for `CHANGE_RED_UNPROVEN`/`CHANGE_GREEN_UNPROVEN`/
 `CHANGE_COMPLETENESS_TDD` (and `CHANGE_COMPLETENESS_TDD` in
@@ -545,16 +617,31 @@ emission sites (directly by `change.ts`, and internally by
 regime (`NEITHER_KEY_CODES`/`REQUIREMENT_ONLY_CODES`/`DETAIL_ONLY_CODES`/
 `BOTH_KEYS_CODES`) actually requires, so the per-requirement
 `CHANGE_ORDER_MIGRATION_REQUIRED` call site never passes
-`requirementId`.
+`requirementId`. Preserve each emission site's existing control flow and
+batch object, but replace duplicated inline predicate logic with the same
+exported total boolean condition helpers used by DES-004's standalone
+evaluator. Emission remains driven by those helpers against the exact
+in-scope change/requirement/batch object, never by key-based re-resolution;
+therefore waiver-free diagnostics remain byte-compatible and duplicate batch
+keys do not redirect an emission to a different batch. An authoritative stale
+waiver whose standalone scope is `indeterminate` is blocked by the separate
+error-severity `CHANGE_WAIVER_STALE` diagnostic from DES-004, not by
+fabricating or suppressing a target; independently applicable upstream
+diagnostics such as `CHANGE_IMPLEMENTATION_SCOPE_MISSING` remain unchanged.
 Constraints: Must not add `changeId`/`requirementId`/`detail` to any
 diagnostic code outside the twelve allow-listed codes (in particular,
-never to `CHANGE_COMPLETENESS_CODE`). Must not change any diagnostic's
+never to `CHANGE_COMPLETENESS_CODE`), except that the non-waivable audit codes
+`CHANGE_WAIVER_STALE` and `CHANGE_WAIVER_EVIDENCE_MALFORMED` may carry those
+fields solely to identify the affected waiver scope. Must not change any diagnostic's
 `code`, `message`, `path`, or `line` values. `detail` must be present on a
-diagnostic if and only if `requiresDetail(code)` (DES-001) is `true`, and
-`requirementId` if and only if `requiresRequirementId(code)` is `true` —
+diagnostic for the twelve waivable codes if and only if
+`requiresDetail(code)` (DES-001) is `true`, and `requirementId` if and only if
+`requiresRequirementId(code)` is `true` —
 the same regime the CLI/linkage layers enforce, so a diagnostic's own
-target shape and a waiver's required scope keys can never disagree.
-Requirements: REQ-CHANGE-EVIDENCE-WAIVER-013, REQ-CHANGE-EVIDENCE-WAIVER-016
+target shape and a waiver's required scope keys can never disagree. The two
+audit diagnostics mirror the affected waiver record's optional scope fields
+without calling these `WaivableCode` predicates on their own audit code.
+Requirements: REQ-CHANGE-EVIDENCE-WAIVER-011, REQ-CHANGE-EVIDENCE-WAIVER-013, REQ-CHANGE-EVIDENCE-WAIVER-016
 ADRs: ADR-0025
 
 ## DES-CHANGE-EVIDENCE-WAIVER-004: Inline waiver-aware severity, malformed/stale reporting, and completeness recount
@@ -567,90 +654,181 @@ return — both functions already compute `evidence` before the early
 return today, so this only relocates the pre-existing `tdd` load earlier,
 introducing no new I/O call and no behavior change to the load itself.
 Immediately after both loads, each function calls a single new async
-function, `buildWaiverContext(root: string, evidence: ChangeEvidence | null, tdd: TddEvidence | null): Promise<WaiverContext>`
-(exported from `change-waiver.ts`; the only place any waiver-related I/O
-or `await`-requiring computation happens — every other DES-004 function
-below is deliberately synchronous, consulting only this precomputed
-result, so `snapshotPayload`'s and `waiverLinkage`'s `async`ness from
-DES-002 never needs to leak into `reportWaiverEvidenceDiagnostics`/
-`waivedDiagnostic`, resolving the async/sync mismatch flagged in design
-review). `buildWaiverContext` computes `loaded = await
+function, `buildWaiverContext(root: string, evidence: ChangeEvidence | null, tdd: TddEvidence | null, precomputed?: { loaded?: LoadedChangeWaiverEvidence | null; order?: Awaited<ReturnType<typeof inspectEvidenceOrder>> }): Promise<WaiverContext>`
+(exported from `change-waiver.ts`; it centralizes waiver-file/order loading
+and per-record snapshot computation. `evaluateWaiverCondition` remains async
+for its change-document existence check and is awaited only by
+`buildWaiverContext`, `recordChangeWaiver`, and existing candidate emission
+branches; `reportWaiverEvidenceDiagnostics` and `waivedDiagnostic` remain
+synchronous over the precomputed context). `buildWaiverContext` uses the supplied `loaded`/`order` values
+when present and otherwise computes `loaded = await
 loadChangeWaiverEvidence(root)`, `order = await inspectEvidenceOrder(root)`
 (the existing exported async function already used elsewhere in
 `change.ts` to load and validate `order.json` in one call — no new
 order-log validation logic is introduced), and, only when `loaded` is
 non-null and not malformed, iterates `loaded.waivers` once, computing for
-each `index`: `linkage[index] = await waiverLinkage(root, evidence, order,
-loaded.waivers, index)` (DES-002) and, only when `linkage[index].valid`,
+each `index`: `linkage[index] = waiverLinkage(order, loaded.waivers, index)`
+(DES-002) and, only when `linkage[index].valid`,
 `currentHash[index] = digest(canonicalJson(await snapshotPayload(root,
 evidence, tdd, order, loaded.waivers[index].changeId,
 loaded.waivers[index].code, loaded.waivers[index].requirementId,
 loaded.waivers[index].detail)))` (`undefined` when linkage is invalid,
-since a non-linked record's staleness is moot). The returned
+since a non-linked record's staleness is moot), and
+`condition[index] = await evaluateWaiverCondition(..., { changeId, code:
+record.code as WaivableCode, requirementId, detail })` only when linkage is
+valid (linkage has already proven the code is allow-listed; use `undefined`
+otherwise, preserving exact index alignment with `loaded.waivers`). The returned
 `WaiverContext` is `{ loaded, order, linkage: Array<{ valid: boolean;
-reason?: string }>, currentHash: Array<string | undefined> }`, fully
+reason?: string }>, currentHash: Array<string | undefined>, condition:
+Array<WaiverCondition | undefined> }`, fully
 resolved (no remaining `Promise`s), so every function below can be a
 plain synchronous function over this value.
 Immediately compute
-`const waiverDiagnostics = reportWaiverEvidenceDiagnostics(waiverContext, evidence, tdd)`
+`const waiverDiagnostics = reportWaiverEvidenceDiagnostics(waiverContext)`
 using this same, already-relocated `tdd` value (never a second,
 separately timed load) and, on both the early-return path and the normal
 path, append
 `waiverDiagnostics` to the returned `diagnostics` array before computing
 `valid` (so a malformed/stale/invalid waiver file is reported even when
 there are zero change documents at all, resolving the prior early-return
-bypass). `reportWaiverEvidenceDiagnostics(waiverContext: WaiverContext, evidence: ChangeEvidence | null, tdd: TddEvidence | null): Diagnostic[]`
+bypass). `reportWaiverEvidenceDiagnostics(waiverContext: WaiverContext): Diagnostic[]`
 is synchronous (all I/O and linkage/snapshot computation already happened
 via `buildWaiverContext`): if
 `waiverContext.loaded === null`, return `[]` (no file, nothing to report);
 if `waiverContext.loaded.malformed`, return exactly one
 `CHANGE_WAIVER_EVIDENCE_MALFORMED` diagnostic naming the file and stop;
 otherwise, for each waiver index failing
-`waiverContext.linkage[index].valid`
-(which is `false` for every waiver whenever `evidence === null` and its
-code is not `CHANGE_RECORD_MISSING`, since `waiverLinkage` requires either
-non-null `evidence` or, for `CHANGE_RECORD_MISSING` specifically, only
-that the change document exists on disk — this is exactly the case where
-the calling validator's own early return fires for every other code, so
-every recorded non-`CHANGE_RECORD_MISSING` waiver is correctly reported
-malformed/unlinked rather than silently skipped), push one
+`waiverContext.linkage[index].valid`, push one
 `CHANGE_WAIVER_EVIDENCE_MALFORMED` diagnostic naming its
 `changeId`/`code`/`requirementId`/`detail` and
-`waiverContext.linkage[index].reason` (REQ-007); group the remaining,
-validly linked waivers by their
-`changeId`/`code`/`requirementId`/`detail` scope tuple and, within each
-group, treat only the record with the greatest `order` as authoritative
-(REQ-006's supersession rule — a group can legitimately contain more than
-one validly linked record when REQ-010 permitted a replacement after an
-earlier one went stale); for each group's authoritative record at index
-`i`, when it is stale (`record.snapshotVersion !== CURRENT_SNAPSHOT_VERSION
-|| record.snapshotHash !== waiverContext.currentHash[i]`, DES-002's
-non-stale predicate evaluated against the precomputed
-`waiverContext.currentHash[i]`), push one `CHANGE_WAIVER_STALE` diagnostic
-naming its `changeId`/`code`/`requirementId`/`detail` (REQ-011) — this
-pass runs independent of whether the original target diagnostic still
-fires, so a stale waiver is always reported even after its underlying
-condition is separately resolved, and never fabricates a resolved
-`CHANGE_*`/`CHANGE_COMPLETENESS_*` diagnostic on its own; a non-authoritative
-(superseded) record in a group is never itself reported stale or
-malformed merely for having been superseded.
+`waiverContext.linkage[index].reason` (REQ-007). Process the waiver array in
+one ascending-index pass. For a valid record, derive its scope tuple; only
+when this is the first array index carrying that scope, use
+`authoritativeWaiverIndex(waiverContext, scope)` to select the validly linked
+record with greatest `order`. The selector returns `-1` when none exists.
+When the authoritative record at index `i` is stale, push exactly one
+`CHANGE_WAIVER_STALE` diagnostic naming its
+`changeId`/`code`/`requirementId`/`detail` and condition value. Its message
+uses the normative assertion substrings `target code is no longer reported`
+and `replacement waiver is not required` for `false`, without claiming all
+related debt is resolved; `condition still exists` for `true`, with direction
+to resolve it or record an allowed replacement; and `cannot be evaluated` for
+`indeterminate`/`undefined`, with direction to restore an evaluable
+change/requirement/batch scope before rerunning validation (REQ-011).
+Set its severity from `waiverContext.condition[i]`: `false` produces
+`severity: 'warning'`; `true` or `indeterminate` produces `severity: 'error'`.
+`buildWaiverContext` computes this tri-state once per validly linked record
+through `evaluateWaiverCondition(...)`, never by inspecting either caller's
+locally assembled diagnostics. The evaluator reuses the same code-specific
+condition implementation used by `recordChangeWaiver` and stale-waiver
+classification. The twelve structured diagnostic emission sites retain their
+existing `qualityHistory` and `currentRequirementIdsForBatch` guards and exact
+batch objects, while calling the same total boolean predicate helpers; they do
+not key-resolve through this evaluator. The shared evaluator
+semantics are:
+`CHANGE_REQUIREMENTS_UNCHANGED` and `CHANGE_DESIGN_UNCHANGED` map their
+existing predicates directly; `CHANGE_RED_UNPROVEN` and
+`CHANGE_GREEN_UNPROVEN` return `false` when `qualityHistory` is non-empty and
+otherwise map their existing predicates; `CHANGE_COMPLETENESS_TDD` maps its
+existing predicate; `CHANGE_RECORD_MISSING` awaits
+`recordMissingCondition` after independently checking that the change document
+exists (document absence is `indeterminate` at both record and read time; a
+present document plus a present chronology entry maps to
+`false`). Evaluate in this order: reject/return `indeterminate` for grammar
+failure; then apply scope preconditions (current change entry, declared
+`requirementId`, declared requirement encoded by `requirement:<REQ-ID>`, and
+at least one matching batch for batch-key scopes); then apply ownership; then
+the code helper. The current-change-entry precondition excludes
+`CHANGE_RECORD_MISSING`, for which a present document plus absent entry is the
+defining `true` condition. `CHANGE_PHASE_MISSING` maps an absent singular
+phase or uncovered aggregate TDD requirement to `true`, and a present singular
+phase or complete aggregate coverage to `false`. The
+`CHANGE_ORDER_MIGRATION_REQUIRED` `phase:` flavor maps a present
+non-integer-order phase to `true`, and an absent or integer-ordered phase to
+`false`. `CHANGE_RECORD_MISSING` alone requires its change document to exist;
+the other eleven codes evaluate from chronology/TDD/order state even when the
+document is absent, preserving existing validator behavior alongside the
+separate `CHANGE_DOCUMENT_MISSING` diagnostic. The four bare-`batchKey`
+codes (`CHANGE_TESTS_UNCHANGED`, `CHANGE_IMPLEMENTATION_UNCHANGED`,
+`CHANGE_TEST_CHANGED_AFTER_RED`, and
+`CHANGE_RELEVANT_IMPLEMENTATION_UNCHANGED`) resolve all effective batches
+matching the key and return `indeterminate` when none match. When one or more
+match, apply `currentRequirementIdsForBatch` to each: return `false` when no
+matching batch currently owns any requirement in the scope (or, for
+`CHANGE_RELEVANT_IMPLEMENTATION_UNCHANGED`, when none owns the named
+`requirementId`); otherwise return `true` when any currently owned matching
+batch's total tests/implementation predicate is true (for that code, only
+when the named requirement is currently owned and its helper is true), or
+`false` when none are true. The
+`CHANGE_ORDER_MIGRATION_REQUIRED` `batch:` flavor also resolves all key
+matches but applies no ownership filter. Add
+`orderMigrationRequiredBatchItemCondition(batch, phase): boolean`, returning
+whether that exact phase item is present with a non-integer order; use it in
+both validator emission and the evaluator, while
+`orderMigrationRequiredBatchCondition(change, batchPhaseName, key)`
+aggregates it across matching batches. The evaluator's batch-scope
+precondition handles zero matches as `indeterminate` before calling the
+boolean aggregate helper; with at least one match it returns `true` when any
+match satisfies the item predicate and `false` otherwise. For
+`CHANGE_RELEVANT_IMPLEMENTATION_UNCHANGED`, absent or empty
+requirement-implementation fingerprints map through the existing total helper
+to `false`; the independent upstream `CHANGE_IMPLEMENTATION_SCOPE_MISSING`
+diagnostic remains the fail-closed error. A missing change
+or undeclared requirement is `indeterminate`. All boolean predicate results
+map `true`/`false` directly. Both
+`validateChangeEvidence` and `validateChangeCompleteness` call this same
+reporting pass and therefore each emit exactly one identically classified
+stale diagnostic per authoritative linked stale scope. A non-authoritative
+(superseded) record in a group is never itself reported stale or malformed
+merely for having been superseded.
+Corrective coverage uses one fixture whose condition becomes `false` without
+changing its snapshot hash and asserts identical warning classification in
+both validators, absence of the resolved target diagnostic, and exactly one
+stale diagnostic per validator, both normative `false` remediation
+substrings, and no claim that all related debt is resolved; one fixture that appends a later duplicate-key
+batch and asserts the prior single-match waiver becomes stale while the target
+remains error-severity; and one hash-preservation fixture that proves the
+single-match flat snapshot hash remains equal while the false condition alone
+makes the waiver stale.
+CHANGE-0032 adds hash-drifted `true` and `indeterminate`
+`CHANGE_COMPLETENESS_TDD` fixtures that each assert exactly one
+error-severity stale diagnostic and the normative remediation substring in
+both validators; a document-present before/after fixture that proves canonical
+payload/hash byte equality; and a retained document-absent historical-waiver
+fixture that proves hash drift and tri-state-classified stale reporting.
+`TEST-CHANGE-EVIDENCE-WAIVER-028` covers the shared batch order-migration predicate across absent,
+present-with-integer-order, present-with-non-integer-order, zero-match,
+single-match, and multi-match fixtures, asserting evaluator/emission parity,
+document-present hash stability, historical document-absent hash drift, and
+the gate/status report-level single audit entry while gate's validator check
+arrays retain their own copies.
+It also writes valid waiver evidence with an empty/missing change chronology
+that produces at least one authoritative indeterminate stale entry, and proves
+full, `--changed`, and `--feature` gate modes expose the same non-empty
+change-waiver audit subset as `projectStatus`, while both commands leave
+change/TDD/order/waiver evidence byte-identical. The full/`--changed` gate
+check arrays retain their validator copies; feature-scoped check arrays follow
+REQ-011's feature filter while the top-level subset remains repository-wide.
+The all-integer fixture asserts condition `false`, warning severity, and the
+`target code is no longer reported`/`replacement waiver is not required`
+message substrings. The zero-match fixture asserts `indeterminate`, error
+severity, and `cannot be evaluated`; non-integer single/multi-match fixtures
+assert `true` exactly when the target diagnostic is emitted. The audit-count
+assertion traces to REQ-011's cross-validator/report-level count paragraph.
 Separately, replace direct `error(code, message)` calls at the twelve
-allow-listed emission sites (which only run on the normal, non-early-return
-path, since they require an existing change, so `evidence` is always
-non-null at these call sites) with a call through
+allow-listed emission sites with a call through
 `waivedDiagnostic(waiverContext: WaiverContext, code: WaivableCode, message: string, changeId: string, requirementId: string | undefined, detail: string | undefined): Diagnostic`
 (synchronous — like `reportWaiverEvidenceDiagnostics`, it consults only
 the precomputed `waiverContext`, never calling `snapshotPayload`/
 `waiverLinkage` itself; defined once in `change-waiver.ts`, alongside and reusing `errorFor` from
 DES-003): if `waiverContext.loaded` is
 non-null, non-malformed, and contains at least one waiver matching
-`changeId`/`code`/`requirementId`/`detail` exactly, select the matching
-waiver with the greatest `order` (the same authoritative-record rule used
-above), find its `index` within `waiverContext.loaded.waivers`; if
-`waiverContext.linkage[index].valid` and (`record.snapshotVersion ===
-CURRENT_SNAPSHOT_VERSION && record.snapshotHash ===
-waiverContext.currentHash[index]`, DES-002's non-stale predicate
-evaluated against the precomputed hash), return
+`changeId`/`code`/`requirementId`/`detail` exactly, obtain the index through
+the same `authoritativeWaiverIndex(waiverContext, scope)` selector used
+above. If it returns `-1`, return the unmodified `errorFor(...)` result at
+`severity: 'error'`; otherwise, if
+`waiverContext.linkage[index].valid` and
+`!isWaiverStale(waiverContext, index)`, return
 `{ ...errorFor(code, message, { changeId, requirementId, detail }), severity: 'warning', waiver: { approver, reason, recordedAt } }`;
 otherwise return the unmodified `errorFor(code, message, { changeId,
 requirementId, detail })` at `severity: 'error'` (REQ-008, REQ-009). Because this
@@ -664,15 +842,27 @@ returns `severity: 'warning'`, resolving the current code's
 problem structurally, not via post-hoc reinterpretation of an
 already-built diagnostics array (REQ-014's completeness half; the other
 eleven waivable codes never participate in `completeRequirements`
-counting, unchanged). Both new
-diagnostic codes are `severity: 'error'`, added to the existing
+counting, unchanged). `CHANGE_WAIVER_EVIDENCE_MALFORMED` remains
+`severity: 'error'`. `CHANGE_WAIVER_STALE` is an error for `true` or
+`indeterminate` conditions and an audit warning only for deterministically
+resolved (`false`) conditions. Both diagnostics stay in the existing
 `change-history`/`change-completeness` diagnostics arrays — no new gate
-check, check-name configuration, or release-profile entry is introduced;
-`CHANGE_WAIVER_EVIDENCE_MALFORMED`/`CHANGE_WAIVER_STALE` already block
-release approval simply by being error-severity members of the
-pre-existing required `change-history` check's diagnostics.
-Interfaces: `type WaiverContext = { loaded: LoadedChangeWaiverEvidence | null; order: Awaited<ReturnType<typeof inspectEvidenceOrder>>; linkage: Array<{ valid: boolean; reason?: string }>; currentHash: Array<string | undefined> }`;
-`buildWaiverContext(...)` (the sole async function in this component),
+check, check-name configuration, or release-profile entry is introduced.
+`CHANGE_RECORD_MISSING` uses this same waiver-aware path both in the
+zero/absent-evidence early return and in the normal document scan.
+Interfaces: `type WaiverCondition = 'true' | 'false' | 'indeterminate'`;
+`type WaiverScope = { changeId: string; code: WaivableCode; requirementId?: string; detail?: string }`;
+`type WaiverContext = { loaded: LoadedChangeWaiverEvidence | null; order: Awaited<ReturnType<typeof inspectEvidenceOrder>>; linkage: Array<{ valid: boolean; reason?: string }>; currentHash: Array<string | undefined>; condition: Array<WaiverCondition | undefined> }`;
+`authoritativeWaiverIndex(waiverContext: WaiverContext, scope: WaiverScope): number`
+(greatest-order validly linked index, or `-1` when none exists);
+`isWaiverStale(waiverContext: WaiverContext, index: number): boolean`
+(true when version/hash differs or the current `condition[index]` is `false`,
+`indeterminate`, or `undefined`; this is a stateless current-state predicate,
+so an exact return to the originally approved snapshot/`true` condition can
+make the waiver active again, while invalid linkage is handled separately and
+never passed as an active waiver);
+`evaluateWaiverCondition(root: string, evidence: ChangeEvidence | null, tdd: TddEvidence | null, order: Awaited<ReturnType<typeof inspectEvidenceOrder>>, scope: WaiverScope): Promise<WaiverCondition>`;
+`buildWaiverContext(...)`,
 `waivedDiagnostic(...)` and `reportWaiverEvidenceDiagnostics(...)` as
 above, both exported from `change-waiver.ts` and both synchronous (the one
 `await loadChangeWaiverEvidence`/`await inspectEvidenceOrder` pair per
@@ -691,7 +881,15 @@ counting for any check other than `CHANGE_COMPLETENESS_TDD` under an
 active, non-stale waiver. Must report waiver-evidence-file diagnostics
 (`malformed`/invalid linkage/stale) on every return path of both
 validators, including the existing early-return path taken when no change
-documents exist.
+documents exist. Must return `indeterminate`, never `false`, when a
+code-specific scope tuple cannot be resolved. For every fully evaluable exact scope,
+a currently emitted structured target diagnostic must correspond to evaluator
+`true`, and evaluator `false` must correspond to no emitted target diagnostic;
+`indeterminate` never fabricates the target diagnostic.
+`recordChangeWaiver` must accept only evaluator `true`; evaluator `false` or
+`indeterminate` rejects without writing evidence. A stored record whose code
+cannot narrow to `WaivableCode` is invalidly linked and never evaluated.
+`condition[i] === undefined` is fail-closed and maps to error if encountered.
 Requirements: REQ-CHANGE-EVIDENCE-WAIVER-006, REQ-CHANGE-EVIDENCE-WAIVER-007, REQ-CHANGE-EVIDENCE-WAIVER-008, REQ-CHANGE-EVIDENCE-WAIVER-009, REQ-CHANGE-EVIDENCE-WAIVER-010, REQ-CHANGE-EVIDENCE-WAIVER-011, REQ-CHANGE-EVIDENCE-WAIVER-014
 ADRs: ADR-0025
 
@@ -714,7 +912,8 @@ avoids an error-severity diagnostic in the slice and is counted toward
 consuming these corrected `valid` fields; its `featureDir` branch's
 `countErrors(...) === 0` already matches this same error-only semantics
 and is unaffected. Define two shared helpers in `change-waiver.ts`, both
-taking only `root: string` and doing their own I/O (loading
+taking `root: string` plus an optional precomputed `WaiverContext`; only
+when no context is supplied do they perform their own I/O (loading
 `loadChangeWaiverEvidence`, `loadChangeEvidence`, `loadTddEvidence` from
 `./tdd.js` — the same existing exported function `change.ts` itself
 already calls — and `inspectEvidenceOrder` internally, then delegating to
@@ -725,57 +924,58 @@ computing exactly the
 `(await loadChangeWaiverEvidence(root))` (return `[]` immediately when
 `null` or `malformed`) combined with `await loadChangeEvidence(root)`,
 `await loadTddEvidence(root)`, and
-`await inspectEvidenceOrder(root)`, filtered to those waivers whose index
-`i` satisfies `waiverContext.linkage[i].valid`
-(`waiverContext = await buildWaiverContext(root, evidence, tdd)`, DES-004's
-sole async precomputation — reused here rather than reimplemented, so
-`gate`'s validators, `activeWaivers`, and `waiverEvidenceDiagnostics` can
-never diverge on any waiver's linkage/staleness classification), and
-non-stale (`waivers[i].snapshotVersion === CURRENT_SNAPSHOT_VERSION &&
-waivers[i].snapshotHash === waiverContext.currentHash[i]`, DES-002's
-non-stale predicate evaluated against `buildWaiverContext`'s precomputed
-hash, never a separately reimplemented staleness check), and
-selected as the greatest-`order` record within each
-`changeId`/`code`/`requirementId`/`detail` scope group (DES-004's
-authoritative-record rule, so a superseded prior waiver is never listed
-alongside its replacement), each
+`await inspectEvidenceOrder(root)`, grouping scopes and selecting each
+scope's index through DES-004's shared
+`authoritativeWaiverIndex(waiverContext, scope)`, then retaining that record
+only when the index is not `-1` and non-stale
+(`!isWaiverStale(waiverContext, i)`, never a separately reimplemented
+staleness check). When a context argument is supplied, use it directly;
+otherwise build exactly one context from the loaded evidence before grouping.
+Project each retained record
 projected to exactly `changeId`, `code`, `requirementId`, `detail` (each
 only when present), `approver`, `reason`, `recordedAt` (REQ-012); and
-`waiverEvidenceDiagnostics(root): Promise<Diagnostic[]>`, an async wrapper
-with the identical load set (`evidence`, `tdd`, `order`, `loaded`, and the
-same `waiverContext = await buildWaiverContext(root, evidence, tdd)`) that
-calls DES-004's synchronous
-`reportWaiverEvidenceDiagnostics(waiverContext, evidence, tdd)` directly,
-returning exactly the malformed/stale
-diagnostics REQ-007/REQ-011 require (REQ-CHANGE-EVIDENCE-WAIVER-007's
-"gate/status diagnostic" wording is satisfied by calling this same helper
-from both places, not only from `gate`'s validators — and because both
-helpers load `evidence`/`tdd`/`order`/`waiverContext` identically and both
-delegate to DES-002/DES-004's shared logic, `gate`'s validators,
-`activeWaivers`, and
-`waiverEvidenceDiagnostics` can never diverge on any waiver's active/stale
-classification). Call `activeWaivers(root)` and
-`waiverEvidenceDiagnostics(root)` once each from `gate.ts` (`runGate`) —
-though `runGate`'s `waivers`/diagnostics content is already implied by
-`validateChangeEvidence`/`validateChangeCompleteness`'s own internal calls
-to the same underlying logic, so `runGate` may reuse either its own
-validator diagnostics or these helpers' output, provided the two never
-diverge — to add a `waivers` array and ensure malformed/stale diagnostics
-appear on the JSON report; and once each from `gate.ts`'s
-`projectStatus(root)` (which already has `root` in scope, and does not
+`waiverEvidenceDiagnostics(root, waiverContext?)`, an async wrapper that uses
+the supplied context directly, or only when absent loads `evidence`, `tdd`,
+`order`, and `loaded` and builds one context, then calls DES-004's synchronous
+`reportWaiverEvidenceDiagnostics(waiverContext)` directly,
+returning exactly the malformed/stale diagnostics REQ-007/REQ-011 require.
+In `runGate`, load change/TDD/order/waiver evidence once to build one
+`WaiverContext`, then pass that context to `activeWaivers` and
+`waiverEvidenceDiagnostics`; use the latter directly for the report-level
+change-waiver subset instead of filtering `changes.diagnostics`, and
+concatenate it before `workflowWaiverDiagnostics`. The validators'
+diagnostics remain the sole source for the
+`change-history` and `change-completeness` check arrays, while
+the shared derivation populates only the report-level `waiverDiagnostics`
+audit array and is never appended into either check a second time — adding a
+`waivers` array and ensuring malformed/stale diagnostics appear on the JSON
+report without gate-level duplication.
+The exactly-once guarantee applies to `report.waiverDiagnostics`; the two
+per-check arrays intentionally retain their respective validator copies so
+each validator remains independently blockable.
+Because the report-level derivation is independent of
+`scopedToFeature`-filtered check arrays, change-level stale diagnostics are
+not lost from `gate --feature`'s report-level audit field. Call `activeWaivers(root)` and
+`waiverEvidenceDiagnostics(root)` once each from `gate.ts`'s
+`projectStatus(root)` with one shared precomputed `WaiverContext` passed to
+both helpers (status already has `root` in scope and does not
 otherwise run `validateChangeEvidence`/`validateChangeCompleteness`) to
 add the identical `waivers` array plus a `waiverDiagnostics` array to
 `status --json`'s returned object, satisfying REQ-007's requirement that
 malformed waiver evidence is reported via a `status` diagnostic too, not
 only `gate`.
 Interfaces: No signature change to `validateChangeEvidence`/
-`validateChangeCompleteness`; `activeWaivers(root: string): Promise<Array<{ changeId: string; code: string; requirementId?: string; detail?: string; approver: string; reason: string; recordedAt: string }>>`
-and `waiverEvidenceDiagnostics(root: string): Promise<Diagnostic[]>`, both
+`validateChangeCompleteness`; `activeWaivers(root: string, waiverContext?: WaiverContext): Promise<Array<{ changeId: string; code: string; requirementId?: string; detail?: string; approver: string; reason: string; recordedAt: string }>>`
+and `waiverEvidenceDiagnostics(root: string, waiverContext?: WaiverContext): Promise<Diagnostic[]>`, both
 exported from `change-waiver.ts`; `GateReport` and `projectStatus`'s
 return type both gain an additive `waivers?: Array<{ changeId: string;
 code: string; requirementId?: string; detail?: string; approver: string;
 reason: string; recordedAt: string }>` field and an additive
 `waiverDiagnostics?: Diagnostic[]` field.
+For `projectStatus(root)`, load `evidence`/`tdd` and build one
+`WaiverContext`, then pass that same context to both helpers through optional
+precomputed-context parameters so status performs linkage, snapshot hashing,
+and condition evaluation only once.
 Constraints: Must not change `valid` semantics for any diagnostic outside
 the twelve allow-listed codes. Must exclude stale or malformed waivers,
 and every non-authoritative (superseded) record in a scope group, from

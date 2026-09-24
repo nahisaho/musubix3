@@ -45,8 +45,8 @@ function json(value: unknown): string {
   return `${JSON.stringify(value, null, 2)}\n`;
 }
 
-async function fsyncPath(path: string): Promise<void> {
-  const handle = await open(path, 'r');
+async function fsyncFile(path: string): Promise<void> {
+  const handle = await open(path, 'r+');
   try {
     await handle.sync();
   } finally {
@@ -54,11 +54,18 @@ async function fsyncPath(path: string): Promise<void> {
   }
 }
 
-async function fsyncDirectory(path: string): Promise<void> {
+export async function fsyncQualityRefreshDirectory(
+  path: string,
+  openDirectory: typeof open = open,
+): Promise<void> {
+  let handle: Awaited<ReturnType<typeof open>> | undefined;
   try {
-    await fsyncPath(path);
+    handle = await openDirectory(path, 'r');
+    await handle.sync();
   } catch (cause) {
     if (!['EISDIR', 'EPERM', 'EACCES', 'EINVAL'].includes((cause as NodeJS.ErrnoException).code ?? '')) throw cause;
+  } finally {
+    await handle?.close();
   }
 }
 
@@ -83,16 +90,16 @@ async function restoreJournal(root: string, journal: QualityRefreshJournal): Pro
     if (target.existed) {
       const staging = `${absolute}.${journal.transactionId}.restore`;
       await writeFile(staging, Buffer.from(target.originalBase64, 'base64'));
-      await fsyncPath(staging);
+      await fsyncFile(staging);
       await rename(staging, absolute);
     } else {
       await removeIfPresent(absolute);
     }
     await removeIfPresent(await safePath(root, target.temporaryPath));
   }
-  await fsyncDirectory(evidenceDirectory);
+  await fsyncQualityRefreshDirectory(evidenceDirectory);
   await removeIfPresent(await safePath(root, JOURNAL_PATH));
-  await fsyncDirectory(evidenceDirectory);
+  await fsyncQualityRefreshDirectory(evidenceDirectory);
 }
 
 function validateCandidate(order: EvidenceOrderLog, changes: ChangeEvidence): void {
@@ -203,7 +210,7 @@ export async function commitQualityRefresh(
   await mkdir(dirname(journalAbsolute), { recursive: true });
   if (faultAt === 'journal:staging') throw new Error('Injected Quality refresh failure at journal:staging.');
   await writeFile(stagingJournal, json(journal), { flag: 'wx' });
-  await fsyncPath(stagingJournal);
+  await fsyncFile(stagingJournal);
   if (faultAt === 'journal:publication') {
     throw new Error('CHANGE_QUALITY_REFRESH_RECOVERY_REQUIRED: injected failure at journal:publication.');
   }
@@ -217,28 +224,28 @@ export async function commitQualityRefresh(
     }
     throw cause;
   }
-  await fsyncDirectory(dirname(journalAbsolute));
+  await fsyncQualityRefreshDirectory(dirname(journalAbsolute));
   try {
     for (let index = 0; index < targets.length; index++) {
       if (faultAt === `temporary:${index}`) throw new Error(`Injected Quality refresh failure at temporary:${index}.`);
       const target = targets[index]!;
       const temporary = await safePath(root, target.temporaryPath);
       await writeFile(temporary, Buffer.from(target.candidateBase64, 'base64'), { flag: 'wx' });
-      await fsyncPath(temporary);
+      await fsyncFile(temporary);
     }
     for (let index = 0; index < targets.length; index++) {
       if (faultAt === `replace:${index}`) throw new Error(`Injected Quality refresh failure at replace:${index}.`);
       const target = targets[index]!;
       await rename(await safePath(root, target.temporaryPath), await safePath(root, target.path));
     }
-    await fsyncDirectory(dirname(journalAbsolute));
+    await fsyncQualityRefreshDirectory(dirname(journalAbsolute));
     journal.state = 'committed';
     const commitStaging = await safePath(root, `${STAGING_PREFIX}${transactionId}.commit.json`);
     await writeFile(commitStaging, json(journal), { flag: 'wx' });
-    await fsyncPath(commitStaging);
+    await fsyncFile(commitStaging);
     if (faultAt === 'commit-marker') throw new Error('Injected Quality refresh failure at commit-marker.');
     await rename(commitStaging, journalAbsolute);
-    await fsyncDirectory(dirname(journalAbsolute));
+    await fsyncQualityRefreshDirectory(dirname(journalAbsolute));
     if (faultAt === 'cleanup') {
       throw new Error('CHANGE_QUALITY_REFRESH_RECOVERY_REQUIRED: injected failure at cleanup.');
     }
@@ -311,7 +318,7 @@ export async function recoverQualityRefresh(root: string): Promise<QualityRefres
         if (actualDigest !== target.candidateSha256) {
           const recovery = `${absolute}.${journal.transactionId}.recover`;
           await writeFile(recovery, Buffer.from(target.candidateBase64, 'base64'));
-          await fsyncPath(recovery);
+          await fsyncFile(recovery);
           await rename(recovery, absolute);
         }
       }
@@ -319,10 +326,10 @@ export async function recoverQualityRefresh(root: string): Promise<QualityRefres
       if (cause instanceof Error && cause.message.startsWith('CHANGE_QUALITY_REFRESH_RECOVERY_UNSAFE')) throw cause;
       throw unsafe(cause instanceof Error ? cause.message : String(cause));
     }
-    await fsyncDirectory(evidenceDir);
+    await fsyncQualityRefreshDirectory(evidenceDir);
     await removeIfPresent(journalAbsolute);
     for (const entry of staging) await removeIfPresent(resolve(evidenceDir, entry));
-    await fsyncDirectory(evidenceDir);
+    await fsyncQualityRefreshDirectory(evidenceDir);
     return { recovered: true, action: 'rolled-forward' };
   });
 }

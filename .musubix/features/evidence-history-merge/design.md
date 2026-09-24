@@ -2,7 +2,8 @@
 
 ## DES-EVIDENCE-HISTORY-MERGE-001: Input normalization and merge planning
 Responsibilities: Add an analysis-layer merge planner that resolves the current
-root and incoming real paths, loads each evidence history without mutation,
+root and incoming real paths through
+`resolveEvidenceWriterCanonicalRoot`, loads each evidence history without mutation,
 performs input-local structural validation, and normalizes order records and
 their dependent TDD phase, change phase/batch, and waiver payloads into source-
 qualified entries. Pair payloads by their pre-merge `order` and the matching
@@ -20,7 +21,9 @@ only one side has one, and require canonical payload equivalence when both
 exist. Reject any
 incoming mapping that is not strictly increasing in incoming source order.
 Interfaces: `planEvidenceMerge(root: string, incoming: string):
-Promise<EvidenceMergePlan>`; `EvidenceMergePlan` contains normalized source
+Promise<EvidenceMergePlan>`; shared
+`resolveEvidenceWriterCanonicalRoot(root: string): string` from the writer-lock
+module; `EvidenceMergePlan` contains normalized source
 summaries, old-to-new order maps, merged payload arrays, diagnostics,
 `preserved`/`deduplicated`/`appended` order-record counts, per-file change
 status, and a revalidation-required flag.
@@ -106,7 +109,9 @@ ADRs: ADR-0029
 Depends-On: DES-EVIDENCE-HISTORY-MERGE-001
 
 ## DES-EVIDENCE-HISTORY-MERGE-003: Journaled apply and explicit recovery
-Responsibilities: Add an evidence merge transaction manager. After planning
+Responsibilities: Add an evidence merge transaction manager. Transaction file
+durability uses a dedicated writable-handle `fsyncFile` helper while directory
+durability remains a separate read-only-handle `fsyncDirectory` helper. After planning
 and candidate validation, create `.musubix/evidence/.merge-transaction.json`
 through an atomically published, exclusively linked prepared-journal file with
 schema version, transaction ID, `prepared` state, target existence, original
@@ -149,7 +154,13 @@ Recovery bypasses both guards and interprets the recovery files directly.
 Internal tests may inject failures at journal staging, publication, directory
 fsync, every temporary write, target replace, commit-marker, roll-forward
 verification, and cleanup boundaries.
-Constraints: Dry-run never creates a journal or temporary file. Candidate
+Constraints: `fsyncFile` opens already-written journal, candidate, and recovery
+staging files with `r+`, syncs, and closes without error suppression.
+`fsyncDirectory` never delegates to `fsyncFile`; it retains the existing
+platform/error policy, whose broader correction is tracked by #43.
+Deterministic transaction tests inject file- and directory-sync recorders,
+assert every expected file sync, and assert directory sync remains invoked
+after the helper split rather than merely observing overall success. Dry-run never creates a journal or temporary file. Candidate
 validation cannot run after the transaction begins through guarded public
 loaders; transaction internals operate only on already-built bytes and explicit
 paths. Journal creation uses exclusive creation to avoid two merge transactions

@@ -114,8 +114,12 @@ export function linkageReason(
   return `${label} must use one of the colliding declaration indices: ${matches.join(', ')}.`;
 }
 
-export function nonStale(record: WorkflowWaiverRecord, index: number, context: WorkflowWaiverContext): boolean {
-  return record.snapshotVersion === CURRENT_SNAPSHOT_VERSION && record.snapshotHash === context.currentHash[index];
+/** @id CODE-WORKFLOW-EVIDENCE-WAIVER-025
+ * @implements REQ-WORKFLOW-EVIDENCE-WAIVER-012
+ * @design DES-WORKFLOW-EVIDENCE-WAIVER-004 DES-WORKFLOW-EVIDENCE-WAIVER-005 DES-WORKFLOW-EVIDENCE-WAIVER-007
+ */
+export function recordStale(record: WorkflowWaiverRecord, index: number, context: WorkflowWaiverContext): boolean {
+  return record.snapshotVersion !== CURRENT_SNAPSHOT_VERSION || record.snapshotHash !== context.currentHash[index];
 }
 
 function recoverableScopeFields(record: unknown): Partial<{
@@ -354,7 +358,7 @@ export function snapshotHashFor(
 }
 
 /** @id CODE-WORKFLOW-EVIDENCE-WAIVER-013
- * @implements REQ-WORKFLOW-EVIDENCE-WAIVER-001 REQ-WORKFLOW-EVIDENCE-WAIVER-009 REQ-WORKFLOW-EVIDENCE-WAIVER-010 REQ-WORKFLOW-EVIDENCE-WAIVER-016
+ * @implements REQ-WORKFLOW-EVIDENCE-WAIVER-001 REQ-WORKFLOW-EVIDENCE-WAIVER-009 REQ-WORKFLOW-EVIDENCE-WAIVER-010 REQ-WORKFLOW-EVIDENCE-WAIVER-012 REQ-WORKFLOW-EVIDENCE-WAIVER-016
  * @design DES-WORKFLOW-EVIDENCE-WAIVER-005
  */
 export function waivedWorkflowDiagnostic(context: WorkflowWaiverContext, diagnostic: Diagnostic): Diagnostic {
@@ -373,7 +377,7 @@ export function waivedWorkflowDiagnostic(context: WorkflowWaiverContext, diagnos
     return diagnostic;
   }
   const record = context.loaded.waivers[authoritative];
-  if (!nonStale(record, authoritative, context)) return diagnostic;
+  if (recordStale(record, authoritative, context)) return diagnostic;
   return {
     ...diagnostic,
     severity: 'warning',
@@ -451,7 +455,7 @@ export function deriveWorkflowWaiverAudit(context: WorkflowWaiverContext): {
     );
     if (authoritative === -1 || !waiverRecordShapeValid(loaded.waivers[authoritative])) continue;
     const authoritativeRecord = loaded.waivers[authoritative];
-    if (!nonStale(authoritativeRecord, authoritative, context)) {
+    if (recordStale(authoritativeRecord, authoritative, context)) {
       workflowWaiverDiagnostics.push({
         ...error('WORKFLOW_WAIVER_STALE', `Workflow waiver for ${scopeLabel(
           authoritativeRecord.skill,

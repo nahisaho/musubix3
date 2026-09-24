@@ -83,17 +83,26 @@ codes, and
 `.musubix/evidence/change-waivers.json` and `.musubix/evidence/order.json`
 are byte-identical before and after the call.
 
-## REQ-CHANGE-EVIDENCE-WAIVER-002: Require the diagnostic to be currently present before it can be waived
+## REQ-CHANGE-EVIDENCE-WAIVER-002: Require the exact waiver condition to be currently true
 Priority: must
 Type: functional
 Pattern: unwanted-behavior
-Statement: If `change waiver record <CHANGE-ID> <CODE>` is invoked and re-running `validateChangeEvidence`/`validateChangeCompleteness` does not currently report that exact `<CODE>` for that `<CHANGE-ID>` (and `<REQ-ID>`, when required by REQ-004), then the system shall reject the invocation and record no evidence.
-Acceptance: Given a `<CHANGE-ID>`/`<CODE>`/`<REQ-ID>` combination for which
-the corresponding validator reports no matching diagnostic at invocation
-time, `change waiver record` exits nonzero with an error stating there is
-no matching diagnostic to waive, and both evidence files are
+Statement: If `change waiver record <CHANGE-ID> <CODE>` is invoked and its REQ-CHANGE-EVIDENCE-WAIVER-011 condition evaluator does not return `true` for the exact scope, then the system shall reject the invocation and record no evidence.
+Acceptance: Given a full
+`changeId`/`code`/`requirementId`/`detail` scope for which the evaluator
+returns `false`, `change waiver record` exits nonzero with an
+error stating there is no matching diagnostic to waive, and both evidence files are
 byte-identical before and after the call. This rejects pre-emptive,
 speculative waivers recorded before the debt actually exists.
+Given a syntactically valid batch-scoped `--detail` whose batch key is absent
+from the current effective batches, the evaluator returns `indeterminate`;
+the command exits nonzero with an error stating that the scope cannot be
+evaluated before considering diagnostic absence, and both evidence files
+remain byte-identical.
+Given `CHANGE_ORDER_MIGRATION_REQUIRED --detail requirement:<REQ-ID>` where
+the encoded requirement is not currently declared by the change, the
+evaluator likewise returns `indeterminate` and the same no-write rejection
+applies.
 
 ## REQ-CHANGE-EVIDENCE-WAIVER-003: Require an explicit human approver, reason, and confirmation
 Priority: must
@@ -129,35 +138,51 @@ that code requires both to disambiguate an overlapping-batch instance.
 Priority: must
 Type: functional
 Pattern: unwanted-behavior
-Statement: If `<CODE>` is one of `CHANGE_PHASE_MISSING`, `CHANGE_ORDER_MIGRATION_REQUIRED`, `CHANGE_TESTS_UNCHANGED`, `CHANGE_IMPLEMENTATION_UNCHANGED`, `CHANGE_TEST_CHANGED_AFTER_RED`, or `CHANGE_RELEVANT_IMPLEMENTATION_UNCHANGED`, and a currently-reported diagnostic instance of that `<CODE>` for `<CHANGE-ID>` (and `--requirement`, for `CHANGE_RELEVANT_IMPLEMENTATION_UNCHANGED`) does not have a `detail` value, computed per this requirement's grammar and emitted in that diagnostic's structured `detail` field, equal to a supplied `--detail <value>` option, then the system shall reject the invocation and record no evidence.
-Acceptance: The canonical `detail` grammar is: for `CHANGE_PHASE_MISSING`
-and the phase-level flavor of `CHANGE_ORDER_MIGRATION_REQUIRED`, a singular
-phase source emits exactly `phase:<phaseName>` (`phaseName` one of
-`impact`/`requirements`/`design`/`quality`) and a batch phase source emits
-exactly `batch:<phaseName>:<batchKey>` (`phaseName` one of
+Statement: If `<CODE>` is one of `CHANGE_PHASE_MISSING`, `CHANGE_ORDER_MIGRATION_REQUIRED`, `CHANGE_TESTS_UNCHANGED`, `CHANGE_IMPLEMENTATION_UNCHANGED`, `CHANGE_TEST_CHANGED_AFTER_RED`, or `CHANGE_RELEVANT_IMPLEMENTATION_UNCHANGED`, and a supplied `--detail <value>` is not valid for that code's canonical grammar below, then the system shall reject the invocation before condition evaluation and record no evidence; a grammatically valid detail is subsequently accepted or rejected solely by the REQ-CHANGE-EVIDENCE-WAIVER-011 evaluator and REQ-CHANGE-EVIDENCE-WAIVER-002.
+Acceptance: The canonical `detail` grammar is: for `CHANGE_PHASE_MISSING`,
+exactly `phase:<phaseName>` (`phaseName` one of
+`impact`/`requirements`/`design`/`quality`/`red`/`implementation`/`green`,
+with the three TDD phase names representing aggregate missing-requirement
+coverage); for the phase-level flavor of
+`CHANGE_ORDER_MIGRATION_REQUIRED`, exactly `phase:<phaseName>` (`phaseName`
+one of `impact`/`requirements`/`design`); for its batch-phase
+flavor, exactly `batch:<phaseName>:<batchKey>` (`phaseName` one of
 `red`/`implementation`/`green`, `batchKey` the batch's unique requirement
 IDs deduplicated, sorted ascending, and joined with `,`, identical to the
-existing internal `batchKey` convention); for the TDD-cycle-order flavor of
+existing internal `batchKey` convention). A supplied batch key is valid only
+when it is non-empty, consists of non-empty comma-separated requirement-ID
+tokens, contains no duplicates, and is already sorted ascending by that same
+comparator; otherwise it is invalid grammar rather than an absent current
+batch. For the TDD-cycle-order flavor of
 `CHANGE_ORDER_MIGRATION_REQUIRED`, exactly `requirement:<REQ-ID>`; for
 `CHANGE_TESTS_UNCHANGED`, `CHANGE_IMPLEMENTATION_UNCHANGED`,
 `CHANGE_TEST_CHANGED_AFTER_RED`, and the batch component of
 `CHANGE_RELEVANT_IMPLEMENTATION_UNCHANGED`, exactly `<batchKey>` alone (no
-prefix). Given `CHANGE-0011` currently reports `CHANGE_PHASE_MISSING`
+prefix). Given a fixture change reports simultaneous `CHANGE_PHASE_MISSING`
 instances with `detail` values `phase:requirements`, `phase:design`, and
-`phase:quality` (three simultaneous instances, same `changeId`/`code`),
-calling `change waiver record CHANGE-0011 CHANGE_PHASE_MISSING --detail
+`phase:red` (same `changeId`/`code`), calling
+`change waiver record CHANGE-0001 CHANGE_PHASE_MISSING --detail
 phase:requirements ...` waives only that instance; the `phase:design` and
-`phase:quality` instances continue reporting `severity: "error"` per
+`phase:red` instances continue reporting `severity: "error"` per
 REQ-CHANGE-EVIDENCE-WAIVER-009 (generalized to the `changeId`/`code`/
 `requirementId`/`detail` tuple). Given two independently recorded `red`
 batches for different requirement sets on the same change both lacking
 `order`, their `CHANGE_ORDER_MIGRATION_REQUIRED` instances emit distinct
 `batch:red:<batchKey>` values and a waiver naming one `batchKey` never
 downgrades the other. Omitting `--detail` for a code whose row requires
-it, or supplying a `--detail` value with no currently matching diagnostic
-instance, exits nonzero and records no evidence. A code whose
+it exits nonzero and records no evidence; a grammatically valid detail is
+then accepted or rejected under REQ-002/011. A code whose
 REQ-CHANGE-EVIDENCE-WAIVER-004 row does not require `--detail` never
 accepts it; supplying it exits nonzero.
+Supplying an unlisted phase name or a `batch:` detail for
+`CHANGE_PHASE_MISSING` exits nonzero with an invalid-detail error before
+condition evaluation and leaves waiver/order evidence byte-identical.
+Given two effective batches sharing the same canonical batch key, they share
+one exact structured waiver scope: a matching `batch:<phase>:<batchKey>` or
+bare `<batchKey>` waiver applies to every emitted diagnostic instance with
+that tuple, while REQ-CHANGE-EVIDENCE-WAIVER-011 aggregates all colliding
+instances and returns `true` if and only if at least one such target instance
+is emitted.
 
 ## REQ-CHANGE-EVIDENCE-WAIVER-005: Record the waiver as a hash-chained, ordered, identity-bound evidence entry
 Priority: must
@@ -179,34 +204,40 @@ waiver record's own `order` field.
 Priority: must
 Type: functional
 Pattern: ubiquitous
-Statement: The system shall treat a waiver record as validly linked only when its `code` is one of the twelve REQ-CHANGE-EVIDENCE-WAIVER-001 allow-listed values, its `requirementId`/`detail` presence exactly matches that `code`'s REQ-CHANGE-EVIDENCE-WAIVER-004 row, its `changeId` names a change document present at `.musubix/changes/<changeId>.md`, its `code` is `CHANGE_RECORD_MISSING` only if `.musubix/evidence/changes.json` has no entry for `changeId` (and otherwise its `changeId` names a change present in `.musubix/evidence/changes.json` whose declared `requirementIds` include `requirementId` when present), exactly one `order.json` record exists with `phase: "waiver"` and the same `changeId`/`code`/`requirementId`/`detail`/`order` as that record, and that record's chain fields are valid per REQ-CHANGE-EVIDENCE-WAIVER-015.
+Statement: The system shall determine valid waiver linkage solely from an allow-listed `code`, the presence or absence and canonical grammar of `requirementId`/`detail` required by REQ-CHANGE-EVIDENCE-WAIVER-004/016, exactly one matching `phase: "waiver"` order record for that record's scope and stored `order` sequence, exclusive ownership of that order sequence by one waiver record, and a valid REQ-CHANGE-EVIDENCE-WAIVER-015 chain.
 Acceptance: Given a waiver record that is otherwise hash- and
 order-consistent but declares a `code` outside the twelve-value
-allow-list, declares `requirementId`/`detail` inconsistent with its code's
-REQ-004 row, names a `changeId` with no `.musubix/changes/<changeId>.md`
-document, names a `code` of `CHANGE_RECORD_MISSING` for a `changeId` that
-does have a `.musubix/evidence/changes.json` entry, names a non-`CHANGE_RECORD_MISSING`
-`changeId` absent from `.musubix/evidence/changes.json`, or names a
-`requirementId` not among that change's declared `requirementIds`, linkage
-is invalid under this definition. A `CHANGE_RECORD_MISSING` waiver for a
-`changeId` whose change document exists and has no `changes.json` entry is
-validly linked despite that absence, since that absence is exactly what
-the code reports. Given a waiver record whose `order` field has no matching
+allow-list, declares `requirementId`/`detail` whose presence or absence is
+inconsistent with its code's REQ-004 row, stores a `detail` that fails that
+code's REQ-016 canonical grammar, has no matching
 `order.json` entry, or whose chain fields fail
 REQ-CHANGE-EVIDENCE-WAIVER-015, linkage is likewise invalid; more than one
 validly linked waiver record may share the same
 `changeId`/`code`/`requirementId`/`detail` scope across separate `order`
 values (for example when REQ-CHANGE-EVIDENCE-WAIVER-010 permits a
-replacement after an earlier one goes stale), and REQ-CHANGE-EVIDENCE-WAIVER-011
-evaluates only the validly linked record with the greatest `order` for
-that scope. Only a record passing every one of these conditions is validly
-linked.
+replacement after an earlier one goes stale), and every waiver consumer
+(diagnostic downgrade, duplicate rejection, stale reporting, and active-waiver
+listing) uses only the validly linked record with the greatest `order` for
+that scope as authoritative. Given a structurally valid waiver, adding or removing its
+`changes.json` entry, adding or removing its `requirementId` from the
+current declaration, deleting/restoring its change document, or
+resolving/reintroducing its underlying condition does not make linkage
+malformed; those state changes are classified by the standalone condition
+evaluator and any independently applicable validator diagnostics.
+Requirement-value membership in the
+current declaration is not a linkage condition. Only a record passing
+every record-identity, chain, and order-linkage condition is validly linked.
+Every reference in the remaining requirements to a validly linked,
+non-stale waiver record means this authoritative record for its exact scope.
+Two waiver records may not claim the same stored `order` sequence; such a
+collision makes the colliding linkage invalid rather than relying on array
+position as an authority tie-breaker.
 
 ## REQ-CHANGE-EVIDENCE-WAIVER-007: Report malformed waiver evidence
 Priority: must
 Type: functional
 Pattern: unwanted-behavior
-Statement: If a waiver record does not have valid linkage per REQ-CHANGE-EVIDENCE-WAIVER-006, then the system shall report a `gate`/`status` diagnostic naming that waiver's malformed evidence without downgrading the severity of any diagnostic on the strength of that malformed waiver.
+Statement: If the waiver evidence file cannot be parsed/validated as a record array, or a waiver record does not have valid linkage per REQ-CHANGE-EVIDENCE-WAIVER-006, then the system shall emit an error-severity `CHANGE_WAIVER_EVIDENCE_MALFORMED` diagnostic naming the malformed file or record through both change validators and top-level `gate`/`status` `waiverDiagnostics`, without downgrading any target diagnostic on the strength of that malformed evidence.
 Acceptance: Given a waiver record that fails any condition of
 REQ-CHANGE-EVIDENCE-WAIVER-006, `gate --json` reports a diagnostic
 identifying the malformed waiver evidence, and the `CHANGE_*`/
@@ -234,7 +265,7 @@ never by parsing message text.
 Priority: must
 Type: functional
 Pattern: ubiquitous
-Statement: The system shall report `severity: "error"`, unaffected, for every diagnostic instance of a waivable code that does not itself have a matching, validly linked, non-stale waiver record for that exact `changeId`/`code`/`requirementId`/`detail` combination.
+Statement: The system shall report `severity: "error"`, unaffected, for every diagnostic instance of a waivable code whose exact `changeId`/`code`/`requirementId`/`detail` scope does not have an authoritative, validly linked, non-stale waiver record.
 Acceptance: Given `CHANGE-0009` has a valid waiver for
 `CHANGE_RED_UNPROVEN`/`REQ-APPROVAL-DOMAIN-SCOPING-001` only, a
 `CHANGE_RED_UNPROVEN` instance for `REQ-APPROVAL-DOMAIN-SCOPING-002` on the
@@ -249,19 +280,27 @@ instance still reports `severity: "error"`.
 Priority: must
 Type: functional
 Pattern: unwanted-behavior
-Statement: If `change waiver record` is invoked for a `changeId`/`code`/`requirementId`/`detail` combination that already has a validly linked, non-stale waiver record, then the system shall reject the invocation and record no additional evidence.
+Statement: If `change waiver record` is invoked for a `changeId`/`code`/`requirementId`/`detail` combination whose authoritative record is validly linked and non-stale, then the system shall reject the invocation and record no additional evidence.
 Acceptance: Calling `change waiver record` a second time for the identical
 `changeId`/`code`/`requirementId`/`detail` immediately after a successful
 waiver, with no intervening evidence change, exits nonzero with an error
 stating the scope is already waived, and both evidence files are
 byte-identical before and after the second call.
 
-## REQ-CHANGE-EVIDENCE-WAIVER-011: Define the per-code snapshot payload and invalidate a waiver when it no longer matches, reverting to error
+## REQ-CHANGE-EVIDENCE-WAIVER-011: Define the per-code snapshot payload and stale-waiver severity
 Priority: must
 Type: functional
 Pattern: state-driven
-Statement: While a waiver record's stored `snapshotVersion`/`snapshotHash` for its `code` does not equal the current `snapshotVersion`/recomputed canonical-JSON SHA-256 hash of that code's defined evidence fields for that same `changeId`/`code`/`requirementId`/`detail`, the system shall treat that waiver as stale and, when the corresponding diagnostic still fires, report it with `severity: "error"` alongside a separate diagnostic naming the stale waiver.
-Acceptance: The canonical snapshot payload for each allow-listed code
+Statement: While an authoritative waiver record is stale, the system shall report `CHANGE_WAIVER_STALE` naming that scope with `severity: "error"` when the canonical condition predicate evaluates `true` or `indeterminate` and `severity: "warning"` only when it evaluates `false`.
+Acceptance: An authoritative waiver record is stale when its stored
+`snapshotVersion`/`snapshotHash` differs from the current
+`snapshotVersion`/recomputed canonical-JSON SHA-256 hash for the same exact
+scope, or while its canonical condition predicate is `false` or
+`indeterminate`. A `false` condition is currently stale because that target
+code is no longer reported for the scope (warning), without asserting that
+every related underlying debt is resolved; an `indeterminate` condition is
+stale-and-unevaluable (error).
+The canonical snapshot payload for each allow-listed code
 contains exactly: for `CHANGE_REQUIREMENTS_UNCHANGED`,
 `impact.fingerprints.requirements`, `requirements.fingerprints.requirements`,
 and `requirements.allowUnchanged`; for `CHANGE_DESIGN_UNCHANGED`,
@@ -270,8 +309,15 @@ and `requirements.allowUnchanged`; for `CHANGE_DESIGN_UNCHANGED`,
 the targeted requirement's effective batch's `red`/`implementation`/`green`
 phase fingerprints and `order` values, the change's `requirements` phase
 `order`, and every TDD cycle for that requirement with its `red`/`green`
-`valid`/`order` values, each batch/cycle list sorted by `order` ascending;
-for `CHANGE_RECORD_MISSING`, the SHA-256 digest of
+`valid`/`order` values, plus the `void.order` values of validly voided cycles
+in the current TDD window when that list is non-empty. Cycle objects use a
+total order: integer `red.order` values ascending, then present non-integer
+values by canonical JSON, then absent values, with `cycleId` ascending
+lexicographically (absent as `""`) and then the canonical JSON of the
+serialized cycle object as final tie-breakers before `cycleId` is excluded.
+The `void.order` list is sorted numerically ascending independently;
+For `CHANGE_RECORD_MISSING`, the payload is `null` when the change document is
+absent; otherwise it contains the SHA-256 digest of
 `.musubix/changes/<CHANGE-ID>.md`'s current text content, plus whether
 `.musubix/evidence/changes.json` currently has an entry for `changeId`
 (an explicit absent/present sentinel) and, when present, that entry's
@@ -282,12 +328,22 @@ contains any `kind: "change"` record with
 that `entityId`/`changeId` and a `phase` other than `"waiver"` (a second,
 independently monotonic ever-recorded sentinel that cannot revert to false
 once true, even if the `changes.json` entry is later removed); for
-`CHANGE_PHASE_MISSING`, and for `CHANGE_ORDER_MIGRATION_REQUIRED`
-when its `detail` has the `phase:`/`batch:` prefix, that phase's
-presence/`order` integrality and, for a `batch:` detail, the sorted list of
-currently-missing requirement IDs for that phase; for
+`CHANGE_PHASE_MISSING` with `phase:<impact|requirements|design|quality>`,
+the shared payload
+`{ phasePresent, orderIsInteger, phaseOrder, missingRequirementIds: null }`
+representing that phase's presence/`order` integrality; with
+`phase:<red|implementation|green>`, the same four-field payload with
+`phasePresent`/`orderIsInteger`/`phaseOrder` fixed to `null` and
+`missingRequirementIds` equal to the sorted currently missing requirement IDs
+for that aggregate phase; for
+`CHANGE_ORDER_MIGRATION_REQUIRED` when its `detail` has the
+`phase:`/`batch:` prefix, that phase or batch item’s presence/`order`
+integrality; for
 `CHANGE_ORDER_MIGRATION_REQUIRED` when its `detail` has the `requirement:`
-prefix, that requirement's TDD cycles' `red`/`green` `order` integrality;
+prefix, that requirement's TDD cycles' `red`/`green` `order` integrality plus
+the `void.order` values of validly voided cycles in the current TDD window
+when that list is non-empty, using the same total cycle ordering and
+independently numerically sorted void-order list defined above;
 for `CHANGE_TESTS_UNCHANGED` scoped by `detail` (the batch key), the
 change's `design` phase `fingerprints.tests` and that batch's `red` phase
 `fingerprints.tests`; for `CHANGE_IMPLEMENTATION_UNCHANGED` scoped by
@@ -299,7 +355,35 @@ and `green` phase `fingerprints.tests`; for
 `CHANGE_RELEVANT_IMPLEMENTATION_UNCHANGED` scoped by both `requirementId`
 and `detail` (the batch key), that batch's `red`/
 `implementation` `fingerprints.requirementImplementations[requirementId]`
-values.
+values. For each `CHANGE_ORDER_MIGRATION_REQUIRED` `batch:` or
+bare-batch-key payload, when zero or one effective batch matches the key, the
+payload keeps that existing flat shape, evaluating an absent batch exactly as
+the current zero-match payload does; when more than one effective batch
+matches, the
+payload instead contains `matchingBatches` in effective-batch order. The
+`CHANGE_TESTS_UNCHANGED` change-level `design.fingerprints.tests` field stays
+at the payload root, while each matching object has exactly these code-specific
+fields: `{ phaseItemPresent,
+orderIsInteger, phaseOrder }` for the order-migration `batch:` flavor;
+`{ ownedRequirementIds, batchRedTests }` for `CHANGE_TESTS_UNCHANGED`;
+`{ ownedRequirementIds, redImplementation,
+implementationImplementation }` for `CHANGE_IMPLEMENTATION_UNCHANGED`;
+`{ ownedRequirementIds, redTests, greenTests }` for
+`CHANGE_TEST_CHANGED_AFTER_RED`; and `{ ownedRequirementIds,
+redRequirementImplementation, implementationRequirementImplementation }`
+for `CHANGE_RELEVANT_IMPLEMENTATION_UNCHANGED`. Each listed
+`ownedRequirementIds` value is sorted and returned by the current
+batch-ownership rule; the
+`CHANGE_ORDER_MIGRATION_REQUIRED` `batch:` flavor has no ownership field.
+Thus adding or removing duplicate matches changes the canonical payload;
+transferring ownership changes a multi-match bare-key payload, while a
+single-match ownership change is payload-invisible unless the matched batch
+loses all current ownership, in which case the evaluator returns `false`;
+reordering matches changes a payload whenever their serialized matching
+objects differ. Document-present zero/single-match payloads preserve their
+last-released field shape and hash computation; document-present multi-match
+and document-absent states use the corrected shapes defined here at the
+current snapshot version.
 Given a `CHANGE_RECORD_MISSING` waiver recorded while `changes.json` has no
 entry for `changeId` and `order.json` has no non-`waiver` `change` record
 for it either, a subsequent `change-record` invocation that both adds a
@@ -316,11 +400,184 @@ payload for that change/requirement, `gate --json` reports the
 waiver as stale. Given the same change afterward, the underlying condition
 no longer holds and `validateChangeEvidence`/`validateChangeCompleteness`
 no longer emits that `changeId`/`code`/`requirementId`/`detail` diagnostic,
-`gate --json` reports only the stale-waiver diagnostic and does not
-fabricate the now-resolved `CHANGE_*`/`CHANGE_COMPLETENESS_*` diagnostic. A
-future, incompatible change to a code's snapshot payload definition
-increments `snapshotVersion`, making every waiver recorded under a prior
-version stale regardless of field equality.
+`gate --json` reports only the stale-waiver diagnostic with `severity:
+"warning"`, does not fabricate the no-longer-reported
+`CHANGE_*`/`CHANGE_COMPLETENESS_*` diagnostic, and does not fail a required
+check solely because of that warning. Stale-waiver reporting uses a standalone,
+independently callable tri-state evaluator that never infers condition state
+from a validator's assembled diagnostics and implements the same
+code-specific condition semantics which produce the corresponding structured
+diagnostic: `true`, `false`, or `indeterminate`. Only `false` maps to
+`severity: "warning"`; `true` and `indeterminate` map to `severity: "error"`.
+A missing change, undeclared
+requirement, malformed detail, batch key absent from the current effective
+batches, unavailable scope, or other inability to evaluate the condition
+returns `indeterminate` rather than `false`. Given a stale
+`CHANGE_COMPLETENESS_TDD` waiver whose exact evaluator condition is `true` or
+`indeterminate`, both change-history and change-completeness reporting retain
+an error for that stale scope; when that condition becomes `false` (including
+through debt resolution or a validator guard that stops reporting the target),
+both reporting paths instead report the stale waiver as a warning. For every
+allow-listed code, each validator
+reports exactly one stale-waiver diagnostic for each authoritative, validly
+linked stale scope, using the same tri-state result and severity mapping rather
+than inferring resolution from its own local diagnostic array. For every
+allow-listed code and fully evaluable exact scope, at least one corresponding
+validator diagnostic instance is emitted if and only if the evaluator returns
+`true`;
+`indeterminate` does not fabricate the target diagnostic.
+This cross-validator audit is intentional: either standalone validator can
+become invalid from an error-severity stale scope even when the corresponding
+target code originated in the other validator. `gate --json` and `status
+--json` each expose an identical repository-wide top-level
+`waiverDiagnostics` change-waiver subset containing exactly one
+`CHANGE_WAIVER_STALE` per authoritative stale scope plus the malformed
+diagnostics required by REQ-007; workflow-waiver audit entries may coexist in
+the same field. The change-waiver subset is exactly entries whose `code` is
+`CHANGE_WAIVER_STALE` or `CHANGE_WAIVER_EVIDENCE_MALFORMED`: one malformed
+entry per invalid waiver record (or one file-level entry when the file cannot
+be parsed/validated as a record array), and one stale entry per authoritative
+stale scope. If the file itself is malformed, the file-level diagnostic is the sole
+change-waiver subset entry. Otherwise iterate ascending waiver-array index:
+emit a malformed record diagnostic at its record index, or, for the first
+index whose record carries a given valid scope, emit that scope's
+authoritative stale diagnostic when applicable, at most once per scope. Both
+surfaces obtain that subset from `waiverEvidenceDiagnostics`, so their
+change-waiver subsets deep-equal for the same repository state. The change, TDD, order, and change-waiver evidence files remain byte-identical
+before and after `gate --json`; a second run over unchanged state yields a
+deep-equal change-waiver subset. This top-level field is report-only; full/`--changed`
+blocking comes from the validators' per-check diagnostics. `gate --feature`
+does not filter the top-level field, and the same repository-wide subset is
+reported by full, `--changed`, and `--feature` gate modes plus `status`.
+Feature per-check arrays intentionally
+retain the existing path/message feature filter for every diagnostic,
+including waiver diagnostics; unscoped waiver diagnostics that do not match
+that filter are omitted from feature-check status by design, preserving
+REQ-CLI-WORKFLOW-UX-005 isolation.
+The evaluator first applies these scope-availability preconditions:
+`indeterminate` is required when the change document is absent for
+`CHANGE_RECORD_MISSING`, a
+non-`CHANGE_RECORD_MISSING` scope has no current change-evidence entry, a
+required `requirementId` is undeclared, `detail` fails its canonical grammar,
+the requirement encoded by a `requirement:<REQ-ID>` detail is undeclared, or a
+detail-scoped batch key resolves to zero current effective batches. For
+evaluation, these `indeterminate` preconditions take precedence over every
+code-specific helper or ownership predicate below. Otherwise the evaluator
+applies each code's defining predicate: an absent chronology entry is `true`
+for `CHANGE_RECORD_MISSING`; a missing referenced phase or aggregate
+requirement coverage is `true` for `CHANGE_PHASE_MISSING`; and any other
+absence that the corresponding validator predicate itself defines as the
+target diagnostic condition is likewise `true`. For
+`CHANGE_TESTS_UNCHANGED`, `CHANGE_IMPLEMENTATION_UNCHANGED`,
+`CHANGE_TEST_CHANGED_AFTER_RED`, and
+`CHANGE_RELEVANT_IMPLEMENTATION_UNCHANGED`, when one or more batches share the
+key, the evaluator applies the same `currentRequirementIdsForBatch` ownership
+rule as the validator, returns `false` when no matching batch currently owns
+any requirement per `currentRequirementIdsForBatch` (or, for
+`CHANGE_RELEVANT_IMPLEMENTATION_UNCHANGED`, when none owns the named
+`requirementId`), and otherwise returns `true` when any currently owned
+matching batch emits the exact target (for
+`CHANGE_RELEVANT_IMPLEMENTATION_UNCHANGED`, when the named requirement is
+currently owned and its helper is true), or `false` when none do. For the
+`CHANGE_ORDER_MIGRATION_REQUIRED` `batch:` flavor, the evaluator applies no
+ownership filter; when one or more effective batches match the key it returns
+`true` when any match has the named phase item present with a non-integer
+order, or `false` when none do. Zero matches returns `indeterminate`. The
+evaluator maps each existing total code-specific boolean helper directly,
+including its defined result for absent phases or fingerprints, except that
+`CHANGE_RED_UNPROVEN` and `CHANGE_GREEN_UNPROVEN` return `false` when
+`qualityHistory` is non-empty, matching the validator guard. For
+every fully evaluable exact scope, the evaluator returns `true` if and only if
+at least one corresponding target diagnostic instance is emitted.
+`change waiver record` succeeds only when this evaluator returns `true` for
+the exact scope; a scope that evaluates `indeterminate` causes the command to
+exit nonzero with an error stating that
+the scope cannot be evaluated, while `.musubix/evidence/change-waivers.json`
+and `.musubix/evidence/order.json` remain byte-identical, so every successful
+new waiver remains non-stale immediately after creation as required by
+REQ-005. A stored detail that no longer passes REQ-016 is malformed linkage
+under REQ-006/007, not an indeterminate stale scope. Restoring an absent
+document/change/requirement/batch scope makes an
+indeterminate historical waiver evaluable again; the user then resolves the
+debt or records an allowed replacement, so append-only evidence does not
+require a deletion/tombstone path.
+Given a fixture with no waiver evidence, validation before and after this
+change emits the same set of the twelve allow-listed target diagnostics with
+the same severity, message, `changeId`, `requirementId`, and `detail`; sharing
+the evaluator as the predicate implementation must not alter waiver-free
+behavior.
+For an authoritative stale target whose condition is `indeterminate`,
+`CHANGE_WAIVER_STALE` itself remains the error-severity fail-closed
+diagnostic; the validator does not fabricate the unresolved target diagnostic.
+An independently applicable existing upstream diagnostic, including
+`CHANGE_IMPLEMENTATION_SCOPE_MISSING` for absent or empty
+requirement-implementation fingerprints, remains unchanged. When the evaluator
+returns `false` no corresponding validator diagnostic is emitted. Given a stale batch-scoped waiver whose
+recorded batch key no longer exists, the stale-waiver diagnostic remains an
+error because its condition is `indeterminate`, not resolved. A future, incompatible change to a code's snapshot payload field set or
+canonical shape increments `snapshotVersion`, making every waiver recorded
+under a prior version stale regardless of field equality. This revision keeps
+the current snapshot version because its new `matchingBatches` shape is
+reachable only for previously ambiguous multi-match scopes; a correction that
+changes only computed values for a previously miscomputed state also keeps the
+version because the existing hash mismatch makes every affected waiver
+`CHANGE_WAIVER_STALE`. Changes that alter an existing zero/single-match field
+set or canonical shape for a valid code-specific zero-, single-, or
+multi-match payload in a state that already had a defined valid payload
+require a version increment. Defining a previously ambiguous state or
+correcting computed values while preserving the field set does not. Replacing the unintended
+global `null` short-circuit with the already-defined code-specific payload
+does not require an increment because `null` was not a valid payload for these
+eleven codes. A stale scope whose evaluator
+returns `false` intentionally remains as a persistent warning and append-only
+record; it remains machine-visible through the diagnostic and
+`.musubix/evidence/change-waivers.json` even though REQ-012 excludes stale
+records from the active `waivers` array.
+For the eleven non-`CHANGE_RECORD_MISSING` codes, snapshot computation uses
+chronology/TDD/order state even when the independent change document is
+absent. This same-version correction can change hashes only for the
+document-absent state, including a payload computed from absent chronology
+by applying the exact code-specific field derivations defined above:
+absent fingerprint/order/phase-item/`allowUnchanged` values serialize as
+explicit `null`; non-aggregate presence/integer flags serialize as `false`,
+while code-specific aggregate fields fixed to `null` remain `null`; aggregate
+`missingRequirementIds` is `null` when the change entry is absent. Batch match
+lists are empty. TDD-derived `cycles` remains its deterministically sorted
+array. With chronology present, the
+independently emitted `CHANGE_DOCUMENT_MISSING` error remains fail-closed;
+with chronology also absent, the evaluator remains fail-closed through an
+`indeterminate` stale error.
+Given equivalent document-present zero/single-match fixtures, their canonical
+snapshot payloads and hashes remain byte-identical to the last-released
+calculation. Given a
+waiver recorded from the former document-absent behavior and retained with
+chronology present, its recomputed hash differs and both validators report
+`CHANGE_WAIVER_STALE` with the severity determined by the current tri-state
+condition.
+The `CHANGE_WAIVER_STALE` diagnostic `message` contains `target code is no
+longer reported` and `replacement waiver is not required` for `false`, without
+saying that all related debt is resolved. For `true`, its message contains
+`condition still exists` and directs the user to resolve it or record an
+allowed replacement. For `indeterminate`, its message contains `cannot be
+evaluated` and directs the user to restore an evaluable change, requirement,
+or batch scope before rerunning validation.
+The batch-scoped order-migration evaluator and validator emission use the same
+code-specific predicate implementation so their presence, integer-order, and
+matching-batch semantics cannot diverge.
+Across absent, present-with-integer-order, present-with-non-integer-order,
+zero-match, single-match, and multi-match fixtures, that shared predicate
+causes the evaluator to return `true` if and only if the target diagnostic is
+emitted, returns `false` when no match has a named phase item with non-integer
+order (including a phase-item-absent match or all-integer matches), and
+returns `indeterminate` when the exact batch scope has zero matches.
+Given a recorded waiver whose snapshot hash remains equal but whose evaluator
+changes from `true` to `false`, both `validateChangeEvidence` and
+`validateChangeCompleteness` report exactly one warning-severity
+`CHANGE_WAIVER_STALE` for the authoritative scope and emit no fabricated target
+diagnostic. Given a later effective batch with the same canonical batch key,
+the recomputed multi-match snapshot differs from the prior single-match
+snapshot, so a still-`true` target is error-severity and the earlier waiver no
+longer downgrades any matching diagnostic.
 
 ## REQ-CHANGE-EVIDENCE-WAIVER-012: Surface active waivers in `status`/`gate --json` for audit visibility
 Priority: should
@@ -328,7 +585,7 @@ Type: functional
 Pattern: event-driven
 Statement: When `gate --json` or `status --json` runs and one or more validly linked non-stale waiver records exist, the system shall include a `waivers` array listing each waiver's `changeId`, `code`, `requirementId` (when present), `detail` (when present), `approver`, `reason`, and `recordedAt`.
 Acceptance: `gate --json` output contains a `waivers` array with one entry
-per validly linked, non-stale waiver record, each carrying exactly the
+per scope whose authoritative record is validly linked and non-stale, each carrying exactly the
 `changeId`/`code`/`requirementId`/`detail`/`approver`/`reason`/`recordedAt`
 values persisted by REQ-CHANGE-EVIDENCE-WAIVER-005; a stale or malformed
 waiver (per REQ-CHANGE-EVIDENCE-WAIVER-007/011) is excluded from this
@@ -380,5 +637,3 @@ itself; validating the file detects and reports a broken chain (a record
 whose `previousSha256` does not equal its predecessor's `payloadSha256`,
 or a first record whose `previousSha256` is not the genesis value) as
 malformed per REQ-CHANGE-EVIDENCE-WAIVER-007.
-
-

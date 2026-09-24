@@ -111,7 +111,10 @@ describe('evidence merge recovery', () => {
     await expect(readFile(join(project, evidencePaths[0]), 'utf8')).resolves.toBe(original);
   });
 
-  it('rolls a prepared transaction back to byte-identical originals', async () => {
+  /** @id TEST-EVIDENCE-HISTORY-MERGE-006
+   * @verifies REQ-EVIDENCE-HISTORY-MERGE-004
+   */
+  it('TEST-EVIDENCE-HISTORY-MERGE-006 rolls a prepared transaction back to byte-identical originals', async () => {
     const project = await root();
     const originals = {
       [evidencePaths[0]]: bytes({ schemaVersion: 1, records: [] }),
@@ -147,7 +150,10 @@ describe('evidence merge recovery', () => {
     }
   });
 
-  it('rolls a committed transaction forward from journaled candidate bytes', async () => {
+  /** @id TEST-EVIDENCE-HISTORY-MERGE-007
+   * @verifies REQ-EVIDENCE-HISTORY-MERGE-004
+   */
+  it('TEST-EVIDENCE-HISTORY-MERGE-007 rolls a committed transaction forward from journaled candidate bytes', async () => {
     const project = await root();
     const candidates = {
       [evidencePaths[0]]: bytes({ schemaVersion: 1, records: [] }),
@@ -245,7 +251,10 @@ describe('evidence merge recovery', () => {
     }]);
   });
 
-  it('rejects a merged TDD phase order that would place migrate before refactor', async () => {
+  /** @id TEST-EVIDENCE-HISTORY-MERGE-008
+   * @verifies REQ-EVIDENCE-HISTORY-MERGE-002
+   */
+  it('TEST-EVIDENCE-HISTORY-MERGE-008 rejects a merged TDD phase order that would place migrate before refactor', async () => {
     const base = await root();
     const incoming = await root();
     await writeOrderingHistory(base, 'migrate');

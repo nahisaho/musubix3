@@ -8,7 +8,7 @@ import { digest, exists, safePath, writeJson } from './files.js';
 import { assertEvidenceOutputUnprotected, withEvidenceWriterLock } from './evidence-writer-lock.js';
 import {
   CURRENT_SNAPSHOT_VERSION, WORKFLOW_WAIVABLE_CODES, WORKFLOW_WAIVER_PATH, authoritativeIndex, buildWorkflowWaiverContext,
-  deriveWorkflowWaiverAudit, loadWorkflowWaiverEvidence, nonStale, payloadShaOf, resolveEvent,
+  deriveWorkflowWaiverAudit, loadWorkflowWaiverEvidence, payloadShaOf, recordStale, resolveEvent,
   scopeKey, scopeLabel, snapshotHashFor, waiverChainValid, waiverLinkage, waiverRecordShapeValid, waivedWorkflowDiagnostic,
   type LoadedWorkflowWaiverEvidence, type WorkflowWaivableCode, type WorkflowWaiverContext, type WorkflowWaiverRecord,
   linkageReason,
@@ -690,7 +690,7 @@ function declarationScope(workflow: WorkflowManifest, event: WorkflowEvent, even
 }
 
 /** @id CODE-WORKFLOW-EVIDENCE-WAIVER-018
- * @implements REQ-WORKFLOW-EVIDENCE-WAIVER-001 REQ-WORKFLOW-EVIDENCE-WAIVER-009 REQ-WORKFLOW-EVIDENCE-WAIVER-010 REQ-WORKFLOW-EVIDENCE-WAIVER-016
+ * @implements REQ-WORKFLOW-EVIDENCE-WAIVER-001 REQ-WORKFLOW-EVIDENCE-WAIVER-009 REQ-WORKFLOW-EVIDENCE-WAIVER-010 REQ-WORKFLOW-EVIDENCE-WAIVER-012 REQ-WORKFLOW-EVIDENCE-WAIVER-016
  * @design DES-WORKFLOW-EVIDENCE-WAIVER-005
  */
 export async function validateLoadedWorkflow(
@@ -931,7 +931,7 @@ async function recordWorkflowWaiverUnlocked(
   const activeIndex = authoritativeIndex(context, skill, phase, recordedAt, index);
   if (activeIndex !== -1 && !context.loaded?.malformed && waiverRecordShapeValid(context.loaded!.waivers[activeIndex])) {
     const activeRecord = context.loaded!.waivers[activeIndex];
-    if (nonStale(activeRecord, activeIndex, context)) {
+    if (!recordStale(activeRecord, activeIndex, context)) {
       throw new Error(`${scopeLabel(skill, phase, recordedAt, index)} already has an active waiver.`);
     }
   }
@@ -1027,7 +1027,7 @@ async function recordAllWorkflowWaiversUnlocked(
     const activeIndex = authoritativeIndex(context, diagnostic.skill, diagnostic.phase, diagnostic.declarationRecordedAt, diagnostic.index);
     if (activeIndex !== -1 && !context.loaded?.malformed && waiverRecordShapeValid(context.loaded!.waivers[activeIndex])) {
       const activeRecord = context.loaded!.waivers[activeIndex];
-      if (nonStale(activeRecord, activeIndex, context)) continue;
+      if (!recordStale(activeRecord, activeIndex, context)) continue;
     }
     candidates.push({
       skill: diagnostic.skill,
