@@ -4,11 +4,11 @@ description: "Use when deciding release readiness from actual checks, measurable
 ---
 # Quality / 品質
 /* @id CODE-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-003
- * @implements REQ-EVIDENCE-WRITER-LOCK-006
- * @design DES-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-001
+ * @implements REQ-EVIDENCE-WRITER-LOCK-006 REQ-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-001
+ * @design DES-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-001 DES-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-003
  */
 Follow the user's input language. Native review/security review remain separate. After the work, run `npx musubix3 workflow-record sdd-quality complete --status completed` exactly once.
-If `EVIDENCE_WRITER_LOCKED` blocks a command, stop the blocked command and inspect its reported owner metadata and exact canonical `.musubix/evidence/.writer-lock.json` path. On Linux, only after confirming the recorded owner is no longer active, run `npx musubix3 evidence unlock --recover`.
+If `EVIDENCE_WRITER_LOCKED` blocks a command, stop the blocked command and inspect its reported owner metadata and exact canonical `.musubix/evidence/.writer-lock.json` path. On Linux, only after confirming the recorded owner is no longer active, run `npx musubix3 evidence unlock --recover`. For `EVIDENCE_WRITER_LOCK_ROLLBACK_FAILED`, inspect `lockRemoved`: false may be a live failed acquirer with no lease or owner metadata may be unavailable, so automatic recovery is preferred after it exits; a mismatched readable owner is a replacement lock that must not be removed. True means absent now but crash durability is unconfirmed, so inspect only the exact reported path before retrying.
 Never blindly delete the lock, force-steal it, poll, or start automatic retry loops. If recovery returns `EVIDENCE_WRITER_LOCK_RECOVERY_UNSAFE`, including on Linux, or required probes are unavailable on macOS/Windows, stop automation: operator review must confirm no related process is active before targeted manual removal of only the exact reported path.
 Retry only after the active owner releases the lock, recovery succeeds, or the reviewed manual procedure completes.
 1. Inspect config/baseline first. Execute only trusted argument-array commands; never edit baseline without independent approval or substitute another CLI.

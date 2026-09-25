@@ -3165,6 +3165,58 @@
       "order": 1446,
       "previousSha256": "80b8519585a1797cc58d78488cd1e96897abcbb8f71c7be254200a3e5a564958",
       "payloadSha256": "cc0f863150fd50c4c1659dfd735d7f60e5808b5affd53b9c80aedc44229176ff"
+    },
+    {
+      "changeId": "CHANGE-0039",
+      "code": "CHANGE_COMPLETENESS_TDD",
+      "requirementId": "REQ-EVIDENCE-WRITER-LOCK-001",
+      "approver": "nahisaho",
+      "reason": "Fresh genuine Red-Green evidence exists for this requirement, but the corrective change-record Red checkpoint was recorded before the TDD Red command, placing the cycle outside the bounded checkpoint window; duplicate corrective subset recording is rejected by the CLI.",
+      "recordedAt": "2026-09-24T20:45:37.787Z",
+      "snapshotVersion": 1,
+      "snapshotHash": "5f2b395142de64e71fc5f9ed2c9245386680b763e1c3e79c1e4d49b8e9684e78",
+      "order": 1528,
+      "previousSha256": "cc0f863150fd50c4c1659dfd735d7f60e5808b5affd53b9c80aedc44229176ff",
+      "payloadSha256": "0c1027f843067460938a166fe45e8fe9fe225253ed2dbb2e33a10a97e268a87d"
+    },
+    {
+      "changeId": "CHANGE-0039",
+      "code": "CHANGE_COMPLETENESS_TDD",
+      "requirementId": "REQ-EVIDENCE-WRITER-LOCK-006",
+      "approver": "nahisaho",
+      "reason": "Fresh genuine Red-Green evidence exists for this requirement, but the corrective change-record Red checkpoint was recorded before the TDD Red command, placing the cycle outside the bounded checkpoint window; duplicate corrective subset recording is rejected by the CLI.",
+      "recordedAt": "2026-09-24T20:45:39.329Z",
+      "snapshotVersion": 1,
+      "snapshotHash": "fe0bbef2214a0b054219bff2455edab5f30966b7f3a26b5550fe3bb8267e9ca7",
+      "order": 1529,
+      "previousSha256": "0c1027f843067460938a166fe45e8fe9fe225253ed2dbb2e33a10a97e268a87d",
+      "payloadSha256": "c3179f981f0a45f14399ba9c58cc109bf55ba301f3030382c60d2507db4a6ffb"
+    },
+    {
+      "changeId": "CHANGE-0039",
+      "code": "CHANGE_COMPLETENESS_TDD",
+      "requirementId": "REQ-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-001",
+      "approver": "nahisaho",
+      "reason": "Fresh genuine Red-Green evidence exists for this requirement, but the corrective change-record Red checkpoint was recorded before the TDD Red command, placing the cycle outside the bounded checkpoint window; duplicate corrective subset recording is rejected by the CLI.",
+      "recordedAt": "2026-09-24T20:45:40.835Z",
+      "snapshotVersion": 1,
+      "snapshotHash": "610d7913311f93b69bd026fc51e10f1aa1ce55c8110dc26231c206089ec36114",
+      "order": 1530,
+      "previousSha256": "c3179f981f0a45f14399ba9c58cc109bf55ba301f3030382c60d2507db4a6ffb",
+      "payloadSha256": "4766f47d06457882691666bd935a32b913bf8f1f47796f78be9334ac538b7783"
+    },
+    {
+      "changeId": "CHANGE-0040",
+      "code": "CHANGE_TEST_CHANGED_AFTER_RED",
+      "detail": "REQ-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-001",
+      "approver": "nahisaho",
+      "reason": "CHANGE-0040 added TEST-026 assertions after its initial Red. CHANGE-0041 records the immutable history honestly and supplies a reviewed corrective Red/Green cycle for the same requirement and test.",
+      "recordedAt": "2026-09-25T00:06:37.226Z",
+      "snapshotVersion": 1,
+      "snapshotHash": "6c4b4754d32393885c336959cfecb3122e8e6365366e572f7782487e1bf52bd5",
+      "order": 1552,
+      "previousSha256": "4766f47d06457882691666bd935a32b913bf8f1f47796f78be9334ac538b7783",
+      "payloadSha256": "4203fbc795935f488f1863b706a4729fcb94957b40f35c5fb394116f768836c9"
     }
   ]
 }

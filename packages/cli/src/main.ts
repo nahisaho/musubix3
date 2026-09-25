@@ -304,6 +304,19 @@ lock. Inspect the reported owner and exact lock path before any targeted manual
 removal. If a merge journal is also pending, recover this writer lock first,
 then run evidence merge --recover.
 
+'EVIDENCE_WRITER_LOCK_ROLLBACK_FAILED' reports 'lockRemoved'. False can name a
+live failed acquirer with no lease, or owner metadata may be unavailable.
+Automatic recovery is preferred after a recorded owner exits; otherwise inspect
+the exact path before targeted removal. True means the path is absent now but
+crash durability is unconfirmed, so inspect only the exact reported path before
+retrying. A mismatched readable owner identifies a replacement lock and must not
+be removed as failed-acquirer cleanup.
+
+'EVIDENCE_WRITER_LOCK_RECOVERY_DURABILITY_FAILED' reports 'lockRemoved: true'
+after verified unlink when strict directory synchronization fails. The path is
+absent now, but crash durability is unconfirmed; inspect only the exact reported
+path before retrying.
+
 Windows directory synchronization may be unavailable after atomic publication
 or verified release. Automatic recovery remains inspection-only on Windows and
 macOS.`))
@@ -807,32 +820,75 @@ async function main(): Promise<void> {
     const message = cause instanceof Error ? cause.message : String(cause);
     if (process.argv.includes('--json')) {
       if (cause instanceof EvidenceWriterLockError) {
-        const underlying = cause.cause instanceof Error
-          ? {
-              name: cause.cause.name,
-              message: cause.cause.message,
-              ...('code' in cause.cause ? { code: String((cause.cause as NodeJS.ErrnoException).code) } : {}),
-            }
-          : cause.cause === undefined ? undefined : { message: String(cause.cause) };
-        console.log(JSON.stringify({
-          error: {
-            code: cause.code,
-            message,
-            lockPath: cause.lockPath,
-            ...(cause.owner === undefined ? {} : { owner: cause.owner }),
-            ...(underlying === undefined ? {} : { cause: underlying }),
-            ...(cause.guidance === undefined ? {} : { guidance: cause.guidance }),
-          },
-        }));
+        console.log(JSON.stringify(renderEvidenceWriterLockError(cause).json));
       } else if (cause instanceof EvidenceProtectedOutputError) {
         console.log(JSON.stringify({ error: { code: cause.code, message, path: cause.path } }));
       } else {
         console.log(JSON.stringify({ error: { code: 'CLI_ERROR', message } }));
       }
     }
+    else if (cause instanceof EvidenceWriterLockError) {
+      for (const line of renderEvidenceWriterLockError(cause).human) console.error(line);
+    }
     else console.error(`musubix3: ${message}`);
     process.exitCode = 2;
   }
+}
+
+type ProjectedCause = { name: string; message: string; code?: string } | { message: string };
+
+function projectCause(cause: unknown): ProjectedCause | undefined {
+  if (cause instanceof Error) {
+    return {
+      name: cause.name,
+      message: cause.message,
+      ...('code' in cause ? { code: String((cause as NodeJS.ErrnoException).code) } : {}),
+    };
+  }
+  return cause === undefined ? undefined : { message: String(cause) };
+}
+
+function serializeLockError(error: EvidenceWriterLockError): Record<string, unknown> {
+  const underlying = projectCause(error.cause);
+  return {
+    code: error.code,
+    message: error.message,
+    lockPath: error.lockPath,
+    ...(error.owner === undefined ? {} : { owner: error.owner }),
+    ...(underlying === undefined ? {} : { cause: underlying }),
+    ...(error.guidance === undefined ? {} : { guidance: error.guidance }),
+    ...(error.lockRemoved === undefined ? {} : { lockRemoved: error.lockRemoved }),
+  };
+}
+
+/** @id CODE-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-002
+ * @implements REQ-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-001 REQ-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-001
+ * @design DES-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-002 DES-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-002
+ */
+export function renderEvidenceWriterLockError(
+  error: EvidenceWriterLockError,
+): { json: { error: Record<string, unknown> }; human: string[] } {
+  const serialized = serializeLockError(error);
+  const human = [`musubix3: ${error.message}`];
+  if (error.rollbackError !== undefined) {
+    serialized.rollbackError = {
+      ...serializeLockError(error.rollbackError),
+      lockRemoved: error.rollbackError.lockRemoved,
+    };
+    human.push(
+      `musubix3: ${error.rollbackError.code}: ${error.rollbackError.message} (lockRemoved: ${String(error.rollbackError.lockRemoved)})`,
+    );
+    for (const guidance of error.rollbackError.guidance ?? []) {
+      human.push(`musubix3: ${guidance}`);
+    }
+  }
+  if (error.code === 'EVIDENCE_WRITER_LOCK_RECOVERY_DURABILITY_FAILED') {
+    human.push(`musubix3: ${error.code} (lockRemoved: ${String(error.lockRemoved)})`);
+    for (const guidance of error.guidance ?? []) {
+      human.push(`musubix3: ${guidance}`);
+    }
+  }
+  return { json: { error: serialized }, human };
 }
 
 if (process.argv[1] !== undefined && pathToFileURL(realpathSync(process.argv[1])).href === import.meta.url) {

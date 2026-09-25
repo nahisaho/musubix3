@@ -411,8 +411,18 @@ musubix3外からproject fileを直接変更するprogramはcoordination対象�
 owner PIDが確実に存在しない場合だけ削除します。live、PID再利用、別host、
 不正・変更済みmetadata、未対応platform、判定不能なlockは正確なpathと確認手順を
 表示して保持し、force modeはありません。必要なidentity probeを提供できないため、
-Windows と macOS の自動復旧は inspection-only です。canonical lockと
-`.writer-lock.<transactionId>.json` staging fileはGitおよび生成入力から除外
+Windows と macOS の自動復旧は inspection-only です。
+`EVIDENCE_WRITER_LOCK_ROLLBACK_FAILED`は`lockRemoved`も報告します。falseの場合は
+leaseを持たないliveなfailed acquirerを記録したlockか、owner metadataを取得できない
+lockの可能性があります。記録済みprocessの終了後は自動復旧を優先し、それ以外では
+正確なpathを調査して関連acquisitionがないことを確認した後、そのpathだけを対象に削除します。
+trueの場合は現在pathが存在しなくてもcrash durabilityが未確認なので、再試行前にその
+正確なpathだけを確認します。読み取れたownerが不一致ならreplacement lockであり、
+failed-acquirer cleanupとして削除してはいけません。
+`EVIDENCE_WRITER_LOCK_RECOVERY_DURABILITY_FAILED`は、検証済みの復旧unlinkが成功した後に
+厳格な親directory同期が失敗した場合、`lockRemoved: true`を報告します。現在pathは
+存在しませんがcrash durabilityは未確認なので、再試行前にその正確なpathだけを確認します。
+canonical lockと`.writer-lock.<transactionId>.json` staging fileはGitおよび生成入力から除外
 されます。関連processが存在しないことを確認した後に限り、残存staging fileを
 正確なpath指定で削除できます。
 

@@ -304,6 +304,19 @@ describe('CLI contracts', () => {
 });
 
 describe('distribution contracts', () => {
+  /** @id TEST-EVIDENCE-WRITER-LOCK-029
+   * @verifies REQ-EVIDENCE-WRITER-LOCK-006 REQ-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-001
+   */
+  it('TEST-EVIDENCE-WRITER-LOCK-029 keeps rollback recovery guidance in every distributed workflow skill', async () => {
+    for (const name of ['sdd-change', 'sdd-implementation', 'sdd-quality']) {
+      const text = await readText(repository, `.github/skills/${name}/SKILL.md`);
+      expect(text).toContain('EVIDENCE_WRITER_LOCK_ROLLBACK_FAILED');
+      expect(text).toContain('lockRemoved');
+      expect(text).toContain('failed acquirer with no lease');
+      expect(text.split(/\r?\n/).length).toBeLessThan(80);
+    }
+  });
+
   /** @id TEST-SESSION-SCOPED-DEVELOPMENT-001
    * @verifies REQ-SESSION-SCOPED-DEVELOPMENT-001
    */

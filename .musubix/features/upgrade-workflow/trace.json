@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-24T11:33:11.721Z",
+  "generatedAt": "2026-09-25T00:38:00.158Z",
   "nodes": [
     {
       "id": "CODE-SESSION-SCOPED-DEVELOPMENT-001",
@@ -1229,6 +1229,62 @@
       "kind": "requirement",
       "path": ".musubix/features/evidence-writer-lock/requirements.md",
       "line": 40,
+      "mandatory": true
+    },
+    {
+      "id": "DES-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-001",
+      "kind": "design",
+      "path": ".musubix/features/evidence-writer-lock-acquisition-rollback/design.md",
+      "line": 3
+    },
+    {
+      "id": "DES-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-002",
+      "kind": "design",
+      "path": ".musubix/features/evidence-writer-lock-acquisition-rollback/design.md",
+      "line": 58
+    },
+    {
+      "id": "DES-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-003",
+      "kind": "design",
+      "path": ".musubix/features/evidence-writer-lock-acquisition-rollback/design.md",
+      "line": 90
+    },
+    {
+      "id": "REQ-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-001",
+      "kind": "requirement",
+      "path": ".musubix/features/evidence-writer-lock-acquisition-rollback/requirements.md",
+      "line": 9,
+      "mandatory": true
+    },
+    {
+      "id": "DES-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-001",
+      "kind": "design",
+      "path": ".musubix/features/evidence-writer-lock-recovery-durability/design.md",
+      "line": 7
+    },
+    {
+      "id": "DES-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-002",
+      "kind": "design",
+      "path": ".musubix/features/evidence-writer-lock-recovery-durability/design.md",
+      "line": 35
+    },
+    {
+      "id": "DES-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-003",
+      "kind": "design",
+      "path": ".musubix/features/evidence-writer-lock-recovery-durability/design.md",
+      "line": 63
+    },
+    {
+      "id": "DES-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-004",
+      "kind": "design",
+      "path": ".musubix/features/evidence-writer-lock-recovery-durability/design.md",
+      "line": 91
+    },
+    {
+      "id": "REQ-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-001",
+      "kind": "requirement",
+      "path": ".musubix/features/evidence-writer-lock-recovery-durability/requirements.md",
+      "line": 9,
       "mandatory": true
     },
     {
@@ -2641,46 +2697,58 @@
       "line": 1
     },
     {
+      "id": "CODE-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-001",
+      "kind": "code",
+      "path": "packages/analysis/src/evidence-writer-lock.ts",
+      "line": 691
+    },
+    {
       "id": "CODE-EVIDENCE-WRITER-LOCK-002",
       "kind": "code",
       "path": "packages/analysis/src/evidence-writer-lock.ts",
-      "line": 644
+      "line": 784
     },
     {
       "id": "CODE-EVIDENCE-WRITER-LOCK-003",
       "kind": "code",
       "path": "packages/analysis/src/evidence-writer-lock.ts",
-      "line": 858
+      "line": 1013
     },
     {
       "id": "CODE-EVIDENCE-WRITER-LOCK-004",
       "kind": "code",
       "path": "packages/analysis/src/evidence-writer-lock.ts",
-      "line": 897
+      "line": 1052
     },
     {
       "id": "CODE-EVIDENCE-WRITER-LOCK-005",
       "kind": "code",
       "path": "packages/analysis/src/evidence-writer-lock.ts",
-      "line": 912
+      "line": 1067
     },
     {
       "id": "CODE-EVIDENCE-WRITER-LOCK-007",
       "kind": "code",
       "path": "packages/analysis/src/evidence-writer-lock.ts",
-      "line": 929
+      "line": 1084
     },
     {
       "id": "CODE-EVIDENCE-WRITER-LOCK-008",
       "kind": "code",
       "path": "packages/analysis/src/evidence-writer-lock.ts",
-      "line": 959
+      "line": 1114
+    },
+    {
+      "id": "CODE-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-001",
+      "kind": "code",
+      "path": "packages/analysis/src/evidence-writer-lock.ts",
+      "line": 1183
     },
     {
       "id": "CODE-EVIDENCE-WRITER-LOCK-006",
       "kind": "code",
       "path": "packages/analysis/src/evidence-writer-lock.ts",
-      "line": 1028
+      "line": 1209
     },
     {
       "id": "CODE-CLI-WORKFLOW-UX-001",
@@ -3004,37 +3072,43 @@
       "id": "CODE-WORKFLOW-EVIDENCE-WAIVER-023",
       "kind": "code",
       "path": "packages/cli/src/main.ts",
-      "line": 473
+      "line": 486
     },
     {
       "id": "CODE-WORKFLOW-WAIVER-BULK-002",
       "kind": "code",
       "path": "packages/cli/src/main.ts",
-      "line": 509
+      "line": 522
     },
     {
       "id": "CODE-CHANGE-RECORD-RECORDEDAT-ORDER-004",
       "kind": "code",
       "path": "packages/cli/src/main.ts",
-      "line": 599
+      "line": 612
     },
     {
       "id": "CODE-CHANGE-RECORD-FAIL-FAST-002",
       "kind": "code",
       "path": "packages/cli/src/main.ts",
-      "line": 615
+      "line": 628
     },
     {
       "id": "CODE-CHANGE-QUALITY-REFRESH-005",
       "kind": "code",
       "path": "packages/cli/src/main.ts",
-      "line": 626
+      "line": 639
     },
     {
       "id": "CODE-TDD-ADOPTION-WARNING-003",
       "kind": "code",
       "path": "packages/cli/src/main.ts",
-      "line": 717
+      "line": 730
+    },
+    {
+      "id": "CODE-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-002",
+      "kind": "code",
+      "path": "packages/cli/src/main.ts",
+      "line": 864
     },
     {
       "id": "CODE-DESIGN-ADR-NONE-EXEMPTION-001",
@@ -3763,16 +3837,22 @@
       "line": 301
     },
     {
-      "id": "TEST-SESSION-SCOPED-DEVELOPMENT-001",
+      "id": "TEST-EVIDENCE-WRITER-LOCK-029",
       "kind": "test",
       "path": "tests/cli-package.test.ts",
       "line": 307
     },
     {
+      "id": "TEST-SESSION-SCOPED-DEVELOPMENT-001",
+      "kind": "test",
+      "path": "tests/cli-package.test.ts",
+      "line": 320
+    },
+    {
       "id": "TEST-SESSION-SCOPED-DEVELOPMENT-002",
       "kind": "test",
       "path": "tests/cli-package.test.ts",
-      "line": 331
+      "line": 344
     },
     {
       "id": "TEST-CLI-WORKFLOW-UX-001",
@@ -3922,115 +4002,127 @@
       "id": "TEST-EVIDENCE-WRITER-LOCK-006",
       "kind": "test",
       "path": "tests/evidence-writer-lock-integration.test.ts",
-      "line": 59
+      "line": 62
     },
     {
       "id": "TEST-EVIDENCE-WRITER-LOCK-007",
       "kind": "test",
       "path": "tests/evidence-writer-lock-integration.test.ts",
-      "line": 78
+      "line": 81
     },
     {
       "id": "TEST-EVIDENCE-WRITER-LOCK-008",
       "kind": "test",
       "path": "tests/evidence-writer-lock-integration.test.ts",
-      "line": 94
+      "line": 97
     },
     {
       "id": "TEST-EVIDENCE-WRITER-LOCK-009",
       "kind": "test",
       "path": "tests/evidence-writer-lock-integration.test.ts",
-      "line": 112
+      "line": 115
     },
     {
       "id": "TEST-EVIDENCE-WRITER-LOCK-010",
       "kind": "test",
       "path": "tests/evidence-writer-lock-integration.test.ts",
-      "line": 141
+      "line": 144
+    },
+    {
+      "id": "TEST-EVIDENCE-WRITER-LOCK-028",
+      "kind": "test",
+      "path": "tests/evidence-writer-lock-integration.test.ts",
+      "line": 181
+    },
+    {
+      "id": "TEST-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-002",
+      "kind": "test",
+      "path": "tests/evidence-writer-lock-integration.test.ts",
+      "line": 246
     },
     {
       "id": "TEST-EVIDENCE-WRITER-LOCK-020",
       "kind": "test",
       "path": "tests/evidence-writer-lock-integration.test.ts",
-      "line": 178
+      "line": 286
     },
     {
       "id": "TEST-EVIDENCE-WRITER-LOCK-021",
       "kind": "test",
       "path": "tests/evidence-writer-lock-integration.test.ts",
-      "line": 193
+      "line": 301
     },
     {
       "id": "TEST-EVIDENCE-WRITER-LOCK-011",
       "kind": "test",
       "path": "tests/evidence-writer-lock-integration.test.ts",
-      "line": 211
+      "line": 319
     },
     {
       "id": "TEST-EVIDENCE-WRITER-LOCK-012",
       "kind": "test",
       "path": "tests/evidence-writer-lock-integration.test.ts",
-      "line": 285
+      "line": 393
     },
     {
       "id": "TEST-EVIDENCE-WRITER-LOCK-013",
       "kind": "test",
       "path": "tests/evidence-writer-lock-integration.test.ts",
-      "line": 307
+      "line": 415
     },
     {
       "id": "TEST-EVIDENCE-WRITER-LOCK-014",
       "kind": "test",
       "path": "tests/evidence-writer-lock-integration.test.ts",
-      "line": 328
+      "line": 436
     },
     {
       "id": "TEST-EVIDENCE-WRITER-LOCK-015",
       "kind": "test",
       "path": "tests/evidence-writer-lock-integration.test.ts",
-      "line": 359
+      "line": 467
     },
     {
       "id": "TEST-EVIDENCE-WRITER-LOCK-016",
       "kind": "test",
       "path": "tests/evidence-writer-lock-integration.test.ts",
-      "line": 397
+      "line": 505
     },
     {
       "id": "TEST-EVIDENCE-WRITER-LOCK-017",
       "kind": "test",
       "path": "tests/evidence-writer-lock-integration.test.ts",
-      "line": 458
+      "line": 566
     },
     {
       "id": "TEST-EVIDENCE-WRITER-LOCK-025",
       "kind": "test",
       "path": "tests/evidence-writer-lock-integration.test.ts",
-      "line": 527
+      "line": 635
     },
     {
       "id": "TEST-EVIDENCE-WRITER-LOCK-018",
       "kind": "test",
       "path": "tests/evidence-writer-lock-integration.test.ts",
-      "line": 547
+      "line": 658
     },
     {
       "id": "TEST-EVIDENCE-WRITER-LOCK-019",
       "kind": "test",
       "path": "tests/evidence-writer-lock-integration.test.ts",
-      "line": 571
+      "line": 682
     },
     {
       "id": "TEST-EVIDENCE-WRITER-LOCK-022",
       "kind": "test",
       "path": "tests/evidence-writer-lock-integration.test.ts",
-      "line": 593
+      "line": 704
     },
     {
       "id": "TEST-EVIDENCE-WRITER-LOCK-023",
       "kind": "test",
       "path": "tests/evidence-writer-lock-integration.test.ts",
-      "line": 614
+      "line": 725
     },
     {
       "id": "TEST-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-001",
@@ -4042,43 +4134,79 @@
       "id": "TEST-EVIDENCE-WRITER-LOCK-001",
       "kind": "test",
       "path": "tests/evidence-writer-lock.test.ts",
-      "line": 50
+      "line": 62
     },
     {
       "id": "TEST-EVIDENCE-WRITER-LOCK-002",
       "kind": "test",
       "path": "tests/evidence-writer-lock.test.ts",
-      "line": 65
+      "line": 77
     },
     {
       "id": "TEST-EVIDENCE-WRITER-LOCK-003",
       "kind": "test",
       "path": "tests/evidence-writer-lock.test.ts",
-      "line": 87
+      "line": 99
     },
     {
       "id": "TEST-EVIDENCE-WRITER-LOCK-004",
       "kind": "test",
       "path": "tests/evidence-writer-lock.test.ts",
-      "line": 104
+      "line": 116
     },
     {
       "id": "TEST-EVIDENCE-WRITER-LOCK-005",
       "kind": "test",
       "path": "tests/evidence-writer-lock.test.ts",
-      "line": 117
+      "line": 129
+    },
+    {
+      "id": "TEST-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-001",
+      "kind": "test",
+      "path": "tests/evidence-writer-lock.test.ts",
+      "line": 160
+    },
+    {
+      "id": "TEST-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-003",
+      "kind": "test",
+      "path": "tests/evidence-writer-lock.test.ts",
+      "line": 197
     },
     {
       "id": "TEST-EVIDENCE-WRITER-LOCK-024",
       "kind": "test",
       "path": "tests/evidence-writer-lock.test.ts",
-      "line": 148
+      "line": 226
     },
     {
       "id": "TEST-EVIDENCE-WRITER-LOCK-026",
       "kind": "test",
       "path": "tests/evidence-writer-lock.test.ts",
-      "line": 212
+      "line": 290
+    },
+    {
+      "id": "TEST-EVIDENCE-WRITER-LOCK-027",
+      "kind": "test",
+      "path": "tests/evidence-writer-lock.test.ts",
+      "line": 337
+    },
+    {
+      "id": "TEST-EVIDENCE-WRITER-LOCK-030",
+      "kind": "test",
+      "path": "tests/evidence-writer-lock.test.ts",
+      "line": 533
+    },
+    {
+      "id": "TEST-EVIDENCE-WRITER-LOCK-031",
+      "kind": "test",
+      "path": "tests/evidence-writer-lock.test.ts",
+      "line": 561
+    },
+    {
+      "id": "TEST-EVIDENCE-WRITER-LOCK-032",
+      "kind": "test",
+      "path": "tests/evidence-writer-lock.test.ts",
+      "line": 585
     },
     {
       "id": "TEST-GITHUB-ACTIONS-NODE24-RUNTIME-001",
@@ -4644,7 +4772,17 @@
     },
     {
       "from": "CODE-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-001",
+      "to": "REQ-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-001",
       "to": "DES-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-001",
+      "to": "DES-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-003",
       "relation": "implements"
     },
     {
@@ -4654,7 +4792,17 @@
     },
     {
       "from": "CODE-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-002",
+      "to": "REQ-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-002",
       "to": "DES-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-002",
+      "to": "DES-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-003",
       "relation": "implements"
     },
     {
@@ -4664,7 +4812,17 @@
     },
     {
       "from": "CODE-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-003",
+      "to": "REQ-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-003",
       "to": "DES-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-003",
+      "to": "DES-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-003",
       "relation": "implements"
     },
     {
@@ -5715,6 +5873,106 @@
     {
       "from": "DES-EVIDENCE-WRITER-LOCK-005",
       "to": "DES-EVIDENCE-WRITER-LOCK-004",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-001",
+      "to": "REQ-EVIDENCE-WRITER-LOCK-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-001",
+      "to": "REQ-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0031",
+      "to": "DES-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-001",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-002",
+      "to": "REQ-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0031",
+      "to": "DES-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-002",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-002",
+      "to": "DES-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-001",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-003",
+      "to": "REQ-EVIDENCE-WRITER-LOCK-006",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-003",
+      "to": "REQ-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0031",
+      "to": "DES-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-003",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-003",
+      "to": "DES-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-002",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-001",
+      "to": "REQ-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "ADR-0031",
+      "to": "DES-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-001",
+      "relation": "decides"
+    },
+    {
+      "from": "DES-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-001",
+      "to": "DES-EVIDENCE-WRITER-LOCK-004",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-002",
+      "to": "REQ-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-002",
+      "to": "DES-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-001",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-003",
+      "to": "REQ-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-003",
+      "to": "DES-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-001",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-003",
+      "to": "DES-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-002",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-004",
+      "to": "REQ-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-004",
+      "to": "DES-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-003",
       "relation": "depends-on"
     },
     {
@@ -8154,6 +8412,11 @@
     },
     {
       "from": "CODE-EVIDENCE-WRITER-LOCK-001",
+      "to": "REQ-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-EVIDENCE-WRITER-LOCK-001",
       "to": "DES-EVIDENCE-WRITER-LOCK-001",
       "relation": "implements"
     },
@@ -8165,6 +8428,36 @@
     {
       "from": "CODE-EVIDENCE-WRITER-LOCK-001",
       "to": "DES-EVIDENCE-WRITER-LOCK-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-EVIDENCE-WRITER-LOCK-001",
+      "to": "DES-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-EVIDENCE-WRITER-LOCK-001",
+      "to": "DES-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-001",
+      "to": "REQ-EVIDENCE-WRITER-LOCK-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-001",
+      "to": "REQ-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-001",
+      "to": "DES-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-001",
+      "to": "DES-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-002",
       "relation": "implements"
     },
     {
@@ -8283,6 +8576,16 @@
       "relation": "implements"
     },
     {
+      "from": "CODE-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-001",
+      "to": "REQ-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-001",
+      "to": "DES-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-001",
+      "relation": "implements"
+    },
+    {
       "from": "CODE-EVIDENCE-WRITER-LOCK-006",
       "to": "REQ-EVIDENCE-WRITER-LOCK-004",
       "relation": "implements"
@@ -8294,7 +8597,17 @@
     },
     {
       "from": "CODE-EVIDENCE-WRITER-LOCK-006",
+      "to": "REQ-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-EVIDENCE-WRITER-LOCK-006",
       "to": "DES-EVIDENCE-WRITER-LOCK-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-EVIDENCE-WRITER-LOCK-006",
+      "to": "DES-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-001",
       "relation": "implements"
     },
     {
@@ -9268,6 +9581,26 @@
       "relation": "implements"
     },
     {
+      "from": "CODE-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-002",
+      "to": "REQ-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-002",
+      "to": "REQ-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-002",
+      "to": "DES-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-002",
+      "to": "DES-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-002",
+      "relation": "implements"
+    },
+    {
       "from": "CODE-DESIGN-ADR-NONE-EXEMPTION-001",
       "to": "REQ-DESIGN-ADR-NONE-EXEMPTION-001",
       "relation": "implements"
@@ -9669,7 +10002,17 @@
     },
     {
       "from": "CODE-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-004",
+      "to": "REQ-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-004",
       "to": "DES-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-004",
+      "to": "DES-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-003",
       "relation": "implements"
     },
     {
@@ -10213,6 +10556,16 @@
       "relation": "verifies"
     },
     {
+      "from": "TEST-EVIDENCE-WRITER-LOCK-029",
+      "to": "REQ-EVIDENCE-WRITER-LOCK-006",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-EVIDENCE-WRITER-LOCK-029",
+      "to": "REQ-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-001",
+      "relation": "verifies"
+    },
+    {
       "from": "TEST-SESSION-SCOPED-DEVELOPMENT-001",
       "to": "REQ-SESSION-SCOPED-DEVELOPMENT-001",
       "relation": "verifies"
@@ -10388,6 +10741,16 @@
       "relation": "verifies"
     },
     {
+      "from": "TEST-EVIDENCE-WRITER-LOCK-028",
+      "to": "REQ-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-002",
+      "to": "REQ-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-001",
+      "relation": "verifies"
+    },
+    {
       "from": "TEST-EVIDENCE-WRITER-LOCK-020",
       "to": "REQ-EVIDENCE-WRITER-LOCK-001",
       "relation": "verifies"
@@ -10443,6 +10806,11 @@
       "relation": "verifies"
     },
     {
+      "from": "TEST-EVIDENCE-WRITER-LOCK-025",
+      "to": "REQ-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-001",
+      "relation": "verifies"
+    },
+    {
       "from": "TEST-EVIDENCE-WRITER-LOCK-018",
       "to": "REQ-EVIDENCE-WRITER-LOCK-001",
       "relation": "verifies"
@@ -10478,6 +10846,11 @@
       "relation": "verifies"
     },
     {
+      "from": "TEST-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-001",
+      "to": "REQ-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-001",
+      "relation": "verifies"
+    },
+    {
       "from": "TEST-EVIDENCE-WRITER-LOCK-001",
       "to": "REQ-EVIDENCE-WRITER-LOCK-001",
       "relation": "verifies"
@@ -10503,6 +10876,16 @@
       "relation": "verifies"
     },
     {
+      "from": "TEST-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-001",
+      "to": "REQ-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-003",
+      "to": "REQ-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-001",
+      "relation": "verifies"
+    },
+    {
       "from": "TEST-EVIDENCE-WRITER-LOCK-024",
       "to": "REQ-EVIDENCE-WRITER-LOCK-001",
       "relation": "verifies"
@@ -10510,6 +10893,36 @@
     {
       "from": "TEST-EVIDENCE-WRITER-LOCK-026",
       "to": "REQ-EVIDENCE-WRITER-LOCK-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-EVIDENCE-WRITER-LOCK-026",
+      "to": "REQ-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-EVIDENCE-WRITER-LOCK-027",
+      "to": "REQ-EVIDENCE-WRITER-LOCK-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-EVIDENCE-WRITER-LOCK-027",
+      "to": "REQ-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-EVIDENCE-WRITER-LOCK-030",
+      "to": "REQ-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-EVIDENCE-WRITER-LOCK-031",
+      "to": "REQ-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-EVIDENCE-WRITER-LOCK-032",
+      "to": "REQ-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-001",
       "relation": "verifies"
     },
     {
@@ -11230,13 +11643,13 @@
   ],
   "diagnostics": [],
   "fingerprints": {
-    ".github/skills/sdd-change/SKILL.md": "163c120ce082c9420d1033c1776877d2a3507c7a12fe4cccb8c18ab0ec0c2df1",
+    ".github/skills/sdd-change/SKILL.md": "528b1696db85fb0b27233a15543d9187afc1efa1b33d288eee6fed176ae8d0f3",
     ".github/skills/sdd-design/SKILL.md": "7f9a4fa13b420f8436b4b33704111f3b70248408fe209ab7ee98a258b2712d66",
     ".github/skills/sdd-formal-codegraph/SKILL.md": "67944f2599609922f4957a1d99fa0f2139a21c1eb08e7264b5d72e45c2204721",
-    ".github/skills/sdd-implementation/SKILL.md": "1ddb56e14043ca5c94ace3a0bc7a932c071c610e74f0299be07f91adc699cd12",
+    ".github/skills/sdd-implementation/SKILL.md": "80dc991673d2c8f6b2ac092a5ae0277767a87952e043ab6e20c09dd701eb3459",
     ".github/skills/sdd-issue-report/SKILL.md": "c9f3d50f90565052134cf3c7758cef4cc855f83f29168b321482995446c7f090",
     ".github/skills/sdd-knowledge/SKILL.md": "162be3e509c58216f27fe0e270b847aaa09cdc1f3aae8f46e32e9a2e6b00af69",
-    ".github/skills/sdd-quality/SKILL.md": "82b418b0ad799d14acdb3486c80817d8ebe34deb779965d94350fc3f15d20e0a",
+    ".github/skills/sdd-quality/SKILL.md": "14be004a5f3dfbd292e4a2b8d9d6fbb4b74b6184ab028334266a69c6883cc4b4",
     ".github/skills/sdd-requirements/SKILL.md": "b31117f90b5c9f88f795a25de76913d92119e4dc7c287d9db2f47d14d8520a38",
     ".github/skills/sdd-traceability/SKILL.md": "ec1321579a91a9b6bc71e67c67e6d172b93aba652b7d6d8c2fc4c23b3e9987af",
     ".musubix/decisions/ADR-0002.md": "da556c6ef7efcee366a8c6497179bad96c093145366b6422548b0e3df2cba348",
@@ -11268,7 +11681,7 @@
     ".musubix/decisions/ADR-0028.md": "e9507066f52f57e58105e16ceac3196fad091912edbe1a5c89e2705664c4bb22",
     ".musubix/decisions/ADR-0029.md": "ad78f16771e42db6742c0aadbbe2e1e7d4640f4447995f7f801c994b5b424485",
     ".musubix/decisions/ADR-0030.md": "80b4d83140891df2ae9b8056d8ed4ec4b04bcb03544ca0523932a18465b088d2",
-    ".musubix/decisions/ADR-0031.md": "94c1d13ac65ce7b782a0668bf22bde6ef0e1a005b45b74aeb84ea7aefc9eff05",
+    ".musubix/decisions/ADR-0031.md": "5f8432ea8d763914d0a555d4d66c60798f722ca1dc3afd204ea96814cbfac88b",
     ".musubix/decisions/ADR-0032.md": "31bfdd12d54dcf9b5335d10c38de351ab396ee0c1e9834b4a275fbc4de00d06d",
     ".musubix/decisions/ADR-0033.md": "82855115e4da67d3c4ddbbb72435e9a852b405ab6db325c416f427e9cde30978",
     ".musubix/decisions/ADR-0034.md": "3553589fd9d989c089351af9cea4f2fe671117006591dc1f6336b6b95196ebcd",
@@ -11307,7 +11720,11 @@
     ".musubix/features/evidence-history-merge/design.md": "123823f034c53b76326f17e619a34a849c5672e179d77761550a21513f5d04ec",
     ".musubix/features/evidence-history-merge/requirements.md": "7fa32ee9bc9dd11e25bcdaff1959ab4d17156f9965c5904f4a0cf2283d5cd988",
     ".musubix/features/evidence-writer-lock/design.md": "1889cea7999a543de177518ebb7f31bbdc1c5fd298eed93f235b95f0809d956f",
-    ".musubix/features/evidence-writer-lock/requirements.md": "4bc22eb3ad47ba2c41747ce5e9e992f85ef34a79e0397d5bfcd7c8739cd13a70",
+    ".musubix/features/evidence-writer-lock/requirements.md": "42066c00726ef87b3ac7ad1777a8f66d45e64f0512065cf7bfd72aa007fad7f7",
+    ".musubix/features/evidence-writer-lock-acquisition-rollback/design.md": "d3eb56803396dda6d47abea4c4e2b6fd58bd0c91b754d5e8c4f7f3eb30d22df7",
+    ".musubix/features/evidence-writer-lock-acquisition-rollback/requirements.md": "bd16d34d6aa8b44f9203503205bcf44fac9e78f7290362408f9bd20639e69fda",
+    ".musubix/features/evidence-writer-lock-recovery-durability/design.md": "5a25fec9b5102bd4e27fad2051cbd6d79346d9a5562152eaf2bba7789640a7d7",
+    ".musubix/features/evidence-writer-lock-recovery-durability/requirements.md": "3d3dffe76925860758b18c5b35ee88fc86e7d8ccbac8495562692a6b8411f2c7",
     ".musubix/features/evidence-writer-lock-skill-guidance/design.md": "8999bbe16cf32b807b09d2b402a8fc43fe633832a4df943e38e4ae50b91262e0",
     ".musubix/features/evidence-writer-lock-skill-guidance/requirements.md": "8372387ec47f8d9e4877815fe47d4a5c2b71411166fc249a4fac8131bde7732b",
     ".musubix/features/gate-command-timeout-margin/design.md": "a8ea53c4ba2c30c2ade92bbbbbff6f75a13d5e8bae215a9e1e7966cf4e2a1b91",
@@ -11365,7 +11782,7 @@
     "packages/analysis/src/config.ts": "52d5212f4057df9ed5caac0a0025ce744864909abceea3c64d259479ddffb998",
     "packages/analysis/src/evidence-merge-guard.ts": "1c0b4735d974f4c5fa0b9edaa5bde075baa5ca09de645d32db41f2e24e9421e1",
     "packages/analysis/src/evidence-merge.ts": "c7766f8ef74da94027073d9516ec307d67d8f729395c2c010ab9820e5a12eecf",
-    "packages/analysis/src/evidence-writer-lock.ts": "86d898cdcc6693e50279c193a9bf9d50b616520587871a82209146e286b7930f",
+    "packages/analysis/src/evidence-writer-lock.ts": "f311d82ea5c154e2725d8cf9017bd514dfc1707686318337eaf60d1420a16732",
     "packages/analysis/src/files.ts": "8c444fac80a0f26dc7341b43e84f3e3906e346ad5e442f2909da7f18e031c72d",
     "packages/analysis/src/formal.ts": "3b214da239fbf5f796f76fb5d9141cf60f9b946a51560cde5944e7e2f9ca4891",
     "packages/analysis/src/gate.ts": "f0da290dbd9a263be82c8df685988607f952e544e2d518a582bc2f9202fdcccb",
@@ -11386,7 +11803,7 @@
     "packages/analysis/src/workflow-waiver.ts": "2c6b982bcdd99e33951ad47bd7e060a8cf4868b7caa48a7bb9fa896092eed123",
     "packages/analysis/src/workflow.ts": "37c332cdcd7f5bae240a192c10e8e39bdeb28233cf3c30b535516f521ef4d661",
     "packages/cli/src/install.ts": "346a6e66a29505010681ac32ea17651339cef3cfc1143422174981438e17bbf1",
-    "packages/cli/src/main.ts": "25ae53c6cac1eea57020a33397138c9913831d11b4d255867785a1f09a013244",
+    "packages/cli/src/main.ts": "a23e9e6f4c143aefe664f182cca2fc70f18a72c43f266dd679f374de91ca39ec",
     "packages/domain/src/constitution.ts": "514278499642ff46ed902864b9192f566b116b4f92eb3fafa6b62588335e170a",
     "packages/domain/src/design.ts": "fc1ca4d3249abc9705ba4b6f296e0f4fa3b3d6ff6d5d82e51c99f49fc7a93ac9",
     "packages/domain/src/index.ts": "43243e9279e3826b23cd8d8b4365854974112ce4cf17cfb0f0ee32e6b28e9cc6",
@@ -11401,7 +11818,7 @@
     "scripts/release-prepare.mjs": "e166ac42868ce134ad9d3e68a92e14831f2ad243b51f2c0782a47e49fe55a640",
     "scripts/release-publish.mjs": "021ae204cca11fd66d583e27df16e9ead16d77df0503d717d63bda14ecf144f3",
     "scripts/release-version.mjs": "24f8d0d1cd72408d5462238a99db3856639a94cb904337a8fabddad7af1cb6de",
-    "scripts/smoke-package.mjs": "5b3e1e0e9fc6efe7e549976d16b084880fc75f86d787b6133f1f4e07d43e95e9",
+    "scripts/smoke-package.mjs": "3950961c8a8cb45a71b45fe46810cd5ba9afb72c9c27201aa0921c92b72f3c4e",
     "tests/adapter-integration.test.ts": "42c350b4c3498d2dca32943731521ae8c2d52921f560039c0f7719b060bd4972",
     "tests/adapter-pattern-recognition.test.ts": "df7446c88eecf17cff42a5bf2cb6adc4924d62c5ed4536ad62bc8d38eb5bd40c",
     "tests/approval-domain-scoping.test.ts": "130399e4bb168e0f15d7385b9704e7b0fb9a1f7d59f862204ffbcb67354c6043",
@@ -11414,7 +11831,7 @@
     "tests/change-record-fail-fast.test.ts": "2f69f19332049c206f39b42c3bc2b505ce63173db798d74c5a9ace7064cdfe78",
     "tests/change-record-recordedat-order.test.ts": "5ad61cf31e273dc9cdfe190b21dcc8ffc49d327592e01b6eb0251f4cdda7b149",
     "tests/change-requirement-batches.test.ts": "919b14e0fc9174e82b916dac0448ba2f9acf57f038f0ec820ed0aa6a397f77bd",
-    "tests/cli-package.test.ts": "9050cda19c56670ea496754575b9bcfeda3e5d3f6753136f745d5714877adb59",
+    "tests/cli-package.test.ts": "6fadc282510e6992d69b14898a02dd76e0e7a03c4fd3dcae8f7870fd443e5e87",
     "tests/cli-workflow-ux.test.ts": "53bdc5375bef05b365d725f5a8948393d68ae8cd1116fad8ff36ca3de127a177",
     "tests/command-working-directory.test.ts": "82dc863b1fcc5cd8a5ea1534238ef2f61f15e5d6c5e25d61fce43a7efe9bbc02",
     "tests/design-adr-none-exemption.test.ts": "f8a4771eb8b71a8c83b9ef782e9ed8646ef408aa4169298ab7a02553aa1c9ed7",
@@ -11422,9 +11839,9 @@
     "tests/ears-id-diagnostic-messages.test.ts": "b87dbcbbd8a1c6d2c8fddd2ad0c7483da022281b4fae2f968972413933ee009a",
     "tests/evidence-history-merge-recovery.test.ts": "01821174b200d2b394129cb5d0d5e4de8c1eaa9069e797d7c759f4826d0b7a83",
     "tests/evidence-history-merge.test.ts": "3712cdb32da2e280eb0bdcebb52cefa4841702592dda80279dab71eae2bb4df6",
-    "tests/evidence-writer-lock-integration.test.ts": "ad5a6d651dcb2f0fc81bfd93e8a640632a1fb2d73e2c49db59adbdbced087dc8",
-    "tests/evidence-writer-lock-skill-guidance.test.ts": "8789e47256f8cd99ba931c326264beaa4f288d0dadf999cdba865ba648475afb",
-    "tests/evidence-writer-lock.test.ts": "87e516ef8434489740c73b0a2e6695e2a0de28a5424a668b9b56c2304e093439",
+    "tests/evidence-writer-lock-integration.test.ts": "bad452f387a697f1e1a1507fab0660421e4dc797ccb142ac8142006cdb4704b7",
+    "tests/evidence-writer-lock-skill-guidance.test.ts": "2d52ed19d78f9f8a4823d9d337fd9f7c4ab4b6715fc3210c2b770ee354beff72",
+    "tests/evidence-writer-lock.test.ts": "ee7daa577fd3f338f1c6c8a303aa10ad4b47defa269fea01f38bb133a2bcee26",
     "tests/formal-knowledge.test.ts": "325ff2567b72708b83d3eab7b2986e7ceb7beb252ed21276b0db7436ffa367a4",
     "tests/gate-install.test.ts": "d2d1f923f594f15776c1ecb64325775a1c3770de557d2a2c0342ec4144538822",
     "tests/github-actions-node24-runtime.test.ts": "9a444869a4d0dcdb76fb34fc5e017eb8f4f39896ec7b8aa8e0d36e8a6552e28d",

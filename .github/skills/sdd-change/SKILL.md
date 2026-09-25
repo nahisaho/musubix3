@@ -8,14 +8,14 @@ description: "Use as the MANDATORY first Skill for requests to develop, build, c
  * @design DES-SESSION-SCOPED-DEVELOPMENT-001
  */
 /* @id CODE-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-001
- * @implements REQ-EVIDENCE-WRITER-LOCK-006
- * @design DES-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-001
+ * @implements REQ-EVIDENCE-WRITER-LOCK-006 REQ-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-001
+ * @design DES-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-001 DES-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-003
  */
 Mandatory entrypoint: every new natural-language development request is a new change, even in an existing Copilot session; never reuse prior requirements, approvals, TDD, or change evidence unless the user explicitly names the existing change ID and asks to continue it. never start implementation before validating requirements/design; skip only for verified approved artifacts of that explicitly continued change. Never infer approval; show `approval prepare <stage>` and record only its reviewed hash with `approval record <stage> --approver <name> --artifact-sha256 <hash> --confirm`.
 Whenever an AI deliverable is documentation (requirements, design, ADRs, the CHANGE document, or release/quality evidence), run Copilot's native `rubber-duck` review agent on it before that phase's human approval, fixing every issue and re-reviewing until none remain.
 Follow the user's input language. Use native Copilot planning, editing, research, review, security review and subagents.
 Record exactly one final invocation outcome with `npx musubix3 workflow-record sdd-change complete --status <status>`; `change-record` separately proves phases.
-If `EVIDENCE_WRITER_LOCKED` blocks a command, stop the blocked command and inspect its reported owner metadata and exact canonical `.musubix/evidence/.writer-lock.json` path. On Linux, only after confirming the recorded owner is no longer active, run `npx musubix3 evidence unlock --recover`.
+If `EVIDENCE_WRITER_LOCKED` blocks a command, stop the blocked command and inspect its reported owner metadata and exact canonical `.musubix/evidence/.writer-lock.json` path. On Linux, only after confirming the recorded owner is no longer active, run `npx musubix3 evidence unlock --recover`. For `EVIDENCE_WRITER_LOCK_ROLLBACK_FAILED`, inspect `lockRemoved`: false may be a live failed acquirer with no lease or owner metadata may be unavailable, so automatic recovery is preferred after it exits; a mismatched readable owner is a replacement lock that must not be removed. True means absent now but crash durability is unconfirmed, so inspect only the exact reported path before retrying.
 Never blindly delete the lock, force-steal it, poll, or start automatic retry loops. If recovery returns `EVIDENCE_WRITER_LOCK_RECOVERY_UNSAFE`, including on Linux, or required probes are unavailable on macOS/Windows, stop automation: operator review must confirm no related process is active before targeted manual removal of only the exact reported path.
 Retry only after the active owner releases the lock, recovery succeeds, or the reviewed manual procedure completes.
 Run `workflow-sanitize <copilot.jsonl> <safe.jsonl>` before review, then `workflow-verify <safe.jsonl>`; it validates source-order lifecycles without assuming globally monotonic clocks unless `maxEventSkewMs` is explicitly set.

@@ -8,6 +8,7 @@ import {
   EVIDENCE_CONDITIONAL_OPERATION_MODES,
   EVIDENCE_OPERATION_CLASSIFICATION,
   EVIDENCE_WRITER_ANALYSIS_ENTRIES,
+  EvidenceWriterLockError,
   acquireEvidenceWriterLock,
   adapterInvocation,
   assertEvidenceOutputUnprotected,
@@ -29,6 +30,8 @@ import { fixture } from './helpers.js';
 const cli = resolve('dist/packages/cli/src/main.js');
 const writerLockPath = (root: string): string => resolve(root, '.musubix/evidence/.writer-lock.json');
 const jsonBytes = (value: unknown): string => `${JSON.stringify(value, null, 2)}\n`;
+const filesystemError = (code: string): NodeJS.ErrnoException =>
+  Object.assign(new Error(`injected ${code}`), { code });
 
 async function snapshotProject(root: string): Promise<Record<string, string>> {
   const snapshot: Record<string, string> = {};
@@ -173,6 +176,111 @@ describe('evidence writer lock integration', () => {
     expect(recovered.exitCode).toBe(0);
     expect(JSON.parse(recovered.stdout)).toEqual({ action: 'recovered', recovered: true });
     await expect(readFile(writerLockPath(root), 'utf8')).rejects.toMatchObject({ code: 'ENOENT' });
+  });
+
+  /** @id TEST-EVIDENCE-WRITER-LOCK-028
+   * @verifies REQ-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-001
+   */
+  it('TEST-EVIDENCE-WRITER-LOCK-028 renders rollback failures for JSON and human CLI callers', async () => {
+    const cliModule = await import('../packages/cli/src/main.js');
+    const evidenceCommand = cliModule.createProgram().commands.find((command) => command.name() === 'evidence');
+    const unlockCommand = evidenceCommand?.commands.find((command) => command.name() === 'unlock');
+    let help = '';
+    unlockCommand?.configureOutput({ writeOut: (text) => { help += text; } });
+    unlockCommand?.outputHelp();
+    expect(help).toContain('EVIDENCE_WRITER_LOCK_ROLLBACK_FAILED');
+    expect(help).toContain('lockRemoved');
+    const primary = new EvidenceWriterLockError(
+      'EVIDENCE_WRITER_LOCK_ACQUIRE_FAILED',
+      'acquisition failed',
+      {
+        lockPath: '/project/.musubix/evidence/.writer-lock.json',
+        cause: filesystemError('EACCES'),
+        rollbackError: new EvidenceWriterLockError(
+          'EVIDENCE_WRITER_LOCK_ROLLBACK_FAILED',
+          'rollback failed',
+          {
+            lockPath: '/project/.musubix/evidence/.writer-lock.json',
+            lockRemoved: true,
+            cause: filesystemError('EIO'),
+            guidance: ['Inspect only the exact reported path before retrying.'],
+          },
+        ),
+      },
+    );
+
+    expect(cliModule.renderEvidenceWriterLockError(primary)).toEqual({
+      json: {
+        error: {
+          code: 'EVIDENCE_WRITER_LOCK_ACQUIRE_FAILED',
+          message: 'acquisition failed',
+          lockPath: '/project/.musubix/evidence/.writer-lock.json',
+          cause: { name: 'Error', message: 'injected EACCES', code: 'EACCES' },
+          rollbackError: {
+            code: 'EVIDENCE_WRITER_LOCK_ROLLBACK_FAILED',
+            message: 'rollback failed',
+            lockPath: '/project/.musubix/evidence/.writer-lock.json',
+            lockRemoved: true,
+            cause: { name: 'Error', message: 'injected EIO', code: 'EIO' },
+            guidance: ['Inspect only the exact reported path before retrying.'],
+          },
+        },
+      },
+      human: [
+        'musubix3: acquisition failed',
+        'musubix3: EVIDENCE_WRITER_LOCK_ROLLBACK_FAILED: rollback failed (lockRemoved: true)',
+        'musubix3: Inspect only the exact reported path before retrying.',
+      ],
+    });
+
+    expect(cliModule.renderEvidenceWriterLockError(new EvidenceWriterLockError(
+      'EVIDENCE_WRITER_LOCK_ACQUIRE_FAILED',
+      'non-error cause',
+      {
+        lockPath: '/project/.musubix/evidence/.writer-lock.json',
+        cause: 'injected cause',
+      },
+    )).json.error.cause).toEqual({ message: 'injected cause' });
+  });
+
+  /** @id TEST-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-002
+   * @verifies REQ-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-001
+   */
+  it('TEST-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-002 renders recovery durability failures', async () => {
+    const cliModule = await import('../packages/cli/src/main.js');
+    const path = '/project/.musubix/evidence/.writer-lock.json';
+    const guidance = [
+      `The canonical lock path ${path} is absent now, but crash durability is unconfirmed.`,
+      `Inspect only the exact reported path ${path} before retrying.`,
+    ];
+    const error = new EvidenceWriterLockError(
+      'EVIDENCE_WRITER_LOCK_RECOVERY_DURABILITY_FAILED',
+      'recovery directory synchronization failed',
+      {
+        lockPath: path,
+        lockRemoved: true,
+        cause: filesystemError('EACCES'),
+        guidance,
+      },
+    );
+
+    expect(cliModule.renderEvidenceWriterLockError(error)).toEqual({
+      json: {
+        error: {
+          code: 'EVIDENCE_WRITER_LOCK_RECOVERY_DURABILITY_FAILED',
+          message: 'recovery directory synchronization failed',
+          lockPath: path,
+          cause: { name: 'Error', message: 'injected EACCES', code: 'EACCES' },
+          guidance,
+          lockRemoved: true,
+        },
+      },
+      human: [
+        'musubix3: recovery directory synchronization failed',
+        'musubix3: EVIDENCE_WRITER_LOCK_RECOVERY_DURABILITY_FAILED (lockRemoved: true)',
+        ...guidance.map((line) => `musubix3: ${line}`),
+      ],
+    });
   });
 
   /** @id TEST-EVIDENCE-WRITER-LOCK-020
@@ -525,7 +633,7 @@ describe('evidence writer lock integration', () => {
   });
 
   /** @id TEST-EVIDENCE-WRITER-LOCK-025
-   * @verifies REQ-EVIDENCE-WRITER-LOCK-001
+   * @verifies REQ-EVIDENCE-WRITER-LOCK-001 REQ-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-001
    */
   it('TEST-EVIDENCE-WRITER-LOCK-025 documents the Windows durability boundary', async () => {
     const [english, japanese, help] = await Promise.all([
@@ -542,6 +650,9 @@ describe('evidence writer lock integration', () => {
     expect(japanese).toContain('Windows と macOS の自動復旧は inspection-only');
     expect(help.stdout).toContain('Windows directory synchronization');
     expect(help.stdout).toContain('inspection-only');
+    expect(english).toContain('EVIDENCE_WRITER_LOCK_RECOVERY_DURABILITY_FAILED');
+    expect(japanese).toContain('EVIDENCE_WRITER_LOCK_RECOVERY_DURABILITY_FAILED');
+    expect(help.stdout).toContain('EVIDENCE_WRITER_LOCK_RECOVERY_DURABILITY_FAILED');
   });
 
   /** @id TEST-EVIDENCE-WRITER-LOCK-018

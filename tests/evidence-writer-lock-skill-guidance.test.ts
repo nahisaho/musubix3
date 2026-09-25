@@ -9,7 +9,7 @@ const skillPaths = [
 
 describe('evidence writer lock skill guidance', () => {
   /** @id TEST-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-001
-   * @verifies REQ-EVIDENCE-WRITER-LOCK-006
+   * @verifies REQ-EVIDENCE-WRITER-LOCK-006 REQ-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-001
    */
   it('TEST-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-001 documents safe recovery in every protected workflow skill', async () => {
     for (const path of skillPaths) {
@@ -34,6 +34,13 @@ describe('evidence writer lock skill guidance', () => {
       expect(skill, path).toContain('Retry only after the active owner releases the lock');
       expect(skill, path).toContain('recovery succeeds');
       expect(skill, path).toContain('reviewed manual procedure completes');
+      expect(skill, path).toContain('EVIDENCE_WRITER_LOCK_ROLLBACK_FAILED');
+      expect(skill, path).toContain('lockRemoved');
+      expect(skill, path).toContain('failed acquirer');
+      expect(skill, path).toContain('no lease');
+      expect(skill, path).toContain('automatic recovery is preferred after it exits');
+      expect(skill, path).toContain('crash durability');
+      expect(skill, path).toContain('owner metadata may be unavailable');
     }
   });
 });

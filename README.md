@@ -461,6 +461,18 @@ recovery is currently Linux-only and requires matching hostname, boot identity,
 PID namespace, and a demonstrably absent owner PID. Live, PID-reused,
 cross-host, malformed, changed, unsupported, or indeterminate locks are left
 untouched with the exact path and inspection guidance. There is no force mode.
+`EVIDENCE_WRITER_LOCK_ROLLBACK_FAILED` additionally reports `lockRemoved`.
+When false, the retained metadata can name a live failed acquirer with no lease,
+or owner metadata may be unavailable. Automatic recovery is preferred after a
+recorded owner exits; otherwise inspect the exact path and confirm no related
+acquisition is active before targeted removal of only that path. When true, the
+path is absent now but crash durability is unconfirmed, so inspect only that
+exact path before retrying. A mismatched readable owner identifies a replacement
+lock and must not be removed as failed-acquirer cleanup.
+`EVIDENCE_WRITER_LOCK_RECOVERY_DURABILITY_FAILED` reports
+`lockRemoved: true` when verified recovery unlink succeeded but strict
+containing-directory synchronization failed. The path is absent now, but crash
+durability is unconfirmed; inspect only that exact path before retrying.
 Because the required identity probes are unavailable, automatic recovery remains inspection-only on Windows and macOS.
 The canonical lock and `.writer-lock.<transactionId>.json` staging files are
 ignored and excluded from generated inputs. After confirming no related process

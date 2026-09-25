@@ -26,12 +26,16 @@ try {
   assert(!existsSync(resolve(consumer, '.musubix')));
   run(['init', '--json']);
   /** @id CODE-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-004
-   * @implements REQ-EVIDENCE-WRITER-LOCK-006
-   * @design DES-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-003
+   * @implements REQ-EVIDENCE-WRITER-LOCK-006 REQ-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-001
+   * @design DES-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-003 DES-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-003
    */
   for (const skill of ['sdd-change', 'sdd-implementation', 'sdd-quality']) {
     const path = `.github/skills/${skill}/SKILL.md`;
-    assert.equal(readFileSync(resolve(consumer, path), 'utf8'), readFileSync(resolve(root, path), 'utf8'));
+    const installed = readFileSync(resolve(consumer, path), 'utf8');
+    assert.equal(installed, readFileSync(resolve(root, path), 'utf8'));
+    assert(installed.includes('EVIDENCE_WRITER_LOCK_ROLLBACK_FAILED'));
+    assert(installed.includes('lockRemoved'));
+    assert(installed.includes('owner metadata may be unavailable'));
   }
   assert(existsSync(resolve(consumer, '.github/skills/sdd-formal-codegraph/SKILL.md')));
   assert.equal(JSON.parse(run(['status', '--json'])).initialized, true);
@@ -39,7 +43,7 @@ try {
   execFileSync(process.execPath, ['--input-type=module', '-e', "const {githubOidcAudience}=await import('musubix3/attestation'); if (!githubOidcAudience('urn:smoke','key-id','key').includes('musubix3-key-id=key')) process.exit(1);"], { cwd: consumer, stdio: 'pipe' });
   const plugin = JSON.parse(readFileSync(resolve(consumer, 'node_modules/musubix3/plugin.json'), 'utf8'));
   assert.equal(plugin.skills, '.github/skills/');
-  console.log(`Installed tarball verified: executable bin, ESM exports, init, status, assets, and hidden skills (${version}).`);
+  console.log(`Installed tarball verified: executable bin, ESM exports, init, status, assets, hidden skills, and rollback guidance (${version}).`);
 } finally {
   rmSync(work, { recursive: true, force: true });
 }

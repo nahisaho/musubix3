@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-24T11:33:17.923Z",
-  "totalRequirements": 184,
+  "generatedAt": "2026-09-25T00:38:08.143Z",
+  "totalRequirements": 186,
   "modeledRequirements": 11,
-  "modeledFraction": 0.059782608695652176,
+  "modeledFraction": 0.05913978494623656,
   "result": {
     "valid": true,
     "abstraction": "Consistency of explicit branch-scoped conditional, exact unit-normalized integer numeric, bounded temporal interval, deterministic state-transition, and controlled unconditional Boolean constraints; not implementation correctness.",
@@ -162,6 +162,8 @@
       "REQ-EVIDENCE-WRITER-LOCK-003",
       "REQ-EVIDENCE-WRITER-LOCK-004",
       "REQ-EVIDENCE-WRITER-LOCK-005",
+      "REQ-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-001",
+      "REQ-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-001",
       "REQ-EVIDENCE-WRITER-LOCK-006",
       "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-001",
       "REQ-GITHUB-ACTIONS-NODE24-RUNTIME-002",
@@ -692,6 +694,16 @@
       {
         "code": "FORMAL_UNSUPPORTED",
         "severity": "warning",
+        "message": "REQ-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-001 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-001 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
         "message": "REQ-EVIDENCE-WRITER-LOCK-006 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
       },
       {
@@ -1142,7 +1154,9 @@
     ".musubix/features/design-adr-none-exemption/requirements.md": "f7586dbbc34f8dccb06141efc277ab817b15a6ac0a9fb7ed2faff9bdab144373",
     ".musubix/features/ears-id-diagnostic-messages/requirements.md": "49afd4e574f1179a31707323fbbcfffabf1051f666ad1fcba60b39b2e7da3808",
     ".musubix/features/evidence-history-merge/requirements.md": "7fa32ee9bc9dd11e25bcdaff1959ab4d17156f9965c5904f4a0cf2283d5cd988",
-    ".musubix/features/evidence-writer-lock/requirements.md": "4bc22eb3ad47ba2c41747ce5e9e992f85ef34a79e0397d5bfcd7c8739cd13a70",
+    ".musubix/features/evidence-writer-lock/requirements.md": "42066c00726ef87b3ac7ad1777a8f66d45e64f0512065cf7bfd72aa007fad7f7",
+    ".musubix/features/evidence-writer-lock-acquisition-rollback/requirements.md": "bd16d34d6aa8b44f9203503205bcf44fac9e78f7290362408f9bd20639e69fda",
+    ".musubix/features/evidence-writer-lock-recovery-durability/requirements.md": "3d3dffe76925860758b18c5b35ee88fc86e7d8ccbac8495562692a6b8411f2c7",
     ".musubix/features/evidence-writer-lock-skill-guidance/requirements.md": "8372387ec47f8d9e4877815fe47d4a5c2b71411166fc249a4fac8131bde7732b",
     ".musubix/features/gate-command-timeout-margin/requirements.md": "44cab1571eadf8ec0d4b33993891f9caf6ef2a95379ab475550b06a1cc4a0b5f",
     ".musubix/features/github-actions-node24-runtime/requirements.md": "bd51b35f5bad232267c6535d0f84e6dfd75f988038e1c9381ee37fa9dee70b3f",

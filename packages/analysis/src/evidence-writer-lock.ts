@@ -1,12 +1,13 @@
 /** @id CODE-EVIDENCE-WRITER-LOCK-001
- * @implements REQ-EVIDENCE-WRITER-LOCK-001 REQ-EVIDENCE-WRITER-LOCK-002 REQ-EVIDENCE-WRITER-LOCK-003 REQ-EVIDENCE-WRITER-LOCK-004 REQ-EVIDENCE-WRITER-LOCK-005
- * @design DES-EVIDENCE-WRITER-LOCK-001 DES-EVIDENCE-WRITER-LOCK-002 DES-EVIDENCE-WRITER-LOCK-004
+ * @implements REQ-EVIDENCE-WRITER-LOCK-001 REQ-EVIDENCE-WRITER-LOCK-002 REQ-EVIDENCE-WRITER-LOCK-003 REQ-EVIDENCE-WRITER-LOCK-004 REQ-EVIDENCE-WRITER-LOCK-005 REQ-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-001
+ * @design DES-EVIDENCE-WRITER-LOCK-001 DES-EVIDENCE-WRITER-LOCK-002 DES-EVIDENCE-WRITER-LOCK-004 DES-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-001 DES-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-002
  */
 import { AsyncLocalStorage } from 'node:async_hooks';
 import { randomUUID } from 'node:crypto';
 import {
   closeSync,
   existsSync,
+  fstatSync,
   fsyncSync,
   linkSync,
   mkdirSync,
@@ -35,8 +36,10 @@ const STAGING_PREFIX = '.writer-lock.';
 export type EvidenceWriterLockErrorCode =
   | 'EVIDENCE_WRITER_LOCKED'
   | 'EVIDENCE_WRITER_LOCK_ACQUIRE_FAILED'
+  | 'EVIDENCE_WRITER_LOCK_ROLLBACK_FAILED'
   | 'EVIDENCE_WRITER_LOCK_RELEASE_FAILED'
   | 'EVIDENCE_WRITER_LOCK_RECOVERY_UNSAFE'
+  | 'EVIDENCE_WRITER_LOCK_RECOVERY_DURABILITY_FAILED'
   | 'EVIDENCE_WRITER_CONTEXT_LOST';
 
 export type EvidenceOperationClass = 'writer' | 'coordinated-reader' | 'exempt';
@@ -190,6 +193,8 @@ export interface EvidenceWriterLockDependencies {
   processFingerprint?: () => Promise<EvidenceWriterProcessFingerprint>;
   lockOwner?: (path: string) => Promise<EvidenceWriterLockOwner>;
   lockIdentity?: (path: string) => Promise<EvidenceWriterLockIdentity>;
+  publishedLockIdentity?: (descriptor: number) => EvidenceWriterLockIdentity;
+  rollbackUnlink?: (path: string) => Promise<void>;
   syncEvidenceDirectory?: (path: string, policy: EvidenceDirectorySyncPolicy) => Promise<void>;
   syncEvidenceDirectorySync?: (path: string, policy: EvidenceDirectorySyncPolicy) => void;
 }
@@ -232,6 +237,8 @@ interface ErrorOptions {
   owner?: EvidenceWriterLockErrorOwner;
   cause?: unknown;
   guidance?: string[];
+  rollbackError?: EvidenceWriterLockError;
+  lockRemoved?: boolean;
 }
 
 export class EvidenceWriterLockError extends Error {
@@ -239,6 +246,8 @@ export class EvidenceWriterLockError extends Error {
   readonly lockPath: string;
   readonly owner: EvidenceWriterLockErrorOwner | undefined;
   readonly guidance: string[] | undefined;
+  readonly rollbackError: EvidenceWriterLockError | undefined;
+  readonly lockRemoved: boolean | undefined;
 
   constructor(code: EvidenceWriterLockErrorCode, message: string, options: ErrorOptions) {
     super(message, options.cause === undefined ? undefined : { cause: options.cause });
@@ -247,6 +256,8 @@ export class EvidenceWriterLockError extends Error {
     this.lockPath = options.lockPath;
     this.owner = options.owner;
     this.guidance = options.guidance;
+    this.rollbackError = options.rollbackError;
+    this.lockRemoved = options.lockRemoved;
   }
 }
 
@@ -623,13 +634,142 @@ function canonicalizeRootForAcquisition(
   };
 }
 
-async function removeOwnPublishedLock(path: string, transactionId: string): Promise<void> {
-  try {
-    const owner = await readOwner(path);
-    if (owner.transactionId === transactionId) await unlink(path);
-  } catch (cause) {
-    if (errno(cause) !== 'ENOENT') throw cause;
+type RollbackLockClassification = 'own' | 'replacement' | 'unknown';
+
+function rollbackGuidance(
+  path: string,
+  lockRemoved: boolean,
+  classification: RollbackLockClassification,
+): string[] {
+  if (lockRemoved) {
+    return [
+      `Acquisition rollback unlinked ${path}, but crash durability is unconfirmed.`,
+      `Inspect only the exact reported path ${path} before retrying.`,
+    ];
   }
+  if (classification === 'own') {
+    return [
+      `Acquisition rollback could not prove that the lock is absent at ${path}.`,
+      'The recorded owner may be a live failed acquirer with no lease and will not release the retained lock.',
+      `Automatic recovery is preferred after it exits; otherwise confirm no related acquisition is active before targeted manual removal of only the exact reported path ${path}.`,
+    ];
+  }
+  if (classification === 'replacement') {
+    return [
+      `Acquisition rollback observed a replacement lock at ${path}.`,
+      'The replacement lock must not be removed as failed-acquirer cleanup.',
+      'Wait for its owner to release it or follow the normal reviewed recovery procedure.',
+    ];
+  }
+  return [
+    `Acquisition rollback could not prove that the lock is absent at ${path}.`,
+    'The owner metadata may be unavailable; inspect the exact reported path before deciding whether recovery is safe.',
+    `Confirm no related acquisition is active before targeted manual removal of only the exact reported path ${path}.`,
+  ];
+}
+
+function rollbackError(
+  path: string,
+  lockRemoved: boolean,
+  cause: unknown,
+  classification: RollbackLockClassification,
+  owner?: EvidenceWriterLockOwner,
+): EvidenceWriterLockError {
+  return new EvidenceWriterLockError(
+    'EVIDENCE_WRITER_LOCK_ROLLBACK_FAILED',
+    `Failed to roll back evidence writer lock acquisition at ${path}.`,
+    {
+      lockPath: path,
+      lockRemoved,
+      cause,
+      guidance: rollbackGuidance(path, lockRemoved, classification),
+      ...(owner === undefined ? {} : { owner }),
+    },
+  );
+}
+
+/** @id CODE-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-001
+ * @implements REQ-EVIDENCE-WRITER-LOCK-001 REQ-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-001
+ * @design DES-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-001 DES-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-002
+ */
+async function rollbackPublishedLock(
+  path: string,
+  directory: string,
+  expectedCanonicalRoot: string,
+  expectedTransactionId: string,
+  publishedIdentity: EvidenceWriterLockIdentity | undefined,
+  dependencies: EvidenceWriterLockDependencies,
+): Promise<{ completed: true } | { completed: false; error: EvidenceWriterLockError }> {
+  if (publishedIdentity === undefined) {
+    let owner: EvidenceWriterLockOwner | undefined;
+    try {
+      owner = await (dependencies.lockOwner ?? readOwner)(path);
+    } catch {
+      owner = undefined;
+    }
+    const classification = owner === undefined
+      ? 'unknown'
+      : owner.canonicalRoot === expectedCanonicalRoot
+        && owner.transactionId === expectedTransactionId
+        ? 'own'
+        : 'replacement';
+    return {
+      completed: false,
+      error: rollbackError(
+        path,
+        false,
+        new Error('Published lock identity was not captured.'),
+        classification,
+        owner,
+      ),
+    };
+  }
+
+  let observation: { owner: EvidenceWriterLockOwner; identity: EvidenceWriterLockIdentity };
+  try {
+    observation = await observeLock(path, dependencies);
+  } catch (cause) {
+    if (errno(cause) === 'ENOENT') return { completed: true };
+    return { completed: false, error: rollbackError(path, false, cause, 'unknown') };
+  }
+
+  const { owner, identity } = observation;
+  if (
+    owner.canonicalRoot !== expectedCanonicalRoot
+    || owner.transactionId !== expectedTransactionId
+    || identity.dev !== publishedIdentity.dev
+    || identity.ino !== publishedIdentity.ino
+  ) {
+    return {
+      completed: false,
+      error: rollbackError(
+        path,
+        false,
+        new Error('Published lock identity changed before acquisition rollback.'),
+        'replacement',
+        owner,
+      ),
+    };
+  }
+
+  try {
+    await (dependencies.rollbackUnlink ?? unlink)(path);
+  } catch (cause) {
+    if (errno(cause) === 'ENOENT') return { completed: true };
+    return { completed: false, error: rollbackError(path, false, cause, 'own', owner) };
+  }
+
+  try {
+    await syncDirectory(
+      directory,
+      (dependencies.platform ?? (() => process.platform))(),
+      'allow-unsupported',
+      dependencies.syncEvidenceDirectory,
+    );
+  } catch (cause) {
+    return { completed: false, error: rollbackError(path, true, cause, 'own', owner) };
+  }
+  return { completed: true };
 }
 
 async function removeCreatedDirectoryIfEmpty(path: string, existed: boolean): Promise<void> {
@@ -662,6 +802,7 @@ export async function acquireEvidenceWriterLock(
   let owner: EvidenceWriterLockOwner | undefined;
   let publishedIdentity: EvidenceWriterLockIdentity | undefined;
   let published = false;
+  let publicationRemoved = false;
 
   try {
     ({ canonicalRoot, rootExisted } = canonicalizeRootForAcquisition(root));
@@ -690,18 +831,23 @@ export async function acquireEvidenceWriterLock(
     try {
       writeFileSync(staging, `${JSON.stringify(owner, null, 2)}\n`, 'utf8');
       fsyncSync(staging);
+
+      try {
+        linkSync(stagingPath, canonicalLockPath);
+        published = true;
+      } catch (cause) {
+        if (errno(cause) === 'EEXIST') {
+          throw lockedError(canonicalLockPath, await readContendingOwner(canonicalLockPath));
+        }
+        throw cause;
+      }
+      publishedIdentity = (dependencies.publishedLockIdentity
+        ?? ((descriptor: number) => {
+          const identity = fstatSync(descriptor);
+          return { dev: identity.dev, ino: identity.ino };
+        }))(staging);
     } finally {
       closeSync(staging);
-    }
-
-    try {
-      linkSync(stagingPath, canonicalLockPath);
-      published = true;
-    } catch (cause) {
-      if (errno(cause) === 'EEXIST') {
-        throw lockedError(canonicalLockPath, await readContendingOwner(canonicalLockPath));
-      }
-      throw cause;
     }
     syncDirectorySync(
       directory,
@@ -709,20 +855,29 @@ export async function acquireEvidenceWriterLock(
       'allow-unsupported',
       dependencies.syncEvidenceDirectorySync,
     );
-    publishedIdentity = await (dependencies.lockIdentity ?? defaultLockIdentity)(canonicalLockPath);
   } catch (cause) {
+    let acquisitionRollbackError: EvidenceWriterLockError | undefined;
     if (published) {
-      try {
-        await removeOwnPublishedLock(canonicalLockPath, transactionId);
-      } catch {
-        // The original acquisition failure remains primary.
-      }
+      const rollback = await rollbackPublishedLock(
+        canonicalLockPath,
+        directory,
+        canonicalRoot,
+        transactionId,
+        publishedIdentity,
+        dependencies,
+      );
+      publicationRemoved = rollback.completed;
+      if (!rollback.completed) acquisitionRollbackError = rollback.error;
     }
-    if (cause instanceof EvidenceWriterLockError) throw cause;
+    if (!published && cause instanceof EvidenceWriterLockError) throw cause;
     throw new EvidenceWriterLockError(
       'EVIDENCE_WRITER_LOCK_ACQUIRE_FAILED',
       `Failed to acquire evidence writer lock at ${canonicalLockPath}.`,
-      { lockPath: canonicalLockPath, cause },
+      {
+        lockPath: canonicalLockPath,
+        cause,
+        ...(acquisitionRollbackError === undefined ? {} : { rollbackError: acquisitionRollbackError }),
+      },
     );
   } finally {
     if (stagingPath !== '') {
@@ -738,7 +893,7 @@ export async function acquireEvidenceWriterLock(
         }
       }
     }
-    if (!published) {
+    if (!published || publicationRemoved) {
       try {
         await removeCreatedDirectoryIfEmpty(directory, evidenceDirectoryExisted);
         await removeCreatedDirectoryIfEmpty(musubixDirectory, musubixDirectoryExisted);
@@ -1025,9 +1180,35 @@ function recoveryUnsafe(
   );
 }
 
+/** @id CODE-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-001
+ * @implements REQ-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-001
+ * @design DES-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-001
+ */
+function recoveryDurabilityFailed(
+  path: string,
+  owner: EvidenceWriterLockOwner,
+  cause: unknown,
+): EvidenceWriterLockError {
+  const guidance = [
+    `The canonical lock path ${path} is absent now, but crash durability is unconfirmed.`,
+    `Inspect only the exact reported path ${path} before retrying.`,
+  ];
+  return new EvidenceWriterLockError(
+    'EVIDENCE_WRITER_LOCK_RECOVERY_DURABILITY_FAILED',
+    `Recovered evidence writer lock at ${path}, but the containing directory could not be synchronized. ${guidance.join(' ')}`,
+    {
+      lockPath: path,
+      owner,
+      cause,
+      lockRemoved: true,
+      guidance,
+    },
+  );
+}
+
 /** @id CODE-EVIDENCE-WRITER-LOCK-006
- * @implements REQ-EVIDENCE-WRITER-LOCK-004 REQ-EVIDENCE-WRITER-LOCK-005
- * @design DES-EVIDENCE-WRITER-LOCK-004
+ * @implements REQ-EVIDENCE-WRITER-LOCK-004 REQ-EVIDENCE-WRITER-LOCK-005 REQ-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-001
+ * @design DES-EVIDENCE-WRITER-LOCK-004 DES-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-001
  */
 export async function recoverEvidenceWriterLock(
   root: string,
@@ -1098,9 +1279,13 @@ export async function recoverEvidenceWriterLock(
 
   try {
     await unlink(path);
-    await syncRecoveredEvidenceDirectoryStrict(canonicalRoot, dependencies);
   } catch (cause) {
     throw recoveryUnsafe(path, owner, 'the verified lock could not be removed.', cause);
+  }
+  try {
+    await syncRecoveredEvidenceDirectoryStrict(canonicalRoot, dependencies);
+  } catch (cause) {
+    throw recoveryDurabilityFailed(path, owner, cause);
   }
   return { action: 'recovered', recovered: true };
 }
