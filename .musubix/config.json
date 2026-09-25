@@ -197,6 +197,18 @@
       "timeoutMs": 120000
     },
     {
+      "name": "transaction-directory-sync-policy-tests",
+      "command": "npx",
+      "args": [
+        "vitest",
+        "run",
+        "tests/transaction-directory-sync-policy.test.ts"
+      ],
+      "adapter": "vitest",
+      "required": false,
+      "timeoutMs": 120000
+    },
+    {
       "name": "change-record-fail-fast-tests",
       "command": "npx",
       "args": [

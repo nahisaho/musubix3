@@ -396,6 +396,15 @@ Windows の directory synchronization が EPERM、EINVAL、ENOTSUP
 capabilityとして扱います。file同期、publication、metadata、unlink、
 open/close、その他のerror、およびWindows以外のplatformはfail-closedの
 ままです。
+Quality refreshとevidence mergeもtransaction directory同期に同じ境界を
+使用します。file handleの同期は常にstrictで、既にopen済みのdirectory
+handleの同期がWindowsでEPERM、EINVAL、ENOTSUPを返した場合だけ許容します。
+directoryのopen/close失敗、WindowsのEISDIR/EACCES、Linux/macOSの全
+directory-sync失敗はtransactionを停止し、recovery stateを保持または報告
+します。network/shared filesystemや権限制約のあるstorageでは、報告された
+filesystem診断を保持し、recovery前にdirectory synchronizationをサポート
+するstorageとpermissionへprojectを移してください。recoveryは自動retry
+しません。
 
 status、approval prepare/validate、trace/graph inspection、knowledge query、
 TDD validate、attestation payload/verify、merge dry-runなどのcoordinated

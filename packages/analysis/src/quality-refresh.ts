@@ -3,6 +3,10 @@ import { dirname, resolve } from 'node:path';
 import { digest, exists, safePath } from './files.js';
 import { evidenceJournals } from './evidence-merge-guard.js';
 import { withEvidenceWriterLock } from './evidence-writer-lock.js';
+import {
+  synchronizeDirectory,
+  type DirectoryOpen,
+} from './filesystem-durability.js';
 import { validateEvidenceOrderLog, type EvidenceOrderLog } from './order.js';
 import {
   qualityIdentity,
@@ -41,6 +45,10 @@ export interface QualityRefreshRecoveryReport {
   action: 'nothing-to-recover' | 'rolled-back' | 'rolled-forward';
 }
 
+export interface QualityRefreshDirectorySyncDependencies {
+  syncDirectory?: (path: string) => Promise<void>;
+}
+
 function json(value: unknown): string {
   return `${JSON.stringify(value, null, 2)}\n`;
 }
@@ -54,19 +62,16 @@ async function fsyncFile(path: string): Promise<void> {
   }
 }
 
+/** @id CODE-TRANSACTION-DIRECTORY-SYNC-POLICY-002
+ * @implements REQ-TRANSACTION-DIRECTORY-SYNC-POLICY-001
+ * @design DES-TRANSACTION-DIRECTORY-SYNC-POLICY-002 DES-TRANSACTION-DIRECTORY-SYNC-POLICY-006
+ */
 export async function fsyncQualityRefreshDirectory(
   path: string,
-  openDirectory: typeof open = open,
+  openDirectory?: DirectoryOpen,
+  platform?: () => NodeJS.Platform,
 ): Promise<void> {
-  let handle: Awaited<ReturnType<typeof open>> | undefined;
-  try {
-    handle = await openDirectory(path, 'r');
-    await handle.sync();
-  } catch (cause) {
-    if (!['EISDIR', 'EPERM', 'EACCES', 'EINVAL'].includes((cause as NodeJS.ErrnoException).code ?? '')) throw cause;
-  } finally {
-    await handle?.close();
-  }
+  await synchronizeDirectory(path, 'allow-unsupported', openDirectory, platform);
 }
 
 async function removeIfPresent(path: string): Promise<void> {
@@ -83,7 +88,11 @@ async function originalBytes(root: string, path: TargetPath): Promise<{ existed:
   }
 }
 
-async function restoreJournal(root: string, journal: QualityRefreshJournal): Promise<void> {
+async function restoreJournal(
+  root: string,
+  journal: QualityRefreshJournal,
+  syncDirectory: (path: string) => Promise<void> = fsyncQualityRefreshDirectory,
+): Promise<void> {
   const evidenceDirectory = await safePath(root, EVIDENCE_DIR);
   for (const target of journal.targets) {
     const absolute = await safePath(root, target.path);
@@ -97,9 +106,9 @@ async function restoreJournal(root: string, journal: QualityRefreshJournal): Pro
     }
     await removeIfPresent(await safePath(root, target.temporaryPath));
   }
-  await fsyncQualityRefreshDirectory(evidenceDirectory);
+  await syncDirectory(evidenceDirectory);
   await removeIfPresent(await safePath(root, JOURNAL_PATH));
-  await fsyncQualityRefreshDirectory(evidenceDirectory);
+  await syncDirectory(evidenceDirectory);
 }
 
 function validateCandidate(order: EvidenceOrderLog, changes: ChangeEvidence): void {
@@ -163,16 +172,48 @@ function unsafe(reason: string): Error {
   return new Error(`CHANGE_QUALITY_REFRESH_RECOVERY_UNSAFE: ${reason}`);
 }
 
+function unsafeRecovery(reason: string, inventory: string[]): Error {
+  return new Error(
+    `CHANGE_QUALITY_REFRESH_RECOVERY_UNSAFE: ${reason} Journal: ${JOURNAL_PATH}. `
+    + `Owned paths: ${inventory.length ? inventory.join(', ') : 'none identified'}. `
+    + 'Manual remediation: back up .musubix/evidence; restore or verify order.json and changes.json '
+    + 'from a trusted source; quarantine the listed Quality-refresh paths; rerun structural validation.',
+  );
+}
+
+function journalInventory(journal: QualityRefreshJournal, staging: string[] = []): string[] {
+  return [
+    JOURNAL_PATH,
+    ...staging.map((entry) => `${EVIDENCE_DIR}/${entry}`),
+    ...journal.targets.map((target) => target.temporaryPath),
+  ];
+}
+
+function recoveryDirectorySync(
+  syncDirectory: (path: string) => Promise<void>,
+  inventory: string[],
+): (path: string) => Promise<void> {
+  return async (path) => {
+    try {
+      await syncDirectory(path);
+    } catch (cause) {
+      throw unsafeRecovery(cause instanceof Error ? cause.message : String(cause), inventory);
+    }
+  };
+}
+
 /** @id CODE-CHANGE-QUALITY-REFRESH-002
- * @implements REQ-CHANGE-QUALITY-REFRESH-001 REQ-CHANGE-QUALITY-REFRESH-003
- * @design DES-CHANGE-QUALITY-REFRESH-002
+ * @implements REQ-CHANGE-QUALITY-REFRESH-001 REQ-CHANGE-QUALITY-REFRESH-003 REQ-TRANSACTION-DIRECTORY-SYNC-POLICY-001
+ * @design DES-CHANGE-QUALITY-REFRESH-002 DES-TRANSACTION-DIRECTORY-SYNC-POLICY-002 DES-TRANSACTION-DIRECTORY-SYNC-POLICY-003
  */
 export async function commitQualityRefresh(
   root: string,
   order: EvidenceOrderLog,
   changes: ChangeEvidence,
   faultAt?: string,
+  dependencies: QualityRefreshDirectorySyncDependencies = {},
 ): Promise<void> {
+  const syncDirectory = dependencies.syncDirectory ?? fsyncQualityRefreshDirectory;
   const journals = await evidenceJournals(root);
   if (journals.merge) throw new Error('EVIDENCE_MERGE_RECOVERY_REQUIRED: run evidence merge --recover.');
   if (journals.qualityRefresh) {
@@ -224,8 +265,8 @@ export async function commitQualityRefresh(
     }
     throw cause;
   }
-  await fsyncQualityRefreshDirectory(dirname(journalAbsolute));
   try {
+    await syncDirectory(dirname(journalAbsolute));
     for (let index = 0; index < targets.length; index++) {
       if (faultAt === `temporary:${index}`) throw new Error(`Injected Quality refresh failure at temporary:${index}.`);
       const target = targets[index]!;
@@ -238,14 +279,14 @@ export async function commitQualityRefresh(
       const target = targets[index]!;
       await rename(await safePath(root, target.temporaryPath), await safePath(root, target.path));
     }
-    await fsyncQualityRefreshDirectory(dirname(journalAbsolute));
+    await syncDirectory(dirname(journalAbsolute));
     journal.state = 'committed';
     const commitStaging = await safePath(root, `${STAGING_PREFIX}${transactionId}.commit.json`);
     await writeFile(commitStaging, json(journal), { flag: 'wx' });
     await fsyncFile(commitStaging);
     if (faultAt === 'commit-marker') throw new Error('Injected Quality refresh failure at commit-marker.');
     await rename(commitStaging, journalAbsolute);
-    await fsyncQualityRefreshDirectory(dirname(journalAbsolute));
+    await syncDirectory(dirname(journalAbsolute));
     if (faultAt === 'cleanup') {
       throw new Error('CHANGE_QUALITY_REFRESH_RECOVERY_REQUIRED: injected failure at cleanup.');
     }
@@ -253,7 +294,10 @@ export async function commitQualityRefresh(
   } catch (cause) {
     const injected = cause instanceof Error && cause.message.startsWith('Injected Quality refresh failure');
     if (injected && journal.state === 'prepared') {
-      await restoreJournal(root, journal);
+      await restoreJournal(root, journal, recoveryDirectorySync(
+        syncDirectory,
+        journalInventory(journal),
+      ));
       throw cause;
     }
     throw new Error(`CHANGE_QUALITY_REFRESH_RECOVERY_REQUIRED: ${
@@ -263,11 +307,15 @@ export async function commitQualityRefresh(
 }
 
 /** @id CODE-CHANGE-QUALITY-REFRESH-003
- * @implements REQ-CHANGE-QUALITY-REFRESH-003
- * @design DES-CHANGE-QUALITY-REFRESH-002
+ * @implements REQ-CHANGE-QUALITY-REFRESH-003 REQ-TRANSACTION-DIRECTORY-SYNC-POLICY-001
+ * @design DES-CHANGE-QUALITY-REFRESH-002 DES-TRANSACTION-DIRECTORY-SYNC-POLICY-003
  */
-export async function recoverQualityRefresh(root: string): Promise<QualityRefreshRecoveryReport> {
+export async function recoverQualityRefresh(
+  root: string,
+  dependencies: QualityRefreshDirectorySyncDependencies = {},
+): Promise<QualityRefreshRecoveryReport> {
   return withEvidenceWriterLock(root, 'change quality-recover', async () => {
+    const syncDirectory = dependencies.syncDirectory ?? fsyncQualityRefreshDirectory;
     const journals = await evidenceJournals(root);
     if (journals.merge && journals.qualityRefresh) throw unsafe('merge and Quality-refresh journals coexist.');
     if (journals.merge) throw new Error('EVIDENCE_MERGE_RECOVERY_REQUIRED: run evidence merge --recover.');
@@ -292,8 +340,10 @@ export async function recoverQualityRefresh(root: string): Promise<QualityRefres
     } catch (cause) {
       throw unsafe(cause instanceof Error ? cause.message : String(cause));
     }
+    const inventory = journalInventory(journal, staging);
+    const syncRecoveryDirectory = recoveryDirectorySync(syncDirectory, inventory);
     if (journal.state === 'prepared') {
-      await restoreJournal(root, journal);
+      await restoreJournal(root, journal, syncRecoveryDirectory);
       for (const entry of staging) await removeIfPresent(resolve(evidenceDir, entry));
       return { recovered: true, action: 'rolled-back' };
     }
@@ -326,10 +376,10 @@ export async function recoverQualityRefresh(root: string): Promise<QualityRefres
       if (cause instanceof Error && cause.message.startsWith('CHANGE_QUALITY_REFRESH_RECOVERY_UNSAFE')) throw cause;
       throw unsafe(cause instanceof Error ? cause.message : String(cause));
     }
-    await fsyncQualityRefreshDirectory(evidenceDir);
+    await syncRecoveryDirectory(evidenceDir);
     await removeIfPresent(journalAbsolute);
     for (const entry of staging) await removeIfPresent(resolve(evidenceDir, entry));
-    await fsyncQualityRefreshDirectory(evidenceDir);
+    await syncRecoveryDirectory(evidenceDir);
     return { recovered: true, action: 'rolled-forward' };
   });
 }

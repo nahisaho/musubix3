@@ -40,6 +40,7 @@
     ".musubix/decisions/ADR-0036.md": "c4ed0289564d2b19e3c28e06e4784d792c694ff2be59d97c8f24431157d3faa3",
     ".musubix/decisions/ADR-0037.md": "b64626a843de7f90ec4540c72fc2eab5daeb5a7d3854e8de2e80f1f44b88a5e4",
     ".musubix/decisions/ADR-0038.md": "7b486c1bf146f98d5dede59c6e7b98065fe3f1c3825fe9b94cfe2e4098378014",
+    ".musubix/decisions/ADR-0039.md": "40914b091703d1fa3c9750e19ce276d15813e60452ac8b974980ec794c8249fb",
     ".musubix/features/adapter-pattern-recognition/design.md": "a8e0c4a11f626cb4a41c9b5b53359c072ec0c3161f704791f42ba8af38124a70",
     ".musubix/features/adapter-pattern-recognition/requirements.md": "5731561a0a04982b8a5c305bdeeae6084bcf0ee8846f295eaaaabc823d1f9793",
     ".musubix/features/approval-domain-scoping/design.md": "e8731f1e3094aa22192ae2ae5986fb4dc9a7698f7cfe66961e1342f6e0743bd9",
@@ -112,6 +113,8 @@
     ".musubix/features/tdd-red-collection-guidance/requirements.md": "a4a49066c5146a4b8fc3ce8603a56c19721cb26573906d95de0bf150ed473fb7",
     ".musubix/features/tdd-superseded-cycle-scoping/design.md": "45f69705b11c56b5c7e2e243534d3918b7c46723d3f4bf7ee342df19187ee2cd",
     ".musubix/features/tdd-superseded-cycle-scoping/requirements.md": "b02f10b42474ac383e278c6fa38291ba965210213d45bc759ff7db67f368e80a",
+    ".musubix/features/transaction-directory-sync-policy/design.md": "f6c10c259e27358aeacc46b10d7ba468ea7eb28cd327083d1438b6aebee07e07",
+    ".musubix/features/transaction-directory-sync-policy/requirements.md": "298b5ab7aa7a6664604fe31eaf7182c6eb49f698057adaaf76618c6067ce4f3e",
     ".musubix/features/upgrade-workflow/design.md": "f9cd55dc17bb2fae8886288f4fa21f8346f2c1818d0d6e0e8247a30b721aa530",
     ".musubix/features/upgrade-workflow/requirements.md": "0b299f538f54ff56a9156a47ace1ed652c9e73bdc3d531604994edbdb0435dfd",
     ".musubix/features/workflow-evidence-waiver/design.md": "b947a24cffdf47f3de6ab639d9459ec7ac1f5ec2b37d6e7eaa45a6e0e7d91cff",
@@ -123,7 +126,7 @@
     ".musubix/features/workflow-waiver-bulk-recording/design.md": "c956f35169212cedc0fc66a11902200c7dda10230fc326075644d908f29580ae",
     ".musubix/features/workflow-waiver-bulk-recording/requirements.md": "361cfba519d4ab189a2091cf7b99133b9c005f69fb28aa2d77bba17bd7ee7b33"
   },
-  "artifactSha256": "b576c0705d6a150e46d84258fb3d9c1cabcfbfb6206da7b30ced27c20528240f",
+  "artifactSha256": "57fb930dd2dc65bdf325a7eef475371109b79d3f98bcad176036199881a0b145",
   "approver": "nahisaho",
-  "approvedAt": "2026-09-24T23:55:11.333Z"
+  "approvedAt": "2026-09-25T05:31:24.279Z"
 }

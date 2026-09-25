@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-25T00:38:08.143Z",
-  "totalRequirements": 186,
+  "generatedAt": "2026-09-25T06:30:52.911Z",
+  "totalRequirements": 187,
   "modeledRequirements": 11,
-  "modeledFraction": 0.05913978494623656,
+  "modeledFraction": 0.058823529411764705,
   "result": {
     "valid": true,
     "abstraction": "Consistency of explicit branch-scoped conditional, exact unit-normalized integer numeric, bounded temporal interval, deterministic state-transition, and controlled unconditional Boolean constraints; not implementation correctness.",
@@ -225,6 +225,7 @@
       "REQ-TDD-GREEN-REQUIREMENT-SCOPING-001",
       "REQ-TDD-GREEN-REQUIREMENT-SCOPING-002",
       "REQ-TDD-RED-COLLECTION-GUIDANCE-001",
+      "REQ-TRANSACTION-DIRECTORY-SYNC-POLICY-001",
       "REQ-UPGRADE-WORKFLOW-001",
       "REQ-WORKFLOW-EVIDENCE-WAIVER-001",
       "REQ-WORKFLOW-EVIDENCE-WAIVER-002",
@@ -1009,6 +1010,11 @@
       {
         "code": "FORMAL_UNSUPPORTED",
         "severity": "warning",
+        "message": "REQ-TRANSACTION-DIRECTORY-SYNC-POLICY-001 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
         "message": "REQ-UPGRADE-WORKFLOW-001 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
       },
       {
@@ -1175,6 +1181,7 @@
     ".musubix/features/tdd-green-requirement-scoping/requirements.md": "456edab50870ba2fc3297eccee1c4dc114a8c8400354cb3e4b00769bb8b29ba1",
     ".musubix/features/tdd-red-collection-guidance/requirements.md": "a4a49066c5146a4b8fc3ce8603a56c19721cb26573906d95de0bf150ed473fb7",
     ".musubix/features/tdd-superseded-cycle-scoping/requirements.md": "b02f10b42474ac383e278c6fa38291ba965210213d45bc759ff7db67f368e80a",
+    ".musubix/features/transaction-directory-sync-policy/requirements.md": "298b5ab7aa7a6664604fe31eaf7182c6eb49f698057adaaf76618c6067ce4f3e",
     ".musubix/features/upgrade-workflow/requirements.md": "0b299f538f54ff56a9156a47ace1ed652c9e73bdc3d531604994edbdb0435dfd",
     ".musubix/features/workflow-evidence-waiver/requirements.md": "b8cf35b2e2d99194203ea46fa85a92939b9c4234c60698ccb141f7e906ce457d",
     ".musubix/features/workflow-multi-session-verification/requirements.md": "2ae290a162d6318ff2567a0fe6f44aa38f40e38b0b9344fd1c1c36bfc3937aa1",

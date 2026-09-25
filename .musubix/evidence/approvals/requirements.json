@@ -39,13 +39,14 @@
     ".musubix/features/tdd-green-requirement-scoping/requirements.md": "456edab50870ba2fc3297eccee1c4dc114a8c8400354cb3e4b00769bb8b29ba1",
     ".musubix/features/tdd-red-collection-guidance/requirements.md": "a4a49066c5146a4b8fc3ce8603a56c19721cb26573906d95de0bf150ed473fb7",
     ".musubix/features/tdd-superseded-cycle-scoping/requirements.md": "b02f10b42474ac383e278c6fa38291ba965210213d45bc759ff7db67f368e80a",
+    ".musubix/features/transaction-directory-sync-policy/requirements.md": "298b5ab7aa7a6664604fe31eaf7182c6eb49f698057adaaf76618c6067ce4f3e",
     ".musubix/features/upgrade-workflow/requirements.md": "0b299f538f54ff56a9156a47ace1ed652c9e73bdc3d531604994edbdb0435dfd",
     ".musubix/features/workflow-evidence-waiver/requirements.md": "b8cf35b2e2d99194203ea46fa85a92939b9c4234c60698ccb141f7e906ce457d",
     ".musubix/features/workflow-multi-session-verification/requirements.md": "2ae290a162d6318ff2567a0fe6f44aa38f40e38b0b9344fd1c1c36bfc3937aa1",
     ".musubix/features/workflow-session-shutdown/requirements.md": "c00d313bbb445e0951fad5d2cd70f22341a19ce357659cd03e80f3049ef8d873",
     ".musubix/features/workflow-waiver-bulk-recording/requirements.md": "361cfba519d4ab189a2091cf7b99133b9c005f69fb28aa2d77bba17bd7ee7b33"
   },
-  "artifactSha256": "73c76129ae2965f9abb58347affcfa2f6f93c307e83e6ee6ef55af13362e1f53",
+  "artifactSha256": "4b0e0d093b8c67baedcc9d503dd98f64524ac3bebb6c60bc6197b983ce088eb5",
   "approver": "nahisaho",
-  "approvedAt": "2026-09-24T22:42:34.957Z"
+  "approvedAt": "2026-09-25T03:51:24.747Z"
 }

@@ -39,29 +39,69 @@ it('TEST-WINDOWS-CORE-PORTABILITY-002 shares native root identity and effective 
 });
 
 /** @id TEST-WINDOWS-CORE-PORTABILITY-003
- * @verifies REQ-CHANGE-QUALITY-REFRESH-001
+ * @verifies REQ-CHANGE-QUALITY-REFRESH-001 REQ-TRANSACTION-DIRECTORY-SYNC-POLICY-001
  */
-it('TEST-WINDOWS-CORE-PORTABILITY-003 preserves unsupported directory-open handling in Quality refresh', async () => {
+it('TEST-WINDOWS-CORE-PORTABILITY-003 preserves unsupported directory-sync handling in Quality refresh', async () => {
   const syncDirectory = (qualityRefresh as Record<string, unknown>).fsyncQualityRefreshDirectory;
   expect(typeof syncDirectory).toBe('function');
   await expect((syncDirectory as (
     path: string,
-    openDirectory: (path: string, flags: string) => Promise<never>,
-  ) => Promise<void>)('.', async () => {
-    throw Object.assign(new Error('unsupported'), { code: 'EPERM' });
-  })).resolves.toBeUndefined();
+    openDirectory: (path: string, flags: string) => Promise<{
+      sync(): Promise<void>;
+      close(): Promise<void>;
+    }>,
+    platform: () => NodeJS.Platform,
+  ) => Promise<void>)('.', async () => ({
+    sync: async () => {
+      throw Object.assign(new Error('unsupported'), { code: 'EPERM' });
+    },
+    close: async () => {},
+  }), () => 'win32')).resolves.toBeUndefined();
+  await expect((syncDirectory as (
+    path: string,
+    openDirectory: (path: string, flags: string) => Promise<{
+      sync(): Promise<void>;
+      close(): Promise<void>;
+    }>,
+    platform: () => NodeJS.Platform,
+  ) => Promise<void>)('.', async () => ({
+    sync: async () => {
+      throw Object.assign(new Error('actionable'), { code: 'EPERM' });
+    },
+    close: async () => {},
+  }), () => 'linux')).rejects.toMatchObject({ code: 'EPERM' });
 });
 
 /** @id TEST-WINDOWS-CORE-PORTABILITY-004
- * @verifies REQ-EVIDENCE-HISTORY-MERGE-004
+ * @verifies REQ-EVIDENCE-HISTORY-MERGE-004 REQ-TRANSACTION-DIRECTORY-SYNC-POLICY-001
  */
-it('TEST-WINDOWS-CORE-PORTABILITY-004 preserves unsupported directory-open handling in evidence merge', async () => {
+it('TEST-WINDOWS-CORE-PORTABILITY-004 preserves unsupported directory-sync handling in evidence merge', async () => {
   const syncDirectory = (evidenceMerge as Record<string, unknown>).fsyncEvidenceMergeDirectory;
   expect(typeof syncDirectory).toBe('function');
   await expect((syncDirectory as (
     path: string,
-    openDirectory: (path: string, flags: string) => Promise<never>,
-  ) => Promise<void>)('.', async () => {
-    throw Object.assign(new Error('unsupported'), { code: 'EPERM' });
-  })).resolves.toBeUndefined();
+    openDirectory: (path: string, flags: string) => Promise<{
+      sync(): Promise<void>;
+      close(): Promise<void>;
+    }>,
+    platform: () => NodeJS.Platform,
+  ) => Promise<void>)('.', async () => ({
+    sync: async () => {
+      throw Object.assign(new Error('unsupported'), { code: 'EPERM' });
+    },
+    close: async () => {},
+  }), () => 'win32')).resolves.toBeUndefined();
+  await expect((syncDirectory as (
+    path: string,
+    openDirectory: (path: string, flags: string) => Promise<{
+      sync(): Promise<void>;
+      close(): Promise<void>;
+    }>,
+    platform: () => NodeJS.Platform,
+  ) => Promise<void>)('.', async () => ({
+    sync: async () => {
+      throw Object.assign(new Error('actionable'), { code: 'EPERM' });
+    },
+    close: async () => {},
+  }), () => 'linux')).rejects.toMatchObject({ code: 'EPERM' });
 });

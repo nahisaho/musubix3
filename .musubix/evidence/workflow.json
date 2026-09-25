@@ -840,6 +840,71 @@
       "phase": "complete",
       "status": "completed",
       "recordedAt": "2026-09-25T00:45:35.627Z"
+    },
+    {
+      "skill": "sdd-design",
+      "version": "0.1.8",
+      "provenance": "self-reported",
+      "phase": "complete",
+      "status": "completed",
+      "recordedAt": "2026-09-25T02:14:09.774Z"
+    },
+    {
+      "skill": "sdd-implementation",
+      "version": "0.1.8",
+      "provenance": "self-reported",
+      "phase": "complete",
+      "status": "completed",
+      "recordedAt": "2026-09-25T02:28:09.668Z"
+    },
+    {
+      "skill": "sdd-requirements",
+      "version": "0.1.8",
+      "provenance": "self-reported",
+      "phase": "complete",
+      "status": "completed",
+      "recordedAt": "2026-09-25T03:23:22.460Z"
+    },
+    {
+      "skill": "sdd-design",
+      "version": "0.1.8",
+      "provenance": "self-reported",
+      "phase": "complete",
+      "status": "completed",
+      "recordedAt": "2026-09-25T03:53:59.298Z"
+    },
+    {
+      "skill": "sdd-implementation",
+      "version": "0.1.8",
+      "provenance": "self-reported",
+      "phase": "complete",
+      "status": "completed",
+      "recordedAt": "2026-09-25T04:02:31.825Z"
+    },
+    {
+      "skill": "sdd-quality",
+      "version": "0.1.8",
+      "provenance": "self-reported",
+      "phase": "complete",
+      "status": "completed",
+      "recordedAt": "2026-09-25T05:50:55.325Z"
+    },
+    {
+      "skill": "sdd-change",
+      "version": "0.1.8",
+      "provenance": "self-reported",
+      "phase": "complete",
+      "status": "failed",
+      "reason": "Release readiness is blocked only because strict workflow verification requires this Copilot session to end with a terminal result before reconciliation; implementation and all other non-approval checks are complete.",
+      "recordedAt": "2026-09-25T05:51:14.668Z"
+    },
+    {
+      "skill": "sdd-change",
+      "version": "0.1.8",
+      "provenance": "self-reported",
+      "phase": "complete",
+      "status": "completed",
+      "recordedAt": "2026-09-25T06:38:45.447Z"
     }
   ]
 }

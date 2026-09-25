@@ -18,6 +18,7 @@ export * from './change.js';
 export * from './change-waiver.js';
 export * from './evidence-merge.js';
 export * from './quality-refresh.js';
+export * from './filesystem-durability.js';
 export * from './evidence-writer-lock.js';
 /** @id CODE-WORKFLOW-EVIDENCE-WAIVER-024
  * @implements REQ-WORKFLOW-EVIDENCE-WAIVER-013

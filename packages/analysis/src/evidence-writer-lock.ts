@@ -1,6 +1,6 @@
 /** @id CODE-EVIDENCE-WRITER-LOCK-001
- * @implements REQ-EVIDENCE-WRITER-LOCK-001 REQ-EVIDENCE-WRITER-LOCK-002 REQ-EVIDENCE-WRITER-LOCK-003 REQ-EVIDENCE-WRITER-LOCK-004 REQ-EVIDENCE-WRITER-LOCK-005 REQ-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-001
- * @design DES-EVIDENCE-WRITER-LOCK-001 DES-EVIDENCE-WRITER-LOCK-002 DES-EVIDENCE-WRITER-LOCK-004 DES-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-001 DES-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-002
+ * @implements REQ-EVIDENCE-WRITER-LOCK-001 REQ-EVIDENCE-WRITER-LOCK-002 REQ-EVIDENCE-WRITER-LOCK-003 REQ-EVIDENCE-WRITER-LOCK-004 REQ-EVIDENCE-WRITER-LOCK-005 REQ-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-001 REQ-TRANSACTION-DIRECTORY-SYNC-POLICY-001
+ * @design DES-EVIDENCE-WRITER-LOCK-001 DES-EVIDENCE-WRITER-LOCK-002 DES-EVIDENCE-WRITER-LOCK-004 DES-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-001 DES-EVIDENCE-WRITER-LOCK-ACQUISITION-ROLLBACK-002 DES-TRANSACTION-DIRECTORY-SYNC-POLICY-002
  */
 import { AsyncLocalStorage } from 'node:async_hooks';
 import { randomUUID } from 'node:crypto';
@@ -29,6 +29,12 @@ import {
 import { hostname as systemHostname } from 'node:os';
 import { dirname, relative, resolve, sep } from 'node:path';
 import { assertEvidenceMergeReady } from './evidence-merge-guard.js';
+import {
+  classifyDirectorySyncError,
+  type DirectorySyncPolicy,
+} from './filesystem-durability.js';
+
+export type { EvidenceDirectorySyncPolicy } from './filesystem-durability.js';
 
 const LOCK_RELATIVE_PATH = '.musubix/evidence/.writer-lock.json';
 const STAGING_PREFIX = '.writer-lock.';
@@ -184,8 +190,6 @@ export interface EvidenceWriterLockIdentity {
   ino: number;
 }
 
-export type EvidenceDirectorySyncPolicy = 'allow-unsupported' | 'strict';
-
 export interface EvidenceWriterLockDependencies {
   hostname?: () => string;
   platform?: () => NodeJS.Platform;
@@ -195,8 +199,8 @@ export interface EvidenceWriterLockDependencies {
   lockIdentity?: (path: string) => Promise<EvidenceWriterLockIdentity>;
   publishedLockIdentity?: (descriptor: number) => EvidenceWriterLockIdentity;
   rollbackUnlink?: (path: string) => Promise<void>;
-  syncEvidenceDirectory?: (path: string, policy: EvidenceDirectorySyncPolicy) => Promise<void>;
-  syncEvidenceDirectorySync?: (path: string, policy: EvidenceDirectorySyncPolicy) => void;
+  syncEvidenceDirectory?: (path: string, policy: DirectorySyncPolicy) => Promise<void>;
+  syncEvidenceDirectorySync?: (path: string, policy: DirectorySyncPolicy) => void;
 }
 
 export interface EvidenceWriterRecoveryDependencies extends EvidenceWriterLockDependencies {
@@ -310,17 +314,11 @@ function evidenceDirectory(canonicalRoot: string): string {
   return resolve(canonicalRoot, '.musubix/evidence');
 }
 
-const WINDOWS_UNSUPPORTED_DIRECTORY_SYNC_ERRORS = new Set(['EPERM', 'EINVAL', 'ENOTSUP']);
-
-function isUnsupportedDirectorySync(cause: unknown, platform: NodeJS.Platform): boolean {
-  return platform === 'win32' && WINDOWS_UNSUPPORTED_DIRECTORY_SYNC_ERRORS.has(errno(cause) ?? '');
-}
-
 async function syncDirectory(
   path: string,
   platform: NodeJS.Platform,
-  policy: EvidenceDirectorySyncPolicy,
-  synchronize?: (path: string, policy: EvidenceDirectorySyncPolicy) => Promise<void>,
+  policy: DirectorySyncPolicy,
+  synchronize?: (path: string, policy: DirectorySyncPolicy) => Promise<void>,
 ): Promise<void> {
   const handle = await open(path, 'r');
   try {
@@ -328,7 +326,8 @@ async function syncDirectory(
       if (synchronize) await synchronize(path, policy);
       else await handle.sync();
     } catch (cause) {
-      if (policy !== 'allow-unsupported' || !isUnsupportedDirectorySync(cause, platform)) throw cause;
+      if (policy !== 'allow-unsupported'
+        || classifyDirectorySyncError(cause, platform) !== 'unsupported') throw cause;
     }
   } finally {
     await handle.close();
@@ -350,8 +349,8 @@ async function syncRecoveredEvidenceDirectoryStrict(
 function syncDirectorySync(
   path: string,
   platform: NodeJS.Platform,
-  policy: EvidenceDirectorySyncPolicy,
-  synchronize?: (path: string, policy: EvidenceDirectorySyncPolicy) => void,
+  policy: DirectorySyncPolicy,
+  synchronize?: (path: string, policy: DirectorySyncPolicy) => void,
 ): void {
   const descriptor = openSync(path, 'r');
   try {
@@ -359,7 +358,8 @@ function syncDirectorySync(
       if (synchronize) synchronize(path, policy);
       else fsyncSync(descriptor);
     } catch (cause) {
-      if (policy !== 'allow-unsupported' || !isUnsupportedDirectorySync(cause, platform)) throw cause;
+      if (policy !== 'allow-unsupported'
+        || classifyDirectorySyncError(cause, platform) !== 'unsupported') throw cause;
     }
   } finally {
     closeSync(descriptor);

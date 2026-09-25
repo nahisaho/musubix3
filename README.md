@@ -445,6 +445,15 @@ release, musubix3 treats only that directory-entry durability operation as an
 unsupported capability. File synchronization, publication, metadata, unlink,
 open/close, every other error, and every non-Windows platform remain
 fail-closed.
+Quality refresh and evidence merge use the same boundary for transaction
+directory synchronization. Their file handles are always synchronized
+strictly; only Windows EPERM, EINVAL, or ENOTSUP from synchronizing an
+already-open directory handle may be accepted. Directory open/close failures,
+Windows EISDIR/EACCES, and every Linux or macOS directory-sync failure stop the
+transaction and preserve or report its recovery state. On network, shared, or
+permission-constrained storage, retain the reported filesystem diagnostic and
+move the project to storage and permissions that support directory
+synchronization before recovery. Recovery does not retry automatically.
 
 Coordinated readers such as status, approval preparation/validation, trace and
 graph inspection, knowledge queries, TDD validation, attestation payload/verify,

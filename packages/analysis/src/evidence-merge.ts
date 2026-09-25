@@ -33,6 +33,10 @@ import {
 } from './change-evidence.js';
 import { digest, exists, readText, safePath, within } from './files.js';
 import {
+  synchronizeDirectory,
+  type DirectoryOpen,
+} from './filesystem-durability.js';
+import {
   loadEvidenceOrder,
   validateEvidenceOrderLog,
   type EvidenceOrderLog,
@@ -90,6 +94,11 @@ export interface EvidenceMergeOptions {
   dryRun?: boolean;
   /** Test-only deterministic fault injection. */
   faultAt?: string;
+  syncDirectory?: (path: string) => Promise<void>;
+}
+
+export interface EvidenceMergeDirectorySyncDependencies {
+  syncDirectory?: (path: string) => Promise<void>;
 }
 
 export interface EvidenceMergeRecoveryReport {
@@ -995,19 +1004,16 @@ async function fsyncFile(path: string): Promise<void> {
   }
 }
 
+/** @id CODE-TRANSACTION-DIRECTORY-SYNC-POLICY-003
+ * @implements REQ-TRANSACTION-DIRECTORY-SYNC-POLICY-001
+ * @design DES-TRANSACTION-DIRECTORY-SYNC-POLICY-002 DES-TRANSACTION-DIRECTORY-SYNC-POLICY-006
+ */
 export async function fsyncEvidenceMergeDirectory(
   path: string,
-  openDirectory: typeof open = open,
+  openDirectory?: DirectoryOpen,
+  platform?: () => NodeJS.Platform,
 ): Promise<void> {
-  let handle: Awaited<ReturnType<typeof open>> | undefined;
-  try {
-    handle = await openDirectory(path, 'r');
-    await handle.sync();
-  } catch (cause) {
-    if (!['EISDIR', 'EPERM', 'EACCES', 'EINVAL'].includes((cause as NodeJS.ErrnoException).code ?? '')) throw cause;
-  } finally {
-    await handle?.close();
-  }
+  await synchronizeDirectory(path, 'allow-unsupported', openDirectory, platform);
 }
 
 async function removeIfPresent(path: string): Promise<void> {
@@ -1023,7 +1029,11 @@ async function originalBytes(root: string, path: TargetPath): Promise<{ existed:
   }
 }
 
-async function restoreJournal(root: string, journal: MergeJournal): Promise<void> {
+async function restoreJournal(
+  root: string,
+  journal: MergeJournal,
+  syncDirectory: (path: string) => Promise<void> = fsyncEvidenceMergeDirectory,
+): Promise<void> {
   const evidenceDirectory = await safePath(root, EVIDENCE_DIR);
   for (const target of journal.targets) {
     const absolute = await safePath(root, target.path);
@@ -1037,16 +1047,21 @@ async function restoreJournal(root: string, journal: MergeJournal): Promise<void
     }
     await removeIfPresent(await safePath(root, target.temporaryPath));
   }
-  await fsyncEvidenceMergeDirectory(evidenceDirectory);
+  await syncDirectory(evidenceDirectory);
   await removeIfPresent(await safePath(root, JOURNAL_PATH));
-  await fsyncEvidenceMergeDirectory(evidenceDirectory);
+  await syncDirectory(evidenceDirectory);
 }
 
 /** @id CODE-EVIDENCE-HISTORY-MERGE-003
- * @implements REQ-EVIDENCE-HISTORY-MERGE-004
- * @design DES-EVIDENCE-HISTORY-MERGE-003
+ * @implements REQ-EVIDENCE-HISTORY-MERGE-004 REQ-TRANSACTION-DIRECTORY-SYNC-POLICY-001
+ * @design DES-EVIDENCE-HISTORY-MERGE-003 DES-TRANSACTION-DIRECTORY-SYNC-POLICY-002 DES-TRANSACTION-DIRECTORY-SYNC-POLICY-003
  */
-async function applyCandidates(root: string, candidates: Candidates, faultAt?: string): Promise<void> {
+async function applyCandidates(
+  root: string,
+  candidates: Candidates,
+  faultAt?: string,
+  syncDirectory: (path: string) => Promise<void> = fsyncEvidenceMergeDirectory,
+): Promise<void> {
   const transactionId = crypto.randomUUID();
   const targets: JournalTarget[] = [];
   for (const path of TARGETS) {
@@ -1083,8 +1098,8 @@ async function applyCandidates(root: string, candidates: Candidates, faultAt?: s
     }
     throw cause;
   }
-  await fsyncEvidenceMergeDirectory(dirname(journalAbsolute));
   try {
+    await syncDirectory(dirname(journalAbsolute));
     for (let index = 0; index < targets.length; index++) {
       if (faultAt === `temporary:${index}`) throw new Error(`Injected evidence merge failure at temporary:${index}.`);
       const target = targets[index]!;
@@ -1097,20 +1112,23 @@ async function applyCandidates(root: string, candidates: Candidates, faultAt?: s
       const target = targets[index]!;
       await rename(await safePath(root, target.temporaryPath), await safePath(root, target.path));
     }
-    await fsyncEvidenceMergeDirectory(dirname(journalAbsolute));
+    await syncDirectory(dirname(journalAbsolute));
     journal.state = 'committed';
     const commitStaging = await safePath(root, `${STAGING_PREFIX}${transactionId}.commit.json`);
     await writeFile(commitStaging, json(journal), { flag: 'wx' });
     await fsyncFile(commitStaging);
     if (faultAt === 'commit-marker') throw new Error('Injected evidence merge failure at commit-marker.');
     await rename(commitStaging, journalAbsolute);
-    await fsyncEvidenceMergeDirectory(dirname(journalAbsolute));
+    await syncDirectory(dirname(journalAbsolute));
     if (faultAt === 'cleanup') throw new Error('EVIDENCE_MERGE_RECOVERY_REQUIRED: injected failure at cleanup.');
     await removeIfPresent(journalAbsolute);
   } catch (cause) {
     const injected = cause instanceof Error && cause.message.startsWith('Injected evidence merge failure');
     if (injected && journal.state === 'prepared') {
-      await restoreJournal(root, journal);
+      await restoreJournal(root, journal, recoveryDirectorySync(
+        syncDirectory,
+        mergeJournalInventory(journal),
+      ));
       throw cause;
     }
     throw new Error(`EVIDENCE_MERGE_RECOVERY_REQUIRED: ${
@@ -1141,8 +1159,8 @@ function reportFor(plan: MergePlan, candidates: Candidates): EvidenceMergeReport
 }
 
 /** @id CODE-EVIDENCE-HISTORY-MERGE-004
- * @implements REQ-EVIDENCE-HISTORY-MERGE-001 REQ-EVIDENCE-HISTORY-MERGE-004 REQ-EVIDENCE-HISTORY-MERGE-005
- * @design DES-EVIDENCE-HISTORY-MERGE-004
+ * @implements REQ-EVIDENCE-HISTORY-MERGE-001 REQ-EVIDENCE-HISTORY-MERGE-004 REQ-EVIDENCE-HISTORY-MERGE-005 REQ-TRANSACTION-DIRECTORY-SYNC-POLICY-001
+ * @design DES-EVIDENCE-HISTORY-MERGE-004 DES-TRANSACTION-DIRECTORY-SYNC-POLICY-003
  */
 export async function mergeEvidenceHistories(
   root: string,
@@ -1210,7 +1228,12 @@ async function mergeEvidenceHistoriesUnlocked(
     }
   }
   if (!report.valid || options.dryRun) return report;
-  await applyCandidates(plan.base.root, candidates, options.faultAt);
+  await applyCandidates(
+    plan.base.root,
+    candidates,
+    options.faultAt,
+    options.syncDirectory ?? fsyncEvidenceMergeDirectory,
+  );
   return report;
 }
 
@@ -1219,10 +1242,31 @@ export { assertEvidenceMergeReady, assertEvidenceMergeStartable };
 function unsafeRecovery(reason: string, inventory: string[]): Error {
   return new Error(
     `EVIDENCE_MERGE_RECOVERY_UNSAFE: ${reason} Journal: ${JOURNAL_PATH}. `
-    + `Merge-owned files: ${inventory.length ? inventory.join(', ') : 'none found'}. `
+    + `Merge-owned paths: ${inventory.length ? inventory.join(', ') : 'none identified'}. `
     + 'Manual remediation: back up .musubix/evidence; restore or verify order.json, tdd.json, changes.json, '
     + 'and change-waivers.json from a trusted source; quarantine the listed merge files; rerun structural validation.',
   );
+}
+
+function mergeJournalInventory(journal: MergeJournal, staging: string[] = []): string[] {
+  return [
+    JOURNAL_PATH,
+    ...staging.map((entry) => `${EVIDENCE_DIR}/${entry}`),
+    ...journal.targets.map((target) => target.temporaryPath),
+  ];
+}
+
+function recoveryDirectorySync(
+  syncDirectory: (path: string) => Promise<void>,
+  inventory: string[],
+): (path: string) => Promise<void> {
+  return async (path) => {
+    try {
+      await syncDirectory(path);
+    } catch (cause) {
+      throw unsafeRecovery(cause instanceof Error ? cause.message : String(cause), inventory);
+    }
+  };
 }
 
 function validateJournal(journal: MergeJournal): void {
@@ -1277,11 +1321,21 @@ function validateJournalCandidates(journal: MergeJournal): void {
   }
 }
 
-export async function recoverEvidenceMerge(root: string): Promise<EvidenceMergeRecoveryReport> {
-  return withEvidenceWriterLock(root, 'evidence merge --recover', () => recoverEvidenceMergeUnlocked(root));
+export async function recoverEvidenceMerge(
+  root: string,
+  dependencies: EvidenceMergeDirectorySyncDependencies = {},
+): Promise<EvidenceMergeRecoveryReport> {
+  return withEvidenceWriterLock(
+    root,
+    'evidence merge --recover',
+    () => recoverEvidenceMergeUnlocked(root, dependencies),
+  );
 }
 
-async function recoverEvidenceMergeUnlocked(root: string): Promise<EvidenceMergeRecoveryReport> {
+async function recoverEvidenceMergeUnlocked(
+  root: string,
+  dependencies: EvidenceMergeDirectorySyncDependencies,
+): Promise<EvidenceMergeRecoveryReport> {
   const journals = await evidenceJournals(root);
   if (journals.merge && journals.qualityRefresh) {
     throw new Error('EVIDENCE_MERGE_RECOVERY_UNSAFE: merge and Quality-refresh journals coexist.');
@@ -1308,23 +1362,30 @@ async function recoverEvidenceMergeUnlocked(root: string): Promise<EvidenceMerge
   } catch {
     throw unsafeRecovery('Published merge journal is unreadable.', [JOURNAL_PATH, ...staging]);
   }
-  const inventory = [
-    JOURNAL_PATH,
-    ...staging.map((entry) => `${EVIDENCE_DIR}/${entry}`),
-    ...(Array.isArray(journal.targets)
-      ? journal.targets.flatMap((target) => typeof target?.temporaryPath === 'string' ? [target.temporaryPath] : [])
-      : []),
-  ];
+  const inventory = Array.isArray(journal.targets)
+    ? mergeJournalInventory(journal, staging)
+    : [JOURNAL_PATH, ...staging.map((entry) => `${EVIDENCE_DIR}/${entry}`)];
   try {
     validateJournal(journal);
   } catch (cause) {
     throw unsafeRecovery(cause instanceof Error ? cause.message : String(cause), inventory);
   }
   if (journal.state === 'prepared') {
-    await restoreJournal(root, journal);
+    await restoreJournal(
+      root,
+      journal,
+      recoveryDirectorySync(
+        dependencies.syncDirectory ?? fsyncEvidenceMergeDirectory,
+        inventory,
+      ),
+    );
     for (const entry of staging) await removeIfPresent(resolve(evidenceDir, entry));
     return { recovered: true, action: 'rolled-back', discardedStaging: staging.length > 0 };
   }
+  const syncRecoveryDirectory = recoveryDirectorySync(
+    dependencies.syncDirectory ?? fsyncEvidenceMergeDirectory,
+    inventory,
+  );
   try {
     validateJournalCandidates(journal);
   } catch (cause) {
@@ -1343,16 +1404,16 @@ async function recoverEvidenceMergeUnlocked(root: string): Promise<EvidenceMerge
       await writeFile(stagingPath, Buffer.from(target.candidateBase64, 'base64'));
       await fsyncFile(stagingPath);
       await rename(stagingPath, absolute);
-      await fsyncEvidenceMergeDirectory(evidenceDir);
+      await syncRecoveryDirectory(evidenceDir);
     }
     const verified = await readFile(absolute, 'utf8');
     if (digest(verified) !== target.candidateSha256) {
       throw unsafeRecovery('Candidate verification failed after rewrite.', inventory);
     }
   }
-  await fsyncEvidenceMergeDirectory(evidenceDir);
+  await syncRecoveryDirectory(evidenceDir);
   await removeIfPresent(journalAbsolute);
   for (const entry of staging) await removeIfPresent(resolve(evidenceDir, entry));
-  await fsyncEvidenceMergeDirectory(evidenceDir);
+  await syncRecoveryDirectory(evidenceDir);
   return { recovered: true, action: 'rolled-forward', discardedStaging: staging.length > 0 };
 }
