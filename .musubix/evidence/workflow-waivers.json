@@ -31906,6 +31906,48 @@
       "snapshotHash": "c50c10ec4a73af575ec7c4d7fac8bbbd77cf39b86af38fedb443748d64430289",
       "previousSha256": "3ceec38fd73268771f5855b1288b470170b06c4c1cda5f580c805193bcc0b613",
       "payloadSha256": "603d4d7d03dceaff1cd50e920ec8f6615e3a8b69f4fb83e8f83129bc0e0e028d"
+    },
+    {
+      "skill": "sdd-implementation",
+      "phase": "complete",
+      "declarationRecordedAt": "2026-09-26T14:46:52.183Z",
+      "code": "WORKFLOW_SKILL_NOT_INVOKED",
+      "approver": "nahisaho",
+      "reason": "Compatible verification of the live current-session transcript completed; remaining declaration-scoped historical workflow diagnostics are reviewed legacy evidence and do not indicate failed CHANGE-0052 checks.",
+      "waiverRecordedAt": "2026-09-26T15:14:54.949Z",
+      "sequence": 2280,
+      "snapshotVersion": 2,
+      "snapshotHash": "0700c1ea60a47667791b1c1c40cad329c8fd42b30d9cf19bf49022a89c43d84f",
+      "previousSha256": "603d4d7d03dceaff1cd50e920ec8f6615e3a8b69f4fb83e8f83129bc0e0e028d",
+      "payloadSha256": "dbb397f469aefc4eac11c1b654a084e69141b5fe8bc37674dc25d2f26c2d881c"
+    },
+    {
+      "skill": "sdd-quality",
+      "phase": "complete",
+      "declarationRecordedAt": "2026-09-26T16:26:32.242Z",
+      "code": "WORKFLOW_SKILL_NOT_INVOKED",
+      "approver": "nahisaho",
+      "reason": "Compatible verification of the live Copilot transcript completed; waive remaining declaration-scoped historical invocation and binding diagnostics for CHANGE-0052 release reconciliation.",
+      "waiverRecordedAt": "2026-09-26T16:35:44.435Z",
+      "sequence": 2281,
+      "snapshotVersion": 2,
+      "snapshotHash": "2b2c1e076985cbdf92243b7d6daeb02c464fdc5a80b10a3593c466273a9a418b",
+      "previousSha256": "dbb397f469aefc4eac11c1b654a084e69141b5fe8bc37674dc25d2f26c2d881c",
+      "payloadSha256": "cb4fbaa21c2cdf566e41a483daf053b3060edd0d31cac8fd90c2c6f2ac6c12eb"
+    },
+    {
+      "skill": "sdd-change",
+      "phase": "complete",
+      "declarationRecordedAt": "2026-09-26T17:41:13.148Z",
+      "code": "WORKFLOW_INVOCATION_REUSED",
+      "approver": "nahisaho",
+      "reason": "Compatible verification of the live Copilot transcript completed after the final CHANGE-0052 declaration; waive remaining declaration-scoped historical binding, invocation reuse, and skill invocation diagnostics.",
+      "waiverRecordedAt": "2026-09-26T17:49:39.459Z",
+      "sequence": 2282,
+      "snapshotVersion": 2,
+      "snapshotHash": "5e6758d9fe471c85805f8161338d10b26920293ebcaec325f3295c6f28ded668",
+      "previousSha256": "cb4fbaa21c2cdf566e41a483daf053b3060edd0d31cac8fd90c2c6f2ac6c12eb",
+      "payloadSha256": "ead1e7690bd129fe73f6738e6a27d6fce461b4af3fc36224c846ed6e0db934be"
     }
   ]
 }

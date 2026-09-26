@@ -255,8 +255,8 @@ Copilot の提案を記号的検査で制約する構成であり、独自の「
 3. コンポーネントとADRを更新し、設計文書・ADRの`rubber-duck`レビューを実施して
    指摘事項をすべて修正（指摘がゼロになるまで繰り返す）、`design` checkpoint
    を記録し、実装前にartifact-boundな人間の`design`承認を明示的に記録。
-4. 注釈付きテストを作成し、構造化結果を伴う `tdd red` と変更の `red` を記録。
-5. 最小実装後に `implementation`、成功する `tdd green`、変更の `green` を記録。
+4. 注釈付きテストを作成し、構造化結果を伴う `tdd red` の後に変更の `red` を記録。
+5. 最小実装後に変更の `implementation`、成功する `tdd green`、変更の `green` の順で記録。
 6. 注釈とグラフを更新して変更影響・網羅性を確認。
 7. 実コマンドで候補品質ゲートを実行。リリース・品質エビデンス要約の
    `rubber-duck`レビューを実施して指摘事項をすべて修正(指摘がゼロになるまで
@@ -279,8 +279,11 @@ npx musubix3 approval prepare design --json
 npx musubix3 approval record design --approver "設計責任者" --artifact-sha256 "$REVIEWED_HASH" --confirm
 npx musubix3 change-record CHANGE-0001 design --requirement REQ-EXAMPLE-001
 npx musubix3 tdd red TEST-EXAMPLE-001 --requirement REQ-EXAMPLE-001 --command test
+npx musubix3 change-record CHANGE-0001 red --requirement REQ-EXAMPLE-001
 # テストを変更せず、最小限の振る舞いを実装
+npx musubix3 change-record CHANGE-0001 implementation --requirement REQ-EXAMPLE-001
 npx musubix3 tdd green TEST-EXAMPLE-001 --requirement REQ-EXAMPLE-001 --command test
+npx musubix3 change-record CHANGE-0001 green --requirement REQ-EXAMPLE-001
 npx musubix3 tdd refactor TEST-EXAMPLE-001 --requirement REQ-EXAMPLE-001 --command test
 npx musubix3 trace build
 npx musubix3 trace check --strict --json
@@ -372,7 +375,7 @@ npx musubix3 tdd green TEST-EXAMPLE-002 --requirement REQ-EXAMPLE-002 --command 
 | `attestation oidc-audience --key-id <id> [--public-key-file <pem>]` | 署名鍵を許可するGitHub custom audienceを導出 |
 | `attestation payload --provider <name> --run-id <id> --key-id <id> [--public-key-file <pem>] [--github-oidc-token-file <jwt>]` | 外部署名用の正規化CI payloadを出力 |
 | `attestation verify` | 静的鍵またはGitHub OIDC認可済みEd25519 provenanceを検証 |
-| `change-record <CHANGE-ID> <phase> --requirement <REQ-ID...>` | 段階的変更の成果物・TDD指紋を順序付きで記録。この`--requirement <REQ-ID...>`はTDD phase commandと異なり複数requirementのbatchを受け付ける。複数batchが同じrequirementを含む場合、検証はRedの`order`が最新のbatchを使用し、後発batchが未完了でも古い完了済み証跡へ暗黙にフォールバックしない |
+| `change-record <CHANGE-ID> <phase> --requirement <REQ-ID...> [--allow-unchanged] [--dry-run]` | 段階的変更の成果物・TDD指紋を順序付きで記録。安全な順序は `tdd red` → `change-record red` → 実装コード → `change-record implementation` → `tdd green` → `change-record green`。Red/Implementation/Greenではcandidate作成・order割当・書込みの前に全requested requirementの保存済みTDD証拠を検査し、失敗は`CHANGE_RED_TDD_PREFLIGHT_FAILED`、`CHANGE_IMPLEMENTATION_TDD_PREFLIGHT_FAILED`、`CHANGE_GREEN_TDD_PREFLIGHT_FAILED`で報告する。JSONは`code`、`message`、`phase`、sort済み`uncoveredRequirementIds`、決定的`rejections`を保持し、非JSONは`musubix3:` prefixと復旧順序を示す。拒否時と`--dry-run`は`changes.json`/`order.json`をbyte-identicalに保ちsequenceを消費しない。複数batchが同じrequirementを含む場合は最新Red `order`がcurrentで、古いbatchへの追記は拒否される。整数Red orderを持たないlegacy non-void cycle、不正なorder log、または保存済みchange境界のorder record欠落は`missing-order`でfail-closedとなり、waiverでは追記を許可できないため、legacy evidenceを修復またはarchiveして完全なordered cycleを再生成する。既存`*_UNCHANGED_AT_RECORD`検査はpreflightより先に実行される |
 | `change quality-recover [--json]` | 中断したQuality refreshの2ファイルtransactionを復旧する。Quality後に新しい完全なcorrective batchがある場合、full-set Qualityを再記録すると以前のcheckpointをschema version 2の`qualityHistory`へ保持する。不完全・不要なrefreshは安定した`CHANGE_QUALITY_REFRESH_*`エラーで拒否する |
 | `config lint` | `args`が存在しないrepository相対パスを参照する設定済みコマンドを報告 |
 | `config scaffold` | 検出したGo/Rust/Maven/Python/Nodeツールチェーン向けのnative test-command候補を`.musubix/config.json`へ書き込まずに提案 |

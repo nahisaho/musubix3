@@ -11,7 +11,7 @@ import { code, processResult, project, tddResultRunner, testCode } from './helpe
 
 /**
  * Stages CHANGE-0001 for REQ-EXAMPLE-001 through impact/requirements/design,
- * then records the `red` phase without ever running a real TDD Red cycle,
+ * then synthesizes a historical `red` phase without ever running a real TDD Red cycle,
  * which is exactly the structurally-unavoidable recording-order debt this
  * feature exists to let a human waive: `CHANGE_RED_UNPROVEN` fires because
  * no valid TDD cycle precedes the recorded Red fingerprint.
@@ -26,7 +26,21 @@ async function stageChangeThroughRed(root: string, changeId = 'CHANGE-0001'): Pr
     `${await readText(root, '.musubix/features/example/design.md')}\nChange: revised component behavior.\n`);
   await recordChangePhase(root, changeId, 'design', ['REQ-EXAMPLE-001']);
   await writeText(root, 'src/service.test.ts', `${testCode}\n// staged failing behavior, no TDD Red evidence recorded\n`);
-  await recordChangePhase(root, changeId, 'red', ['REQ-EXAMPLE-001']);
+  const evidence = (await loadChangeEvidence(root))!;
+  const change = evidence.changes.find((entry) => entry.changeId === changeId)!;
+  const redOrder = await appendEvidenceOrder(root, { kind: 'change', entityId: changeId, phase: 'red' });
+  change.phases.red = {
+    ...structuredClone(change.phases.design!),
+    phase: 'red',
+    order: redOrder.sequence,
+    recordedAt: new Date().toISOString(),
+    fingerprints: {
+      ...structuredClone(change.phases.design!.fingerprints),
+      tests: `historical-red-${changeId}`,
+      tdd: `historical-red-tdd-${changeId}`,
+    },
+  };
+  await writeJson(root, '.musubix/evidence/changes.json', evidence);
 }
 
 /** Extends `stageChangeThroughRed` through Implementation and Green, again
@@ -36,8 +50,37 @@ async function stageChangeThroughRed(root: string, changeId = 'CHANGE-0001'): Pr
 async function stageChangeThroughGreen(root: string, changeId = 'CHANGE-0001'): Promise<void> {
   await stageChangeThroughRed(root, changeId);
   await writeText(root, 'src/service.ts', code.replace('return true', 'return false'));
-  await recordChangePhase(root, changeId, 'implementation', ['REQ-EXAMPLE-001']);
-  await recordChangePhase(root, changeId, 'green', ['REQ-EXAMPLE-001']);
+  const evidence = (await loadChangeEvidence(root))!;
+  const change = evidence.changes.find((entry) => entry.changeId === changeId)!;
+  const implementationOrder = await appendEvidenceOrder(root, {
+    kind: 'change',
+    entityId: changeId,
+    phase: 'implementation',
+  });
+  change.phases.implementation = {
+    ...structuredClone(change.phases.red!),
+    phase: 'implementation',
+    order: implementationOrder.sequence,
+    recordedAt: new Date().toISOString(),
+    fingerprints: {
+      ...structuredClone(change.phases.red!.fingerprints),
+      implementation: `historical-implementation-${changeId}`,
+      requirementImplementations: {
+        'REQ-EXAMPLE-001': {
+          paths: ['src/service.ts'],
+          fingerprints: { 'src/service.ts': `historical-implementation-${changeId}` },
+        },
+      },
+    },
+  };
+  const greenOrder = await appendEvidenceOrder(root, { kind: 'change', entityId: changeId, phase: 'green' });
+  change.phases.green = {
+    ...structuredClone(change.phases.implementation),
+    phase: 'green',
+    order: greenOrder.sequence,
+    recordedAt: new Date().toISOString(),
+  };
+  await writeJson(root, '.musubix/evidence/changes.json', evidence);
 }
 
 function diagnosticsFor(diagnostics: Diagnostic[], code: string): Diagnostic[] {

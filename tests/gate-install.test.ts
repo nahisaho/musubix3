@@ -2,7 +2,7 @@ import { mkdir, readdir, symlink } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { describe, expect, it, vi } from 'vitest';
 import {
-  aggregateStatus, changedFiles, defaultConfig, exists, loadConfig, loadTddEvidence, parseConfig, projectStatus, readText,
+  aggregateStatus, appendEvidenceOrder, changedFiles, defaultConfig, exists, loadConfig, loadTddEvidence, parseConfig, projectStatus, readText,
   recordChangePhase, recordWorkflow, runGate, runProcess, runTddPhase, validateChangeCompleteness, validateChangeEvidence, validateTddEvidence,
   verifyWorkflowLog, writeJson, writeText, type Runner,
 } from '../packages/analysis/src/index.js';
@@ -501,7 +501,16 @@ export const unrelated = false;
     // tests/tdd-fingerprint-migration.test.ts).
     const raw = JSON.parse(await readText(root, '.musubix/evidence/changes.json'));
     const change = raw.changes[0];
-    change.phases.implementation = { ...change.phases.red, phase: 'implementation', order: change.phases.red.order + 1000 };
+    const implementationOrder = await appendEvidenceOrder(root, {
+      kind: 'change',
+      entityId: 'CHANGE-0001',
+      phase: 'implementation',
+    });
+    change.phases.implementation = {
+      ...change.phases.red,
+      phase: 'implementation',
+      order: implementationOrder.sequence,
+    };
     await writeJson(root, '.musubix/evidence/changes.json', raw);
     await runTddPhase(root, 'green', 'TEST-EXAMPLE-001', 'REQ-EXAMPLE-001', 'test',
       tddResultRunner(root, 'passed'));

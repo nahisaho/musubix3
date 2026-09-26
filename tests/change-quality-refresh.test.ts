@@ -1,6 +1,7 @@
 import { expect, it } from 'vitest';
 import * as analysis from '../packages/analysis/src/index.js';
 import { project } from './helpers.js';
+import { recordTddGreen, recordTddRed } from './helpers.js';
 
 type QualityRefreshApi = {
   recoverQualityRefresh(root: string): Promise<{
@@ -57,12 +58,16 @@ async function stageInitialQuality(root: string): Promise<void> {
     `${await analysis.readText(root, 'src/service.test.ts')}\n// initial quality red\n`);
   await analysis.writeText(root, 'src/second.test.ts',
     `${await analysis.readText(root, 'src/second.test.ts')}\n// initial quality red\n`);
+  await recordTddRed(root, 'TEST-EXAMPLE-001', 'REQ-EXAMPLE-001');
+  await recordTddRed(root, 'TEST-EXAMPLE-002', 'REQ-EXAMPLE-002');
   await analysis.recordChangePhase(root, 'CHANGE-0001', 'red', requirements);
   await analysis.writeText(root, 'src/service.ts',
     `${await analysis.readText(root, 'src/service.ts')}\n// initial quality implementation\n`);
   await analysis.writeText(root, 'src/second.ts',
     `${await analysis.readText(root, 'src/second.ts')}\n// initial quality implementation\n`);
   await analysis.recordChangePhase(root, 'CHANGE-0001', 'implementation', requirements);
+  await recordTddGreen(root, 'TEST-EXAMPLE-001', 'REQ-EXAMPLE-001');
+  await recordTddGreen(root, 'TEST-EXAMPLE-002', 'REQ-EXAMPLE-002');
   await analysis.recordChangePhase(root, 'CHANGE-0001', 'green', requirements);
   await analysis.recordChangePhase(root, 'CHANGE-0001', 'quality', requirements);
 }
@@ -73,10 +78,12 @@ async function stageCorrectiveBatches(root: string): Promise<void> {
     const sourcePath = index === 0 ? 'src/service.ts' : 'src/second.ts';
     await analysis.writeText(root, testPath,
       `${await analysis.readText(root, testPath)}\n// corrective ${requirementId} red\n`);
+    await recordTddRed(root, index === 0 ? 'TEST-EXAMPLE-001' : 'TEST-EXAMPLE-002', requirementId);
     await analysis.recordChangePhase(root, 'CHANGE-0001', 'red', [requirementId]);
     await analysis.writeText(root, sourcePath,
       `${await analysis.readText(root, sourcePath)}\n// corrective ${requirementId} implementation\n`);
     await analysis.recordChangePhase(root, 'CHANGE-0001', 'implementation', [requirementId]);
+    await recordTddGreen(root, index === 0 ? 'TEST-EXAMPLE-001' : 'TEST-EXAMPLE-002', requirementId);
     await analysis.recordChangePhase(root, 'CHANGE-0001', 'green', [requirementId]);
   }
 }

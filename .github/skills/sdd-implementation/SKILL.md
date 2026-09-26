@@ -33,9 +33,13 @@ Retry only after the active owner releases the lock, recovery succeeds, or the r
    Make the runner emit a fresh
    `musubix-json` report containing only the selected test (plus declared
    deterministic `operations` counters when applicable) and run
-   `npx musubix3 tdd red <TEST-ID> --requirement <REQ-ID> --command <name>` with exactly one requirement per invocation; when a test verifies multiple requirements, run a separate Red/Green cycle for each requirement, unlike variadic `change-record --requirement <REQ-ID...>`.
-3. Implement only enough code to pass, preserving the test unchanged, then run
-   `tdd green`. Refactor only after Green and record `tdd refactor`.
+   `npx musubix3 tdd red <TEST-ID> --requirement <REQ-ID> --command <name>` with exactly one requirement per invocation; when a test verifies multiple requirements, record a separate Red/Green cycle for each requirement, collecting every Red in the batch unlike variadic `change-record --requirement <REQ-ID...>`. Immediately record the matching `change-record <CHANGE-ID> red --requirement <REQ-ID...>` batch before implementation or any TDD Green.
+3. Implement only enough code to pass, preserving the test unchanged, record
+   `change-record <CHANGE-ID> implementation --requirement <REQ-ID...>`, then run
+   `tdd green` and record `change-record <CHANGE-ID> green --requirement <REQ-ID...>`.
+   This exact order avoids `green-already-recorded`; preflight rejection uses stable
+   `CHANGE_*_TDD_PREFLIGHT_FAILED` codes, emits deterministic JSON details, and
+   performs no evidence write or order allocation. Refactor only after Green and record `tdd refactor`.
    Use `tdd validate` to inspect persisted order, fingerprints, durations and
    hash-chain evidence before claiming the cycle is complete.
 4. Add one block comment per trace entity:

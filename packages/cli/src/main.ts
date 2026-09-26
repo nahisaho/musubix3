@@ -21,6 +21,7 @@ import {
   scaffoldCommands, scaffoldRequirements, scaffoldDesign,
   recordChangeWaiver, recordWorkflowWaiver, recordAllWorkflowWaivers,
   assertCoordinatedEvidenceRead, EvidenceProtectedOutputError, EvidenceWriterLockError,
+  ChangeRecordTddPreflightError,
   recoverEvidenceWriterLock, withEvidenceWriterLock,
 } from '../../analysis/src/index.js';
 import { install, pluginInstall, upgradeSkills } from './install.js';
@@ -846,6 +847,10 @@ source, quarantining merge files, and rerunning structural validation.`))
   return program;
 }
 
+/** @id CODE-CHANGE-RECORD-TDD-PREFLIGHT-003
+ * @implements REQ-CHANGE-RECORD-TDD-PREFLIGHT-001 REQ-CHANGE-RECORD-TDD-PREFLIGHT-002 REQ-CHANGE-RECORD-TDD-PREFLIGHT-003 REQ-CHANGE-RECORD-TDD-PREFLIGHT-004
+ * @design DES-CHANGE-RECORD-TDD-PREFLIGHT-003
+ */
 async function main(): Promise<void> {
   try {
     await createProgram().parseAsync(process.argv);
@@ -857,12 +862,25 @@ async function main(): Promise<void> {
         console.log(JSON.stringify(renderEvidenceWriterLockError(cause).json));
       } else if (cause instanceof EvidenceProtectedOutputError) {
         console.log(JSON.stringify({ error: { code: cause.code, message, path: cause.path } }));
+      } else if (cause instanceof ChangeRecordTddPreflightError) {
+        console.log(JSON.stringify({ error: {
+          code: cause.code,
+          message: cause.message,
+          phase: cause.phase,
+          uncoveredRequirementIds: cause.uncoveredRequirementIds,
+          rejections: cause.rejections,
+        } }));
       } else {
         console.log(JSON.stringify({ error: { code: 'CLI_ERROR', message } }));
       }
     }
     else if (cause instanceof EvidenceWriterLockError) {
       for (const line of renderEvidenceWriterLockError(cause).human) console.error(line);
+    }
+    else if (cause instanceof ChangeRecordTddPreflightError) {
+      console.error(`musubix3: ${cause.code}: ${cause.phase} TDD preflight failed for ${cause.uncoveredRequirementIds.join(', ')}. `
+        + 'Use tdd red -> change-record red -> implementation code -> change-record implementation '
+        + '-> tdd green -> change-record green.');
     }
     else console.error(`musubix3: ${message}`);
     process.exitCode = 2;

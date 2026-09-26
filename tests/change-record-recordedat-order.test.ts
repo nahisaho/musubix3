@@ -5,7 +5,7 @@ import {
   appendEvidenceOrder, changePhases, loadChangeEvidence, readText, recordChangePhase, runProcess,
   validateChangeEvidence, writeJson, writeText,
 } from '../packages/analysis/src/index.js';
-import { code, project, testCode } from './helpers.js';
+import { code, project, recordTddGreen, recordTddRed, testCode } from './helpers.js';
 
 /** @id TEST-CHANGE-RECORD-RECORDEDAT-ORDER-001
  * @verifies REQ-CHANGE-RECORD-RECORDEDAT-ORDER-001
@@ -45,10 +45,12 @@ async function buildNonContiguousChange(root: string): Promise<void> {
     `${await readText(root, '.musubix/features/example/design.md')}\nChange: revised component behavior.\n`);
   await recordChangePhase(root, 'CHANGE-0001', 'design', ['REQ-EXAMPLE-001']);
   await writeText(root, 'src/service.test.ts', `${testCode}\n// staged failing behavior\n`);
+  await recordTddRed(root, 'TEST-EXAMPLE-001', 'REQ-EXAMPLE-001');
   await recordChangePhase(root, 'CHANGE-0001', 'red', ['REQ-EXAMPLE-001']);
   await foreign();
   await writeText(root, 'src/service.ts', code.replace('return true', 'return false'));
   await recordChangePhase(root, 'CHANGE-0001', 'implementation', ['REQ-EXAMPLE-001']);
+  await recordTddGreen(root, 'TEST-EXAMPLE-001', 'REQ-EXAMPLE-001');
   await recordChangePhase(root, 'CHANGE-0001', 'green', ['REQ-EXAMPLE-001']);
   await recordChangePhase(root, 'CHANGE-0001', 'quality', ['REQ-EXAMPLE-001']);
 }

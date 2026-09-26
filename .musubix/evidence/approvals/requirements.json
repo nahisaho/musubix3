@@ -12,6 +12,7 @@
     ".musubix/features/change-quality-refresh/requirements.md": "14202e150cc31cb45b8e0cc88124c8547fd93f733e1c929dee4382c30fffb5a9",
     ".musubix/features/change-record-fail-fast/requirements.md": "7488f2f96293ca03ca0690358aa528d1e329e70d39be3885540f54c81c14d94e",
     ".musubix/features/change-record-recordedat-order/requirements.md": "f43a1e3170ff7488fd2b3993ac9ba662b45ae159978513f929a99f59bdfcb83b",
+    ".musubix/features/change-record-tdd-preflight/requirements.md": "8d5978d0838b76d1e8dabf0b185121baee2cf001be18afa745aa0541b78072d6",
     ".musubix/features/change-requirement-batches/requirements.md": "d4d2d1e9e12cd4e062ca3a14e4a28d9f011de634fb3c10defb53653260667110",
     ".musubix/features/cli-workflow-ux-v019/requirements.md": "8ac7b7e793009d95a03b53de1e3aca043d4433a7b6de9511d8547ebc33b5e7b2",
     ".musubix/features/command-working-directory/requirements.md": "4a376dfe7a6e9b1bb1ff4a947fb2807f7179a1798df369040c879a1b9e4fcb90",
@@ -49,7 +50,7 @@
     ".musubix/features/workflow-session-shutdown/requirements.md": "c00d313bbb445e0951fad5d2cd70f22341a19ce357659cd03e80f3049ef8d873",
     ".musubix/features/workflow-waiver-bulk-recording/requirements.md": "00d35b15a4a68505080c01058fd39fde9760e2f7a9fb94f826aced6207b7cd6a"
   },
-  "artifactSha256": "54ff5ac18d71e1e350b9874c2ca16e9cb40bd9090d9d72cb04d9437b98160d80",
+  "artifactSha256": "1ae4412dd3eee4b89e0c6adc405dca554dffe22df37f0002e0bdb1c790198191",
   "approver": "nahisaho",
-  "approvedAt": "2026-09-26T04:29:12.239Z"
+  "approvedAt": "2026-09-26T10:46:14.814Z"
 }

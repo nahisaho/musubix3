@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-26T08:47:20.042Z",
+  "generatedAt": "2026-09-26T17:57:20.988Z",
   "status": "pass",
   "checks": [
     {
@@ -106,7 +106,7 @@
       "name": "formal",
       "required": false,
       "status": "pass",
-      "summary": "11/200 requirements modeled; consistency consistent; solver not-requested.",
+      "summary": "11/204 requirements modeled; consistency consistent; solver not-requested.",
       "diagnostics": [
         {
           "code": "FORMAL_UNSUPPORTED",
@@ -417,6 +417,26 @@
           "code": "FORMAL_UNSUPPORTED",
           "severity": "warning",
           "message": "REQ-CHANGE-RECORD-RECORDEDAT-ORDER-002 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+        },
+        {
+          "code": "FORMAL_UNSUPPORTED",
+          "severity": "warning",
+          "message": "REQ-CHANGE-RECORD-TDD-PREFLIGHT-001 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+        },
+        {
+          "code": "FORMAL_UNSUPPORTED",
+          "severity": "warning",
+          "message": "REQ-CHANGE-RECORD-TDD-PREFLIGHT-002 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+        },
+        {
+          "code": "FORMAL_UNSUPPORTED",
+          "severity": "warning",
+          "message": "REQ-CHANGE-RECORD-TDD-PREFLIGHT-003 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+        },
+        {
+          "code": "FORMAL_UNSUPPORTED",
+          "severity": "warning",
+          "message": "REQ-CHANGE-RECORD-TDD-PREFLIGHT-004 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
         },
         {
           "code": "FORMAL_UNSUPPORTED",
@@ -1060,7 +1080,7 @@
       "name": "workflow",
       "required": true,
       "status": "pass",
-      "summary": "129 workflow declaration(s) across 8 Skill(s) reconciled with Copilot invocation events.",
+      "summary": "132 workflow declaration(s) across 8 Skill(s) reconciled with Copilot invocation events.",
       "diagnostics": [
         {
           "code": "WORKFLOW_SKILL_NOT_INVOKED",
@@ -4421,6 +4441,90 @@
             "recordedAt": "2026-09-26T06:08:08.507Z",
             "waiverRecordedAt": "2026-09-26T06:08:08.507Z"
           }
+        },
+        {
+          "code": "WORKFLOW_SKILL_NOT_INVOKED",
+          "severity": "warning",
+          "message": "sdd-implementation:complete has no matching earlier completed Copilot Skill invocation.",
+          "skill": "sdd-implementation",
+          "phase": "complete",
+          "declarationRecordedAt": "2026-09-26T14:46:52.183Z",
+          "waiver": {
+            "approver": "nahisaho",
+            "reason": "Compatible verification of the live current-session transcript completed; remaining declaration-scoped historical workflow diagnostics are reviewed legacy evidence and do not indicate failed CHANGE-0052 checks.",
+            "recordedAt": "2026-09-26T15:14:54.949Z",
+            "waiverRecordedAt": "2026-09-26T15:14:54.949Z"
+          }
+        },
+        {
+          "code": "WORKFLOW_BINDING_MISSING",
+          "severity": "warning",
+          "message": "sdd-implementation:complete is not one-to-one bound to completed invocation evidence.",
+          "skill": "sdd-implementation",
+          "phase": "complete",
+          "declarationRecordedAt": "2026-09-26T14:46:52.183Z",
+          "waiver": {
+            "approver": "nahisaho",
+            "reason": "Compatible verification of the live current-session transcript completed; remaining declaration-scoped historical workflow diagnostics are reviewed legacy evidence and do not indicate failed CHANGE-0052 checks.",
+            "recordedAt": "2026-09-26T15:14:54.949Z",
+            "waiverRecordedAt": "2026-09-26T15:14:54.949Z"
+          }
+        },
+        {
+          "code": "WORKFLOW_SKILL_NOT_INVOKED",
+          "severity": "warning",
+          "message": "sdd-quality:complete has no matching earlier completed Copilot Skill invocation.",
+          "skill": "sdd-quality",
+          "phase": "complete",
+          "declarationRecordedAt": "2026-09-26T16:26:32.242Z",
+          "waiver": {
+            "approver": "nahisaho",
+            "reason": "Compatible verification of the live Copilot transcript completed; waive remaining declaration-scoped historical invocation and binding diagnostics for CHANGE-0052 release reconciliation.",
+            "recordedAt": "2026-09-26T16:35:44.435Z",
+            "waiverRecordedAt": "2026-09-26T16:35:44.435Z"
+          }
+        },
+        {
+          "code": "WORKFLOW_BINDING_MISSING",
+          "severity": "warning",
+          "message": "sdd-quality:complete is not one-to-one bound to completed invocation evidence.",
+          "skill": "sdd-quality",
+          "phase": "complete",
+          "declarationRecordedAt": "2026-09-26T16:26:32.242Z",
+          "waiver": {
+            "approver": "nahisaho",
+            "reason": "Compatible verification of the live Copilot transcript completed; waive remaining declaration-scoped historical invocation and binding diagnostics for CHANGE-0052 release reconciliation.",
+            "recordedAt": "2026-09-26T16:35:44.435Z",
+            "waiverRecordedAt": "2026-09-26T16:35:44.435Z"
+          }
+        },
+        {
+          "code": "WORKFLOW_INVOCATION_REUSED",
+          "severity": "warning",
+          "message": "sdd-change:complete would reuse an invocation already bound to another declaration.",
+          "skill": "sdd-change",
+          "phase": "complete",
+          "declarationRecordedAt": "2026-09-26T17:41:13.148Z",
+          "waiver": {
+            "approver": "nahisaho",
+            "reason": "Compatible verification of the live Copilot transcript completed after the final CHANGE-0052 declaration; waive remaining declaration-scoped historical binding, invocation reuse, and skill invocation diagnostics.",
+            "recordedAt": "2026-09-26T17:49:39.459Z",
+            "waiverRecordedAt": "2026-09-26T17:49:39.459Z"
+          }
+        },
+        {
+          "code": "WORKFLOW_BINDING_MISSING",
+          "severity": "warning",
+          "message": "sdd-change:complete is not one-to-one bound to completed invocation evidence.",
+          "skill": "sdd-change",
+          "phase": "complete",
+          "declarationRecordedAt": "2026-09-26T17:41:13.148Z",
+          "waiver": {
+            "approver": "nahisaho",
+            "reason": "Compatible verification of the live Copilot transcript completed after the final CHANGE-0052 declaration; waive remaining declaration-scoped historical binding, invocation reuse, and skill invocation diagnostics.",
+            "recordedAt": "2026-09-26T17:49:39.459Z",
+            "waiverRecordedAt": "2026-09-26T17:49:39.459Z"
+          }
         }
       ]
     },
@@ -4428,14 +4532,14 @@
       "name": "tdd",
       "required": true,
       "status": "pass",
-      "summary": "464 Red-Green TDD cycle(s) recorded.",
+      "summary": "486 Red-Green TDD cycle(s) recorded.",
       "diagnostics": []
     },
     {
       "name": "change-history",
       "required": true,
       "status": "pass",
-      "summary": "48 staged change(s) checked for ordered artifact and TDD evidence.",
+      "summary": "49 staged change(s) checked for ordered artifact and TDD evidence.",
       "diagnostics": [
         {
           "code": "CHANGE_WAIVER_STALE",
@@ -5809,7 +5913,7 @@
           "waiver": {
             "approver": "nahisaho",
             "reason": "Pre-existing legacy diagnostic predating the CHANGE-0012 waiver mechanism; retroactively reviewed and accepted as historical debt.",
-            "recordedAt": "2026-09-12T23:58:12.686Z"
+            "recordedAt": "2026-09-26T14:56:19.616Z"
           }
         },
         {
@@ -5821,7 +5925,7 @@
           "waiver": {
             "approver": "nahisaho",
             "reason": "Pre-existing legacy diagnostic predating the CHANGE-0012 waiver mechanism; retroactively reviewed and accepted as historical debt.",
-            "recordedAt": "2026-09-12T23:58:13.068Z"
+            "recordedAt": "2026-09-26T14:56:20.760Z"
           }
         },
         {
@@ -5833,7 +5937,7 @@
           "waiver": {
             "approver": "nahisaho",
             "reason": "Pre-existing legacy diagnostic predating the CHANGE-0012 waiver mechanism; retroactively reviewed and accepted as historical debt.",
-            "recordedAt": "2026-09-12T23:58:13.468Z"
+            "recordedAt": "2026-09-26T14:56:21.899Z"
           }
         },
         {
@@ -5845,7 +5949,7 @@
           "waiver": {
             "approver": "nahisaho",
             "reason": "Pre-existing legacy diagnostic predating the CHANGE-0012 waiver mechanism; retroactively reviewed and accepted as historical debt.",
-            "recordedAt": "2026-09-12T23:58:13.877Z"
+            "recordedAt": "2026-09-26T14:56:23.024Z"
           }
         },
         {
@@ -5857,7 +5961,7 @@
           "waiver": {
             "approver": "nahisaho",
             "reason": "Pre-existing legacy diagnostic predating the CHANGE-0012 waiver mechanism; retroactively reviewed and accepted as historical debt.",
-            "recordedAt": "2026-09-12T23:58:14.255Z"
+            "recordedAt": "2026-09-26T14:56:23.675Z"
           }
         },
         {
@@ -5869,7 +5973,7 @@
           "waiver": {
             "approver": "nahisaho",
             "reason": "Pre-existing legacy diagnostic predating the CHANGE-0012 waiver mechanism; retroactively reviewed and accepted as historical debt.",
-            "recordedAt": "2026-09-12T23:58:14.624Z"
+            "recordedAt": "2026-09-26T14:56:24.782Z"
           }
         },
         {
@@ -6496,7 +6600,7 @@
       "name": "change-completeness",
       "required": true,
       "status": "pass",
-      "summary": "48/48 staged change(s) have semantically complete evidence.",
+      "summary": "49/49 staged change(s) have semantically complete evidence.",
       "diagnostics": [
         {
           "code": "CHANGE_WAIVER_STALE",
@@ -7059,7 +7163,7 @@
           "waiver": {
             "approver": "nahisaho",
             "reason": "Pre-existing legacy diagnostic predating the CHANGE-0012 waiver mechanism; retroactively reviewed and accepted as historical debt.",
-            "recordedAt": "2026-09-12T23:58:29.715Z"
+            "recordedAt": "2026-09-26T15:00:33.193Z"
           }
         },
         {
@@ -7071,7 +7175,7 @@
           "waiver": {
             "approver": "nahisaho",
             "reason": "Pre-existing legacy diagnostic predating the CHANGE-0012 waiver mechanism; retroactively reviewed and accepted as historical debt.",
-            "recordedAt": "2026-09-12T23:58:30.076Z"
+            "recordedAt": "2026-09-26T15:00:34.336Z"
           }
         },
         {
@@ -7083,7 +7187,7 @@
           "waiver": {
             "approver": "nahisaho",
             "reason": "Pre-existing legacy diagnostic predating the CHANGE-0012 waiver mechanism; retroactively reviewed and accepted as historical debt.",
-            "recordedAt": "2026-09-12T23:58:30.423Z"
+            "recordedAt": "2026-09-26T15:00:35.451Z"
           }
         },
         {
@@ -7609,7 +7713,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 1699,
+      "durationMs": 1724,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/requirements-design-scaffold-tests/aggregate.json\n",
       "stderr": ""
@@ -7619,7 +7723,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 7005,
+      "durationMs": 6790,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/approval-tests/aggregate.json\n",
       "stderr": ""
@@ -7629,7 +7733,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 8664,
+      "durationMs": 8499,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/approval-domain-scoping-tests/aggregate.json\n",
       "stderr": ""
@@ -7639,7 +7743,7 @@
       "required": true,
       "status": "pass",
       "summary": "npm: completed, exit 0.",
-      "durationMs": 3192,
+      "durationMs": 3545,
       "exitCode": 0,
       "stdout": "\n> musubix3@0.1.20 typecheck\n> tsc --noEmit\n\n",
       "stderr": ""
@@ -7649,7 +7753,7 @@
       "required": true,
       "status": "pass",
       "summary": "npm: completed, exit 0.",
-      "durationMs": 2715,
+      "durationMs": 3078,
       "exitCode": 0,
       "stdout": "\n> musubix3@0.1.20 build\n> tsc -p tsconfig.build.json\n\n",
       "stderr": ""
@@ -7659,7 +7763,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 30389,
+      "durationMs": 30559,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/session-tests/aggregate.json\n",
       "stderr": ""
@@ -7669,9 +7773,9 @@
       "required": true,
       "status": "pass",
       "summary": "npm: completed, exit 0.",
-      "durationMs": 160561,
+      "durationMs": 188856,
       "exitCode": 0,
-      "stdout": "\n> musubix3@0.1.20 test\n> vitest run\n\n\n\u001b[1m\u001b[30m\u001b[46m RUN \u001b[49m\u001b[39m\u001b[22m \u001b[36mv4.1.11 \u001b[39m\u001b[90m/home/nahisaho/GitHub/musubix3\u001b[39m\n\n \u001b[32m✓\u001b[39m tests/gate-install.test.ts \u001b[2m(\u001b[22m\u001b[2m73 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 32243\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m runs actual commands and persists freshness-aware successful evidence \u001b[33m 1424\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m fails a structured test command that reports only skipped tests \u001b[33m 751\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m fails an exit-zero command whose structured test reports failed \u001b[33m 698\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m fails an exit-zero command whose structured test reports error \u001b[33m 798\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m keeps optional structured-test failures out of identity diagnostics \u001b[33m 711\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m does not accept passing entries from a rejected optional report as test identity evidence \u001b[33m 702\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m fails a structured test command that reports zero tests \u001b[33m 673\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m supports a required formal gate with persisted modeled coverage \u001b[33m 743\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m requires annotated test IDs to pass in a fresh structured command report \u001b[33m 1406\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m records a verified Red-Green-Refactor cycle without allowing test mutation \u001b[33m 947\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m chains immutable TDD phase records and detects mutation, deletion and reordering \u001b[33m 369\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m proves staged change order with artifact fingerprints and TDD evidence \u001b[33m 4056\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m rejects unrelated source changes as implementation evidence for a requirement \u001b[33m 2405\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m rejects reused TDD output and reconciles required workflow with actual Skill calls \u001b[33m 1425\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m fails a required formal gate below the modeled fraction threshold \u001b[33m 697\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m fails missing required commands, while retaining skipped status \u001b[33m 643\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m fails real nonzero exits and timeouts \u001b[33m 1143\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m uses coverage thresholds without disguising missing coverage \u001b[33m 675\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m rejects quality policy weakening against the trusted baseline \u001b[33m 677\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m requires independent approval when the policy baseline changes \u001b[33m 617\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m fails if verification mutates its own input snapshot \u001b[33m 696\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m ignores standard Cargo and Maven target output without weakening source stability \u001b[33m 654\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m keeps source directories named target inside the stability snapshot \u001b[33m 671\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m ignores manifest-scoped .NET bin and obj output without hiding source directories \u001b[33m 672\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m ignores manifest-scoped ecosystem caches without hiding same-named source directories \u001b[33m 791\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m ignores Python bytecode caches without hiding Python source \u001b[33m 651\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m ignores the conventional project-local NuGet package cache \u001b[33m 637\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m ignores Python virtual environments identified by pyvenv.cfg without hiding similarly named source \u001b[33m 628\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m does not exclude a source tree when pyvenv.cfg is not a regular file \u001b[33m 630\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m does not exclude an arbitrary source tree with a regular pyvenv.cfg marker \u001b[33m 654\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m changed mode captures changes and still runs actual commands \u001b[33m 630\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m preserves the latest changed-run evidence across a later full gate \u001b[33m 1180\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/change-evidence-waiver.test.ts \u001b[2m(\u001b[22m\u001b[2m28 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 41871\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-EVIDENCE-WAIVER-001 rejects a waiver for any code outside the twelve-code allow-list \u001b[33m 2288\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-EVIDENCE-WAIVER-002 rejects a waiver when no matching diagnostic is currently reported \u001b[33m 1763\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-EVIDENCE-WAIVER-003 requires a non-empty approver and reason \u001b[33m 1631\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-EVIDENCE-WAIVER-004 binds requirement-scoping to each code's own granularity \u001b[33m 1679\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-EVIDENCE-WAIVER-005 records the waiver as a hash-chained, ordered, identity-bound entry, and starts non-stale \u001b[33m 1725\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-EVIDENCE-WAIVER-006 downgrades only the exact waived instance, never any other change/requirement/code \u001b[33m 1595\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-EVIDENCE-WAIVER-007 rejects a duplicate waiver for an already validly waived, non-stale scope \u001b[33m 1626\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-EVIDENCE-WAIVER-008 treats a waiver as stale once its snapshot payload changes, reporting it error again plus a stale diagnostic \u001b[33m 2767\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-EVIDENCE-WAIVER-009 reports malformed waiver evidence without downgrading the targeted diagnostic \u001b[33m 1569\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-EVIDENCE-WAIVER-010 surfaces active waivers for audit visibility, excluding stale/malformed ones \u001b[33m 1610\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-EVIDENCE-WAIVER-011 attaches structured changeId/requirementId targets to every waivable diagnostic \u001b[33m 1599\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-EVIDENCE-WAIVER-012 redefines change-history/change-completeness validity as free of error-severity diagnostics \u001b[33m 2804\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-EVIDENCE-WAIVER-014 waives detail-scoped CHANGE_PHASE_MISSING using the phase:<name> grammar \u001b[33m 542\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-EVIDENCE-WAIVER-015 waives batch-scoped CHANGE_TESTS_UNCHANGED using the bare batchKey grammar \u001b[33m 1373\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-EVIDENCE-WAIVER-016 reports a resolved stale waiver as a warning without fabricating its target diagnostic \u001b[33m 553\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-EVIDENCE-WAIVER-017 rejects an indeterminate absent-batch scope without writing evidence \u001b[33m 1598\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-EVIDENCE-WAIVER-018 keeps structurally valid historical evidence linked after mutable debt resolution \u001b[33m 526\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-EVIDENCE-WAIVER-019 explains that resolved stale evidence no longer needs a replacement waiver \u001b[33m 494\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-EVIDENCE-WAIVER-020 rejects a resolved scope without writing waiver evidence \u001b[33m 478\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-EVIDENCE-WAIVER-022 reports a hash-stable resolved waiver as stale warning in both validators \u001b[33m 1657\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-EVIDENCE-WAIVER-023 stales a batch waiver when a later duplicate key owns the same debt \u001b[33m 1242\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-EVIDENCE-WAIVER-026 keeps the single-match hash stable while false condition alone makes it stale \u001b[33m 1589\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-EVIDENCE-WAIVER-027 reports precise false true and indeterminate stale remediation in both validators \u001b[33m 4766\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-EVIDENCE-WAIVER-028 preserves batch parity and shared gate status audit order \u001b[33m 3742\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/cli-package.test.ts \u001b[2m(\u001b[22m\u001b[2m15 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 30915\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m prints version/help and JSON validation with nonzero failure \u001b[33m 1201\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m returns structured errors for missing files, invalid solver and unknown commands \u001b[33m 926\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m supports init alias, dry-run, status and native-bin symlink invocation \u001b[33m 1591\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m requires explicit confirmation before recording human approval \u001b[33m 2261\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m runs full workflow and reports JSON evidence \u001b[33m 10136\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m reports and enforces strict Code Graph mode through CLI gates and status \u001b[33m 2908\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m enforces strict workflow session identity from config and CLI \u001b[33m 2168\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m derives the configured GitHub OIDC audience without reading a private key \u001b[33m 412\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m records a staged change checkpoint through the CLI \u001b[33m 2539\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m returns exit 1 for incomplete starter gates and contradictory requirements \u001b[33m 1466\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m executes a complete CLI TDD cycle and exposes it to the gate \u001b[33m 3184\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-SESSION-SCOPED-DEVELOPMENT-002 reuses evidence only for an explicit change ID \u001b[33m 1229\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m validates native manifests and packed hidden skills/built engine/assets \u001b[33m 861\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/change-requirement-batches.test.ts \u001b[2m(\u001b[22m\u001b[2m10 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 21805\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-REQUIREMENT-BATCHES-001 completes an interleaved Red-Implement-Green loop per requirement batch \u001b[33m 4712\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-REQUIREMENT-BATCHES-002 rejects Implementation for a batch before its own Red and Green before its own Implementation \u001b[33m 2478\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-REQUIREMENT-BATCHES-003 rejects Quality until every requirement has Green coverage \u001b[33m 3887\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-REQUIREMENT-BATCHES-006 recognizes every requirement in one authoritative @verifies declaration \u001b[33m 2901\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-REQUIREMENT-BATCHES-007 uses trace-compatible polyglot comment blocks for authoritative tests \u001b[33m 2790\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m suppresses fully superseded batch diagnostics in validation and waiver recording \u001b[33m 5033\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/change-quality-refresh.test.ts \u001b[2m(\u001b[22m\u001b[2m3 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 14209\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-QUALITY-REFRESH-001 appends a current Quality checkpoint and retains immutable history \u001b[33m 5962\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-QUALITY-REFRESH-002 rejects unnecessary refreshes and projects dry-run without reserving order \u001b[33m 5493\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-QUALITY-REFRESH-003 validates versioned lineage and exposes deterministic recovery \u001b[33m 2753\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/change-record-fail-fast.test.ts \u001b[2m(\u001b[22m\u001b[2m10 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 16025\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-RECORD-FAIL-FAST-001 rejects an unchanged requirements phase at record time, leaving evidence untouched \u001b[33m 1693\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-RECORD-FAIL-FAST-002 rejects an unchanged design phase at record time, leaving evidence untouched \u001b[33m 1631\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-RECORD-FAIL-FAST-003 rejects an unchanged tests fingerprint at Red record time, leaving evidence untouched \u001b[33m 1964\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-RECORD-FAIL-FAST-004 rejects an unchanged implementation fingerprint at Implementation record time, leaving evidence untouched \u001b[33m 2334\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-RECORD-FAIL-FAST-005 rejects an unchanged per-requirement relevant-implementation fingerprint, naming the unchanged requirement \u001b[33m 2452\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-RECORD-FAIL-FAST-011 leaves both changes.json and order.json byte-identical across every rejection kind, including the evidence-order sequence \u001b[33m 1853\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-RECORD-FAIL-FAST-006 allows an explicitly overridden unchanged requirements phase and persists the marker \u001b[33m 1204\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-RECORD-FAIL-FAST-007 suppresses only CHANGE_REQUIREMENTS_UNCHANGED for a marked override, not the other unchanged diagnostics \u001b[33m 865\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-RECORD-FAIL-FAST-008 previews a phase recording with --dry-run without persisting it, in both outcomes \u001b[33m 1586\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-RECORD-FAIL-FAST-009 documents the fail-fast rejection, --allow-unchanged, and --dry-run in --help \u001b[33m 441\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/npm-audit-remediation.test.ts \u001b[2m(\u001b[22m\u001b[2m5 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 8522\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-NPM-AUDIT-REMEDIATION-001 records the reviewed advisory and reachability evidence \u001b[33m 964\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-NPM-AUDIT-REMEDIATION-002 resolves every Vitest tooling path outside the advisory range \u001b[33m 1404\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-NPM-AUDIT-REMEDIATION-003 preserves test configuration and CI execution contracts \u001b[33m 5269\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-NPM-AUDIT-REMEDIATION-004 documents the dependency-audit monitoring policy \u001b[33m 850\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/p3-performance-provenance.test.ts \u001b[2m(\u001b[22m\u001b[2m9 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 11591\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m binds every observation to the exact successful command and fresh report \u001b[33m 1212\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m detects report tampering and makes prior quality status stale \u001b[33m 880\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m rejects duplicate counter reports and withholds provenance from rejected test reports \u001b[33m 2382\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m rejects failed executions, missing provenance, and configuration drift \u001b[33m 2668\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m binds semantic provenance records into the attestation performance head \u001b[33m 737\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m keeps semantic performance and quality heads stable across gate-sign-gate runs \u001b[33m 1371\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m attests stable quality verdicts and widened formal verdict fields \u001b[33m 863\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m persists stdout adapter reports and detects later tampering \u001b[33m 707\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m fails attestation verification when the bound report is changed after signing \u001b[33m 770\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/workflow-evidence-waiver.test.ts \u001b[2m(\u001b[22m\u001b[2m18 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 10351\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-WORKFLOW-EVIDENCE-WAIVER-002 rejects CLI calls with disallowed codes, missing confirmation, missing options, bad timestamps, and invalid --index values \u001b[33m 1856\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-WORKFLOW-EVIDENCE-WAIVER-004 records a genesis waiver, downgrades only the exact colliding scope, and surfaces workflowWaivers in gate/status \u001b[33m 1170\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-WORKFLOW-EVIDENCE-WAIVER-006 reports malformed workflow-waiver evidence separately and rejects further appends until repaired \u001b[33m 928\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-WORKFLOW-EVIDENCE-WAIVER-007 passes the workflow gate when every workflow error is waived, while leaving non-waived diagnostics as errors \u001b[33m 1461\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-WORKFLOW-EVIDENCE-WAIVER-012 keeps stale workflow-waiver audit visible for version, changed-code, and resolved outcomes while restoring scoped errors \u001b[33m 2218\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-WORKFLOW-EVIDENCE-WAIVER-013 evaluates only authoritative workflow-waiver records and preserves audit order and shape \u001b[33m 379\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-WORKFLOW-EVIDENCE-WAIVER-015 preserves malformed waiver audit and rejects recording while reconciliation suppresses scope evaluation \u001b[33m 341\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-WORKFLOW-EVIDENCE-WAIVER-011 keeps malformed workflow waiver diagnostics non-blocking when the workflow check itself has no error-severity diagnostics \u001b[33m 747\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/p4-correspondence-mutation.test.ts \u001b[2m(\u001b[22m\u001b[2m12 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 9172\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m proves explicit formal requirements through fresh trace and passing test reports \u001b[33m 1285\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m validates model correspondence against the exact merged .NET command \u001b[33m 879\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m fails closed when formal or generated trace evidence becomes stale \u001b[33m 827\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m accepts current deterministic killed mutants and binds both evidence heads \u001b[33m 963\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m fails closed when strict mode has no mutation report \u001b[33m 723\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m rejects survived mutants \u001b[33m 773\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m rejects skipped mutants \u001b[33m 799\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m rejects duplicate, unlinked, and stale mutation evidence \u001b[33m 2413\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/attestation-evidence-stability.test.ts \u001b[2m(\u001b[22m\u001b[2m5 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 9132\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-ATTESTATION-EVIDENCE-STABILITY-002 keeps a signed attestation valid across a no-op gate re-run with reordered mutants \u001b[33m 2175\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-ATTESTATION-EVIDENCE-STABILITY-003 keeps all ten evidenceHeads entries stable across full, --changed, and --feature no-op re-runs \u001b[33m 6944\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/tdd-repeated-requirement-option.test.ts \u001b[2m(\u001b[22m\u001b[2m3 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 8343\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-TDD-REPEATED-REQUIREMENT-OPTION-001 rejects repeated requirements before any TDD phase side effect \u001b[33m 6964\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-TDD-REPEATED-REQUIREMENT-OPTION-002 documents one requirement per TDD invocation \u001b[33m 1231\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/approval-domain-scoping.test.ts \u001b[2m(\u001b[22m\u001b[2m24 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 8288\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-APPROVAL-DOMAIN-SCOPING-002 rejects a feature matched by more than one domain \u001b[33m 339\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-APPROVAL-DOMAIN-SCOPING-008 reports every domain plus release when validate omits --domain \u001b[33m 346\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-APPROVAL-DOMAIN-SCOPING-013 invalidates every domain approval when the constitution changes \u001b[33m 361\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-APPROVAL-DOMAIN-SCOPING-015 stores each domain's evidence independently of other domains and repo-wide evidence \u001b[33m 317\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-APPROVAL-DOMAIN-SCOPING-016 blocks a design-owning domain's requirement until only that domain approves \u001b[33m 330\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-APPROVAL-DOMAIN-SCOPING-018 blocks TDD Red for a requirement until only its owning domain's design approves \u001b[33m 514\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-APPROVAL-DOMAIN-SCOPING-019 scopes gate --feature's approval check to the owning domain only \u001b[33m 1591\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-APPROVAL-DOMAIN-SCOPING-021 reports a per-domain breakdown in full-repo gate \u001b[33m 1012\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-APPROVAL-DOMAIN-SCOPING-022 requires every domain and release current for overall validity \u001b[33m 458\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-APPROVAL-DOMAIN-SCOPING-023 computes the identical manifest hash at every evaluation site \u001b[33m 339\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/change-record-recordedat-order.test.ts \u001b[2m(\u001b[22m\u001b[2m3 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 8412\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-RECORD-RECORDEDAT-ORDER-001 documents that order (not recordedAt) is the verified chronology field, in --help and README \u001b[33m 594\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-RECORD-RECORDEDAT-ORDER-002 reports exactly one warning-severity CHANGE_RECORDEDAT_OUT_OF_ORDER diagnostic for an inverted consecutive order pair, and none when recordedAt is monotonic \u001b[33m 4266\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-RECORD-RECORDEDAT-ORDER-003 excludes entries with a duplicated order, a missing order, or a non-canonical recordedAt from the inversion comparison, while still flagging an unrelated valid inversion \u001b[33m 3550\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/approval.test.ts \u001b[2m(\u001b[22m\u001b[2m8 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 6089\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-HUMAN-APPROVAL-GATES-001 records explicitly confirmed approval fields \u001b[32m 300\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-HUMAN-APPROVAL-GATES-006 recomputes quality before release approval \u001b[33m 3907\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-HUMAN-APPROVAL-GATES-007 rejects invalid artifacts and reports malformed evidence \u001b[33m 881\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/trace-graph.test.ts \u001b[2m(\u001b[22m\u001b[2m62 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 7178\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m indexes static, re-export, dynamic, require, symbols and call targets \u001b[33m 851\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m resolves tsconfig path aliases and JS directory imports \u001b[33m 582\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m resolves nearest nested tsconfig paths \u001b[33m 480\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m resolves NodeNext import/require conditions according to usage \u001b[33m 479\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m finds cycles, self cycles and enforces architecture globs \u001b[33m 472\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m reports unresolved local and nonliteral imports honestly \u001b[33m 426\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m refuses stale caches after source and config changes \u001b[33m 681\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/cli-workflow-ux.test.ts \u001b[2m(\u001b[22m\u001b[2m6 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 4938\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CLI-WORKFLOW-UX-001 excludes nested MUSUBIX3 workspaces from ancestor scans \u001b[33m 875\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CLI-WORKFLOW-UX-002 states bidirectional candidate semantics for trace impact text output \u001b[33m 1083\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CLI-WORKFLOW-UX-005 scopes gate status to one feature, isolating unrelated failures \u001b[33m 2546\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/tdd-cycle-void.test.ts \u001b[2m(\u001b[22m\u001b[2m13 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 4530\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-TDD-CYCLE-VOID-001 rejects voiding a cycle whose latest Green is already valid \u001b[33m 307\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-TDD-CYCLE-VOID-002 rejects voiding when no earlier non-voided valid fallback cycle exists \u001b[33m 520\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-TDD-CYCLE-VOID-005 treats a void payload with a mismatched cycleId chain record as not validly linked \u001b[33m 316\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-TDD-CYCLE-VOID-006 reports malformed void evidence for a duplicated void chain record \u001b[33m 316\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-TDD-CYCLE-VOID-007 still raises TDD_GREEN_MISSING alongside the malformed-void diagnostic \u001b[33m 333\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-TDD-CYCLE-VOID-008 suppresses missing-phase diagnostics independently for each validly voided trailing cycle \u001b[33m 396\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-TDD-CYCLE-VOID-009 leaves diagnostics for a non-voided cycle unaffected by voiding a different cycle \u001b[33m 353\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-TDD-CYCLE-VOID-010 computes TDD_TEST_STALE against the nearest earlier non-voided valid cycle after voiding \u001b[33m 331\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-TDD-CYCLE-VOID-011 rejects re-voiding but allows voiding a fresh later cycle \u001b[33m 437\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-TDD-CYCLE-VOID-012 routes tdd migrate around a validly voided latest cycle \u001b[33m 319\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-TDD-CYCLE-VOID-013 surfaces scoped void evidence in tdd validate output, keyed to its own cycle \u001b[33m 307\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/evidence-writer-lock-integration.test.ts \u001b[2m(\u001b[22m\u001b[2m21 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 3120\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-EVIDENCE-WRITER-LOCK-010 preserves typed CLI lock errors and recovers a dead Linux owner \u001b[33m 600\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-EVIDENCE-WRITER-LOCK-020 initializes a nonexistent root under the writer lock \u001b[33m 404\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-EVIDENCE-WRITER-LOCK-016 gives exactly one process ownership at a shared barrier \u001b[33m 343\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-EVIDENCE-WRITER-LOCK-017 keeps exempt CLI operations independent of a foreign lock \u001b[33m 911\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-EVIDENCE-WRITER-LOCK-018 blocks graph gate before replacing the code graph cache \u001b[33m 320\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/change-acceptance-heuristic.test.ts \u001b[2m(\u001b[22m\u001b[2m6 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 4288\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-ACCEPTANCE-HEURISTIC-001 recognizes report/error/naming vocabulary as measurable acceptance \u001b[33m 989\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-ACCEPTANCE-HEURISTIC-002 recognizes exit/configur vocabulary as measurable acceptance \u001b[33m 601\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-ACCEPTANCE-HEURISTIC-003 recognizes contain/unaffected/stale vocabulary as measurable acceptance \u001b[33m 621\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-ACCEPTANCE-HEURISTIC-004 still rejects whole-value placeholders and too-short text \u001b[33m 713\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-ACCEPTANCE-HEURISTIC-005 still rejects placeholder-prefixed text even when it contains a newly recognized keyword \u001b[33m 780\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-ACCEPTANCE-HEURISTIC-006 still rejects long non-placeholder prose containing no recognized keyword \u001b[33m 583\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/p3-codegraph-policy.test.ts \u001b[2m(\u001b[22m\u001b[2m6 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 3324\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m keeps unresolved computed imports and requires as compatible warnings by default \u001b[33m 777\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m upgrades unresolved computed loading to gate-blocking errors in strict mode \u001b[33m 1296\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m rejects weakening a strict trusted Code Graph baseline \u001b[33m 823\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m allows statically resolvable cache-busting imports in strict mode \u001b[33m 424\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/evidence-history-merge.test.ts \u001b[2m(\u001b[22m\u001b[2m6 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 3079\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-EVIDENCE-HISTORY-MERGE-001 preserves base order, deduplicates the ancestor, and appends incoming history \u001b[33m 685\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-EVIDENCE-HISTORY-MERGE-002 rebuilds order references and the TDD hash chain into a valid candidate \u001b[33m 641\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-EVIDENCE-HISTORY-MERGE-003 rejects divergent payloads for the same cycle phase without writing \u001b[33m 397\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-EVIDENCE-HISTORY-MERGE-004 restores byte-identical evidence after an injected replacement failure \u001b[33m 513\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-EVIDENCE-HISTORY-MERGE-005 dry-run returns the merge plan without writing any evidence file \u001b[33m 483\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-EVIDENCE-HISTORY-MERGE-009 uses the injected canonical resolver for base and incoming planning \u001b[33m 358\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/github-actions-node24-runtime.test.ts \u001b[2m(\u001b[22m\u001b[2m8 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 2920\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-GITHUB-ACTIONS-NODE24-RUNTIME-002 preserves protected workflows and release artifact hand-offs \u001b[33m 335\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-GITHUB-ACTIONS-PROJECT-NODE24-002 binds prior publishing provenance to exact runtime-only changes \u001b[33m 476\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-GITHUB-ACTIONS-PROJECT-NODE24-003 enforces exact bilingual documentation and evidence states \u001b[33m 1114\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/bounded-file-read-concurrency.test.ts \u001b[2m(\u001b[22m\u001b[2m4 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 4232\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-BOUNDED-FILE-READ-CONCURRENCY-002 snapshots a large path list without exceeding the OS file-descriptor limit \u001b[33m 945\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-BOUNDED-FILE-READ-CONCURRENCY-003 bounds concurrent reads while Code Graph loads a language with many source files \u001b[33m 839\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-BOUNDED-FILE-READ-CONCURRENCY-004 bounds concurrent reads while knowledge build loads many Markdown documents \u001b[33m 2427\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/release-version-synchronization.test.ts \u001b[2m(\u001b[22m\u001b[2m7 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 3469\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-RELEASE-VERSION-SYNCHRONIZATION-001 synchronizes and checks every declared surface deterministically \u001b[33m 1541\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-RELEASE-VERSION-SYNCHRONIZATION-002 rejects stale plans and rolls back staged and partial commits \u001b[33m 779\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-RELEASE-VERSION-SYNCHRONIZATION-006 preserves undeclared JSON bytes and modes without phantom rollback \u001b[33m 336\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/tdd-adoption-warning.test.ts \u001b[2m(\u001b[22m\u001b[2m7 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 2272\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-TDD-ADOPTION-WARNING-001 warns exactly once, listing other uncovered mandatory requirements, on the project-first Red \u001b[33m 351\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m prints the warning message via the default (non-JSON) CLI output without changing exit code \u001b[33m 636\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-TDD-ADOPTION-WARNING-002 documents the project-wide adoption semantics in --help and README \u001b[33m 427\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/transaction-directory-sync-policy.test.ts \u001b[2m(\u001b[22m\u001b[2m5 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 1915\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-TRANSACTION-DIRECTORY-SYNC-POLICY-003 preserves transaction recovery diagnostics \u001b[33m 518\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-TRANSACTION-DIRECTORY-SYNC-POLICY-005 preserves forwarding, policies, and unsafe recovery boundaries \u001b[33m 1388\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/workflow-multi-session-verification.test.ts \u001b[2m(\u001b[22m\u001b[2m18 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 1683\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-002 reports one ledger build and memoized scope heads \u001b[33m 1101\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/command-working-directory.test.ts \u001b[2m(\u001b[22m\u001b[2m3 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 1466\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-COMMAND-WORKING-DIRECTORY-001 runs a configured command with its own working directory \u001b[33m 1183\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/workflow-waiver-bulk-recording.test.ts \u001b[2m(\u001b[22m\u001b[2m4 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 1158\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-WORKFLOW-WAIVER-BULK-002 rejects the whole bulk invocation without writing when any precondition fails \u001b[33m 483\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-WORKFLOW-WAIVER-BULK-003 reports zero recorded waivers without writing when nothing currently qualifies \u001b[33m 457\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/design-adr-none-exemption.test.ts \u001b[2m(\u001b[22m\u001b[2m4 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 1376\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-DESIGN-ADR-NONE-EXEMPTION-004 applies parsed exemptions to change completeness \u001b[33m 1369\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/p2-improvements.test.ts \u001b[2m(\u001b[22m\u001b[2m18 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 1161\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m resolves safe local cache-busting imports and package entrypoints without hiding arbitrary dynamics \u001b[33m 878\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/php-verification.test.ts \u001b[2m(\u001b[22m\u001b[2m11 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 896\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m fingerprints an indented block annotation instead of hashing an empty slice \u001b[33m 310\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m uses the structured report, not console output, so quiet runners are not false positives \u001b[33m 332\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/release-approval-ordering.test.ts \u001b[2m(\u001b[22m\u001b[2m7 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 957\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-RELEASE-APPROVAL-ORDERING-001 binds the approved Git candidate to the clean tagged release manifest \u001b[33m 337\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/release-asset-publishing.test.ts \u001b[2m(\u001b[22m\u001b[2m14 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 601\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/tdd-fingerprint-migration.test.ts \u001b[2m(\u001b[22m\u001b[2m2 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 759\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-TDD-FINGERPRINT-MIGRATION-001 migrates a cycle recorded under the superseded algorithm without a fresh Red/Green \u001b[33m 446\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-TDD-FINGERPRINT-MIGRATION-002 refuses to migrate a cycle whose test genuinely drifted \u001b[33m 312\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/tdd-fingerprint-scoping.test.ts \u001b[2m(\u001b[22m\u001b[2m2 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 621\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-TDD-FINGERPRINT-SCOPING-001 keeps a nested test non-stale when a later sibling test is appended \u001b[33m 336\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/tdd-superseded-cycle-scoping.test.ts \u001b[2m(\u001b[22m\u001b[2m2 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 629\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-TDD-SUPERSEDED-CYCLE-SCOPING-001 does not block gate on a superseded incomplete Red cycle \u001b[33m 365\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/tdd-green-requirement-scoping.test.ts \u001b[2m(\u001b[22m\u001b[2m2 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 613\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-TDD-GREEN-REQUIREMENT-SCOPING-001 completes an older pending cycle for the same test ID after a newer one starts \u001b[33m 335\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/p3-workflow-provenance.test.ts \u001b[2m(\u001b[22m\u001b[2m14 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 540\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/p3-attestation-oidc.test.ts \u001b[2m(\u001b[22m\u001b[2m10 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 689\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/p4-workflow-streaming.test.ts \u001b[2m(\u001b[22m\u001b[2m10 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 481\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/formal-knowledge.test.ts \u001b[2m(\u001b[22m\u001b[2m21 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[32m 269\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/model-correspondence-evidence-guidance.test.ts \u001b[2m(\u001b[22m\u001b[2m2 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 321\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/evidence-writer-lock.test.ts \u001b[2m(\u001b[22m\u001b[2m13 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[32m 204\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/upgrade-workflow.test.ts \u001b[2m(\u001b[22m\u001b[2m2 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[32m 200\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/evidence-history-merge-recovery.test.ts \u001b[2m(\u001b[22m\u001b[2m7 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[32m 169\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/adapter-pattern-recognition.test.ts \u001b[2m(\u001b[22m\u001b[2m2 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[32m 171\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/scaffold-artifact.test.ts \u001b[2m(\u001b[22m\u001b[2m6 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[32m 72\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/p3-formal.test.ts \u001b[2m(\u001b[22m\u001b[2m10 tests\u001b[22m\u001b[2m | \u001b[22m\u001b[33m2 skipped\u001b[39m\u001b[2m)\u001b[22m\u001b[32m 119\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/windows-core-portability.test.ts \u001b[2m(\u001b[22m\u001b[2m4 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[32m 14\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/domain.test.ts \u001b[2m(\u001b[22m\u001b[2m46 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[32m 38\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/ears-id-diagnostic-messages.test.ts \u001b[2m(\u001b[22m\u001b[2m3 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[32m 5\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/evidence-writer-lock-skill-guidance.test.ts \u001b[2m(\u001b[22m\u001b[2m1 test\u001b[22m\u001b[2m)\u001b[22m\u001b[32m 9\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/tdd-red-collection-guidance.test.ts \u001b[2m(\u001b[22m\u001b[2m1 test\u001b[22m\u001b[2m)\u001b[22m\u001b[32m 3\u001b[2mms\u001b[22m\u001b[39m\n \u001b[2m\u001b[90m↓\u001b[39m\u001b[22m tests/adapter-integration.test.ts \u001b[2m(\u001b[22m\u001b[2m6 tests\u001b[22m\u001b[2m | \u001b[22m\u001b[33m6 skipped\u001b[39m\u001b[2m)\u001b[22m\n\n\u001b[2m Test Files \u001b[22m \u001b[1m\u001b[32m55 passed\u001b[39m\u001b[22m\u001b[2m | \u001b[22m\u001b[33m1 skipped\u001b[39m\u001b[90m (56)\u001b[39m\n\u001b[2m      Tests \u001b[22m \u001b[1m\u001b[32m614 passed\u001b[39m\u001b[22m\u001b[2m | \u001b[22m\u001b[33m8 skipped\u001b[39m\u001b[90m (622)\u001b[39m\n\u001b[2m   Start at \u001b[22m 17:41:22\n\u001b[2m   Duration \u001b[22m 160.15s\u001b[2m (transform 1.83s, setup 0ms, import 16.79s, tests 297.45s, environment 4ms)\u001b[22m\n\n",
+      "stdout": "\n> musubix3@0.1.20 test\n> vitest run\n\n\n\u001b[1m\u001b[30m\u001b[46m RUN \u001b[49m\u001b[39m\u001b[22m \u001b[36mv4.1.11 \u001b[39m\u001b[90m/home/nahisaho/GitHub/musubix3\u001b[39m\n\n \u001b[32m✓\u001b[39m tests/change-evidence-waiver.test.ts \u001b[2m(\u001b[22m\u001b[2m28 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 38949\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-EVIDENCE-WAIVER-001 rejects a waiver for any code outside the twelve-code allow-list \u001b[33m 2158\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-EVIDENCE-WAIVER-002 rejects a waiver when no matching diagnostic is currently reported \u001b[33m 1597\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-EVIDENCE-WAIVER-003 requires a non-empty approver and reason \u001b[33m 1478\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-EVIDENCE-WAIVER-004 binds requirement-scoping to each code's own granularity \u001b[33m 1433\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-EVIDENCE-WAIVER-005 records the waiver as a hash-chained, ordered, identity-bound entry, and starts non-stale \u001b[33m 1559\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-EVIDENCE-WAIVER-006 downgrades only the exact waived instance, never any other change/requirement/code \u001b[33m 1616\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-EVIDENCE-WAIVER-007 rejects a duplicate waiver for an already validly waived, non-stale scope \u001b[33m 1630\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-EVIDENCE-WAIVER-008 treats a waiver as stale once its snapshot payload changes, reporting it error again plus a stale diagnostic \u001b[33m 1744\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-EVIDENCE-WAIVER-009 reports malformed waiver evidence without downgrading the targeted diagnostic \u001b[33m 1597\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-EVIDENCE-WAIVER-010 surfaces active waivers for audit visibility, excluding stale/malformed ones \u001b[33m 1536\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-EVIDENCE-WAIVER-011 attaches structured changeId/requirementId targets to every waivable diagnostic \u001b[33m 1531\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-EVIDENCE-WAIVER-012 redefines change-history/change-completeness validity as free of error-severity diagnostics \u001b[33m 2252\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-EVIDENCE-WAIVER-014 waives detail-scoped CHANGE_PHASE_MISSING using the phase:<name> grammar \u001b[33m 633\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-EVIDENCE-WAIVER-015 waives batch-scoped CHANGE_TESTS_UNCHANGED using the bare batchKey grammar \u001b[33m 1527\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-EVIDENCE-WAIVER-016 reports a resolved stale waiver as a warning without fabricating its target diagnostic \u001b[33m 670\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-EVIDENCE-WAIVER-017 rejects an indeterminate absent-batch scope without writing evidence \u001b[33m 1519\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-EVIDENCE-WAIVER-018 keeps structurally valid historical evidence linked after mutable debt resolution \u001b[33m 643\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-EVIDENCE-WAIVER-019 explains that resolved stale evidence no longer needs a replacement waiver \u001b[33m 671\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-EVIDENCE-WAIVER-020 rejects a resolved scope without writing waiver evidence \u001b[33m 595\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-EVIDENCE-WAIVER-022 reports a hash-stable resolved waiver as stale warning in both validators \u001b[33m 1675\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-EVIDENCE-WAIVER-023 stales a batch waiver when a later duplicate key owns the same debt \u001b[33m 1513\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-EVIDENCE-WAIVER-026 keeps the single-match hash stable while false condition alone makes it stale \u001b[33m 1479\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-EVIDENCE-WAIVER-027 reports precise false true and indeterminate stale remediation in both validators \u001b[33m 3252\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-EVIDENCE-WAIVER-028 preserves batch parity and shared gate status audit order \u001b[33m 3912\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/change-record-fail-fast.test.ts \u001b[2m(\u001b[22m\u001b[2m16 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 49486\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-RECORD-TDD-PREFLIGHT-001 rejects a multi-requirement Red append unless every requirement has eligible pending Red evidence \u001b[33m 2722\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-RECORD-TDD-PREFLIGHT-002 rejects Implementation when the persisted batch has bounded pending Red evidence for only its final requirement \u001b[33m 2083\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-RECORD-TDD-PREFLIGHT-003 rejects Green when only the final requirement has Green evidence after Implementation \u001b[33m 2097\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-RECORD-TDD-PREFLIGHT-004 returns deterministic structured CLI Red diagnostics with dry-run parity and no writes \u001b[33m 4359\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-RECORD-TDD-PREFLIGHT-005 renders stable non-JSON recovery guidance without writes \u001b[33m 2989\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-RECORD-FAIL-FAST-001 rejects an unchanged requirements phase at record time, leaving evidence untouched \u001b[33m 1562\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-RECORD-FAIL-FAST-002 rejects an unchanged design phase at record time, leaving evidence untouched \u001b[33m 1970\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-RECORD-FAIL-FAST-003 rejects an unchanged tests fingerprint at Red record time, leaving evidence untouched \u001b[33m 2666\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-RECORD-FAIL-FAST-004 rejects an unchanged implementation fingerprint at Implementation record time, leaving evidence untouched \u001b[33m 3064\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-RECORD-FAIL-FAST-005 rejects an unchanged per-requirement relevant-implementation fingerprint, naming the unchanged requirement \u001b[33m 3163\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-RECORD-FAIL-FAST-011 leaves both changes.json and order.json byte-identical across every rejection kind, including the evidence-order sequence \u001b[33m 2405\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-RECORD-FAIL-FAST-006 allows an explicitly overridden unchanged requirements phase and persists the marker \u001b[33m 1528\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-RECORD-FAIL-FAST-007 suppresses only CHANGE_REQUIREMENTS_UNCHANGED for a marked override, not the other unchanged diagnostics \u001b[33m 1021\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-RECORD-FAIL-FAST-008 previews a phase recording with --dry-run without persisting it, in both outcomes \u001b[33m 1813\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-RECORD-FAIL-FAST-009 documents the fail-fast rejection, --allow-unchanged, and --dry-run in --help \u001b[33m 554\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-RECORD-TDD-PREFLIGHT-006 rejects high-risk persisted TDD states with canonical ordered diagnostics and no writes \u001b[33m 15488\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/gate-install.test.ts \u001b[2m(\u001b[22m\u001b[2m73 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 39009\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m runs actual commands and persists freshness-aware successful evidence \u001b[33m 1514\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m fails a structured test command that reports only skipped tests \u001b[33m 880\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m fails an exit-zero command whose structured test reports failed \u001b[33m 827\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m fails an exit-zero command whose structured test reports error \u001b[33m 954\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m keeps optional structured-test failures out of identity diagnostics \u001b[33m 906\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m does not accept passing entries from a rejected optional report as test identity evidence \u001b[33m 842\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m fails a structured test command that reports zero tests \u001b[33m 774\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m supports a required formal gate with persisted modeled coverage \u001b[33m 867\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m requires annotated test IDs to pass in a fresh structured command report \u001b[33m 1867\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m records a verified Red-Green-Refactor cycle without allowing test mutation \u001b[33m 1083\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m chains immutable TDD phase records and detects mutation, deletion and reordering \u001b[33m 421\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m requires a Red-Green cycle for every mandatory requirement \u001b[33m 337\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m proves staged change order with artifact fingerprints and TDD evidence \u001b[33m 4992\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m rejects unrelated source changes as implementation evidence for a requirement \u001b[33m 3148\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m rejects reused TDD output and reconciles required workflow with actual Skill calls \u001b[33m 1789\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m fails a required formal gate below the modeled fraction threshold \u001b[33m 840\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m fails missing required commands, while retaining skipped status \u001b[33m 788\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m fails real nonzero exits and timeouts \u001b[33m 1381\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m uses coverage thresholds without disguising missing coverage \u001b[33m 875\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m rejects quality policy weakening against the trusted baseline \u001b[33m 897\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m requires independent approval when the policy baseline changes \u001b[33m 801\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m fails if verification mutates its own input snapshot \u001b[33m 753\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m ignores standard Cargo and Maven target output without weakening source stability \u001b[33m 793\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m keeps source directories named target inside the stability snapshot \u001b[33m 816\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m ignores manifest-scoped .NET bin and obj output without hiding source directories \u001b[33m 861\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m ignores manifest-scoped ecosystem caches without hiding same-named source directories \u001b[33m 908\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m ignores Python bytecode caches without hiding Python source \u001b[33m 775\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m ignores the conventional project-local NuGet package cache \u001b[33m 766\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m ignores Python virtual environments identified by pyvenv.cfg without hiding similarly named source \u001b[33m 739\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m does not exclude a source tree when pyvenv.cfg is not a regular file \u001b[33m 722\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m does not exclude an arbitrary source tree with a regular pyvenv.cfg marker \u001b[33m 726\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m changed mode captures changes and still runs actual commands \u001b[33m 705\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m preserves the latest changed-run evidence across a later full gate \u001b[33m 1408\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/cli-package.test.ts \u001b[2m(\u001b[22m\u001b[2m15 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 35649\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m prints version/help and JSON validation with nonzero failure \u001b[33m 1277\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m returns structured errors for missing files, invalid solver and unknown commands \u001b[33m 1145\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m supports init alias, dry-run, status and native-bin symlink invocation \u001b[33m 1721\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m requires explicit confirmation before recording human approval \u001b[33m 2495\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m runs full workflow and reports JSON evidence \u001b[33m 12053\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m reports and enforces strict Code Graph mode through CLI gates and status \u001b[33m 3468\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m enforces strict workflow session identity from config and CLI \u001b[33m 2520\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m derives the configured GitHub OIDC audience without reading a private key \u001b[33m 467\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m records a staged change checkpoint through the CLI \u001b[33m 2957\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m returns exit 1 for incomplete starter gates and contradictory requirements \u001b[33m 1802\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m executes a complete CLI TDD cycle and exposes it to the gate \u001b[33m 3435\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-SESSION-SCOPED-DEVELOPMENT-002 reuses evidence only for an explicit change ID \u001b[33m 1292\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m validates native manifests and packed hidden skills/built engine/assets \u001b[33m 984\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/change-quality-refresh.test.ts \u001b[2m(\u001b[22m\u001b[2m3 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 17865\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-QUALITY-REFRESH-001 appends a current Quality checkpoint and retains immutable history \u001b[33m 7530\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-QUALITY-REFRESH-002 rejects unnecessary refreshes and projects dry-run without reserving order \u001b[33m 6893\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-QUALITY-REFRESH-003 validates versioned lineage and exposes deterministic recovery \u001b[33m 3440\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/change-requirement-batches.test.ts \u001b[2m(\u001b[22m\u001b[2m10 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 26181\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-REQUIREMENT-BATCHES-001 completes an interleaved Red-Implement-Green loop per requirement batch \u001b[33m 5837\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-REQUIREMENT-BATCHES-002 rejects Implementation for a batch before its own Red and Green before its own Implementation \u001b[33m 2928\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-REQUIREMENT-BATCHES-003 rejects Quality until every requirement has Green coverage \u001b[33m 4717\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-REQUIREMENT-BATCHES-006 recognizes every requirement in one authoritative @verifies declaration \u001b[33m 3626\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-REQUIREMENT-BATCHES-007 uses trace-compatible polyglot comment blocks for authoritative tests \u001b[33m 3443\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m suppresses fully superseded batch diagnostics in validation and waiver recording \u001b[33m 5626\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/workflow-evidence-waiver.test.ts \u001b[2m(\u001b[22m\u001b[2m18 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 11091\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-WORKFLOW-EVIDENCE-WAIVER-002 rejects CLI calls with disallowed codes, missing confirmation, missing options, bad timestamps, and invalid --index values \u001b[33m 2107\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-WORKFLOW-EVIDENCE-WAIVER-004 records a genesis waiver, downgrades only the exact colliding scope, and surfaces workflowWaivers in gate/status \u001b[33m 1284\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-WORKFLOW-EVIDENCE-WAIVER-006 reports malformed workflow-waiver evidence separately and rejects further appends until repaired \u001b[33m 903\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-WORKFLOW-EVIDENCE-WAIVER-007 passes the workflow gate when every workflow error is waived, while leaving non-waived diagnostics as errors \u001b[33m 1476\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-WORKFLOW-EVIDENCE-WAIVER-012 keeps stale workflow-waiver audit visible for version, changed-code, and resolved outcomes while restoring scoped errors \u001b[33m 2369\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-WORKFLOW-EVIDENCE-WAIVER-013 evaluates only authoritative workflow-waiver records and preserves audit order and shape \u001b[33m 418\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-WORKFLOW-EVIDENCE-WAIVER-015 preserves malformed waiver audit and rejects recording while reconciliation suppresses scope evaluation \u001b[33m 363\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-WORKFLOW-EVIDENCE-WAIVER-011 keeps malformed workflow waiver diagnostics non-blocking when the workflow check itself has no error-severity diagnostics \u001b[33m 779\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/p3-performance-provenance.test.ts \u001b[2m(\u001b[22m\u001b[2m9 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 12763\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m binds every observation to the exact successful command and fresh report \u001b[33m 1274\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m detects report tampering and makes prior quality status stale \u001b[33m 971\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m rejects duplicate counter reports and withholds provenance from rejected test reports \u001b[33m 2541\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m rejects failed executions, missing provenance, and configuration drift \u001b[33m 2931\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m binds semantic provenance records into the attestation performance head \u001b[33m 810\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m keeps semantic performance and quality heads stable across gate-sign-gate runs \u001b[33m 1585\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m attests stable quality verdicts and widened formal verdict fields \u001b[33m 1013\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m persists stdout adapter reports and detects later tampering \u001b[33m 738\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m fails attestation verification when the bound report is changed after signing \u001b[33m 899\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/npm-audit-remediation.test.ts \u001b[2m(\u001b[22m\u001b[2m5 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 9722\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-NPM-AUDIT-REMEDIATION-001 records the reviewed advisory and reachability evidence \u001b[33m 1071\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-NPM-AUDIT-REMEDIATION-002 resolves every Vitest tooling path outside the advisory range \u001b[33m 1398\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-NPM-AUDIT-REMEDIATION-003 preserves test configuration and CI execution contracts \u001b[33m 6234\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-NPM-AUDIT-REMEDIATION-004 documents the dependency-audit monitoring policy \u001b[33m 982\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/p4-correspondence-mutation.test.ts \u001b[2m(\u001b[22m\u001b[2m12 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 10167\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m proves explicit formal requirements through fresh trace and passing test reports \u001b[33m 1424\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m validates model correspondence against the exact merged .NET command \u001b[33m 864\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m fails closed when formal or generated trace evidence becomes stale \u001b[33m 857\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m accepts current deterministic killed mutants and binds both evidence heads \u001b[33m 1033\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m fails closed when strict mode has no mutation report \u001b[33m 865\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m rejects survived mutants \u001b[33m 840\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m rejects skipped mutants \u001b[33m 983\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m rejects duplicate, unlinked, and stale mutation evidence \u001b[33m 2745\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/tdd-repeated-requirement-option.test.ts \u001b[2m(\u001b[22m\u001b[2m3 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 8927\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-TDD-REPEATED-REQUIREMENT-OPTION-001 rejects repeated requirements before any TDD phase side effect \u001b[33m 7592\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-TDD-REPEATED-REQUIREMENT-OPTION-002 documents one requirement per TDD invocation \u001b[33m 1185\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/attestation-evidence-stability.test.ts \u001b[2m(\u001b[22m\u001b[2m5 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 9482\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-ATTESTATION-EVIDENCE-STABILITY-002 keeps a signed attestation valid across a no-op gate re-run with reordered mutants \u001b[33m 2373\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-ATTESTATION-EVIDENCE-STABILITY-003 keeps all ten evidenceHeads entries stable across full, --changed, and --feature no-op re-runs \u001b[33m 7095\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/trace-graph.test.ts \u001b[2m(\u001b[22m\u001b[2m62 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 7163\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m indexes static, re-export, dynamic, require, symbols and call targets \u001b[33m 802\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m resolves tsconfig path aliases and JS directory imports \u001b[33m 473\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m resolves nearest nested tsconfig paths \u001b[33m 474\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m resolves NodeNext import/require conditions according to usage \u001b[33m 427\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m finds cycles, self cycles and enforces architecture globs \u001b[33m 394\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m reports unresolved local and nonliteral imports honestly \u001b[33m 403\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m refuses stale caches after source and config changes \u001b[33m 875\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/change-record-recordedat-order.test.ts \u001b[2m(\u001b[22m\u001b[2m3 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 7836\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-RECORD-RECORDEDAT-ORDER-001 documents that order (not recordedAt) is the verified chronology field, in --help and README \u001b[33m 495\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-RECORD-RECORDEDAT-ORDER-002 reports exactly one warning-severity CHANGE_RECORDEDAT_OUT_OF_ORDER diagnostic for an inverted consecutive order pair, and none when recordedAt is monotonic \u001b[33m 3998\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-RECORD-RECORDEDAT-ORDER-003 excludes entries with a duplicated order, a missing order, or a non-canonical recordedAt from the inversion comparison, while still flagging an unrelated valid inversion \u001b[33m 3341\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/cli-workflow-ux.test.ts \u001b[2m(\u001b[22m\u001b[2m6 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 5855\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CLI-WORKFLOW-UX-001 excludes nested MUSUBIX3 workspaces from ancestor scans \u001b[33m 1044\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CLI-WORKFLOW-UX-002 states bidirectional candidate semantics for trace impact text output \u001b[33m 1260\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CLI-WORKFLOW-UX-005 scopes gate status to one feature, isolating unrelated failures \u001b[33m 3036\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/approval-domain-scoping.test.ts \u001b[2m(\u001b[22m\u001b[2m24 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 8234\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-APPROVAL-DOMAIN-SCOPING-002 rejects a feature matched by more than one domain \u001b[33m 308\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-APPROVAL-DOMAIN-SCOPING-008 reports every domain plus release when validate omits --domain \u001b[33m 328\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-APPROVAL-DOMAIN-SCOPING-013 invalidates every domain approval when the constitution changes \u001b[33m 379\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-APPROVAL-DOMAIN-SCOPING-015 stores each domain's evidence independently of other domains and repo-wide evidence \u001b[33m 330\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-APPROVAL-DOMAIN-SCOPING-016 blocks a design-owning domain's requirement until only that domain approves \u001b[33m 307\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-APPROVAL-DOMAIN-SCOPING-018 blocks TDD Red for a requirement until only its owning domain's design approves \u001b[33m 496\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-APPROVAL-DOMAIN-SCOPING-019 scopes gate --feature's approval check to the owning domain only \u001b[33m 1487\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-APPROVAL-DOMAIN-SCOPING-020 keeps the release stage repository-wide inside gate --feature \u001b[33m 341\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-APPROVAL-DOMAIN-SCOPING-021 reports a per-domain breakdown in full-repo gate \u001b[33m 1109\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-APPROVAL-DOMAIN-SCOPING-022 requires every domain and release current for overall validity \u001b[33m 411\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-APPROVAL-DOMAIN-SCOPING-023 computes the identical manifest hash at every evaluation site \u001b[33m 316\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/approval.test.ts \u001b[2m(\u001b[22m\u001b[2m8 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 5784\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-HUMAN-APPROVAL-GATES-001 records explicitly confirmed approval fields \u001b[33m 342\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-HUMAN-APPROVAL-GATES-006 recomputes quality before release approval \u001b[33m 3556\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-HUMAN-APPROVAL-GATES-007 rejects invalid artifacts and reports malformed evidence \u001b[33m 832\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-HUMAN-APPROVAL-GATES-005 blocks TDD Red until design approval is current \u001b[33m 302\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/tdd-cycle-void.test.ts \u001b[2m(\u001b[22m\u001b[2m13 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 4938\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-TDD-CYCLE-VOID-001 rejects voiding a cycle whose latest Green is already valid \u001b[33m 313\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-TDD-CYCLE-VOID-002 rejects voiding when no earlier non-voided valid fallback cycle exists \u001b[33m 548\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-TDD-CYCLE-VOID-003 requires a non-empty approver and reason \u001b[33m 330\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-TDD-CYCLE-VOID-004 records the void as a hash-chained, ordered, identity-bound entry without disturbing other evidence \u001b[33m 333\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-TDD-CYCLE-VOID-005 treats a void payload with a mismatched cycleId chain record as not validly linked \u001b[33m 348\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-TDD-CYCLE-VOID-006 reports malformed void evidence for a duplicated void chain record \u001b[33m 348\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-TDD-CYCLE-VOID-007 still raises TDD_GREEN_MISSING alongside the malformed-void diagnostic \u001b[33m 344\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-TDD-CYCLE-VOID-008 suppresses missing-phase diagnostics independently for each validly voided trailing cycle \u001b[33m 471\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-TDD-CYCLE-VOID-009 leaves diagnostics for a non-voided cycle unaffected by voiding a different cycle \u001b[33m 396\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-TDD-CYCLE-VOID-010 computes TDD_TEST_STALE against the nearest earlier non-voided valid cycle after voiding \u001b[33m 362\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-TDD-CYCLE-VOID-011 rejects re-voiding but allows voiding a fresh later cycle \u001b[33m 482\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-TDD-CYCLE-VOID-012 routes tdd migrate around a validly voided latest cycle \u001b[33m 346\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-TDD-CYCLE-VOID-013 surfaces scoped void evidence in tdd validate output, keyed to its own cycle \u001b[33m 317\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/p3-codegraph-policy.test.ts \u001b[2m(\u001b[22m\u001b[2m6 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 3422\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m keeps unresolved computed imports and requires as compatible warnings by default \u001b[33m 842\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m upgrades unresolved computed loading to gate-blocking errors in strict mode \u001b[33m 1380\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m rejects weakening a strict trusted Code Graph baseline \u001b[33m 763\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m allows statically resolvable cache-busting imports in strict mode \u001b[33m 433\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/change-acceptance-heuristic.test.ts \u001b[2m(\u001b[22m\u001b[2m6 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 4583\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-ACCEPTANCE-HEURISTIC-001 recognizes report/error/naming vocabulary as measurable acceptance \u001b[33m 1087\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-ACCEPTANCE-HEURISTIC-002 recognizes exit/configur vocabulary as measurable acceptance \u001b[33m 680\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-ACCEPTANCE-HEURISTIC-003 recognizes contain/unaffected/stale vocabulary as measurable acceptance \u001b[33m 643\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-ACCEPTANCE-HEURISTIC-004 still rejects whole-value placeholders and too-short text \u001b[33m 728\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-ACCEPTANCE-HEURISTIC-005 still rejects placeholder-prefixed text even when it contains a newly recognized keyword \u001b[33m 802\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-CHANGE-ACCEPTANCE-HEURISTIC-006 still rejects long non-placeholder prose containing no recognized keyword \u001b[33m 643\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/evidence-writer-lock-integration.test.ts \u001b[2m(\u001b[22m\u001b[2m21 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 3289\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-EVIDENCE-WRITER-LOCK-010 preserves typed CLI lock errors and recovers a dead Linux owner \u001b[33m 608\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-EVIDENCE-WRITER-LOCK-020 initializes a nonexistent root under the writer lock \u001b[33m 489\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-EVIDENCE-WRITER-LOCK-016 gives exactly one process ownership at a shared barrier \u001b[33m 371\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-EVIDENCE-WRITER-LOCK-017 keeps exempt CLI operations independent of a foreign lock \u001b[33m 885\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-EVIDENCE-WRITER-LOCK-018 blocks graph gate before replacing the code graph cache \u001b[33m 358\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/evidence-history-merge.test.ts \u001b[2m(\u001b[22m\u001b[2m6 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 3240\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-EVIDENCE-HISTORY-MERGE-001 preserves base order, deduplicates the ancestor, and appends incoming history \u001b[33m 741\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-EVIDENCE-HISTORY-MERGE-002 rebuilds order references and the TDD hash chain into a valid candidate \u001b[33m 688\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-EVIDENCE-HISTORY-MERGE-003 rejects divergent payloads for the same cycle phase without writing \u001b[33m 400\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-EVIDENCE-HISTORY-MERGE-004 restores byte-identical evidence after an injected replacement failure \u001b[33m 523\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-EVIDENCE-HISTORY-MERGE-005 dry-run returns the merge plan without writing any evidence file \u001b[33m 483\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-EVIDENCE-HISTORY-MERGE-009 uses the injected canonical resolver for base and incoming planning \u001b[33m 404\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/github-actions-node24-runtime.test.ts \u001b[2m(\u001b[22m\u001b[2m8 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 2816\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-GITHUB-ACTIONS-NODE24-RUNTIME-002 preserves protected workflows and release artifact hand-offs \u001b[33m 318\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-GITHUB-ACTIONS-PROJECT-NODE24-002 binds prior publishing provenance to exact runtime-only changes \u001b[33m 417\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-GITHUB-ACTIONS-PROJECT-NODE24-003 enforces exact bilingual documentation and evidence states \u001b[33m 1182\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/bounded-file-read-concurrency.test.ts \u001b[2m(\u001b[22m\u001b[2m4 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 2711\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-BOUNDED-FILE-READ-CONCURRENCY-002 snapshots a large path list without exceeding the OS file-descriptor limit \u001b[33m 916\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-BOUNDED-FILE-READ-CONCURRENCY-003 bounds concurrent reads while Code Graph loads a language with many source files \u001b[33m 868\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-BOUNDED-FILE-READ-CONCURRENCY-004 bounds concurrent reads while knowledge build loads many Markdown documents \u001b[33m 907\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/release-version-synchronization.test.ts \u001b[2m(\u001b[22m\u001b[2m7 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 2485\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-RELEASE-VERSION-SYNCHRONIZATION-001 synchronizes and checks every declared surface deterministically \u001b[33m 875\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-RELEASE-VERSION-SYNCHRONIZATION-002 rejects stale plans and rolls back staged and partial commits \u001b[33m 570\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/tdd-adoption-warning.test.ts \u001b[2m(\u001b[22m\u001b[2m7 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 2135\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-TDD-ADOPTION-WARNING-001 warns exactly once, listing other uncovered mandatory requirements, on the project-first Red \u001b[33m 333\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m prints the warning message via the default (non-JSON) CLI output without changing exit code \u001b[33m 555\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-TDD-ADOPTION-WARNING-002 documents the project-wide adoption semantics in --help and README \u001b[33m 500\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/workflow-multi-session-verification.test.ts \u001b[2m(\u001b[22m\u001b[2m18 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 1812\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-002 reports one ledger build and memoized scope heads \u001b[33m 1198\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/transaction-directory-sync-policy.test.ts \u001b[2m(\u001b[22m\u001b[2m5 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 2045\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-TRANSACTION-DIRECTORY-SYNC-POLICY-003 preserves transaction recovery diagnostics \u001b[33m 560\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-TRANSACTION-DIRECTORY-SYNC-POLICY-005 preserves forwarding, policies, and unsafe recovery boundaries \u001b[33m 1475\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/design-adr-none-exemption.test.ts \u001b[2m(\u001b[22m\u001b[2m4 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 1272\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-DESIGN-ADR-NONE-EXEMPTION-004 applies parsed exemptions to change completeness \u001b[33m 1265\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/command-working-directory.test.ts \u001b[2m(\u001b[22m\u001b[2m3 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 1491\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-COMMAND-WORKING-DIRECTORY-001 runs a configured command with its own working directory \u001b[33m 1190\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/p2-improvements.test.ts \u001b[2m(\u001b[22m\u001b[2m18 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 1023\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m resolves safe local cache-busting imports and package entrypoints without hiding arbitrary dynamics \u001b[33m 780\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/workflow-waiver-bulk-recording.test.ts \u001b[2m(\u001b[22m\u001b[2m4 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 1235\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-WORKFLOW-WAIVER-BULK-002 rejects the whole bulk invocation without writing when any precondition fails \u001b[33m 562\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-WORKFLOW-WAIVER-BULK-003 reports zero recorded waivers without writing when nothing currently qualifies \u001b[33m 454\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/php-verification.test.ts \u001b[2m(\u001b[22m\u001b[2m11 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 804\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m uses the structured report, not console output, so quiet runners are not false positives \u001b[33m 305\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/tdd-green-requirement-scoping.test.ts \u001b[2m(\u001b[22m\u001b[2m2 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 612\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-TDD-GREEN-REQUIREMENT-SCOPING-001 completes an older pending cycle for the same test ID after a newer one starts \u001b[33m 331\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/release-approval-ordering.test.ts \u001b[2m(\u001b[22m\u001b[2m7 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 1828\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-RELEASE-APPROVAL-ORDERING-001 binds the approved Git candidate to the clean tagged release manifest \u001b[33m 820\u001b[2mms\u001b[22m\u001b[39m\n     \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-RELEASE-APPROVAL-ORDERING-002 reports missing and complete stale drift in Unicode code-point order \u001b[33m 491\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/tdd-fingerprint-migration.test.ts \u001b[2m(\u001b[22m\u001b[2m2 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 1674\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-TDD-FINGERPRINT-MIGRATION-001 migrates a cycle recorded under the superseded algorithm without a fresh Red/Green \u001b[33m 1237\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-TDD-FINGERPRINT-MIGRATION-002 refuses to migrate a cycle whose test genuinely drifted \u001b[33m 435\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/p3-attestation-oidc.test.ts \u001b[2m(\u001b[22m\u001b[2m10 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 704\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/tdd-superseded-cycle-scoping.test.ts \u001b[2m(\u001b[22m\u001b[2m2 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 638\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-TDD-SUPERSEDED-CYCLE-SCOPING-001 does not block gate on a superseded incomplete Red cycle \u001b[33m 367\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/p3-workflow-provenance.test.ts \u001b[2m(\u001b[22m\u001b[2m14 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 533\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/tdd-fingerprint-scoping.test.ts \u001b[2m(\u001b[22m\u001b[2m2 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 648\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-TDD-FINGERPRINT-SCOPING-001 keeps a nested test non-stale when a later sibling test is appended \u001b[33m 358\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/release-asset-publishing.test.ts \u001b[2m(\u001b[22m\u001b[2m14 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 554\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/p4-workflow-streaming.test.ts \u001b[2m(\u001b[22m\u001b[2m10 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 456\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/formal-knowledge.test.ts \u001b[2m(\u001b[22m\u001b[2m21 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[32m 282\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/model-correspondence-evidence-guidance.test.ts \u001b[2m(\u001b[22m\u001b[2m2 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 332\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m TEST-MODEL-CORRESPONDENCE-EVIDENCE-GUIDANCE-002 documents the `evidence refresh` prerequisite in --help \u001b[33m 308\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/evidence-writer-lock.test.ts \u001b[2m(\u001b[22m\u001b[2m13 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[32m 215\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/upgrade-workflow.test.ts \u001b[2m(\u001b[22m\u001b[2m2 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[32m 206\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/evidence-history-merge-recovery.test.ts \u001b[2m(\u001b[22m\u001b[2m7 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[32m 176\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/adapter-pattern-recognition.test.ts \u001b[2m(\u001b[22m\u001b[2m2 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[32m 177\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/p3-formal.test.ts \u001b[2m(\u001b[22m\u001b[2m10 tests\u001b[22m\u001b[2m | \u001b[22m\u001b[33m2 skipped\u001b[39m\u001b[2m)\u001b[22m\u001b[32m 137\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/scaffold-artifact.test.ts \u001b[2m(\u001b[22m\u001b[2m6 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[32m 78\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/domain.test.ts \u001b[2m(\u001b[22m\u001b[2m46 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[32m 30\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/evidence-writer-lock-skill-guidance.test.ts \u001b[2m(\u001b[22m\u001b[2m1 test\u001b[22m\u001b[2m)\u001b[22m\u001b[32m 12\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/windows-core-portability.test.ts \u001b[2m(\u001b[22m\u001b[2m4 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[32m 16\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/ears-id-diagnostic-messages.test.ts \u001b[2m(\u001b[22m\u001b[2m3 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[32m 6\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m✓\u001b[39m tests/tdd-red-collection-guidance.test.ts \u001b[2m(\u001b[22m\u001b[2m1 test\u001b[22m\u001b[2m)\u001b[22m\u001b[32m 3\u001b[2mms\u001b[22m\u001b[39m\n \u001b[2m\u001b[90m↓\u001b[39m\u001b[22m tests/adapter-integration.test.ts \u001b[2m(\u001b[22m\u001b[2m6 tests\u001b[22m\u001b[2m | \u001b[22m\u001b[33m6 skipped\u001b[39m\u001b[2m)\u001b[22m\n\n\u001b[2m Test Files \u001b[22m \u001b[1m\u001b[32m55 passed\u001b[39m\u001b[22m\u001b[2m | \u001b[22m\u001b[33m1 skipped\u001b[39m\u001b[90m (56)\u001b[39m\n\u001b[2m      Tests \u001b[22m \u001b[1m\u001b[32m620 passed\u001b[39m\u001b[22m\u001b[2m | \u001b[22m\u001b[33m8 skipped\u001b[39m\u001b[90m (628)\u001b[39m\n\u001b[2m   Start at \u001b[22m 02:50:45\n\u001b[2m   Duration \u001b[22m 188.43s\u001b[2m (transform 1.86s, setup 0ms, import 17.61s, tests 352.78s, environment 4ms)\u001b[22m\n\n",
       "stderr": ""
     },
     {
@@ -7679,7 +7783,7 @@
       "required": true,
       "status": "pass",
       "summary": "npm: completed, exit 0.",
-      "durationMs": 912,
+      "durationMs": 972,
       "exitCode": 0,
       "stdout": "\n> musubix3@0.1.20 pack:check\n> node scripts/check-package.mjs\n\nPackage verified: musubix3-0.1.20.tgz, 140 files, 9 skills.\n",
       "stderr": ""
@@ -7689,7 +7793,7 @@
       "required": true,
       "status": "pass",
       "summary": "npm: completed, exit 0.",
-      "durationMs": 4033,
+      "durationMs": 3952,
       "exitCode": 0,
       "stdout": "\n> musubix3@0.1.20 pack:smoke\n> node scripts/smoke-package.mjs\n\nInstalled tarball verified: executable bin, ESM exports, init, status, assets, hidden skills, and rollback guidance (0.1.20).\n",
       "stderr": ""
@@ -7699,7 +7803,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 6608,
+      "durationMs": 6522,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/cli-workflow-ux-tests/aggregate.json\n",
       "stderr": ""
@@ -7709,7 +7813,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 2019,
+      "durationMs": 2099,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/tdd-fingerprint-scoping-tests/aggregate.json\n",
       "stderr": ""
@@ -7719,7 +7823,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 2041,
+      "durationMs": 2264,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/tdd-fingerprint-migration-tests/aggregate.json\n",
       "stderr": ""
@@ -7729,7 +7833,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 2001,
+      "durationMs": 2109,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/tdd-superseded-cycle-scoping-tests/aggregate.json\n",
       "stderr": ""
@@ -7739,7 +7843,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 6390,
+      "durationMs": 6086,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/tdd-cycle-void-tests/aggregate.json\n",
       "stderr": ""
@@ -7749,7 +7853,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 22787,
+      "durationMs": 23372,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/change-requirement-batches-tests/aggregate.json\n",
       "stderr": ""
@@ -7759,7 +7863,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 15039,
+      "durationMs": 16383,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/change-quality-refresh-tests/aggregate.json\n",
       "stderr": ""
@@ -7769,7 +7873,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 1436,
+      "durationMs": 1368,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/windows-core-portability-tests/aggregate.json\n",
       "stderr": ""
@@ -7779,7 +7883,7 @@
       "required": false,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 3398,
+      "durationMs": 3205,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/transaction-directory-sync-policy-tests/aggregate.json\n",
       "stderr": ""
@@ -7789,7 +7893,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 17360,
+      "durationMs": 40448,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/change-record-fail-fast-tests/aggregate.json\n",
       "stderr": ""
@@ -7799,7 +7903,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 5502,
+      "durationMs": 5423,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/change-acceptance-heuristic-tests/aggregate.json\n",
       "stderr": ""
@@ -7809,7 +7913,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 40754,
+      "durationMs": 33143,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/change-evidence-waiver-tests/aggregate.json\n",
       "stderr": ""
@@ -7819,7 +7923,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 4208,
+      "durationMs": 4312,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/evidence-history-merge-tests/aggregate.json\n",
       "stderr": ""
@@ -7829,7 +7933,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 11006,
+      "durationMs": 11557,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/workflow-evidence-waiver-tests/aggregate.json\n",
       "stderr": ""
@@ -7839,7 +7943,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 2435,
+      "durationMs": 2476,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/workflow-waiver-bulk-recording-tests/aggregate.json\n",
       "stderr": ""
@@ -7849,7 +7953,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 1936,
+      "durationMs": 2008,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/tdd-green-requirement-scoping-tests/aggregate.json\n",
       "stderr": ""
@@ -7859,7 +7963,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 1508,
+      "durationMs": 1454,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/ears-id-diagnostic-messages-tests/aggregate.json\n",
       "stderr": ""
@@ -7869,7 +7973,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 1705,
+      "durationMs": 1722,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/adapter-pattern-recognition-tests/aggregate.json\n",
       "stderr": ""
@@ -7879,7 +7983,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 2905,
+      "durationMs": 2974,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/workflow-multi-session-verification-tests/aggregate.json\n",
       "stderr": ""
@@ -7889,7 +7993,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 1880,
+      "durationMs": 2076,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/workflow-session-shutdown-tests/aggregate.json\n",
       "stderr": ""
@@ -7899,7 +8003,7 @@
       "required": false,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 2800,
+      "durationMs": 3169,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/command-working-directory-tests/aggregate.json\n",
       "stderr": ""
@@ -7909,7 +8013,7 @@
       "required": false,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 2580,
+      "durationMs": 2677,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/design-adr-none-exemption-tests/aggregate.json\n",
       "stderr": ""
@@ -7919,7 +8023,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 1346,
+      "durationMs": 1326,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/tdd-red-collection-guidance-tests/aggregate.json\n",
       "stderr": ""
@@ -7929,7 +8033,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 3833,
+      "durationMs": 3867,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/bounded-file-read-concurrency-tests/aggregate.json\n",
       "stderr": ""
@@ -7939,7 +8043,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 9334,
+      "durationMs": 9269,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/attestation-evidence-stability-tests/aggregate.json\n",
       "stderr": ""
@@ -7949,7 +8053,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 8704,
+      "durationMs": 7851,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/change-record-recordedat-order-tests/aggregate.json\n",
       "stderr": ""
@@ -7959,7 +8063,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 1686,
+      "durationMs": 1518,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/upgrade-workflow-tests/aggregate.json\n",
       "stderr": ""
@@ -7969,7 +8073,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 1680,
+      "durationMs": 1604,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/model-correspondence-evidence-guidance-tests/aggregate.json\n",
       "stderr": ""
@@ -7979,7 +8083,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 3965,
+      "durationMs": 3295,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/tdd-adoption-warning-tests/aggregate.json\n",
       "stderr": ""
@@ -7989,7 +8093,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 9334,
+      "durationMs": 8737,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/tdd-repeated-requirement-option-tests/aggregate.json\n",
       "stderr": ""
@@ -7999,7 +8103,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 5156,
+      "durationMs": 4514,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/evidence-writer-lock-tests/aggregate.json\n",
       "stderr": ""
@@ -8009,7 +8113,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 5786,
+      "durationMs": 3564,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/release-version-synchronization-tests/aggregate.json\n",
       "stderr": ""
@@ -8019,7 +8123,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 2259,
+      "durationMs": 2244,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/release-approval-ordering-tests/aggregate.json\n",
       "stderr": ""
@@ -8029,7 +8133,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 3105,
+      "durationMs": 3194,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/github-actions-node24-runtime-tests/aggregate.json\n",
       "stderr": ""
@@ -8039,7 +8143,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 8673,
+      "durationMs": 8575,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/npm-audit-remediation-tests/aggregate.json\n",
       "stderr": ""
@@ -8049,7 +8153,7 @@
       "required": true,
       "status": "pass",
       "summary": "npx: completed, exit 0.",
-      "durationMs": 1197,
+      "durationMs": 1141,
       "exitCode": 0,
       "stdout": "JSON report written to /home/nahisaho/GitHub/musubix3/.musubix/evidence/native/release-asset-publishing-tests/aggregate.json\n",
       "stderr": ""
@@ -8058,7 +8162,7 @@
       "name": "test-identities",
       "required": false,
       "status": "pass",
-      "summary": "285/285 annotated test IDs passed in structured command reports.",
+      "summary": "291/291 annotated test IDs passed in structured command reports.",
       "diagnostics": []
     },
     {
@@ -8128,20 +8232,20 @@
     "trace.errors": 0,
     "graph.violations": 0,
     "formal.errors": 0,
-    "formal.modeledFraction": 0.055,
+    "formal.modeledFraction": 0.05392156862745098,
     "commands.failures": 0,
     "commands.skipped": 0,
-    "tests.annotatedIds": 285,
-    "tests.executedIds": 285,
-    "tdd.cycles": 464,
+    "tests.annotatedIds": 291,
+    "tests.executedIds": 291,
+    "tdd.cycles": 486,
     "tdd.errors": 0,
-    "changes.count": 48,
+    "changes.count": 49,
     "changes.errors": 0,
-    "changes.complete": 48,
+    "changes.complete": 49,
     "changes.completenessErrors": 0,
     "performance.budgets": 0,
     "performance.errors": 0,
-    "mutation.requirements": 180,
+    "mutation.requirements": 184,
     "mutation.coveredRequirements": 0,
     "mutation.mutants": 0,
     "mutation.errors": 0,
@@ -8154,26 +8258,13 @@
     "coverage.implementation": 1,
     "coverage.tests": 1
   },
-  "mode": "changed",
+  "mode": "full",
   "feature": null,
   "changed": [
     ".github/skills/sdd-change/SKILL.md",
     ".github/skills/sdd-implementation/SKILL.md",
-    ".github/workflows/ci.yml",
-    ".github/workflows/npm-publish.yml",
-    ".github/workflows/release.yml",
-    ".musubix/changes/CHANGE-0047.md",
-    ".musubix/changes/CHANGE-0048.md",
-    ".musubix/changes/CHANGE-0049.md",
-    ".musubix/changes/CHANGE-0050.md",
-    ".musubix/changes/CHANGE-0051.md",
-    ".musubix/config.json",
-    ".musubix/decisions/ADR-0017.md",
-    ".musubix/decisions/ADR-0036.md",
-    ".musubix/decisions/ADR-0040.md",
-    ".musubix/decisions/ADR-0041.md",
+    ".musubix/changes/CHANGE-0052.md",
     ".musubix/evidence/approvals/design.json",
-    ".musubix/evidence/approvals/release.json",
     ".musubix/evidence/approvals/requirements.json",
     ".musubix/evidence/change-waivers.json",
     ".musubix/evidence/changes.json",
@@ -8182,41 +8273,34 @@
     ".musubix/evidence/native/adapter-pattern-recognition-tests/aggregate.json",
     ".musubix/evidence/native/approval-domain-scoping-tests/aggregate.json",
     ".musubix/evidence/native/approval-tests/aggregate.json",
-    ".musubix/evidence/native/attestation-evidence-stability-tests/TEST-ATTESTATION-EVIDENCE-STABILITY-004.json",
     ".musubix/evidence/native/attestation-evidence-stability-tests/aggregate.json",
     ".musubix/evidence/native/bounded-file-read-concurrency-tests/aggregate.json",
     ".musubix/evidence/native/change-acceptance-heuristic-tests/aggregate.json",
     ".musubix/evidence/native/change-evidence-waiver-tests/aggregate.json",
     ".musubix/evidence/native/change-quality-refresh-tests/aggregate.json",
+    ".musubix/evidence/native/change-record-fail-fast-tests/TEST-CHANGE-RECORD-FAIL-FAST-003.json",
+    ".musubix/evidence/native/change-record-fail-fast-tests/TEST-CHANGE-RECORD-FAIL-FAST-004.json",
+    ".musubix/evidence/native/change-record-fail-fast-tests/TEST-CHANGE-RECORD-FAIL-FAST-005.json",
+    ".musubix/evidence/native/change-record-fail-fast-tests/TEST-CHANGE-RECORD-TDD-PREFLIGHT-001.json",
+    ".musubix/evidence/native/change-record-fail-fast-tests/TEST-CHANGE-RECORD-TDD-PREFLIGHT-002.json",
+    ".musubix/evidence/native/change-record-fail-fast-tests/TEST-CHANGE-RECORD-TDD-PREFLIGHT-003.json",
+    ".musubix/evidence/native/change-record-fail-fast-tests/TEST-CHANGE-RECORD-TDD-PREFLIGHT-004.json",
+    ".musubix/evidence/native/change-record-fail-fast-tests/TEST-CHANGE-RECORD-TDD-PREFLIGHT-005.json",
     ".musubix/evidence/native/change-record-fail-fast-tests/aggregate.json",
     ".musubix/evidence/native/change-record-recordedat-order-tests/aggregate.json",
+    ".musubix/evidence/native/change-requirement-batches-tests/TEST-CHANGE-REQUIREMENT-BATCHES-002.json",
+    ".musubix/evidence/native/change-requirement-batches-tests/TEST-CHANGE-REQUIREMENT-BATCHES-003.json",
+    ".musubix/evidence/native/change-requirement-batches-tests/TEST-CHANGE-REQUIREMENT-BATCHES-006.json",
+    ".musubix/evidence/native/change-requirement-batches-tests/TEST-CHANGE-REQUIREMENT-BATCHES-007.json",
     ".musubix/evidence/native/change-requirement-batches-tests/aggregate.json",
-    ".musubix/evidence/native/change48-tdd/TEST-WORKFLOW-MULTI-SESSION-001.json",
-    ".musubix/evidence/native/change48-tdd/TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-001.json",
-    ".musubix/evidence/native/change48-tdd/TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-002.json",
-    ".musubix/evidence/native/change48-tdd/TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-004.json",
-    ".musubix/evidence/native/change48-tdd/TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-005.json",
-    ".musubix/evidence/native/change48-tdd/TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-007.json",
-    ".musubix/evidence/native/change48-tdd/TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-008.json",
-    ".musubix/evidence/native/change48-tdd/TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-009.json",
-    ".musubix/evidence/native/change48-tdd/TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-010.json",
-    ".musubix/evidence/native/change48-tdd/aggregate.json",
     ".musubix/evidence/native/cli-workflow-ux-tests/aggregate.json",
     ".musubix/evidence/native/command-working-directory-tests/aggregate.json",
-    ".musubix/evidence/native/design-adr-none-exemption-tests/TEST-DESIGN-ADR-NONE-EXEMPTION-004.json",
     ".musubix/evidence/native/design-adr-none-exemption-tests/aggregate.json",
     ".musubix/evidence/native/ears-id-diagnostic-messages-tests/aggregate.json",
     ".musubix/evidence/native/evidence-history-merge-tests/aggregate.json",
     ".musubix/evidence/native/evidence-writer-lock-tests/aggregate.json",
-    ".musubix/evidence/native/github-actions-node24-runtime-tests/TEST-GITHUB-ACTIONS-NODE24-RUNTIME-003.json",
-    ".musubix/evidence/native/github-actions-node24-runtime-tests/TEST-GITHUB-ACTIONS-PROJECT-NODE24-001.json",
-    ".musubix/evidence/native/github-actions-node24-runtime-tests/TEST-GITHUB-ACTIONS-PROJECT-NODE24-002.json",
-    ".musubix/evidence/native/github-actions-node24-runtime-tests/TEST-GITHUB-ACTIONS-PROJECT-NODE24-003.json",
-    ".musubix/evidence/native/github-actions-node24-runtime-tests/TEST-GITHUB-ACTIONS-PROJECT-NODE24-004.json",
-    ".musubix/evidence/native/github-actions-node24-runtime-tests/TEST-GITHUB-ACTIONS-PROJECT-NODE24-005.json",
     ".musubix/evidence/native/github-actions-node24-runtime-tests/aggregate.json",
     ".musubix/evidence/native/model-correspondence-evidence-guidance-tests/aggregate.json",
-    ".musubix/evidence/native/npm-audit-remediation-tests/TEST-NPM-AUDIT-REMEDIATION-003.json",
     ".musubix/evidence/native/npm-audit-remediation-tests/aggregate.json",
     ".musubix/evidence/native/release-approval-ordering-tests/aggregate.json",
     ".musubix/evidence/native/release-asset-publishing-tests/aggregate.json",
@@ -8229,34 +8313,14 @@
     ".musubix/evidence/native/tdd-fingerprint-scoping-tests/aggregate.json",
     ".musubix/evidence/native/tdd-green-requirement-scoping-tests/aggregate.json",
     ".musubix/evidence/native/tdd-red-collection-guidance-tests/aggregate.json",
-    ".musubix/evidence/native/tdd-repeated-requirement-option-tests/TEST-TDD-REPEATED-REQUIREMENT-OPTION-001.json",
-    ".musubix/evidence/native/tdd-repeated-requirement-option-tests/TEST-TDD-REPEATED-REQUIREMENT-OPTION-002.json",
-    ".musubix/evidence/native/tdd-repeated-requirement-option-tests/TEST-TDD-REPEATED-REQUIREMENT-OPTION-003.json",
     ".musubix/evidence/native/tdd-repeated-requirement-option-tests/aggregate.json",
     ".musubix/evidence/native/tdd-superseded-cycle-scoping-tests/aggregate.json",
     ".musubix/evidence/native/transaction-directory-sync-policy-tests/aggregate.json",
     ".musubix/evidence/native/upgrade-workflow-tests/aggregate.json",
     ".musubix/evidence/native/windows-core-portability-tests/aggregate.json",
-    ".musubix/evidence/native/workflow-evidence-waiver-tests/TEST-WORKFLOW-EVIDENCE-WAIVER-004.json",
-    ".musubix/evidence/native/workflow-evidence-waiver-tests/TEST-WORKFLOW-EVIDENCE-WAIVER-010.json",
-    ".musubix/evidence/native/workflow-evidence-waiver-tests/TEST-WORKFLOW-EVIDENCE-WAIVER-012.json",
-    ".musubix/evidence/native/workflow-evidence-waiver-tests/TEST-WORKFLOW-EVIDENCE-WAIVER-015.json",
-    ".musubix/evidence/native/workflow-evidence-waiver-tests/TEST-WORKFLOW-EVIDENCE-WAIVER-016.json",
-    ".musubix/evidence/native/workflow-evidence-waiver-tests/TEST-WORKFLOW-EVIDENCE-WAIVER-017.json",
     ".musubix/evidence/native/workflow-evidence-waiver-tests/aggregate.json",
-    ".musubix/evidence/native/workflow-multi-session-verification-tests/TEST-WORKFLOW-EVIDENCE-WAIVER-018.json",
-    ".musubix/evidence/native/workflow-multi-session-verification-tests/TEST-WORKFLOW-MULTI-SESSION-001.json",
-    ".musubix/evidence/native/workflow-multi-session-verification-tests/TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-011.json",
-    ".musubix/evidence/native/workflow-multi-session-verification-tests/TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-012.json",
-    ".musubix/evidence/native/workflow-multi-session-verification-tests/TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-013.json",
-    ".musubix/evidence/native/workflow-multi-session-verification-tests/TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-014.json",
-    ".musubix/evidence/native/workflow-multi-session-verification-tests/TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-015.json",
-    ".musubix/evidence/native/workflow-multi-session-verification-tests/TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-016.json",
     ".musubix/evidence/native/workflow-multi-session-verification-tests/aggregate.json",
     ".musubix/evidence/native/workflow-session-shutdown-tests/aggregate.json",
-    ".musubix/evidence/native/workflow-waiver-bulk-recording-tests/TEST-WORKFLOW-WAIVER-BULK-001.json",
-    ".musubix/evidence/native/workflow-waiver-bulk-recording-tests/TEST-WORKFLOW-WAIVER-BULK-002.json",
-    ".musubix/evidence/native/workflow-waiver-bulk-recording-tests/TEST-WORKFLOW-WAIVER-BULK-004.json",
     ".musubix/evidence/native/workflow-waiver-bulk-recording-tests/aggregate.json",
     ".musubix/evidence/order.json",
     ".musubix/evidence/performance.json",
@@ -8266,8 +8330,6 @@
     ".musubix/evidence/workflow.json",
     ".musubix/features/adapter-pattern-recognition/trace.json",
     ".musubix/features/approval-domain-scoping/trace.json",
-    ".musubix/features/attestation-evidence-stability/design.md",
-    ".musubix/features/attestation-evidence-stability/requirements.md",
     ".musubix/features/attestation-evidence-stability/trace.json",
     ".musubix/features/bounded-file-read-concurrency/trace.json",
     ".musubix/features/change-acceptance-heuristic/trace.json",
@@ -8275,11 +8337,12 @@
     ".musubix/features/change-quality-refresh/trace.json",
     ".musubix/features/change-record-fail-fast/trace.json",
     ".musubix/features/change-record-recordedat-order/trace.json",
+    ".musubix/features/change-record-tdd-preflight/design.md",
+    ".musubix/features/change-record-tdd-preflight/requirements.md",
+    ".musubix/features/change-record-tdd-preflight/trace.json",
     ".musubix/features/change-requirement-batches/trace.json",
     ".musubix/features/cli-workflow-ux-v019/trace.json",
     ".musubix/features/command-working-directory/trace.json",
-    ".musubix/features/design-adr-none-exemption/design.md",
-    ".musubix/features/design-adr-none-exemption/requirements.md",
     ".musubix/features/design-adr-none-exemption/trace.json",
     ".musubix/features/ears-id-diagnostic-messages/trace.json",
     ".musubix/features/evidence-history-merge/trace.json",
@@ -8288,16 +8351,10 @@
     ".musubix/features/evidence-writer-lock-skill-guidance/trace.json",
     ".musubix/features/evidence-writer-lock/trace.json",
     ".musubix/features/gate-command-timeout-margin/trace.json",
-    ".musubix/features/github-actions-node24-runtime/design.md",
-    ".musubix/features/github-actions-node24-runtime/requirements.md",
     ".musubix/features/github-actions-node24-runtime/trace.json",
-    ".musubix/features/github-actions-project-node24/design.md",
-    ".musubix/features/github-actions-project-node24/requirements.md",
     ".musubix/features/github-actions-project-node24/trace.json",
     ".musubix/features/human-approval-gates/trace.json",
     ".musubix/features/model-correspondence-evidence-guidance/trace.json",
-    ".musubix/features/npm-audit-remediation/design.md",
-    ".musubix/features/npm-audit-remediation/requirements.md",
     ".musubix/features/npm-audit-remediation/trace.json",
     ".musubix/features/release-approval-ordering/trace.json",
     ".musubix/features/release-asset-publishing/trace.json",
@@ -8310,88 +8367,45 @@
     ".musubix/features/tdd-fingerprint-scoping/trace.json",
     ".musubix/features/tdd-green-requirement-scoping/trace.json",
     ".musubix/features/tdd-red-collection-guidance/trace.json",
-    ".musubix/features/tdd-repeated-requirement-option/design.md",
-    ".musubix/features/tdd-repeated-requirement-option/requirements.md",
     ".musubix/features/tdd-repeated-requirement-option/trace.json",
     ".musubix/features/tdd-superseded-cycle-scoping/trace.json",
     ".musubix/features/transaction-directory-sync-policy/trace.json",
     ".musubix/features/upgrade-workflow/trace.json",
-    ".musubix/features/workflow-evidence-waiver/design.md",
-    ".musubix/features/workflow-evidence-waiver/requirements.md",
     ".musubix/features/workflow-evidence-waiver/trace.json",
-    ".musubix/features/workflow-multi-session-verification/design.md",
-    ".musubix/features/workflow-multi-session-verification/requirements.md",
     ".musubix/features/workflow-multi-session-verification/trace.json",
-    ".musubix/features/workflow-resumed-session-durability/design.md",
-    ".musubix/features/workflow-resumed-session-durability/requirements.md",
     ".musubix/features/workflow-resumed-session-durability/trace.json",
     ".musubix/features/workflow-session-shutdown/trace.json",
-    ".musubix/features/workflow-waiver-bulk-recording/design.md",
-    ".musubix/features/workflow-waiver-bulk-recording/requirements.md",
     ".musubix/features/workflow-waiver-bulk-recording/trace.json",
     "README-ja.md",
     "README.md",
     "packages/analysis/src/change.ts",
-    "packages/analysis/src/gate.ts",
-    "packages/analysis/src/process.ts",
-    "packages/analysis/src/workflow-types.ts",
-    "packages/analysis/src/workflow-waiver.ts",
-    "packages/analysis/src/workflow.ts",
+    "packages/analysis/src/tdd.ts",
     "packages/cli/src/main.ts",
-    "packages/domain/src/design.ts",
-    "packages/domain/src/types.ts",
-    "scripts/check-gate-command-timeout-margin.mjs",
-    "scripts/check-github-actions.mjs",
-    "scripts/check-npm-audit-remediation.mjs",
-    "tests/attestation-evidence-stability.test.ts",
-    "tests/cli-package.test.ts",
-    "tests/design-adr-none-exemption.test.ts",
-    "tests/fixtures/release-asset-publishing/workflow-baseline.json",
-    "tests/github-actions-node24-runtime.test.ts",
-    "tests/npm-audit-remediation.test.ts",
-    "tests/p4-workflow-streaming.test.ts",
-    "tests/tdd-repeated-requirement-option.test.ts",
-    "tests/workflow-evidence-waiver.test.ts",
-    "tests/workflow-multi-session-verification.test.ts"
+    "tests/change-evidence-waiver.test.ts",
+    "tests/change-quality-refresh.test.ts",
+    "tests/change-record-fail-fast.test.ts",
+    "tests/change-record-recordedat-order.test.ts",
+    "tests/change-requirement-batches.test.ts",
+    "tests/gate-install.test.ts",
+    "tests/helpers.ts"
   ],
   "impacted": [
-    "packages/analysis/src/adapters.ts",
-    "packages/analysis/src/approval-domains.ts",
     "packages/analysis/src/approval-record.ts",
-    "packages/analysis/src/approval.ts",
     "packages/analysis/src/attestation.ts",
     "packages/analysis/src/change-evidence.ts",
     "packages/analysis/src/change-waiver.ts",
     "packages/analysis/src/change.ts",
-    "packages/analysis/src/config.ts",
     "packages/analysis/src/evidence-merge.ts",
-    "packages/analysis/src/formal.ts",
     "packages/analysis/src/gate.ts",
-    "packages/analysis/src/graph.ts",
     "packages/analysis/src/index.ts",
-    "packages/analysis/src/knowledge.ts",
     "packages/analysis/src/model-correspondence.ts",
-    "packages/analysis/src/mutation.ts",
-    "packages/analysis/src/order.ts",
     "packages/analysis/src/performance.ts",
-    "packages/analysis/src/process.ts",
     "packages/analysis/src/quality-refresh.ts",
     "packages/analysis/src/tdd.ts",
-    "packages/analysis/src/trace.ts",
-    "packages/analysis/src/workflow-types.ts",
     "packages/analysis/src/workflow-waiver.ts",
     "packages/analysis/src/workflow.ts",
     "packages/cli/src/install.ts",
     "packages/cli/src/main.ts",
-    "packages/domain/src/constitution.ts",
-    "packages/domain/src/design.ts",
-    "packages/domain/src/index.ts",
-    "packages/domain/src/markdown.ts",
-    "packages/domain/src/requirements.ts",
-    "packages/domain/src/types.ts",
-    "scripts/check-gate-command-timeout-margin.mjs",
-    "scripts/check-github-actions.mjs",
-    "scripts/check-npm-audit-remediation.mjs",
     "tests/adapter-integration.test.ts",
     "tests/adapter-pattern-recognition.test.ts",
     "tests/approval-domain-scoping.test.ts",
@@ -8417,10 +8431,8 @@
     "tests/evidence-writer-lock.test.ts",
     "tests/formal-knowledge.test.ts",
     "tests/gate-install.test.ts",
-    "tests/github-actions-node24-runtime.test.ts",
     "tests/helpers.ts",
     "tests/model-correspondence-evidence-guidance.test.ts",
-    "tests/npm-audit-remediation.test.ts",
     "tests/p2-improvements.test.ts",
     "tests/p3-attestation-oidc.test.ts",
     "tests/p3-codegraph-policy.test.ts",
@@ -8451,25 +8463,12 @@
   ],
   "lastChangeAnalysis": {
     "baseline": "HEAD",
-    "head": "46edcde9209cc2708c5d6669c98af9e55aa7c7cb",
+    "head": "2988df1cc0744718a8184e0101d533b6e93303c4",
     "changed": [
       ".github/skills/sdd-change/SKILL.md",
       ".github/skills/sdd-implementation/SKILL.md",
-      ".github/workflows/ci.yml",
-      ".github/workflows/npm-publish.yml",
-      ".github/workflows/release.yml",
-      ".musubix/changes/CHANGE-0047.md",
-      ".musubix/changes/CHANGE-0048.md",
-      ".musubix/changes/CHANGE-0049.md",
-      ".musubix/changes/CHANGE-0050.md",
-      ".musubix/changes/CHANGE-0051.md",
-      ".musubix/config.json",
-      ".musubix/decisions/ADR-0017.md",
-      ".musubix/decisions/ADR-0036.md",
-      ".musubix/decisions/ADR-0040.md",
-      ".musubix/decisions/ADR-0041.md",
+      ".musubix/changes/CHANGE-0052.md",
       ".musubix/evidence/approvals/design.json",
-      ".musubix/evidence/approvals/release.json",
       ".musubix/evidence/approvals/requirements.json",
       ".musubix/evidence/change-waivers.json",
       ".musubix/evidence/changes.json",
@@ -8478,41 +8477,34 @@
       ".musubix/evidence/native/adapter-pattern-recognition-tests/aggregate.json",
       ".musubix/evidence/native/approval-domain-scoping-tests/aggregate.json",
       ".musubix/evidence/native/approval-tests/aggregate.json",
-      ".musubix/evidence/native/attestation-evidence-stability-tests/TEST-ATTESTATION-EVIDENCE-STABILITY-004.json",
       ".musubix/evidence/native/attestation-evidence-stability-tests/aggregate.json",
       ".musubix/evidence/native/bounded-file-read-concurrency-tests/aggregate.json",
       ".musubix/evidence/native/change-acceptance-heuristic-tests/aggregate.json",
       ".musubix/evidence/native/change-evidence-waiver-tests/aggregate.json",
       ".musubix/evidence/native/change-quality-refresh-tests/aggregate.json",
+      ".musubix/evidence/native/change-record-fail-fast-tests/TEST-CHANGE-RECORD-FAIL-FAST-003.json",
+      ".musubix/evidence/native/change-record-fail-fast-tests/TEST-CHANGE-RECORD-FAIL-FAST-004.json",
+      ".musubix/evidence/native/change-record-fail-fast-tests/TEST-CHANGE-RECORD-FAIL-FAST-005.json",
+      ".musubix/evidence/native/change-record-fail-fast-tests/TEST-CHANGE-RECORD-TDD-PREFLIGHT-001.json",
+      ".musubix/evidence/native/change-record-fail-fast-tests/TEST-CHANGE-RECORD-TDD-PREFLIGHT-002.json",
+      ".musubix/evidence/native/change-record-fail-fast-tests/TEST-CHANGE-RECORD-TDD-PREFLIGHT-003.json",
+      ".musubix/evidence/native/change-record-fail-fast-tests/TEST-CHANGE-RECORD-TDD-PREFLIGHT-004.json",
+      ".musubix/evidence/native/change-record-fail-fast-tests/TEST-CHANGE-RECORD-TDD-PREFLIGHT-005.json",
       ".musubix/evidence/native/change-record-fail-fast-tests/aggregate.json",
       ".musubix/evidence/native/change-record-recordedat-order-tests/aggregate.json",
+      ".musubix/evidence/native/change-requirement-batches-tests/TEST-CHANGE-REQUIREMENT-BATCHES-002.json",
+      ".musubix/evidence/native/change-requirement-batches-tests/TEST-CHANGE-REQUIREMENT-BATCHES-003.json",
+      ".musubix/evidence/native/change-requirement-batches-tests/TEST-CHANGE-REQUIREMENT-BATCHES-006.json",
+      ".musubix/evidence/native/change-requirement-batches-tests/TEST-CHANGE-REQUIREMENT-BATCHES-007.json",
       ".musubix/evidence/native/change-requirement-batches-tests/aggregate.json",
-      ".musubix/evidence/native/change48-tdd/TEST-WORKFLOW-MULTI-SESSION-001.json",
-      ".musubix/evidence/native/change48-tdd/TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-001.json",
-      ".musubix/evidence/native/change48-tdd/TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-002.json",
-      ".musubix/evidence/native/change48-tdd/TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-004.json",
-      ".musubix/evidence/native/change48-tdd/TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-005.json",
-      ".musubix/evidence/native/change48-tdd/TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-007.json",
-      ".musubix/evidence/native/change48-tdd/TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-008.json",
-      ".musubix/evidence/native/change48-tdd/TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-009.json",
-      ".musubix/evidence/native/change48-tdd/TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-010.json",
-      ".musubix/evidence/native/change48-tdd/aggregate.json",
       ".musubix/evidence/native/cli-workflow-ux-tests/aggregate.json",
       ".musubix/evidence/native/command-working-directory-tests/aggregate.json",
-      ".musubix/evidence/native/design-adr-none-exemption-tests/TEST-DESIGN-ADR-NONE-EXEMPTION-004.json",
       ".musubix/evidence/native/design-adr-none-exemption-tests/aggregate.json",
       ".musubix/evidence/native/ears-id-diagnostic-messages-tests/aggregate.json",
       ".musubix/evidence/native/evidence-history-merge-tests/aggregate.json",
       ".musubix/evidence/native/evidence-writer-lock-tests/aggregate.json",
-      ".musubix/evidence/native/github-actions-node24-runtime-tests/TEST-GITHUB-ACTIONS-NODE24-RUNTIME-003.json",
-      ".musubix/evidence/native/github-actions-node24-runtime-tests/TEST-GITHUB-ACTIONS-PROJECT-NODE24-001.json",
-      ".musubix/evidence/native/github-actions-node24-runtime-tests/TEST-GITHUB-ACTIONS-PROJECT-NODE24-002.json",
-      ".musubix/evidence/native/github-actions-node24-runtime-tests/TEST-GITHUB-ACTIONS-PROJECT-NODE24-003.json",
-      ".musubix/evidence/native/github-actions-node24-runtime-tests/TEST-GITHUB-ACTIONS-PROJECT-NODE24-004.json",
-      ".musubix/evidence/native/github-actions-node24-runtime-tests/TEST-GITHUB-ACTIONS-PROJECT-NODE24-005.json",
       ".musubix/evidence/native/github-actions-node24-runtime-tests/aggregate.json",
       ".musubix/evidence/native/model-correspondence-evidence-guidance-tests/aggregate.json",
-      ".musubix/evidence/native/npm-audit-remediation-tests/TEST-NPM-AUDIT-REMEDIATION-003.json",
       ".musubix/evidence/native/npm-audit-remediation-tests/aggregate.json",
       ".musubix/evidence/native/release-approval-ordering-tests/aggregate.json",
       ".musubix/evidence/native/release-asset-publishing-tests/aggregate.json",
@@ -8525,34 +8517,14 @@
       ".musubix/evidence/native/tdd-fingerprint-scoping-tests/aggregate.json",
       ".musubix/evidence/native/tdd-green-requirement-scoping-tests/aggregate.json",
       ".musubix/evidence/native/tdd-red-collection-guidance-tests/aggregate.json",
-      ".musubix/evidence/native/tdd-repeated-requirement-option-tests/TEST-TDD-REPEATED-REQUIREMENT-OPTION-001.json",
-      ".musubix/evidence/native/tdd-repeated-requirement-option-tests/TEST-TDD-REPEATED-REQUIREMENT-OPTION-002.json",
-      ".musubix/evidence/native/tdd-repeated-requirement-option-tests/TEST-TDD-REPEATED-REQUIREMENT-OPTION-003.json",
       ".musubix/evidence/native/tdd-repeated-requirement-option-tests/aggregate.json",
       ".musubix/evidence/native/tdd-superseded-cycle-scoping-tests/aggregate.json",
       ".musubix/evidence/native/transaction-directory-sync-policy-tests/aggregate.json",
       ".musubix/evidence/native/upgrade-workflow-tests/aggregate.json",
       ".musubix/evidence/native/windows-core-portability-tests/aggregate.json",
-      ".musubix/evidence/native/workflow-evidence-waiver-tests/TEST-WORKFLOW-EVIDENCE-WAIVER-004.json",
-      ".musubix/evidence/native/workflow-evidence-waiver-tests/TEST-WORKFLOW-EVIDENCE-WAIVER-010.json",
-      ".musubix/evidence/native/workflow-evidence-waiver-tests/TEST-WORKFLOW-EVIDENCE-WAIVER-012.json",
-      ".musubix/evidence/native/workflow-evidence-waiver-tests/TEST-WORKFLOW-EVIDENCE-WAIVER-015.json",
-      ".musubix/evidence/native/workflow-evidence-waiver-tests/TEST-WORKFLOW-EVIDENCE-WAIVER-016.json",
-      ".musubix/evidence/native/workflow-evidence-waiver-tests/TEST-WORKFLOW-EVIDENCE-WAIVER-017.json",
       ".musubix/evidence/native/workflow-evidence-waiver-tests/aggregate.json",
-      ".musubix/evidence/native/workflow-multi-session-verification-tests/TEST-WORKFLOW-EVIDENCE-WAIVER-018.json",
-      ".musubix/evidence/native/workflow-multi-session-verification-tests/TEST-WORKFLOW-MULTI-SESSION-001.json",
-      ".musubix/evidence/native/workflow-multi-session-verification-tests/TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-011.json",
-      ".musubix/evidence/native/workflow-multi-session-verification-tests/TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-012.json",
-      ".musubix/evidence/native/workflow-multi-session-verification-tests/TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-013.json",
-      ".musubix/evidence/native/workflow-multi-session-verification-tests/TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-014.json",
-      ".musubix/evidence/native/workflow-multi-session-verification-tests/TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-015.json",
-      ".musubix/evidence/native/workflow-multi-session-verification-tests/TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-016.json",
       ".musubix/evidence/native/workflow-multi-session-verification-tests/aggregate.json",
       ".musubix/evidence/native/workflow-session-shutdown-tests/aggregate.json",
-      ".musubix/evidence/native/workflow-waiver-bulk-recording-tests/TEST-WORKFLOW-WAIVER-BULK-001.json",
-      ".musubix/evidence/native/workflow-waiver-bulk-recording-tests/TEST-WORKFLOW-WAIVER-BULK-002.json",
-      ".musubix/evidence/native/workflow-waiver-bulk-recording-tests/TEST-WORKFLOW-WAIVER-BULK-004.json",
       ".musubix/evidence/native/workflow-waiver-bulk-recording-tests/aggregate.json",
       ".musubix/evidence/order.json",
       ".musubix/evidence/performance.json",
@@ -8562,8 +8534,6 @@
       ".musubix/evidence/workflow.json",
       ".musubix/features/adapter-pattern-recognition/trace.json",
       ".musubix/features/approval-domain-scoping/trace.json",
-      ".musubix/features/attestation-evidence-stability/design.md",
-      ".musubix/features/attestation-evidence-stability/requirements.md",
       ".musubix/features/attestation-evidence-stability/trace.json",
       ".musubix/features/bounded-file-read-concurrency/trace.json",
       ".musubix/features/change-acceptance-heuristic/trace.json",
@@ -8571,11 +8541,12 @@
       ".musubix/features/change-quality-refresh/trace.json",
       ".musubix/features/change-record-fail-fast/trace.json",
       ".musubix/features/change-record-recordedat-order/trace.json",
+      ".musubix/features/change-record-tdd-preflight/design.md",
+      ".musubix/features/change-record-tdd-preflight/requirements.md",
+      ".musubix/features/change-record-tdd-preflight/trace.json",
       ".musubix/features/change-requirement-batches/trace.json",
       ".musubix/features/cli-workflow-ux-v019/trace.json",
       ".musubix/features/command-working-directory/trace.json",
-      ".musubix/features/design-adr-none-exemption/design.md",
-      ".musubix/features/design-adr-none-exemption/requirements.md",
       ".musubix/features/design-adr-none-exemption/trace.json",
       ".musubix/features/ears-id-diagnostic-messages/trace.json",
       ".musubix/features/evidence-history-merge/trace.json",
@@ -8584,16 +8555,10 @@
       ".musubix/features/evidence-writer-lock-skill-guidance/trace.json",
       ".musubix/features/evidence-writer-lock/trace.json",
       ".musubix/features/gate-command-timeout-margin/trace.json",
-      ".musubix/features/github-actions-node24-runtime/design.md",
-      ".musubix/features/github-actions-node24-runtime/requirements.md",
       ".musubix/features/github-actions-node24-runtime/trace.json",
-      ".musubix/features/github-actions-project-node24/design.md",
-      ".musubix/features/github-actions-project-node24/requirements.md",
       ".musubix/features/github-actions-project-node24/trace.json",
       ".musubix/features/human-approval-gates/trace.json",
       ".musubix/features/model-correspondence-evidence-guidance/trace.json",
-      ".musubix/features/npm-audit-remediation/design.md",
-      ".musubix/features/npm-audit-remediation/requirements.md",
       ".musubix/features/npm-audit-remediation/trace.json",
       ".musubix/features/release-approval-ordering/trace.json",
       ".musubix/features/release-asset-publishing/trace.json",
@@ -8606,88 +8571,45 @@
       ".musubix/features/tdd-fingerprint-scoping/trace.json",
       ".musubix/features/tdd-green-requirement-scoping/trace.json",
       ".musubix/features/tdd-red-collection-guidance/trace.json",
-      ".musubix/features/tdd-repeated-requirement-option/design.md",
-      ".musubix/features/tdd-repeated-requirement-option/requirements.md",
       ".musubix/features/tdd-repeated-requirement-option/trace.json",
       ".musubix/features/tdd-superseded-cycle-scoping/trace.json",
       ".musubix/features/transaction-directory-sync-policy/trace.json",
       ".musubix/features/upgrade-workflow/trace.json",
-      ".musubix/features/workflow-evidence-waiver/design.md",
-      ".musubix/features/workflow-evidence-waiver/requirements.md",
       ".musubix/features/workflow-evidence-waiver/trace.json",
-      ".musubix/features/workflow-multi-session-verification/design.md",
-      ".musubix/features/workflow-multi-session-verification/requirements.md",
       ".musubix/features/workflow-multi-session-verification/trace.json",
-      ".musubix/features/workflow-resumed-session-durability/design.md",
-      ".musubix/features/workflow-resumed-session-durability/requirements.md",
       ".musubix/features/workflow-resumed-session-durability/trace.json",
       ".musubix/features/workflow-session-shutdown/trace.json",
-      ".musubix/features/workflow-waiver-bulk-recording/design.md",
-      ".musubix/features/workflow-waiver-bulk-recording/requirements.md",
       ".musubix/features/workflow-waiver-bulk-recording/trace.json",
       "README-ja.md",
       "README.md",
       "packages/analysis/src/change.ts",
-      "packages/analysis/src/gate.ts",
-      "packages/analysis/src/process.ts",
-      "packages/analysis/src/workflow-types.ts",
-      "packages/analysis/src/workflow-waiver.ts",
-      "packages/analysis/src/workflow.ts",
+      "packages/analysis/src/tdd.ts",
       "packages/cli/src/main.ts",
-      "packages/domain/src/design.ts",
-      "packages/domain/src/types.ts",
-      "scripts/check-gate-command-timeout-margin.mjs",
-      "scripts/check-github-actions.mjs",
-      "scripts/check-npm-audit-remediation.mjs",
-      "tests/attestation-evidence-stability.test.ts",
-      "tests/cli-package.test.ts",
-      "tests/design-adr-none-exemption.test.ts",
-      "tests/fixtures/release-asset-publishing/workflow-baseline.json",
-      "tests/github-actions-node24-runtime.test.ts",
-      "tests/npm-audit-remediation.test.ts",
-      "tests/p4-workflow-streaming.test.ts",
-      "tests/tdd-repeated-requirement-option.test.ts",
-      "tests/workflow-evidence-waiver.test.ts",
-      "tests/workflow-multi-session-verification.test.ts"
+      "tests/change-evidence-waiver.test.ts",
+      "tests/change-quality-refresh.test.ts",
+      "tests/change-record-fail-fast.test.ts",
+      "tests/change-record-recordedat-order.test.ts",
+      "tests/change-requirement-batches.test.ts",
+      "tests/gate-install.test.ts",
+      "tests/helpers.ts"
     ],
     "impacted": [
-      "packages/analysis/src/adapters.ts",
-      "packages/analysis/src/approval-domains.ts",
       "packages/analysis/src/approval-record.ts",
-      "packages/analysis/src/approval.ts",
       "packages/analysis/src/attestation.ts",
       "packages/analysis/src/change-evidence.ts",
       "packages/analysis/src/change-waiver.ts",
       "packages/analysis/src/change.ts",
-      "packages/analysis/src/config.ts",
       "packages/analysis/src/evidence-merge.ts",
-      "packages/analysis/src/formal.ts",
       "packages/analysis/src/gate.ts",
-      "packages/analysis/src/graph.ts",
       "packages/analysis/src/index.ts",
-      "packages/analysis/src/knowledge.ts",
       "packages/analysis/src/model-correspondence.ts",
-      "packages/analysis/src/mutation.ts",
-      "packages/analysis/src/order.ts",
       "packages/analysis/src/performance.ts",
-      "packages/analysis/src/process.ts",
       "packages/analysis/src/quality-refresh.ts",
       "packages/analysis/src/tdd.ts",
-      "packages/analysis/src/trace.ts",
-      "packages/analysis/src/workflow-types.ts",
       "packages/analysis/src/workflow-waiver.ts",
       "packages/analysis/src/workflow.ts",
       "packages/cli/src/install.ts",
       "packages/cli/src/main.ts",
-      "packages/domain/src/constitution.ts",
-      "packages/domain/src/design.ts",
-      "packages/domain/src/index.ts",
-      "packages/domain/src/markdown.ts",
-      "packages/domain/src/requirements.ts",
-      "packages/domain/src/types.ts",
-      "scripts/check-gate-command-timeout-margin.mjs",
-      "scripts/check-github-actions.mjs",
-      "scripts/check-npm-audit-remediation.mjs",
       "tests/adapter-integration.test.ts",
       "tests/adapter-pattern-recognition.test.ts",
       "tests/approval-domain-scoping.test.ts",
@@ -8713,10 +8635,8 @@
       "tests/evidence-writer-lock.test.ts",
       "tests/formal-knowledge.test.ts",
       "tests/gate-install.test.ts",
-      "tests/github-actions-node24-runtime.test.ts",
       "tests/helpers.ts",
       "tests/model-correspondence-evidence-guidance.test.ts",
-      "tests/npm-audit-remediation.test.ts",
       "tests/p2-improvements.test.ts",
       "tests/p3-attestation-oidc.test.ts",
       "tests/p3-codegraph-policy.test.ts",
@@ -8745,7 +8665,7 @@
       "tests/workflow-multi-session-verification.test.ts",
       "tests/workflow-waiver-bulk-recording.test.ts"
     ],
-    "generatedAt": "2026-09-26T08:47:20.042Z"
+    "generatedAt": "2026-09-26T15:21:39.021Z"
   },
   "fingerprints": {
     ".gitattributes": "d60f352d0db1404c70afb4bb8b2ca3fd1c610572aa40720e8a0b7baa7885418c",
@@ -8805,6 +8725,7 @@
     ".musubix/changes/CHANGE-0049.md": "c4e6866b1f831821156b76974289ed8d09300adc271f00c290151d4f31f51632",
     ".musubix/changes/CHANGE-0050.md": "38e29e4e5367e51a8b03fb4b20e7572363ab832d16f27f2bb0ec50b6e2ea7723",
     ".musubix/changes/CHANGE-0051.md": "d6245603ce18f8f69f76a4ddf70e0f9e4c2c94993e9c9931f7dd9ad69f250585",
+    ".musubix/changes/CHANGE-0052.md": "ea0a2fe22e5085a290bb34de4ce5f8a2875ff221cf0d54d77b8ebe5ee4e1f0f0",
     ".musubix/config.json": "458e9efabc0bdf78b2277679c30e212669d816f49b17e8a3bc82d51f813340c9",
     ".musubix/constitution.md": "f8b47fdc486f395bab05223a94821b145cf8df70ffde2c838a28f8d71fe0fa92",
     ".musubix/decisions/ADR-0002.md": "da556c6ef7efcee366a8c6497179bad96c093145366b6422548b0e3df2cba348",
@@ -8865,6 +8786,8 @@
     ".musubix/features/change-record-fail-fast/requirements.md": "7488f2f96293ca03ca0690358aa528d1e329e70d39be3885540f54c81c14d94e",
     ".musubix/features/change-record-recordedat-order/design.md": "dd13b47ff7a22763bf45114f4a789c3c566e71d5905bd1dbcebe1f093992e7ab",
     ".musubix/features/change-record-recordedat-order/requirements.md": "f43a1e3170ff7488fd2b3993ac9ba662b45ae159978513f929a99f59bdfcb83b",
+    ".musubix/features/change-record-tdd-preflight/design.md": "bbef776b4603ebfaad092a7ad13faf82d2bc8d6175d8e524cf487fe253daec51",
+    ".musubix/features/change-record-tdd-preflight/requirements.md": "8d5978d0838b76d1e8dabf0b185121baee2cf001be18afa745aa0541b78072d6",
     ".musubix/features/change-requirement-batches/design.md": "11ee9d356f4f2e9a144cf9368294efa76daf31de0dbe96d6326d0141d581f6b7",
     ".musubix/features/change-requirement-batches/requirements.md": "d4d2d1e9e12cd4e062ca3a14e4a28d9f011de634fb3c10defb53653260667110",
     ".musubix/features/cli-workflow-ux-v019/design.md": "bdb13e2b903123c32e54787599220ea5444a0922532b60d38fef528991116cf8",
@@ -8962,7 +8885,7 @@
     "packages/analysis/src/attestation.ts": "c353b5d93f151665e1f5f0531b763db164cb54e5305a837efd47b2742eb3b949",
     "packages/analysis/src/change-evidence.ts": "564bceca2edd2d8922b421ecd3b83f6df4d428b556e81450cd0819b5728a29e2",
     "packages/analysis/src/change-waiver.ts": "2ca1c25d10e7c7bfc2fc0e92eda59eb96b1e364b33fd8d6b5cb42cba5b35cdc6",
-    "packages/analysis/src/change.ts": "7f0ef8cf8972183bef33855744b7fecb892da0c42b0b45c8d8ad06db806265df",
+    "packages/analysis/src/change.ts": "a866f32a78a92e504f88dadb67e7d7a457677583769ae3991eae5f4609257167",
     "packages/analysis/src/config.ts": "52d5212f4057df9ed5caac0a0025ce744864909abceea3c64d259479ddffb998",
     "packages/analysis/src/evidence-merge-guard.ts": "1c0b4735d974f4c5fa0b9edaa5bde075baa5ca09de645d32db41f2e24e9421e1",
     "packages/analysis/src/evidence-merge.ts": "816d607be6a1479ba57bb59ce984b1704c9beec0929466cd4f5c8d56316e2dec",
@@ -8981,7 +8904,7 @@
     "packages/analysis/src/process.ts": "0e973b2f31cae8f22d112fcfcd1a24ea3005322234bfa3acae59bca9e8d42bb8",
     "packages/analysis/src/quality-refresh.ts": "29f5abc947fc41d654ec5ed1ef7baf40506254bdbcb72a8d4b18cc4f747cebc0",
     "packages/analysis/src/scaffold-artifact.ts": "e5e6fa31fbd97ce4dcc294ab26966eb0a4a2507eb4025a7a8a522831e7fb886d",
-    "packages/analysis/src/tdd.ts": "d56d5b760c570eaf2495d32afa6c15caa6bca6ed4f40d1bffeefbf1141cdb135",
+    "packages/analysis/src/tdd.ts": "d6e3da689cfa3a2a7cdfb19083452ad278bafcf6f5a391cfb657a9e38b5eff91",
     "packages/analysis/src/test-report.ts": "41c76811bfcb5e286bf097bf2f6aaf6cd5a414202efe8108f28219ecca063a01",
     "packages/analysis/src/trace.ts": "de8528c3f5aa40c44ceeece09368f92baa8f853a1babd6fc9ba2e4b115549be8",
     "packages/analysis/src/workflow-types.ts": "90cd118da80780e08905b23bf86df68e767385d0aa3a1ae835463fc802635d47",
@@ -8989,7 +8912,7 @@
     "packages/analysis/src/workflow.ts": "b1cfd042b2a78e43549126d0636d28f8ee1d04f1f58996faf0cfddbf7693fdd2",
     "packages/cli/package.json": "3b6f4b369d74ae2f958dffc23bd662dee82867d2458147b0d08191a4333d6083",
     "packages/cli/src/install.ts": "346a6e66a29505010681ac32ea17651339cef3cfc1143422174981438e17bbf1",
-    "packages/cli/src/main.ts": "b1cc7576279f9987407202c8b667858ac60e65e973396fcd4a49879eafb0b25c",
+    "packages/cli/src/main.ts": "25aa8d566e3851cee100b3c29b3d9c527594fe5778cd9e8222a00124e859991d",
     "packages/domain/package.json": "c9a3ff0fddd58032f1ab5e195410aaa4bedea3bd3372ba322495c272f081f590",
     "packages/domain/src/constitution.ts": "514278499642ff46ed902864b9192f566b116b4f92eb3fafa6b62588335e170a",
     "packages/domain/src/design.ts": "8ec1d6085bf11b22430815215aa267175228aef749fbeb92ab94c383416840cb",
@@ -8998,8 +8921,8 @@
     "packages/domain/src/requirements.ts": "65ea1e6d3bbd29e929c785037b930e5f5eb5535b607403e5f30c3657d36e9175",
     "packages/domain/src/types.ts": "76ed395512fc357ea124c600965415b14711f7ecfa763e557f02d2c6b9df35ab",
     "plugin.json": "5235ff8c037ce0b2872d02c511a13d07f5cf28ea8b1513dd90bc81583523a1bc",
-    "README-ja.md": "1a1d5fa32a3f26415aa4d89191612c611190a7457ba11c5684ad705bf93426ae",
-    "README.md": "2625b71780381f108a9daaeaa1d5521da8521dafbcacf49bd0c5b76b24031752",
+    "README-ja.md": "589a97c6f156e5a23533b496eb7830db13a4a2ed7724d34ae3946dac5dca562d",
+    "README.md": "eb93907e34e55e8d561f8d12aa721ee79cf1c83f0eba8de1d75715d4c77e2b62",
     "release-assets/musubix3.cdx.json": "11c67e452d573aae119e08e8e6b0a03d22e152a3526fbf53b0c3186dac4cbd39",
     "release-assets/SHA256SUMS": "38c8d757e3bb0fcff9187743685db047883e3f7b27ab13022f5d3bfad7c004e7",
     "scripts/check-gate-command-timeout-margin.mjs": "8c69d0412eec6a672e52007366a707bc3ce9165ed0465a09c973a0aeb7939a95",
@@ -9019,11 +8942,11 @@
     "tests/attestation-evidence-stability.test.ts": "a699d20fe5137acb3f40b02e597695209de4c61d98679a281acca34bf902cd05",
     "tests/bounded-file-read-concurrency.test.ts": "85743bfec42baef1a8cebd36a6b9e85293f9fc29f4121b220398ce32794b3112",
     "tests/change-acceptance-heuristic.test.ts": "44e9ecd782a3cd38c5913b200272b083c90fc144c389740f4b8548eabec73a3e",
-    "tests/change-evidence-waiver.test.ts": "b408605ce04c54d6eae3904afc89e1a9ec3603c185152d5272b622190efbe074",
-    "tests/change-quality-refresh.test.ts": "854f6d0f2d6069c675867b3b5642e6e3252abff24f2ecb4f87ea77b7e6a16cf3",
-    "tests/change-record-fail-fast.test.ts": "2f69f19332049c206f39b42c3bc2b505ce63173db798d74c5a9ace7064cdfe78",
-    "tests/change-record-recordedat-order.test.ts": "5ad61cf31e273dc9cdfe190b21dcc8ffc49d327592e01b6eb0251f4cdda7b149",
-    "tests/change-requirement-batches.test.ts": "919b14e0fc9174e82b916dac0448ba2f9acf57f038f0ec820ed0aa6a397f77bd",
+    "tests/change-evidence-waiver.test.ts": "a218f2dc2d3c36f2443b5606aa023201fb06ede38dd36e21a33676c407ecff24",
+    "tests/change-quality-refresh.test.ts": "45efc1697f4d9ee276f9499b82ead4364fe04f47d7a1370aaac21ce72c8d0a15",
+    "tests/change-record-fail-fast.test.ts": "e7eb9bbcb3ca7b0f9ee66e2e18e95a2665e9a9d015ffe0b5df7ed679cf517a80",
+    "tests/change-record-recordedat-order.test.ts": "85042e697f0cdfdde72f7d87e3121a012f39528afc60424f01525800a8eaa67e",
+    "tests/change-requirement-batches.test.ts": "0ff22bb65020076f9bb84ddcce2ff1815881d6c7016039017bdfd4efe6087c30",
     "tests/cli-package.test.ts": "e34848cf61ca23f65cda84777df9911bf78e82292bf01856c5129f51d181a9a6",
     "tests/cli-workflow-ux.test.ts": "53bdc5375bef05b365d725f5a8948393d68ae8cd1116fad8ff36ca3de127a177",
     "tests/command-working-directory.test.ts": "82dc863b1fcc5cd8a5ea1534238ef2f61f15e5d6c5e25d61fce43a7efe9bbc02",
@@ -9038,9 +8961,9 @@
     "tests/fixtures/github-actions-node24-runtime/baseline.json": "a4aced5fb2ed5a86ca64ee8d1126fff410081d8c4ca5f5c236d72a0cfd71a532",
     "tests/fixtures/release-asset-publishing/workflow-baseline.json": "9cf3c7e29a5dbd9893b70ac2849f312db79a6541321eabe4915f661f2be0b612",
     "tests/formal-knowledge.test.ts": "325ff2567b72708b83d3eab7b2986e7ceb7beb252ed21276b0db7436ffa367a4",
-    "tests/gate-install.test.ts": "d2d1f923f594f15776c1ecb64325775a1c3770de557d2a2c0342ec4144538822",
+    "tests/gate-install.test.ts": "c75aa41874638ac1e9974165b03b5e3b227b2aa6fede1c5029a0da55d3a1c0b5",
     "tests/github-actions-node24-runtime.test.ts": "bac93f61ff6bf352bdbb6e0149e34b81401166ba2a6e46adc0622c43b3dddeb6",
-    "tests/helpers.ts": "718d3833355787d04c50bd33deb94aad6dceb62d9a7fd854956ba20b6d6af18e",
+    "tests/helpers.ts": "9ce3c3784d027c17ef539e1ece168efa7707dae216011cbfa01514bdb6620666",
     "tests/model-correspondence-evidence-guidance.test.ts": "f32fef2927b6353cef035f67cc8df69c1fb37ef08b745d88215df9bfa46d65ad",
     "tests/npm-audit-remediation.test.ts": "afb783cda0b381c687707f5f70894ddfee13ac048d905900ba290689b7763a94",
     "tests/p2-improvements.test.ts": "0d96ebf371ac344778ecc5a84b75cbac2ff972263d85264e861392fca5c976e4",
@@ -9853,7 +9776,7 @@
       "requirementId": "REQ-CHANGE-RECORD-FAIL-FAST-003",
       "approver": "nahisaho",
       "reason": "Pre-existing legacy diagnostic predating the CHANGE-0012 waiver mechanism; retroactively reviewed and accepted as historical debt.",
-      "recordedAt": "2026-09-12T23:58:12.686Z"
+      "recordedAt": "2026-09-26T14:56:19.616Z"
     },
     {
       "changeId": "CHANGE-0010",
@@ -9861,7 +9784,7 @@
       "requirementId": "REQ-CHANGE-RECORD-FAIL-FAST-003",
       "approver": "nahisaho",
       "reason": "Pre-existing legacy diagnostic predating the CHANGE-0012 waiver mechanism; retroactively reviewed and accepted as historical debt.",
-      "recordedAt": "2026-09-12T23:58:13.068Z"
+      "recordedAt": "2026-09-26T14:56:20.760Z"
     },
     {
       "changeId": "CHANGE-0010",
@@ -9869,7 +9792,7 @@
       "requirementId": "REQ-CHANGE-RECORD-FAIL-FAST-004",
       "approver": "nahisaho",
       "reason": "Pre-existing legacy diagnostic predating the CHANGE-0012 waiver mechanism; retroactively reviewed and accepted as historical debt.",
-      "recordedAt": "2026-09-12T23:58:13.468Z"
+      "recordedAt": "2026-09-26T14:56:21.899Z"
     },
     {
       "changeId": "CHANGE-0010",
@@ -9877,7 +9800,7 @@
       "requirementId": "REQ-CHANGE-RECORD-FAIL-FAST-004",
       "approver": "nahisaho",
       "reason": "Pre-existing legacy diagnostic predating the CHANGE-0012 waiver mechanism; retroactively reviewed and accepted as historical debt.",
-      "recordedAt": "2026-09-12T23:58:13.877Z"
+      "recordedAt": "2026-09-26T14:56:23.024Z"
     },
     {
       "changeId": "CHANGE-0010",
@@ -9885,7 +9808,7 @@
       "requirementId": "REQ-CHANGE-RECORD-FAIL-FAST-005",
       "approver": "nahisaho",
       "reason": "Pre-existing legacy diagnostic predating the CHANGE-0012 waiver mechanism; retroactively reviewed and accepted as historical debt.",
-      "recordedAt": "2026-09-12T23:58:14.255Z"
+      "recordedAt": "2026-09-26T14:56:23.675Z"
     },
     {
       "changeId": "CHANGE-0010",
@@ -9893,7 +9816,7 @@
       "requirementId": "REQ-CHANGE-RECORD-FAIL-FAST-005",
       "approver": "nahisaho",
       "reason": "Pre-existing legacy diagnostic predating the CHANGE-0012 waiver mechanism; retroactively reviewed and accepted as historical debt.",
-      "recordedAt": "2026-09-12T23:58:14.624Z"
+      "recordedAt": "2026-09-26T14:56:24.782Z"
     },
     {
       "changeId": "CHANGE-0010",
@@ -10253,7 +10176,7 @@
       "requirementId": "REQ-CHANGE-RECORD-FAIL-FAST-003",
       "approver": "nahisaho",
       "reason": "Pre-existing legacy diagnostic predating the CHANGE-0012 waiver mechanism; retroactively reviewed and accepted as historical debt.",
-      "recordedAt": "2026-09-12T23:58:29.715Z"
+      "recordedAt": "2026-09-26T15:00:33.193Z"
     },
     {
       "changeId": "CHANGE-0010",
@@ -10261,7 +10184,7 @@
       "requirementId": "REQ-CHANGE-RECORD-FAIL-FAST-004",
       "approver": "nahisaho",
       "reason": "Pre-existing legacy diagnostic predating the CHANGE-0012 waiver mechanism; retroactively reviewed and accepted as historical debt.",
-      "recordedAt": "2026-09-12T23:58:30.076Z"
+      "recordedAt": "2026-09-26T15:00:34.336Z"
     },
     {
       "changeId": "CHANGE-0010",
@@ -10269,7 +10192,7 @@
       "requirementId": "REQ-CHANGE-RECORD-FAIL-FAST-005",
       "approver": "nahisaho",
       "reason": "Pre-existing legacy diagnostic predating the CHANGE-0012 waiver mechanism; retroactively reviewed and accepted as historical debt.",
-      "recordedAt": "2026-09-12T23:58:30.423Z"
+      "recordedAt": "2026-09-26T15:00:35.451Z"
     },
     {
       "changeId": "CHANGE-0010",
@@ -11976,6 +11899,33 @@
       "approver": "nahisaho",
       "reason": "CHANGE-0051 audited reconciliation of historical declaration-scoped workflow residuals after strict verification of the completed prior-session transcript.",
       "waiverRecordedAt": "2026-09-26T06:08:08.511Z"
+    },
+    {
+      "skill": "sdd-implementation",
+      "phase": "complete",
+      "declarationRecordedAt": "2026-09-26T14:46:52.183Z",
+      "code": "WORKFLOW_SKILL_NOT_INVOKED",
+      "approver": "nahisaho",
+      "reason": "Compatible verification of the live current-session transcript completed; remaining declaration-scoped historical workflow diagnostics are reviewed legacy evidence and do not indicate failed CHANGE-0052 checks.",
+      "waiverRecordedAt": "2026-09-26T15:14:54.949Z"
+    },
+    {
+      "skill": "sdd-quality",
+      "phase": "complete",
+      "declarationRecordedAt": "2026-09-26T16:26:32.242Z",
+      "code": "WORKFLOW_SKILL_NOT_INVOKED",
+      "approver": "nahisaho",
+      "reason": "Compatible verification of the live Copilot transcript completed; waive remaining declaration-scoped historical invocation and binding diagnostics for CHANGE-0052 release reconciliation.",
+      "waiverRecordedAt": "2026-09-26T16:35:44.435Z"
+    },
+    {
+      "skill": "sdd-change",
+      "phase": "complete",
+      "declarationRecordedAt": "2026-09-26T17:41:13.148Z",
+      "code": "WORKFLOW_INVOCATION_REUSED",
+      "approver": "nahisaho",
+      "reason": "Compatible verification of the live Copilot transcript completed after the final CHANGE-0052 declaration; waive remaining declaration-scoped historical binding, invocation reuse, and skill invocation diagnostics.",
+      "waiverRecordedAt": "2026-09-26T17:49:39.459Z"
     }
   ],
   "waiverDiagnostics": [

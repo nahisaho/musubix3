@@ -2,7 +2,8 @@ import { mkdir, rm } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { afterEach } from 'vitest';
 import {
-  defaultConfig, digest, readText, runProcess, writeJson, writeText, type Config, type ProcessResult, type Runner,
+  defaultConfig, digest, readText, runProcess, runTddPhase, writeJson, writeText,
+  type Config, type ProcessResult, type Runner,
 } from '../packages/analysis/src/index.js';
 import { install } from '../packages/cli/src/install.js';
 
@@ -96,6 +97,16 @@ export function tddResultRunner(root: string, status: 'passed' | 'failed' | 'ski
     await writeJson(root, reportPath, { schemaVersion: 1, tests: [{ id: testId, status }] });
     return processResult(overrides);
   };
+}
+
+export async function recordTddRed(root: string, testId: string, requirementId: string): Promise<void> {
+  await runTddPhase(root, 'red', testId, requirementId, 'test',
+    tddResultRunner(root, 'failed', { exitCode: 1 }));
+}
+
+export async function recordTddGreen(root: string, testId: string, requirementId: string): Promise<void> {
+  await runTddPhase(root, 'green', testId, requirementId, 'test',
+    tddResultRunner(root, 'passed'));
 }
 
 export function processResult(overrides: Partial<ProcessResult> = {}): ProcessResult {

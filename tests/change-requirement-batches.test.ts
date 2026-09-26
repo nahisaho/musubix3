@@ -9,7 +9,7 @@ import {
   type ChangePhaseEvidence, type ChangeRecord,
 } from '../packages/analysis/src/change-evidence.js';
 import type { TddEvidence, TddPhaseEvidence } from '../packages/analysis/src/tdd.js';
-import { code, project, tddResultRunner, testCode } from './helpers.js';
+import { code, project, recordTddGreen, recordTddRed, tddResultRunner, testCode } from './helpers.js';
 
 function batchPhase(
   phase: ChangePhaseEvidence['phase'],
@@ -150,12 +150,14 @@ it('TEST-CHANGE-REQUIREMENT-BATCHES-002 rejects Implementation for a batch befor
     .rejects.toThrow(/red/i);
 
   await writeText(root, 'src/service.test.ts', `${testCode}\n// batch 001 staged failing behavior\n`);
+  await recordTddRed(root, 'TEST-EXAMPLE-001', 'REQ-EXAMPLE-001');
   await recordChangePhase(root, 'CHANGE-0001', 'red', ['REQ-EXAMPLE-001']);
   await expect(recordChangePhase(root, 'CHANGE-0001', 'green', ['REQ-EXAMPLE-001']))
     .rejects.toThrow(/implementation/i);
 
   // An unrelated batch (002) is unaffected by 001's missing Implementation.
   await writeText(root, 'src/second.test.ts', `${await readText(root, 'src/second.test.ts')}\n// batch 002 staged failing behavior\n`);
+  await recordTddRed(root, 'TEST-EXAMPLE-002', 'REQ-EXAMPLE-002');
   await recordChangePhase(root, 'CHANGE-0001', 'red', ['REQ-EXAMPLE-002']);
   await writeText(root, 'src/second.ts', (await readText(root, 'src/second.ts')).replace('return true', 'return false'));
   await recordChangePhase(root, 'CHANGE-0001', 'implementation', ['REQ-EXAMPLE-002']);
@@ -176,18 +178,22 @@ it('TEST-CHANGE-REQUIREMENT-BATCHES-003 rejects Quality until every requirement 
     `${await readText(root, '.musubix/features/example/design.md')}\nChange: revised component behavior.\n`);
   await recordChangePhase(root, 'CHANGE-0001', 'design', ['REQ-EXAMPLE-001', 'REQ-EXAMPLE-002']);
   await writeText(root, 'src/service.test.ts', `${testCode}\n// batch 001 staged failing behavior\n`);
+  await recordTddRed(root, 'TEST-EXAMPLE-001', 'REQ-EXAMPLE-001');
   await recordChangePhase(root, 'CHANGE-0001', 'red', ['REQ-EXAMPLE-001']);
   await writeText(root, 'src/service.ts', code.replace('return true', 'return false'));
   await recordChangePhase(root, 'CHANGE-0001', 'implementation', ['REQ-EXAMPLE-001']);
+  await recordTddGreen(root, 'TEST-EXAMPLE-001', 'REQ-EXAMPLE-001');
   await recordChangePhase(root, 'CHANGE-0001', 'green', ['REQ-EXAMPLE-001']);
 
   await expect(recordChangePhase(root, 'CHANGE-0001', 'quality', ['REQ-EXAMPLE-001', 'REQ-EXAMPLE-002']))
     .rejects.toThrow(/REQ-EXAMPLE-002/);
 
   await writeText(root, 'src/second.test.ts', `${await readText(root, 'src/second.test.ts')}\n// batch 002 staged failing behavior\n`);
+  await recordTddRed(root, 'TEST-EXAMPLE-002', 'REQ-EXAMPLE-002');
   await recordChangePhase(root, 'CHANGE-0001', 'red', ['REQ-EXAMPLE-002']);
   await writeText(root, 'src/second.ts', (await readText(root, 'src/second.ts')).replace('return true', 'return false'));
   await recordChangePhase(root, 'CHANGE-0001', 'implementation', ['REQ-EXAMPLE-002']);
+  await recordTddGreen(root, 'TEST-EXAMPLE-002', 'REQ-EXAMPLE-002');
   await recordChangePhase(root, 'CHANGE-0001', 'green', ['REQ-EXAMPLE-002']);
   await recordChangePhase(root, 'CHANGE-0001', 'quality', ['REQ-EXAMPLE-001', 'REQ-EXAMPLE-002']);
 });
@@ -216,12 +222,16 @@ export function testReadiness() { return true; }
   await recordChangePhase(root, 'CHANGE-0001', 'design', requirements);
   await writeText(root, 'src/service.test.ts',
     `${await readText(root, 'src/service.test.ts')}\n// red checkpoint\n`);
+  await recordTddRed(root, 'TEST-EXAMPLE-001', 'REQ-EXAMPLE-001');
+  await recordTddRed(root, 'TEST-EXAMPLE-001', 'REQ-EXAMPLE-002');
   await recordChangePhase(root, 'CHANGE-0001', 'red', requirements);
   await writeText(root, 'src/service.ts',
     `${await readText(root, 'src/service.ts')}\n// implementation checkpoint\n`);
   await writeText(root, 'src/second.ts',
     `${await readText(root, 'src/second.ts')}\n// implementation checkpoint\n`);
   await recordChangePhase(root, 'CHANGE-0001', 'implementation', requirements);
+  await recordTddGreen(root, 'TEST-EXAMPLE-001', 'REQ-EXAMPLE-001');
+  await recordTddGreen(root, 'TEST-EXAMPLE-001', 'REQ-EXAMPLE-002');
   await recordChangePhase(root, 'CHANGE-0001', 'green', requirements);
   await recordChangePhase(root, 'CHANGE-0001', 'quality', requirements);
 
@@ -257,12 +267,16 @@ def test_readiness():
   await recordChangePhase(root, 'CHANGE-0001', 'design', requirements);
   await writeText(root, 'src/shared_test.py',
     `${await readText(root, 'src/shared_test.py')}\n# red checkpoint\n`);
+  await recordTddRed(root, 'TEST-EXAMPLE-PY-001', 'REQ-EXAMPLE-001');
+  await recordTddRed(root, 'TEST-EXAMPLE-PY-001', 'REQ-EXAMPLE-002');
   await recordChangePhase(root, 'CHANGE-0001', 'red', requirements);
   await writeText(root, 'src/service.ts',
     `${await readText(root, 'src/service.ts')}\n// implementation checkpoint\n`);
   await writeText(root, 'src/second.ts',
     `${await readText(root, 'src/second.ts')}\n// implementation checkpoint\n`);
   await recordChangePhase(root, 'CHANGE-0001', 'implementation', requirements);
+  await recordTddGreen(root, 'TEST-EXAMPLE-PY-001', 'REQ-EXAMPLE-001');
+  await recordTddGreen(root, 'TEST-EXAMPLE-PY-001', 'REQ-EXAMPLE-002');
   await recordChangePhase(root, 'CHANGE-0001', 'green', requirements);
   await recordChangePhase(root, 'CHANGE-0001', 'quality', requirements);
 
@@ -467,10 +481,14 @@ it('suppresses fully superseded batch diagnostics in validation and waiver recor
   await recordChangePhase(root, 'CHANGE-0001', 'design', requirements);
 
   await writeText(root, 'src/service.test.ts', `${testCode}\n// legacy red\n`);
+  await recordTddRed(root, 'TEST-EXAMPLE-001', 'REQ-EXAMPLE-001');
+  await recordTddRed(root, 'TEST-EXAMPLE-002', 'REQ-EXAMPLE-002');
   await recordChangePhase(root, 'CHANGE-0001', 'red', requirements);
   await writeText(root, 'src/service.ts', `${code}\n// legacy implementation\n`);
   await writeText(root, 'src/second.ts', `${await readText(root, 'src/second.ts')}\n// legacy implementation\n`);
   await recordChangePhase(root, 'CHANGE-0001', 'implementation', requirements);
+  await recordTddGreen(root, 'TEST-EXAMPLE-001', 'REQ-EXAMPLE-001');
+  await recordTddGreen(root, 'TEST-EXAMPLE-002', 'REQ-EXAMPLE-002');
   await recordChangePhase(root, 'CHANGE-0001', 'green', requirements);
 
   for (const [requirementId, testPath, implementationPath] of [
@@ -478,9 +496,15 @@ it('suppresses fully superseded batch diagnostics in validation and waiver recor
     ['REQ-EXAMPLE-002', 'src/second.test.ts', 'src/second.ts'],
   ] as const) {
     await writeText(root, testPath, `${await readText(root, testPath)}\n// scoped red\n`);
+    await recordTddRed(root,
+      requirementId === 'REQ-EXAMPLE-001' ? 'TEST-EXAMPLE-001' : 'TEST-EXAMPLE-002',
+      requirementId);
     await recordChangePhase(root, 'CHANGE-0001', 'red', [requirementId]);
     await writeText(root, implementationPath, `${await readText(root, implementationPath)}\n// scoped implementation\n`);
     await recordChangePhase(root, 'CHANGE-0001', 'implementation', [requirementId]);
+    await recordTddGreen(root,
+      requirementId === 'REQ-EXAMPLE-001' ? 'TEST-EXAMPLE-001' : 'TEST-EXAMPLE-002',
+      requirementId);
     await recordChangePhase(root, 'CHANGE-0001', 'green', [requirementId]);
   }
 

@@ -263,8 +263,9 @@ finalize requirements while blockers remain.
    `design` approval before implementation.
 4. Write an annotated behavior test, record a structured failing `tdd red`, then
    record the change `red` checkpoint.
-5. Implement the minimum change, record `implementation`, run passing `tdd green`,
-   then record `green` and refactor. For a change with multiple requirements,
+5. Implement the minimum change, record the change `implementation` checkpoint,
+   run passing `tdd green`, then record the change `green` checkpoint and
+   refactor. For a change with multiple requirements,
    `red`/`implementation`/`green` may instead be recorded once per requirement
    subset (an independent batch per subset), completing each requirement's
    Red-Implementation-Green loop before moving to the next, instead of
@@ -292,14 +293,15 @@ npx musubix3 approval prepare design --json
 npx musubix3 approval record design --approver "Design Owner" --artifact-sha256 "$REVIEWED_HASH" --confirm
 npx musubix3 change-record CHANGE-0001 design --requirement REQ-EXAMPLE-001
 npx musubix3 tdd red TEST-EXAMPLE-001 --requirement REQ-EXAMPLE-001 --command test
+npx musubix3 change-record CHANGE-0001 red --requirement REQ-EXAMPLE-001
 # Implement the minimum behavior without changing the test.
+npx musubix3 change-record CHANGE-0001 implementation --requirement REQ-EXAMPLE-001
 npx musubix3 tdd green TEST-EXAMPLE-001 --requirement REQ-EXAMPLE-001 --command test
+npx musubix3 change-record CHANGE-0001 green --requirement REQ-EXAMPLE-001
 npx musubix3 tdd refactor TEST-EXAMPLE-001 --requirement REQ-EXAMPLE-001 --command test
 # A change declaring REQ-EXAMPLE-001 and REQ-EXAMPLE-002 may record red/implementation/green
 # once per requirement subset instead of once for the whole change:
-npx musubix3 change-record CHANGE-0001 red --requirement REQ-EXAMPLE-001
-npx musubix3 change-record CHANGE-0001 implementation --requirement REQ-EXAMPLE-001
-npx musubix3 change-record CHANGE-0001 green --requirement REQ-EXAMPLE-001
+# Repeat that exact six-step order for each independent requirement subset.
 npx musubix3 trace build
 npx musubix3 trace check --strict --json
 npx musubix3 graph index
@@ -422,7 +424,7 @@ validation/gate or requested solver failure, **2** usage, I/O or malformed confi
 | `attestation oidc-audience --key-id <id> [--public-key-file <pem>]` | Derive the GitHub custom audience that authorizes a signing key |
 | `attestation payload --provider <name> --run-id <id> --key-id <id> [--public-key-file <pem>] [--github-oidc-token-file <jwt>]` | Emit canonical unsigned CI payload for external signing |
 | `attestation verify` | Verify static-key or GitHub OIDC-authorized Ed25519 provenance |
-| `change-record <CHANGE-ID> <phase> --requirement <REQ-ID...> [--allow-unchanged] [--dry-run]` | Record ordered artifact/TDD fingerprints for a staged change. `impact`/`requirements`/`design`/`quality` require the change's full requirement ID set; `red`/`implementation`/`green` also accept a proper non-empty subset, recorded as an independent per-requirement batch, so a multi-requirement change can be completed with an interleaved per-requirement Red-Implementation-Green loop instead of one global batch. When multiple batches contain the same requirement, validation uses the batch with the latest Red `order`; a later incomplete batch supersedes older evidence and must be completed rather than silently falling back. Rejects with a non-zero exit and a stable `*_UNCHANGED_AT_RECORD` diagnostic (leaving `changes.json`/`order.json` untouched) when a phase's fingerprint is byte-identical to the immediately preceding phase's, since that mistake is otherwise only caught much later by `trace check --strict`/`gate`, at which point the append-only evidence store makes it unfixable. `--allow-unchanged` bypasses this check for the `requirements` phase only (the one case `sdd-change` documents as legitimate: a defect fix that intentionally leaves its requirement unchanged) and persists a durable marker so later validation does not re-flag it. `--dry-run` previews the exact success/rejection outcome, including every existing check, without persisting anything. Each recorded phase/batch stores both `order` (the verified, `gate`-checked logical append sequence from `order.json` — the only field guaranteed correct and monotonic per change) and `recordedAt` (an independently captured wall-clock timestamp with no ordering guarantee relative to `order`); `gate` reports a non-blocking `CHANGE_RECORDEDAT_OUT_OF_ORDER` warning when a change's `recordedAt` values disagree with its `order` sequence |
+| `change-record <CHANGE-ID> <phase> --requirement <REQ-ID...> [--allow-unchanged] [--dry-run]` | Record ordered artifact/TDD fingerprints for a staged change. `impact`/`requirements`/`design`/`quality` require the change's full requirement ID set; `red`/`implementation`/`green` also accept a proper non-empty subset. Use the recovery-safe order `tdd red` → `change-record red` → implementation code → `change-record implementation` → `tdd green` → `change-record green`. Before any Red/Implementation/Green candidate, order allocation, or write, persisted evidence is checked for every requested requirement; failures use `CHANGE_RED_TDD_PREFLIGHT_FAILED`, `CHANGE_IMPLEMENTATION_TDD_PREFLIGHT_FAILED`, or `CHANGE_GREEN_TDD_PREFLIGHT_FAILED`. JSON mode preserves `code`, `message`, `phase`, sorted `uncoveredRequirementIds`, and deterministic `rejections`; non-JSON output keeps the `musubix3:` prefix and recovery ordering. Rejection and `--dry-run` leave `changes.json` and `order.json` byte-identical and consume no sequence. When multiple batches contain the same requirement, the latest Red `order` is authoritative and an older requested batch is rejected rather than silently reused. A legacy non-void cycle without integer Red order, an invalid order log, or a missing persisted change-boundary order record fails closed with `missing-order`; waivers cannot authorize the append, so archive or repair the legacy evidence and regenerate a complete ordered cycle. Existing stable `*_UNCHANGED_AT_RECORD` checks still run first. `--allow-unchanged` applies only to `requirements`. Each recorded phase/batch stores verified monotonic `order` and informational `recordedAt`; `gate` reports non-blocking `CHANGE_RECORDEDAT_OUT_OF_ORDER` when their chronology differs. |
 | `change quality-recover [--json]` | Recover an interrupted atomic Quality refresh. A repeated full-set Quality after a newer complete corrective batch retains earlier checkpoints in schema-version-2 `qualityHistory`; incomplete/current or unnecessary refreshes fail with stable `CHANGE_QUALITY_REFRESH_*` errors. |
 | `config lint` | Report configured commands whose `args` reference repository-relative paths that do not exist |
 | `config scaffold` | Propose native test-command entries for detected Go/Rust/Maven/Python/Node toolchains without writing `.musubix/config.json` |

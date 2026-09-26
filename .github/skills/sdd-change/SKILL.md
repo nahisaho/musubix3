@@ -23,7 +23,7 @@ Baseline-protect transcript byte limits; never truncate/edit to bypass them.
 For strict evidence, bind an expected UUID; GitHub origin needs strict OIDC.
 Never record multiple declarations per invocation; use only the configured CLI.
 For broad work, use short stages: initialize, requirements, requirements approval, design, design approval, real Red, Green, integration, trace/formal, quality, release approval. Report each result before the next prompt.
-For a staged change, run variadic `change-record <CHANGE-ID> <phase> --requirement <REQ-ID...>` after each phase in this exact order: `impact`, `requirements`, `design`, `red`, `implementation`, `green`, `quality`; unlike TDD phase commands, it accepts a requirement batch.
+For a staged change, run variadic `change-record <CHANGE-ID> <phase> --requirement <REQ-ID...>` after each phase. The TDD batch order is exactly `tdd red` -> `change-record red` -> implementation code -> `change-record implementation` -> `tdd green` -> `change-record green`; finish with full-set `quality`. Unlike TDD phase commands, `change-record` accepts a requirement batch. Its Red/Implementation/Green preflight fails with stable `CHANGE_*_TDD_PREFLIGHT_FAILED` codes before candidate construction or writes; JSON exposes sorted uncovered requirements and deterministic rejections, and retrying safely requires following this ordering rather than recording Green early.
 `impact`/`requirements`/`design`/`quality` always use the full requirement ID set; `red`/`implementation`/`green` may instead use a non-empty subset as an independent per-requirement batch for an interleaved Red-Implementation-Green loop; `quality` still needs full cumulative Green coverage.
 After Quality, record a new corrective subset Red/Implementation/Green batch and invoke full-set `quality` again; schema v2 retains prior checkpoints in `qualityHistory`, and `change quality-recover` recovers interruptions.
 Refresh errors are `CHANGE_QUALITY_REFRESH_LINEAGE_INVALID`, `CHANGE_QUALITY_REFRESH_GREEN_MISSING`, `CHANGE_QUALITY_REFRESH_NOT_NEEDED`, and `CHANGE_QUALITY_REFRESH_RECOVERY_REQUIRED`; an already-used corrective subset requires a new reviewed staged change.
@@ -57,10 +57,10 @@ Persisted monotonic order, not wall-clock time, proves these phase boundaries.
    test adapter. For deterministic performance requirements, use a passing
    instrumented `operations` report with command/report/run/exit provenance;
    native adapters cannot emit app counters, and elapsed time is insufficient.
-2. Run `npx musubix3 tdd red <TEST-ID> --requirement <REQ-ID> --command <name>` with exactly one requirement per invocation; when a test verifies multiple requirements, run a separate Red/Green cycle for each requirement.
-   Do not edit implementation code until this records the expected failing test.
-3. Implement the smallest complete change, preserving the test, then run
-   `tdd green` with the same IDs and command. Refactor only after Green and record
+2. Run `npx musubix3 tdd red <TEST-ID> --requirement <REQ-ID> --command <name>` with exactly one requirement per invocation; when a test verifies multiple requirements, record a separate Red/Green cycle for each requirement, collecting every Red in the batch before immediately recording the matching `change-record ... red` batch and before implementation or any TDD Green.
+   Do not edit implementation code until both Red records succeed.
+3. Implement the smallest complete change, preserving the test, record the matching `change-record ... implementation` batch, then run
+   `tdd green` with the same IDs and command and record `change-record ... green`. Refactor only after Green and record
    `tdd refactor` after the refactored code passes.
 4. Maintain unique IDs and trace annotations in authoritative files; never add
    proxies for coverage. Links locate evidence, not proof.

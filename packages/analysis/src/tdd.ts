@@ -292,6 +292,75 @@ function phaseLinkageValid(
     && record.phaseEvidenceSha256 === digest(JSON.stringify(phaseEvidence));
 }
 
+export type TddCycleIntegrityPhase = 'red' | 'green';
+
+/** @id CODE-CHANGE-RECORD-TDD-PREFLIGHT-002
+ * @implements REQ-CHANGE-RECORD-TDD-PREFLIGHT-001 REQ-CHANGE-RECORD-TDD-PREFLIGHT-002 REQ-CHANGE-RECORD-TDD-PREFLIGHT-003 REQ-CHANGE-RECORD-TDD-PREFLIGHT-004
+ * @design DES-CHANGE-RECORD-TDD-PREFLIGHT-002
+ */
+export function tddCycleIntegrityDiagnosticCodes(
+  evidence: TddEvidence,
+  order: ReturnType<typeof validateEvidenceOrderLog>,
+  cycle: TddCycle,
+  phases: readonly TddCycleIntegrityPhase[],
+): string[] {
+  const diagnostics = new Set<string>();
+  for (const phase of phases) {
+    const phaseEvidence = cycle[phase];
+    if (!phaseEvidence) continue;
+    if (!cycle.cycleId || !Number.isInteger(phaseEvidence.order)) {
+      diagnostics.add('TDD_ORDER_MIGRATION_REQUIRED');
+    } else {
+      const record = evidenceOrderRecord(order.records, 'tdd', cycle.cycleId, phase);
+      if (!order.valid || !record || record.sequence !== phaseEvidence.order) diagnostics.add('TDD_ORDER_MISMATCH');
+    }
+  }
+  if (!evidence.chain) {
+    diagnostics.add('TDD_CHAIN_MISSING');
+  } else {
+    for (const phase of phases) {
+      const phaseEvidence = cycle[phase];
+      if (!phaseEvidence) continue;
+      const matches = evidence.chain.filter((record) =>
+        record.phase === phase && record.cycleId === cycle.cycleId);
+      if (matches.length === 0) {
+        diagnostics.add('TDD_CHAIN_PHASE_MISSING');
+        continue;
+      }
+      if (matches.length > 1) diagnostics.add('TDD_CHAIN_PHASE_DUPLICATE');
+      for (const record of matches) {
+        const index = evidence.chain.indexOf(record);
+        const expectedPrevious = index === 0 ? null : evidence.chain[index - 1]!.recordSha256;
+        const { recordSha256, ...payload } = record;
+        if (record.sequence !== index + 1) diagnostics.add('TDD_CHAIN_SEQUENCE');
+        if (record.previousSha256 !== expectedPrevious) diagnostics.add('TDD_CHAIN_LINK');
+        if (recordSha256 !== chainRecordSha256(payload)) diagnostics.add('TDD_CHAIN_HASH_MISMATCH');
+        if (record.requirementId !== cycle.requirementId
+          || record.testId !== cycle.testId
+          || record.testPath !== cycle.testPath
+          || record.commandName !== cycle.commandName
+          || record.phaseEvidenceSha256 !== digest(JSON.stringify(phaseEvidence))) {
+          diagnostics.add('TDD_CHAIN_PAYLOAD_MISMATCH');
+        }
+      }
+    }
+  }
+  if (phases.includes('green') && cycle.green) {
+    if (cycle.green.commandSha256 !== cycle.red.commandSha256) diagnostics.add('TDD_COMMAND_CHANGED');
+    const migratedFingerprint = cycle.migrate
+      && phaseLinkageValid(order, evidence.chain, cycle, 'migrate', cycle.migrate)
+      ? cycle.migrate.toFingerprint
+      : undefined;
+    if ((migratedFingerprint ?? cycle.green.testFingerprint) !== cycle.red.testFingerprint) {
+      diagnostics.add('TDD_TEST_FINGERPRINT_MISMATCH');
+    }
+    if (cycle.green.order !== undefined && cycle.red.order !== undefined && cycle.green.order <= cycle.red.order) {
+      diagnostics.add('TDD_ORDER_SEQUENCE');
+    }
+  }
+  return [...diagnostics].sort();
+}
+
 /** @id CODE-TDD-CYCLE-VOID-002
  * @implements REQ-TDD-CYCLE-VOID-005, REQ-TDD-CYCLE-VOID-006, REQ-TDD-CYCLE-VOID-007
  * @design DES-TDD-CYCLE-VOID-002

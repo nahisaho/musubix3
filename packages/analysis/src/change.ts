@@ -1,7 +1,10 @@
 import { error, ids, validateDesign, validateRequirements, type Diagnostic, type Requirement } from '../../domain/src/index.js';
 import { digest, exists, files, snapshot, within, writeJson, readText } from './files.js';
-import { loadTddEvidence, validlyVoidedTddCycles } from './tdd.js';
-import { buildTrace, commentBlocks } from './trace.js';
+import {
+  loadTddEvidence, tddCycleIntegrityDiagnosticCodes, validlyVoidedTddCycles,
+  type TddCycle, type TddEvidence,
+} from './tdd.js';
+import { buildTrace, commentBlocks, type TraceGraph } from './trace.js';
 import { indexGraph } from './graph.js';
 import { validatePerformanceEvidence } from './performance.js';
 import {
@@ -73,13 +76,17 @@ async function requirementImplementationFingerprints(
   return result;
 }
 
-async function currentFingerprints(root: string, changeId: string, requirementIds: string[]): Promise<ChangeFingerprints> {
+async function currentFingerprints(
+  root: string,
+  changeId: string,
+  requirementIds: string[],
+): Promise<{ fingerprints: ChangeFingerprints; trace: TraceGraph }> {
   const paths = await files(root);
   const trace = await buildTrace(root, false);
   const codePaths = trace.nodes.filter((node) => node.kind === 'code').map((node) => node.path);
   const testPaths = trace.nodes.filter((node) => node.kind === 'test').map((node) => node.path);
   const tddPath = '.musubix/evidence/tdd.json';
-  return {
+  return { trace, fingerprints: {
     impact: await fingerprint(root, paths.filter((path) => path === `.musubix/changes/${changeId}.md`)),
     requirements: await fingerprint(root, paths.filter((path) => /^\.musubix\/features\/[^/]+\/requirements\.md$/.test(path))),
     design: await fingerprint(root, paths.filter((path) =>
@@ -88,12 +95,249 @@ async function currentFingerprints(root: string, changeId: string, requirementId
     tests: await fingerprint(root, testPaths),
     tdd: await fingerprint(root, await exists(within(root, tddPath)) ? [tddPath] : []),
     requirementImplementations: await requirementImplementationFingerprints(root, requirementIds, trace),
-  };
+  } };
 }
 
 const tddBatchPhases = ['red', 'implementation', 'green'] as const;
 type TddBatchPhase = typeof tddBatchPhases[number];
 const singularPhases = ['impact', 'requirements', 'design', 'quality'] as const;
+
+export type ChangeTddPreflightPhase = TddBatchPhase;
+export type ChangeTddPreflightCategory =
+  | 'no-candidate'
+  | 'wrong-requirement'
+  | 'superseded-batch'
+  | 'outside-window'
+  | 'validly-voided'
+  | 'invalid-result'
+  | 'missing-order'
+  | 'green-already-recorded'
+  | 'green-not-after-implementation'
+  | 'tdd-validation';
+
+export interface ChangeTddPreflightCategoryResult {
+  category: ChangeTddPreflightCategory;
+  details: string[];
+}
+
+export interface ChangeTddPreflightRejection {
+  requirementId: string;
+  categories: ChangeTddPreflightCategoryResult[];
+}
+
+export interface ChangeTddPreflightResult {
+  phase: ChangeTddPreflightPhase;
+  uncoveredRequirementIds: string[];
+  rejections: ChangeTddPreflightRejection[];
+}
+
+const preflightCategoryOrder: readonly ChangeTddPreflightCategory[] = [
+  'no-candidate',
+  'wrong-requirement',
+  'superseded-batch',
+  'outside-window',
+  'validly-voided',
+  'invalid-result',
+  'missing-order',
+  'green-already-recorded',
+  'green-not-after-implementation',
+  'tdd-validation',
+];
+
+const preflightCodes = {
+  red: 'CHANGE_RED_TDD_PREFLIGHT_FAILED',
+  implementation: 'CHANGE_IMPLEMENTATION_TDD_PREFLIGHT_FAILED',
+  green: 'CHANGE_GREEN_TDD_PREFLIGHT_FAILED',
+} as const;
+
+export class ChangeRecordTddPreflightError extends Error {
+  readonly code: typeof preflightCodes[ChangeTddPreflightPhase];
+  readonly phase: ChangeTddPreflightPhase;
+  readonly uncoveredRequirementIds: string[];
+  readonly rejections: ChangeTddPreflightRejection[];
+
+  constructor(result: ChangeTddPreflightResult) {
+    const code = preflightCodes[result.phase];
+    super(
+      `${code}: ${result.phase} requires bounded TDD evidence for ${result.uncoveredRequirementIds.join(', ')}. `
+      + 'Use tdd red -> change-record red -> implementation code -> change-record implementation '
+      + '-> tdd green -> change-record green.',
+    );
+    this.name = 'ChangeRecordTddPreflightError';
+    this.code = code;
+    this.phase = result.phase;
+    this.uncoveredRequirementIds = result.uncoveredRequirementIds;
+    this.rejections = result.rejections;
+  }
+}
+
+function cycleReference(cycle: TddCycle, index: number): string {
+  return cycle.cycleId || `${cycle.testId}@${cycle.red.order ?? 'unordered'}#${index}`;
+}
+
+function addPreflightDetail(
+  categories: Map<ChangeTddPreflightCategory, Set<string>>,
+  category: ChangeTddPreflightCategory,
+  detail?: string,
+): void {
+  const details = categories.get(category) ?? new Set<string>();
+  if (detail !== undefined) details.add(detail);
+  categories.set(category, details);
+}
+
+function verifyingTestIds(trace: TraceGraph, requirementIds: readonly string[]): Map<string, readonly string[]> {
+  return new Map(requirementIds.map((requirementId) => [
+    requirementId,
+    [...new Set(trace.edges
+      .filter((edge) => edge.relation === 'verifies' && edge.to === requirementId)
+      .map((edge) => edge.from))].sort(),
+  ]));
+}
+
+function changeBoundaryLinked(
+  order: ReturnType<typeof validateEvidenceOrderLog>,
+  change: ChangeRecord,
+  batch: ChangeTddBatch | undefined,
+  phase: 'requirements' | TddBatchPhase,
+): boolean {
+  const evidence = phase === 'requirements' ? change.phases.requirements : batch?.[phase];
+  if (!evidence || !Number.isInteger(evidence.order)) return false;
+  const identity = phase === 'requirements' || evidence === change.phases[phase]
+    ? phase
+    : `${phase}:${batchKey(batch!.requirementIds)}`;
+  const record = evidenceOrderRecord(order.records, 'change', change.changeId, identity);
+  return !!record && record.sequence === evidence.order;
+}
+
+/** @id CODE-CHANGE-RECORD-TDD-PREFLIGHT-001
+ * @implements REQ-CHANGE-RECORD-TDD-PREFLIGHT-001 REQ-CHANGE-RECORD-TDD-PREFLIGHT-002 REQ-CHANGE-RECORD-TDD-PREFLIGHT-003 REQ-CHANGE-RECORD-TDD-PREFLIGHT-004
+ * @design DES-CHANGE-RECORD-TDD-PREFLIGHT-001
+ */
+export function analyzeChangeTddPreflight(
+  change: ChangeRecord,
+  effectiveBatchSnapshot: ChangeTddBatch[],
+  requestedBatch: ChangeTddBatch | undefined,
+  phase: ChangeTddPreflightPhase,
+  requirementIds: readonly string[],
+  tdd: TddEvidence | null,
+  order: ReturnType<typeof validateEvidenceOrderLog>,
+  verifyingTestIdsByRequirement: ReadonlyMap<string, readonly string[]>,
+): ChangeTddPreflightResult {
+  const validlyVoided = validlyVoidedTddCycles(tdd, order);
+  const rejections: ChangeTddPreflightRejection[] = [];
+  for (const requirementId of [...new Set(requirementIds)].sort()) {
+    const categories = new Map<ChangeTddPreflightCategory, Set<string>>();
+    const cycles = (tdd?.cycles ?? []).map((cycle, index) => ({ cycle, index }));
+    const candidates = cycles.filter(({ cycle }) => cycle.requirementId === requirementId);
+    const authoritative = new Set(verifyingTestIdsByRequirement.get(requirementId) ?? []);
+    const wrongRequirement = cycles.filter(({ cycle }) =>
+      cycle.requirementId !== requirementId && authoritative.has(cycle.testId));
+    for (const { cycle, index } of wrongRequirement) {
+      addPreflightDetail(categories, 'wrong-requirement', cycleReference(cycle, index));
+    }
+    if (!candidates.length && !wrongRequirement.length) addPreflightDetail(categories, 'no-candidate');
+
+    const currentBatch = batchFor(effectiveBatchSnapshot, requirementId);
+    if (phase !== 'red' && requestedBatch && currentBatch !== requestedBatch) {
+      addPreflightDetail(categories, 'superseded-batch',
+        currentBatch ? batchKey(currentBatch.requirementIds) : batchKey(requestedBatch.requirementIds));
+    }
+    const requirementsOrder = change.phases.requirements?.order;
+    const currentRedOrder = requestedBatch?.red?.order;
+    const priorRedOrders = effectiveBatchSnapshot
+      .filter((batch) =>
+        batch.requirementIds.includes(requirementId)
+        && Number.isInteger(batch.red?.order)
+        && (phase === 'red' || batch !== requestedBatch)
+        && (phase === 'red' || batch.red!.order! < currentRedOrder!))
+      .map((batch) => batch.red!.order!);
+    const lowerBound = Number.isInteger(requirementsOrder)
+      ? Math.max(requirementsOrder!, ...priorRedOrders)
+      : undefined;
+    const through = phase === 'red' ? undefined : currentRedOrder;
+    let accepted = false;
+
+    const boundaryLinked = order.valid
+      && changeBoundaryLinked(order, change, undefined, 'requirements')
+      && (phase === 'red' || changeBoundaryLinked(order, change, requestedBatch, 'red'))
+      && (phase !== 'green' || changeBoundaryLinked(order, change, requestedBatch, 'implementation'));
+    if (!boundaryLinked || lowerBound === undefined || (phase !== 'red' && !Number.isInteger(through))) {
+      addPreflightDetail(categories, 'missing-order', `${requirementId}:boundary`);
+    }
+    if (candidates.some(({ cycle }) => !validlyVoided.has(cycle) && !Number.isInteger(cycle.red.order))) {
+      for (const { cycle, index } of candidates.filter(({ cycle }) =>
+        !validlyVoided.has(cycle) && !Number.isInteger(cycle.red.order))) {
+        addPreflightDetail(categories, 'missing-order', cycleReference(cycle, index));
+      }
+    }
+
+    for (const { cycle, index } of candidates) {
+      const reference = cycleReference(cycle, index);
+      if (validlyVoided.has(cycle)) {
+        addPreflightDetail(categories, 'validly-voided', reference);
+        continue;
+      }
+      if (cycle.void) {
+        addPreflightDetail(categories, 'tdd-validation', `${reference}:TDD_VOID_EVIDENCE_MALFORMED`);
+        continue;
+      }
+      if (!cycle.red.valid || (phase === 'green' && !cycle.green?.valid)) {
+        addPreflightDetail(categories, 'invalid-result', reference);
+        continue;
+      }
+      if (!Number.isInteger(cycle.red.order)
+        || (phase === 'green' && !Number.isInteger(cycle.green?.order))) {
+        addPreflightDetail(categories, 'missing-order', reference);
+        continue;
+      }
+      if (lowerBound === undefined || cycle.red.order! <= lowerBound
+        || (through !== undefined && cycle.red.order! > through)) {
+        addPreflightDetail(categories, 'outside-window', reference);
+        continue;
+      }
+      if (phase !== 'green' && cycle.green) {
+        addPreflightDetail(categories, 'green-already-recorded', reference);
+        continue;
+      }
+      if (phase === 'green'
+        && (!requestedBatch?.implementation
+          || !Number.isInteger(requestedBatch.implementation.order)
+          || cycle.green!.order! <= requestedBatch.implementation.order!)) {
+        addPreflightDetail(categories, 'green-not-after-implementation', reference);
+        continue;
+      }
+      const integrityCodes = tdd
+        ? tddCycleIntegrityDiagnosticCodes(tdd, order, cycle, phase === 'green' ? ['red', 'green'] : ['red'])
+        : [];
+      for (const code of integrityCodes) {
+        if (code.startsWith('TDD_ORDER_')) addPreflightDetail(categories, 'missing-order', reference);
+        else addPreflightDetail(categories, 'tdd-validation', `${reference}:${code}`);
+      }
+      if (!integrityCodes.length && (phase === 'red' || currentBatch === requestedBatch)) accepted = true;
+    }
+
+    const hasMigrationFailure = categories.has('missing-order');
+    if (!accepted || hasMigrationFailure || categories.has('superseded-batch')) {
+      if (accepted) {
+        for (const category of [...categories.keys()]) {
+          if (!['missing-order', 'superseded-batch', 'wrong-requirement'].includes(category)) categories.delete(category);
+        }
+      }
+      const orderedCategories = preflightCategoryOrder
+        .filter((category) => categories.has(category))
+        .map((category) => ({ category, details: [...categories.get(category)!].sort() }));
+      rejections.push({
+        requirementId,
+        categories: orderedCategories.length ? orderedCategories : [{ category: 'no-candidate', details: [] }],
+      });
+    }
+  }
+  return {
+    phase,
+    uncoveredRequirementIds: rejections.map((rejection) => rejection.requirementId),
+    rejections,
+  };
+}
 
 /** @id CODE-CHANGE-RECORD-FAIL-FAST-001
  * @implements REQ-CHANGE-RECORD-FAIL-FAST-001 REQ-CHANGE-RECORD-FAIL-FAST-002 REQ-CHANGE-RECORD-FAIL-FAST-003 REQ-CHANGE-RECORD-FAIL-FAST-004 REQ-CHANGE-RECORD-FAIL-FAST-005
@@ -209,7 +453,7 @@ async function recordChangePhaseUnlocked(
         ? 'Every phase must use the same requirement IDs.'
         : 'Every phase must use requirement IDs declared on the change.');
     }
-    const fingerprints = await currentFingerprints(root, changeId, change.requirementIds);
+    const { fingerprints, trace } = await currentFingerprints(root, changeId, change.requirementIds);
     const baseline = phase === 'requirements' ? change.phases.impact?.fingerprints
       : phase === 'design' ? change.phases.requirements?.fingerprints
       : phase === 'red' ? change.phases.design?.fingerprints
@@ -219,6 +463,20 @@ async function recordChangePhaseUnlocked(
     if (!allowUnchanged) {
       const rejection = unchangedRejection(changeId, phase, change.requirementIds, fingerprints, baseline);
       if (rejection) throw new Error(rejection);
+    }
+    if (isBatchPhase) {
+      const batchPhase = phase as TddBatchPhase;
+      const effectiveBatchSnapshot = effectiveBatches(change);
+      const requestedBatch = batchPhase === 'red'
+        ? undefined
+        : effectiveBatchSnapshot.find((batch) => batchKey(batch.requirementIds) === batchKey(normalizedRequirementIds));
+      const tdd = await loadTddEvidence(root);
+      const validatedOrder = await inspectEvidenceOrder(root);
+      const preflight = analyzeChangeTddPreflight(
+        change, effectiveBatchSnapshot, requestedBatch, batchPhase, normalizedRequirementIds,
+        tdd, validatedOrder, verifyingTestIds(trace, normalizedRequirementIds),
+      );
+      if (preflight.uncoveredRequirementIds.length) throw new ChangeRecordTddPreflightError(preflight);
     }
     const candidate: ChangePhaseEvidence = {
       phase,
@@ -241,16 +499,11 @@ async function recordChangePhaseUnlocked(
       throw new Error('A requirement batch must use a non-empty subset of the change requirement IDs.');
     }
     const batchPhase = phase as TddBatchPhase;
-    change.tddBatches ??= [];
     const key = batchKey(normalizedRequirementIds);
-    let batch = change.tddBatches.find((entry) => batchKey(entry.requirementIds) === key);
+    let batch = change.tddBatches?.find((entry) => batchKey(entry.requirementIds) === key);
     if (batchPhase === 'red') {
       if (batch?.red) throw new Error(`${changeId}:red is already recorded for requirement batch ${normalizedRequirementIds.join(', ')}.`);
       if (!change.phases.design) throw new Error('red requires the preceding design phase.');
-      if (!batch) {
-        batch = { requirementIds: normalizedRequirementIds };
-        change.tddBatches.push(batch);
-      }
     } else if (batchPhase === 'implementation') {
       if (!batch?.red) throw new Error(`implementation requires the preceding red phase for requirement batch ${normalizedRequirementIds.join(', ')}.`);
       if (batch.implementation) throw new Error(`${changeId}:implementation is already recorded for requirement batch ${normalizedRequirementIds.join(', ')}.`);
@@ -258,12 +511,28 @@ async function recordChangePhaseUnlocked(
       if (!batch?.implementation) throw new Error(`green requires the preceding implementation phase for requirement batch ${normalizedRequirementIds.join(', ')}.`);
       if (batch.green) throw new Error(`${changeId}:green is already recorded for requirement batch ${normalizedRequirementIds.join(', ')}.`);
     }
-    const fingerprints = await currentFingerprints(root, changeId, normalizedRequirementIds);
+    const { fingerprints, trace } = await currentFingerprints(root, changeId, normalizedRequirementIds);
     const baseline = batchPhase === 'red' ? change.phases.design?.fingerprints
       : batchPhase === 'implementation' ? batch?.red?.fingerprints
       : undefined;
     const rejection = unchangedRejection(changeId, phase, normalizedRequirementIds, fingerprints, baseline);
     if (rejection) throw new Error(rejection);
+    const effectiveBatchSnapshot = effectiveBatches(change);
+    const requestedBatch = batchPhase === 'red'
+      ? undefined
+      : effectiveBatchSnapshot.find((entry) => entry === batch);
+    const tdd = await loadTddEvidence(root);
+    const validatedOrder = await inspectEvidenceOrder(root);
+    const preflight = analyzeChangeTddPreflight(
+      change, effectiveBatchSnapshot, requestedBatch, batchPhase, normalizedRequirementIds,
+      tdd, validatedOrder, verifyingTestIds(trace, normalizedRequirementIds),
+    );
+    if (preflight.uncoveredRequirementIds.length) throw new ChangeRecordTddPreflightError(preflight);
+    if (!batch) {
+      batch = { requirementIds: normalizedRequirementIds };
+      change.tddBatches ??= [];
+      change.tddBatches.push(batch);
+    }
     const candidate: ChangePhaseEvidence = {
       phase,
       recordedAt: new Date().toISOString(),
@@ -374,7 +643,7 @@ async function refreshQuality(
   if (!current.some(({ batch }) => batch!.green!.order! > authoritativeOrder)) {
     throw new Error(`CHANGE_QUALITY_REFRESH_NOT_NEEDED: ${changeId} has no current Green after Quality.`);
   }
-  const fingerprints = await currentFingerprints(root, changeId, change.requirementIds);
+  const { fingerprints } = await currentFingerprints(root, changeId, change.requirementIds);
   const candidate: ChangePhaseEvidence = {
     phase: 'quality',
     recordedAt: new Date().toISOString(),
