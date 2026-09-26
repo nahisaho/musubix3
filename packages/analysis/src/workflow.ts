@@ -1,21 +1,27 @@
 import { createHash } from 'node:crypto';
 import { createReadStream } from 'node:fs';
 import { mkdir, open, readFile, rename, unlink } from 'node:fs/promises';
-import { dirname } from 'node:path';
+import { dirname, resolve as resolvePath } from 'node:path';
 import { error, type Diagnostic } from '../../domain/src/index.js';
-import { loadConfig } from './config.js';
+import { canonicalJson } from './change-waiver.js';
+import { defaultConfig, loadConfig, type WorkflowConfig } from './config.js';
 import { digest, exists, safePath, writeJson } from './files.js';
 import { assertEvidenceOutputUnprotected, withEvidenceWriterLock } from './evidence-writer-lock.js';
 import {
-  CURRENT_SNAPSHOT_VERSION, WORKFLOW_WAIVABLE_CODES, WORKFLOW_WAIVER_PATH, authoritativeIndex, buildWorkflowWaiverContext,
-  deriveWorkflowWaiverAudit, loadWorkflowWaiverEvidence, payloadShaOf, recordStale, resolveEvent,
+  WORKFLOW_WAIVABLE_CODES, WORKFLOW_WAIVER_PATH, authoritativeIndex, buildWorkflowWaiverContext,
+  computeWorkflowBindings, createWorkflowReconciliationPass,
+  deriveWorkflowWaiverAudit, loadWorkflowWaiverEvidence, payloadShaOf, resolveEvent,
   scopeKey, scopeLabel, snapshotHashFor, waiverChainValid, waiverLinkage, waiverRecordShapeValid, waivedWorkflowDiagnostic,
+  snapshotVersionFor, waiverSnapshotState,
   type LoadedWorkflowWaiverEvidence, type WorkflowWaivableCode, type WorkflowWaiverContext, type WorkflowWaiverRecord,
   linkageReason,
 } from './workflow-waiver.js';
 import {
-  loadWorkflow, workflowVerificationLimits,
-  type WorkflowEvent, type WorkflowManifest, type WorkflowSanitizationResult, type WorkflowVerificationOptions,
+  loadWorkflow, workflowReconciliationLimits, workflowVerificationLimits,
+  type PersistingWorkflowVerificationOptions, type WorkflowEvent,
+  type WorkflowInvocationSource, type WorkflowLedgerInvocation, type WorkflowManifest,
+  type WorkflowReconciliation, type WorkflowSanitizationResult, type WorkflowVerificationOptions,
+  type WorkflowVerificationResult, type WorkflowReconciliationInstrumentation,
 } from './workflow-types.js';
 
 export * from './workflow-types.js';
@@ -29,18 +35,380 @@ function timestampMs(value: string): number {
   return Number.isNaN(parsed) ? Number.POSITIVE_INFINITY : parsed;
 }
 
-function canonical(value: unknown): string {
-  if (Array.isArray(value)) return `[${value.map(canonical).join(',')}]`;
-  if (value && typeof value === 'object') {
-    return `{${Object.entries(value as Record<string, unknown>)
-      .sort(([a], [b]) => a.localeCompare(b))
-      .map(([key, nested]) => `${JSON.stringify(key)}:${canonical(nested)}`).join(',')}}`;
+function compareUnicodeScalar(left: string, right: string): number {
+  const a = [...left].map((character) => character.codePointAt(0)!);
+  const b = [...right].map((character) => character.codePointAt(0)!);
+  for (let index = 0; index < Math.min(a.length, b.length); index += 1) {
+    if (a[index] !== b[index]) return a[index]! - b[index]!;
   }
-  return JSON.stringify(value);
+  return a.length - b.length;
 }
 
 function eventsSha256(events: WorkflowEvent[]): string {
   return digest(JSON.stringify(events));
+}
+
+function sourceKey(source: WorkflowInvocationSource): string {
+  return canonicalJson([
+    source.mode,
+    source.sessionId ?? '',
+    source.transcriptSha256 ?? '',
+    source.sourceSha256,
+  ]);
+}
+
+function compareSources(left: WorkflowInvocationSource, right: WorkflowInvocationSource): number {
+  return compareUnicodeScalar(left.mode, right.mode)
+    || compareUnicodeScalar(left.sessionId ?? '', right.sessionId ?? '')
+    || compareUnicodeScalar(left.transcriptSha256 ?? '', right.transcriptSha256 ?? '')
+    || compareUnicodeScalar(left.sourceSha256, right.sourceSha256);
+}
+
+function canonicalInvocations(invocations: WorkflowLedgerInvocation[]): WorkflowLedgerInvocation[] {
+  return invocations
+    .map((invocation) => ({
+      ...invocation,
+      sources: [...invocation.sources].sort(compareSources),
+    }))
+    .sort((a, b) =>
+      timestampMs(a.invokedAt) - timestampMs(b.invokedAt)
+      || timestampMs(a.completedAt ?? '') - timestampMs(b.completedAt ?? '')
+      || compareUnicodeScalar(a.skill, b.skill)
+      || compareUnicodeScalar(a.toolCallId, b.toolCallId));
+}
+
+function reconciliationIdentityError(invocations: WorkflowLedgerInvocation[]): string | undefined {
+  const toolCallIds = new Set<string>();
+  for (const invocation of invocations) {
+    if (toolCallIds.has(invocation.toolCallId)
+      || new Set(invocation.sources.map(sourceKey)).size !== invocation.sources.length) {
+      return 'Workflow reconciliation contains duplicate identities.';
+    }
+    toolCallIds.add(invocation.toolCallId);
+  }
+  if (canonicalJson(invocations) !== canonicalJson(canonicalInvocations(invocations))) {
+    return 'Workflow reconciliation is not canonically ordered.';
+  }
+  return undefined;
+}
+
+function exactKeys(value: Record<string, unknown>, required: string[], optional: string[] = []): boolean {
+  const allowed = new Set([...required, ...optional]);
+  return required.every((key) => Object.prototype.hasOwnProperty.call(value, key))
+    && Object.keys(value).every((key) => allowed.has(key));
+}
+
+function validTimestamp(value: unknown): value is string {
+  return typeof value === 'string' && !Number.isNaN(Date.parse(value));
+}
+
+function reconciliationShapeValid(workflow: WorkflowManifest, reconciliation: WorkflowReconciliation): boolean {
+  const record = reconciliation as unknown as Record<string, unknown>;
+  if (!exactKeys(
+    record,
+    ['schemaVersion', 'mode', 'skewMs', 'ledgerSha256', 'bindingsSha256', 'invocations', 'bindings'],
+    ['expectedSessionId'],
+  )) return false;
+  if (reconciliation.expectedSessionId !== undefined
+    && (!uuid.test(reconciliation.expectedSessionId) || reconciliation.expectedSessionId !== reconciliation.expectedSessionId.toLowerCase())) {
+    return false;
+  }
+  const invocationShapeValid = reconciliation.invocations.every((invocation) => {
+    if (!invocation || typeof invocation !== 'object' || Array.isArray(invocation)) return false;
+    const candidate = invocation as unknown as Record<string, unknown>;
+    if (!exactKeys(candidate, ['skill', 'toolCallId', 'invokedAt', 'status', 'sources'], ['completedAt'])
+      || typeof invocation.skill !== 'string' || !invocation.skill
+      || typeof invocation.toolCallId !== 'string' || !invocation.toolCallId
+      || !validTimestamp(invocation.invokedAt)
+      || !['completed', 'failed', 'incomplete'].includes(invocation.status)
+      || (invocation.status === 'incomplete'
+        ? invocation.completedAt !== undefined
+        : !validTimestamp(invocation.completedAt))
+      || !Array.isArray(invocation.sources) || invocation.sources.length === 0) {
+      return false;
+    }
+    return invocation.sources.every((source) => {
+      if (!source || typeof source !== 'object' || Array.isArray(source)) return false;
+      const sourceRecord = source as unknown as Record<string, unknown>;
+      const strict = source.mode === 'strict';
+      return exactKeys(
+        sourceRecord,
+        strict ? ['mode', 'sourceSha256', 'sessionId', 'transcriptSha256'] : ['mode', 'sourceSha256'],
+      )
+        && ['compatible', 'strict'].includes(source.mode)
+        && /^[a-f0-9]{64}$/.test(source.sourceSha256)
+        && (!strict || (
+          typeof source.sessionId === 'string'
+          && uuid.test(source.sessionId)
+          && source.sessionId === source.sessionId.toLowerCase()
+          && typeof source.transcriptSha256 === 'string'
+          && /^[a-f0-9]{64}$/.test(source.transcriptSha256)
+        ));
+    });
+  });
+  if (!invocationShapeValid) return false;
+  const invocationIds = new Set(reconciliation.invocations.map((invocation) => invocation.toolCallId));
+  const boundEvents = new Set<number>();
+  const boundInvocations = new Set<string>();
+  let previousEventIndex = -1;
+  return reconciliation.bindings.every((binding) => {
+    if (!binding || typeof binding !== 'object' || Array.isArray(binding)) return false;
+    const candidate = binding as unknown as Record<string, unknown>;
+    const event = workflow.events[binding.eventIndex];
+    const valid = exactKeys(candidate, ['eventIndex', 'skill', 'phase', 'recordedAt', 'toolCallId'])
+      && Number.isSafeInteger(binding.eventIndex)
+      && binding.eventIndex > previousEventIndex
+      && event?.status === 'completed'
+      && binding.skill === event.skill
+      && binding.phase === event.phase
+      && binding.recordedAt === event.recordedAt
+      && invocationIds.has(binding.toolCallId)
+      && !boundEvents.has(binding.eventIndex)
+      && !boundInvocations.has(binding.toolCallId);
+    if (valid) {
+      previousEventIndex = binding.eventIndex;
+      boundEvents.add(binding.eventIndex);
+      boundInvocations.add(binding.toolCallId);
+    }
+    return valid;
+  });
+}
+
+/** @id CODE-WORKFLOW-RESUMED-SESSION-DURABILITY-001
+ * @implements REQ-WORKFLOW-RESUMED-SESSION-DURABILITY-001 REQ-WORKFLOW-RESUMED-SESSION-DURABILITY-002 REQ-WORKFLOW-RESUMED-SESSION-DURABILITY-004
+ * @design DES-WORKFLOW-RESUMED-SESSION-DURABILITY-001 DES-WORKFLOW-RESUMED-SESSION-DURABILITY-002 DES-WORKFLOW-RESUMED-SESSION-DURABILITY-003
+ */
+function mergeReconciliation(
+  workflow: WorkflowManifest,
+  options: WorkflowVerificationOptions,
+  config: WorkflowConfig,
+  resetLedger = false,
+  sourceByToolCall?: Map<string, string>,
+): WorkflowReconciliation {
+  const verification = workflow.verification!;
+  const previous = resetLedger ? undefined : workflow.reconciliation;
+  const byId = new Map<string, WorkflowLedgerInvocation>();
+  for (const invocation of previous?.invocations ?? []) {
+    byId.set(invocation.toolCallId, { ...invocation, sources: [...invocation.sources] });
+  }
+  for (const invocation of verification.invocations) {
+    const source: WorkflowInvocationSource = {
+      mode: options.mode,
+      sourceSha256: sourceByToolCall?.get(invocation.toolCallId) ?? verification.sourceSha256,
+      ...(options.mode === 'strict' ? {
+        sessionId: verification.sessionId!,
+        transcriptSha256: verification.transcriptSha256!,
+      } : {}),
+    };
+    const existing = byId.get(invocation.toolCallId);
+    if (!existing) {
+      byId.set(invocation.toolCallId, { ...invocation, sources: [source] });
+      continue;
+    }
+    if (existing.skill !== invocation.skill || existing.invokedAt !== invocation.invokedAt) {
+      throw new Error(`WORKFLOW_INVOCATION_CONFLICT: ${invocation.toolCallId} has conflicting invocation identity.`);
+    }
+    if (existing.status !== invocation.status) {
+      if (existing.status === 'incomplete' && invocation.status !== 'incomplete') {
+        existing.status = invocation.status;
+        if (invocation.completedAt !== undefined) existing.completedAt = invocation.completedAt;
+      } else if (invocation.status !== 'incomplete') {
+        throw new Error(`WORKFLOW_INVOCATION_CONFLICT: ${invocation.toolCallId} has conflicting terminal evidence.`);
+      }
+    } else if (existing.completedAt !== invocation.completedAt) {
+      throw new Error(`WORKFLOW_INVOCATION_CONFLICT: ${invocation.toolCallId} has conflicting completion evidence.`);
+    }
+    if (!existing.sources.some((candidate) => sourceKey(candidate) === sourceKey(source))) existing.sources.push(source);
+  }
+  const invocations = canonicalInvocations([...byId.values()]);
+  const mode = previous?.mode === 'strict' || options.mode === 'strict' ? 'strict' : 'compatible';
+  const configuredSessionId = config.expectedSessionId?.toLowerCase();
+  const expectedSessionId = previous?.expectedSessionId ?? configuredSessionId;
+  const skewMs = config.maxEventSkewMs ?? 0;
+  const bindings = computeWorkflowBindings(workflow, invocations, mode, expectedSessionId, skewMs);
+  const reconciliation: WorkflowReconciliation = {
+    schemaVersion: 1,
+    mode,
+    ...(expectedSessionId ? { expectedSessionId } : {}),
+    skewMs,
+    ledgerSha256: digest(canonicalJson(invocations)),
+    bindingsSha256: digest(canonicalJson(bindings)),
+    invocations,
+    bindings,
+  };
+  const sourceCount = invocations.reduce((sum, invocation) => sum + invocation.sources.length, 0);
+  if (invocations.length > workflowReconciliationLimits.maxInvocations
+    || sourceCount > workflowReconciliationLimits.maxSources
+    || Buffer.byteLength(canonicalJson(reconciliation)) > workflowReconciliationLimits.maxBytes) {
+    throw new Error('WORKFLOW_RECONCILIATION_LIMIT: durable workflow reconciliation exceeds configured limits.');
+  }
+  return reconciliation;
+}
+
+function reconciliationDiagnostic(
+  workflow: WorkflowManifest,
+  config: WorkflowConfig,
+): Diagnostic | undefined {
+  if (!Object.prototype.hasOwnProperty.call(workflow, 'reconciliation')) return undefined;
+  const value = workflow.reconciliation as unknown;
+  if (!value || typeof value !== 'object' || Array.isArray(value)) {
+    return error('WORKFLOW_RECONCILIATION_MALFORMED', 'Workflow reconciliation is malformed.', '.musubix/evidence/workflow.json');
+  }
+  const reconciliation = value as WorkflowReconciliation;
+  const sourceCount = Array.isArray(reconciliation.invocations)
+    ? reconciliation.invocations.reduce((sum, invocation) =>
+        sum + (Array.isArray(invocation?.sources) ? invocation.sources.length : 0), 0)
+    : 0;
+  if (!Array.isArray(reconciliation.invocations) || !Array.isArray(reconciliation.bindings)
+    || reconciliation.schemaVersion !== 1
+    || !['compatible', 'strict'].includes(reconciliation.mode)
+    || !Number.isSafeInteger(reconciliation.skewMs) || reconciliation.skewMs < 0
+    || !reconciliationShapeValid(workflow, reconciliation)
+    || reconciliation.ledgerSha256 !== digest(canonicalJson(reconciliation.invocations))
+    || reconciliation.bindingsSha256 !== digest(canonicalJson(reconciliation.bindings))) {
+    return error('WORKFLOW_RECONCILIATION_MALFORMED', 'Workflow reconciliation is malformed.', '.musubix/evidence/workflow.json');
+  }
+  const identityError = reconciliationIdentityError(reconciliation.invocations);
+  if (identityError) {
+    return error('WORKFLOW_RECONCILIATION_MALFORMED', identityError, '.musubix/evidence/workflow.json');
+  }
+  if (reconciliation.invocations.length > workflowReconciliationLimits.maxInvocations
+    || sourceCount > workflowReconciliationLimits.maxSources
+    || Buffer.byteLength(canonicalJson(reconciliation)) > workflowReconciliationLimits.maxBytes) {
+    return error('WORKFLOW_RECONCILIATION_LIMIT', 'Workflow reconciliation exceeds durable limits.', '.musubix/evidence/workflow.json');
+  }
+  if ((config.maxEventSkewMs ?? 0) !== reconciliation.skewMs
+    || (config.mode === 'strict' && reconciliation.mode !== 'strict')
+    || (config.expectedSessionId
+      && reconciliation.expectedSessionId?.toLowerCase() !== config.expectedSessionId.toLowerCase())) {
+    return error('WORKFLOW_RECONCILIATION_CONFIG_MISMATCH', 'Workflow reconciliation does not match current config.', '.musubix/evidence/workflow.json');
+  }
+  if (workflow.verification && workflow.verification.eventsSha256 === eventsSha256(workflow.events)) {
+    const recomputedBindings = computeWorkflowBindings(
+      workflow,
+      reconciliation.invocations,
+      reconciliation.mode,
+      reconciliation.expectedSessionId,
+      reconciliation.skewMs,
+    );
+    if (canonicalJson(recomputedBindings) !== canonicalJson(reconciliation.bindings)) {
+      return error('WORKFLOW_RECONCILIATION_MALFORMED', 'Workflow reconciliation bindings are not reproducible.', '.musubix/evidence/workflow.json');
+    }
+  }
+  return undefined;
+}
+
+/** @id CODE-WORKFLOW-RESUMED-SESSION-DURABILITY-002
+ * @implements REQ-WORKFLOW-RESUMED-SESSION-DURABILITY-005
+ * @design DES-WORKFLOW-RESUMED-SESSION-DURABILITY-005
+ */
+async function planWorkflowWaiverMigration(
+  root: string,
+  workflow: WorkflowManifest,
+  config: WorkflowConfig,
+): Promise<{
+  evidence?: { schemaVersion: 1; waivers: unknown[] };
+  warnings: Array<{ code: 'WORKFLOW_WAIVER_MIGRATION_SKIPPED'; message: string }>;
+}> {
+  const loaded = await loadWorkflowWaiverEvidence(root);
+  if (!loaded) return { warnings: [] };
+  if (loaded.malformed || loaded.waivers.some((record, index) =>
+    !waiverRecordShapeValid(record) || !waiverChainValid(loaded.waivers, index))) {
+    return {
+      warnings: [{
+        code: 'WORKFLOW_WAIVER_MIGRATION_SKIPPED',
+        message: 'Workflow reconciliation committed, but malformed waiver evidence prevented migration; migration remains pending.',
+      }],
+    };
+  }
+  const validated = await validateLoadedWorkflow(root, workflow, config, config, loaded);
+  const context = validated.workflowWaiverContext;
+  if (context.suppressed) {
+    return {
+      warnings: [{
+        code: 'WORKFLOW_WAIVER_MIGRATION_SKIPPED',
+        message: 'Workflow reconciliation committed, but suppressed waiver classification prevented migration; migration remains pending.',
+      }],
+    };
+  }
+  const successors: WorkflowWaiverRecord[] = [];
+  let previous = loaded.waivers.at(-1) as WorkflowWaiverRecord | undefined;
+  for (let index = 0; index < loaded.waivers.length; index += 1) {
+    const record = loaded.waivers[index] as WorkflowWaiverRecord;
+    if (record.snapshotVersion !== 1 || !context.linkage[index]?.valid) continue;
+    if (authoritativeIndex(context, record.skill, record.phase, record.declarationRecordedAt, record.index) !== index) continue;
+    const code = context.currentCode?.[index] ?? null;
+    if (code !== null && code !== record.code) continue;
+    const draft: WorkflowWaiverRecord = {
+      ...record,
+      sequence: (previous?.sequence ?? 0) + 1,
+      snapshotVersion: 2,
+      snapshotHash: '',
+      previousSha256: previous?.payloadSha256 ?? '0'.repeat(64),
+      payloadSha256: '',
+    };
+    const withoutPayload = {
+      ...draft,
+      snapshotHash: snapshotHashFor(workflow, validated.diagnostics, draft, context.reconciliationPass),
+    };
+    const successor = { ...withoutPayload, payloadSha256: payloadShaOf(withoutPayload) };
+    successors.push(successor);
+    previous = successor;
+  }
+  return successors.length
+    ? { evidence: { schemaVersion: 1, waivers: [...loaded.waivers, ...successors] }, warnings: [] }
+    : { warnings: [] };
+}
+
+async function resolvePersistingOptions(
+  root: string,
+  options: PersistingWorkflowVerificationOptions | undefined,
+): Promise<{ verification: WorkflowVerificationOptions; reconciliationConfig: WorkflowConfig; resetLedger: boolean }> {
+  const configPath = await safePath(root, '.musubix/config.json');
+  const hasConfig = await exists(configPath);
+  const configured = hasConfig ? (await loadConfig(root)).workflow : { mode: 'compatible' as const };
+  if (configured.mode === 'strict' && options?.mode === 'compatible') {
+    throw new Error('WORKFLOW_RECONCILIATION_CONFIG_MISMATCH: strict workflow config cannot be weakened.');
+  }
+  if (hasConfig && options?.maxEventSkewMs !== undefined
+    && options.maxEventSkewMs !== (configured.maxEventSkewMs ?? 0)) {
+    throw new Error('WORKFLOW_RECONCILIATION_CONFIG_MISMATCH: supplied workflow skew differs from config.');
+  }
+  if (options?.expectedSessionId && configured.expectedSessionId
+    && options.expectedSessionId.toLowerCase() !== configured.expectedSessionId.toLowerCase()) {
+    throw new Error('WORKFLOW_RECONCILIATION_CONFIG_MISMATCH: supplied session does not match configured session.');
+  }
+  if (options?.resetLedger && !options.confirmReset) {
+    throw new Error('WORKFLOW_RECONCILIATION_RESET_CONFIRMATION_REQUIRED: --reset-ledger requires --confirm.');
+  }
+  const resetLedger = options?.resetLedger === true;
+  const persisted = resetLedger ? undefined : (await loadWorkflow(root))?.reconciliation;
+  const configuredSessionId = configured.expectedSessionId?.toLowerCase();
+  const persistedSessionId = persisted?.expectedSessionId?.toLowerCase();
+  if (configuredSessionId && persistedSessionId && configuredSessionId !== persistedSessionId) {
+    throw new Error('WORKFLOW_RECONCILIATION_CONFIG_MISMATCH: configured session differs from the persisted session; --reset-ledger --confirm is required to replace it.');
+  }
+  const effectiveSessionId = configuredSessionId ?? persistedSessionId;
+  if (options?.expectedSessionId && effectiveSessionId
+    && options.expectedSessionId.toLowerCase() !== effectiveSessionId) {
+    throw new Error('WORKFLOW_RECONCILIATION_CONFIG_MISMATCH: supplied session does not match the configured or persisted session.');
+  }
+  const mode = options?.mode === 'strict' || options?.expectedSessionId ? 'strict' : configured.mode;
+  return {
+    verification: {
+      ...configured,
+      ...options,
+      mode,
+      ...(options?.expectedSessionId ?? effectiveSessionId
+        ? { expectedSessionId: (options?.expectedSessionId ?? effectiveSessionId)! }
+        : {}),
+    },
+    reconciliationConfig: {
+      ...configured,
+      ...(configuredSessionId ? { expectedSessionId: configuredSessionId } : {}),
+    },
+    resetLedger,
+  };
 }
 
 export async function recordWorkflow(
@@ -75,12 +443,15 @@ async function recordWorkflowUnlocked(
 export async function verifyWorkflowLog(
   root: string,
   logText: string,
-  options: WorkflowVerificationOptions = { mode: 'compatible' },
-): Promise<WorkflowManifest> {
-  return withEvidenceWriterLock(root, 'workflow-verify', () =>
-    verifyWorkflowChunks(root, (async function* () {
+  options?: PersistingWorkflowVerificationOptions,
+): Promise<WorkflowVerificationResult> {
+  return withEvidenceWriterLock(root, 'workflow-verify', async () => {
+    const resolved = await resolvePersistingOptions(root, options);
+    return (
+    await verifyWorkflowChunks(root, (async function* () {
       yield Buffer.from(logText);
-    })(), options));
+    })(), resolved.verification, true, resolved.resetLedger, undefined, resolved.reconciliationConfig) as WorkflowVerificationResult);
+  });
 }
 
 /* @id CODE-WORKFLOW-MULTI-SESSION-001
@@ -90,9 +461,84 @@ export async function verifyWorkflowLog(
 export async function verifyWorkflowLogFile(
   root: string,
   path: string | string[],
-  options: WorkflowVerificationOptions = { mode: 'compatible' },
-): Promise<WorkflowManifest> {
-  return withEvidenceWriterLock(root, 'workflow-verify', () => verifyWorkflowLogFileUnlocked(root, path, options));
+  options?: PersistingWorkflowVerificationOptions,
+): Promise<WorkflowVerificationResult> {
+  return withEvidenceWriterLock(root, 'workflow-verify', async () => {
+    const resolved = await resolvePersistingOptions(root, options);
+    return await verifyWorkflowLogFileUnlocked(
+      root,
+      path,
+      resolved.verification,
+      true,
+      resolved.resetLedger,
+      resolved.reconciliationConfig,
+    ) as WorkflowVerificationResult;
+  });
+}
+
+async function workflowFileMetadata(
+  path: string,
+  maxBytes: number,
+  maxLineBytes: number,
+  maxEvents: number,
+): Promise<{ sourceSha256: string; sourceBytes: number; eventCount: number; earliestTimestamp: number; toolCallIds: string[] }> {
+  const sourceHash = createHash('sha256');
+  const toolCallIds: string[] = [];
+  let sourceBytes = 0;
+  let eventCount = 0;
+  let earliestTimestamp = Number.POSITIVE_INFINITY;
+  let lineParts: Buffer[] = [];
+  let lineBytes = 0;
+  let lineNumber = 1;
+  const inspectLine = (bytes: Buffer): void => {
+    if (!bytes.length) return;
+    let event: unknown;
+    try { event = JSON.parse(bytes.toString('utf8')) as unknown; } catch { return; }
+    if (!event || typeof event !== 'object' || Array.isArray(event)) return;
+    eventCount += 1;
+    if (eventCount > maxEvents) {
+      throw new Error(`Workflow transcript exceeds the maximum event count of ${maxEvents}.`);
+    }
+    const record = event as Record<string, unknown>;
+    const data = record.data && typeof record.data === 'object'
+      ? record.data as Record<string, unknown>
+      : record;
+    const timestampValue = record.timestamp ?? data.timestamp;
+    const time = typeof timestampValue === 'string' ? Date.parse(timestampValue) : NaN;
+    if (!Number.isNaN(time) && time < earliestTimestamp) earliestTimestamp = time;
+    const toolCallId = data.toolCallId ?? data.callId ?? record.toolCallId;
+    if (starts.has(String(record.type ?? '')) && typeof toolCallId === 'string') toolCallIds.push(toolCallId);
+  };
+  for await (const value of createReadStream(path)) {
+    const chunk = Buffer.from(value);
+    sourceBytes += chunk.byteLength;
+    if (sourceBytes > maxBytes) {
+      throw new Error(`Workflow transcript exceeds the maximum total size of ${maxBytes} bytes; raise workflow.maxTranscriptBytes in .musubix/config.json and protect it in the policy baseline.`);
+    }
+    sourceHash.update(chunk);
+    let start = 0;
+    for (let index = chunk.indexOf(0x0a); index !== -1; index = chunk.indexOf(0x0a, start)) {
+      const part = chunk.subarray(start, index);
+      lineBytes += part.byteLength;
+      if (lineBytes > maxLineBytes) {
+        throw new Error(`Workflow transcript line ${lineNumber} exceeds the maximum size of ${maxLineBytes} bytes; raise workflow.maxTranscriptLineBytes in .musubix/config.json and protect it in the policy baseline.`);
+      }
+      if (part.byteLength) lineParts.push(part);
+      inspectLine(Buffer.concat(lineParts, lineBytes));
+      lineParts = [];
+      lineBytes = 0;
+      lineNumber += 1;
+      start = index + 1;
+    }
+    const remainder = chunk.subarray(start);
+    lineBytes += remainder.byteLength;
+    if (lineBytes > maxLineBytes) {
+      throw new Error(`Workflow transcript line ${lineNumber} exceeds the maximum size of ${maxLineBytes} bytes; raise workflow.maxTranscriptLineBytes in .musubix/config.json and protect it in the policy baseline.`);
+    }
+    if (remainder.byteLength) lineParts.push(remainder);
+  }
+  inspectLine(Buffer.concat(lineParts, lineBytes));
+  return { sourceSha256: sourceHash.digest('hex'), sourceBytes, eventCount, earliestTimestamp, toolCallIds };
 }
 
 async function verifyWorkflowLogFileUnlocked(
@@ -100,13 +546,35 @@ async function verifyWorkflowLogFileUnlocked(
   path: string | string[],
   options: WorkflowVerificationOptions,
   persist = true,
-): Promise<WorkflowManifest> {
+  resetLedger = false,
+  reconciliationConfig?: WorkflowConfig,
+): Promise<WorkflowManifest | WorkflowVerificationResult> {
   const paths = Array.isArray(path) ? path : [path];
   if (!paths.length) throw new Error('Workflow verification requires at least one transcript file.');
   if (paths.length > 1 && options.mode === 'strict') {
     throw new Error('Strict workflow verification requires exactly one transcript file.');
   }
   let orderedPaths = paths;
+  const sourceByToolCall = new Map<string, string>();
+  const metadataByPath = new Map<string, Awaited<ReturnType<typeof workflowFileMetadata>>>();
+  const maxBytes = options.maxTranscriptBytes ?? options.maxBytes ?? workflowVerificationLimits.maxBytes;
+  const maxLineBytes = options.maxTranscriptLineBytes ?? options.maxLineBytes ?? workflowVerificationLimits.maxLineBytes;
+  const maxEvents = options.maxEvents ?? workflowVerificationLimits.maxEvents;
+  let metadataBytes = 0;
+  let metadataEvents = 0;
+  for (const filePath of paths) {
+    const metadata = await workflowFileMetadata(filePath, maxBytes, maxLineBytes, maxEvents);
+    metadataBytes += metadata.sourceBytes;
+    metadataEvents += metadata.eventCount;
+    if (metadataBytes > maxBytes) {
+      throw new Error(`Workflow transcript exceeds the maximum total size of ${maxBytes} bytes; raise workflow.maxTranscriptBytes in .musubix/config.json and protect it in the policy baseline.`);
+    }
+    if (metadataEvents > maxEvents) {
+      throw new Error(`Workflow transcript exceeds the maximum event count of ${maxEvents}.`);
+    }
+    metadataByPath.set(filePath, metadata);
+    for (const toolCallId of metadata.toolCallIds) sourceByToolCall.set(toolCallId, metadata.sourceSha256);
+  }
   if (paths.length > 1) {
     // Multiple transcripts are concatenated into one logical stream below; a
     // toolCallId genuinely belongs to a single Copilot session, so seeing it
@@ -118,38 +586,19 @@ async function verifyWorkflowLogFileUnlocked(
     // caller listed them, while still preserving each file's own internal
     // (possibly clock-skewed) source order untouched.
     const seenInFile = new Map<string, string>();
-    const earliestTimestamp = new Map<string, number>();
     for (const filePath of paths) {
-      const text = await readFile(filePath, 'utf-8');
-      for (const line of text.split('\n')) {
-        if (!line.trim()) continue;
-        let event: unknown;
-        try { event = JSON.parse(line) as unknown; } catch { continue; }
-        if (!event || typeof event !== 'object' || Array.isArray(event)) continue;
-        const record = event as Record<string, unknown>;
-        const data = record.data && typeof record.data === 'object'
-          ? record.data as Record<string, unknown>
-          : record;
-        const type = String(record.type ?? '');
-        const timestampValue = record.timestamp ?? data.timestamp;
-        const time = typeof timestampValue === 'string' ? Date.parse(timestampValue) : NaN;
-        if (!Number.isNaN(time)) {
-          const current = earliestTimestamp.get(filePath);
-          if (current === undefined || time < current) earliestTimestamp.set(filePath, time);
+      for (const toolCallId of metadataByPath.get(filePath)!.toolCallIds) {
+        const previousFile = seenInFile.get(toolCallId);
+        if (previousFile !== undefined && previousFile !== filePath) {
+          throw new Error(`Tool call ${toolCallId} appears in more than one workflow transcript file.`);
         }
-        const toolCallId = data.toolCallId ?? data.callId ?? record.toolCallId;
-        if (starts.has(type) && typeof toolCallId === 'string') {
-          const previousFile = seenInFile.get(toolCallId);
-          if (previousFile !== undefined && previousFile !== filePath) {
-            throw new Error(`Tool call ${toolCallId} appears in more than one workflow transcript file.`);
-          }
-          seenInFile.set(toolCallId, filePath);
-        }
+        seenInFile.set(toolCallId, filePath);
       }
     }
     orderedPaths = paths
-      .map((filePath, index) => ({ filePath, index, time: earliestTimestamp.get(filePath) ?? Number.POSITIVE_INFINITY }))
-      .sort((a, b) => (a.time - b.time) || (a.index - b.index))
+      .map((filePath) => ({ filePath, time: metadataByPath.get(filePath)!.earliestTimestamp }))
+      .sort((a, b) => (a.time - b.time)
+        || compareUnicodeScalar(resolvePath(a.filePath), resolvePath(b.filePath)))
       .map(({ filePath }) => filePath);
   }
   return verifyWorkflowChunks(root, (async function* () {
@@ -165,7 +614,7 @@ async function verifyWorkflowLogFileUnlocked(
       // stream, and therefore its sourceSha256, is unchanged.
       if (index < orderedPaths.length - 1 && !endedWithNewline) yield Buffer.from('\n');
     }
-  })(), options, persist);
+  })(), options, persist, resetLedger, sourceByToolCall, reconciliationConfig);
 }
 
 export async function sanitizeWorkflowLogFile(
@@ -187,7 +636,9 @@ export async function sanitizeWorkflowLogFile(
     ...(maxTranscriptBytes === undefined ? {} : { maxBytes: maxTranscriptBytes }),
     ...(maxTranscriptLineBytes === undefined ? {} : { maxLineBytes: maxTranscriptLineBytes }),
   }, false);
-  const expectedSourceSha256 = validated.verification!.sourceSha256;
+  const expectedSourceSha256 = 'workflow' in validated
+    ? validated.workflow.verification!.sourceSha256
+    : validated.verification!.sourceSha256;
   const maxBytes = maxTranscriptBytes ?? workflowVerificationLimits.maxBytes;
   const maxLineBytes = maxTranscriptLineBytes ?? workflowVerificationLimits.maxLineBytes;
   const target = await safePath(root, outputPath);
@@ -377,7 +828,10 @@ async function verifyWorkflowChunks(
   chunks: AsyncIterable<Uint8Array>,
   options: WorkflowVerificationOptions,
   persist = true,
-): Promise<WorkflowManifest> {
+  resetLedger = false,
+  sourceByToolCall?: Map<string, string>,
+  reconciliationConfig: WorkflowConfig = options,
+): Promise<WorkflowManifest | WorkflowVerificationResult> {
   const current = persist
     ? await loadWorkflow(root)
     : await (async (): Promise<WorkflowManifest | null> => {
@@ -447,7 +901,7 @@ async function verifyWorkflowChunks(
       throw new Error(`Workflow transcript exceeds the maximum event count of ${maxEvents}.`);
     }
     const record = event as Record<string, unknown>;
-    transcriptHash.update(parsedCount === 1 ? canonical(record) : `,${canonical(record)}`);
+    transcriptHash.update(parsedCount === 1 ? canonicalJson(record) : `,${canonicalJson(record)}`);
     const data = record.data && typeof record.data === 'object'
       ? record.data as Record<string, unknown>
       : record;
@@ -669,8 +1123,21 @@ async function verifyWorkflowChunks(
     verifiedAt: (options.now ?? (() => new Date()))().toISOString(),
     invocations,
   };
-  if (persist) await writeJson(root, '.musubix/evidence/workflow.json', current);
-  return current;
+  if (!persist) return current;
+  current.reconciliation = mergeReconciliation(current, options, reconciliationConfig, resetLedger, sourceByToolCall);
+  const migration = await planWorkflowWaiverMigration(root, current, reconciliationConfig);
+  await writeJson(root, '.musubix/evidence/workflow.json', current);
+  if (migration.evidence) {
+    try {
+      await writeJson(root, WORKFLOW_WAIVER_PATH, migration.evidence);
+    } catch (cause) {
+      throw new Error('WORKFLOW_WAIVER_MIGRATION_WRITE_FAILED: workflow reconciliation committed and waiver migration remains pending.', { cause });
+    }
+  }
+  return Object.assign(Object.create(current) as WorkflowManifest, {
+    workflow: current,
+    warnings: migration.warnings,
+  });
 }
 
 function declarationScope(workflow: WorkflowManifest, event: WorkflowEvent, eventIndex: number): Pick<Diagnostic, 'skill' | 'phase' | 'declarationRecordedAt' | 'index'> {
@@ -697,7 +1164,9 @@ export async function validateLoadedWorkflow(
   root: string,
   workflow: WorkflowManifest | null,
   options: WorkflowVerificationOptions = { mode: 'compatible' },
+  reconciliationConfigOrLoaded?: WorkflowConfig | LoadedWorkflowWaiverEvidence | null,
   preloadedWaiverEvidence?: LoadedWorkflowWaiverEvidence | null,
+  instrumentation?: WorkflowReconciliationInstrumentation,
 ): Promise<{
   present: boolean;
   verified: boolean;
@@ -708,10 +1177,25 @@ export async function validateLoadedWorkflow(
 }> {
   const present = !!workflow?.events.length;
   const rawDiagnostics: Diagnostic[] = [];
+  const resolvedReconciliationConfig = reconciliationConfigOrLoaded
+    && 'mode' in reconciliationConfigOrLoaded
+    ? reconciliationConfigOrLoaded as WorkflowConfig
+    : (await exists(await safePath(root, '.musubix/config.json'))
+        ? (await loadConfig(root)).workflow
+        : defaultConfig.workflow);
+  const explicitlyLoaded = reconciliationConfigOrLoaded
+    && !('mode' in reconciliationConfigOrLoaded)
+    ? reconciliationConfigOrLoaded as LoadedWorkflowWaiverEvidence
+    : preloadedWaiverEvidence;
+  const reconciliationError = workflow ? reconciliationDiagnostic(workflow, resolvedReconciliationConfig) : undefined;
+  const reconciliationPass = workflow?.reconciliation && !reconciliationError
+    ? createWorkflowReconciliationPass(workflow, instrumentation)
+    : undefined;
+  if (reconciliationError) rawDiagnostics.push(reconciliationError);
   if (workflow?.events.length) {
     if (!workflow.verification) {
       rawDiagnostics.push(error('WORKFLOW_INVOCATION_UNVERIFIED', 'Workflow declarations have not been reconciled with a Copilot session log.'));
-    } else {
+    } else if (!reconciliationError) {
       if (options.mode === 'strict') {
         const verification = workflow.verification;
         if (verification.mode !== 'strict'
@@ -750,6 +1234,7 @@ export async function validateLoadedWorkflow(
       if (workflow.verification.eventsSha256 !== eventsSha256(workflow.events)) {
         rawDiagnostics.push(error('WORKFLOW_VERIFICATION_STALE', 'Workflow declarations changed after Skill invocation verification.'));
       }
+      const evidenceInvocations = workflow.reconciliation?.invocations ?? workflow.verification.invocations;
       const duplicateCalls = workflow.verification.invocations
         .filter((invocation, index, all) => all.findIndex((candidate) => candidate.toolCallId === invocation.toolCallId) !== index);
       for (const duplicate of duplicateCalls) {
@@ -761,15 +1246,24 @@ export async function validateLoadedWorkflow(
         if (event.status !== 'completed') continue;
         const scope = declarationScope(workflow, event, eventIndex);
         const recordedAt = timestampMs(event.recordedAt);
-        const eligible = workflow.verification.invocations
+        const deadline = recordedAt + (workflow.reconciliation?.skewMs ?? 0);
+        const eligible = evidenceInvocations
           .map((invocation, index) => ({ invocation, index }))
-          .filter(({ invocation }) => invocation.skill === event.skill && timestampMs(invocation.invokedAt) <= recordedAt);
+          .filter(({ invocation }) =>
+            invocation.skill === event.skill
+            && timestampMs(invocation.invokedAt) <= deadline
+            && (!workflow.reconciliation || workflow.reconciliation.mode !== 'strict'
+              || !('sources' in invocation)
+              || (invocation as WorkflowLedgerInvocation).sources.some((source: WorkflowInvocationSource) =>
+                source.mode === 'strict'
+                && (!workflow.reconciliation?.expectedSessionId
+                  || source.sessionId?.toLowerCase() === workflow.reconciliation.expectedSessionId))));
         const match = eligible.find(({ invocation, index }) =>
           !used.has(invocation.toolCallId)
           && index > previousIndex
           && invocation.status === 'completed'
           && !!invocation.completedAt
-          && timestampMs(invocation.completedAt) <= recordedAt);
+          && timestampMs(invocation.completedAt) <= deadline);
         if (!match) {
           if (eligible.some(({ invocation }) => invocation.status === 'incomplete')) {
             rawDiagnostics.push({
@@ -810,8 +1304,8 @@ export async function validateLoadedWorkflow(
       }
     }
   }
-  const loaded = preloadedWaiverEvidence !== undefined ? preloadedWaiverEvidence : await loadWorkflowWaiverEvidence(root);
-  const workflowWaiverContext = buildWorkflowWaiverContext(loaded, workflow, rawDiagnostics);
+  const loaded = explicitlyLoaded !== undefined ? explicitlyLoaded : await loadWorkflowWaiverEvidence(root);
+  const workflowWaiverContext = buildWorkflowWaiverContext(loaded, workflow, rawDiagnostics, reconciliationPass);
   const diagnostics = rawDiagnostics.map((diagnostic) => waivedWorkflowDiagnostic(workflowWaiverContext, diagnostic));
   return {
     present,
@@ -829,7 +1323,8 @@ export async function validateLoadedWorkflow(
  */
 export async function validateWorkflow(
   root: string,
-  options: WorkflowVerificationOptions = { mode: 'compatible' },
+  options?: WorkflowVerificationOptions,
+  reconciliationConfig?: WorkflowConfig,
 ): Promise<{
   present: boolean;
   verified: boolean;
@@ -839,7 +1334,15 @@ export async function validateWorkflow(
   workflowWaiverContext: WorkflowWaiverContext;
 }> {
   const workflow = await loadWorkflow(root);
-  return validateLoadedWorkflow(root, workflow, options);
+  const config = await exists(await safePath(root, '.musubix/config.json'))
+    ? await loadConfig(root)
+    : defaultConfig;
+  return validateLoadedWorkflow(
+    root,
+    workflow,
+    options ?? config.workflow,
+    reconciliationConfig ?? config.workflow,
+  );
 }
 
 /** @id CODE-WORKFLOW-EVIDENCE-WAIVER-015
@@ -858,6 +1361,16 @@ export async function activeWorkflowWaivers(root: string): Promise<ReturnType<ty
 export async function workflowWaiverEvidenceDiagnostics(root: string): Promise<Diagnostic[]> {
   const workflow = await validateWorkflow(root);
   return deriveWorkflowWaiverAudit(workflow.workflowWaiverContext).workflowWaiverDiagnostics;
+}
+
+/** @id CODE-WORKFLOW-EVIDENCE-WAIVER-027
+ * @implements REQ-WORKFLOW-EVIDENCE-WAIVER-012 REQ-WORKFLOW-RESUMED-SESSION-DURABILITY-004
+ * @design DES-WORKFLOW-EVIDENCE-WAIVER-005
+ */
+function workflowReconciliationBlocker(diagnostics: Diagnostic[]): Diagnostic | undefined {
+  return diagnostics.find((diagnostic) =>
+    ['WORKFLOW_INVOCATION_UNVERIFIED', 'WORKFLOW_RECONCILIATION_MALFORMED', 'WORKFLOW_RECONCILIATION_LIMIT',
+      'WORKFLOW_RECONCILIATION_CONFIG_MISMATCH'].includes(diagnostic.code));
 }
 
 /** @id CODE-WORKFLOW-EVIDENCE-WAIVER-017
@@ -896,7 +1409,9 @@ async function recordWorkflowWaiverUnlocked(
     throw new Error(`${WORKFLOW_WAIVER_PATH} is malformed; regenerate or repair it before recording a new waiver.`);
   }
   const workflow = await loadWorkflow(root);
-  const config = await loadConfig(root);
+  const config = await exists(await safePath(root, '.musubix/config.json'))
+    ? await loadConfig(root)
+    : defaultConfig;
   const existing = loaded ?? { schemaVersion: 1 as const, waivers: [] as unknown[] };
   for (let recordIndex = 0; recordIndex < existing.waivers.length; recordIndex += 1) {
     const current = existing.waivers[recordIndex];
@@ -910,9 +1425,10 @@ async function recordWorkflowWaiverUnlocked(
     throw new Error(`${code} is not a waivable code. Allowed codes: ${WORKFLOW_WAIVABLE_CODES.join(', ')}.`);
   }
   if (!approver.trim() || !reason.trim()) throw new Error('A non-empty --approver and --reason are required.');
-  const validated = await validateLoadedWorkflow(root, workflow, config.workflow, loaded);
-  if (validated.diagnostics.some((diagnostic) => diagnostic.code === 'WORKFLOW_INVOCATION_UNVERIFIED')) {
-    throw new Error('workflow-verify must be (re-)run before any declaration-scoped workflow diagnostic can be waived.');
+  const validated = await validateLoadedWorkflow(root, workflow, config.workflow, config.workflow, loaded);
+  const reconciliationBlocker = workflowReconciliationBlocker(validated.diagnostics);
+  if (reconciliationBlocker) {
+    throw new Error(`${reconciliationBlocker.code}: run workflow-verify to repair workflow reconciliation before any declaration-scoped workflow diagnostic can be waived.`);
   }
   if (!resolveEvent(workflow, skill, phase, recordedAt, index)) {
     throw new Error(linkageReason(workflow, skill, phase, recordedAt, index));
@@ -931,7 +1447,7 @@ async function recordWorkflowWaiverUnlocked(
   const activeIndex = authoritativeIndex(context, skill, phase, recordedAt, index);
   if (activeIndex !== -1 && !context.loaded?.malformed && waiverRecordShapeValid(context.loaded!.waivers[activeIndex])) {
     const activeRecord = context.loaded!.waivers[activeIndex];
-    if (!recordStale(activeRecord, activeIndex, context)) {
+    if (waiverSnapshotState(context, activeIndex) === 'current') {
       throw new Error(`${scopeLabel(skill, phase, recordedAt, index)} already has an active waiver.`);
     }
   }
@@ -949,12 +1465,17 @@ async function recordWorkflowWaiverUnlocked(
     reason,
     waiverRecordedAt,
     sequence: nextSequence,
-    snapshotVersion: CURRENT_SNAPSHOT_VERSION,
+    snapshotVersion: snapshotVersionFor(workflow),
     snapshotHash: '',
     previousSha256,
     payloadSha256: '',
   };
-  const snapshotHash = snapshotHashFor(workflow, validated.diagnostics, draftRecord);
+  const snapshotHash = snapshotHashFor(
+    workflow,
+    validated.diagnostics,
+    draftRecord,
+    validated.workflowWaiverContext.reconciliationPass,
+  );
   const withoutPayloadSha: Omit<WorkflowWaiverRecord, 'payloadSha256'> = {
     ...draftRecord,
     snapshotHash,
@@ -1000,7 +1521,9 @@ async function recordAllWorkflowWaiversUnlocked(
     throw new Error(`${WORKFLOW_WAIVER_PATH} is malformed; regenerate or repair it before recording a new waiver.`);
   }
   const workflow = await loadWorkflow(root);
-  const config = await loadConfig(root);
+  const config = await exists(await safePath(root, '.musubix/config.json'))
+    ? await loadConfig(root)
+    : defaultConfig;
   const existing = loaded ?? { schemaVersion: 1 as const, waivers: [] as unknown[] };
   for (let recordIndex = 0; recordIndex < existing.waivers.length; recordIndex += 1) {
     const current = existing.waivers[recordIndex];
@@ -1011,9 +1534,10 @@ async function recordAllWorkflowWaiversUnlocked(
     }
   }
   if (!approver.trim() || !reason.trim()) throw new Error('A non-empty --approver and --reason are required.');
-  const validated = await validateLoadedWorkflow(root, workflow, config.workflow, loaded);
-  if (validated.diagnostics.some((diagnostic) => diagnostic.code === 'WORKFLOW_INVOCATION_UNVERIFIED')) {
-    throw new Error('workflow-verify must be (re-)run before any declaration-scoped workflow diagnostic can be waived.');
+  const validated = await validateLoadedWorkflow(root, workflow, config.workflow, config.workflow, loaded);
+  const reconciliationBlocker = workflowReconciliationBlocker(validated.diagnostics);
+  if (reconciliationBlocker) {
+    throw new Error(`${reconciliationBlocker.code}: run workflow-verify to repair workflow reconciliation before any declaration-scoped workflow diagnostic can be waived.`);
   }
   const context = validated.workflowWaiverContext;
   const seen = new Set<string>();
@@ -1027,7 +1551,7 @@ async function recordAllWorkflowWaiversUnlocked(
     const activeIndex = authoritativeIndex(context, diagnostic.skill, diagnostic.phase, diagnostic.declarationRecordedAt, diagnostic.index);
     if (activeIndex !== -1 && !context.loaded?.malformed && waiverRecordShapeValid(context.loaded!.waivers[activeIndex])) {
       const activeRecord = context.loaded!.waivers[activeIndex];
-      if (!recordStale(activeRecord, activeIndex, context)) continue;
+      if (waiverSnapshotState(context, activeIndex) === 'current') continue;
     }
     candidates.push({
       skill: diagnostic.skill,
@@ -1038,9 +1562,9 @@ async function recordAllWorkflowWaiversUnlocked(
     });
   }
   candidates.sort((a, b) =>
-    a.skill.localeCompare(b.skill)
-    || a.phase.localeCompare(b.phase)
-    || a.declarationRecordedAt.localeCompare(b.declarationRecordedAt)
+    compareUnicodeScalar(a.skill, b.skill)
+    || compareUnicodeScalar(a.phase, b.phase)
+    || compareUnicodeScalar(a.declarationRecordedAt, b.declarationRecordedAt)
     || (a.index ?? -1) - (b.index ?? -1));
   if (candidates.length === 0) return { recorded: 0, waivers: [] };
   const tail = existing.waivers.at(-1);
@@ -1059,12 +1583,17 @@ async function recordAllWorkflowWaiversUnlocked(
       reason,
       waiverRecordedAt,
       sequence: nextSequence,
-      snapshotVersion: CURRENT_SNAPSHOT_VERSION,
+      snapshotVersion: snapshotVersionFor(workflow),
       snapshotHash: '',
       previousSha256,
       payloadSha256: '',
     };
-    const snapshotHash = snapshotHashFor(workflow, validated.diagnostics, draftRecord);
+    const snapshotHash = snapshotHashFor(
+      workflow,
+      validated.diagnostics,
+      draftRecord,
+      validated.workflowWaiverContext.reconciliationPass,
+    );
     const withoutPayloadSha: Omit<WorkflowWaiverRecord, 'payloadSha256'> = { ...draftRecord, snapshotHash };
     const record: WorkflowWaiverRecord = { ...withoutPayloadSha, payloadSha256: payloadShaOf(withoutPayloadSha) };
     newRecords.push(record);

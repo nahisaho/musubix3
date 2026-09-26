@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import { validateDesign } from '../packages/domain/src/index.js';
+import {
+  readText, recordChangePhase, validateChangeCompleteness, writeText,
+} from '../packages/analysis/src/index.js';
+import { project } from './helpers.js';
 
 const base = (adrs: string): string =>
   `## DES-EXAMPLE-001: Example\nResponsibilities: Delegates to DES-OTHER-001.\nInterfaces: none exposed.\nConstraints: none.\nRequirements: REQ-EXAMPLE-001\nADRs: ${adrs}\n`;
@@ -41,5 +45,51 @@ describe('design ADR none-exemption', () => {
     const valid = validateDesign(base('ADR-0001'), 'design.md', context);
     expect(valid.diagnostics.map((d) => d.code)).not.toContain('DES_ADR');
     expect(valid.diagnostics.map((d) => d.code)).not.toContain('DES_ADR_EXEMPTION_REASON');
+  });
+
+  /** @id TEST-DESIGN-ADR-NONE-EXEMPTION-004
+   * @verifies REQ-DESIGN-ADR-NONE-EXEMPTION-004
+   */
+  it('TEST-DESIGN-ADR-NONE-EXEMPTION-004 applies parsed exemptions to change completeness', async () => {
+    const root = await project();
+    await writeText(root, '.musubix/changes/CHANGE-0001.md',
+      '# CHANGE-0001\nRequirements: REQ-EXAMPLE-001\n');
+    await recordChangePhase(root, 'CHANGE-0001', 'impact', ['REQ-EXAMPLE-001']);
+    const designPath = '.musubix/features/example/design.md';
+    const original = await readText(root, designPath);
+    const withExemption = original.replace(
+      'ADRs: ADR-0001',
+      'ADRs: none — this local validation correction preserves the existing architecture',
+    );
+
+    await writeText(root, designPath, withExemption);
+    let result = await validateChangeCompleteness(root);
+    expect(result.diagnostics).not.toContainEqual(expect.objectContaining({
+      code: 'CHANGE_COMPLETENESS_ADR',
+      message: expect.stringContaining('REQ-EXAMPLE-001'),
+    }));
+
+    await writeText(root, designPath, `${withExemption}
+## DES-EXAMPLE-002: Second satisfying design
+Responsibilities: Preserves the existing real ADR path.
+Interfaces: Existing fixture interface.
+Constraints: No additional behavior.
+Requirements: REQ-EXAMPLE-001
+ADRs: ADR-0001
+`);
+    result = await validateChangeCompleteness(root);
+    expect(result.diagnostics).not.toContainEqual(expect.objectContaining({
+      code: 'CHANGE_COMPLETENESS_ADR',
+      message: expect.stringContaining('REQ-EXAMPLE-001'),
+    }));
+
+    for (const invalid of ['', 'none', 'none — TBD', 'none of the existing ADRs apply', 'ADR-9999']) {
+      await writeText(root, designPath, original.replace('ADRs: ADR-0001', `ADRs: ${invalid}`));
+      result = await validateChangeCompleteness(root);
+      expect(result.diagnostics).toContainEqual(expect.objectContaining({
+        code: 'CHANGE_COMPLETENESS_ADR',
+        message: expect.stringContaining('REQ-EXAMPLE-001'),
+      }));
+    }
   });
 });

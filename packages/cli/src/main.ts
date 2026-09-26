@@ -45,6 +45,20 @@ function pathQuery(root: string, query: string): string {
   return portable(relative(root, resolve(root, query)));
 }
 
+/** @id CODE-TDD-REPEATED-REQUIREMENT-OPTION-001
+ * @implements REQ-TDD-REPEATED-REQUIREMENT-OPTION-001
+ * @design DES-TDD-REPEATED-REQUIREMENT-OPTION-001
+ */
+function parseSingleTddRequirement(value: string, previous?: string): string {
+  if (previous !== undefined) {
+    throw new Error(
+      '--requirement may be supplied only once: one TDD invocation records exactly one requirement. '
+      + 'Run a separate Red/Green cycle for each requirement.',
+    );
+  }
+  return value;
+}
+
 async function coordinatedReader<T>(root: string, operation: () => Promise<T>): Promise<T> {
   await assertCoordinatedEvidenceRead(root);
   return operation();
@@ -425,10 +439,18 @@ source, quarantining merge files, and rerunning structural validation.`))
       });
       output(manifest, !!options.json, `Recorded ${skill}:${phase} as ${options.status}.`);
     });
+  /** @id CODE-WORKFLOW-RESUMED-SESSION-DURABILITY-005
+   * @implements REQ-WORKFLOW-RESUMED-SESSION-DURABILITY-007
+   * @design DES-WORKFLOW-RESUMED-SESSION-DURABILITY-007
+   */
   common(program.command('workflow-verify <log...>').description('Reconcile workflow declarations with Copilot JSONL Skill events'))
     .option('--strict', 'Require a complete Copilot JSONL transcript and successful terminal result')
     .option('--session-id <uuid>', 'Require the terminal result to identify this Copilot session')
-    .action(async (logs: string[], options: { root: string; json?: boolean; strict?: boolean; sessionId?: string }) => {
+    .option('--reset-ledger', 'Destructively rebuild durable reconciliation from the supplied transcript')
+    .option('--confirm', 'Confirm destructive durable-ledger reset')
+    .action(async (logs: string[], options: {
+      root: string; json?: boolean; strict?: boolean; sessionId?: string; resetLedger?: boolean; confirm?: boolean;
+    }) => {
       const root = resolve(options.root);
       await withEvidenceWriterLock(root, 'workflow-verify', async () => {
         const paths = logs.map((log) => resolve(log));
@@ -439,7 +461,7 @@ source, quarantining merge files, and rerunning structural validation.`))
         const configured = (await loadConfig(root)).workflow;
         const mode = options.strict || options.sessionId ? 'strict' : configured.mode;
         const expectedSessionId = options.sessionId ?? configured.expectedSessionId;
-        const manifest = await verifyWorkflowLogFile(root, paths.length === 1 ? paths[0]! : paths, {
+        const result = await verifyWorkflowLogFile(root, paths.length === 1 ? paths[0]! : paths, {
           mode,
           ...(expectedSessionId ? { expectedSessionId } : {}),
           ...(configured.maxAgeSeconds === undefined ? {} : { maxAgeSeconds: configured.maxAgeSeconds }),
@@ -449,9 +471,12 @@ source, quarantining merge files, and rerunning structural validation.`))
           ...(configured.maxEventSkewMs === undefined ? {} : { maxEventSkewMs: configured.maxEventSkewMs }),
           ...(configured.maxTranscriptBytes === undefined ? {} : { maxBytes: configured.maxTranscriptBytes }),
           ...(configured.maxTranscriptLineBytes === undefined ? {} : { maxLineBytes: configured.maxTranscriptLineBytes }),
+          ...(options.resetLedger ? { resetLedger: true, confirmReset: options.confirm === true } : {}),
         });
+        const manifest = result.workflow;
+        for (const warning of result.warnings) process.stderr.write(`${warning.code}: ${warning.message}\n`);
         output(
-          manifest,
+          result,
           !!options.json,
           `Verified ${manifest.verification?.invocations.length ?? 0} Copilot Skill invocation event(s)`
             + `${manifest.verification?.sessionId ? ` in session ${manifest.verification.sessionId}` : ''}.`,
@@ -747,8 +772,17 @@ source, quarantining merge files, and rerunning structural validation.`))
         + 'already has a valid Green cycle.',
       );
     }
+    /** @id CODE-TDD-REPEATED-REQUIREMENT-OPTION-002
+     * @implements REQ-TDD-REPEATED-REQUIREMENT-OPTION-002
+     * @design DES-TDD-REPEATED-REQUIREMENT-OPTION-002
+     */
     phaseCommand
-      .requiredOption('--requirement <id>', 'Requirement ID verified by the test')
+      .requiredOption(
+        '--requirement <id>',
+        'Exactly one requirement per TDD invocation; for multiple requirements, '
+        + 'run a separate Red/Green cycle for each requirement.',
+        parseSingleTddRequirement,
+      )
       .requiredOption('--command <name>', 'Configured command name to execute')
       .action(async (testId: string, options: {
         root: string; json?: boolean; requirement: string; command: string;

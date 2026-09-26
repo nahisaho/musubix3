@@ -5,8 +5,9 @@ This design extends the audited waiver pattern shipped for
 ADR-0025) to the `workflow` check, per ADR-0026. It adds a new, parallel
 module (`packages/analysis/src/workflow-waiver.ts`) rather than extending
 `change-waiver.ts` directly, because the scope key
-(`skill`/`phase`/`declarationRecordedAt`/`index`), snapshot payload
-(declaration fields plus `workflowEvidenceHead(workflow)`), and linkage
+(`skill`/`phase`/`declarationRecordedAt`/`index`), versioned snapshot payload
+(legacy declaration fields plus `workflowEvidenceHead(workflow)`, or durable
+scope-local reconciliation evidence), and linkage
 source (`.musubix/evidence/workflow.json`'s declaration events, not
 `changes.json`/`tdd.json`) are structurally different from
 `change-evidence-waiver`'s domain — see ADR-0026's "Rejected alternatives"
@@ -28,7 +29,10 @@ declaration-scoped flavor — the tool-call-scoped flavor is never present
 in this set and is rejected by name at the CLI/record layer per
 DES-WORKFLOW-EVIDENCE-WAIVER-006) and its derived
 `type WorkflowWaivableCode = typeof WORKFLOW_WAIVABLE_CODES[number]`, both
-exported. Declare `export const CURRENT_SNAPSHOT_VERSION = 1`. Declare
+exported. Declare `export const LEGACY_SNAPSHOT_VERSION = 1` and
+`export const CURRENT_SNAPSHOT_VERSION = 2`; recording selects version 1
+only when reconciliation is absent and version 2 only when valid
+reconciliation is present. Declare
 `export interface WorkflowWaiverRecord { skill: string; phase: string;
 declarationRecordedAt: string; index?: number; code: WorkflowWaivableCode;
 approver: string; reason: string; waiverRecordedAt: string; sequence:
@@ -67,27 +71,23 @@ a purely additive, non-breaking widening): a workflow waiver's own
 persisted `waiverRecordedAt` field value is copied into *both* this
 object's pre-existing `recordedAt` key *and* the new `waiverRecordedAt`
 key at diagnostic-emission time (DES-WORKFLOW-EVIDENCE-WAIVER-005), so the
-same value is available under either spelling — only the persisted
+emitted object has exactly `approver`, `reason`, `recordedAt`, and
+`waiverRecordedAt`, with the same timestamp available under both spellings.
+Only the persisted
 `WorkflowWaiverRecord` (this component) and the in-memory `Diagnostic`
 (existing, extended only with the four scope fields above plus this one
 `waiver.waiverRecordedAt` field) ever exist.
-This resolves an apparent naming tension in
-REQ-WORKFLOW-EVIDENCE-WAIVER-009's prose, which describes the emitted
-`waiver` object as "containing the `approver`, `reason`, and
-`waiverRecordedAt` of that authoritative waiver record": rather than
-relying solely on an argument that this phrase names a source field
-rather than a mandated key spelling (a reading an acceptance test could
-reasonably reject), the emitted object is widened to expose the value
-under the literal `waiverRecordedAt` key as well, so REQ-009's Acceptance
-criterion is satisfied both by a test that checks for a `waiverRecordedAt`
-key and by a test that continues to check the existing `recordedAt` key
-that every other `Diagnostic.waiver` producer in the codebase already uses.
+This directly implements REQ-WORKFLOW-EVIDENCE-WAIVER-009's closed key set
+while retaining the common `Diagnostic.waiver.recordedAt` contract used by
+existing producers; making `waiverRecordedAt` optional in the shared type
+preserves backward compatibility for those other producers.
 Finally, this component adds `export * from './workflow-waiver.js';` to
 `packages/analysis/src/index.ts`'s existing barrel (alongside its current
 `export * from './change-waiver.js';` entry), so
 `packages/cli/src/main.ts`'s existing `from '../../analysis/src/index.js'`
-import can resolve `recordWorkflowWaiver` (DES-006) without a separate
-deep import path.
+import can resolve the waiver helpers/types used by workflow and tests without
+a separate deep import path. `recordWorkflowWaiver` itself remains available
+through the barrel's pre-existing `export * from './workflow.js'` entry.
 Requirements: REQ-WORKFLOW-EVIDENCE-WAIVER-001, REQ-WORKFLOW-EVIDENCE-WAIVER-005, REQ-WORKFLOW-EVIDENCE-WAIVER-013, REQ-WORKFLOW-EVIDENCE-WAIVER-016
 ADRs: ADR-0026
 
@@ -195,33 +195,46 @@ skill: string, phase: string, declarationRecordedAt: string, index:
 number | undefined): string` as `JSON.stringify([skill, phase,
 declarationRecordedAt, index ?? null])`, the grouping key used by
 DES-WORKFLOW-EVIDENCE-WAIVER-005/006/007.
+Implement `function waiverChainPrefixValid(waivers: unknown[], index:
+number): boolean` to validate the genesis-through-index sequence,
+`previousSha256`, and recomputed `payloadSha256` chain without imposing
+unrelated predecessor shape fields; the candidate's full shape remains the
+separate `waiverLinkage` responsibility.
 Implement `export interface WorkflowWaiverContext { loaded:
 LoadedWorkflowWaiverEvidence | null; workflow: WorkflowManifest | null;
 linkage: Array<{ valid: boolean; reason?: string }>; currentHash:
-Array<string | undefined> }` and `export function
+Array<string | undefined>; currentCode:
+Array<WorkflowWaivableCode | null>; suppressed: boolean;
+reconciliationPass?: WorkflowReconciliationPass }` and `export function
 buildWorkflowWaiverContext(loaded: LoadedWorkflowWaiverEvidence | null,
-workflow: WorkflowManifest | null, rawDiagnostics: Diagnostic[]):
+workflow: WorkflowManifest | null, rawDiagnostics: Diagnostic[],
+reconciliationPass?: WorkflowReconciliationPass):
 WorkflowWaiverContext` — synchronous and pure, taking the already-loaded
 evidence and the **complete set of raw, not-yet-waiver-transformed,
 structured diagnostics** for the current `validateWorkflow` run (see
 DES-WORKFLOW-EVIDENCE-WAIVER-005's two-phase pipeline, which is what
 guarantees this set is complete and available before context-building
 happens, resolving the evaluation-order problem a single-pass design
-would otherwise have): when `loaded` is present and not malformed,
-compute `linkage[i]` via `waiverLinkage(workflow, loaded.waivers, i)` and,
-for each valid entry (whose element is therefore already confirmed to be
-a `WorkflowWaiverRecord` by `waiverLinkage`'s own shape/chain check),
+would otherwise have): set `suppressed` from unverified/global
+reconciliation diagnostics, retain the pass, and precompute current reason per
+scope. When `loaded` is present and not malformed, compute `linkage[i]`
+via `waiverLinkage(workflow, loaded.waivers, i)`. Only when `suppressed` is
+false and the snapshot version is usable (legacy absence, or valid
+reconciliation with a pass), compute, for each valid entry (whose element is
+therefore already confirmed to be a `WorkflowWaiverRecord` by
+`waiverLinkage`'s own shape/chain check),
 `currentHash[i]` via
 DES-WORKFLOW-EVIDENCE-WAIVER-004's `snapshotHashFor(workflow,
-rawDiagnostics, loaded.waivers[i] as WorkflowWaiverRecord)` (else
-`undefined`) — this is the sole
+rawDiagnostics, loaded.waivers[i] as WorkflowWaiverRecord,
+reconciliationPass)`; otherwise leave every `currentHash[i]` undefined and do
+not build any snapshot payload. This is the sole
 precomputation, so every later function (`waivedWorkflowDiagnostic`,
 `reportWorkflowWaiverEvidenceDiagnostics`) reads only these already-resolved
 arrays, mirroring `change-waiver.ts`'s `buildWaiverContext` in spirit
 (there, async because it must itself load change/TDD evidence; here,
 synchronous because loading is already the caller's job — see
 DES-WORKFLOW-EVIDENCE-WAIVER-005/007 for the two call sites that perform
-that loading). Implement `function authoritativeIndex(context:
+that loading). Implement `export function authoritativeIndex(context:
 WorkflowWaiverContext, skill: string, phase: string, declarationRecordedAt:
 string, index: number | undefined): number` returning the greatest-`sequence`
 validly-linked record index sharing `scopeKey(skill, phase,
@@ -231,11 +244,11 @@ per REQ-WORKFLOW-EVIDENCE-WAIVER-007's authoritative-record definition; a
 non-authoritative validly-linked record is never independently
 re-evaluated by any other function in this module.
 Interfaces: `waiverLinkage(workflow, waivers, index)`;
+`waiverChainPrefixValid(waivers, index)`;
 `resolveEvent(workflow, skill, phase, declarationRecordedAt, index)`;
 `scopeKey(skill, phase, declarationRecordedAt, index)`;
-`WorkflowWaiverContext`; `buildWorkflowWaiverContext(loaded, workflow, rawDiagnostics)`;
-`authoritativeIndex(context, skill, phase, declarationRecordedAt, index)`
-(module-local, not exported — only this module's own consumers need it).
+`WorkflowWaiverContext`; `buildWorkflowWaiverContext(loaded, workflow, rawDiagnostics, reconciliationPass?)`;
+`authoritativeIndex(context, skill, phase, declarationRecordedAt, index)`.
 Constraints: Must never select a structurally invalid record as
 authoritative, regardless of `sequence`; must never let one record's
 staleness or validity affect another record's own linkage validity; must
@@ -253,23 +266,32 @@ path by rejecting a new append whenever any existing record fails
 one), so a tampered earlier record is caught at the next append attempt;
 this design intentionally mirrors the precedent module's exact behavior
 here rather than introducing new, asymmetric tamper-detection semantics
-for the workflow domain alone.
+for ordinary authoritative selection. The narrower version-1 migration
+compatibility predicate in DES-WORKFLOW-EVIDENCE-WAIVER-004 additionally uses
+`waiverChainPrefixValid(waivers, index)`: from genesis through the candidate it
+checks each stored `sequence`, `previousSha256`, and recomputed
+`payloadSha256`, but deliberately ignores unrelated shape fields of predecessor
+records. The candidate itself must still pass full shape/linkage validation.
+This prevents read-side rescue across an earlier broken sequence/hash link
+while allowing the compatibility window to survive a predecessor's unrelated
+shape defect as required.
 Depends-On: DES-WORKFLOW-EVIDENCE-WAIVER-002
 Requirements: REQ-WORKFLOW-EVIDENCE-WAIVER-005, REQ-WORKFLOW-EVIDENCE-WAIVER-007, REQ-WORKFLOW-EVIDENCE-WAIVER-013
 ADRs: ADR-0026
 
 ## DES-WORKFLOW-EVIDENCE-WAIVER-004: Snapshot payload and staleness evaluation
-Responsibilities: Implement `export function snapshotPayload(workflow:
+Responsibilities: Implement version-aware `export function snapshotPayload(workflow:
 WorkflowManifest | null, skill: string, phase: string,
 declarationRecordedAt: string, index: number | undefined, code:
-WorkflowWaivableCode | null): unknown` returning exactly the
-REQ-WORKFLOW-EVIDENCE-WAIVER-012 canonical payload: the resolved
+WorkflowWaivableCode | null, reconciliationPass?: WorkflowReconciliationPass): unknown`. For snapshot version 1, return exactly
+the legacy REQ-WORKFLOW-EVIDENCE-WAIVER-012 canonical payload: the resolved
 declaration event's (via `resolveEvent`, DES-WORKFLOW-EVIDENCE-WAIVER-003)
 own `skill`/`phase`/`status`/`recordedAt`/`version`; its own
 `commandSha256` when present or the literal `null` sentinel when absent;
 `index ?? null`; `workflowEvidenceHead(workflow)` (imported from
-`packages/analysis/src/workflow.ts`, reused verbatim, never reimplemented);
-and `code` verbatim in that final position — `code` is `null` exactly
+`packages/analysis/src/workflow-types.ts`, reused verbatim, never reimplemented);
+and `code` verbatim in that final position. For snapshot version 2, delegate
+to DES-WORKFLOW-EVIDENCE-WAIVER-010's exact scope-local payload. `code` is `null` exactly
 when no allow-listed reason diagnostic is currently raised for this exact
 scope (REQ-012's explicit sentinel case), a decision made entirely by this
 function's caller (`snapshotHashFor` below), never inferred internally
@@ -287,40 +309,65 @@ post-transformation diagnostics used by `recordWorkflowWaiver` are both
 conforming inputs because waiver transformation changes only severity and
 attached waiver metadata. Implement `function snapshotHashFor(workflow:
 WorkflowManifest | null, rawDiagnostics: Diagnostic[], record:
-WorkflowWaiverRecord): string` as `digest(canonicalJson(snapshotPayload(
+WorkflowWaiverRecord, reconciliationPass?: WorkflowReconciliationPass): string` as
+`digest(canonicalJson(snapshotPayload(
 workflow, record.skill, record.phase, record.declarationRecordedAt,
 record.index, currentCodeFor(rawDiagnostics, record.skill, record.phase,
-record.declarationRecordedAt, record.index))))` — note this **never**
+record.declarationRecordedAt, record.index), reconciliationPass)))` — note this **never**
 falls back to `record.code`; when `currentCodeFor` returns `null` (no
 diagnostic currently raised for the scope), the payload's `code` position
 is `null`, exactly matching REQ-012's "resolves to no diagnostic at all"
 acceptance case, which is what makes an old record correctly stale once
 its scope's diagnostic disappears even though the record's own persisted
-`code` field is untouched. A waiver record is non-stale exactly when
-`record.snapshotVersion === CURRENT_SNAPSHOT_VERSION && record.snapshotHash
-=== snapshotHashFor(workflow, rawDiagnostics, record)`.
-The stale branch is therefore the disjunction of version mismatch and hash
-mismatch; it does not require a currently raised workflow reason diagnostic.
-Define that rule once as module-local
-`recordStale(context: WorkflowWaiverContext, index: number): boolean`.
-Severity transformation, active-waiver listing, and stale-audit derivation
-must call this predicate verbatim rather than restating either half.
-The payload object uses exactly these literal keys in this order before
+`code` field is untouched. Define one exported tri-state
+`waiverSnapshotState(context: WorkflowWaiverContext, index: number):
+'suppressed' | 'current' | 'stale'`. It returns `suppressed` while
+`WORKFLOW_INVOCATION_UNVERIFIED` or a global reconciliation error prevents
+complete per-scope evaluation; `current` for a pending migration-compatible
+v1 record or a version-compatible record whose stored hash matches; otherwise
+`stale`. Migration-compatible means reconciliation is present and
+unsuppressed, the authoritative version-1 record is shape-valid and
+declaration-linked, `waiverChainPrefixValid` confirms the sequence/hash chain
+from genesis through it, and the current code equals its stored code or is `null`;
+the predicate is read-side and does not depend on write-side migration
+selection having run. Severity transformation, duplicate rejection,
+active-waiver listing, and stale-audit derivation call this function verbatim.
+Suppressed produces no downgrade, active listing, or stale audit; current may
+downgrade/list only when the identical reason is raised. Stale produces an
+`error` audit while a current allow-listed code remains, or a `warning` audit
+containing the exact substring `condition is resolved; a replacement waiver
+is not required` when the current code is `null`.
+The version-1 payload object uses exactly these literal keys in this order before
 canonical key sorting: `skill`, `phase`, `status`, `recordedAt`, `version`,
-`commandSha256`, `index`, `workflowEvidenceHead`, and `code`. Its
+`commandSha256`, `index`, `workflowEvidenceHead`, and `code`. The version-2
+payload uses exactly `skill`, `phase`, `status`, `recordedAt`, `version`,
+`commandSha256`, `index`, `workflowScopeEvidenceHead`, and `code`. Its
 `skill`/`phase`/`status`/`recordedAt`/`version` values come from the resolved
 event. Calling `snapshotPayload` with a scope that does not resolve to an event
 is a programming error and throws; every conforming caller must establish valid
 linkage first.
-Interfaces: `snapshotPayload(workflow, skill, phase, declarationRecordedAt, index, code)`;
+Interfaces: `snapshotPayload(workflow, skill, phase, declarationRecordedAt, index, code, reconciliationPass?)`;
 `currentCodeFor(rawDiagnostics, skill, phase, declarationRecordedAt, index)`;
-`snapshotHashFor(workflow, rawDiagnostics, record)` (module-local, not exported).
-Constraints: Must use `workflowEvidenceHead` exactly as exported by
-`workflow.ts` (no re-derivation of its hashing logic in this module); must
+`snapshotHashFor(workflow, rawDiagnostics, record, reconciliationPass?)`;
+exported `snapshotVersionFor(workflow)` and `waiverSnapshotState(context, index)`.
+Constraints: `snapshotVersionFor` returns 1 only for own-property absence and
+2 only for valid reconciliation; present-invalid reconciliation has no usable
+snapshot version and the function throws `Workflow reconciliation is invalid.`;
+callers must suppress/reject before hashing. Version 1 must use `workflowEvidenceHead` exactly as exported by
+`workflow-types.ts` (no re-derivation of its hashing logic in this module);
+it is selected only when reconciliation is absent and is never recomputed as a
+substitute for a pending version-1 record after reconciliation exists;
+an authoritative version-2 record with no reconciliation own property is
+therefore stale and is never evaluated with the version-1 global head;
+version 2 must use `workflowScopeEvidenceHead` exactly as defined by
+DES-WORKFLOW-EVIDENCE-WAIVER-010; both versions must
 represent an absent `commandSha256`/`index`/current-code as the literal
 `null` sentinel, never an omitted key, so two conforming implementations
 of this payload always canonicalize identically; must never substitute a
-stored record's own `code` for the result of `currentCodeFor`.
+stored record's own `code` for the result of `currentCodeFor`. Calling
+`snapshotPayload` or `snapshotHashFor` on the version-2 path without a
+`WorkflowReconciliationPass` throws `Workflow reconciliation is required for
+a reconciliation pass.` rather than constructing a second implicit pass.
 Depends-On: DES-WORKFLOW-EVIDENCE-WAIVER-003
 Requirements: REQ-WORKFLOW-EVIDENCE-WAIVER-012
 ADRs: ADR-0026
@@ -335,15 +382,16 @@ manifest" and "diagnostics computed against that exact manifest" (DES-006,
 DES-007) can guarantee they observe one consistent snapshot rather than
 two independent loads that a concurrent write could make disagree:
 `export async function validateLoadedWorkflow(root: string, workflow:
-WorkflowManifest | null, options: WorkflowVerificationOptions = { mode:
-'compatible' }, preloadedWaiverEvidence?: LoadedWorkflowWaiverEvidence |
-null): Promise<{ present: boolean; verified: boolean; events:
+WorkflowManifest | null, verificationOptions: WorkflowVerificationOptions,
+reconciliationConfig: WorkflowConfig,
+preloadedWaiverEvidence?: LoadedWorkflowWaiverEvidence |
+null, instrumentation?: WorkflowReconciliationInstrumentation): Promise<{ present: boolean; verified: boolean; events:
 number; skills: number; diagnostics: Diagnostic[]; workflowWaiverContext:
 WorkflowWaiverContext }>` — `root` is
 retained so phase 2 below can load
 `.musubix/evidence/workflow-waivers.json` (a second, independent file this
 function never previously touched) **when the caller has not already
-loaded it**: the optional fourth parameter distinguishes "omitted"
+loaded it**: the optional fifth parameter distinguishes "omitted"
 (`undefined` — the common case; phase 2 calls `loadWorkflowWaiverEvidence(root)`
 itself) from "explicitly supplied" (any value including `null`, meaning
 the file is already known absent or already loaded — phase 2 uses that
@@ -354,7 +402,8 @@ file; the `workflow` manifest itself is
 never re-read from disk here, only the caller-supplied value is used —
 a new, non-manifest-loading export containing exactly `validateWorkflow`'s
 current diagnostic-computation
-body (identical `WORKFLOW_INVOCATION_UNVERIFIED`/strict-mode/
+body (identical `WORKFLOW_INVOCATION_UNVERIFIED`, `WORKFLOW_RECONCILIATION_MALFORMED`,
+`WORKFLOW_RECONCILIATION_LIMIT`, or `WORKFLOW_RECONCILIATION_CONFIG_MISMATCH`/strict-mode/
 `WORKFLOW_VERIFICATION_STALE`/tool-call-scoped `WORKFLOW_INVOCATION_REUSED`/
 five reason-code/`WORKFLOW_BINDING_MISSING` logic, unchanged severities,
 message text, and ordering), restructured into two phases inside it so
@@ -362,15 +411,24 @@ waiver evaluation never races diagnostic emission (the pipeline hazard a
 single interleaved pass would otherwise create, since a diagnostic being
 downgraded and a diagnostic being scanned for `currentCodeFor` would then
 be the same in-progress array). `export async function
-validateWorkflow(root: string, options?: WorkflowVerificationOptions):
-Promise<...>` becomes a thin, behavior-preserving wrapper: `const workflow
-= await loadWorkflow(root); return validateLoadedWorkflow(root, workflow,
-options);` — its return shape gains the same new `workflowWaiverContext`
+validateWorkflow(root: string, options?: WorkflowVerificationOptions,
+reconciliationConfig?: WorkflowConfig): Promise<...>` becomes a thin,
+behavior-preserving wrapper: load the workflow once, use explicitly supplied
+`reconciliationConfig` when `runGate` already resolved it, otherwise load
+`config.workflow` normally, use `options ?? config.workflow` as verification
+options, then call `validateLoadedWorkflow(root, workflow,
+verificationOptions, resolvedReconciliationConfig, undefined, undefined)` —
+the wrapper has no preloaded evidence or instrumentation inputs, so both are
+always explicitly absent; its return shape gains
+the same new `workflowWaiverContext`
 field, purely additively (every existing consumer of
 `present`/`verified`/`events`/`skills`/`diagnostics` — `gate.ts`'s
 `runGate`, existing tests — continues to compile and behave identically,
 since none of them read a field they didn't already read); only its
-implementation is now a delegation. **Phase 1 (unchanged emission logic, plus structured
+implementation is now a delegation. Before phase 1, create exactly one
+`reconciliationPass = createWorkflowReconciliationPass(...)` when valid reconciliation
+is available; pass that same object to `computeRawWorkflowDiagnostics` and
+phase-2 context construction. **Phase 1 (unchanged emission logic, plus structured
 fields)** — compute `rawDiagnostics: Diagnostic[]` exactly as
 `validateWorkflow` does today (identical `WORKFLOW_INVOCATION_UNVERIFIED`/
 strict-mode/`WORKFLOW_VERIFICATION_STALE`/tool-call-scoped
@@ -389,7 +447,7 @@ additive annotation of the existing diagnostics, not a behavior change.
 : await loadWorkflowWaiverEvidence(root)` (one load when the parameter is
 omitted/`undefined`, zero loads when a value including `null` was
 explicitly supplied — see the Constraints paragraph below), then build one
-`context = buildWorkflowWaiverContext(loaded, workflow, rawDiagnostics)`
+`context = buildWorkflowWaiverContext(loaded, workflow, rawDiagnostics, reconciliationPass)`
 (DES-WORKFLOW-EVIDENCE-WAIVER-003) using the now-complete `rawDiagnostics`
 from phase 1 — this same `context` object becomes the function's returned
 `workflowWaiverContext`, so any caller needing `workflowWaivers`/
@@ -404,8 +462,10 @@ resolve `authoritativeIndex(context, diagnostic.skill!, diagnostic.phase!,
 diagnostic.declarationRecordedAt!, diagnostic.index)`; when `-1`, return
 the diagnostic unchanged; otherwise, when
 `context.loaded && !context.loaded.malformed &&
-!recordStale(context, authoritative)` (the single predicate from
-DES-WORKFLOW-EVIDENCE-WAIVER-004), return `{
+waiverSnapshotState(context, authoritative) === 'current'` (the single state from
+DES-WORKFLOW-EVIDENCE-WAIVER-004), bind
+`record = context.loaded.waivers[authoritative]` after its shape guard, and
+return `{
 ...diagnostic, severity: 'warning', waiver: { approver: record.approver,
 reason: record.reason, recordedAt: record.waiverRecordedAt,
 waiverRecordedAt: record.waiverRecordedAt } }` (using the
@@ -428,12 +488,17 @@ as today from the *final* (post-transformation) `diagnostics` array
 status redefinition happens in `runGate`, DES-WORKFLOW-EVIDENCE-WAIVER-007,
 not here, since `verified` itself is a separate, pre-existing "zero
 diagnostics of any severity" signal this design does not repurpose).
-Interfaces: `validateWorkflow(root, options?)` (unchanged signature;
-return shape additively gains `workflowWaiverContext`);
+Interfaces: `validateWorkflow(root, options?, reconciliationConfig?)`
+(additive optional config argument; return shape additively gains
+`workflowWaiverContext`);
 `validateLoadedWorkflow(root: string, workflow: WorkflowManifest | null,
-options?: WorkflowVerificationOptions, preloadedWaiverEvidence?:
-LoadedWorkflowWaiverEvidence | null)` (new; the actual two-phase
-implementation — the fourth parameter is optional and its two possible
+verificationOptions: WorkflowVerificationOptions,
+reconciliationConfig: WorkflowConfig, preloadedWaiverEvidence?:
+LoadedWorkflowWaiverEvidence | null, instrumentation?:
+WorkflowReconciliationInstrumentation)` (new; the actual two-phase
+implementation — verification options drive current-input parsing/lifecycle
+behavior while reconciliation config independently drives persisted-config
+mismatch diagnostics; the fifth parameter is optional and its two possible
 states are distinguished by `undefined`-ness, not truthiness: omitted or
 explicit `undefined` means "load `workflow-waivers.json` internally",
 while any explicitly supplied value, including `null` for "file
@@ -450,7 +515,7 @@ for the same manifest and options, so introducing the split is a pure,
 additive refactor from every existing caller's perspective; each call
 must load `.musubix/evidence/workflow-waivers.json` at most once, and the
 exact count is contract, not incidental: `validateWorkflow(root, options)`
-and any call to `validateLoadedWorkflow` that omits its fourth parameter
+and any call to `validateLoadedWorkflow` that omits its fifth parameter
 (or passes explicit `undefined`) load it exactly once inside phase 2;
 a call to `validateLoadedWorkflow` that supplies an explicit
 `preloadedWaiverEvidence` value (including `null`) loads it zero times,
@@ -462,13 +527,22 @@ Depends-On: DES-WORKFLOW-EVIDENCE-WAIVER-002, DES-WORKFLOW-EVIDENCE-WAIVER-003, 
 Requirements: REQ-WORKFLOW-EVIDENCE-WAIVER-001, REQ-WORKFLOW-EVIDENCE-WAIVER-009, REQ-WORKFLOW-EVIDENCE-WAIVER-010, REQ-WORKFLOW-EVIDENCE-WAIVER-012, REQ-WORKFLOW-EVIDENCE-WAIVER-016
 ADRs: ADR-0026
 
+## DES-WORKFLOW-EVIDENCE-WAIVER-010: Durable scope heads, migration compatibility, and active visibility
+Responsibilities: Implement the CHANGE-0048 version-2 snapshot path in `workflow-waiver.ts`: export `resolveEventIndex` and the two-argument convenience `workflowScopeEvidenceHead`; `resolveEventIndex(workflow, event)` accepts only the event already selected by `resolveEvent` and returns its array position, performing no independent triplet/collision resolution. Build one `WorkflowReconciliationPass` in context creation, thread it through `snapshotPayload`/`snapshotHashFor`, and use `workflowScopeEvidenceHeadForPass` for all batch evaluation. Hash exactly `{ binding, skewMs, invocations }`, where `binding` is the freshly recomputed binding or `null` and each invocation contains exactly `skill`, `toolCallId`, `invokedAt`, optional `completedAt`, and `status` with provenance `sources` removed. Compute the exact payload keys and null sentinels. Extend context with the shared migration-compatible predicate and tri-state snapshot state; include effective same-code v1 records and exclude resolved successors from active visibility. `planWorkflowWaiverMigration` remains owned by DES-WORKFLOW-RESUMED-SESSION-DURABILITY-005 and consumes these predicates/hash interfaces rather than introducing duplicate builders here. Preserve old records and append successors with original approval metadata/time. `workflowScopeEvidenceHead(workflow, eventIndex)` throws when `eventIndex` is out of range or does not identify a completed declaration.
+Interfaces: `resolveEventIndex(workflow, event)`; `workflowScopeEvidenceHead(workflow, eventIndex)`; `workflowScopeEvidenceHeadForPass`; `snapshotVersionFor`; `snapshotHashFor(..., reconciliationPass?)`; `waiverSnapshotState`.
+Constraints: The pass owns freshly recomputed bindings, semantic invocation indexes, memoized heads, and instrumentation. Persisted reads and in-memory next-state migration use distinct pass objects. In a legacy workflow without reconciliation, v1 stored hash versus the legacy current hash decides `current` or `stale` exactly as before. With reconciliation, migration-compatible v1 and matching v2 are `current`; a v2 record without reconciliation is stale. `WORKFLOW_INVOCATION_UNVERIFIED` and every reconciliation global error yield `suppressed`, with no hash/stale/downgrade/listing for either version and no legacy fallback. Historical superseded v1 records do not independently emit stale audit entries.
+Depends-On: DES-WORKFLOW-EVIDENCE-WAIVER-003, DES-WORKFLOW-EVIDENCE-WAIVER-004, DES-WORKFLOW-RESUMED-SESSION-DURABILITY-003
+Requirements: REQ-WORKFLOW-RESUMED-SESSION-DURABILITY-003, REQ-WORKFLOW-RESUMED-SESSION-DURABILITY-005, REQ-WORKFLOW-EVIDENCE-WAIVER-012, REQ-WORKFLOW-EVIDENCE-WAIVER-014
+ADRs: ADR-0026, ADR-0041
+
 ## DES-WORKFLOW-EVIDENCE-WAIVER-006: `workflow waiver record` command
 Responsibilities: Implement `export async function recordWorkflowWaiver(
 root: string, code: string, skill: string, phase: string, recordedAt:
 string, index: number | undefined, approver: string, reason: string):
 Promise<{ recorded: boolean; skill: string; phase: string;
 declarationRecordedAt: string; index?: number; code: string }>` in
-`workflow-waiver.ts`, mirroring `recordChangeWaiver`'s exact control-flow
+`workflow.ts`, using helpers imported from `workflow-waiver.ts` and mirroring
+`recordChangeWaiver`'s exact control-flow
 shape: (1) reject `recordedAt` that is not parseable by `Date.parse`
 (REQ-002's "before any diagnostic lookup is attempted" requirement — this
 check runs first, before any file is loaded); (2) `const loaded = await
@@ -487,7 +561,7 @@ that component's `validateWorkflow`/`validateLoadedWorkflow` split); (3.5)
 `const config = await loadConfig(root)` (`packages/analysis/src/config.ts`,
 already imported by `gate.ts` the identical way) to obtain
 `config.workflow: WorkflowConfig`, the same options object `runGate` already
-passes to `validateWorkflow(root, config.workflow)` for its own `workflow`
+passes to `validateWorkflow(root, config.workflow, config.workflow)` for its own `workflow`
 check — reused here so `recordWorkflowWaiver`'s "currently present"
 diagnostic check (step 7) evaluates the project's actual configured
 `mode`/`maxAgeSeconds`/`maxFutureSkewSeconds`, never a hardcoded default
@@ -498,17 +572,19 @@ against that already-loaded manifest, throwing on the first invalid one
 (REQ-017); (5) reject `code` outside `WORKFLOW_WAIVABLE_CODES`, naming the
 five allowed codes in the error (REQ-001); (6) reject empty/whitespace
 `approver`/`reason` (REQ-003); (7) call `validateLoadedWorkflow(root,
-workflow, config.workflow, loaded)` — passing step (3.5)'s already-loaded
-project configuration as the options argument and step (2)'s
-already-loaded waiver
-evidence as the fourth argument so phase 2 performs no second read of
+workflow, config.workflow, config.workflow, loaded)` — passing step (3.5)'s
+already-loaded project configuration separately as verification options and
+read-side reconciliation config, and step (2)'s already-loaded waiver
+evidence as the fifth argument so phase 2 performs no second read of
 `.musubix/evidence/workflow-waivers.json` (this is precisely why
 `validateLoadedWorkflow` accepts that optional parameter) — and never
 `validateWorkflow(root, ...)`, which would silently reload both files and
 could observe different manifest/evidence snapshots under concurrent
 writes — and reject when its
-(pre-waiver-irrelevant, since `WORKFLOW_INVOCATION_UNVERIFIED` is never
-waivable/transformed) diagnostics include `WORKFLOW_INVOCATION_UNVERIFIED`
+(pre-waiver-irrelevant, since these global blockers are never
+waivable/transformed) diagnostics include `WORKFLOW_INVOCATION_UNVERIFIED`,
+`WORKFLOW_RECONCILIATION_MALFORMED`, `WORKFLOW_RECONCILIATION_LIMIT`, or
+`WORKFLOW_RECONCILIATION_CONFIG_MISMATCH`
 (REQ-004); (8) resolve the target declaration event via `resolveEvent(
 workflow, skill, phase, recordedAt, index)` (DES-WORKFLOW-EVIDENCE-WAIVER-003):
 reject when it returns `undefined` per REQ-005's collision rule (zero or
@@ -522,11 +598,15 @@ already-waived, still-currently-raised diagnostic still counts as
 "currently present" for this check, since waiving only changes severity,
 never removes the diagnostic; a downgraded diagnostic's `code` is
 unchanged); (10) reject when the scope's current authoritative record (if
-any) is already validly linked and non-stale, via
-`authoritativeIndex`/`snapshotHashFor` against this same `workflow`
+any) is effective under REQ-WORKFLOW-EVIDENCE-WAIVER-012, including a
+migration-compatible version-1 record awaiting automatic successor append, via
+`authoritativeIndex`/`waiverSnapshotState` against this same validation context
 (REQ-011, "already has an active waiver"); (11) compute `snapshotHash` via
-`snapshotHashFor(workflow, validateLoadedWorkflow's diagnostics, ...)` for
+`snapshotHashFor(workflow, validateLoadedWorkflow's diagnostics, ...,
+validated.workflowWaiverContext.reconciliationPass)` for
 the about-to-be-created record's scope; append a new record with
+`snapshotVersion: snapshotVersionFor(workflow)` (never the unconditional
+`CURRENT_SNAPSHOT_VERSION`),
 `sequence` one greater than the last existing record's (or `1` for the
 first), `previousSha256` equal to the last record's `payloadSha256` (or
 genesis), `waiverRecordedAt: new Date().toISOString()`, and `payloadSha256`
@@ -534,9 +614,10 @@ computed over every other field via `canonicalJson`; (12) persist via
 `writeJson` to `.musubix/evidence/workflow-waivers.json`, creating the `{
 schemaVersion: 1, waivers: [] }` document first if absent (REQ-006); never
 modify `.musubix/evidence/workflow.json` or any existing waiver record.
-Every rejection in steps (1) and (4)–(10) leaves
-`.musubix/evidence/workflow-waivers.json` byte-identical to its
-pre-call state, since no write occurs before step (12).
+The public function acquires `withEvidenceWriterLock(root,
+'workflow-waiver-record', ...)` before loading either evidence document and
+holds it through step (12), serializing this chain append with verification
+migration and bulk recording.
 Every rejection in steps (1) and (4)–(10) leaves
 `.musubix/evidence/workflow-waivers.json` byte-identical to its
 pre-call state, since no write occurs before step (12).
@@ -569,9 +650,9 @@ file, as the idiomatic Commander option-parser error type, rather than
 inventing a new error class),
 whose action throws `'Recording a workflow waiver requires --confirm.'`
 when `--confirm` is absent (mirroring `change waiver record`'s identical
-check) and otherwise calls `recordWorkflowWaiver` (imported via
-`packages/analysis/src/index.ts`'s barrel, per
-DES-WORKFLOW-EVIDENCE-WAIVER-001's added export).
+check) and otherwise calls `recordWorkflowWaiver` through
+`packages/analysis/src/index.ts`'s pre-existing `export * from
+'./workflow.js'` barrel entry.
 Interfaces: `recordWorkflowWaiver(root, code, skill, phase, recordedAt, index, approver, reason)`;
 new `workflow waiver record <code> --skill <skill> --phase <phase> --recorded-at <timestamp> [--index <n>] --approver <name> --reason <text> --confirm` CLI command.
 Constraints: Must reject and record no evidence for every failure case in
@@ -604,8 +685,10 @@ from a second, independent load of `workflow.json`/`workflow-waivers.json`.
 It scans `context.loaded?.waivers ?? []` once in ascending persisted array
 position, using per-scope memoization to populate both returned arrays together:
 `workflowWaivers` gets one entry
-per scope for its authoritative, validly-linked, non-stale record only
-(REQ-014's authoritative-only rule); `workflowWaiverDiagnostics` gets
+per scope for its effective authoritative record only when its identical
+allow-listed code remains raised (REQ-014's authoritative-only rule), ordered
+by that authoritative record's persisted array position; when no qualifying
+scope exists, it returns a present empty array. `workflowWaiverDiagnostics` gets
 `WORKFLOW_WAIVER_EVIDENCE_MALFORMED` for the whole document or any
 individually invalidly-linked record — for a whole-document malformation
 (unparseable JSON or wrong top-level shape) the diagnostic names only the
@@ -626,11 +709,22 @@ in isolation (never assuming any other field's validity); the recovered record
 the remaining recovered scope fields enrich diagnostic metadata, so it can
 never overwrite `WORKFLOW_WAIVER_EVIDENCE_MALFORMED`. This output is never consulted by
 `waiverLinkage`, `authoritativeIndex`, or any other structural/staleness
-decision in this module, and `WORKFLOW_WAIVER_STALE` for each scope whose authoritative record satisfies
-`recordStale(context, authoritativeIndex)` (per REQ-012). The derivation emits
-at most one valid-scope outcome when it encounters that scope's first validly
-linked record; that outcome is computed from the greatest-sequence
-authoritative record. A stale outcome contains only the standard diagnostic
+decision in this module, and `WORKFLOW_WAIVER_STALE` for each scope whose authoritative record has
+`waiverSnapshotState(context, authoritativeIndex) === 'stale'` (per REQ-012):
+severity is `error` while `currentCode[authoritativeIndex]` is non-null and
+`warning` with the exact substring `condition is resolved; a replacement
+waiver is not required` while it is null;
+`suppressed` emits no active listing and no `WORKFLOW_WAIVER_STALE`, but it
+does not suppress whole-document or per-record
+`WORKFLOW_WAIVER_EVIDENCE_MALFORMED`; those audit diagnostics are derived
+before the valid-scope suppression branch and remain visible. The derivation
+emits at most one valid-scope outcome, computed from the greatest-sequence
+authoritative record. It records each active listing candidate with that
+authoritative record's array position and sorts candidates by that position
+before return. Separately, a stale diagnostic is emitted at the scope's
+lowest-position validly linked record position, so stale audit ordering and
+active listing ordering intentionally use their distinct requirement-defined
+positions. A stale outcome contains only the standard diagnostic
 fields plus the authoritative record's `skill`, `phase`,
 `declarationRecordedAt`, and conditionally present `index`; it never copies the
 record's reason code, sequence, snapshot fields, chain hashes, approval
@@ -662,7 +756,7 @@ derives every one of `checks`/`diagnostics`/`workflowWaivers`/
 `workflowWaiverDiagnostics` it needs from that single result.
 Modify `packages/analysis/src/gate.ts`'s `runGate` function's existing
 `workflow` check construction (the block that already calls
-`validateWorkflow(root, config.workflow)` and pushes `checks.push({ name:
+`validateWorkflow(root, config.workflow, config.workflow)` and pushes `checks.push({ name:
 'workflow', ... })`) to change `status: !workflow.present ? 'skipped' :
 workflow.verified ? 'pass' : 'fail'` to `status: !workflow.present ?
 'skipped' : countErrors(workflow.diagnostics) === 0 ? 'pass' : 'fail'`
@@ -673,7 +767,7 @@ DES-005 already downgrading waived diagnostics' severity inside
 `workflow.diagnostics` itself, so no additional waiver-aware branching is
 needed at this call site beyond the existing `countErrors` pattern. Also
 in `runGate`, since it already computes `const workflow =
-await validateWorkflow(root, config.workflow)` for the check above, reuse
+await validateWorkflow(root, config.workflow, config.workflow)` for the check above, reuse
 that exact same result — `const { workflowWaivers, workflowWaiverDiagnostics }
 = deriveWorkflowWaiverAudit(workflow.workflowWaiverContext)` (a
 synchronous derivation from data already in hand, never a second load of
@@ -702,6 +796,9 @@ performing exactly one `validateWorkflow` call of its own (`runGate`'s
 existing call for its check; `projectStatus`'s new call solely for the
 audit arrays) without either one reconstructing `workflow` check status
 outside `runGate`.
+`projectStatus` concatenates its change-waiver diagnostics first and workflow-
+waiver diagnostics second, using the same
+`[...waiverDiagnostics, ...workflowWaiverDiagnostics]` order as `runGate`.
 Interfaces: `deriveWorkflowWaiverAudit(context)`; `activeWorkflowWaivers(root)`
 and `workflowWaiverEvidenceDiagnostics(root)` (thin wrappers, each calling
 `validateWorkflow(root)` once and returning one field of
@@ -734,12 +831,15 @@ ADRs: ADR-0026
 Responsibilities: Add two focused tests in
 `tests/workflow-evidence-waiver.test.ts`. `TEST-WORKFLOW-EVIDENCE-WAIVER-012`
 verifies that a non-current
-  `snapshotVersion` is stale even when the hash is current, that a still-raised
+  `snapshotVersion` outside the explicit version-1 migration compatibility
+  window is stale even when the hash is current, that a still-raised
   allow-listed reason and its paired `WORKFLOW_BINDING_MISSING` return to
   `error` without `waiver`, that a changed scope reports its newly current
   reason at `error` without continuing the superseded reason as downgraded, and
   that a fully resolved scope reports workflow `pass` while retaining
-  unconditional top-level stale audit visibility.
+  top-level stale audit visibility as a warning stating that the condition is
+  resolved and no replacement waiver is required; a stale scope whose
+  allow-listed reason remains raised stays error severity.
 `TEST-WORKFLOW-EVIDENCE-WAIVER-013` verifies authoritative-only evaluation,
   both superseded/authoritative mismatch combinations, exact stale diagnostic
   field omissions, cardinality, and first-valid-scope ordering among malformed
@@ -750,11 +850,13 @@ links `TEST-WORKFLOW-EVIDENCE-WAIVER-012` and
 `TEST-WORKFLOW-EVIDENCE-WAIVER-013`.
 Constraints: These new test IDs receive their own genuine Red/Green cycles. A
 deterministic test-only temporary implementation fault may invert or bypass the
-shared `recordStale` predicate to prove the tests detect nonconformance; the
+shared `waiverSnapshotState` function to prove the tests detect nonconformance; the
 fault must be removed before Green, and a passing execution must never be
 recorded as Red. The tests mutate only temporary project evidence, assert exact
 cardinality/structured fields rather than
-message substrings for stale diagnostics, must assert the exact
+message substrings for error-severity stale diagnostics; the resolved warning
+case additionally asserts the exact required substring `condition is resolved;
+a replacement waiver is not required`. Tests must assert the exact
 `.musubix/evidence/workflow-waivers.json` path, and must preserve the existing
 TEST-008 authoritative fixture unchanged.
 Depends-On: DES-WORKFLOW-EVIDENCE-WAIVER-004, DES-WORKFLOW-EVIDENCE-WAIVER-005, DES-WORKFLOW-EVIDENCE-WAIVER-007
@@ -770,9 +872,10 @@ changed-code severity restoration, and resolved-scope audit visibility. Keep
 `TEST-WORKFLOW-EVIDENCE-WAIVER-013` authoritative for supersession,
 authoritative-record staleness, diagnostic shape, cardinality, and persisted
 array ordering. Add `TEST-WORKFLOW-EVIDENCE-WAIVER-014` after the CHANGE-0035
-Design checkpoint to directly assert that `recordStale` returns false for the
-current snapshot and true for independent version and hash drift.
-Interfaces: `recordStale(record, index, context)` as the single shared predicate;
+Design checkpoint to directly assert that `waiverSnapshotState` returns
+`current` for the current snapshot, `stale` for independent version/hash drift,
+and `suppressed` for unverified/global-reconciliation blockers.
+Interfaces: `waiverSnapshotState(context, index)` as the single shared state;
 `TEST-WORKFLOW-EVIDENCE-WAIVER-012`;
 `TEST-WORKFLOW-EVIDENCE-WAIVER-013`;
 `TEST-WORKFLOW-EVIDENCE-WAIVER-014`; the configured

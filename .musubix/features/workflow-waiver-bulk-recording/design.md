@@ -7,9 +7,9 @@ existing single-diagnostic workflow waiver path
 existing validation/linkage/chain primitive from
 `packages/analysis/src/workflow-waiver.ts` (`WORKFLOW_WAIVABLE_CODES`,
 `waiverRecordShapeValid`, `waiverChainValid`, `waiverLinkage`,
-`authoritativeIndex`, `nonStale`, `scopeKey`, `snapshotHashFor`,
-`payloadShaOf`) and `validateLoadedWorkflow` unchanged. No existing exported
-function's signature or behavior changes.
+`authoritativeIndex`, `waiverSnapshotState`, `scopeKey`, `snapshotHashFor`,
+`payloadShaOf`) and `validateLoadedWorkflow`. CHANGE-0048 extends the shared validation and
+snapshot selection behavior without adding a separate bulk-only path.
 
 ## DES-WORKFLOW-WAIVER-BULK-001: `recordAllWorkflowWaivers` bulk-recording function
 Responsibilities: Add `export async function recordAllWorkflowWaivers(root:
@@ -23,12 +23,19 @@ existing corresponding check (throwing the same message shape on failure,
 so CLI error text stays consistent for contributors already familiar with
 the single-record command): (1) load
 `.musubix/evidence/workflow-waivers.json` via `loadWorkflowWaiverEvidence`
-and throw if malformed; (2) walk every existing waiver record with
+and throw if malformed; then load `workflow.json` once and
+`config.workflow` once, reusing those exact snapshots throughout the call;
+(2) walk every existing waiver record with
 `waiverRecordShapeValid`/`waiverChainValid`/`waiverLinkage` and throw on
 the first invalid one, identically to `recordWorkflowWaiver`'s existing
-loop; (3) throw if `approver.trim()` or `reason.trim()` is empty; (4) call
-`validateLoadedWorkflow(root, workflow, config.workflow, loaded)` and throw
-if its `diagnostics` contain `WORKFLOW_INVOCATION_UNVERIFIED`. Only after
+loop; (3) throw if
+`approver.trim()` or `reason.trim()` is empty; (4) call
+`validateLoadedWorkflow(root, workflow, config.workflow, config.workflow,
+loaded)`, passing the loaded config independently as verification options and
+read-side reconciliation config, and throw
+if its `diagnostics` contain `WORKFLOW_INVOCATION_UNVERIFIED`,
+`WORKFLOW_RECONCILIATION_MALFORMED`, `WORKFLOW_RECONCILIATION_LIMIT`, or
+`WORKFLOW_RECONCILIATION_CONFIG_MISMATCH`. Only after
 all four hold does it compute candidates (REQ-WORKFLOW-WAIVER-BULK-001):
 filter `validated.diagnostics` to entries whose `code` is in
 `WORKFLOW_WAIVABLE_CODES` and which carry `skill`/`phase`/
@@ -39,11 +46,11 @@ applies before treating a diagnostic as declaration-scoped), deduplicate by
 ever report once per declaration in practice but deduplication keeps the
 function correct even if a future diagnostic code reports more than one
 entry per declaration, exclude any whose `authoritativeIndex` in
-`validated.workflowWaiverContext` resolves to a `nonStale` active record,
+`validated.workflowWaiverContext` resolves to
+`waiverSnapshotState(...) === 'current'` (including pending v1),
 then sort the remainder by `skill`, then `phase`, then
 `declarationRecordedAt`, then `index` (`undefined` sorts before any defined
-value) for deterministic, reviewable output and a deterministic hash
-chain. If the candidate list is empty, return `{ recorded: 0, waivers: [] }`
+value) for deterministic, reviewable output and a deterministic hash chain. If the candidate list is empty, return `{ recorded: 0, waivers: [] }`
 without any file write (REQ-WORKFLOW-WAIVER-BULK-003) — this is a normal,
 successful return, not a thrown error. Otherwise, starting from the
 existing evidence's current tail (`sequence`/`payloadSha256`, or the
@@ -52,10 +59,13 @@ absent/empty), build one `WorkflowWaiverRecord` per candidate in sorted
 order, each one's `previousSha256`/`sequence` chained onto the
 immediately preceding record already built in this same call (never
 re-reading the file mid-loop), each with the shared `approver`/`reason`
-and its own `waiverRecordedAt` timestamp (`new Date().toISOString()`,
-called once per record so entries are not artificially forced to an
-identical timestamp), each `snapshotHash` computed by the existing
-`snapshotHashFor(workflow, validated.diagnostics, draftRecord)` (the same
+and its own `waiverRecordedAt` timestamp (`new Date().toISOString()` called
+once per record), each with
+`snapshotVersion: snapshotVersionFor(workflow)` rather than unconditional
+`CURRENT_SNAPSHOT_VERSION`, each `snapshotHash` computed by the existing
+version-aware `snapshotHashFor(workflow, validated.diagnostics, draftRecord,
+validated.workflowWaiverContext.reconciliationPass)`
+(version 1 without reconciliation, version 2 with valid reconciliation; the same
 pre-loop `validated.diagnostics`, since no waiver written earlier in this
 call changes any other candidate's underlying diagnostic), and each
 `payloadSha256` computed by the existing `payloadShaOf`. Write the full
@@ -70,7 +80,7 @@ newRecords.length, waivers: newRecords.map(...) }` in the same shape
 Interfaces: `recordAllWorkflowWaivers(root, approver, reason)`.
 Constraints: Must not duplicate `WORKFLOW_WAIVABLE_CODES`,
 `waiverRecordShapeValid`, `waiverChainValid`, `waiverLinkage`,
-`authoritativeIndex`, `nonStale`, `scopeKey`, `snapshotHashFor`, or
+`authoritativeIndex`, `waiverSnapshotState`, `scopeKey`, `snapshotHashFor`, or
 `payloadShaOf`; must import and reuse each verbatim from
 `workflow-waiver.ts` exactly as `recordWorkflowWaiver` already does. Must
 never write `workflow-waivers.json` when any precondition fails or when
@@ -88,7 +98,7 @@ or any `gate`/`status` computation — a mix of bulk- and single-recorded
 entries in the same evidence file must remain indistinguishable to every
 existing consumer, since `WorkflowWaiverRecord`'s shape is unchanged.
 Requirements: REQ-WORKFLOW-WAIVER-BULK-001, REQ-WORKFLOW-WAIVER-BULK-002, REQ-WORKFLOW-WAIVER-BULK-003
-ADRs: none — this component makes no new architectural decision; it is a batch wrapper that composes ADR-0026's already-decided waiver evidence model, chain, and validation primitives verbatim, adding only candidate selection and looped record construction.
+ADRs: ADR-0041
 
 ## DES-WORKFLOW-WAIVER-BULK-002: `workflow waiver record-all` CLI subcommand
 Responsibilities: In `packages/cli/src/main.ts`, next to the existing
@@ -122,22 +132,24 @@ diagnostic in one all-or-nothing, hash-chained action, downgrading any
 paired `WORKFLOW_BINDING_MISSING` for the same declaration scope exactly
 as a single `record` call already does today; it never affects
 `WORKFLOW_INVOCATION_UNVERIFIED`, which remains a blocker requiring
-`workflow-verify` (compatible mode) to have reconciled the session's
+`workflow-verify` under the project's effective configured mode to have reconciled the session's
 transcript first. In
 `.github/skills/sdd-change/SKILL.md`'s release-approval step (the existing
 line referencing `workflow-sanitize`/`workflow-verify`), add that
-`workflow-verify` should be run in compatible mode (no `--strict`) against
-the current session's own transcript (`~/.copilot/session-state/<sessionId
+when configured compatible, `workflow-verify` should be run against the
+current session's own transcript (`~/.copilot/session-state/<sessionId
 >/events.jsonl`, already documented in `README.md` as an internal Copilot
-CLI detail) before evaluating the `workflow` gate check, and that
+CLI detail) before evaluating the `workflow` gate check. When configured
+strict, the current session cannot verify its own still-open transcript;
+release approval is deferred until a subsequent Copilot session verifies
+the prior session's completed terminal transcript. Then
 `workflow waiver record-all` is the documented, repeatable step for any
 declaration-scoped diagnostics that remain afterward — so this is no
 longer rediscovered per change.
 Interfaces: None (documentation only).
 Constraints: Must not alter any other `SKILL.md` instruction's meaning or
 ordering; must not claim bulk waiver resolves `WORKFLOW_INVOCATION_UNVERIFIED`
-or any other non-declaration-scoped diagnostic.
+or any other non-declaration-scoped diagnostic. Document the three durable
+reconciliation blockers and the reset/reverification recovery path.
 Requirements: REQ-WORKFLOW-WAIVER-BULK-004
-ADRs: none — this component is documentation only; it records no new architectural decision beyond ADR-0026's already-decided waiver model.
-
-Depends-On: DES-WORKFLOW-EVIDENCE-WAIVER-001, DES-WORKFLOW-EVIDENCE-WAIVER-002, DES-WORKFLOW-EVIDENCE-WAIVER-003, DES-WORKFLOW-EVIDENCE-WAIVER-004, DES-WORKFLOW-EVIDENCE-WAIVER-005, DES-WORKFLOW-EVIDENCE-WAIVER-006
+ADRs: ADR-0041

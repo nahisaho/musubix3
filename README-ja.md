@@ -363,16 +363,16 @@ npx musubix3 tdd green TEST-EXAMPLE-002 --requirement REQ-EXAMPLE-002 --command 
 | `mutation validate` | 要求scopeのschema-v1 killed-mutant証拠を再検証 |
 | `mutation identity <REQ-ID> <TEST-ID> <sourcePath> <operator> <line> <column>` | mutation reportが宣言すべき決定的な`MUT-*`識別子を出力 |
 | `tdd validate` | 保存済みRed/Green/Refactorの順序、指紋、実行時間、hash-chainを検証 |
-| `tdd red\|green\|refactor <TEST-ID> --requirement <REQ-ID> --command <name>` | 検証可能なTDDフェーズを実行・記録 |
+| `tdd red\|green\|refactor <TEST-ID> --requirement <REQ-ID> --command <name>` | 検証可能なTDDフェーズを実行・記録。1回の呼出しは1つのrequirementだけを受け付け、1つのtestが複数requirementを検証する場合はrequirementごとに個別のRed/Green cycleを実行する |
 | `workflow-record <skill> <phase> --status <status>` | 自己申告のworkflow宣言を記録 |
 | `workflow waiver record <code> --skill <skill> --phase <phase> --recorded-at <timestamp> [--index <n>] --approver <name> --reason <text> --confirm` | declaration単位のworkflow照合診断（`WORKFLOW_SKILL_NOT_INVOKED`、`WORKFLOW_INVOCATION_ORDER`、`WORKFLOW_INVOCATION_INCOMPLETE`、`WORKFLOW_INVOCATION_FAILED`、`WORKFLOW_INVOCATION_REUSED`のいずれか）1件を、監査可能な範囲でnon-blockingなwaived状態に降格記録する。同じdeclaration scopeを共有する`WORKFLOW_BINDING_MISSING`診断も同時に降格される。`WORKFLOW_INVOCATION_UNVERIFIED`はwaiveできず、そのsessionで実際に`workflow-verify`を実行した場合のみ解消できる |
 | `workflow waiver record-all --approver <name> --reason <text> --confirm` | `workflow waiver record`の一括版。reconciliation report全体で現在waive可能なdeclaration scope診断を、1件ずつの`record`呼び出しの代わりに全件一括でall-or-nothingにwaiveする。不正なwaiver証拠、無効なwaiver chain、空の`--approver`/`--reason`、または`workflow-verify`が未解決の`WORKFLOW_INVOCATION_UNVERIFIED`診断のいずれかが事前条件チェックで検出された場合は何も記録せず拒否する（`workflow-verify`が一度も実行されていない場合、個別waiverも一括waiverもこれを代替できない）。waiveされた各declaration scope診断に対応する`WORKFLOW_BINDING_MISSING`も、既存の単体`record`コマンドと同様に同時に降格される。waive対象が0件（既にwaive済み、または該当なし）の場合は冪等に成功し、何も記録しない |
 | `workflow-sanitize <copilot.jsonl> <output-file> [--session-id <uuid>]` | reviewやstrict検証前にmessageとSkill以外のtool dataを除去 |
-| `workflow-verify <copilot.jsonl> [--strict] [--session-id <uuid>]` | Skillイベントを照合し、任意で完全な成功session transcriptを要求 |
+| `workflow-verify <copilot.jsonl...> [--strict] [--session-id <uuid>] [--reset-ledger --confirm]` | Skillイベントをdurable ledgerへmergeする。compatibleは複数ファイル、strictは単一terminal transcriptを要求する。stickyなstrict mode／configured session anchorを変更する場合のみ確認付きresetを使う |
 | `attestation oidc-audience --key-id <id> [--public-key-file <pem>]` | 署名鍵を許可するGitHub custom audienceを導出 |
 | `attestation payload --provider <name> --run-id <id> --key-id <id> [--public-key-file <pem>] [--github-oidc-token-file <jwt>]` | 外部署名用の正規化CI payloadを出力 |
 | `attestation verify` | 静的鍵またはGitHub OIDC認可済みEd25519 provenanceを検証 |
-| `change-record <CHANGE-ID> <phase> --requirement <REQ-ID...>` | 段階的変更の成果物・TDD指紋を順序付きで記録。複数batchが同じrequirementを含む場合、検証はRedの`order`が最新のbatchを使用し、後発batchが未完了でも古い完了済み証跡へ暗黙にフォールバックしない |
+| `change-record <CHANGE-ID> <phase> --requirement <REQ-ID...>` | 段階的変更の成果物・TDD指紋を順序付きで記録。この`--requirement <REQ-ID...>`はTDD phase commandと異なり複数requirementのbatchを受け付ける。複数batchが同じrequirementを含む場合、検証はRedの`order`が最新のbatchを使用し、後発batchが未完了でも古い完了済み証跡へ暗黙にフォールバックしない |
 | `change quality-recover [--json]` | 中断したQuality refreshの2ファイルtransactionを復旧する。Quality後に新しい完全なcorrective batchがある場合、full-set Qualityを再記録すると以前のcheckpointをschema version 2の`qualityHistory`へ保持する。不完全・不要なrefreshは安定した`CHANGE_QUALITY_REFRESH_*`エラーで拒否する |
 | `config lint` | `args`が存在しないrepository相対パスを参照する設定済みコマンドを報告 |
 | `config scaffold` | 検出したGo/Rust/Maven/Python/Nodeツールチェーン向けのnative test-command候補を`.musubix/config.json`へ書き込まずに提案 |
@@ -833,9 +833,31 @@ Pythonではstaleな`.pyc`によるfalse survivorを防ぐため、`mutation doc
 品質根拠は状態、必須フラグ、終了コード・出力、実測値、日時、入力の指紋を保存します。
 変更ゲートのパス、HEAD、影響範囲は後続の通常ゲートでも保持します。
 `workflow-record` は自己申告のSkill、フェーズ、状態、任意コマンドのSHA-256を保存します。
-`workflow-verify` はCopilot JSONLからSkill発火メタデータだけを取り込み、完了宣言ごとに
-異なる成功完了tool callを順序付きで1対1対応させます。未完了、失敗、再利用、順序違反、
-後からの宣言変更は失敗です。
+`workflow-verify` はCopilot JSONLからSkill発火メタデータだけを取り込み、過去sessionを
+再提出せずに済むdurable reconciliation ledgerへmergeします。strict ledger modeとconfigured
+session anchorはstickyで、緩和・置換には`--reset-ledger --confirm`が必要です。
+`workflowReconciliationLimits`の上限はinvocation 10,000件、source 50,000件、
+canonical reconciliation 16 MiBです。既存version-1
+waiverは有効なlinkageと同一または解消済みreasonを満たす場合にscope-local version 2へ自動移行します。
+安全でないwaiver evidenceではreconciliationをcommitしたうえで
+`WORKFLOW_WAIVER_MIGRATION_SKIPPED`を返します。reconciliation後のwaiver書込み失敗は
+migrationをpendingのまま残して`WORKFLOW_WAIVER_MIGRATION_WRITE_FAILED`をthrowし、
+waiver evidenceを修復してpersisting `workflow-verify`を再実行すると再試行します。
+成功したpersisting verificationは変更された`skewMs`、compatibleからstrictへの単調な
+ledger mode強化、未設定から設定済みへのsession anchor追加を修復します。既存の異なる
+`expectedSessionId`の置換、strictからcompatibleへの緩和、strict設定下で明示的にcompatible
+modeを指定したpersisting API実行は修復せず、確認付きresetが必要か
+`WORKFLOW_RECONCILIATION_CONFIG_MISMATCH`で失敗します。persist済みstrict evidenceは
+compatible設定でも有効です。`maxEventSkewMs`変更直後はconfig mismatchがscope-local waiver
+評価を抑止し、次の成功したpersisting verificationが`skewMs`を書き換えると、影響を受ける
+version-2 waiverはstaleになり、pendingの信頼可能なversion-1 waiverは同じrunでcurrentな
+version-2 successorへ移行します。compatible evidenceをstrictへ強化する際、過去のstrict
+transcriptが得られなければresidual reviewのやり直しが必要になる場合があります。
+config mismatch中は`workflow waiver record`と`record-all`の両方を拒否します。
+fail-closed診断は`WORKFLOW_INVOCATION_CONFLICT`、`WORKFLOW_RECONCILIATION_MALFORMED`、
+`WORKFLOW_RECONCILIATION_LIMIT`、`WORKFLOW_RECONCILIATION_CONFIG_MISMATCH`、
+`WORKFLOW_RECONCILIATION_RESET_CONFIRMATION_REQUIRED`です。attestationはfull ledger arrayではなく、
+reconciliation設定と`ledgerSha256`、`bindingsSha256`を投影します。
 元transcriptにmessage、Skill以外のtool引数、outputが含まれる場合は、
 review evidenceへ入れる前に`workflow-sanitize`で必要最小限へ変換します。
 したがって各Skill発火は最終workflow outcomeを1件だけ記録し、複数phaseのchronologyは
@@ -967,8 +989,8 @@ CLI検証を呼び出す前に削除します。短命JWTは署名済みattestat
   日本語は文字 bigram。Git 根拠は最大100コミット・各30ファイルで、共変更は相関、
   著者別ディレクトリ件数は貢献の記録であって因果や専門性ではありません。
   履歴がない場合は明示的に skipped。外部サービスへは送信しません。
-- Core CIはNode 22をLinux、Windows、macOSで実行し、LinuxではNode 20と
-  Node 24の互換性も追加確認します。native adapterとformal solverの統合は、
+- Core CIはNode 24をLinux、Windows、macOSで実行し、LinuxではNode 20/24の互換性も検証します。
+  native adapterとformal solverの統合は、
   固定toolchainを使ってLinuxで実行します。
 - **GitHub-hosted runner ポリシー:** portability matrix は意図的に
   `ubuntu-latest`、`windows-latest`、`macos-latest` を使用し、それ以外の
@@ -976,8 +998,8 @@ CLI検証を呼び出す前に削除します。短命JWTは署名済みattestat
   使用します。これらは固定 image ではなく GitHub-hosted の floating label
   です。選択される hosted runner image が変更された場合は、toolchain 導入、
   typecheck、build、test、package check、release preparation、provenance、
-  publication control を再検証します。Action 自体の Node.js 24 runtime は、
-  package が検証する Node.js 20/22/24 とは別のものです。
+  publication control を再検証します。
+  Action 自体の Node.js 24 runtime は、package が検証する Node.js 20/24 とは別のものです。
   Windowsの実行ラッパーとprocess tree停止にはplatform固有の差があります。
   ESLintは追加せず、strict TypeScript と既存テストで検証します。
 
@@ -1033,9 +1055,9 @@ tag が指すcommit、および承認済みtag manifestを検証します。Rele
 `packages/domain` は純粋な検証、`packages/analysis` は根拠・コンパイラ・
 ファイルシステム、`packages/cli` はコマンドと配置を担当します。
 ビルド出力は `dist/packages/**`。npm パッケージには隠しSkills、プラグイン定義、
-CLI、モジュール、雛形が明示的に含まれます。Core CIはNode 22をLinux、Windows、
-macOSで実行し、LinuxではNode 20/24の互換性も検証します。native adapterと
-formal solverは固定toolchainを使ってLinuxで統合検証します。
+CLI、モジュール、雛形が明示的に含まれます。
+Core CIはNode 24をLinux、Windows、macOSで実行し、Linuxのcompatibility matrixではNode 20とNode 24を検証します。
+native adapterとformal solverは固定toolchainを使ってLinuxで統合検証します。
 `pack:smoke` は実際のtarballを `.test-work/` 内の独立した利用側プロジェクトへ
 導入し、実行ファイル・ESM export・配置を確認してから削除します。
 attestation APIは`musubix3/analysis`と専用`musubix3/attestation` exportの

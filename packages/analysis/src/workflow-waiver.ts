@@ -3,7 +3,8 @@ import { canonicalJson } from './change-waiver.js';
 import { digest, exists, readText, within } from './files.js';
 import {
   workflowEvidenceHead,
-  type WorkflowEvent, type WorkflowManifest,
+  type WorkflowDeclarationBinding, type WorkflowEvent, type WorkflowLedgerInvocation, type WorkflowManifest,
+  type WorkflowReconciliationInstrumentation,
 } from './workflow-types.js';
 
 export const WORKFLOW_WAIVER_PATH = '.musubix/evidence/workflow-waivers.json';
@@ -29,6 +30,127 @@ export type WorkflowWaivableCode = typeof WORKFLOW_WAIVABLE_CODES[number];
  * @design DES-WORKFLOW-EVIDENCE-WAIVER-001
  */
 export const CURRENT_SNAPSHOT_VERSION = 1;
+
+/** @id CODE-WORKFLOW-RESUMED-SESSION-DURABILITY-003
+ * @implements REQ-WORKFLOW-RESUMED-SESSION-DURABILITY-003 REQ-WORKFLOW-EVIDENCE-WAIVER-012 REQ-WORKFLOW-EVIDENCE-WAIVER-014
+ * @design DES-WORKFLOW-RESUMED-SESSION-DURABILITY-004 DES-WORKFLOW-EVIDENCE-WAIVER-010
+ */
+export function snapshotVersionFor(workflow: WorkflowManifest | null): 1 | 2 {
+  if (!workflow || !Object.prototype.hasOwnProperty.call(workflow, 'reconciliation')) return 1;
+  if (!workflow.reconciliation) throw new Error('Workflow reconciliation is invalid.');
+  return 2;
+}
+
+export interface WorkflowReconciliationPass {
+  readonly workflow: WorkflowManifest;
+  readonly canonicalLedger: readonly WorkflowLedgerInvocation[];
+  readonly bindingsByEventIndex: ReadonlyMap<number, WorkflowDeclarationBinding>;
+  readonly invocationsBySkill: ReadonlyMap<string, readonly WorkflowLedgerInvocation[]>;
+  readonly headByEventIndex: Map<number, string>;
+  readonly instrumentation?: WorkflowReconciliationInstrumentation;
+}
+
+/** @id CODE-WORKFLOW-RESUMED-SESSION-DURABILITY-010
+ * @implements REQ-WORKFLOW-RESUMED-SESSION-DURABILITY-002 REQ-WORKFLOW-RESUMED-SESSION-DURABILITY-003
+ * @design DES-WORKFLOW-RESUMED-SESSION-DURABILITY-003 DES-WORKFLOW-RESUMED-SESSION-DURABILITY-004
+ */
+export function computeWorkflowBindings(
+  workflow: WorkflowManifest,
+  invocations: readonly WorkflowLedgerInvocation[],
+  mode: 'compatible' | 'strict',
+  expectedSessionId: string | undefined,
+  skewMs: number,
+): WorkflowDeclarationBinding[] {
+  const bindings: WorkflowDeclarationBinding[] = [];
+  const used = new Set<string>();
+  let previousIndex = -1;
+  for (const [eventIndex, event] of workflow.events.entries()) {
+    if (event.status !== 'completed') continue;
+    const deadline = Date.parse(event.recordedAt) + skewMs;
+    const match = invocations
+      .map((invocation, invocationIndex) => ({ invocation, invocationIndex }))
+      .find(({ invocation, invocationIndex }) =>
+        invocationIndex > previousIndex
+        && !used.has(invocation.toolCallId)
+        && invocation.skill === event.skill
+        && invocation.status === 'completed'
+        && invocation.completedAt !== undefined
+        && Date.parse(invocation.invokedAt) <= deadline
+        && Date.parse(invocation.completedAt) <= deadline
+        && (mode !== 'strict' || invocation.sources.some((source) =>
+          source.mode === 'strict'
+          && (!expectedSessionId || source.sessionId?.toLowerCase() === expectedSessionId))));
+    if (!match) continue;
+    used.add(match.invocation.toolCallId);
+    previousIndex = match.invocationIndex;
+    bindings.push({
+      eventIndex,
+      skill: event.skill,
+      phase: event.phase,
+      recordedAt: event.recordedAt,
+      toolCallId: match.invocation.toolCallId,
+    });
+  }
+  return bindings;
+}
+
+export function createWorkflowReconciliationPass(
+  workflow: WorkflowManifest,
+  instrumentation?: WorkflowReconciliationInstrumentation,
+): WorkflowReconciliationPass {
+  const reconciliation = workflow.reconciliation;
+  if (!reconciliation) throw new Error('Workflow reconciliation is required for a reconciliation pass.');
+  const canonicalLedger = [...reconciliation.invocations];
+  const bindings = computeWorkflowBindings(
+    workflow,
+    canonicalLedger,
+    reconciliation.mode,
+    reconciliation.expectedSessionId,
+    reconciliation.skewMs,
+  );
+  const invocationsBySkill = new Map<string, WorkflowLedgerInvocation[]>();
+  for (const invocation of canonicalLedger) {
+    const candidates = invocationsBySkill.get(invocation.skill) ?? [];
+    candidates.push(invocation);
+    invocationsBySkill.set(invocation.skill, candidates);
+  }
+  instrumentation?.('canonicalLedgerBuild');
+  return {
+    workflow,
+    canonicalLedger,
+    bindingsByEventIndex: new Map(bindings.map((binding) => [binding.eventIndex, binding])),
+    invocationsBySkill,
+    headByEventIndex: new Map(),
+    ...(instrumentation ? { instrumentation } : {}),
+  };
+}
+
+export function workflowScopeEvidenceHeadForPass(
+  pass: WorkflowReconciliationPass,
+  eventIndex: number,
+): string {
+  const cached = pass.headByEventIndex.get(eventIndex);
+  if (cached !== undefined) return cached;
+  const reconciliation = pass.workflow.reconciliation;
+  if (!reconciliation) throw new Error('Workflow reconciliation is required for a scope-local evidence head.');
+  const event = pass.workflow.events[eventIndex];
+  if (!event || event.status !== 'completed') {
+    throw new Error(`Workflow declaration event ${eventIndex} must identify a completed declaration.`);
+  }
+  const deadline = Date.parse(event.recordedAt) + reconciliation.skewMs;
+  const binding = pass.bindingsByEventIndex.get(eventIndex) ?? null;
+  const invocations = (pass.invocationsBySkill.get(event.skill) ?? [])
+    .filter((invocation) => Date.parse(invocation.invokedAt) <= deadline)
+    .map(({ sources: _sources, ...semantic }) => semantic);
+  const head = digest(canonicalJson({ binding, skewMs: reconciliation.skewMs, invocations }));
+  pass.headByEventIndex.set(eventIndex, head);
+  pass.instrumentation?.(`scopeHeadComputed(${eventIndex})`);
+  return head;
+}
+
+export function workflowScopeEvidenceHead(workflow: WorkflowManifest, eventIndex: number): string {
+  return workflowScopeEvidenceHeadForPass(createWorkflowReconciliationPass(workflow), eventIndex);
+}
 
 export interface WorkflowWaiverRecord {
   skill: string;
@@ -119,7 +241,10 @@ export function linkageReason(
  * @design DES-WORKFLOW-EVIDENCE-WAIVER-004 DES-WORKFLOW-EVIDENCE-WAIVER-005 DES-WORKFLOW-EVIDENCE-WAIVER-007
  */
 export function recordStale(record: WorkflowWaiverRecord, index: number, context: WorkflowWaiverContext): boolean {
-  return record.snapshotVersion !== CURRENT_SNAPSHOT_VERSION || record.snapshotHash !== context.currentHash[index];
+  if (!context.loaded) {
+    return record.snapshotVersion !== CURRENT_SNAPSHOT_VERSION || record.snapshotHash !== context.currentHash[index];
+  }
+  return waiverSnapshotState(context, index) === 'stale';
 }
 
 function recoverableScopeFields(record: unknown): Partial<{
@@ -201,6 +326,33 @@ export function waiverChainValid(waivers: unknown[], index: number): boolean {
     && record.payloadSha256 === payloadShaOf(record);
 }
 
+/** @id CODE-WORKFLOW-EVIDENCE-WAIVER-026
+ * @implements REQ-WORKFLOW-EVIDENCE-WAIVER-012
+ * @design DES-WORKFLOW-EVIDENCE-WAIVER-003
+ */
+function waiverChainPrefixValid(waivers: unknown[], index: number): boolean {
+  for (let recordIndex = 0; recordIndex <= index; recordIndex += 1) {
+    const record = waivers[recordIndex];
+    if (!record || typeof record !== 'object' || Array.isArray(record)) return false;
+    const candidate = record as Record<string, unknown>;
+    const predecessor = waivers[recordIndex - 1];
+    const previous = predecessor && typeof predecessor === 'object' && !Array.isArray(predecessor)
+      ? predecessor as Record<string, unknown>
+      : undefined;
+    const expectedPreviousSha256 = recordIndex === 0 ? GENESIS_SHA256 : previous?.payloadSha256;
+    const expectedSequence = recordIndex === 0
+      ? 1
+      : typeof previous?.sequence === 'number' ? previous.sequence + 1 : undefined;
+    const { payloadSha256: _payloadSha256, ...payload } = candidate;
+    if (candidate.previousSha256 !== expectedPreviousSha256
+      || candidate.sequence !== expectedSequence
+      || candidate.payloadSha256 !== digest(canonicalJson(payload))) {
+      return false;
+    }
+  }
+  return true;
+}
+
 /** @id CODE-WORKFLOW-EVIDENCE-WAIVER-007
  * @implements REQ-WORKFLOW-EVIDENCE-WAIVER-005 REQ-WORKFLOW-EVIDENCE-WAIVER-007 REQ-WORKFLOW-EVIDENCE-WAIVER-013
  * @design DES-WORKFLOW-EVIDENCE-WAIVER-003
@@ -249,6 +401,9 @@ export interface WorkflowWaiverContext {
   workflow: WorkflowManifest | null;
   linkage: Array<{ valid: boolean; reason?: string }>;
   currentHash: Array<string | undefined>;
+  currentCode?: Array<WorkflowWaivableCode | null>;
+  suppressed?: boolean;
+  reconciliationPass?: WorkflowReconciliationPass;
 }
 
 /** @id CODE-WORKFLOW-EVIDENCE-WAIVER-010
@@ -259,17 +414,42 @@ export function buildWorkflowWaiverContext(
   loaded: LoadedWorkflowWaiverEvidence | null,
   workflow: WorkflowManifest | null,
   rawDiagnostics: Diagnostic[],
+  reconciliationPass?: WorkflowReconciliationPass,
 ): WorkflowWaiverContext {
   const linkage: Array<{ valid: boolean; reason?: string }> = [];
   const currentHash: Array<string | undefined> = [];
+  const currentCode: Array<WorkflowWaivableCode | null> = [];
+  const suppressed = rawDiagnostics.some((diagnostic) => [
+    'WORKFLOW_INVOCATION_UNVERIFIED',
+    'WORKFLOW_RECONCILIATION_MALFORMED',
+    'WORKFLOW_RECONCILIATION_LIMIT',
+    'WORKFLOW_RECONCILIATION_CONFIG_MISMATCH',
+  ].includes(diagnostic.code));
+  const pass = !suppressed && workflow?.reconciliation
+    ? (reconciliationPass ?? createWorkflowReconciliationPass(workflow))
+    : undefined;
   if (loaded && !loaded.malformed) {
     for (let index = 0; index < loaded.waivers.length; index += 1) {
       const resolved = waiverLinkage(workflow, loaded.waivers, index);
       linkage.push(resolved);
-      currentHash.push(resolved.valid ? snapshotHashFor(workflow, rawDiagnostics, loaded.waivers[index] as WorkflowWaiverRecord) : undefined);
+      const record = loaded.waivers[index] as WorkflowWaiverRecord;
+      currentCode.push(resolved.valid
+        ? currentCodeFor(rawDiagnostics, record.skill, record.phase, record.declarationRecordedAt, record.index)
+        : null);
+      currentHash.push(!suppressed && resolved.valid
+        ? snapshotHashFor(workflow, rawDiagnostics, record, pass)
+        : undefined);
     }
   }
-  return { loaded, workflow, linkage, currentHash };
+  return {
+    loaded,
+    workflow,
+    linkage,
+    currentHash,
+    currentCode,
+    suppressed,
+    ...(pass ? { reconciliationPass: pass } : {}),
+  };
 }
 
 export function authoritativeIndex(
@@ -305,10 +485,11 @@ export function snapshotPayload(
   declarationRecordedAt: string,
   index: number | undefined,
   code: WorkflowWaivableCode | null,
+  reconciliationPass?: WorkflowReconciliationPass,
 ): unknown {
   const event = resolveEvent(workflow, skill, phase, declarationRecordedAt, index);
   if (!event) throw new Error(`snapshotPayload: ${scopeLabel(skill, phase, declarationRecordedAt, index)} does not resolve to a declaration event.`);
-  return {
+  const common = {
     skill: event.skill,
     phase: event.phase,
     status: event.status,
@@ -316,9 +497,25 @@ export function snapshotPayload(
     version: event.version,
     commandSha256: event.commandSha256 ?? null,
     index: index ?? null,
-    workflowEvidenceHead: workflowEvidenceHead(workflow),
-    code,
   };
+  return snapshotVersionFor(workflow) === 1
+    ? { ...common, workflowEvidenceHead: workflowEvidenceHead(workflow), code }
+    : {
+        ...common,
+        workflowScopeEvidenceHead: workflowScopeEvidenceHeadForPass(
+          reconciliationPass ?? (() => {
+            throw new Error('Workflow reconciliation is required for a reconciliation pass.');
+          })(),
+          resolveEventIndex(workflow!, event),
+        ),
+        code,
+      };
+}
+
+export function resolveEventIndex(workflow: WorkflowManifest, event: WorkflowEvent): number {
+  const index = workflow.events.indexOf(event);
+  if (index < 0) throw new Error('Workflow declaration event is not part of the manifest.');
+  return index;
 }
 
 /** @id CODE-WORKFLOW-EVIDENCE-WAIVER-012
@@ -346,6 +543,7 @@ export function snapshotHashFor(
   workflow: WorkflowManifest | null,
   rawDiagnostics: Diagnostic[],
   record: WorkflowWaiverRecord,
+  reconciliationPass?: WorkflowReconciliationPass,
 ): string {
   return digest(canonicalJson(snapshotPayload(
     workflow,
@@ -354,7 +552,29 @@ export function snapshotHashFor(
     record.declarationRecordedAt,
     record.index,
     currentCodeFor(rawDiagnostics, record.skill, record.phase, record.declarationRecordedAt, record.index),
+    reconciliationPass,
   )));
+}
+
+export function waiverSnapshotState(
+  context: WorkflowWaiverContext,
+  index: number,
+): 'suppressed' | 'current' | 'stale' {
+  if (context.suppressed) return 'suppressed';
+  const loaded = context.loaded;
+  if (!loaded || loaded.malformed || !waiverRecordShapeValid(loaded.waivers[index])) return 'stale';
+  const record = loaded.waivers[index];
+  if (record.snapshotVersion === 1 && context.workflow?.reconciliation) {
+    const code = context.currentCode?.[index] ?? null;
+    return waiverChainPrefixValid(loaded.waivers, index)
+      && (code === record.code || code === null)
+      ? 'current'
+      : 'stale';
+  }
+  return record.snapshotVersion === snapshotVersionFor(context.workflow)
+    && record.snapshotHash === context.currentHash[index]
+    ? 'current'
+    : 'stale';
 }
 
 /** @id CODE-WORKFLOW-EVIDENCE-WAIVER-013
@@ -362,6 +582,7 @@ export function snapshotHashFor(
  * @design DES-WORKFLOW-EVIDENCE-WAIVER-005
  */
 export function waivedWorkflowDiagnostic(context: WorkflowWaiverContext, diagnostic: Diagnostic): Diagnostic {
+  if (context.suppressed) return diagnostic;
   if (!(WORKFLOW_WAIVABLE_CODES as readonly string[]).includes(diagnostic.code) && diagnostic.code !== 'WORKFLOW_BINDING_MISSING') {
     return diagnostic;
   }
@@ -424,7 +645,7 @@ export function deriveWorkflowWaiverAudit(context: WorkflowWaiverContext): {
     approver: string;
     reason: string;
     waiverRecordedAt: string;
-  }> = [];
+  } & { authoritativePosition: number }> = [];
   const workflowWaiverDiagnostics: Diagnostic[] = [];
   const groupsSeen = new Set<string>();
   for (let index = 0; index < loaded.waivers.length; index += 1) {
@@ -442,6 +663,7 @@ export function deriveWorkflowWaiverAudit(context: WorkflowWaiverContext): {
       });
       continue;
     }
+    if (context.suppressed) continue;
     const typedRecord = record as WorkflowWaiverRecord;
     const key = scopeKey(typedRecord.skill, typedRecord.phase, typedRecord.declarationRecordedAt, typedRecord.index);
     if (groupsSeen.has(key)) continue;
@@ -456,13 +678,26 @@ export function deriveWorkflowWaiverAudit(context: WorkflowWaiverContext): {
     if (authoritative === -1 || !waiverRecordShapeValid(loaded.waivers[authoritative])) continue;
     const authoritativeRecord = loaded.waivers[authoritative];
     if (recordStale(authoritativeRecord, authoritative, context)) {
+      const resolved = context.currentCode?.[authoritative] === null;
       workflowWaiverDiagnostics.push({
-        ...error('WORKFLOW_WAIVER_STALE', `Workflow waiver for ${scopeLabel(
-          authoritativeRecord.skill,
-          authoritativeRecord.phase,
-          authoritativeRecord.declarationRecordedAt,
-          authoritativeRecord.index,
-        )} is stale.`, WORKFLOW_WAIVER_PATH),
+        ...(resolved
+          ? {
+              code: 'WORKFLOW_WAIVER_STALE',
+              severity: 'warning' as const,
+              message: `Workflow waiver for ${scopeLabel(
+                authoritativeRecord.skill,
+                authoritativeRecord.phase,
+                authoritativeRecord.declarationRecordedAt,
+                authoritativeRecord.index,
+              )} is stale because the waived condition is resolved; a replacement waiver is not required.`,
+              path: WORKFLOW_WAIVER_PATH,
+            }
+          : error('WORKFLOW_WAIVER_STALE', `Workflow waiver for ${scopeLabel(
+              authoritativeRecord.skill,
+              authoritativeRecord.phase,
+              authoritativeRecord.declarationRecordedAt,
+              authoritativeRecord.index,
+            )} is stale.`, WORKFLOW_WAIVER_PATH)),
         skill: authoritativeRecord.skill,
         phase: authoritativeRecord.phase,
         declarationRecordedAt: authoritativeRecord.declarationRecordedAt,
@@ -470,6 +705,7 @@ export function deriveWorkflowWaiverAudit(context: WorkflowWaiverContext): {
       });
       continue;
     }
+    if (context.currentCode?.[authoritative] !== authoritativeRecord.code) continue;
     workflowWaivers.push({
       skill: authoritativeRecord.skill,
       phase: authoritativeRecord.phase,
@@ -479,7 +715,12 @@ export function deriveWorkflowWaiverAudit(context: WorkflowWaiverContext): {
       approver: authoritativeRecord.approver,
       reason: authoritativeRecord.reason,
       waiverRecordedAt: authoritativeRecord.waiverRecordedAt,
+      authoritativePosition: authoritative,
     });
   }
-  return { workflowWaivers, workflowWaiverDiagnostics };
+  workflowWaivers.sort((left, right) => left.authoritativePosition - right.authoritativePosition);
+  return {
+    workflowWaivers: workflowWaivers.map(({ authoritativePosition: _authoritativePosition, ...waiver }) => waiver),
+    workflowWaiverDiagnostics,
+  };
 }

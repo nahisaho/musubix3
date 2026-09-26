@@ -144,7 +144,7 @@ function checkEvidence() {
 }
 
 /** @id CODE-NPM-AUDIT-REMEDIATION-002
- * @implements REQ-NPM-AUDIT-REMEDIATION-002 REQ-NPM-AUDIT-REMEDIATION-003
+ * @implements REQ-NPM-AUDIT-REMEDIATION-002 REQ-NPM-AUDIT-REMEDIATION-003 REQ-GITHUB-ACTIONS-PROJECT-NODE24-001
  * @design DES-NPM-AUDIT-REMEDIATION-002
  */
 function checkLock() {
@@ -242,7 +242,7 @@ function checkLock() {
   }
   if (vitestRecords.some(({ value }) =>
     value?.engines?.node !== '^20.0.0 || ^22.0.0 || >=24.0.0')) {
-    diagnostics.push(diagnostic('LOCK_ENGINE', 'Resolved Vitest must support CI Node.js 20, 22, and 24.', lockPath));
+    diagnostics.push(diagnostic('LOCK_ENGINE', 'Resolved Vitest must support the active CI Node.js 20 and 24 lines.', lockPath));
   }
   const viteRecords = packageRecords(lock.packages, 'vite');
   if (!viteRecords.length) {
@@ -307,8 +307,8 @@ function checkLock() {
   ];
   const compatibilityMatrix = jobs['node-compatibility']?.strategy?.matrix?.node;
   if (requiredJobs.some((job) => Object.hasOwn(job ?? {}, 'continue-on-error'))
-    || !hasSetupNode(jobs['core-portability'], 22)
-    || JSON.stringify(setupNodeVersions(jobs['core-portability'])) !== JSON.stringify(['22'])
+    || !hasSetupNode(jobs['core-portability'], 24)
+    || JSON.stringify(setupNodeVersions(jobs['core-portability'])) !== JSON.stringify(['24'])
     || !hasRun(jobs['core-portability'], 'npm test')
     || runCount(jobs['core-portability'], 'npm test') !== 1
     || JSON.stringify(compatibilityMatrix) !== JSON.stringify([20, 24])

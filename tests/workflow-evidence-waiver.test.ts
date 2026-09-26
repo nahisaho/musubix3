@@ -12,6 +12,7 @@ import {
   canonicalJson,
   CURRENT_SNAPSHOT_VERSION,
   currentCodeFor,
+  deriveWorkflowWaiverAudit,
   digest,
   loadWorkflow,
   loadWorkflowWaiverEvidence,
@@ -25,6 +26,7 @@ import {
   snapshotPayload,
   validateLoadedWorkflow,
   validateWorkflow,
+  verifyWorkflowLog,
   waiverChainValid,
   waiverLinkage,
   waiverRecordShapeValid,
@@ -505,7 +507,12 @@ it('TEST-WORKFLOW-EVIDENCE-WAIVER-012 keeps stale workflow-waiver audit visible 
   ], 'resolved');
   const resolvedGate = await runGate(resolvedRoot);
   expect(resolvedGate.checks.find((check) => check.name === 'workflow')).toMatchObject({ status: 'pass' });
-  expect(findDiagnostics(resolvedGate.waiverDiagnostics, 'WORKFLOW_WAIVER_STALE')).toHaveLength(1);
+  expect(findDiagnostics(resolvedGate.waiverDiagnostics, 'WORKFLOW_WAIVER_STALE')).toEqual([
+    expect.objectContaining({
+      severity: 'warning',
+      message: expect.stringContaining('replacement waiver is not required'),
+    }),
+  ]);
 });
 
 /** @id TEST-WORKFLOW-EVIDENCE-WAIVER-013
@@ -591,6 +598,71 @@ it('TEST-WORKFLOW-EVIDENCE-WAIVER-014 evaluates current, version-stale, and hash
   expect(recordStale({ ...record, snapshotHash: 'c'.repeat(64) }, 0, context)).toBe(true);
 });
 
+/** @id TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-003
+ * @verifies REQ-WORKFLOW-RESUMED-SESSION-DURABILITY-003 REQ-WORKFLOW-RESUMED-SESSION-DURABILITY-004 REQ-WORKFLOW-RESUMED-SESSION-DURABILITY-005
+ */
+it('TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-003 migrates a linked v1 waiver and suppresses malformed reconciliation', async () => {
+  const root = await project();
+  const event = completedDeclaration('sdd-change', 'complete', declarationOneAt);
+  await writeWorkflowEvidence(root, [event], [invocation('other-skill', 'legacy-call', '2020-01-01T00:00:01.000Z', 'completed', '2020-01-01T00:00:02.000Z')]);
+  await recordWorkflowWaiver(root, 'WORKFLOW_SKILL_NOT_INVOKED', 'sdd-change', 'complete', declarationOneAt, undefined, 'nahisaho', 'legacy review');
+
+  const transcript = [
+    {
+      type: 'tool.execution_start',
+      timestamp: '2020-01-02T00:00:01.000Z',
+      data: { toolCallId: 'new-call', toolName: 'skill', arguments: { skill: 'other-skill' } },
+    },
+    {
+      type: 'tool.execution_complete',
+      timestamp: '2020-01-02T00:00:02.000Z',
+      data: { toolCallId: 'new-call', success: true },
+    },
+  ].map((entry) => JSON.stringify(entry)).join('\n');
+  await verifyWorkflowLog(root, transcript, { mode: 'compatible' });
+
+  const migrated = JSON.parse(await readText(root, '.musubix/evidence/workflow-waivers.json'));
+  expect(migrated.waivers).toHaveLength(2);
+  expect(migrated.waivers[1]).toMatchObject({ snapshotVersion: 2, approver: 'nahisaho', reason: 'legacy review' });
+  expect(await activeWorkflowWaivers(root)).toHaveLength(1);
+
+  const malformed = await loadWorkflow(root) as WorkflowManifest;
+  await writeJson(root, '.musubix/evidence/workflow.json', { ...malformed, reconciliation: null });
+  expect((await validateWorkflow(root)).diagnostics)
+    .toContainEqual(expect.objectContaining({ code: 'WORKFLOW_RECONCILIATION_MALFORMED' }));
+  expect(await activeWorkflowWaivers(root)).toEqual([]);
+});
+
+/** @id TEST-WORKFLOW-EVIDENCE-WAIVER-015
+ * @verifies REQ-WORKFLOW-EVIDENCE-WAIVER-008 REQ-WORKFLOW-EVIDENCE-WAIVER-012 REQ-WORKFLOW-RESUMED-SESSION-DURABILITY-004
+ */
+it('TEST-WORKFLOW-EVIDENCE-WAIVER-015 preserves malformed waiver audit and rejects recording while reconciliation suppresses scope evaluation', async () => {
+  const auditRoot = await project();
+  await writeUnverifiedWorkflow(auditRoot, [completedDeclaration('sdd-change', 'complete', declarationOneAt)]);
+  await writeJson(auditRoot, '.musubix/evidence/workflow-waivers.json', { schemaVersion: 1, waivers: [{}] });
+  expect(await workflowWaiverEvidenceDiagnostics(auditRoot)).toContainEqual(expect.objectContaining({
+    code: 'WORKFLOW_WAIVER_EVIDENCE_MALFORMED',
+  }));
+
+  const recordRoot = await project();
+  const event = completedDeclaration('sdd-change', 'complete', declarationOneAt);
+  await writeWorkflowEvidence(recordRoot, [event], [
+    invocation('other-skill', 'call-1', '2020-01-01T00:00:01.000Z', 'completed', '2020-01-01T00:00:02.000Z'),
+  ]);
+  const malformed = await loadWorkflow(recordRoot) as WorkflowManifest;
+  await writeJson(recordRoot, '.musubix/evidence/workflow.json', { ...malformed, reconciliation: null });
+  await expect(recordWorkflowWaiver(
+    recordRoot,
+    'WORKFLOW_SKILL_NOT_INVOKED',
+    'sdd-change',
+    'complete',
+    declarationOneAt,
+    undefined,
+    'nahisaho',
+    'must reject global blocker',
+  )).rejects.toThrow(/WORKFLOW_RECONCILIATION_MALFORMED/);
+});
+
 /** @id TEST-WORKFLOW-EVIDENCE-WAIVER-009
  * @verifies REQ-WORKFLOW-EVIDENCE-WAIVER-001 REQ-WORKFLOW-EVIDENCE-WAIVER-010 REQ-WORKFLOW-EVIDENCE-WAIVER-016
  */
@@ -607,6 +679,97 @@ it('TEST-WORKFLOW-EVIDENCE-WAIVER-009 never waives tool-call-scoped reuse diagno
   expect(currentCodeFor(workflow.diagnostics, 'sdd-change', 'complete', declarationOneAt, undefined)).toBe(null);
   await expect(recordWorkflowWaiver(root, 'WORKFLOW_INVOCATION_REUSED', 'sdd-change', 'complete', declarationOneAt, undefined, 'nahisaho', 'wrong flavor'))
     .rejects.toThrow(/No matching WORKFLOW_INVOCATION_REUSED diagnostic is currently reported/);
+});
+
+/** @id TEST-WORKFLOW-EVIDENCE-WAIVER-016
+ * @verifies REQ-WORKFLOW-EVIDENCE-WAIVER-012
+ */
+it('TEST-WORKFLOW-EVIDENCE-WAIVER-016 rejects migration-compatible v1 records with corrupt prefixes and orders active scopes by authoritative position', () => {
+  const createRecord = (
+    skill: string,
+    declarationRecordedAt: string,
+    reason: string,
+    sequence: number,
+    previousSha256: string,
+  ): WorkflowWaiverRecord => {
+    const record = {
+      skill,
+      phase: 'complete',
+      declarationRecordedAt,
+      code: 'WORKFLOW_SKILL_NOT_INVOKED' as const,
+      approver: 'nahisaho',
+      reason,
+      waiverRecordedAt: `2020-01-01T00:01:0${sequence}.000Z`,
+      sequence,
+      snapshotVersion: 1,
+      snapshotHash: `${sequence}`.repeat(64),
+      previousSha256,
+      payloadSha256: '',
+    };
+    return { ...record, payloadSha256: payloadShaOf(record) };
+  };
+
+  const corruptPredecessor = createRecord('sdd-change', declarationOneAt, 'corrupt predecessor', 1, 'f'.repeat(64));
+  const migrationCandidate = createRecord(
+    'sdd-design',
+    declarationTwoAt,
+    'migration candidate',
+    2,
+    corruptPredecessor.payloadSha256,
+  );
+  expect(recordStale(migrationCandidate, 1, {
+    loaded: { schemaVersion: 1, waivers: [corruptPredecessor, migrationCandidate], malformed: false },
+    workflow: {
+      schemaVersion: 1,
+      events: [],
+      reconciliation: {} as NonNullable<WorkflowManifest['reconciliation']>,
+    },
+    linkage: [{ valid: false }, { valid: true }],
+    currentHash: [undefined, undefined],
+    currentCode: [null, migrationCandidate.code],
+  })).toBe(true);
+
+  const firstA = createRecord('sdd-change', declarationOneAt, 'superseded A', 1, '0'.repeat(64));
+  const activeB = createRecord('sdd-design', declarationTwoAt, 'active B', 2, firstA.payloadSha256);
+  const activeA = createRecord('sdd-change', declarationOneAt, 'active A', 3, activeB.payloadSha256);
+  const ordered = deriveWorkflowWaiverAudit({
+    loaded: { schemaVersion: 1, waivers: [firstA, activeB, activeA], malformed: false },
+    workflow: null,
+    linkage: [{ valid: true }, { valid: true }, { valid: true }],
+    currentHash: [firstA.snapshotHash, activeB.snapshotHash, activeA.snapshotHash],
+    currentCode: [firstA.code, activeB.code, activeA.code],
+  });
+  expect(ordered.workflowWaivers.map((waiver) => waiver.reason)).toEqual(['active B', 'active A']);
+});
+
+/** @id TEST-WORKFLOW-EVIDENCE-WAIVER-017
+ * @verifies REQ-WORKFLOW-EVIDENCE-WAIVER-014
+ */
+it('TEST-WORKFLOW-EVIDENCE-WAIVER-017 excludes current waiver snapshots whose scoped reason is resolved', () => {
+  const draft = {
+    skill: 'sdd-change',
+    phase: 'complete',
+    declarationRecordedAt: declarationOneAt,
+    code: 'WORKFLOW_SKILL_NOT_INVOKED' as const,
+    approver: 'nahisaho',
+    reason: 'resolved residual',
+    waiverRecordedAt: declarationTwoAt,
+    sequence: 1,
+    snapshotVersion: 1,
+    snapshotHash: 'a'.repeat(64),
+    previousSha256: '0'.repeat(64),
+    payloadSha256: '',
+  };
+  const record = { ...draft, payloadSha256: payloadShaOf(draft) };
+  const audit = deriveWorkflowWaiverAudit({
+    loaded: { schemaVersion: 1, waivers: [record], malformed: false },
+    workflow: null,
+    linkage: [{ valid: true }],
+    currentHash: [record.snapshotHash],
+    currentCode: [null],
+  });
+  expect(audit.workflowWaivers).toEqual([]);
+  expect(audit.workflowWaiverDiagnostics).toEqual([]);
 });
 
 /** @id TEST-WORKFLOW-EVIDENCE-WAIVER-010

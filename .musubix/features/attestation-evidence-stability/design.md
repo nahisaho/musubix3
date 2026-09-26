@@ -12,11 +12,9 @@ implementation only. DES-003 documents REQ-004. Every other
 `collectEvidenceHeads` entry is already narrowly-projected and stable
 across the no-op re-runs this fix targets (this is already satisfied by
 the existing code for every entry except `mutation`, per the requirements
-investigation); `workflow`'s `invocations` array is stored/retained in
-recorded order rather than canonically sorted, but this does not affect
-the no-op re-run scenario REQ-001/003 target, since a true no-op re-run
-does not append or reorder invocation records. No further per-entry fix is
-needed.
+investigation); CHANGE-0048 adds durable reconciliation to the `workflow` head through
+DES-ATTESTATION-EVIDENCE-STABILITY-005; legacy workflow evidence keeps its
+old digest.
 DES-004 adds the permanent three-mode regression test that REQ-001's
 acceptance criteria require to prove this for `full`, `--changed`, and
 `--feature` modes going forward, rather than relying on this design's
@@ -121,14 +119,17 @@ enough to match `packages/analysis/src/attestation.ts`'s
 `tdd`: the last entry's `recordSha256` from `.musubix/evidence/tdd.json`'s
 hash chain (not a projection over every recorded phase field); `workflow`:
 `workflowEvidenceHead`'s projection of `.musubix/evidence/workflow.json`'s
-`verification` block only (`eventsSha256`, `sourceSha256`,
+`verification` block (`eventsSha256`, `sourceSha256`,
 `transcriptSha256`, `mode`, `sessionId`, `exitCode`, `terminalAt`,
 `eventCount`, `sourceBytes`, `maxTranscriptBytes`, `maximumLineBytes`,
 `maxTranscriptLineBytes`, and `invocations` (each entry's
 `skill`/`toolCallId`/`invokedAt`/`completedAt`/`status`, unsorted/
 order-sensitive as stored), or just `eventsSha256`/`sourceSha256` when
 `mode`/`transcriptSha256`/`sessionId` are all absent), excluding the raw
-`events` log itself;
+`events` log itself, plus, when present, reconciliation `schemaVersion`,
+`mode`, optional `expectedSessionId`, `skewMs`, `ledgerSha256`,
+and `bindingsSha256`; reconciliation
+remains included with an explicit null verification projection;
 `changes`: a canonical digest of `.musubix/evidence/changes.json`'s
 `changes` array directly (not the `.musubix/changes/*.md` documents
 themselves, which are a separate upstream input to that evidence); `order`:
@@ -184,6 +185,14 @@ excluded one; point to `packages/analysis/src/attestation.ts`'s
 `collectEvidenceHeads` for the authoritative implementation.
 Requirements: REQ-ATTESTATION-EVIDENCE-STABILITY-004
 ADRs: none — documentation-only addition; no new architectural decision.
+
+## DES-ATTESTATION-EVIDENCE-STABILITY-005: Durable workflow reconciliation projection
+Responsibilities: Update `workflowEvidenceHead` per DES-WORKFLOW-RESUMED-SESSION-DURABILITY-006, preserving the exact legacy digest with the existing private canonicalizer when reconciliation is absent and importing exported `canonicalJson` from `change-waiver.ts` for `canonicalJson({ verification, reconciliation })` when present. Add regression tests for full, legacy-short, absent-verification, and field-difference cases.
+Interfaces: `workflowEvidenceHead` signature unchanged; `collectEvidenceHeads` continues delegating to it.
+Constraints: Embed only the six reconciliation digest/config keys, never the full ledger or bindings arrays. For valid reconciliation, preserve their exact values. For any present malformed value (null, array, primitive, or object), keep the five required keys with explicit `null` for missing/wrong-typed values; omit `expectedSessionId` unless it is a valid string, while the independent workflow diagnostic remains fail-closed. This structural non-throwing projection ensures attestation collection still completes and malformed evidence changes the head. Reconciliation must remain attested when verification is null.
+Depends-On: DES-WORKFLOW-RESUMED-SESSION-DURABILITY-001
+Requirements: REQ-WORKFLOW-RESUMED-SESSION-DURABILITY-006, REQ-ATTESTATION-EVIDENCE-STABILITY-004
+ADRs: ADR-0041
 
 ## DES-ATTESTATION-EVIDENCE-STABILITY-004: Three-mode evidence-head stability regression test for REQ-001
 Responsibilities: Add a permanent test proving all ten

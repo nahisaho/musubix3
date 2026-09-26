@@ -413,12 +413,12 @@ validation/gate or requested solver failure, **2** usage, I/O or malformed confi
 | `mutation validate` | Revalidate requirement-scoped schema-v1 killed-mutant evidence |
 | `mutation identity <REQ-ID> <TEST-ID> <sourcePath> <operator> <line> <column>` | Print the deterministic `MUT-*` identity a mutation report must declare |
 | `tdd validate` | Validate persisted Red/Green/Refactor order, fingerprints, durations, and hash-chain evidence |
-| `tdd red\|green\|refactor <TEST-ID> --requirement <REQ-ID> --command <name>` | Execute and record a verified TDD phase. Recording the project's **first** `tdd` cycle (any `red` call while `.musubix/evidence/tdd.json` has zero cycles) makes `gate`'s `tdd` check required **project-wide**, for every mandatory requirement, not just the ones touched by the current change; each uncovered requirement then surfaces as `TDD_REQUIREMENT_UNCOVERED`. `approval record release` always runs the full (non-`--changed`) gate, so it is blocked by any resulting `TDD_REQUIREMENT_UNCOVERED` diagnostics. `tdd migrate` cannot be used to bulk-onboard previously-uncovered requirements: it only re-fingerprints a requirement that already has a valid Green cycle. `tdd red` prints/returns a `TDD_ADOPTION_PROJECT_WIDE` warning (in a `warnings` array, separate from `diagnostics`) the moment this first cycle is persisted, listing every other still-uncovered mandatory requirement. |
+| `tdd red\|green\|refactor <TEST-ID> --requirement <REQ-ID> --command <name>` | Execute and record a verified TDD phase. Each invocation accepts exactly one requirement; when one test verifies multiple requirements, run a separate Red/Green cycle for each requirement. This differs from variadic `change-record --requirement <REQ-ID...>`, which accepts a requirement batch. Recording the project's **first** `tdd` cycle (any `red` call while `.musubix/evidence/tdd.json` has zero cycles) makes `gate`'s `tdd` check required **project-wide**, for every mandatory requirement, not just the ones touched by the current change; each uncovered requirement then surfaces as `TDD_REQUIREMENT_UNCOVERED`. `approval record release` always runs the full (non-`--changed`) gate, so it is blocked by any resulting `TDD_REQUIREMENT_UNCOVERED` diagnostics. `tdd migrate` cannot be used to bulk-onboard previously-uncovered requirements: it only re-fingerprints a requirement that already has a valid Green cycle. `tdd red` prints/returns a `TDD_ADOPTION_PROJECT_WIDE` warning (in a `warnings` array, separate from `diagnostics`) the moment this first cycle is persisted, listing every other still-uncovered mandatory requirement. |
 | `workflow-record <skill> <phase> --status <status>` | Record a compact self-reported workflow declaration |
 | `workflow waiver record <code> --skill <skill> --phase <phase> --recorded-at <timestamp> [--index <n>] --approver <name> --reason <text> --confirm` | Record an audited, bounded downgrade of one declaration-scoped workflow reconciliation diagnostic (`WORKFLOW_SKILL_NOT_INVOKED`, `WORKFLOW_INVOCATION_ORDER`, `WORKFLOW_INVOCATION_INCOMPLETE`, `WORKFLOW_INVOCATION_FAILED`, or `WORKFLOW_INVOCATION_REUSED`) to a non-blocking waived status; a paired `WORKFLOW_BINDING_MISSING` diagnostic sharing the same declaration scope is downgraded together with it. It cannot waive `WORKFLOW_INVOCATION_UNVERIFIED`, which only `workflow-verify` having actually run this session can resolve |
 | `workflow waiver record-all --approver <name> --reason <text> --confirm` | Bulk variant of `workflow waiver record`: waives every currently-outstanding waivable declaration-scoped diagnostic across the whole reconciliation report in one all-or-nothing call, instead of one `record` invocation per diagnostic. Rejects (recording nothing) if any bulk waiver precondition fails first — malformed waiver evidence, an invalid waiver chain, a blank `--approver`/`--reason`, or a `WORKFLOW_INVOCATION_UNVERIFIED` diagnostic (which `workflow-verify` must resolve first; no per-declaration or bulk waiver can substitute for `workflow-verify` never having run). Each waived declaration-scoped diagnostic's paired `WORKFLOW_BINDING_MISSING` is downgraded together with it, identically to the existing single-record command. With zero remaining candidates (already waived, or none present) it succeeds idempotently and records nothing |
 | `workflow-sanitize <copilot.jsonl> <output-file> [--session-id <uuid>]` | Remove messages and non-Skill tool data before review or strict verification |
-| `workflow-verify <copilot.jsonl...> [--strict] [--session-id <uuid>]` | Reconcile Skill events; compatible mode accepts multiple transcript files (concatenated in chronological session order) so declarations whose invocation occurred in an earlier Copilot CLI session can be reconciled; `--strict`/`--session-id` still require exactly one file |
+| `workflow-verify <copilot.jsonl...> [--strict] [--session-id <uuid>] [--reset-ledger --confirm]` | Merge Skill events into durable reconciliation. Compatible mode accepts multiple files in deterministic chronological order; strict evidence and configured session anchors remain sticky. Confirmed reset destructively rebuilds only the ledger/bindings from the supplied transcript. Conflicts, malformed/config-mismatched evidence, or durable limits fail closed. |
 | `attestation oidc-audience --key-id <id> [--public-key-file <pem>]` | Derive the GitHub custom audience that authorizes a signing key |
 | `attestation payload --provider <name> --run-id <id> --key-id <id> [--public-key-file <pem>] [--github-oidc-token-file <jwt>]` | Emit canonical unsigned CI payload for external signing |
 | `attestation verify` | Verify static-key or GitHub OIDC-authorized Ed25519 provenance |
@@ -920,8 +920,38 @@ Quality evidence records required flags, actual exits/output, metrics,
 timestamps and input fingerprints. Changed-run paths, HEAD and impacts survive a
 later full gate. `workflow-record` stores a self-reported Skill/phase/status and
 optional command SHA-256 without storing command text. `workflow-verify` imports
-only Skill invocation metadata from a Copilot JSONL log and binds every completed
-declaration one-to-one, in order, to a distinct completed successful tool call.
+only Skill invocation metadata from Copilot JSONL and merges it into
+`.musubix/evidence/workflow.json`'s durable reconciliation ledger, so later
+sessions do not need earlier transcripts again. Ledger strictness and configured
+session anchors are sticky; `--reset-ledger --confirm` is the only relaxation or
+replacement path. Distinct provenance grows monotonically within the documented
+`workflowReconciliationLimits` of 10,000-invocation, 50,000-source, and
+16 MiB limits. Version-1 workflow waivers
+are migrated automatically to scope-local version 2 when linkage is valid and
+the declaration reason is unchanged or resolved. Unsafe waiver evidence returns
+`WORKFLOW_WAIVER_MIGRATION_SKIPPED` after reconciliation is committed; a
+post-reconciliation waiver write failure throws
+`WORKFLOW_WAIVER_MIGRATION_WRITE_FAILED` while leaving migration pending.
+Repair the waiver evidence and rerun a persisting `workflow-verify` to retry it.
+A successful persisting verification repairs a changed `skewMs`, monotonically
+tightens compatible ledger mode to strict, and adds a newly configured session
+anchor. It cannot replace a different existing `expectedSessionId`, relax a
+strict ledger to compatible, or honor an explicitly compatible persisting API
+request under strict configuration; those cases require a confirmed reset or
+fail with `WORKFLOW_RECONCILIATION_CONFIG_MISMATCH`. Persisted strict evidence
+remains valid under compatible configuration. Changing `maxEventSkewMs` first
+suppresses scope-local waiver evaluation with that config mismatch; after the
+next successful persisting verification rewrites `skewMs`, affected version-2
+waivers become stale while pending trusted version-1 waivers migrate to current
+version-2 successors. Tightening compatible evidence to strict can therefore
+require new residual review when historical strict transcripts are unavailable.
+Configuration mismatch blocks both `workflow waiver record` and `record-all`.
+Operator-visible fail-closed codes are
+`WORKFLOW_INVOCATION_CONFLICT`, `WORKFLOW_RECONCILIATION_MALFORMED`,
+`WORKFLOW_RECONCILIATION_LIMIT`, `WORKFLOW_RECONCILIATION_CONFIG_MISMATCH`, and
+`WORKFLOW_RECONCILIATION_RESET_CONFIRMATION_REQUIRED`. Attestation projects
+reconciliation configuration plus `ledgerSha256` and `bindingsSha256`, never
+the full ledger arrays.
 Use `workflow-sanitize` first when the source transcript contains messages,
 non-Skill tool arguments, or output that should not enter review evidence.
 Each Skill invocation must therefore record exactly one final workflow outcome;
@@ -1159,8 +1189,8 @@ transcript/session fields into the Ed25519 signature.
   cover at most 100 commits/30 files per commit; they indicate correlation and
   contribution, not causality or expertise. No Git history is explicitly skipped.
   Indexing is local; nothing is sent to a service.
-- Core CI covers Node 22 on Linux, Windows, and macOS, with additional Node 20
-  and Node 24 Linux compatibility checks. Native adapters and formal solvers run
+- Core CI covers Node 24 on Linux, Windows, and macOS, while the Linux compatibility matrix tests Node 20 and Node 24.
+  Native adapters and formal solvers run
   once on Linux with pinned toolchains.
 - **GitHub-hosted runner policy:** the portability matrix intentionally uses
   `ubuntu-latest`, `windows-latest`, and `macos-latest`; every other CI job and
@@ -1168,8 +1198,8 @@ transcript/session fields into the Ed25519 signature.
   floating GitHub-hosted labels, not pinned images. When the selected hosted
   runner image changes, revalidate toolchain installation, typecheck, build,
   tests, package checks, release preparation, provenance, and publication
-  controls. The actions' Node.js 24 implementation runtime is independent of
-  the Node.js 20/22/24 versions tested for this package.
+  controls.
+  The actions' Node.js 24 implementation runtime is independent of the Node.js 20/24 versions tested for this package.
   No formatting/lint framework is bundled; strict TypeScript and tests are used.
 
 ## Development and release checks
@@ -1224,9 +1254,9 @@ ref selector and enter that identical tag as `release_tag`.
 Workspaces: `packages/domain` (pure validators), `packages/analysis` (evidence,
 compiler and filesystem services), `packages/cli` (thin command/installation layer).
 One build emits `dist/packages/**`. Published contents explicitly include hidden
-skills, native manifests, built CLI/modules and assets. Core CI runs on Node 22
-across Linux, Windows, and macOS, with additional Node 20 and Node 24 compatibility
-checks on Linux. Native adapter and formal-solver integrations run on Linux with
+skills, native manifests, built CLI/modules and assets.
+Core CI runs on Node 24 across Linux, Windows, and macOS, while the Linux compatibility matrix tests Node 20 and Node 24.
+Native adapter and formal-solver integrations run on Linux with
 pinned toolchains. Tests cover unit behavior, CLI exits, installer preservation,
 and packaging.
 `pack:smoke` installs the real tarball into an isolated `.test-work/` consumer,

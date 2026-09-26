@@ -35,3 +35,10 @@ Type: functional
 Pattern: ubiquitous
 Statement: The system shall continue to require every design component to reference at least one valid ADR or declare a valid "none" exemption, rejecting a component whose ADRs field is empty, unrecognized, or references only unknown/invalid ADR IDs.
 Acceptance: Given a `DES-*` component with an empty `ADRs` field, `design validate` still reports `DES_ADR` exactly as before this change. Given a component whose `ADRs` field references only an ADR ID absent from the known ADR set, `design validate` still reports `DES_ADR_LINK` exactly as before this change.
+
+## REQ-DESIGN-ADR-NONE-EXEMPTION-004: Apply valid ADR exemptions consistently to change completeness
+Priority: must
+Type: functional
+Pattern: event-driven
+Statement: When change completeness evaluates a requirement, the system shall consider the requirement to have ADR evidence when at least one satisfying design component that explicitly lists the requirement has either a traced valid ADR or an explicit ADR exemption accepted by design validation.
+Acceptance: Given a traced requirement explicitly listed by a concrete satisfying `DES-*` component whose ADRs field is `none — this local validation correction preserves the existing architecture`, change completeness reports no `CHANGE_COMPLETENESS_ADR`; the same remains true when another satisfying component uses a real traced ADR. Given an empty ADR field, `none`, `none — TBD`, `none of the existing ADRs apply`, or an unknown `ADR-9999`, design validation remains invalid and change completeness does not treat that value as ADR evidence.

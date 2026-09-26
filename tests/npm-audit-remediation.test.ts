@@ -251,7 +251,7 @@ Audit result: info 1, low 0, moderate 0, high 0, critical 0, total 1.
   });
 
   /** @id TEST-NPM-AUDIT-REMEDIATION-003
-   * @verifies REQ-NPM-AUDIT-REMEDIATION-003
+   * @verifies REQ-NPM-AUDIT-REMEDIATION-003 REQ-GITHUB-ACTIONS-PROJECT-NODE24-001
    */
   it('TEST-NPM-AUDIT-REMEDIATION-003 preserves test configuration and CI execution contracts', () => {
     expect(runCheck('lock')).toEqual({ valid: true, diagnostics: [] });
@@ -262,22 +262,30 @@ Audit result: info 1, low 0, moderate 0, high 0, critical 0, total 1.
     )).not.toThrow();
     expectLockDiagnostic((root) => {
       const workflowPath = join(root, '.github/workflows/ci.yml');
-      writeFileSync(workflowPath, readFileSync(workflowPath, 'utf8').replace(
-        'node-version: 22',
+      const source = readFileSync(workflowPath, 'utf8');
+      const start = source.indexOf('  core-portability:');
+      const end = source.indexOf('\n  node-compatibility:', start);
+      const core = source.slice(start, end).replace(
+        'node-version: 24',
         'node-version: 18',
-      ));
+      );
+      writeFileSync(workflowPath, `${source.slice(0, start)}${core}${source.slice(end)}`);
     }, 'CI_CONTRACT');
     expectLockDiagnostic((root) => {
       const workflowPath = join(root, '.github/workflows/ci.yml');
-      writeFileSync(workflowPath, readFileSync(workflowPath, 'utf8').replace(
-        '          node-version: 22',
+      const source = readFileSync(workflowPath, 'utf8');
+      const start = source.indexOf('  core-portability:');
+      const end = source.indexOf('\n  node-compatibility:', start);
+      const core = source.slice(start, end).replace(
+        '          node-version: 24',
         [
-          '          node-version: 22',
+          '          node-version: 24',
           '      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444',
           '        with:',
           '          node-version: 18',
         ].join('\n'),
-      ));
+      );
+      writeFileSync(workflowPath, `${source.slice(0, start)}${core}${source.slice(end)}`);
     }, 'CI_CONTRACT');
     expectLockDiagnostic((root) => {
       const workflowPath = join(root, '.github/workflows/ci.yml');

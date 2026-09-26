@@ -211,7 +211,7 @@ async function runGateUnlocked(root: string, options: {
     diagnostics: formalDiagnostics,
     durationMs: formalResult.solver.durationMs,
   });
-  const workflow = await validateWorkflow(root, config.workflow);
+  const workflow = await validateWorkflow(root, config.workflow, config.workflow);
   const workflowErrors = countErrors(workflow.diagnostics);
   checks.push({
     name: 'workflow',

@@ -18,12 +18,12 @@ Record exactly one final invocation outcome with `npx musubix3 workflow-record s
 If `EVIDENCE_WRITER_LOCKED` blocks a command, stop the blocked command and inspect its reported owner metadata and exact canonical `.musubix/evidence/.writer-lock.json` path. On Linux, only after confirming the recorded owner is no longer active, run `npx musubix3 evidence unlock --recover`. For `EVIDENCE_WRITER_LOCK_ROLLBACK_FAILED`, inspect `lockRemoved`: false may be a live failed acquirer with no lease or owner metadata may be unavailable, so automatic recovery is preferred after it exits; a mismatched readable owner is a replacement lock that must not be removed. True means absent now but crash durability is unconfirmed, so inspect only the exact reported path before retrying.
 Never blindly delete the lock, force-steal it, poll, or start automatic retry loops. If recovery returns `EVIDENCE_WRITER_LOCK_RECOVERY_UNSAFE`, including on Linux, or required probes are unavailable on macOS/Windows, stop automation: operator review must confirm no related process is active before targeted manual removal of only the exact reported path.
 Retry only after the active owner releases the lock, recovery succeeds, or the reviewed manual procedure completes.
-Run `workflow-sanitize <copilot.jsonl> <safe.jsonl>` before review, then `workflow-verify <safe.jsonl>`; it validates source-order lifecycles without assuming globally monotonic clocks unless `maxEventSkewMs` is explicitly set.
+Run `workflow-sanitize <copilot.jsonl> <safe.jsonl>` before review, then `workflow-verify <safe.jsonl>`; successful runs merge into durable reconciliation, so prior verified transcripts need not be resupplied. Use `--reset-ledger --confirm` only for an intentional destructive ledger rebuild.
 Baseline-protect transcript byte limits; never truncate/edit to bypass them.
 For strict evidence, bind an expected UUID; GitHub origin needs strict OIDC.
 Never record multiple declarations per invocation; use only the configured CLI.
 For broad work, use short stages: initialize, requirements, requirements approval, design, design approval, real Red, Green, integration, trace/formal, quality, release approval. Report each result before the next prompt.
-For a staged change, run `change-record <CHANGE-ID> <phase> --requirement <REQ-ID...>` after each phase in this exact order: `impact`, `requirements`, `design`, `red`, `implementation`, `green`, `quality`.
+For a staged change, run variadic `change-record <CHANGE-ID> <phase> --requirement <REQ-ID...>` after each phase in this exact order: `impact`, `requirements`, `design`, `red`, `implementation`, `green`, `quality`; unlike TDD phase commands, it accepts a requirement batch.
 `impact`/`requirements`/`design`/`quality` always use the full requirement ID set; `red`/`implementation`/`green` may instead use a non-empty subset as an independent per-requirement batch for an interleaved Red-Implementation-Green loop; `quality` still needs full cumulative Green coverage.
 After Quality, record a new corrective subset Red/Implementation/Green batch and invoke full-set `quality` again; schema v2 retains prior checkpoints in `qualityHistory`, and `change quality-recover` recovers interruptions.
 Refresh errors are `CHANGE_QUALITY_REFRESH_LINEAGE_INVALID`, `CHANGE_QUALITY_REFRESH_GREEN_MISSING`, `CHANGE_QUALITY_REFRESH_NOT_NEEDED`, and `CHANGE_QUALITY_REFRESH_RECOVERY_REQUIRED`; an already-used corrective subset requires a new reviewed staged change.
@@ -57,7 +57,7 @@ Persisted monotonic order, not wall-clock time, proves these phase boundaries.
    test adapter. For deterministic performance requirements, use a passing
    instrumented `operations` report with command/report/run/exit provenance;
    native adapters cannot emit app counters, and elapsed time is insufficient.
-2. Run `npx musubix3 tdd red <TEST-ID> --requirement <REQ-ID> --command <name>`.
+2. Run `npx musubix3 tdd red <TEST-ID> --requirement <REQ-ID> --command <name>` with exactly one requirement per invocation; when a test verifies multiple requirements, run a separate Red/Green cycle for each requirement.
    Do not edit implementation code until this records the expected failing test.
 3. Implement the smallest complete change, preserving the test, then run
    `tdd green` with the same IDs and command. Refactor only after Green and record
@@ -72,7 +72,7 @@ Documentation/prototypes may omit TDD only when policy allows; record the reason
    use strict `Formal:` JSON for explicit conditional, numeric, temporal or
    transition semantics; report unsupported prose rather than claiming proof.
    A required `formal` check enforces modeled fraction and configured solver.
-3. Run `gate --changed --json` and `status --json`. Repair failures, dangling links and stale evidence; never weaken requirements or policy to obtain green. If `workflow` fails, run `workflow-verify` compatible mode against this session's live transcript, then `workflow waiver record-all` (bulk, all-or-nothing) for remaining declaration-scoped diagnostics (it cannot clear `WORKFLOW_INVOCATION_UNVERIFIED`), then rerun gate/status.
+3. Run `gate --changed --json` and `status --json`. Repair failures, dangling links and stale evidence; never weaken requirements or policy to obtain green. If `workflow` fails, run `workflow-verify` in compatible mode against this session's own live transcript, then `workflow waiver record-all` (bulk, all-or-nothing) for remaining declaration-scoped diagnostics (it cannot clear `WORKFLOW_INVOCATION_UNVERIFIED`), then rerun gate/status. Under configured strict mode, defer release approval to a subsequent Copilot session that can verify this session's completed terminal transcript.
 4. Treat the first otherwise-passing gate as the release candidate. Run a `rubber-duck` review of the release/quality evidence summary and the CHANGE document; fix every reported issue and re-review until zero issues remain. Before any release operation, prepare/show its exact hash, ask one human approve/reject question and wait; record only that hash, then rerun gate/status.
 5. Complete only when required checks pass and `status.gate.ready` is true;
    otherwise report blockers. One-phase work must state downstream work.

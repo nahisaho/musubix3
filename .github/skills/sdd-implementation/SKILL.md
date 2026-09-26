@@ -33,7 +33,7 @@ Retry only after the active owner releases the lock, recovery succeeds, or the r
    Make the runner emit a fresh
    `musubix-json` report containing only the selected test (plus declared
    deterministic `operations` counters when applicable) and run
-   `npx musubix3 tdd red <TEST-ID> --requirement <REQ-ID> --command <name>`.
+   `npx musubix3 tdd red <TEST-ID> --requirement <REQ-ID> --command <name>` with exactly one requirement per invocation; when a test verifies multiple requirements, run a separate Red/Green cycle for each requirement, unlike variadic `change-record --requirement <REQ-ID...>`.
 3. Implement only enough code to pass, preserving the test unchanged, then run
    `tdd green`. Refactor only after Green and record `tdd refactor`.
    Use `tdd validate` to inspect persisted order, fingerprints, durations and

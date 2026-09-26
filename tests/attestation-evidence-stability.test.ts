@@ -5,7 +5,7 @@ import { describe, expect, it } from 'vitest';
 import {
   attestationSigningPayload, collectEvidenceHeads, createUnsignedAttestation, digest, loadConfig,
   mutationEvidenceHead, mutationIdentity, readText, recordChangePhase, recordWorkflow, runGate, runProcess,
-  runTddPhase, verifyEvidenceAttestation, verifyWorkflowLog, writeJson, writeText, type MutationEvidence,
+  runTddPhase, verifyEvidenceAttestation, verifyWorkflowLog, workflowEvidenceHead, writeJson, writeText, type MutationEvidence,
   type MutationRecord, type Runner,
 } from '../packages/analysis/src/index.js';
 import { processResult, project } from './helpers.js';
@@ -297,5 +297,33 @@ describe('attestation evidence-head stability across no-op gate re-runs', () => 
 
     // `workspace` is explicitly labeled as a repository snapshot, not an evidence file.
     expect(section).toMatch(/`workspace`[\s\S]*not an evidence file/);
+  });
+
+  /** @id TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-006
+   * @verifies REQ-WORKFLOW-RESUMED-SESSION-DURABILITY-006 REQ-ATTESTATION-EVIDENCE-STABILITY-004
+   */
+  it('TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-006 attests reconciliation digests and treats present null as malformed', () => {
+    const verification = {
+      sourceSha256: 'a'.repeat(64),
+      eventsSha256: 'b'.repeat(64),
+      verifiedAt: new Date(0).toISOString(),
+      invocations: [],
+    };
+    const legacy = { schemaVersion: 1 as const, events: [], verification };
+    const durable = {
+      ...legacy,
+      reconciliation: {
+        schemaVersion: 1 as const,
+        mode: 'compatible' as const,
+        skewMs: 0,
+        ledgerSha256: 'c'.repeat(64),
+        bindingsSha256: 'd'.repeat(64),
+        invocations: [],
+        bindings: [],
+      },
+    };
+    expect(workflowEvidenceHead(durable)).not.toBe(workflowEvidenceHead(legacy));
+    expect(workflowEvidenceHead({ ...legacy, reconciliation: null } as never))
+      .not.toBe(workflowEvidenceHead(legacy));
   });
 });

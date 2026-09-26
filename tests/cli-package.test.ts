@@ -175,7 +175,7 @@ describe('CLI contracts', () => {
     ])).exitCode).toBe(0);
     const verified = await invoke(root, ['workflow-verify', 'copilot.jsonl', '--json']);
     expect(verified.exitCode, verified.stderr).toBe(0);
-    expect(JSON.parse(verified.stdout).verification).toMatchObject({ mode: 'strict', sessionId, exitCode: 0 });
+    expect(JSON.parse(verified.stdout).workflow.verification).toMatchObject({ mode: 'strict', sessionId, exitCode: 0 });
     const sanitized = await invoke(root, [
       'workflow-sanitize', 'copilot.jsonl', 'evidence/workflow.sanitized.jsonl', '--json',
     ]);

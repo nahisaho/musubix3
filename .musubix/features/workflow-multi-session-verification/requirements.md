@@ -1,7 +1,12 @@
+---
+schemaVersion: 1
+feature: workflow-multi-session-verification
+---
 # Workflow multi-session verification requirements
 
 ## REQ-WORKFLOW-MULTI-SESSION-001: Reconcile declarations across multiple session transcripts
 Priority: must
 Type: functional
+Pattern: event-driven
 Statement: `workflow-verify`に複数のセッショントランスクリプトファイルが引数として与えられたとき、システムは、`workflow.json`の各Workflow宣言を、それらのファイル群の中でその宣言が実際に記録されたセッションの完了済みSkill実行イベントと照合しなければならない。
-Acceptance: 1つの宣言の実行証跡が単一のトランスクリプトに存在しない場合でも、その実行証跡を含む別のトランスクリプトファイルを追加の引数として`workflow-verify`に与えることで、その宣言が正しく照合され`WORKFLOW_SKILL_NOT_INVOKED`が解消されること。単一ファイルのみを指定した従来の呼び出しは既存の動作(1トランスクリプトのみの照合)を変更なく維持すること。複数ファイルを指定した場合、各ファイル内の行の相対順序は保持されるが、ファイル間の宣言照合順序はイベントの`invokedAt`/`completedAt`時刻に基づくこと(ファイルの指定順に依存しない)。同一の`toolCallId`が複数ファイルにまたがって重複して出現した場合は`WORKFLOW_INVOCATION_REUSED`として拒否すること。
+Acceptance: 1つの宣言の実行証跡が単一のトランスクリプトに存在しない場合でも、その実行証跡を含む別のトランスクリプトファイルを追加の引数として`workflow-verify`に与えることで、その宣言が正しく照合され`WORKFLOW_SKILL_NOT_INVOKED`が解消されること。単一ファイルのみを指定した従来の呼び出しは既存の動作(1トランスクリプトのみの照合)を変更なく維持すること。複数ファイルを指定した場合、各ファイル内の行の相対順序は保持されるが、ファイル間の宣言照合順序はイベントの`invokedAt`/`completedAt`時刻に基づくこと(ファイルの指定順に依存しない)。同一の`toolCallId`が1回の複数ファイル検証で2つ以上の異なる入力ファイルに出現した場合は、内容が同一でも既存どおり非ゼロ終了で拒否すること。単一ファイル内のcompatible-mode重複処理はこの要件では変更しない。一方、別の成功済み検証runで同一のsemantic invocationが再提示された場合のidempotent ledger mergeはREQ-WORKFLOW-RESUMED-SESSION-DURABILITY-001に従うこと。

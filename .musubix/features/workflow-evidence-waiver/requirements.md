@@ -10,6 +10,12 @@ Source: GitHub Issue #1 (recurrence comment, item 3/4), and the separate
 zero-tolerance status computation untouched pending its own requirements
 review.
 
+CHANGE-0048 extends this feature for resumed Copilot sessions: successful
+verification persists a durable reconciliation ledger, snapshot version 2
+uses a declaration-scope-local evidence head, and existing authoritative
+snapshot-version-1 waivers remain effective only through the bounded migration
+compatibility window defined by REQ-WORKFLOW-EVIDENCE-WAIVER-012.
+
 `workflow-verify` reconciles self-reported `workflow-record <skill> <phase>
 --status completed` declarations in `.musubix/evidence/workflow.json`
 against real Copilot Skill invocations parsed from session transcript logs.
@@ -145,7 +151,11 @@ byte-match a real declaration and therefore always falls into the
 "no matching diagnostic" rejection above; no separate format requirement
 beyond the byte-equality check is needed to reject it. This rejects
 pre-emptive, speculative waivers recorded before the debt actually
-exists.
+exists. The reconciliation failures named by
+REQ-WORKFLOW-RESUMED-SESSION-DURABILITY-004 take precedence over this
+diagnostic lookup: while one is raised, recording rejects with the
+reconciliation repair reason rather than the otherwise-applicable
+"no matching diagnostic to waive" reason.
 
 ## REQ-WORKFLOW-EVIDENCE-WAIVER-003: Require an explicit human approver, reason, and confirmation
 Priority: must
@@ -179,7 +189,11 @@ diagnostics at all (never `WORKFLOW_INVOCATION_UNVERIFIED`, per
 `validateWorkflow`'s own early-return behavior), so this requirement does
 not itself apply; every `workflow waiver record` call is instead rejected
 by REQ-WORKFLOW-EVIDENCE-WAIVER-002, since no diagnostic of any allow-listed
-code can be currently present for a scope with no declaration events.
+code can be currently present for a scope with no declaration events. The
+other reconciliation failures named by
+REQ-WORKFLOW-RESUMED-SESSION-DURABILITY-004 use the same fail-closed
+recording precedence: recording rejects with the reconciliation repair reason
+before any "no matching diagnostic to waive" lookup result.
 
 ## REQ-WORKFLOW-EVIDENCE-WAIVER-005: Identify each waivable diagnostic instance by skill, phase, and declaration timestamp, disambiguating exact collisions
 Priority: must
@@ -194,7 +208,7 @@ listing the candidate indices; supplying the correct `--index` waives only
 that one event's diagnostic instance, leaving the other's `severity:
 "error"` unaffected. Given no collision, `--index` must not be supplied;
 if it is, the invocation is rejected and no evidence is recorded, so a
-persisted record's `index` key is present if and only if REQ-013 required
+persisted record's `index` key is present if and only if this requirement required
 one for disambiguation, never merely because an index happened to be
 supplied. The field name `declarationRecordedAt` (never bare `recordedAt`)
 is used everywhere this scope triplet is persisted or reported, to avoid
@@ -294,18 +308,20 @@ The combined top-level `waiverDiagnostics` array concatenates the
 change-waiver subset first and the workflow-waiver subset second, preserving
 each subset's requirement-defined order.
 
-## REQ-WORKFLOW-EVIDENCE-WAIVER-009: Downgrade a validly waived diagnostic instance, and its paired binding-missing diagnostic, to a warning, never suppress
+## REQ-WORKFLOW-EVIDENCE-WAIVER-009: Downgrade a diagnostic covered by an effective authoritative waiver, and its paired binding-missing diagnostic, to a warning, never suppress
 Priority: must
 Type: functional
 Pattern: state-driven
-Statement: While the authoritative waiver record (per REQ-WORKFLOW-EVIDENCE-WAIVER-007) for a `skill`/`phase`/`declarationRecordedAt`/`index` scope is validly linked and non-stale under REQ-WORKFLOW-EVIDENCE-WAIVER-012, the system shall report both the waived diagnostic and the `WORKFLOW_BINDING_MISSING` diagnostic raised for that same declaration event with `severity: "warning"` and an attached `waiver` object containing the `approver`, `reason`, and `waiverRecordedAt` of that authoritative waiver record, instead of `severity: "error"`.
-Acceptance: Given a validly waived, non-stale `WORKFLOW_SKILL_NOT_INVOKED`
+Statement: While workflow-waiver evaluation is active and an effective authoritative waiver under REQ-WORKFLOW-EVIDENCE-WAIVER-012 covers a `skill`/`phase`/`declarationRecordedAt`/`index` scope, the system shall report both the waived diagnostic and the `WORKFLOW_BINDING_MISSING` diagnostic raised for that same declaration event with `severity: "warning"` and an attached `waiver` object containing exactly `approver`, `reason`, `recordedAt`, and `waiverRecordedAt`, where both timestamp fields equal the authoritative waiver record's `waiverRecordedAt`, instead of `severity: "error"`.
+Acceptance: Given an effective authoritative waiver covering a
+`WORKFLOW_SKILL_NOT_INVOKED`
 instance for `sdd-requirements:complete` recorded at a given
 `declarationRecordedAt`, `gate --json` reports both that diagnostic and
 its paired `WORKFLOW_BINDING_MISSING` diagnostic for the identical
 `skill`/`phase`/`declarationRecordedAt`/`index` with `severity: "warning"`
-and a `waiver` object whose `approver`/`reason`/`waiverRecordedAt` match
-the recorded waiver; neither diagnostic is ever fully removed from the
+and a `waiver` object whose `approver`/`reason` match the recorded waiver and
+whose `recordedAt`/`waiverRecordedAt` both equal the recorded waiver's
+`waiverRecordedAt`; neither diagnostic is ever fully removed from the
 report; message text is unchanged. Waiving one declaration event's
 diagnostic never downgrades any other event's diagnostics, even for the
 identical `skill`/`phase` pair at a different `declarationRecordedAt`/
@@ -315,7 +331,7 @@ identical `skill`/`phase` pair at a different `declarationRecordedAt`/
 Priority: must
 Type: functional
 Pattern: ubiquitous
-Statement: The system shall report `severity: "error"`, unaffected, for every declaration-scoped diagnostic instance whose scope has no authoritative waiver record (per REQ-WORKFLOW-EVIDENCE-WAIVER-007) that is validly linked and non-stale.
+Statement: The system shall report `severity: "error"`, unaffected, for every declaration-scoped diagnostic instance whose scope has no effective authoritative waiver under REQ-WORKFLOW-EVIDENCE-WAIVER-012.
 Acceptance: Given exactly one declaration event has a valid waiver, every
 other unmatched declaration event's `WORKFLOW_SKILL_NOT_INVOKED`/
 `WORKFLOW_INVOCATION_ORDER`/`WORKFLOW_INVOCATION_INCOMPLETE`/
@@ -324,11 +340,11 @@ other unmatched declaration event's `WORKFLOW_SKILL_NOT_INVOKED`/
 the tool-call-scoped flavor of `WORKFLOW_INVOCATION_REUSED` (never
 waivable per REQ-001) always reports `severity: "error"`.
 
-## REQ-WORKFLOW-EVIDENCE-WAIVER-011: Reject a duplicate waiver for an already validly waived, non-stale scope
+## REQ-WORKFLOW-EVIDENCE-WAIVER-011: Reject a duplicate waiver for a scope with an effective authoritative waiver
 Priority: must
 Type: functional
 Pattern: unwanted-behavior
-Statement: If `workflow waiver record` is invoked for a `skill`/`phase`/`declarationRecordedAt`/`index` scope whose authoritative record (per REQ-WORKFLOW-EVIDENCE-WAIVER-007) is already validly linked and non-stale, then the system shall reject the invocation and record no additional evidence.
+Statement: If `workflow waiver record` is invoked for a `skill`/`phase`/`declarationRecordedAt`/`index` scope whose authoritative record is effective under REQ-WORKFLOW-EVIDENCE-WAIVER-012, then the system shall reject the invocation and record no additional evidence.
 Acceptance: Calling `workflow waiver record` a second time for the
 identical scope immediately after a successful waiver, with no
 intervening evidence change, exits nonzero with an error stating the scope
@@ -345,13 +361,39 @@ happens to make its own snapshot match again. Which record is the
 authoritative one for a scope is always determined by comparing
 `sequence` integers, never by comparing `waiverRecordedAt` timestamp
 strings.
+An authoritative snapshot-version-1 record that is effective only through
+REQ-WORKFLOW-EVIDENCE-WAIVER-012's migration compatibility window is also
+rejected as already waived; only the automatic migration in
+REQ-WORKFLOW-RESUMED-SESSION-DURABILITY-005 may append its version-2
+successor without new approval.
 
 ## REQ-WORKFLOW-EVIDENCE-WAIVER-012: Define the snapshot payload and invalidate a waiver when the reconciled outcome changes, reverting to error while the scoped diagnostic remains raised
 Priority: must
 Type: functional
 Pattern: state-driven
-Statement: While the authoritative waiver record's (per REQ-WORKFLOW-EVIDENCE-WAIVER-007) stored `snapshotVersion`/`snapshotHash` does not equal the current `snapshotVersion`/recomputed canonical-JSON SHA-256 hash of that scope's defined evidence fields, the system shall treat that record as stale, add a `WORKFLOW_WAIVER_STALE` `error`-severity diagnostic to the `waiverDiagnostics` array (per REQ-WORKFLOW-EVIDENCE-WAIVER-008; never to `workflow.diagnostics`) naming the stale waiver, and, when an allow-listed declaration-scoped reason diagnostic (one of the five REQ-WORKFLOW-EVIDENCE-WAIVER-001 codes) is still raised for that exact scope, report that diagnostic and its paired `WORKFLOW_BINDING_MISSING` with `severity: "error"` and no attached `waiver` object.
-Acceptance: Given the repository's current workflow evidence and a validly linked waiver scope whose authoritative record has a non-current stored `snapshotVersion` or a recomputed `snapshotHash` different from its stored hash, `gate --json` reports `WORKFLOW_WAIVER_STALE` in `waiverDiagnostics` regardless of whether an allow-listed declaration-scoped reason diagnostic remains raised; while one remains raised, `gate --json` also reports it and its paired `WORKFLOW_BINDING_MISSING` with `severity: "error"` and no `waiver` object. The canonical snapshot payload is exactly: the declaration
+Statement: While workflow-waiver evaluation is active, the system shall evaluate authoritative records using the snapshot payload, effective-waiver predicate, staleness severity, and message rules defined in this requirement's Acceptance criteria.
+Acceptance: Workflow-waiver evaluation is active exactly when none of
+`WORKFLOW_INVOCATION_UNVERIFIED`, `WORKFLOW_RECONCILIATION_MALFORMED`,
+`WORKFLOW_RECONCILIATION_LIMIT`, or
+`WORKFLOW_RECONCILIATION_CONFIG_MISMATCH` activates the suppression required
+by REQ-WORKFLOW-RESUMED-SESSION-DURABILITY-004. The current snapshot version
+is `2` when the workflow has a valid `reconciliation` own property and `1`
+when that property is absent. An **effective authoritative
+waiver** is the scope's authoritative record per
+REQ-WORKFLOW-EVIDENCE-WAIVER-007 that is validly linked and either has the
+current snapshot version with a matching recomputed snapshot hash or is a
+migration-compatible authoritative version-1 record as defined below. Any
+other validly linked authoritative record is **stale**. While evaluation is
+active, `gate --json` reports one scope-naming `WORKFLOW_WAIVER_STALE` in
+`waiverDiagnostics` for every stale authoritative record regardless of whether
+an allow-listed declaration-scoped reason remains raised. While one remains
+raised, the stale diagnostic is `error` severity and `gate --json` also reports
+the reason plus its paired `WORKFLOW_BINDING_MISSING` with `severity: "error"`
+and no `waiver` object. When none remains raised, the stale diagnostic is
+`warning` severity, its message contains the exact substring `condition is
+resolved; a replacement waiver is not required`, and the workflow check
+remains passing when every other scope is likewise clean. The canonical
+snapshot payload is exactly: the declaration
 event's own `skill`/`phase`/`status`/`recordedAt`/`version`, the
 declaration event's own `commandSha256` when present or the explicit
 `null` sentinel when the event carries no `commandSha256` (since
@@ -361,32 +403,32 @@ REQ-WORKFLOW-EVIDENCE-WAIVER-013, an omitted-vs-`null` ambiguity here
 would otherwise let two implementations disagree on `snapshotHash`), the
 waiver's own `index` (or the explicit `null`
 sentinel, when REQ-WORKFLOW-EVIDENCE-WAIVER-005 did not require one),
-`workflowEvidenceHead(workflow)` (the existing exported function in
-`packages/analysis/src/workflow.ts` that digests the current
-`verification` object — including `invocations` when `mode`,
-`transcriptSha256`, or `sessionId` is present, or, for the narrower
-legacy-shaped verification lacking all three of those fields, only
-`eventsSha256`/`sourceSha256` — into one deterministic hash, reused
-verbatim rather than redefined; a legacy-shaped verification that omits
-`invocations` from the hash still changes this value whenever
-`eventsSha256`/`sourceSha256` changes, so the snapshot still invalidates
-on any reconciliation-evidence change reflected in those two fields, even
-though it does not by itself detect an `invocations`-only change while
-the verification stays in the legacy shape), and the current allow-listed declaration-scoped reason code
+`workflowScopeEvidenceHead(workflow, eventIndex)` (the exported function from
+`packages/analysis/src/workflow-waiver.ts` that hashes the freshly recomputed
+declaration binding or `null`, persisted `reconciliation.skewMs`, and the
+same-skill canonical durable-ledger invocation semantic fields excluding
+provenance `sources`, whose
+`invokedAt <= recordedAt + reconciliation.skewMs`, deliberately including
+later-completing invocations as the conservative superset defined by
+REQ-WORKFLOW-RESUMED-SESSION-DURABILITY-003), and the current allow-listed declaration-scoped reason code
 (one of the five REQ-WORKFLOW-EVIDENCE-WAIVER-001 values; never
 `WORKFLOW_BINDING_MISSING`, which is always a fixed, redundant consequence
 of exactly one such reason code per REQ-001's acceptance and therefore
 carries no independent snapshot information) that `validateWorkflow`
 currently raises for that scope, or an explicit `null` sentinel when no
-allow-listed reason diagnostic is currently raised for it. Given a validly
-waived `WORKFLOW_SKILL_NOT_INVOKED` instance, after a later
-`workflow-verify` run against a different transcript or invocation set
-that still yields `WORKFLOW_SKILL_NOT_INVOKED` for the identical
-declaration event, the change in `workflowEvidenceHead(workflow)` alone
-makes the waiver stale even though the raised code component of the
-snapshot is unchanged, so a re-verification against materially different
-reconciliation evidence is never silently accepted as covered by the old
-waiver. Given a later `workflow-verify` run against additional session
+allow-listed reason diagnostic is currently raised for it. The exact canonical
+object hashed by `workflowScopeEvidenceHead` has exactly the keys `binding`,
+`skewMs`, and `invocations`; `binding` is the freshly recomputed binding
+object or `null`, `skewMs` is the persisted integer, and each `invocations`
+entry has exactly `skill`, `toolCallId`, `invokedAt`, optional `completedAt`,
+and `status`, with no provenance `sources` key. Given a validly
+waived `WORKFLOW_SKILL_NOT_INVOKED` instance, a later
+`workflow-verify` run whose new transcript hash, session metadata, or
+unrelated invocations do not change that declaration's eligible invocation
+set, binding, declaration fields, or current reason code preserves the
+snapshot hash and the waiver remains active. If a later verification changes
+an invocation eligible for that declaration or changes its binding, the
+scope-local evidence head changes and the waiver becomes stale. Given a later `workflow-verify` run against additional session
 logs changes the raised code for that exact scope to
 `WORKFLOW_INVOCATION_ORDER` (a different reason for the same
 declaration), or resolves it to no diagnostic at all, `gate --json`
@@ -404,7 +446,7 @@ resolves the scope to no diagnostic at all, the `workflow` check reports
 visible in `waiverDiagnostics` indefinitely, purely as a historical audit
 trail — no acknowledgement action is required or defined, and a human may
 optionally record a new waiver for that scope (per
-REQ-WORKFLOW-EVIDENCE-WAIVER-011) only if a diagnostic is still currently
+REQ-WORKFLOW-EVIDENCE-WAIVER-002) only if a diagnostic is still currently
 raised for it. This workflow-waiver treatment intentionally differs from change-waiver
 auditing: change-waiver malformed/stale blocking, severity, and validator
 behavior are owned by REQ-CHANGE-EVIDENCE-WAIVER-007/011/014.
@@ -430,12 +472,58 @@ waiver-reason `code`, `sequence`, `snapshotVersion`, `snapshotHash`,
 object, and its `path` is exactly
 `.musubix/evidence/workflow-waivers.json`. Within the workflow-waiver subset of top-level `waiverDiagnostics`,
 entries follow ascending persisted `waivers` array position: a malformed
-record's diagnostic occupies its own position, while the single audit outcome
-for a validly linked scope occupies that scope's first validly linked record
-position and uses the authoritative record's reported fields defined above.
-A future, incompatible change to this snapshot payload definition
-increments `snapshotVersion`, making every waiver recorded under a prior
-version stale regardless of field equality.
+record's diagnostic occupies its own position, while, when a scope's
+authoritative record is stale, its single `WORKFLOW_WAIVER_STALE` entry
+occupies the array position of that scope's lowest-position validly linked
+record and uses the authoritative record's reported fields defined above.
+This scope-local payload is snapshot version `2`. The first successful durable
+verification migrates authoritative version-1 records to version-2 successors
+under REQ-WORKFLOW-RESUMED-SESSION-DURABILITY-005; superseded version-1
+records are not independently reported stale. Before a version-2 successor is successfully persisted, an authoritative
+version-1 record is **migration-compatible** on read when reconciliation is
+present and unsuppressed, the record is individually shape-valid and
+declaration-linked, the sequence/previous-hash/payload-hash chain from genesis
+through that record is valid, and its stored allow-listed code equals the
+scope's current code or the current code is `null`. This read-side predicate
+does not depend on REQ-WORKFLOW-RESUMED-SESSION-DURABILITY-005 having completed
+write-side pending selection. Its currently raised identical allow-listed
+reason remains downgraded during the retry window. The window therefore
+survives a whole-file migration skip caused by a different record's unrelated
+invalid field while the predicates above remain true, but does not survive
+chain corruption at or before this record; it ends when a version-2 successor
+for that scope is successfully persisted or the record itself ceases to
+satisfy those predicates. A legacy workflow document without `reconciliation` retains
+its existing version-1 evaluation behavior. When reconciliation is present,
+an authoritative version-1 record outside that migration compatibility window is
+stale by definition because snapshot version 1 is non-current; the system does
+not recompute a legacy global workflow head for it. Any later incompatible
+payload change after migration increments `snapshotVersion`, making an
+authoritative record under a prior version stale regardless of field equality,
+except for this explicit version-1 migration compatibility window.
+When `workflow.reconciliation` is absent, `workflow waiver record` and
+`workflow waiver record-all` continue
+to create snapshot-version-1 records whose exact canonical snapshot object keys
+are `skill`, `phase`, `status`, `recordedAt`, `version`, `commandSha256`,
+`index`, `workflowEvidenceHead`, and `code`, using the same explicit `null`
+sentinels defined above and `workflowEvidenceHead(workflow)` as the legacy
+global head; existing version-1 records continue to use that payload. An
+authoritative version-2 record in a workflow document with no
+`reconciliation` own property is stale by definition and is never evaluated
+with the legacy global head. Version-2 recording
+and `workflowScopeEvidenceHead` are used only when valid reconciliation is
+present; therefore the scope-head function is never invoked for a legacy
+workflow document. When reconciliation is present but malformed, over a
+durable limit, or config-mismatched, both recording commands reject without writing under
+REQ-WORKFLOW-RESUMED-SESSION-DURABILITY-004, so no snapshot version is
+selected from unsafe reconciliation.
+The exact version-2 canonical snapshot object keys are `skill`, `phase`,
+`status`, `recordedAt`, `version`, `commandSha256`, `index`,
+`workflowScopeEvidenceHead`, and `code`, with the explicit `null` sentinels
+defined above. The `eventIndex` argument is the resolved declaration event's
+zero-based position in `workflow.events`: the persisted waiver `index` when
+present, otherwise the unique event position resolved from
+`skill`/`phase`/`declarationRecordedAt` under
+REQ-WORKFLOW-EVIDENCE-WAIVER-007.
 
 ## REQ-WORKFLOW-EVIDENCE-WAIVER-013: Define the workflow-waiver evidence file schema, canonicalization, and chain genesis
 Priority: must
@@ -465,16 +553,21 @@ implementations serializing the identical logical record produce
 byte-identical canonical JSON and therefore identical `payloadSha256`
 values, since the serialization algorithm is fully specified by reuse of
 the existing `canonicalJson` function, not redefined ad hoc.
+`.musubix/evidence/workflow-waivers.json` is audit evidence and is excluded
+from both `workflowEvidenceHead`/`workflowScopeEvidenceHead` and attestation
+evidence-head collection, so appending its self-chained records cannot
+recursively invalidate the snapshot or attestation that authorized the append.
 
 ## REQ-WORKFLOW-EVIDENCE-WAIVER-014: Surface active waivers in `status`/`gate --json` for audit visibility
 Priority: should
 Type: functional
 Pattern: event-driven
-Statement: When `gate --json` or `status --json` runs and one or more scopes have an authoritative workflow waiver record (per REQ-WORKFLOW-EVIDENCE-WAIVER-007) that is validly linked and non-stale, the system shall include a `workflowWaivers` array listing each such authoritative record's `skill`, `phase`, `declarationRecordedAt`, `index` (when present), `code`, `approver`, `reason`, and `waiverRecordedAt`.
+Statement: When `gate --json` or `status --json` runs, the system shall include a `workflowWaivers` array listing every currently raised allow-listed reason diagnostic covered by an effective authoritative waiver under REQ-WORKFLOW-EVIDENCE-WAIVER-012 using that record's `skill`, `phase`, `declarationRecordedAt`, `index` (when present), `code`, `approver`, `reason`, and `waiverRecordedAt`.
 Acceptance: `gate --json` output contains a `workflowWaivers` array with
 at most one entry per `skill`/`phase`/`declarationRecordedAt`/`index`
 scope — the entry for that scope's authoritative record, when it is
-validly linked and non-stale — each carrying
+effective and its identical allow-listed `code` is currently
+raised for that scope — each carrying
 only the fields enumerated in this requirement's own Statement,
 with `index` included only when present (never the persisted-only `sequence`/`snapshotVersion`/
 `snapshotHash`/`previousSha256`/`payloadSha256` fields defined by
@@ -487,7 +580,20 @@ array (though its corresponding
 still reported per those requirements), and every superseded,
 non-authoritative record for a scope (per
 REQ-WORKFLOW-EVIDENCE-WAIVER-007) is likewise always excluded from this
-array regardless of its own validity or snapshot state. `status --json`
+array regardless of its own validity or snapshot state. A migrated version-2
+successor whose current snapshot `code` input is `null` because its residual
+is resolved is excluded from `workflowWaivers`, even though the record is
+an effective authoritative waiver. A pending migration-compatible authoritative
+version-1 record whose identical allow-listed `code` is currently raised is
+included in `workflowWaivers` while REQ-WORKFLOW-EVIDENCE-WAIVER-012 keeps its
+diagnostic downgraded. While any reconciliation error named by
+REQ-WORKFLOW-RESUMED-SESSION-DURABILITY-004 is raised, or while
+`WORKFLOW_INVOCATION_UNVERIFIED` is raised, this pending record
+and every other workflow waiver are excluded from `workflowWaivers`.
+Entries are ordered by ascending persisted `waivers` array position of their
+authoritative records. When no scope qualifies, `workflowWaivers` is present as
+an empty array rather than omitted.
+`status --json`
 computes its `workflowWaivers` array via the identical computation used
 for `gate --json`'s `workflowWaivers` array (both are built by
 `packages/analysis/src/gate.ts`'s shared workflow-waiver resolution logic).
@@ -503,7 +609,8 @@ Type: functional
 Pattern: ubiquitous
 Statement: The system shall compute the `workflow` check's `gate`/`status` result as `pass` when `workflow.present` is `true` and `workflow.diagnostics` contains no `error`-severity diagnostic, consistent with the error-severity-based validity semantics used by the `change-history`/`change-completeness` validators and feature-scoped `countErrors` gate branches, rather than requiring `diagnostics.length === 0` regardless of severity; `WORKFLOW_WAIVER_EVIDENCE_MALFORMED`/`WORKFLOW_WAIVER_STALE` diagnostics (per REQ-WORKFLOW-EVIDENCE-WAIVER-008/012) are never included in `workflow.diagnostics` and therefore never affect this `status` computation.
 Acceptance: Given a repository whose only `workflow` diagnostics are
-validly waived, non-stale warnings (per REQ-WORKFLOW-EVIDENCE-WAIVER-009),
+warnings covered by effective authoritative waivers (per
+REQ-WORKFLOW-EVIDENCE-WAIVER-009),
 `gate --json`'s `workflow` check reports `status: "pass"`, even while a
 separate `WORKFLOW_WAIVER_EVIDENCE_MALFORMED`/`WORKFLOW_WAIVER_STALE`
 entry for an unrelated scope is visible in `waiverDiagnostics`; given the

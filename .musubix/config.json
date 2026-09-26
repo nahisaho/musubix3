@@ -450,6 +450,18 @@
       "timeoutMs": 120000
     },
     {
+      "name": "tdd-repeated-requirement-option-tests",
+      "command": "npx",
+      "args": [
+        "vitest",
+        "run",
+        "tests/tdd-repeated-requirement-option.test.ts"
+      ],
+      "adapter": "vitest",
+      "required": true,
+      "timeoutMs": 120000
+    },
+    {
       "name": "evidence-writer-lock-tests",
       "command": "npx",
       "args": [

@@ -12,6 +12,10 @@ const EXPECTED_REQUIRED_CHECKS = [
 
 const EXPECTED_TEST_TIMEOUT_MS = 305000;
 
+/** @id CODE-TDD-REPEATED-REQUIREMENT-OPTION-003
+ * @implements REQ-TDD-REPEATED-REQUIREMENT-OPTION-002
+ * @design DES-TDD-REPEATED-REQUIREMENT-OPTION-002
+ */
 const EXPECTED_REQUIRED_COMMANDS = [
   'requirements-design-scaffold-tests',
   'approval-tests',
@@ -48,6 +52,7 @@ const EXPECTED_REQUIRED_COMMANDS = [
   'upgrade-workflow-tests',
   'model-correspondence-evidence-guidance-tests',
   'tdd-adoption-warning-tests',
+  'tdd-repeated-requirement-option-tests',
   'evidence-writer-lock-tests',
   'release-version-synchronization-tests',
   'release-approval-ordering-tests',
@@ -97,6 +102,21 @@ export function checkGateCommandTimeoutMargin(root = '.') {
   const packSmoke = commands.find((command) => command?.name === 'pack-smoke');
   if (packSmoke?.timeoutMs !== 180000) {
     diagnostics.push(diagnostic('The pack-smoke timeoutMs must remain 180000.', configPath));
+  }
+  const repeatedRequirementTests = commands.find(
+    (command) => command?.name === 'tdd-repeated-requirement-option-tests',
+  );
+  if (repeatedRequirementTests?.command !== 'npx'
+    || JSON.stringify(repeatedRequirementTests?.args) !== JSON.stringify([
+      'vitest', 'run', 'tests/tdd-repeated-requirement-option.test.ts',
+    ])
+    || repeatedRequirementTests?.adapter !== 'vitest'
+    || repeatedRequirementTests?.timeoutMs !== 120000
+    || repeatedRequirementTests?.required !== true) {
+    diagnostics.push(diagnostic(
+      'The tdd-repeated-requirement-option-tests command must remain required npx vitest run tests/tdd-repeated-requirement-option.test.ts with the vitest adapter and 120000ms timeout.',
+      configPath,
+    ));
   }
   if (JSON.stringify(config.requiredChecks) !== JSON.stringify(EXPECTED_REQUIRED_CHECKS)) {
     diagnostics.push(diagnostic('requiredChecks changed from the reviewed set.', configPath));

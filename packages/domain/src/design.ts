@@ -29,13 +29,20 @@ export function validateDesign(text: string, path = '<input>', context: DesignCo
     const requirements = references(field(s.body, 'Requirements|要求'), 'REQ');
     const adrField = field(s.body, 'ADRs|ADR|決定');
     const decisions = references(adrField, 'ADR');
+    const exemption = decisions.length
+      ? null
+      : /^none(?:\s*[-–—:]\s*(.*))?$/i.exec(adrField.trim());
+    const exemptionReason = exemption?.[1]?.trim() ?? '';
+    const adrExemptionReason = exemption
+      && exemptionReason
+      && !/^(TODO|TBD|N\/A|未定)$/i.test(exemptionReason)
+      ? exemptionReason
+      : undefined;
     const dependencies = references(field(s.body, 'Depends-On|依存'), 'DES');
     if (!requirements.length) diagnostics.push(error('DES_REQUIREMENTS', `${s.id} must link requirements.`, path, s.line));
     if (!decisions.length) {
-      const exemption = /^none(?:\s*[-–—:]\s*(.*))?$/i.exec(adrField.trim());
       if (exemption) {
-        const reason = exemption[1]?.trim() ?? '';
-        if (!reason || /^(TODO|TBD|N\/A|未定)$/i.test(reason)) diagnostics.push(error('DES_ADR_EXEMPTION_REASON', `${s.id} declares "none" but must give a concrete reason (e.g. "none — <reason>").`, path, s.line));
+        if (adrExemptionReason === undefined) diagnostics.push(error('DES_ADR_EXEMPTION_REASON', `${s.id} declares "none" but must give a concrete reason (e.g. "none — <reason>").`, path, s.line));
       } else {
         diagnostics.push(error('DES_ADR', `${s.id} must reference an ADR.`, path, s.line));
       }
@@ -49,7 +56,18 @@ export function validateDesign(text: string, path = '<input>', context: DesignCo
     for (const id of dependencies) {
       if (!ids.design.test(id) || (context.designIds && !context.designIds.has(id))) diagnostics.push(error('DES_DEPENDENCY', `Unknown or invalid component dependency ${id}.`, path, s.line));
     }
-    return { id: s.id, title: s.title, responsibility, interfaces, constraints, requirements, decisions, dependencies, line: s.line };
+    return {
+      id: s.id,
+      title: s.title,
+      responsibility,
+      interfaces,
+      constraints,
+      requirements,
+      decisions,
+      ...(adrExemptionReason !== undefined ? { adrExemptionReason } : {}),
+      dependencies,
+      line: s.line,
+    };
   });
   return validation(value, diagnostics);
 }

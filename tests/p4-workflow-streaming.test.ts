@@ -51,7 +51,7 @@ describe('P4 bounded streaming workflow verification', () => {
     const manifest = await verifyWorkflowLogFile(root, path, { mode: 'strict' });
 
     expect(Buffer.byteLength(text)).toBeGreaterThan(2_000_000);
-    expect(manifest.verification).toMatchObject({
+    expect(manifest.workflow.verification).toMatchObject({
       eventCount: events.length,
       sessionId,
       sourceBytes: Buffer.byteLength(text),
@@ -62,8 +62,8 @@ describe('P4 bounded streaming workflow verification', () => {
     expect((await validateWorkflow(root, { mode: 'strict', maxTranscriptBytes: Buffer.byteLength(text) - 1 })).diagnostics)
       .toContainEqual(expect.objectContaining({ code: 'WORKFLOW_TRANSCRIPT_SIZE' }));
 
-    manifest.verification!.maxTranscriptBytes = manifest.verification!.sourceBytes! - 1;
-    await writeFile(resolve(root, '.musubix/evidence/workflow.json'), `${JSON.stringify(manifest, null, 2)}\n`);
+    manifest.workflow.verification!.maxTranscriptBytes = manifest.workflow.verification!.sourceBytes! - 1;
+    await writeFile(resolve(root, '.musubix/evidence/workflow.json'), `${JSON.stringify(manifest.workflow, null, 2)}\n`);
     expect((await validateWorkflow(root, { mode: 'strict', maxTranscriptBytes: 100_000_000 })).diagnostics)
       .toContainEqual(expect.objectContaining({ code: 'WORKFLOW_TRANSCRIPT_SIZE' }));
   });
@@ -81,8 +81,8 @@ describe('P4 bounded streaming workflow verification', () => {
 
     const streamed = await verifyWorkflowLogFile(root, path, { mode: 'strict' });
 
-    expect(streamed.verification).toMatchObject({ eventCount: 4, sessionId });
-    expect(streamed.verification?.sourceSha256)
+    expect(streamed.workflow.verification).toMatchObject({ eventCount: 4, sessionId });
+    expect(streamed.workflow.verification?.sourceSha256)
       .toBe(createHash('sha256').update(text).digest('hex'));
   });
 
@@ -114,9 +114,9 @@ describe('P4 bounded streaming workflow verification', () => {
     const streamed = await verifyWorkflowLogFile(root, path, { mode: 'strict' });
     const fromString = await verifyWorkflowLog(root, text, { mode: 'strict' });
 
-    expect(streamed.verification?.sourceSha256).toBe(fromString.verification?.sourceSha256);
-    expect(streamed.verification?.transcriptSha256).toBe(fromString.verification?.transcriptSha256);
-    expect(streamed.verification?.sourceSha256)
+    expect(streamed.workflow.verification?.sourceSha256).toBe(fromString.workflow.verification?.sourceSha256);
+    expect(streamed.workflow.verification?.transcriptSha256).toBe(fromString.workflow.verification?.transcriptSha256);
+    expect(streamed.workflow.verification?.sourceSha256)
       .toBe(createHash('sha256').update(text).digest('hex'));
   });
 
@@ -151,7 +151,7 @@ describe('P4 bounded streaming workflow verification', () => {
       sessionReplaced: true,
     });
     expect(sanitized).not.toContain('secret-value');
-    expect((await verifyWorkflowLog(root, sanitized, { mode: 'strict', expectedSessionId: replacement })).verification)
+    expect((await verifyWorkflowLog(root, sanitized, { mode: 'strict', expectedSessionId: replacement })).workflow.verification)
       .toMatchObject({ eventCount: 3, sessionId: replacement });
   });
 
@@ -170,7 +170,7 @@ describe('P4 bounded streaming workflow verification', () => {
       skillInvocations: 1,
     });
     await expect(verifyWorkflowLog(root, await readText(root, 'evidence/workflow.jsonl'), { mode: 'strict' }))
-      .resolves.toMatchObject({ verification: { eventCount: 3, sessionId } });
+      .resolves.toMatchObject({ workflow: { verification: { eventCount: 3, sessionId } } });
   });
 
   it('supports an explicit bounded size override for large real transcripts', async () => {

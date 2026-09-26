@@ -80,6 +80,7 @@ export interface Component {
   constraints: string;
   requirements: string[];
   decisions: string[];
+  adrExemptionReason?: string;
   dependencies: string[];
   line: number;
 }

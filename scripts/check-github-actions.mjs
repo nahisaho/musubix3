@@ -17,7 +17,10 @@ const lockPath = 'scripts/github-actions-lock.json';
 const fixturePath = 'tests/fixtures/github-actions-node24-runtime/baseline.json';
 const releasePublishingFixturePath = 'tests/fixtures/release-asset-publishing/workflow-baseline.json';
 const workflowRoot = process.env.GITHUB_ACTIONS_WORKFLOW_ROOT;
+const projectNode24DocRoot = process.env.GITHUB_ACTIONS_PROJECT_NODE24_DOC_ROOT;
 const changePath = process.env.GITHUB_ACTIONS_CHANGE_PATH ?? '.musubix/changes/CHANGE-0021.md';
+const projectNode24ChangePath = process.env.GITHUB_ACTIONS_PROJECT_NODE24_CHANGE_PATH
+  ?? '.musubix/changes/CHANGE-0047.md';
 const shaPattern = /^[0-9a-f]{40}$/;
 const datePattern = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -26,6 +29,18 @@ function currentPath(path) {
   const fixturePath = resolve(workflowRoot, path);
   if (existsSync(fixturePath)) return fixturePath;
   return path === '.github/workflows/dependency-audit.yml' ? path : fixturePath;
+}
+
+function fixtureCurrentPath(path) {
+  if (!workflowRoot) return path;
+  const copiedPath = resolve(workflowRoot, path);
+  return existsSync(copiedPath) ? copiedPath : path;
+}
+
+function projectDocumentPath(path) {
+  if (!projectNode24DocRoot) return path;
+  const copiedPath = resolve(projectNode24DocRoot, path);
+  return existsSync(copiedPath) ? copiedPath : path;
 }
 
 function diagnostic(code, message, path) {
@@ -225,6 +240,18 @@ function sourceSha256(source) {
   return createHash('sha256').update(source).digest('hex');
 }
 
+function gitBlobId(source) {
+  const bytes = Buffer.from(source);
+  return createHash('sha1').update(`blob ${bytes.length}\0`).update(bytes).digest('hex');
+}
+
+function setupNodeVersions(workflow) {
+  return Object.values(workflow.jobs ?? {}).flatMap((job) =>
+    (job?.steps ?? [])
+      .filter((step) => typeof step?.uses === 'string' && step.uses.startsWith('actions/setup-node@'))
+      .map((step) => String(step.with?.['node-version'])));
+}
+
 function checkoutByteDiagnostics() {
   const diagnostics = [];
   const environment = { ...process.env, GIT_ATTR_NOSYSTEM: '1', GIT_CONFIG_NOSYSTEM: '1' };
@@ -289,13 +316,15 @@ function artifactContract(workflow) {
 }
 
 /** @id CODE-GITHUB-ACTIONS-NODE24-RUNTIME-002
- * @implements REQ-GITHUB-ACTIONS-NODE24-RUNTIME-002 REQ-RELEASE-ASSET-PUBLISHING-004
- * @design DES-GITHUB-ACTIONS-NODE24-RUNTIME-002 DES-RELEASE-ASSET-PUBLISHING-006
+ * @implements REQ-GITHUB-ACTIONS-NODE24-RUNTIME-002 REQ-RELEASE-ASSET-PUBLISHING-004 REQ-GITHUB-ACTIONS-PROJECT-NODE24-001 REQ-GITHUB-ACTIONS-PROJECT-NODE24-002
+ * @design DES-GITHUB-ACTIONS-NODE24-RUNTIME-002 DES-RELEASE-ASSET-PUBLISHING-006 DES-GITHUB-ACTIONS-PROJECT-NODE24-002
  */
 function checkWorkflows() {
   const diagnostics = workflowRoot ? [] : checkoutByteDiagnostics();
-  const fixture = readJson(fixturePath);
-  const releasePublishingFixture = readJson(releasePublishingFixturePath);
+  const workflowFixturePath = fixtureCurrentPath(fixturePath);
+  const publishingFixturePath = fixtureCurrentPath(releasePublishingFixturePath);
+  const fixture = readJson(workflowFixturePath);
+  const releasePublishingFixture = readJson(publishingFixturePath);
   const expected = {
     '.github/workflows/ci.yml': {
       blobId: '9d50637ca015041aa6ab5b9e18dd5b2b30811dad',
@@ -315,18 +344,25 @@ function checkWorkflows() {
     return diagnostics;
   }
   const reviewedReleasePublishing = {
-    '.github/workflows/release.yml': '30aaa213cf5ed8158e374f5e9b71ac8dd3a7eb1c0551d5e274b9e6f8b3183f6a',
-    '.github/workflows/npm-publish.yml': '4ccb354eb54c11ac9e8bf9b7d7925aad95d78292f985cad5e57367108733e616',
+    '.github/workflows/release.yml': {
+      priorCommit: '46edcde9209cc2708c5d6669c98af9e55aa7c7cb',
+      priorBlobId: 'a0013a4f5530c84f812242664523ea965dd67306',
+      priorSourceSha256: '30aaa213cf5ed8158e374f5e9b71ac8dd3a7eb1c0551d5e274b9e6f8b3183f6a',
+      changedLines: 3,
+    },
+    '.github/workflows/npm-publish.yml': {
+      priorCommit: '46edcde9209cc2708c5d6669c98af9e55aa7c7cb',
+      priorBlobId: 'ccb30e3b980a93fa9c323fb81944e5253257f2d7',
+      priorSourceSha256: '4ccb354eb54c11ac9e8bf9b7d7925aad95d78292f985cad5e57367108733e616',
+      changedLines: 1,
+    },
   };
   if (releasePublishingFixture.schemaVersion !== 1
-    || releasePublishingFixture.approvedChange !== 'CHANGE-0023'
-    || JSON.stringify(Object.fromEntries(
-      (releasePublishingFixture.workflows ?? []).map(({ path, sourceSha256: hash }) => [path, hash]),
-    )) !== JSON.stringify(reviewedReleasePublishing)) {
+    || releasePublishingFixture.approvedChange !== 'CHANGE-0047') {
     diagnostics.push(diagnostic(
       'WORKFLOW_REVIEWED_BASELINE',
       'Invalid reviewed release publishing workflow baseline.',
-      releasePublishingFixturePath,
+      publishingFixturePath,
     ));
   }
   let changes;
@@ -341,17 +377,63 @@ function checkWorkflows() {
     if (!record || record.blobId !== expected[path].blobId
       || record.sourceSha256 !== expected[path].sourceSha256
       || sourceSha256(record.source) !== record.sourceSha256) {
-      diagnostics.push(diagnostic('WORKFLOW_BASELINE_PROVENANCE', `Invalid baseline provenance for ${path}.`, fixturePath));
+      diagnostics.push(diagnostic('WORKFLOW_BASELINE_PROVENANCE', `Invalid baseline provenance for ${path}.`, workflowFixturePath));
       continue;
     }
     if (Object.hasOwn(reviewedReleasePublishing, path)) {
-      if (sourceSha256(readFileSync(currentPath(path), 'utf8')) !== reviewedReleasePublishing[path]) {
+      const reviewed = reviewedReleasePublishing[path];
+      const publishingRecord = releasePublishingFixture.workflows?.find((candidate) => candidate.path === path);
+      const currentSource = readFileSync(currentPath(path), 'utf8');
+      if (!publishingRecord
+        || publishingRecord.priorCommit !== reviewed.priorCommit
+        || publishingRecord.priorBlobId !== reviewed.priorBlobId
+        || publishingRecord.priorSourceSha256 !== reviewed.priorSourceSha256
+        || typeof publishingRecord.priorSource !== 'string'
+        || !publishingRecord.priorSource.endsWith('\n')
+        || sourceSha256(publishingRecord.priorSource) !== reviewed.priorSourceSha256
+        || gitBlobId(publishingRecord.priorSource) !== reviewed.priorBlobId) {
+        diagnostics.push(diagnostic(
+          'WORKFLOW_REVIEWED_BASELINE',
+          `Invalid reviewed publishing provenance for ${path}.`,
+          publishingFixturePath,
+        ));
+        continue;
+      }
+      if (publishingRecord.sourceSha256 !== sourceSha256(currentSource)) {
+        diagnostics.push(diagnostic('WORKFLOW_PROTECTED_DRIFT', `Protected workflow behavior changed in ${path}.`, path));
+        continue;
+      }
+      const priorLines = publishingRecord.priorSource.split('\n');
+      const currentLines = currentSource.split('\n');
+      const differences = priorLines.flatMap((line, index) =>
+        line === currentLines[index] ? [] : [{ prior: line, current: currentLines[index] }]);
+      if (priorLines.length !== currentLines.length
+        || differences.length !== reviewed.changedLines
+        || differences.some(({ prior, current }) => {
+          const match = /^(\s*)node-version: 22$/.exec(prior);
+          return !match || current !== `${match[1]}node-version: 24`;
+        })) {
         diagnostics.push(diagnostic('WORKFLOW_PROTECTED_DRIFT', `Protected workflow behavior changed in ${path}.`, path));
       }
       continue;
     }
     const baseline = normalizeUses(parse(record.source));
     const current = normalizeUses(parse(readFileSync(currentPath(path), 'utf8')));
+    const currentCore = current.jobs?.['core-portability'];
+    const currentCoreVersions = (currentCore?.steps ?? [])
+      .filter((step) => typeof step?.uses === 'string' && step.uses.startsWith('actions/setup-node@'))
+      .map((step) => String(step.with?.['node-version']));
+    if (currentCore?.name !== 'Core (${{ matrix.os }}, Node 24)'
+      || JSON.stringify(currentCoreVersions) !== JSON.stringify(['24'])) {
+      diagnostics.push(diagnostic('WORKFLOW_PROTECTED_DRIFT', `Protected workflow behavior changed in ${path}.`, path));
+      continue;
+    }
+    currentCore.name = baseline.jobs['core-portability'].name;
+    const baselineSetupNode = baseline.jobs['core-portability'].steps.find((step) =>
+      typeof step?.uses === 'string' && step.uses.startsWith('actions/setup-node@'));
+    const currentSetupNode = currentCore.steps.find((step) =>
+      typeof step?.uses === 'string' && step.uses.startsWith('actions/setup-node@'));
+    currentSetupNode.with['node-version'] = baselineSetupNode.with['node-version'];
     try {
       applyInputChanges(baseline, current, changes);
     } catch (error) {
@@ -361,11 +443,21 @@ function checkWorkflows() {
       diagnostics.push(diagnostic('WORKFLOW_PROTECTED_DRIFT', `Protected workflow behavior changed in ${path}.`, path));
     }
   }
+  const release = parse(readFileSync(currentPath('.github/workflows/release.yml'), 'utf8'));
+  const publish = parse(readFileSync(currentPath('.github/workflows/npm-publish.yml'), 'utf8'));
+  if (JSON.stringify(setupNodeVersions(release)) !== JSON.stringify(['24', '24', '24'])
+    || JSON.stringify(setupNodeVersions(publish)) !== JSON.stringify(['24'])) {
+    diagnostics.push(diagnostic(
+      'WORKFLOW_PROTECTED_DRIFT',
+      'Primary publishing workflows must use Node.js 24 for every setup-node step.',
+      '.github/workflows/release.yml',
+    ));
+  }
   const packageJson = readJson('package.json');
   if (Object.hasOwn(packageJson, 'packageManager')) {
     diagnostics.push(diagnostic('SETUP_NODE_CACHE_DRIFT', 'package.json must omit packageManager for setup-node v5 cache compatibility.', 'package.json'));
   }
-  const contract = artifactContract(parse(readFileSync(currentPath('.github/workflows/release.yml'), 'utf8')));
+  const contract = artifactContract(release);
   const expectedContract = {
     releaseUpload: 'release-assets/',
     attestDownload: 'release-assets',
@@ -384,8 +476,8 @@ function checkWorkflows() {
 }
 
 /** @id CODE-GITHUB-ACTIONS-NODE24-RUNTIME-003
- * @implements REQ-GITHUB-ACTIONS-NODE24-RUNTIME-003
- * @design DES-GITHUB-ACTIONS-NODE24-RUNTIME-003
+ * @implements REQ-GITHUB-ACTIONS-NODE24-RUNTIME-003 REQ-GITHUB-ACTIONS-PROJECT-NODE24-003
+ * @design DES-GITHUB-ACTIONS-NODE24-RUNTIME-003 DES-GITHUB-ACTIONS-PROJECT-NODE24-003
  */
 function checkRunners() {
   const diagnostics = [];
@@ -408,8 +500,10 @@ function checkRunners() {
       }
     }
   }
-  const english = readFileSync('README.md', 'utf8');
-  const japanese = readFileSync('README-ja.md', 'utf8');
+  const englishPath = projectDocumentPath('README.md');
+  const japanesePath = projectDocumentPath('README-ja.md');
+  const english = readFileSync(englishPath, 'utf8');
+  const japanese = readFileSync(japanesePath, 'utf8');
   const anchors = [
     [english, 'GitHub-hosted runner policy'],
     [english, '`ubuntu-latest`, `windows-latest`, and `macos-latest`'],
@@ -421,11 +515,72 @@ function checkRunners() {
   if (anchors.some(([text, anchor]) => !text.replace(/\s+/g, ' ').includes(anchor))) {
     diagnostics.push(diagnostic('RUNNER_POLICY_DOCUMENTATION', 'Hosted runner policy documentation is incomplete.', 'README.md'));
   }
+  const statements = [
+    [englishPath, english, '- Core CI covers Node 24 on Linux, Windows, and macOS, while the Linux compatibility matrix tests Node 20 and Node 24.'],
+    [englishPath, english, "  The actions' Node.js 24 implementation runtime is independent of the Node.js 20/24 versions tested for this package."],
+    [englishPath, english, 'Core CI runs on Node 24 across Linux, Windows, and macOS, while the Linux compatibility matrix tests Node 20 and Node 24.'],
+    [japanesePath, japanese, '- Core CIはNode 24をLinux、Windows、macOSで実行し、LinuxではNode 20/24の互換性も検証します。'],
+    [japanesePath, japanese, '  Action 自体の Node.js 24 runtime は、package が検証する Node.js 20/24 とは別のものです。'],
+    [japanesePath, japanese, 'Core CIはNode 24をLinux、Windows、macOSで実行し、Linuxのcompatibility matrixではNode 20とNode 24を検証します。'],
+  ];
+  for (const [path, source, statement] of statements) {
+    if (!source.split(/\r?\n/).includes(statement)) {
+      diagnostics.push(diagnostic(
+        'PROJECT_NODE24_DOCUMENTATION',
+        `${path} is missing exact project Node.js 24 statement: ${statement}`,
+        path,
+      ));
+    }
+  }
+  return diagnostics;
+}
+
+/** @id CODE-GITHUB-ACTIONS-PROJECT-NODE24-EVIDENCE-001
+ * @implements REQ-GITHUB-ACTIONS-PROJECT-NODE24-003
+ * @design DES-GITHUB-ACTIONS-PROJECT-NODE24-003
+ */
+function checkProjectNode24Evidence() {
+  const diagnostics = [];
+  if (!existsSync(projectNode24ChangePath)) {
+    return [diagnostic(
+      'CHANGE_PROJECT_NODE24_EVIDENCE',
+      'CHANGE-0047 evidence file is missing.',
+      projectNode24ChangePath,
+    )];
+  }
+  const source = readFileSync(projectNode24ChangePath, 'utf8');
+  const frontMatter = /^---\r?\n([\s\S]*?)\r?\n---/.exec(source)?.[1] ?? '';
+  const status = /^status:\s*(\S+)\s*$/m.exec(frontMatter)?.[1];
+  const completedUrl = /^https:\/\/github\.com\/nahisaho\/musubix3\/actions\/runs\/\d+$/;
+  const completedDeferred = /^https:\/\/github\.com\/nahisaho\/musubix3\/actions\/runs\/\d+; Node\.js 20 warning: absent$/;
+  const anchors = [
+    ['Post-merge CI run:', 'pending until the first merged CI execution.', completedUrl],
+    ['Core ubuntu-latest conclusion:', 'pending.', /^success$/],
+    ['Core windows-latest conclusion:', 'pending.', /^success$/],
+    ['Core macos-latest conclusion:', 'pending.', /^success$/],
+    ['Deferred release evidence:', 'pending until the next natural release execution.', completedDeferred],
+    ['Deferred npm-publish evidence:', 'pending until the next natural publication.', completedDeferred],
+  ];
+  for (const [anchor, pending, completed] of anchors) {
+    const matches = [...source.matchAll(new RegExp(`^- ${anchor.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')} (.+)$`, 'gm'))];
+    const value = matches[0]?.[1];
+    const deferred = anchor.startsWith('Deferred ');
+    const validValue = value === pending || (value !== undefined && completed.test(value));
+    if (matches.length !== 1
+      || !validValue
+      || (status === 'completed' && !deferred && value === pending)) {
+      diagnostics.push(diagnostic(
+        'CHANGE_PROJECT_NODE24_EVIDENCE',
+        `CHANGE-0047 has invalid or duplicate ${anchor} evidence.`,
+        projectNode24ChangePath,
+      ));
+    }
+  }
   return diagnostics;
 }
 
 function checkEvidence() {
-  const diagnostics = [];
+  const diagnostics = checkProjectNode24Evidence();
   const change = readFileSync(changePath, 'utf8').replace(/\s+/g, ' ');
   const required = [
     'Requirements approval was recorded',
