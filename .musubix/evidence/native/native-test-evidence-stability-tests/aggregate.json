@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "commandName": "native-test-evidence-stability-tests",
+  "commandSha256": "24860442f0d7f91c1a9cab286ca6bc701a5a7828169288bad84c63c233b9c55f",
+  "inputFingerprint": "2f85340bd70389dd87b4fa1517bae9b0f1e218f26d27461b6bfd6e9e7f2733fa",
+  "inputs": [
+    {
+      "path": "packages/analysis/src/adapters.ts",
+      "sha256": "4627f5490f742c58a08f0b6b021c85c0275bcbc86d9fd94a7e1965c09575cab2"
+    },
+    {
+      "path": "packages/analysis/src/gate.ts",
+      "sha256": "d55d765f4ca0213bb3f28c33518a099f5229130be505211c230444287418d755"
+    },
+    {
+      "path": "packages/analysis/src/model-correspondence.ts",
+      "sha256": "501051277367c7ef414e010be3a9d5b3de2fcdd2318dec9e03d76b0cd8a211ff"
+    },
+    {
+      "path": "packages/analysis/src/native-test-evidence.ts",
+      "sha256": "71ee36cc8ac12726eb47d23b029d6a48bf31ba9376631abcbf71470dcb418bfe"
+    },
+    {
+      "path": "packages/analysis/src/performance.ts",
+      "sha256": "84c19b511dc2dea05e4579b9e55ac002a2b35c947ee18fc087a7f5ba791f1b91"
+    },
+    {
+      "path": "tests/native-test-evidence-stability.test.ts",
+      "sha256": "4ee520bf86471682bb5d1780e3a204613cc1732b3a528b504c72472abeec6696"
+    }
+  ],
+  "adapter": "vitest",
+  "sourceKind": "file",
+  "reportPath": ".musubix/evidence/native/native-test-evidence-stability-tests/aggregate.json",
+  "processStatus": "completed",
+  "exitCode": 0,
+  "tests": [
+    {
+      "id": "TEST-NATIVE-TEST-EVIDENCE-STABILITY-001",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-NATIVE-TEST-EVIDENCE-STABILITY-002",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-NATIVE-TEST-EVIDENCE-STABILITY-003",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-NATIVE-TEST-EVIDENCE-STABILITY-004",
+      "status": "passed"
+    }
+  ]
+}

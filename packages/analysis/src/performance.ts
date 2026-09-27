@@ -1,10 +1,17 @@
 import { error, validateRequirements, type Diagnostic, type Requirement } from '../../domain/src/index.js';
-import { adapterInvocation, mergeAdapterArgs, normalizeAdapterReport, readAdapterOutput } from './adapters.js';
+import { adapterCommandArgs, adapterInvocation } from './adapters.js';
 import { loadConfig, type CommandConfig } from './config.js';
 import { digest, exists, files, readText, safePath, within, writeJson } from './files.js';
 import type { ProcessResult } from './process.js';
 import { parseMusubixTestReport, type MusubixTestReport } from './tdd.js';
 import { withEvidenceWriterLock } from './evidence-writer-lock.js';
+import {
+  createNativeTestEvidencePassContext,
+  nativeTestCommandSha256,
+  validateNativeTestEvidence,
+  type NativeTestEvidencePassContext,
+} from './native-test-evidence.js';
+import { buildTrace, type TraceGraph } from './trace.js';
 
 type TestResult = MusubixTestReport['tests'][number];
 export type PerformanceReportSourceKind = 'file' | 'directory' | 'stdout';
@@ -123,7 +130,7 @@ function canonical(value: unknown): string {
 }
 
 export function performanceCommandSha256(executable: string, args: string[]): string {
-  return digest(canonical({ executable, arguments: args }));
+  return nativeTestCommandSha256(executable, args);
 }
 
 function executionSha256(execution: Omit<PerformanceExecution, 'recordSha256'>): string {
@@ -223,7 +230,7 @@ async function writePerformanceEvidenceUnlocked(
   return evidence;
 }
 
-function configuredInvocation(command: CommandConfig): {
+function configuredInvocation(root: string, command: CommandConfig): {
   reportPath: string;
   sourceKind: PerformanceReportSourceKind;
   args: string[];
@@ -237,11 +244,10 @@ function configuredInvocation(command: CommandConfig): {
   }
   if (command.adapter) {
     const invocation = adapterInvocation(command.adapter, command.name);
-    const configuredArgs = command.args.map((arg) => arg.replaceAll('{reportPath}', invocation.reportPath));
     return {
       reportPath: invocation.reportPath,
       sourceKind: invocation.source,
-      args: mergeAdapterArgs(command.adapter, configuredArgs, invocation.args),
+      args: adapterCommandArgs(root, command, invocation),
     };
   }
   return null;
@@ -273,20 +279,31 @@ async function currentReport(
   root: string,
   command: CommandConfig,
   execution: PerformanceExecution,
-): Promise<{ text: string; tests: TestResult[] } | null> {
+  trace: TraceGraph | undefined,
+  passContext: NativeTestEvidencePassContext,
+): Promise<{ text: string; tests: TestResult[]; diagnostics: Diagnostic[] } | null> {
   const absolute = await safePath(root, execution.reportPath);
   const invocation = command.adapter ? adapterInvocation(command.adapter, command.name) : null;
-  const text = invocation
-    ? await readAdapterOutput(invocation, absolute, '', root)
-    : await exists(absolute) ? await readText(root, execution.reportPath) : null;
+  const text = await exists(absolute) ? await readText(root, execution.reportPath) : null;
   if (text === null) return null;
-  const report = command.testReport
-    ? parseMusubixTestReport(text)
-    : normalizeAdapterReport(command.adapter!, text);
-  return { text, tests: report.tests };
+  if (!invocation) return { text, tests: parseMusubixTestReport(text).tests, diagnostics: [] };
+  if (!trace) throw new Error('Current trace is required for native test evidence validation.');
+  const configured = configuredInvocation(root, command)!;
+  const validated = await validateNativeTestEvidence(root, trace, text, {
+    commandName: command.name,
+    commandSha256: performanceCommandSha256(command.command, configured.args),
+    adapter: command.adapter!,
+    sourceKind: invocation.source,
+    reportPath: invocation.reportPath,
+  }, passContext);
+  return { text, tests: validated.evidence?.tests ?? [], diagnostics: validated.diagnostics };
 }
 
-export async function validatePerformanceEvidence(root: string): Promise<{
+/** @id CODE-NATIVE-TEST-EVIDENCE-STABILITY-003
+ * @implements REQ-NATIVE-TEST-EVIDENCE-STABILITY-004
+ * @design DES-NATIVE-TEST-EVIDENCE-STABILITY-004
+ */
+export async function validatePerformanceEvidence(root: string, options: { trace?: TraceGraph } = {}): Promise<{
   present: boolean;
   valid: boolean;
   budgets: number;
@@ -313,6 +330,9 @@ export async function validatePerformanceEvidence(root: string): Promise<{
     return { present: true, valid: false, budgets: requirements.length, validRequirements: [], diagnostics: [error('PERFORMANCE_EVIDENCE_SCHEMA', 'Invalid performance evidence.', path)] };
   }
   const config = await loadConfig(root);
+  let currentTrace = options.trace;
+  const passContext = createNativeTestEvidencePassContext();
+  const trace = async (): Promise<TraceGraph> => currentTrace ??= await buildTrace(root, false);
   const executionIds = new Set<string>();
   const reportOwners = new Map<string, string>();
   for (const execution of value.executions) {
@@ -340,7 +360,7 @@ export async function validatePerformanceEvidence(root: string): Promise<{
     }
     reportOwners.set(execution.reportPath, execution.executionId);
     const command = config.commands.find((candidate) => candidate.name === execution.commandName);
-    const invocation = command ? configuredInvocation(command) : null;
+    const invocation = command ? configuredInvocation(root, command) : null;
     if (!command || !invocation || invocation.reportPath !== execution.reportPath
       || invocation.sourceKind !== execution.sourceKind
       || performanceCommandSha256(command.command, invocation.args) !== execution.commandSha256) {
@@ -351,9 +371,17 @@ export async function validatePerformanceEvidence(root: string): Promise<{
     }
     if (command && invocation) {
       try {
-        const current = await currentReport(root, command, execution);
+        const current = await currentReport(
+          root,
+          command,
+          execution,
+          command.adapter ? await trace() : undefined,
+          passContext,
+        );
         if (!current || digest(current.text) !== execution.reportSha256) {
           diagnostics.push(error('PERFORMANCE_REPORT_TAMPERED', `${execution.reportPath} is missing or changed since the gate run.`, execution.reportPath));
+        } else if (current.diagnostics.length) {
+          diagnostics.push(...current.diagnostics);
         } else if (canonical(current.tests) !== canonical(execution.tests)) {
           diagnostics.push(error('PERFORMANCE_REPORT_MISMATCH', `${execution.reportPath} no longer normalizes to its recorded test results.`, execution.reportPath));
         }

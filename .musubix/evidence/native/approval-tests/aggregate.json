@@ -1,1 +1,59 @@
-{"numTotalTestSuites":4,"numPassedTestSuites":4,"numFailedTestSuites":0,"numPendingTestSuites":0,"numTotalTests":8,"numPassedTests":8,"numFailedTests":0,"numPendingTests":0,"numTodoTests":0,"snapshot":{"added":0,"failure":false,"filesAdded":0,"filesRemoved":0,"filesRemovedList":[],"filesUnmatched":0,"filesUpdated":0,"matched":0,"total":0,"unchecked":0,"uncheckedKeysByFile":[],"unmatched":0,"updated":0,"didUpdate":false},"startTime":1790444998393,"success":true,"testResults":[{"assertionResults":[{"ancestorTitles":["artifact-bound approval evidence"],"fullName":"artifact-bound approval evidence TEST-HUMAN-APPROVAL-GATES-001 records explicitly confirmed approval fields","status":"passed","title":"TEST-HUMAN-APPROVAL-GATES-001 records explicitly confirmed approval fields","duration":303.66917,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["artifact-bound approval evidence"],"fullName":"artifact-bound approval evidence TEST-HUMAN-APPROVAL-GATES-006 recomputes quality before release approval","status":"passed","title":"TEST-HUMAN-APPROVAL-GATES-006 recomputes quality before release approval","duration":3266.94302,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["artifact-bound approval evidence"],"fullName":"artifact-bound approval evidence TEST-HUMAN-APPROVAL-GATES-002 binds confirmation to the exact manifest hash","status":"passed","title":"TEST-HUMAN-APPROVAL-GATES-002 binds confirmation to the exact manifest hash","duration":158.46921099999963,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["artifact-bound approval evidence"],"fullName":"artifact-bound approval evidence TEST-HUMAN-APPROVAL-GATES-003 binds ordinary JSONL inputs and detects staleness","status":"passed","title":"TEST-HUMAN-APPROVAL-GATES-003 binds ordinary JSONL inputs and detects staleness","duration":223.46418799999992,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["artifact-bound approval evidence"],"fullName":"artifact-bound approval evidence TEST-HUMAN-APPROVAL-GATES-004 blocks design approval before requirements approval","status":"passed","title":"TEST-HUMAN-APPROVAL-GATES-004 blocks design approval before requirements approval","duration":242.25000099999943,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["artifact-bound approval evidence"],"fullName":"artifact-bound approval evidence TEST-HUMAN-APPROVAL-GATES-007 rejects invalid artifacts and reports malformed evidence","status":"passed","title":"TEST-HUMAN-APPROVAL-GATES-007 rejects invalid artifacts and reports malformed evidence","duration":790.2670699999999,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["approval transition gates"],"fullName":"approval transition gates TEST-HUMAN-APPROVAL-GATES-005 blocks TDD Red until design approval is current","status":"passed","title":"TEST-HUMAN-APPROVAL-GATES-005 blocks TDD Red until design approval is current","duration":295.22334300000057,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["approval configuration compatibility"],"fullName":"approval configuration compatibility TEST-HUMAN-APPROVAL-GATES-008 preserves legacy configs and prevents policy downgrade","status":"passed","title":"TEST-HUMAN-APPROVAL-GATES-008 preserves legacy configs and prevents policy downgrade","duration":18.928060000000187,"failureMessages":[],"meta":{},"tags":[]}],"startTime":1790444999133,"endTime":1790445009680.6692,"status":"passed","message":"","name":"/home/nahisaho/GitHub/musubix3/tests/approval.test.ts"}]}
+{
+  "schemaVersion": 1,
+  "commandName": "approval-tests",
+  "commandSha256": "a3fd665db56e2bf85352cc688df5799fc58bc9c7fd3e92c806cda2d5482a1687",
+  "inputFingerprint": "5bf3990755821f2ccf3d9383bdba17cbb5f486b3e9cb4827ac395a4a3c9f8386",
+  "inputs": [
+    {
+      "path": "packages/analysis/src/approval-record.ts",
+      "sha256": "08b934d8c43b6d9b298ec4615b2bcabefbaf7cd143152fe6e1e08ea95cdd288d"
+    },
+    {
+      "path": "packages/analysis/src/approval.ts",
+      "sha256": "033bbf1b8e55e67dd0eeb0d73913ba4d767395486a1bbdf16c05a49f2f2041ac"
+    },
+    {
+      "path": "tests/approval.test.ts",
+      "sha256": "6e0e909eff23c37a6a3b7bfdb0bf495bcca3084d1b44c852d1eeb902bb3d44ca"
+    }
+  ],
+  "adapter": "vitest",
+  "sourceKind": "file",
+  "reportPath": ".musubix/evidence/native/approval-tests/aggregate.json",
+  "processStatus": "completed",
+  "exitCode": 0,
+  "tests": [
+    {
+      "id": "TEST-HUMAN-APPROVAL-GATES-001",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-HUMAN-APPROVAL-GATES-002",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-HUMAN-APPROVAL-GATES-003",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-HUMAN-APPROVAL-GATES-004",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-HUMAN-APPROVAL-GATES-005",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-HUMAN-APPROVAL-GATES-006",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-HUMAN-APPROVAL-GATES-007",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-HUMAN-APPROVAL-GATES-008",
+      "status": "passed"
+    }
+  ]
+}

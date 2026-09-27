@@ -1,1 +1,47 @@
-{"numTotalTestSuites":1,"numPassedTestSuites":1,"numFailedTestSuites":0,"numPendingTestSuites":0,"numTotalTests":3,"numPassedTests":3,"numFailedTests":0,"numPendingTests":0,"numTodoTests":0,"snapshot":{"added":0,"failure":false,"filesAdded":0,"filesRemoved":0,"filesRemovedList":[],"filesUnmatched":0,"filesUpdated":0,"matched":0,"total":0,"unchecked":0,"uncheckedKeysByFile":[],"unmatched":0,"updated":0,"didUpdate":false},"startTime":1790445260600,"success":true,"testResults":[{"assertionResults":[{"ancestorTitles":[],"fullName":"TEST-CHANGE-QUALITY-REFRESH-001 appends a current Quality checkpoint and retains immutable history","status":"passed","title":"TEST-CHANGE-QUALITY-REFRESH-001 appends a current Quality checkpoint and retains immutable history","duration":6298.689189999999,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-CHANGE-QUALITY-REFRESH-002 rejects unnecessary refreshes and projects dry-run without reserving order","status":"passed","title":"TEST-CHANGE-QUALITY-REFRESH-002 rejects unnecessary refreshes and projects dry-run without reserving order","duration":5711.572465,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-CHANGE-QUALITY-REFRESH-003 validates versioned lineage and exposes deterministic recovery","status":"passed","title":"TEST-CHANGE-QUALITY-REFRESH-003 validates versioned lineage and exposes deterministic recovery","duration":2889.8493789999993,"failureMessages":[],"meta":{},"tags":[]}],"startTime":1790445261493,"endTime":1790445275423.8494,"status":"passed","message":"","name":"/home/nahisaho/GitHub/musubix3/tests/change-quality-refresh.test.ts"}]}
+{
+  "schemaVersion": 1,
+  "commandName": "change-quality-refresh-tests",
+  "commandSha256": "0379ef58cecdbf05a48c3dfc273b5ae37a60401bd8cd53def54e9928463438fe",
+  "inputFingerprint": "bacbe5d41f4ed8af7ebcc6a4ab2a971c2c0f87d874bd8327970ddaa1da4fd5b9",
+  "inputs": [
+    {
+      "path": "packages/analysis/src/change-evidence.ts",
+      "sha256": "564bceca2edd2d8922b421ecd3b83f6df4d428b556e81450cd0819b5728a29e2"
+    },
+    {
+      "path": "packages/analysis/src/change.ts",
+      "sha256": "0a39698ff4847828fc6d84e5421cd85434571ab278d5e048cc92d2c65bf403f2"
+    },
+    {
+      "path": "packages/analysis/src/quality-refresh.ts",
+      "sha256": "29f5abc947fc41d654ec5ed1ef7baf40506254bdbcb72a8d4b18cc4f747cebc0"
+    },
+    {
+      "path": "packages/cli/src/main.ts",
+      "sha256": "25aa8d566e3851cee100b3c29b3d9c527594fe5778cd9e8222a00124e859991d"
+    },
+    {
+      "path": "tests/change-quality-refresh.test.ts",
+      "sha256": "45efc1697f4d9ee276f9499b82ead4364fe04f47d7a1370aaac21ce72c8d0a15"
+    }
+  ],
+  "adapter": "vitest",
+  "sourceKind": "file",
+  "reportPath": ".musubix/evidence/native/change-quality-refresh-tests/aggregate.json",
+  "processStatus": "completed",
+  "exitCode": 0,
+  "tests": [
+    {
+      "id": "TEST-CHANGE-QUALITY-REFRESH-001",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-CHANGE-QUALITY-REFRESH-002",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-CHANGE-QUALITY-REFRESH-003",
+      "status": "passed"
+    }
+  ]
+}

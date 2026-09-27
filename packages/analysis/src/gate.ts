@@ -2,7 +2,7 @@ import { randomUUID } from 'node:crypto';
 import { unlink } from 'node:fs/promises';
 import { validateConstitution, validateDesign, validateRequirements, type Diagnostic, type Evidence } from '../../domain/src/index.js';
 import { loadConfig, loadPolicyBaseline, policyDiagnostics, commandCwd, type Config } from './config.js';
-import { digest, evidenceInputPaths, exists, files, readText, safePath, snapshot, within, writeJson } from './files.js';
+import { digest, evidenceInputPaths, exists, files, readText, safePath, snapshot, within, writeJson, writeText } from './files.js';
 import { graphGate, graphImpact, indexGraph } from './graph.js';
 import { formalCheck, type FormalResult } from './formal.js';
 import { validateWorkflow } from './workflow.js';
@@ -13,7 +13,14 @@ import { activeWaivers, buildWaiverContext, waiverEvidenceDiagnostics } from './
 import { deriveWorkflowWaiverAudit } from './workflow-waiver.js';
 import { changedFiles, runProcess, type Runner } from './process.js';
 import { buildTrace, checkTrace } from './trace.js';
-import { adapterInvocation, clearAdapterOutput, mergeAdapterArgs, normalizeAdapterReport, readAdapterOutput } from './adapters.js';
+import {
+  adapterCommandArgs,
+  adapterInvocation,
+  clearAdapterOutput,
+  normalizeAdapterReport,
+  readAdapterOutput,
+  removeAdapterOutput,
+} from './adapters.js';
 import {
   createPerformanceExecution, performanceCommandSha256, validatePerformanceEvidence,
   writePerformanceEvidence, type PerformanceExecution,
@@ -31,6 +38,11 @@ import {
   type ApprovalValidation,
 } from './approval.js';
 import { withEvidenceWriterLock } from './evidence-writer-lock.js';
+import {
+  createNativeTestEvidence,
+  NativeTestEvidenceError,
+  serializeNativeTestEvidence,
+} from './native-test-evidence.js';
 
 export interface GateReport {
   schemaVersion: 1;
@@ -91,8 +103,8 @@ export function aggregateStatus(checks: Evidence[]): 'pass' | 'fail' {
 }
 
 /** @id CODE-CLI-WORKFLOW-UX-005
- * @implements REQ-CLI-WORKFLOW-UX-005
- * @design DES-CLI-WORKFLOW-UX-005
+ * @implements REQ-CLI-WORKFLOW-UX-005 REQ-NATIVE-TEST-EVIDENCE-STABILITY-001
+ * @design DES-CLI-WORKFLOW-UX-005 DES-NATIVE-TEST-EVIDENCE-STABILITY-003
  */
 export async function runGate(root: string, options: {
   changed?: boolean;
@@ -279,7 +291,6 @@ async function runGateUnlocked(root: string, options: {
   for (const [commandIndex, command] of config.commands.entries()) {
     let reportPath: string | undefined;
     let adapterOutput: ReturnType<typeof adapterInvocation> | undefined;
-    let adapterArgs: string[] = [];
     if (command.testReport) {
       configuredTestReports++;
       reportPath = command.testReport.path;
@@ -290,19 +301,18 @@ async function runGateUnlocked(root: string, options: {
       const invocation = adapterInvocation(command.adapter, command.name);
       adapterOutput = invocation;
       reportPath = invocation.reportPath;
-      adapterArgs = invocation.args;
-      await clearAdapterOutput(invocation, await safePath(root, reportPath), root);
+      await clearAdapterOutput(invocation, await safePath(root, invocation.rawReportPath), root);
+      await removeAdapterOutput(await safePath(root, reportPath), root);
     } else if (command.mutationReport) {
       reportPath = command.mutationReport.path;
       const absolute = await safePath(root, reportPath);
       if (await exists(absolute)) await unlink(absolute);
     }
-    const configuredArgs = reportPath
-      ? command.args.map((arg) => arg.replaceAll('{reportPath}', reportPath))
-      : command.args;
     const args = command.adapter
-      ? mergeAdapterArgs(command.adapter, configuredArgs, adapterArgs)
-      : configuredArgs;
+      ? adapterCommandArgs(root, command, adapterOutput!)
+      : reportPath
+        ? command.args.map((arg) => arg.replaceAll('{reportPath}', reportPath))
+        : command.args;
     const result = await runner(command.command, args, { cwd: commandCwd(root, command), timeoutMs: command.timeoutMs });
     const commandCheck: Evidence = {
       name: `command:${command.name}`, required: command.required,
@@ -311,9 +321,13 @@ async function runGateUnlocked(root: string, options: {
       durationMs: result.durationMs, exitCode: result.exitCode, stdout: result.stdout, stderr: result.stderr,
     };
     commandChecks.push(commandCheck);
+    if (adapterOutput && (result.status !== 'completed' || result.exitCode !== 0)) {
+      await removeAdapterOutput(await safePath(root, adapterOutput.rawReportPath), root);
+      await removeAdapterOutput(await safePath(root, adapterOutput.reportPath), root);
+    }
     if (reportPath && result.status === 'completed' && result.exitCode === 0) {
       const reportText = adapterOutput
-        ? await readAdapterOutput(adapterOutput, await safePath(root, reportPath), result.stdout, root)
+        ? await readAdapterOutput(adapterOutput, await safePath(root, adapterOutput.rawReportPath), result.stdout, root)
         : await exists(within(root, reportPath)) ? await readText(root, reportPath) : null;
       if (reportText === null) {
         const diagnostic: Diagnostic = {
@@ -327,6 +341,10 @@ async function runGateUnlocked(root: string, options: {
         commandCheck.status = 'fail';
         commandCheck.diagnostics = [...commandCheck.diagnostics ?? [], diagnostic];
         commandCheck.summary = `${commandCheck.summary} Structured evidence is missing.`;
+        if (adapterOutput) {
+          await removeAdapterOutput(await safePath(root, adapterOutput.rawReportPath), root);
+          await removeAdapterOutput(await safePath(root, adapterOutput.reportPath), root);
+        }
       } else {
         try {
           if (command.mutationReport) {
@@ -346,6 +364,23 @@ async function runGateUnlocked(root: string, options: {
           const report = command.testReport
             ? parseMusubixTestReport(reportText)
             : normalizeAdapterReport(command.adapter!, reportText);
+          let durableReportText = reportText;
+          if (adapterOutput) {
+            const evidence = await createNativeTestEvidence(root, trace, {
+              commandName: command.name,
+              executable: command.command,
+              args,
+              adapter: command.adapter!,
+              sourceKind: adapterOutput.source,
+              reportPath,
+              processStatus: result.status,
+              exitCode: result.exitCode,
+              tests: report.tests,
+            });
+            durableReportText = serializeNativeTestEvidence(evidence);
+            await writeText(root, reportPath, durableReportText);
+            await removeAdapterOutput(await safePath(root, adapterOutput.rawReportPath), root);
+          }
           const skippedTests = report.tests.filter((test) => test.status === 'skipped');
           const unsuccessfulTests = report.tests.filter((test) => test.status === 'failed' || test.status === 'error');
           const executedTests = report.tests.filter((test) => test.status !== 'skipped');
@@ -405,7 +440,7 @@ async function runGateUnlocked(root: string, options: {
               commandSha256: performanceCommandSha256(command.command, args),
               reportPath,
               sourceKind,
-              reportSha256: digest(reportText),
+              reportSha256: digest(durableReportText),
               processStatus: result.status,
               exitCode: result.exitCode,
               tests: report.tests,
@@ -415,6 +450,7 @@ async function runGateUnlocked(root: string, options: {
             }
           }
         } catch (cause) {
+          const nativeDiagnostics = cause instanceof NativeTestEvidenceError ? cause.diagnostics : [];
           const diagnostic: Diagnostic = {
             code: command.mutationReport ? 'MUTATION_REPORT_INVALID' : 'TEST_REPORT_INVALID',
             severity: 'error',
@@ -422,10 +458,14 @@ async function runGateUnlocked(root: string, options: {
             path: reportPath,
           };
           if (command.mutationReport) mutationReportDiagnostics.push(diagnostic);
-          else if (command.required) testReportDiagnostics.push(diagnostic);
+          else if (command.required) testReportDiagnostics.push(...nativeDiagnostics, diagnostic);
           commandCheck.status = 'fail';
-          commandCheck.diagnostics = [...commandCheck.diagnostics ?? [], diagnostic];
+          commandCheck.diagnostics = [...commandCheck.diagnostics ?? [], ...nativeDiagnostics, diagnostic];
           commandCheck.summary = `${commandCheck.summary} Structured ${command.mutationReport ? 'mutation' : 'test'} evidence is invalid.`;
+          if (adapterOutput) {
+            await removeAdapterOutput(await safePath(root, adapterOutput.rawReportPath), root);
+            await removeAdapterOutput(await safePath(root, adapterOutput.reportPath), root);
+          }
         }
       }
     }
@@ -456,7 +496,7 @@ async function runGateUnlocked(root: string, options: {
     diagnostics: identityDiagnostics,
   });
   await writePerformanceEvidence(root, performanceExecutions, gateRunId);
-  const performance = await validatePerformanceEvidence(root);
+  const performance = await validatePerformanceEvidence(root, { trace });
   checks.push({
     name: 'performance',
     required: required('performance') || performance.budgets > 0,
@@ -482,7 +522,7 @@ async function runGateUnlocked(root: string, options: {
     diagnostics: mutation.diagnostics,
   });
   await writeModelCorrespondenceEvidence(root, trace, formalEvidence, performanceExecutions, gateRunId);
-  const correspondence = await validateModelCorrespondenceEvidence(root);
+  const correspondence = await validateModelCorrespondenceEvidence(root, { trace });
   checks.push({
     name: 'model-correspondence',
     required: required('model-correspondence') || correspondence.requirements > 0,
@@ -699,11 +739,12 @@ export async function projectStatus(root: string): Promise<{
       status = evidence.fingerprints && JSON.stringify(evidence.fingerprints) === JSON.stringify(await evidenceSnapshot(root)) ? evidence.status : 'stale';
       if (status === 'pass' && (!evidence.checks?.length || aggregateStatus(evidence.checks) !== 'pass')) status = 'stale';
       if (status === 'pass') {
-        const performance = await validatePerformanceEvidence(root);
+        const evidenceTrace = await buildTrace(root, false);
+        const performance = await validatePerformanceEvidence(root, { trace: evidenceTrace });
         if (performance.budgets > 0 && !performance.valid) status = 'stale';
         const mutation = await validateMutationEvidence(root);
         if ((mutation.present || mutation.requirements > 0) && !mutation.valid) status = 'stale';
-        const correspondence = await validateModelCorrespondenceEvidence(root);
+        const correspondence = await validateModelCorrespondenceEvidence(root, { trace: evidenceTrace });
         if (correspondence.requirements > 0 && !correspondence.valid) status = 'stale';
       }
     }

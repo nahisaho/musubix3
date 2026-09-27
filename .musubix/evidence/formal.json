@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-26T17:49:56.200Z",
-  "totalRequirements": 204,
+  "generatedAt": "2026-09-27T01:41:24.221Z",
+  "totalRequirements": 208,
   "modeledRequirements": 11,
-  "modeledFraction": 0.05392156862745098,
+  "modeledFraction": 0.052884615384615384,
   "result": {
     "valid": true,
     "abstraction": "Consistency of explicit branch-scoped conditional, exact unit-normalized integer numeric, bounded temporal interval, deterministic state-transition, and controlled unconditional Boolean constraints; not implementation correctness.",
@@ -185,6 +185,10 @@
       "REQ-HUMAN-APPROVAL-GATES-007",
       "REQ-HUMAN-APPROVAL-GATES-008",
       "REQ-MODEL-CORRESPONDENCE-EVIDENCE-GUIDANCE-001",
+      "REQ-NATIVE-TEST-EVIDENCE-STABILITY-001",
+      "REQ-NATIVE-TEST-EVIDENCE-STABILITY-002",
+      "REQ-NATIVE-TEST-EVIDENCE-STABILITY-003",
+      "REQ-NATIVE-TEST-EVIDENCE-STABILITY-004",
       "REQ-NPM-AUDIT-REMEDIATION-001",
       "REQ-NPM-AUDIT-REMEDIATION-002",
       "REQ-NPM-AUDIT-REMEDIATION-003",
@@ -827,6 +831,26 @@
       {
         "code": "FORMAL_UNSUPPORTED",
         "severity": "warning",
+        "message": "REQ-NATIVE-TEST-EVIDENCE-STABILITY-001 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-NATIVE-TEST-EVIDENCE-STABILITY-002 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-NATIVE-TEST-EVIDENCE-STABILITY-003 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-NATIVE-TEST-EVIDENCE-STABILITY-004 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
         "message": "REQ-NPM-AUDIT-REMEDIATION-001 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
       },
       {
@@ -1272,6 +1296,7 @@
     ".musubix/features/github-actions-project-node24/requirements.md": "1a2eddd6b5e2d35ddb900e1b1868120c25df10caacc17932d119270813efe5e3",
     ".musubix/features/human-approval-gates/requirements.md": "f2ae2380935831bb102cd6a7726f2a208ab1719e035157302ef51ed28f624fb0",
     ".musubix/features/model-correspondence-evidence-guidance/requirements.md": "d7ca8b823ddfd3265e89f2892003e5eb95faad7e9b3972b249de5f2902446511",
+    ".musubix/features/native-test-evidence-stability/requirements.md": "77d3d6349f9524bf74951962508fba951f903453434a447bdaee730b8f659127",
     ".musubix/features/npm-audit-remediation/requirements.md": "7f982e1ee2dccea7652047fba10a0b882525020e82c41863a3c85c788d3df6c9",
     ".musubix/features/release-approval-ordering/requirements.md": "53ae383ea5fc4e918225abfbadaeec9dbccccb624e512c8cff480a17ba15f112",
     ".musubix/features/release-asset-publishing/requirements.md": "8bf4436d5b694e32b683edbb620573589b28b74c35a076182c971bdb79cd4472",

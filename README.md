@@ -730,6 +730,26 @@ against its own `cwd` instead of the project root. Evidence and report paths
 (`tddReport`/`testReport`/`mutationReport`, `.musubix/config.json` itself)
 are always resolved from the project root regardless of `cwd`; only the
 spawned process's own working directory changes.
+
+Full-command built-in adapters write volatile native output below
+`.musubix/cache/native/**` and replace the tracked
+`.musubix/evidence/native/<command>/aggregate*` path with one canonical JSON
+record after successful normalization. The canonical record retains command,
+adapter, process, normalized test, and trace-linked input provenance while
+excluding timestamps and elapsed durations. Performance and
+model-correspondence validation recheck its exact bytes, command digest, and
+current input fingerprint. `NATIVE_TEST_EVIDENCE_SCHEMA`,
+`NATIVE_TEST_EVIDENCE_COMMAND_MISMATCH`, and
+`NATIVE_TEST_EVIDENCE_SOURCE_MISMATCH` identify invalid, reconfigured, or stale
+records.
+
+For full-command aggregate invocations, `{reportPath}` and generated
+report-path arguments refer to the raw cache path relative to the command's
+`cwd`; the durable path remains project-root-relative. This changes command
+digests only for adapters whose arguments contain a report path. Go/Cargo
+stdout adapter digests and targeted TDD report paths and digests are unchanged.
+Existing raw aggregate files or directories are replaced by the next successful
+gate run.
 `qualityProfile` is `custom` by default. `minimal` preserves the core SDD gate,
 `recommended` also requires strict Code Graph, TDD and structured test
 identities, and `release` requires the complete formal, mutation, workflow,
@@ -1002,7 +1022,9 @@ Cargo/Maven `target/`, manifest-scoped .NET `bin/` and `obj/`, and project-local
 `.nuget/packages/` output are excluded, but source-like generated inputs remain fail-closed.
 Write command-generated reports under `.musubix/evidence/native/` rather than the
 tracked source tree, otherwise a command that writes its own report during the
-gate invalidates input stability.
+gate invalidates input stability. Commands must not mutate trace-linked source
+or test inputs during the gate; canonical native evidence validation reports
+deterministic added, removed, and modified paths and fails closed.
 Built-in adapters own their targeting and report arguments. A
 legacy leading Cargo/Go `test` subcommand is merged safely; conflicting report
 flags such as `--json-report` are rejected.

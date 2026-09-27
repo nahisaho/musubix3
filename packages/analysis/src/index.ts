@@ -9,6 +9,7 @@ export * from './workflow.js';
 export * from './test-report.js';
 export * from './tdd.js';
 export * from './adapters.js';
+export * from './native-test-evidence.js';
 export * from './attestation.js';
 export * from './performance.js';
 export * from './mutation.js';

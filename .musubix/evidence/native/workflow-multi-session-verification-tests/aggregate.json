@@ -1,1 +1,103 @@
-{"numTotalTestSuites":2,"numPassedTestSuites":2,"numFailedTestSuites":0,"numPendingTestSuites":0,"numTotalTests":18,"numPassedTests":18,"numFailedTests":0,"numPendingTests":0,"numTodoTests":0,"snapshot":{"added":0,"failure":false,"filesAdded":0,"filesRemoved":0,"filesRemovedList":[],"filesUnmatched":0,"filesUpdated":0,"matched":0,"total":0,"unchecked":0,"uncheckedKeysByFile":[],"unmatched":0,"updated":0,"didUpdate":false},"startTime":1790445373164,"success":true,"testResults":[{"assertionResults":[{"ancestorTitles":["Workflow multi-session verification"],"fullName":"Workflow multi-session verification TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-001 retains verified invocations across separate persisting runs","status":"passed","title":"TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-001 retains verified invocations across separate persisting runs","duration":70.049621,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["Workflow multi-session verification"],"fullName":"Workflow multi-session verification TEST-WORKFLOW-MULTI-SESSION-001 reconciles declarations whose invocations span separate session transcript files","status":"passed","title":"TEST-WORKFLOW-MULTI-SESSION-001 reconciles declarations whose invocations span separate session transcript files","duration":83.543005,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["Workflow multi-session verification"],"fullName":"Workflow multi-session verification rejects the same tool call ID appearing in more than one supplied transcript file","status":"passed","title":"rejects the same tool call ID appearing in more than one supplied transcript file","duration":14.96592499999997,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["Workflow multi-session verification"],"fullName":"Workflow multi-session verification rejects more than one transcript file in strict mode","status":"passed","title":"rejects more than one transcript file in strict mode","duration":12.100877999999966,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["Workflow multi-session verification"],"fullName":"Workflow multi-session verification TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-007 documents reset, limits, and migration recovery","status":"passed","title":"TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-007 documents reset, limits, and migration recovery","duration":1.1970649999998386,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["Workflow multi-session verification"],"fullName":"Workflow multi-session verification TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-002 reports one ledger build and memoized scope heads","status":"passed","title":"TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-002 reports one ledger build and memoized scope heads","duration":1039.941345,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["Workflow multi-session verification"],"fullName":"Workflow multi-session verification TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-004 rejects a source-shape mutation even with recomputed digests","status":"passed","title":"TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-004 rejects a source-shape mutation even with recomputed digests","duration":36.54232400000001,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["Workflow multi-session verification"],"fullName":"Workflow multi-session verification TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-009 keeps unverified precedence after recordWorkflow retains stale bindings","status":"passed","title":"TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-009 keeps unverified precedence after recordWorkflow retains stale bindings","duration":33.17437000000018,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["Workflow multi-session verification"],"fullName":"Workflow multi-session verification TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-010 keeps run session constraints transient and validates exact durable shapes","status":"passed","title":"TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-010 keeps run session constraints transient and validates exact durable shapes","duration":97.06136800000013,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["Workflow multi-session verification"],"fullName":"Workflow multi-session verification TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-011 returns only the documented persistence result while retaining manifest compatibility","status":"passed","title":"TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-011 returns only the documented persistence result while retaining manifest compatibility","duration":23.610365999999885,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["Workflow multi-session verification"],"fullName":"Workflow multi-session verification TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-012 exposes the durable merged workflow through the documented result","status":"passed","title":"TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-012 exposes the durable merged workflow through the documented result","duration":24.41193199999998,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["Workflow multi-session verification"],"fullName":"Workflow multi-session verification TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-013 exposes deterministic bindings through the documented result","status":"passed","title":"TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-013 exposes deterministic bindings through the documented result","duration":25.96273599999995,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["Workflow multi-session verification"],"fullName":"Workflow multi-session verification TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-014 exposes only the exact durable binding shape","status":"passed","title":"TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-014 exposes only the exact durable binding shape","duration":24.69284299999981,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["Workflow multi-session verification"],"fullName":"Workflow multi-session verification TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-015 exposes attested reconciliation digests through the documented result","status":"passed","title":"TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-015 exposes attested reconciliation digests through the documented result","duration":22.59706899999992,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["Workflow multi-session verification"],"fullName":"Workflow multi-session verification TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-016 exposes migration and recovery warnings through the documented result","status":"passed","title":"TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-016 exposes migration and recovery warnings through the documented result","duration":25.957711000000018,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["Workflow multi-session verification"],"fullName":"Workflow multi-session verification TEST-WORKFLOW-EVIDENCE-WAIVER-018 preserves scope-valid waiver evaluation behind the documented result","status":"passed","title":"TEST-WORKFLOW-EVIDENCE-WAIVER-018 preserves scope-valid waiver evaluation behind the documented result","duration":26.692179000000124,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["Workflow multi-session verification"],"fullName":"Workflow multi-session verification TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-005 reports malformed waiver migration as still pending","status":"passed","title":"TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-005 reports malformed waiver migration as still pending","duration":32.116395999999895,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["Workflow multi-session verification"],"fullName":"Workflow multi-session verification TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-008 documents reconciliation attestation fields","status":"passed","title":"TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-008 documents reconciliation attestation fields","duration":0.9960409999998774,"failureMessages":[],"meta":{},"tags":[]}],"startTime":1790445374028,"endTime":1790445375249.9414,"status":"passed","message":"","name":"/home/nahisaho/GitHub/musubix3/tests/workflow-multi-session-verification.test.ts"}]}
+{
+  "schemaVersion": 1,
+  "commandName": "workflow-multi-session-verification-tests",
+  "commandSha256": "e9165ec12416f9ec05b5e1cae6b5dc42309ad990168ccfb67ee7a2343c4d550f",
+  "inputFingerprint": "c063c50d0b3c186cd2b901c96bcde49f39f6fc1c857be5824ab493a5a79d51e0",
+  "inputs": [
+    {
+      "path": "packages/analysis/src/gate.ts",
+      "sha256": "d55d765f4ca0213bb3f28c33518a099f5229130be505211c230444287418d755"
+    },
+    {
+      "path": "packages/analysis/src/workflow-types.ts",
+      "sha256": "90cd118da80780e08905b23bf86df68e767385d0aa3a1ae835463fc802635d47"
+    },
+    {
+      "path": "packages/analysis/src/workflow-waiver.ts",
+      "sha256": "cfa5defcd540dab275feb1132af0de75be1619248764827b48c2927421b40e36"
+    },
+    {
+      "path": "packages/analysis/src/workflow.ts",
+      "sha256": "b1cfd042b2a78e43549126d0636d28f8ee1d04f1f58996faf0cfddbf7693fdd2"
+    },
+    {
+      "path": "packages/cli/src/main.ts",
+      "sha256": "25aa8d566e3851cee100b3c29b3d9c527594fe5778cd9e8222a00124e859991d"
+    },
+    {
+      "path": "tests/workflow-multi-session-verification.test.ts",
+      "sha256": "226c5ea472a39448a000cede144cc3b4351654acefecbac67898b6d19747e293"
+    }
+  ],
+  "adapter": "vitest",
+  "sourceKind": "file",
+  "reportPath": ".musubix/evidence/native/workflow-multi-session-verification-tests/aggregate.json",
+  "processStatus": "completed",
+  "exitCode": 0,
+  "tests": [
+    {
+      "id": "TEST-WORKFLOW-EVIDENCE-WAIVER-018",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-WORKFLOW-MULTI-SESSION-001",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-001",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-002",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-004",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-005",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-007",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-008",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-009",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-010",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-011",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-012",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-013",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-014",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-015",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-WORKFLOW-RESUMED-SESSION-DURABILITY-016",
+      "status": "passed"
+    }
+  ]
+}

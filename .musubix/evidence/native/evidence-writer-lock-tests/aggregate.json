@@ -1,1 +1,179 @@
-{"numTotalTestSuites":5,"numPassedTestSuites":5,"numFailedTestSuites":0,"numPendingTestSuites":0,"numTotalTests":35,"numPassedTests":35,"numFailedTests":0,"numPendingTests":0,"numTodoTests":0,"snapshot":{"added":0,"failure":false,"filesAdded":0,"filesRemoved":0,"filesRemovedList":[],"filesUnmatched":0,"filesUpdated":0,"matched":0,"total":0,"unchecked":0,"uncheckedKeysByFile":[],"unmatched":0,"updated":0,"didUpdate":false},"startTime":1790445417058,"success":true,"testResults":[{"assertionResults":[{"ancestorTitles":["evidence writer lock integration"],"fullName":"evidence writer lock integration TEST-EVIDENCE-WRITER-LOCK-006 classifies every declared CLI coordination mode deterministically","status":"passed","title":"TEST-EVIDENCE-WRITER-LOCK-006 classifies every declared CLI coordination mode deterministically","duration":3.451667999999927,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["evidence writer lock integration"],"fullName":"evidence writer lock integration TEST-EVIDENCE-WRITER-LOCK-007 reports writer contention before merge-journal state","status":"passed","title":"TEST-EVIDENCE-WRITER-LOCK-007 reports writer contention before merge-journal state","duration":18.693820000000073,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["evidence writer lock integration"],"fullName":"evidence writer lock integration TEST-EVIDENCE-WRITER-LOCK-008 checks the incoming merge root before reading its evidence","status":"passed","title":"TEST-EVIDENCE-WRITER-LOCK-008 checks the incoming merge root before reading its evidence","duration":10.43675200000007,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["evidence writer lock integration"],"fullName":"evidence writer lock integration TEST-EVIDENCE-WRITER-LOCK-009 refuses PID reuse without removing the lock","status":"passed","title":"TEST-EVIDENCE-WRITER-LOCK-009 refuses PID reuse without removing the lock","duration":15.087728999999968,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["evidence writer lock integration"],"fullName":"evidence writer lock integration TEST-EVIDENCE-WRITER-LOCK-010 preserves typed CLI lock errors and recovers a dead Linux owner","status":"passed","title":"TEST-EVIDENCE-WRITER-LOCK-010 preserves typed CLI lock errors and recovers a dead Linux owner","duration":629.558906,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["evidence writer lock integration"],"fullName":"evidence writer lock integration TEST-EVIDENCE-WRITER-LOCK-028 renders rollback failures for JSON and human CLI callers","status":"passed","title":"TEST-EVIDENCE-WRITER-LOCK-028 renders rollback failures for JSON and human CLI callers","duration":32.055669999999964,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["evidence writer lock integration"],"fullName":"evidence writer lock integration TEST-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-002 renders recovery durability failures","status":"passed","title":"TEST-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-002 renders recovery durability failures","duration":0.3835830000000442,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["evidence writer lock integration"],"fullName":"evidence writer lock integration TEST-EVIDENCE-WRITER-LOCK-020 initializes a nonexistent root under the writer lock","status":"passed","title":"TEST-EVIDENCE-WRITER-LOCK-020 initializes a nonexistent root under the writer lock","duration":398.465236,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["evidence writer lock integration"],"fullName":"evidence writer lock integration TEST-EVIDENCE-WRITER-LOCK-021 rejects exempt output paths that target a configured report","status":"passed","title":"TEST-EVIDENCE-WRITER-LOCK-021 rejects exempt output paths that target a configured report","duration":6.248007000000143,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["evidence writer lock integration"],"fullName":"evidence writer lock integration TEST-EVIDENCE-WRITER-LOCK-011 preserves a pending merge journal while writer-lock recovery is required","status":"passed","title":"TEST-EVIDENCE-WRITER-LOCK-011 preserves a pending merge journal while writer-lock recovery is required","duration":37.1003340000002,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["evidence writer lock integration"],"fullName":"evidence writer lock integration TEST-EVIDENCE-WRITER-LOCK-012 reports destination ownership before incoming contention","status":"passed","title":"TEST-EVIDENCE-WRITER-LOCK-012 reports destination ownership before incoming contention","duration":17.274732999999742,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["evidence writer lock integration"],"fullName":"evidence writer lock integration TEST-EVIDENCE-WRITER-LOCK-013 leaves project artifacts unchanged when the incoming root is locked","status":"passed","title":"TEST-EVIDENCE-WRITER-LOCK-013 leaves project artifacts unchanged when the incoming root is locked","duration":24.515885000000253,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["evidence writer lock integration"],"fullName":"evidence writer lock integration TEST-EVIDENCE-WRITER-LOCK-014 fails closed when the lock inode changes before release","status":"passed","title":"TEST-EVIDENCE-WRITER-LOCK-014 fails closed when the lock inode changes before release","duration":13.587035999999898,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["evidence writer lock integration"],"fullName":"evidence writer lock integration TEST-EVIDENCE-WRITER-LOCK-015 classifies every registered CLI leaf","status":"passed","title":"TEST-EVIDENCE-WRITER-LOCK-015 classifies every registered CLI leaf","duration":2.4334280000002764,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["evidence writer lock integration"],"fullName":"evidence writer lock integration TEST-EVIDENCE-WRITER-LOCK-016 gives exactly one process ownership at a shared barrier","status":"passed","title":"TEST-EVIDENCE-WRITER-LOCK-016 gives exactly one process ownership at a shared barrier","duration":297.6362759999997,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["evidence writer lock integration"],"fullName":"evidence writer lock integration TEST-EVIDENCE-WRITER-LOCK-017 keeps exempt CLI operations independent of a foreign lock","status":"passed","title":"TEST-EVIDENCE-WRITER-LOCK-017 keeps exempt CLI operations independent of a foreign lock","duration":863.1072719999997,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["evidence writer lock integration"],"fullName":"evidence writer lock integration TEST-EVIDENCE-WRITER-LOCK-025 documents the Windows durability boundary","status":"passed","title":"TEST-EVIDENCE-WRITER-LOCK-025 documents the Windows durability boundary","duration":301.9598030000002,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["evidence writer lock integration"],"fullName":"evidence writer lock integration TEST-EVIDENCE-WRITER-LOCK-018 blocks graph gate before replacing the code graph cache","status":"passed","title":"TEST-EVIDENCE-WRITER-LOCK-018 blocks graph gate before replacing the code graph cache","duration":320.13079199999993,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["evidence writer lock integration"],"fullName":"evidence writer lock integration TEST-EVIDENCE-WRITER-LOCK-019 checks the dry-run destination before the incoming root","status":"passed","title":"TEST-EVIDENCE-WRITER-LOCK-019 checks the dry-run destination before the incoming root","duration":16.54622100000006,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["evidence writer lock integration"],"fullName":"evidence writer lock integration TEST-EVIDENCE-WRITER-LOCK-022 coordinates direct adapter report mutations without an explicit root","status":"passed","title":"TEST-EVIDENCE-WRITER-LOCK-022 coordinates direct adapter report mutations without an explicit root","duration":22.167719999999917,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["evidence writer lock integration"],"fullName":"evidence writer lock integration TEST-EVIDENCE-WRITER-LOCK-023 keeps resolved modes and analysis writer entries exhaustive","status":"passed","title":"TEST-EVIDENCE-WRITER-LOCK-023 keeps resolved modes and analysis writer entries exhaustive","duration":17.147695000000112,"failureMessages":[],"meta":{},"tags":[]}],"startTime":1790445418012,"endTime":1790445420561.1477,"status":"passed","message":"","name":"/home/nahisaho/GitHub/musubix3/tests/evidence-writer-lock-integration.test.ts"},{"assertionResults":[{"ancestorTitles":["evidence writer lock skill guidance"],"fullName":"evidence writer lock skill guidance TEST-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-001 documents safe recovery in every protected workflow skill","status":"passed","title":"TEST-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-001 documents safe recovery in every protected workflow skill","duration":12.290188999999998,"failureMessages":[],"meta":{},"tags":[]}],"startTime":1790445418642,"endTime":1790445418654.2903,"status":"passed","message":"","name":"/home/nahisaho/GitHub/musubix3/tests/evidence-writer-lock-skill-guidance.test.ts"},{"assertionResults":[{"ancestorTitles":[],"fullName":"TEST-EVIDENCE-WRITER-LOCK-001 publishes complete owner metadata before writer side effects","status":"passed","title":"TEST-EVIDENCE-WRITER-LOCK-001 publishes complete owner metadata before writer side effects","duration":16.394411000000105,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-EVIDENCE-WRITER-LOCK-002 rejects an unrelated contender before its callback runs","status":"passed","title":"TEST-EVIDENCE-WRITER-LOCK-002 rejects an unrelated contender before its callback runs","duration":11.469221999999945,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-EVIDENCE-WRITER-LOCK-003 reuses one owner for nested and concurrent sibling operations","status":"passed","title":"TEST-EVIDENCE-WRITER-LOCK-003 reuses one owner for nested and concurrent sibling operations","duration":17.85951,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-EVIDENCE-WRITER-LOCK-004 releases its own lock after a handled operation failure","status":"passed","title":"TEST-EVIDENCE-WRITER-LOCK-004 releases its own lock after a handled operation failure","duration":12.51948399999992,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-EVIDENCE-WRITER-LOCK-005 explicitly recovers only a demonstrably dead same-host owner","status":"passed","title":"TEST-EVIDENCE-WRITER-LOCK-005 explicitly recovers only a demonstrably dead same-host owner","duration":10.546288000000004,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-001 reports post-unlink sync failure accurately","status":"passed","title":"TEST-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-001 reports post-unlink sync failure accurately","duration":9.165889000000107,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-003 preserves a pre-unlink unsafe lock byte-for-byte","status":"passed","title":"TEST-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-003 preserves a pre-unlink unsafe lock byte-for-byte","duration":9.908885999999939,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-EVIDENCE-WRITER-LOCK-024 permits only unsupported Windows directory synchronization","status":"passed","title":"TEST-EVIDENCE-WRITER-LOCK-024 permits only unsupported Windows directory synchronization","duration":41.4531189999999,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-EVIDENCE-WRITER-LOCK-026 couples directory synchronization policy to every call site","status":"passed","title":"TEST-EVIDENCE-WRITER-LOCK-026 couples directory synchronization policy to every call site","duration":16.274359000000004,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-EVIDENCE-WRITER-LOCK-027 verifies acquisition rollback identity, durability, and error precedence","status":"passed","title":"TEST-EVIDENCE-WRITER-LOCK-027 verifies acquisition rollback identity, durability, and error precedence","duration":76.83507899999995,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-EVIDENCE-WRITER-LOCK-030 reports the failed acquirer after descriptor capture fails","status":"passed","title":"TEST-EVIDENCE-WRITER-LOCK-030 reports the failed acquirer after descriptor capture fails","duration":6.9419030000001385,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-EVIDENCE-WRITER-LOCK-031 refuses failed-acquirer cleanup for a replacement lock","status":"passed","title":"TEST-EVIDENCE-WRITER-LOCK-031 refuses failed-acquirer cleanup for a replacement lock","duration":6.122926000000007,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-EVIDENCE-WRITER-LOCK-032 reports when rollback owner metadata is unavailable","status":"passed","title":"TEST-EVIDENCE-WRITER-LOCK-032 reports when rollback owner metadata is unavailable","duration":5.847256000000016,"failureMessages":[],"meta":{},"tags":[]}],"startTime":1790445418011,"endTime":1790445418252.8472,"status":"passed","message":"","name":"/home/nahisaho/GitHub/musubix3/tests/evidence-writer-lock.test.ts"}]}
+{
+  "schemaVersion": 1,
+  "commandName": "evidence-writer-lock-tests",
+  "commandSha256": "f2d65cca7fa69abed758a36b01258b3d9867750a1adab52d804d6e98ce34c385",
+  "inputFingerprint": "5642d4929dfb05a6fb315fbcce95f3a722a764cc3f2d7e04cf458b6755bb4f9e",
+  "inputs": [
+    {
+      "path": "packages/analysis/src/evidence-writer-lock.ts",
+      "sha256": "cce3d7759232c6023aed58dfab1eb57aaf9da7bab90cac7a4f980100d62c5308"
+    },
+    {
+      "path": "packages/cli/src/main.ts",
+      "sha256": "25aa8d566e3851cee100b3c29b3d9c527594fe5778cd9e8222a00124e859991d"
+    },
+    {
+      "path": "scripts/smoke-package.mjs",
+      "sha256": "3950961c8a8cb45a71b45fe46810cd5ba9afb72c9c27201aa0921c92b72f3c4e"
+    },
+    {
+      "path": "tests/evidence-writer-lock-integration.test.ts",
+      "sha256": "bad452f387a697f1e1a1507fab0660421e4dc797ccb142ac8142006cdb4704b7"
+    },
+    {
+      "path": "tests/evidence-writer-lock-skill-guidance.test.ts",
+      "sha256": "2d52ed19d78f9f8a4823d9d337fd9f7c4ab4b6715fc3210c2b770ee354beff72"
+    },
+    {
+      "path": "tests/evidence-writer-lock.test.ts",
+      "sha256": "ee7daa577fd3f338f1c6c8a303aa10ad4b47defa269fea01f38bb133a2bcee26"
+    }
+  ],
+  "adapter": "vitest",
+  "sourceKind": "file",
+  "reportPath": ".musubix/evidence/native/evidence-writer-lock-tests/aggregate.json",
+  "processStatus": "completed",
+  "exitCode": 0,
+  "tests": [
+    {
+      "id": "TEST-EVIDENCE-WRITER-LOCK-001",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-EVIDENCE-WRITER-LOCK-002",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-EVIDENCE-WRITER-LOCK-003",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-EVIDENCE-WRITER-LOCK-004",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-EVIDENCE-WRITER-LOCK-005",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-EVIDENCE-WRITER-LOCK-006",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-EVIDENCE-WRITER-LOCK-007",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-EVIDENCE-WRITER-LOCK-008",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-EVIDENCE-WRITER-LOCK-009",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-EVIDENCE-WRITER-LOCK-010",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-EVIDENCE-WRITER-LOCK-011",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-EVIDENCE-WRITER-LOCK-012",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-EVIDENCE-WRITER-LOCK-013",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-EVIDENCE-WRITER-LOCK-014",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-EVIDENCE-WRITER-LOCK-015",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-EVIDENCE-WRITER-LOCK-016",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-EVIDENCE-WRITER-LOCK-017",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-EVIDENCE-WRITER-LOCK-018",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-EVIDENCE-WRITER-LOCK-019",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-EVIDENCE-WRITER-LOCK-020",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-EVIDENCE-WRITER-LOCK-021",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-EVIDENCE-WRITER-LOCK-022",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-EVIDENCE-WRITER-LOCK-023",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-EVIDENCE-WRITER-LOCK-024",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-EVIDENCE-WRITER-LOCK-025",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-EVIDENCE-WRITER-LOCK-026",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-EVIDENCE-WRITER-LOCK-027",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-EVIDENCE-WRITER-LOCK-028",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-EVIDENCE-WRITER-LOCK-030",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-EVIDENCE-WRITER-LOCK-031",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-EVIDENCE-WRITER-LOCK-032",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-001",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-002",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-EVIDENCE-WRITER-LOCK-RECOVERY-DURABILITY-003",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-EVIDENCE-WRITER-LOCK-SKILL-GUIDANCE-001",
+      "status": "passed"
+    }
+  ]
+}

@@ -1,1 +1,67 @@
-{"numTotalTestSuites":3,"numPassedTestSuites":3,"numFailedTestSuites":0,"numPendingTestSuites":0,"numTotalTests":13,"numPassedTests":13,"numFailedTests":0,"numPendingTests":0,"numTodoTests":0,"snapshot":{"added":0,"failure":false,"filesAdded":0,"filesRemoved":0,"filesRemovedList":[],"filesUnmatched":0,"filesUpdated":0,"matched":0,"total":0,"unchecked":0,"uncheckedKeysByFile":[],"unmatched":0,"updated":0,"didUpdate":false},"startTime":1790445351652,"success":true,"testResults":[{"assertionResults":[{"ancestorTitles":["evidence merge recovery"],"fullName":"evidence merge recovery blocks shared evidence reads while a canonical merge journal exists","status":"passed","title":"blocks shared evidence reads while a canonical merge journal exists","duration":9.741413999999963,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["evidence merge recovery"],"fullName":"evidence merge recovery discards unpublished staging without touching evidence targets","status":"passed","title":"discards unpublished staging without touching evidence targets","duration":18.21375999999998,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["evidence merge recovery"],"fullName":"evidence merge recovery TEST-EVIDENCE-HISTORY-MERGE-006 rolls a prepared transaction back to byte-identical originals","status":"passed","title":"TEST-EVIDENCE-HISTORY-MERGE-006 rolls a prepared transaction back to byte-identical originals","duration":31.61299299999996,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["evidence merge recovery"],"fullName":"evidence merge recovery TEST-EVIDENCE-HISTORY-MERGE-007 rolls a committed transaction forward from journaled candidate bytes","status":"passed","title":"TEST-EVIDENCE-HISTORY-MERGE-007 rolls a committed transaction forward from journaled candidate bytes","duration":36.33822199999997,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["evidence merge recovery"],"fullName":"evidence merge recovery reports unsafe journals with inventory and manual remediation","status":"passed","title":"reports unsafe journals with inventory and manual remediation","duration":13.405147000000056,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["evidence merge recovery"],"fullName":"evidence merge recovery reports an appended waiver as stale and as a changed authoritative scope","status":"passed","title":"reports an appended waiver as stale and as a changed authoritative scope","duration":29.9905500000001,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["evidence merge recovery"],"fullName":"evidence merge recovery TEST-EVIDENCE-HISTORY-MERGE-008 rejects a merged TDD phase order that would place migrate before refactor","status":"passed","title":"TEST-EVIDENCE-HISTORY-MERGE-008 rejects a merged TDD phase order that would place migrate before refactor","duration":30.47224600000004,"failureMessages":[],"meta":{},"tags":[]}],"startTime":1790445352557,"endTime":1790445352727.4722,"status":"passed","message":"","name":"/home/nahisaho/GitHub/musubix3/tests/evidence-history-merge-recovery.test.ts"},{"assertionResults":[{"ancestorTitles":[],"fullName":"TEST-EVIDENCE-HISTORY-MERGE-001 preserves base order, deduplicates the ancestor, and appends incoming history","status":"passed","title":"TEST-EVIDENCE-HISTORY-MERGE-001 preserves base order, deduplicates the ancestor, and appends incoming history","duration":647.689016,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-EVIDENCE-HISTORY-MERGE-002 rebuilds order references and the TDD hash chain into a valid candidate","status":"passed","title":"TEST-EVIDENCE-HISTORY-MERGE-002 rebuilds order references and the TDD hash chain into a valid candidate","duration":588.2161550000003,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-EVIDENCE-HISTORY-MERGE-003 rejects divergent payloads for the same cycle phase without writing","status":"passed","title":"TEST-EVIDENCE-HISTORY-MERGE-003 rejects divergent payloads for the same cycle phase without writing","duration":362.537914,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-EVIDENCE-HISTORY-MERGE-004 restores byte-identical evidence after an injected replacement failure","status":"passed","title":"TEST-EVIDENCE-HISTORY-MERGE-004 restores byte-identical evidence after an injected replacement failure","duration":469.4486069999998,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-EVIDENCE-HISTORY-MERGE-005 dry-run returns the merge plan without writing any evidence file","status":"passed","title":"TEST-EVIDENCE-HISTORY-MERGE-005 dry-run returns the merge plan without writing any evidence file","duration":436.0200130000003,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-EVIDENCE-HISTORY-MERGE-009 uses the injected canonical resolver for base and incoming planning","status":"passed","title":"TEST-EVIDENCE-HISTORY-MERGE-009 uses the injected canonical resolver for base and incoming planning","duration":338.8608370000002,"failureMessages":[],"meta":{},"tags":[]}],"startTime":1790445352573,"endTime":1790445355078.02,"status":"passed","message":"","name":"/home/nahisaho/GitHub/musubix3/tests/evidence-history-merge.test.ts"}]}
+{
+  "schemaVersion": 1,
+  "commandName": "evidence-history-merge-tests",
+  "commandSha256": "b69a6b2e84db550f42f1613eda252367bfa0c2930045219a6506157ffdfd7d7b",
+  "inputFingerprint": "becbff2097d9814fcb8cea0ba56b06dded72a4fc6e2f6c2478d27a65819e5d6e",
+  "inputs": [
+    {
+      "path": "packages/analysis/src/evidence-merge.ts",
+      "sha256": "816d607be6a1479ba57bb59ce984b1704c9beec0929466cd4f5c8d56316e2dec"
+    },
+    {
+      "path": "packages/analysis/src/evidence-writer-lock.ts",
+      "sha256": "cce3d7759232c6023aed58dfab1eb57aaf9da7bab90cac7a4f980100d62c5308"
+    },
+    {
+      "path": "tests/evidence-history-merge-recovery.test.ts",
+      "sha256": "01821174b200d2b394129cb5d0d5e4de8c1eaa9069e797d7c759f4826d0b7a83"
+    },
+    {
+      "path": "tests/evidence-history-merge.test.ts",
+      "sha256": "3712cdb32da2e280eb0bdcebb52cefa4841702592dda80279dab71eae2bb4df6"
+    }
+  ],
+  "adapter": "vitest",
+  "sourceKind": "file",
+  "reportPath": ".musubix/evidence/native/evidence-history-merge-tests/aggregate.json",
+  "processStatus": "completed",
+  "exitCode": 0,
+  "tests": [
+    {
+      "id": "TEST-EVIDENCE-HISTORY-MERGE-001",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-EVIDENCE-HISTORY-MERGE-002",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-EVIDENCE-HISTORY-MERGE-003",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-EVIDENCE-HISTORY-MERGE-004",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-EVIDENCE-HISTORY-MERGE-005",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-EVIDENCE-HISTORY-MERGE-006",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-EVIDENCE-HISTORY-MERGE-007",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-EVIDENCE-HISTORY-MERGE-008",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-EVIDENCE-HISTORY-MERGE-009",
+      "status": "passed"
+    }
+  ]
+}

@@ -20,6 +20,7 @@ const EXPECTED_REQUIRED_COMMANDS = [
   'requirements-design-scaffold-tests',
   'approval-tests',
   'approval-domain-scoping-tests',
+  'native-test-evidence-stability-tests',
   'typecheck',
   'build',
   'session-tests',

@@ -8,6 +8,7 @@ import { modelCorrespondenceEvidenceHead, validateModelCorrespondenceEvidence } 
 import { loadEvidenceOrder } from './order.js';
 import { runProcess, type Runner } from './process.js';
 import { workflowEvidenceHead, type WorkflowManifest } from './workflow.js';
+import { buildTrace } from './trace.js';
 
 export interface EvidenceAttestation {
   schemaVersion: 1;
@@ -484,7 +485,8 @@ export async function verifyEvidenceAttestation(
   if (ci?.commitSha && ci.commitSha !== attestation.commitSha.toLowerCase()) diagnostics.push(error('ATTESTATION_CI_COMMIT', 'Attestation commit does not match the CI source revision.', path));
   const heads = await collectEvidenceHeads(root);
   if (canonical(heads) !== canonical(attestation.evidenceHeads)) diagnostics.push(error('ATTESTATION_EVIDENCE_HEAD', 'Attested evidence heads do not match current evidence.', path));
-  const performance = await validatePerformanceEvidence(root);
+  const evidenceTrace = await buildTrace(root, false);
+  const performance = await validatePerformanceEvidence(root, { trace: evidenceTrace });
   if (performance.budgets > 0 && !performance.valid) {
     diagnostics.push(error('ATTESTATION_PERFORMANCE_PROVENANCE', 'Attested performance evidence is no longer traceable to its configured command and fresh report.', path));
   }
@@ -492,7 +494,7 @@ export async function verifyEvidenceAttestation(
   if (mutation.present && !mutation.valid) {
     diagnostics.push(error('ATTESTATION_MUTATION_PROVENANCE', 'Attested mutation evidence is no longer traceable to current source, tests, command, and report evidence.', path));
   }
-  const correspondence = await validateModelCorrespondenceEvidence(root);
+  const correspondence = await validateModelCorrespondenceEvidence(root, { trace: evidenceTrace });
   if (correspondence.requirements > 0 && !correspondence.valid) {
     diagnostics.push(error('ATTESTATION_MODEL_CORRESPONDENCE', 'Attested model correspondence evidence is missing, stale, or unproved.', path));
   }

@@ -93,6 +93,7 @@ export const EVIDENCE_CONDITIONAL_OPERATION_MODES = [
 export const EVIDENCE_WRITER_ANALYSIS_ENTRIES = [
   'adapter output capture',
   'adapter output clear',
+  'adapter output remove',
   'approval record',
   'change waiver record',
   'change-record',

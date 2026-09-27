@@ -1058,14 +1058,62 @@
       "phase": "complete",
       "status": "completed",
       "recordedAt": "2026-09-26T17:41:13.148Z"
+    },
+    {
+      "skill": "sdd-requirements",
+      "version": "0.1.8",
+      "provenance": "self-reported",
+      "phase": "complete",
+      "status": "completed",
+      "recordedAt": "2026-09-26T21:16:59.200Z"
+    },
+    {
+      "skill": "sdd-design",
+      "version": "0.1.8",
+      "provenance": "self-reported",
+      "phase": "complete",
+      "status": "completed",
+      "recordedAt": "2026-09-26T22:12:46.366Z"
+    },
+    {
+      "skill": "sdd-implementation",
+      "version": "0.1.8",
+      "provenance": "self-reported",
+      "phase": "complete",
+      "status": "completed",
+      "recordedAt": "2026-09-26T22:46:58.235Z"
+    },
+    {
+      "skill": "sdd-quality",
+      "version": "0.1.8",
+      "provenance": "self-reported",
+      "phase": "complete",
+      "status": "completed",
+      "recordedAt": "2026-09-26T22:56:47.053Z"
+    },
+    {
+      "skill": "sdd-implementation",
+      "version": "0.1.8",
+      "provenance": "self-reported",
+      "phase": "complete",
+      "status": "completed",
+      "recordedAt": "2026-09-27T00:20:19.075Z"
+    },
+    {
+      "skill": "sdd-change",
+      "version": "0.1.8",
+      "provenance": "self-reported",
+      "phase": "complete",
+      "status": "completed",
+      "recordedAt": "2026-09-27T01:32:47.366Z"
     }
   ],
   "reconciliation": {
     "schemaVersion": 1,
     "mode": "strict",
     "skewMs": 0,
-    "ledgerSha256": "4c55ee0a0308171800e6598b8d15ea854ff1afc9841926808934285d759be4e9",
-    "bindingsSha256": "2735129980225af649c38383d0bfa134267c73c2ba642089a7e7da2c70e27b2f",
+    "ledgerSha256": "0da26e018bc78680e366d3499f28eb4646b3748af0f13ea0024e307f5c39147e",
+    "bindingsSha256": "22bbe369b092428ceec77a8e2b36940603cc6c9a489a77b0700bcbc272392b8b",
     "invocations": [
       {
         "skill": "sdd-change",
@@ -6575,6 +6623,12 @@
           {
             "mode": "compatible",
             "sourceSha256": "ead61caa6a169b3d26536c353860df03089cf511bf72fd6fd8d861d6137afa21"
+          },
+          {
+            "mode": "strict",
+            "sourceSha256": "193dac41827fd070817911630a918f24d403c0bc52395c5c6d05aa4b0bea035d",
+            "sessionId": "fcef7127-b895-43b7-a7fe-41d1d2eb0dd4",
+            "transcriptSha256": "1b8a20957af795cc9d389e7acbdc7030eda89d0160e81970345de3145a3ce470"
           }
         ]
       },
@@ -6600,6 +6654,12 @@
           {
             "mode": "compatible",
             "sourceSha256": "ead61caa6a169b3d26536c353860df03089cf511bf72fd6fd8d861d6137afa21"
+          },
+          {
+            "mode": "strict",
+            "sourceSha256": "193dac41827fd070817911630a918f24d403c0bc52395c5c6d05aa4b0bea035d",
+            "sessionId": "fcef7127-b895-43b7-a7fe-41d1d2eb0dd4",
+            "transcriptSha256": "1b8a20957af795cc9d389e7acbdc7030eda89d0160e81970345de3145a3ce470"
           }
         ]
       },
@@ -6621,6 +6681,12 @@
           {
             "mode": "compatible",
             "sourceSha256": "e818e1d3a2a7df26e933b4477a46929a1e5833b013a807a1d30d2a1f683f77d7"
+          },
+          {
+            "mode": "strict",
+            "sourceSha256": "193dac41827fd070817911630a918f24d403c0bc52395c5c6d05aa4b0bea035d",
+            "sessionId": "fcef7127-b895-43b7-a7fe-41d1d2eb0dd4",
+            "transcriptSha256": "1b8a20957af795cc9d389e7acbdc7030eda89d0160e81970345de3145a3ce470"
           }
         ]
       },
@@ -6642,6 +6708,12 @@
           {
             "mode": "compatible",
             "sourceSha256": "e818e1d3a2a7df26e933b4477a46929a1e5833b013a807a1d30d2a1f683f77d7"
+          },
+          {
+            "mode": "strict",
+            "sourceSha256": "193dac41827fd070817911630a918f24d403c0bc52395c5c6d05aa4b0bea035d",
+            "sessionId": "fcef7127-b895-43b7-a7fe-41d1d2eb0dd4",
+            "transcriptSha256": "1b8a20957af795cc9d389e7acbdc7030eda89d0160e81970345de3145a3ce470"
           }
         ]
       },
@@ -6663,6 +6735,12 @@
           {
             "mode": "compatible",
             "sourceSha256": "e818e1d3a2a7df26e933b4477a46929a1e5833b013a807a1d30d2a1f683f77d7"
+          },
+          {
+            "mode": "strict",
+            "sourceSha256": "193dac41827fd070817911630a918f24d403c0bc52395c5c6d05aa4b0bea035d",
+            "sessionId": "fcef7127-b895-43b7-a7fe-41d1d2eb0dd4",
+            "transcriptSha256": "1b8a20957af795cc9d389e7acbdc7030eda89d0160e81970345de3145a3ce470"
           }
         ]
       },
@@ -6684,6 +6762,12 @@
           {
             "mode": "compatible",
             "sourceSha256": "e818e1d3a2a7df26e933b4477a46929a1e5833b013a807a1d30d2a1f683f77d7"
+          },
+          {
+            "mode": "strict",
+            "sourceSha256": "193dac41827fd070817911630a918f24d403c0bc52395c5c6d05aa4b0bea035d",
+            "sessionId": "fcef7127-b895-43b7-a7fe-41d1d2eb0dd4",
+            "transcriptSha256": "1b8a20957af795cc9d389e7acbdc7030eda89d0160e81970345de3145a3ce470"
           }
         ]
       },
@@ -6705,6 +6789,12 @@
           {
             "mode": "compatible",
             "sourceSha256": "e818e1d3a2a7df26e933b4477a46929a1e5833b013a807a1d30d2a1f683f77d7"
+          },
+          {
+            "mode": "strict",
+            "sourceSha256": "193dac41827fd070817911630a918f24d403c0bc52395c5c6d05aa4b0bea035d",
+            "sessionId": "fcef7127-b895-43b7-a7fe-41d1d2eb0dd4",
+            "transcriptSha256": "1b8a20957af795cc9d389e7acbdc7030eda89d0160e81970345de3145a3ce470"
           }
         ]
       },
@@ -6726,6 +6816,12 @@
           {
             "mode": "compatible",
             "sourceSha256": "e818e1d3a2a7df26e933b4477a46929a1e5833b013a807a1d30d2a1f683f77d7"
+          },
+          {
+            "mode": "strict",
+            "sourceSha256": "193dac41827fd070817911630a918f24d403c0bc52395c5c6d05aa4b0bea035d",
+            "sessionId": "fcef7127-b895-43b7-a7fe-41d1d2eb0dd4",
+            "transcriptSha256": "1b8a20957af795cc9d389e7acbdc7030eda89d0160e81970345de3145a3ce470"
           }
         ]
       },
@@ -6743,6 +6839,166 @@
           {
             "mode": "compatible",
             "sourceSha256": "e818e1d3a2a7df26e933b4477a46929a1e5833b013a807a1d30d2a1f683f77d7"
+          },
+          {
+            "mode": "strict",
+            "sourceSha256": "193dac41827fd070817911630a918f24d403c0bc52395c5c6d05aa4b0bea035d",
+            "sessionId": "fcef7127-b895-43b7-a7fe-41d1d2eb0dd4",
+            "transcriptSha256": "1b8a20957af795cc9d389e7acbdc7030eda89d0160e81970345de3145a3ce470"
+          }
+        ]
+      },
+      {
+        "skill": "sdd-change",
+        "toolCallId": "call_CtlhsPn4wF8S2oTUYNG3ylb3",
+        "invokedAt": "2026-09-26T20:49:40.635Z",
+        "completedAt": "2026-09-26T20:49:40.647Z",
+        "status": "completed",
+        "sources": [
+          {
+            "mode": "strict",
+            "sourceSha256": "193dac41827fd070817911630a918f24d403c0bc52395c5c6d05aa4b0bea035d",
+            "sessionId": "fcef7127-b895-43b7-a7fe-41d1d2eb0dd4",
+            "transcriptSha256": "1b8a20957af795cc9d389e7acbdc7030eda89d0160e81970345de3145a3ce470"
+          }
+        ]
+      },
+      {
+        "skill": "sdd-design",
+        "toolCallId": "call_x7jd4DaZWZjuada5vXfCtKYT",
+        "invokedAt": "2026-09-26T21:02:52.740Z",
+        "completedAt": "2026-09-26T21:02:52.756Z",
+        "status": "completed",
+        "sources": [
+          {
+            "mode": "strict",
+            "sourceSha256": "193dac41827fd070817911630a918f24d403c0bc52395c5c6d05aa4b0bea035d",
+            "sessionId": "fcef7127-b895-43b7-a7fe-41d1d2eb0dd4",
+            "transcriptSha256": "1b8a20957af795cc9d389e7acbdc7030eda89d0160e81970345de3145a3ce470"
+          }
+        ]
+      },
+      {
+        "skill": "sdd-requirements",
+        "toolCallId": "call_uhuXv2MQH3sKG9NhdoijWh1O",
+        "invokedAt": "2026-09-26T21:15:51.874Z",
+        "completedAt": "2026-09-26T21:15:51.904Z",
+        "status": "completed",
+        "sources": [
+          {
+            "mode": "strict",
+            "sourceSha256": "193dac41827fd070817911630a918f24d403c0bc52395c5c6d05aa4b0bea035d",
+            "sessionId": "fcef7127-b895-43b7-a7fe-41d1d2eb0dd4",
+            "transcriptSha256": "1b8a20957af795cc9d389e7acbdc7030eda89d0160e81970345de3145a3ce470"
+          }
+        ]
+      },
+      {
+        "skill": "sdd-design",
+        "toolCallId": "call_Zf5rYyJ3cBxWgjVZsyDmYjYi",
+        "invokedAt": "2026-09-26T21:17:03.809Z",
+        "completedAt": "2026-09-26T21:17:03.817Z",
+        "status": "completed",
+        "sources": [
+          {
+            "mode": "strict",
+            "sourceSha256": "193dac41827fd070817911630a918f24d403c0bc52395c5c6d05aa4b0bea035d",
+            "sessionId": "fcef7127-b895-43b7-a7fe-41d1d2eb0dd4",
+            "transcriptSha256": "1b8a20957af795cc9d389e7acbdc7030eda89d0160e81970345de3145a3ce470"
+          }
+        ]
+      },
+      {
+        "skill": "sdd-requirements",
+        "toolCallId": "call_GGok6OP4bMmkUj1EqZVc3K6T",
+        "invokedAt": "2026-09-26T21:32:07.127Z",
+        "completedAt": "2026-09-26T21:32:07.141Z",
+        "status": "completed",
+        "sources": [
+          {
+            "mode": "strict",
+            "sourceSha256": "193dac41827fd070817911630a918f24d403c0bc52395c5c6d05aa4b0bea035d",
+            "sessionId": "fcef7127-b895-43b7-a7fe-41d1d2eb0dd4",
+            "transcriptSha256": "1b8a20957af795cc9d389e7acbdc7030eda89d0160e81970345de3145a3ce470"
+          }
+        ]
+      },
+      {
+        "skill": "sdd-design",
+        "toolCallId": "call_HNfIQTYpCAsx8v1cPlLjIrv9",
+        "invokedAt": "2026-09-26T21:37:02.406Z",
+        "completedAt": "2026-09-26T21:37:02.421Z",
+        "status": "completed",
+        "sources": [
+          {
+            "mode": "strict",
+            "sourceSha256": "193dac41827fd070817911630a918f24d403c0bc52395c5c6d05aa4b0bea035d",
+            "sessionId": "fcef7127-b895-43b7-a7fe-41d1d2eb0dd4",
+            "transcriptSha256": "1b8a20957af795cc9d389e7acbdc7030eda89d0160e81970345de3145a3ce470"
+          }
+        ]
+      },
+      {
+        "skill": "sdd-implementation",
+        "toolCallId": "call_XfOnzXcL4suM0OTULfuTo7yx",
+        "invokedAt": "2026-09-26T22:12:53.468Z",
+        "completedAt": "2026-09-26T22:12:53.479Z",
+        "status": "completed",
+        "sources": [
+          {
+            "mode": "strict",
+            "sourceSha256": "193dac41827fd070817911630a918f24d403c0bc52395c5c6d05aa4b0bea035d",
+            "sessionId": "fcef7127-b895-43b7-a7fe-41d1d2eb0dd4",
+            "transcriptSha256": "1b8a20957af795cc9d389e7acbdc7030eda89d0160e81970345de3145a3ce470"
+          }
+        ]
+      },
+      {
+        "skill": "sdd-quality",
+        "toolCallId": "call_vWO5vaAwExUIMUP6gh8j6Rz5",
+        "invokedAt": "2026-09-26T22:47:01.372Z",
+        "completedAt": "2026-09-26T22:47:01.383Z",
+        "status": "completed",
+        "sources": [
+          {
+            "mode": "strict",
+            "sourceSha256": "193dac41827fd070817911630a918f24d403c0bc52395c5c6d05aa4b0bea035d",
+            "sessionId": "fcef7127-b895-43b7-a7fe-41d1d2eb0dd4",
+            "transcriptSha256": "1b8a20957af795cc9d389e7acbdc7030eda89d0160e81970345de3145a3ce470"
+          }
+        ]
+      },
+      {
+        "skill": "sdd-change",
+        "toolCallId": "call_HyVGwBFTqvUsMkLhnqDGHsUr",
+        "invokedAt": "2026-09-26T23:41:19.734Z",
+        "completedAt": "2026-09-26T23:41:19.741Z",
+        "status": "completed",
+        "sources": [
+          {
+            "mode": "compatible",
+            "sourceSha256": "ca5d98cdadf5f5cecc53a5bd3be52727fbc54224f4b56d0c43b5c221b59c9527"
+          },
+          {
+            "mode": "compatible",
+            "sourceSha256": "d4c17c824fbd15162073b6a0d63e0bf3032b7a870ccc33c72fb58e9d701b25da"
+          }
+        ]
+      },
+      {
+        "skill": "sdd-implementation",
+        "toolCallId": "call_7mLv09LxnPTNIQmEb0W2biSq",
+        "invokedAt": "2026-09-27T00:10:31.090Z",
+        "completedAt": "2026-09-27T00:10:31.095Z",
+        "status": "completed",
+        "sources": [
+          {
+            "mode": "compatible",
+            "sourceSha256": "ca5d98cdadf5f5cecc53a5bd3be52727fbc54224f4b56d0c43b5c221b59c9527"
+          },
+          {
+            "mode": "compatible",
+            "sourceSha256": "d4c17c824fbd15162073b6a0d63e0bf3032b7a870ccc33c72fb58e9d701b25da"
           }
         ]
       }
@@ -6761,76 +7017,76 @@
         "phase": "complete",
         "recordedAt": "2026-09-26T08:40:09.557Z",
         "toolCallId": "call_CajHfM7ujiiVRKUEPOkhlAdO"
+      },
+      {
+        "eventIndex": 129,
+        "skill": "sdd-implementation",
+        "phase": "complete",
+        "recordedAt": "2026-09-26T14:46:52.183Z",
+        "toolCallId": "call_RR4RGuRvUTRSMaA4LbxGknXP"
+      },
+      {
+        "eventIndex": 130,
+        "skill": "sdd-quality",
+        "phase": "complete",
+        "recordedAt": "2026-09-26T16:26:32.242Z",
+        "toolCallId": "call_XU8jFbYD0mEqaySHIQwIu7nW"
+      },
+      {
+        "eventIndex": 131,
+        "skill": "sdd-change",
+        "phase": "complete",
+        "recordedAt": "2026-09-26T17:41:13.148Z",
+        "toolCallId": "call_C6t8xU5nUFdqcRPjeTeKUJJk"
+      },
+      {
+        "eventIndex": 132,
+        "skill": "sdd-requirements",
+        "phase": "complete",
+        "recordedAt": "2026-09-26T21:16:59.200Z",
+        "toolCallId": "call_uhuXv2MQH3sKG9NhdoijWh1O"
+      },
+      {
+        "eventIndex": 133,
+        "skill": "sdd-design",
+        "phase": "complete",
+        "recordedAt": "2026-09-26T22:12:46.366Z",
+        "toolCallId": "call_Zf5rYyJ3cBxWgjVZsyDmYjYi"
+      },
+      {
+        "eventIndex": 134,
+        "skill": "sdd-implementation",
+        "phase": "complete",
+        "recordedAt": "2026-09-26T22:46:58.235Z",
+        "toolCallId": "call_XfOnzXcL4suM0OTULfuTo7yx"
+      },
+      {
+        "eventIndex": 135,
+        "skill": "sdd-quality",
+        "phase": "complete",
+        "recordedAt": "2026-09-26T22:56:47.053Z",
+        "toolCallId": "call_vWO5vaAwExUIMUP6gh8j6Rz5"
       }
     ]
   },
   "verification": {
     "mode": "compatible",
-    "sourceSha256": "e818e1d3a2a7df26e933b4477a46929a1e5833b013a807a1d30d2a1f683f77d7",
-    "eventsSha256": "6488c67ffe8ac2b17fb6849c4828717eb248b199e2f10f69060e112beeae81db",
-    "verifiedAt": "2026-09-26T17:41:18.493Z",
+    "sourceSha256": "ca5d98cdadf5f5cecc53a5bd3be52727fbc54224f4b56d0c43b5c221b59c9527",
+    "eventsSha256": "090e96f68c10055e2f78fc682109f7cb4f2ff9749a3be5f2ffd3443ee1f9809c",
+    "verifiedAt": "2026-09-27T01:32:48.360Z",
     "invocations": [
       {
         "skill": "sdd-change",
-        "toolCallId": "call_FqCEUvoBxC2T2uyx2ccGoOvw",
-        "invokedAt": "2026-09-26T05:58:02.852Z",
-        "completedAt": "2026-09-26T05:58:02.857Z",
-        "status": "completed"
-      },
-      {
-        "skill": "sdd-change",
-        "toolCallId": "call_w5wXBUlj5HDM6uFVX6C42oie",
-        "invokedAt": "2026-09-26T08:35:48.993Z",
-        "completedAt": "2026-09-26T08:35:49.013Z",
-        "status": "completed"
-      },
-      {
-        "skill": "sdd-change",
-        "toolCallId": "call_1KqgIgOecDWaWKC8LXY8IoVj",
-        "invokedAt": "2026-09-26T08:54:19.513Z",
-        "completedAt": "2026-09-26T08:54:19.522Z",
-        "status": "completed"
-      },
-      {
-        "skill": "sdd-design",
-        "toolCallId": "call_uCB6vBnaqJtIAShKrUTkbaX4",
-        "invokedAt": "2026-09-26T09:36:59.483Z",
-        "completedAt": "2026-09-26T09:36:59.496Z",
+        "toolCallId": "call_HyVGwBFTqvUsMkLhnqDGHsUr",
+        "invokedAt": "2026-09-26T23:41:19.734Z",
+        "completedAt": "2026-09-26T23:41:19.741Z",
         "status": "completed"
       },
       {
         "skill": "sdd-implementation",
-        "toolCallId": "call_RR4RGuRvUTRSMaA4LbxGknXP",
-        "invokedAt": "2026-09-26T14:16:52.766Z",
-        "completedAt": "2026-09-26T14:16:52.788Z",
-        "status": "completed"
-      },
-      {
-        "skill": "sdd-change",
-        "toolCallId": "call_EObeH35XEuFVtkixsK9efiKo",
-        "invokedAt": "2026-09-26T14:18:05.021Z",
-        "completedAt": "2026-09-26T14:18:05.023Z",
-        "status": "completed"
-      },
-      {
-        "skill": "sdd-change",
-        "toolCallId": "call_a0zkKNCVwWmA22CNYzZiyHHm",
-        "invokedAt": "2026-09-26T14:21:13.890Z",
-        "completedAt": "2026-09-26T14:21:13.892Z",
-        "status": "completed"
-      },
-      {
-        "skill": "sdd-quality",
-        "toolCallId": "call_XU8jFbYD0mEqaySHIQwIu7nW",
-        "invokedAt": "2026-09-26T14:46:55.875Z",
-        "completedAt": "2026-09-26T14:46:55.883Z",
-        "status": "completed"
-      },
-      {
-        "skill": "sdd-change",
-        "toolCallId": "call_C6t8xU5nUFdqcRPjeTeKUJJk",
-        "invokedAt": "2026-09-26T15:34:11.219Z",
-        "completedAt": "2026-09-26T15:34:11.221Z",
+        "toolCallId": "call_7mLv09LxnPTNIQmEb0W2biSq",
+        "invokedAt": "2026-09-27T00:10:31.090Z",
+        "completedAt": "2026-09-27T00:10:31.095Z",
         "status": "completed"
       }
     ]

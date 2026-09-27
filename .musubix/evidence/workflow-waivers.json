@@ -31948,6 +31948,34 @@
       "snapshotHash": "5e6758d9fe471c85805f8161338d10b26920293ebcaec325f3295c6f28ded668",
       "previousSha256": "cb4fbaa21c2cdf566e41a483daf053b3060edd0d31cac8fd90c2c6f2ac6c12eb",
       "payloadSha256": "ead1e7690bd129fe73f6738e6a27d6fce461b4af3fc36224c846ed6e0db934be"
+    },
+    {
+      "skill": "sdd-implementation",
+      "phase": "complete",
+      "declarationRecordedAt": "2026-09-27T00:20:19.075Z",
+      "code": "WORKFLOW_INVOCATION_REUSED",
+      "approver": "nahisaho",
+      "reason": "Current-session compatible verification reconciled the live transcript after the prior session was strictly verified; the remaining duplicate binding is declaration-scoped and does not represent an unverified invocation.",
+      "waiverRecordedAt": "2026-09-27T00:40:04.885Z",
+      "sequence": 2283,
+      "snapshotVersion": 2,
+      "snapshotHash": "d8fa000ce7e124a81a42e2006e3ab158ad10968beb62e23d72120f2a1c27aecf",
+      "previousSha256": "ead1e7690bd129fe73f6738e6a27d6fce461b4af3fc36224c846ed6e0db934be",
+      "payloadSha256": "fb7ea670f03d1587c7a65565f1c8a8d2130919e7cf906d14b65676285be0f976"
+    },
+    {
+      "skill": "sdd-change",
+      "phase": "complete",
+      "declarationRecordedAt": "2026-09-27T01:32:47.366Z",
+      "code": "WORKFLOW_INVOCATION_REUSED",
+      "approver": "nahisaho",
+      "reason": "Current-session compatible verification reconciled the live transcript after the prior session was strictly verified; the remaining duplicate binding is declaration-scoped and does not represent an unverified invocation.",
+      "waiverRecordedAt": "2026-09-27T01:41:12.879Z",
+      "sequence": 2284,
+      "snapshotVersion": 2,
+      "snapshotHash": "cb71024732613a109e3687ffba5dbe465be5fb1586da92f75b198d1edcd307c4",
+      "previousSha256": "fb7ea670f03d1587c7a65565f1c8a8d2130919e7cf906d14b65676285be0f976",
+      "payloadSha256": "e62f306328fedaa1515f2fcb5b167232dcbca0bceb06e47c034ddc1d94016376"
     }
   ]
 }

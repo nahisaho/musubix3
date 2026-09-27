@@ -1,1 +1,47 @@
-{"numTotalTestSuites":2,"numPassedTestSuites":2,"numFailedTestSuites":0,"numPendingTestSuites":0,"numTotalTests":4,"numPassedTests":4,"numFailedTests":0,"numPendingTests":0,"numTodoTests":0,"snapshot":{"added":0,"failure":false,"filesAdded":0,"filesRemoved":0,"filesRemovedList":[],"filesUnmatched":0,"filesUpdated":0,"matched":0,"total":0,"unchecked":0,"uncheckedKeysByFile":[],"unmatched":0,"updated":0,"didUpdate":false},"startTime":1790445384362,"success":true,"testResults":[{"assertionResults":[{"ancestorTitles":["bounded file-read concurrency for large projects"],"fullName":"bounded file-read concurrency for large projects TEST-BOUNDED-FILE-READ-CONCURRENCY-001 never exceeds the concurrency limit and preserves order","status":"passed","title":"TEST-BOUNDED-FILE-READ-CONCURRENCY-001 never exceeds the concurrency limit and preserves order","duration":18.32745900000009,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["bounded file-read concurrency for large projects"],"fullName":"bounded file-read concurrency for large projects TEST-BOUNDED-FILE-READ-CONCURRENCY-002 snapshots a large path list without exceeding the OS file-descriptor limit","status":"passed","title":"TEST-BOUNDED-FILE-READ-CONCURRENCY-002 snapshots a large path list without exceeding the OS file-descriptor limit","duration":859.5491739999999,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["bounded file-read concurrency for large projects"],"fullName":"bounded file-read concurrency for large projects TEST-BOUNDED-FILE-READ-CONCURRENCY-003 bounds concurrent reads while Code Graph loads a language with many source files","status":"passed","title":"TEST-BOUNDED-FILE-READ-CONCURRENCY-003 bounds concurrent reads while Code Graph loads a language with many source files","duration":756.1467429999998,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["bounded file-read concurrency for large projects"],"fullName":"bounded file-read concurrency for large projects TEST-BOUNDED-FILE-READ-CONCURRENCY-004 bounds concurrent reads while knowledge build loads many Markdown documents","status":"passed","title":"TEST-BOUNDED-FILE-READ-CONCURRENCY-004 bounds concurrent reads while knowledge build loads many Markdown documents","duration":861.7886370000001,"failureMessages":[],"meta":{},"tags":[]}],"startTime":1790445384753,"endTime":1790445387248.7886,"status":"passed","message":"","name":"/home/nahisaho/GitHub/musubix3/tests/bounded-file-read-concurrency.test.ts"}]}
+{
+  "schemaVersion": 1,
+  "commandName": "bounded-file-read-concurrency-tests",
+  "commandSha256": "27680cf8bc50a0e74a7959f8d8f04555c4b941860dbf10b83eb4e12bec1952d8",
+  "inputFingerprint": "20bf27507b0ab69b5f51aac7eccdd8ab7ddd7482ed5179c0edaa1eecac6fd8f1",
+  "inputs": [
+    {
+      "path": "packages/analysis/src/files.ts",
+      "sha256": "8c444fac80a0f26dc7341b43e84f3e3906e346ad5e442f2909da7f18e031c72d"
+    },
+    {
+      "path": "packages/analysis/src/graph.ts",
+      "sha256": "e79836480c0d7a005f23c59e12bc9a1fd4fc6932f5635addb46a45561ef28e6d"
+    },
+    {
+      "path": "packages/analysis/src/knowledge.ts",
+      "sha256": "dfab1e023bcff8c937768746140d1ef3cdb7ffbe2bc8a2f1008a630298b41087"
+    },
+    {
+      "path": "tests/bounded-file-read-concurrency.test.ts",
+      "sha256": "85743bfec42baef1a8cebd36a6b9e85293f9fc29f4121b220398ce32794b3112"
+    }
+  ],
+  "adapter": "vitest",
+  "sourceKind": "file",
+  "reportPath": ".musubix/evidence/native/bounded-file-read-concurrency-tests/aggregate.json",
+  "processStatus": "completed",
+  "exitCode": 0,
+  "tests": [
+    {
+      "id": "TEST-BOUNDED-FILE-READ-CONCURRENCY-001",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-BOUNDED-FILE-READ-CONCURRENCY-002",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-BOUNDED-FILE-READ-CONCURRENCY-003",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-BOUNDED-FILE-READ-CONCURRENCY-004",
+      "status": "passed"
+    }
+  ]
+}

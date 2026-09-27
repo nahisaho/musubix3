@@ -1,1 +1,47 @@
-{"numTotalTestSuites":3,"numPassedTestSuites":3,"numFailedTestSuites":0,"numPendingTestSuites":0,"numTotalTests":15,"numPassedTests":15,"numFailedTests":0,"numPendingTests":0,"numTodoTests":0,"snapshot":{"added":0,"failure":false,"filesAdded":0,"filesRemoved":0,"filesRemovedList":[],"filesUnmatched":0,"filesUpdated":0,"matched":0,"total":0,"unchecked":0,"uncheckedKeysByFile":[],"unmatched":0,"updated":0,"didUpdate":false},"startTime":1790445018385,"success":true,"testResults":[{"assertionResults":[{"ancestorTitles":["CLI contracts"],"fullName":"CLI contracts prints version/help and JSON validation with nonzero failure","status":"passed","title":"prints version/help and JSON validation with nonzero failure","duration":1166.6736140000003,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["CLI contracts"],"fullName":"CLI contracts returns structured errors for missing files, invalid solver and unknown commands","status":"passed","title":"returns structured errors for missing files, invalid solver and unknown commands","duration":775.040931,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["CLI contracts"],"fullName":"CLI contracts supports init alias, dry-run, status and native-bin symlink invocation","status":"passed","title":"supports init alias, dry-run, status and native-bin symlink invocation","duration":1257.267801,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["CLI contracts"],"fullName":"CLI contracts requires explicit confirmation before recording human approval","status":"passed","title":"requires explicit confirmation before recording human approval","duration":1803.6653259999994,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["CLI contracts"],"fullName":"CLI contracts runs full workflow and reports JSON evidence","status":"passed","title":"runs full workflow and reports JSON evidence","duration":9570.603156000001,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["CLI contracts"],"fullName":"CLI contracts reports and enforces strict Code Graph mode through CLI gates and status","status":"passed","title":"reports and enforces strict Code Graph mode through CLI gates and status","duration":2723.843732000001,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["CLI contracts"],"fullName":"CLI contracts enforces strict workflow session identity from config and CLI","status":"passed","title":"enforces strict workflow session identity from config and CLI","duration":2196.062670000003,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["CLI contracts"],"fullName":"CLI contracts derives the configured GitHub OIDC audience without reading a private key","status":"passed","title":"derives the configured GitHub OIDC audience without reading a private key","duration":464.041455999999,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["CLI contracts"],"fullName":"CLI contracts records a staged change checkpoint through the CLI","status":"passed","title":"records a staged change checkpoint through the CLI","duration":2668.398659999999,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["CLI contracts"],"fullName":"CLI contracts returns exit 1 for incomplete starter gates and contradictory requirements","status":"passed","title":"returns exit 1 for incomplete starter gates and contradictory requirements","duration":1445.6963770000002,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["CLI contracts"],"fullName":"CLI contracts executes a complete CLI TDD cycle and exposes it to the gate","status":"passed","title":"executes a complete CLI TDD cycle and exposes it to the gate","duration":2866.8037460000014,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["distribution contracts"],"fullName":"distribution contracts TEST-EVIDENCE-WRITER-LOCK-029 keeps rollback recovery guidance in every distributed workflow skill","status":"passed","title":"TEST-EVIDENCE-WRITER-LOCK-029 keeps rollback recovery guidance in every distributed workflow skill","duration":5.727715000000899,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["distribution contracts"],"fullName":"distribution contracts TEST-SESSION-SCOPED-DEVELOPMENT-001 starts every new request as a fresh change","status":"passed","title":"TEST-SESSION-SCOPED-DEVELOPMENT-001 starts every new request as a fresh change","duration":20.19072700000106,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["distribution contracts"],"fullName":"distribution contracts TEST-SESSION-SCOPED-DEVELOPMENT-002 reuses evidence only for an explicit change ID","status":"passed","title":"TEST-SESSION-SCOPED-DEVELOPMENT-002 reuses evidence only for an explicit change ID","duration":1139.9740689999999,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["distribution contracts"],"fullName":"distribution contracts validates native manifests and packed hidden skills/built engine/assets","status":"passed","title":"validates native manifests and packed hidden skills/built engine/assets","duration":923.8944479999991,"failureMessages":[],"meta":{},"tags":[]}],"startTime":1790445020027,"endTime":1790445045384.8945,"status":"passed","message":"","name":"/home/nahisaho/GitHub/musubix3/tests/cli-package.test.ts"}]}
+{
+  "schemaVersion": 1,
+  "commandName": "session-tests",
+  "commandSha256": "2b4fa65746eac2efcf55846e35b51e06aaa9590349dbd35c7a02435d81eb1743",
+  "inputFingerprint": "85de4d9ed5b55be761f7a618f066c8df9f6372755ab5375322845e0b9b035cd1",
+  "inputs": [
+    {
+      "path": "packages/analysis/src/evidence-writer-lock.ts",
+      "sha256": "cce3d7759232c6023aed58dfab1eb57aaf9da7bab90cac7a4f980100d62c5308"
+    },
+    {
+      "path": "packages/analysis/src/trace.ts",
+      "sha256": "de8528c3f5aa40c44ceeece09368f92baa8f853a1babd6fc9ba2e4b115549be8"
+    },
+    {
+      "path": "packages/cli/src/main.ts",
+      "sha256": "25aa8d566e3851cee100b3c29b3d9c527594fe5778cd9e8222a00124e859991d"
+    },
+    {
+      "path": "scripts/smoke-package.mjs",
+      "sha256": "3950961c8a8cb45a71b45fe46810cd5ba9afb72c9c27201aa0921c92b72f3c4e"
+    },
+    {
+      "path": "tests/cli-package.test.ts",
+      "sha256": "e34848cf61ca23f65cda84777df9911bf78e82292bf01856c5129f51d181a9a6"
+    }
+  ],
+  "adapter": "vitest",
+  "sourceKind": "file",
+  "reportPath": ".musubix/evidence/native/session-tests/aggregate.json",
+  "processStatus": "completed",
+  "exitCode": 0,
+  "tests": [
+    {
+      "id": "TEST-EVIDENCE-WRITER-LOCK-029",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-SESSION-SCOPED-DEVELOPMENT-001",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-SESSION-SCOPED-DEVELOPMENT-002",
+      "status": "passed"
+    }
+  ]
+}

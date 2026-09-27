@@ -684,6 +684,23 @@ repository相対path引数（`CONFIG_ORPHANED_PATH`）はproject rootではな�
 evidence/reportのpath（`tddReport`/`testReport`/`mutationReport`、
 `.musubix/config.json`自体）は`cwd`に関わらず常にproject root基準のまま
 解決され、変わるのは起動するprocess自体の作業ディレクトリのみです。
+
+full-command の組込みadapterは、揮発するnative出力を
+`.musubix/cache/native/**`へ書き、正規化成功後に追跡対象の
+`.musubix/evidence/native/<command>/aggregate*`を単一のcanonical JSON
+recordで置換します。canonical recordはcommand、adapter、process、
+正規化済みtest、trace-linked inputのprovenanceを保持し、timestampと経過時間を
+除外します。performance/model-correspondence validationはexact bytes、
+command digest、現在のinput fingerprintを再検証します。不正・設定変更・staleは
+`NATIVE_TEST_EVIDENCE_SCHEMA`、`NATIVE_TEST_EVIDENCE_COMMAND_MISMATCH`、
+`NATIVE_TEST_EVIDENCE_SOURCE_MISMATCH`で識別されます。
+
+full-command aggregateでは、`{reportPath}`と生成されたreport-path引数は
+commandの`cwd`から見たraw cache pathを指し、durable pathはproject root基準の
+ままです。command digestが変わるのは引数にreport pathを含むadapterだけです。
+stdoutを使うGo/Cargo adapterのdigestとtargeted TDDのreport path/digestは
+変わりません。既存のraw aggregate file/directoryは次回の成功したgateで
+置換されます。
 `qualityProfile`の既定値は`custom`です。`minimal`はSDDの基本gate、
 `recommended`はstrict Code Graph、TDD、構造化test identityも要求し、
 `release`はformal、mutation、workflow、変更、performance、CI attestationを
@@ -892,7 +909,10 @@ gate実行中に入力が変わった場合、`input-stability`は追加・変�
 .NET `bin/`と`obj/`、project-local `.nuget/packages/`は除外しますが、
 source相当の生成入力はfail-closedのままです。コマンドが生成するreportは
 追跡対象のsource treeではなく`.musubix/evidence/native/`配下へ出力してください。
-gate中に自身のreportを書き込むとinput stabilityが失敗します。組込みadapterは対象test選択とreport引数を
+gate中に自身のreportを書き込むとinput stabilityが失敗します。commandはgate中に
+trace-linked source/test inputを変更してはならず、canonical native evidence
+validationは追加・削除・変更pathを決定的に報告してfail-closedになります。
+組込みadapterは対象test選択とreport引数を
 所有します。Cargo/Goの既存設定にある先頭`test`は安全に統合し、
 `--json-report`など競合するreport引数は早期拒否します。
 実行中の入力変更は失敗、その後の変更は `status` で stale になります。

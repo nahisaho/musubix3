@@ -163,10 +163,10 @@ describe('P4 model correspondence and mutation quality', () => {
       expect(args).toEqual([
         'test', 'Example.sln',
         '--logger', 'trx;LogFilePrefix=results',
-        '--results-directory', '.musubix/evidence/native/test/aggregate',
+        '--results-directory', '.musubix/cache/native/test/aggregate',
         '--', 'MSTest.MapInconclusiveToFailed=True',
       ]);
-      await writeText(root, '.musubix/evidence/native/test/aggregate/results_net8.0.trx',
+      await writeText(root, '.musubix/cache/native/test/aggregate/results_net8.0.trx',
         '<TestRun><Results><UnitTestResult testName="TEST-EXAMPLE-001 readiness" outcome="Passed" /></Results></TestRun>');
       return processResult();
     };

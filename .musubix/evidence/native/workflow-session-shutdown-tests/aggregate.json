@@ -1,1 +1,39 @@
-{"numTotalTestSuites":2,"numPassedTestSuites":2,"numFailedTestSuites":0,"numPendingTestSuites":0,"numTotalTests":14,"numPassedTests":14,"numFailedTests":0,"numPendingTests":0,"numTodoTests":0,"snapshot":{"added":0,"failure":false,"filesAdded":0,"filesRemoved":0,"filesRemovedList":[],"filesUnmatched":0,"filesUpdated":0,"matched":0,"total":0,"unchecked":0,"uncheckedKeysByFile":[],"unmatched":0,"updated":0,"didUpdate":false},"startTime":1790445375603,"success":true,"testResults":[{"assertionResults":[{"ancestorTitles":["P3 strict workflow transcript provenance"],"fullName":"P3 strict workflow transcript provenance keeps compatible verification by default and parses strict workflow config","status":"passed","title":"keeps compatible verification by default and parses strict workflow config","duration":3.1819090000000188,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["P3 strict workflow transcript provenance"],"fullName":"P3 strict workflow transcript provenance enforces bounded strict transcript freshness at verification and validation time","status":"passed","title":"enforces bounded strict transcript freshness at verification and validation time","duration":62.375236999999856,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["P3 strict workflow transcript provenance"],"fullName":"P3 strict workflow transcript provenance persists a canonical transcript hash and terminal session identity in strict mode","status":"passed","title":"persists a canonical transcript hash and terminal session identity in strict mode","duration":37.5534990000001,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["P3 strict workflow transcript provenance"],"fullName":"P3 strict workflow transcript provenance does not let compatible evidence satisfy a strict gate","status":"passed","title":"does not let compatible evidence satisfy a strict gate","duration":26.354663000000073,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["P3 strict workflow transcript provenance"],"fullName":"P3 strict workflow transcript provenance requires exactly one final successful result with the expected session identity","status":"passed","title":"requires exactly one final successful result with the expected session identity","duration":51.93297600000005,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["P3 strict workflow transcript provenance"],"fullName":"P3 strict workflow transcript provenance TEST-WORKFLOW-SHUTDOWN-001 accepts only a final routine Copilot session shutdown","status":"passed","title":"TEST-WORKFLOW-SHUTDOWN-001 accepts only a final routine Copilot session shutdown","duration":55.38297299999999,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["P3 strict workflow transcript provenance"],"fullName":"P3 strict workflow transcript provenance TEST-WORKFLOW-SHUTDOWN-RESUME-001 accepts routine shutdown and resume episodes","status":"passed","title":"TEST-WORKFLOW-SHUTDOWN-RESUME-001 accepts routine shutdown and resume episodes","duration":22.974014000000125,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["P3 strict workflow transcript provenance"],"fullName":"P3 strict workflow transcript provenance TEST-WORKFLOW-SHUTDOWN-RESUME-002 rejects invalid resumed shutdown lifecycles","status":"passed","title":"TEST-WORKFLOW-SHUTDOWN-RESUME-002 rejects invalid resumed shutdown lifecycles","duration":63.734748999999965,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["P3 strict workflow transcript provenance"],"fullName":"P3 strict workflow transcript provenance TEST-WORKFLOW-SHUTDOWN-RESUME-003 preserves resume boundaries during sanitization","status":"passed","title":"TEST-WORKFLOW-SHUTDOWN-RESUME-003 preserves resume boundaries during sanitization","duration":34.20559400000002,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["P3 strict workflow transcript provenance"],"fullName":"P3 strict workflow transcript provenance rejects malformed, unordered, orphaned, duplicate, and incomplete tool lifecycles","status":"passed","title":"rejects malformed, unordered, orphaned, duplicate, and incomplete tool lifecycles","duration":51.22025299999996,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["P3 strict workflow transcript provenance"],"fullName":"P3 strict workflow transcript provenance accepts bounded timestamp skew for causally ordered concurrent events","status":"passed","title":"accepts bounded timestamp skew for causally ordered concurrent events","duration":45.43817600000011,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["P3 strict workflow transcript provenance"],"fullName":"P3 strict workflow transcript provenance preserves Skill invocation source order when concurrent timestamps run backward","status":"passed","title":"preserves Skill invocation source order when concurrent timestamps run backward","duration":34.51723900000002,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["P3 strict workflow transcript provenance"],"fullName":"P3 strict workflow transcript provenance binds strict transcript identity into the workflow attestation head","status":"passed","title":"binds strict transcript identity into the workflow attestation head","duration":37.08210299999996,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["P3 strict workflow transcript provenance"],"fullName":"P3 strict workflow transcript provenance orders offset timestamps by instant rather than lexical representation","status":"passed","title":"orders offset timestamps by instant rather than lexical representation","duration":33.76250499999992,"failureMessages":[],"meta":{},"tags":[]}],"startTime":1790445376598,"endTime":1790445377157.7625,"status":"passed","message":"","name":"/home/nahisaho/GitHub/musubix3/tests/p3-workflow-provenance.test.ts"}]}
+{
+  "schemaVersion": 1,
+  "commandName": "workflow-session-shutdown-tests",
+  "commandSha256": "ece0e88cf438d87cf26f0db1b18a8e70b8f422dfb47b38d068b319bd5a622024",
+  "inputFingerprint": "3885ff79c419397b2e3710c01cf63352acf429a7c03b4fbf3ad605c2a4d80768",
+  "inputs": [
+    {
+      "path": "packages/analysis/src/workflow.ts",
+      "sha256": "b1cfd042b2a78e43549126d0636d28f8ee1d04f1f58996faf0cfddbf7693fdd2"
+    },
+    {
+      "path": "tests/p3-workflow-provenance.test.ts",
+      "sha256": "eb1a3f7235292b1d9440183ab1b18b8513ef6e896a6bb1c5a6c8ecf9ad4f0a4a"
+    }
+  ],
+  "adapter": "vitest",
+  "sourceKind": "file",
+  "reportPath": ".musubix/evidence/native/workflow-session-shutdown-tests/aggregate.json",
+  "processStatus": "completed",
+  "exitCode": 0,
+  "tests": [
+    {
+      "id": "TEST-WORKFLOW-SHUTDOWN-001",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-WORKFLOW-SHUTDOWN-RESUME-001",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-WORKFLOW-SHUTDOWN-RESUME-002",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-WORKFLOW-SHUTDOWN-RESUME-003",
+      "status": "passed"
+    }
+  ]
+}

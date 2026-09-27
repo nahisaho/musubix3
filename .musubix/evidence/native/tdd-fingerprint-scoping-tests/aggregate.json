@@ -1,1 +1,27 @@
-{"numTotalTestSuites":1,"numPassedTestSuites":1,"numFailedTestSuites":0,"numPendingTestSuites":0,"numTotalTests":2,"numPassedTests":2,"numFailedTests":0,"numPendingTests":0,"numTodoTests":0,"snapshot":{"added":0,"failure":false,"filesAdded":0,"filesRemoved":0,"filesRemovedList":[],"filesUnmatched":0,"filesUpdated":0,"matched":0,"total":0,"unchecked":0,"uncheckedKeysByFile":[],"unmatched":0,"updated":0,"didUpdate":false},"startTime":1790445228144,"success":true,"testResults":[{"assertionResults":[{"ancestorTitles":[],"fullName":"TEST-TDD-FINGERPRINT-SCOPING-001 keeps a nested test non-stale when a later sibling test is appended","status":"passed","title":"TEST-TDD-FINGERPRINT-SCOPING-001 keeps a nested test non-stale when a later sibling test is appended","duration":362.85105,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"preserves the existing fingerprint for a top-level test declaration","status":"passed","title":"preserves the existing fingerprint for a top-level test declaration","duration":307.9076540000001,"failureMessages":[],"meta":{},"tags":[]}],"startTime":1790445229067,"endTime":1790445229737.9077,"status":"passed","message":"","name":"/home/nahisaho/GitHub/musubix3/tests/tdd-fingerprint-scoping.test.ts"}]}
+{
+  "schemaVersion": 1,
+  "commandName": "tdd-fingerprint-scoping-tests",
+  "commandSha256": "38811a4ba4954aa31e217c36be645dcd06d944d301b06a4ef99428137c4f0ae0",
+  "inputFingerprint": "a18c7b13c31b4b74dc463f881ad7bfe1db27d5c71275fc8d019995866123563b",
+  "inputs": [
+    {
+      "path": "packages/analysis/src/tdd.ts",
+      "sha256": "d6e3da689cfa3a2a7cdfb19083452ad278bafcf6f5a391cfb657a9e38b5eff91"
+    },
+    {
+      "path": "tests/tdd-fingerprint-scoping.test.ts",
+      "sha256": "e10a3ee1d4a6d50d69051a84884ef61d6ecff5d9c47b37b25240a95821e0608e"
+    }
+  ],
+  "adapter": "vitest",
+  "sourceKind": "file",
+  "reportPath": ".musubix/evidence/native/tdd-fingerprint-scoping-tests/aggregate.json",
+  "processStatus": "completed",
+  "exitCode": 0,
+  "tests": [
+    {
+      "id": "TEST-TDD-FINGERPRINT-SCOPING-001",
+      "status": "passed"
+    }
+  ]
+}

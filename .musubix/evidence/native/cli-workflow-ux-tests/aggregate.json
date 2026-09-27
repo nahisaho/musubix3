@@ -1,1 +1,63 @@
-{"numTotalTestSuites":2,"numPassedTestSuites":2,"numFailedTestSuites":0,"numPendingTestSuites":0,"numTotalTests":6,"numPassedTests":6,"numFailedTests":0,"numPendingTests":0,"numTodoTests":0,"snapshot":{"added":0,"failure":false,"filesAdded":0,"filesRemoved":0,"filesRemovedList":[],"filesUnmatched":0,"filesUpdated":0,"matched":0,"total":0,"unchecked":0,"uncheckedKeysByFile":[],"unmatched":0,"updated":0,"didUpdate":false},"startTime":1790445222149,"success":true,"testResults":[{"assertionResults":[{"ancestorTitles":["cli workflow ux improvements (v0.1.9)"],"fullName":"cli workflow ux improvements (v0.1.9) TEST-CLI-WORKFLOW-UX-001 excludes nested MUSUBIX3 workspaces from ancestor scans","status":"passed","title":"TEST-CLI-WORKFLOW-UX-001 excludes nested MUSUBIX3 workspaces from ancestor scans","duration":871.0533230000001,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["cli workflow ux improvements (v0.1.9)"],"fullName":"cli workflow ux improvements (v0.1.9) TEST-CLI-WORKFLOW-UX-002 states bidirectional candidate semantics for trace impact text output","status":"passed","title":"TEST-CLI-WORKFLOW-UX-002 states bidirectional candidate semantics for trace impact text output","duration":1216.8904320000001,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["cli workflow ux improvements (v0.1.9)"],"fullName":"cli workflow ux improvements (v0.1.9) TEST-CLI-WORKFLOW-UX-003 points a stale/missing approval error at approval validate","status":"passed","title":"TEST-CLI-WORKFLOW-UX-003 points a stale/missing approval error at approval validate","duration":156.43104700000004,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["cli workflow ux improvements (v0.1.9)"],"fullName":"cli workflow ux improvements (v0.1.9) TEST-CLI-WORKFLOW-UX-004 reports commands whose args reference nonexistent repository paths","status":"passed","title":"TEST-CLI-WORKFLOW-UX-004 reports commands whose args reference nonexistent repository paths","duration":153.93295199999966,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["cli workflow ux improvements (v0.1.9)"],"fullName":"cli workflow ux improvements (v0.1.9) TEST-CLI-WORKFLOW-UX-005 scopes gate status to one feature, isolating unrelated failures","status":"passed","title":"TEST-CLI-WORKFLOW-UX-005 scopes gate status to one feature, isolating unrelated failures","duration":2479.6314270000003,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["cli workflow ux improvements (v0.1.9)"],"fullName":"cli workflow ux improvements (v0.1.9) TEST-CLI-WORKFLOW-UX-006 proposes native commands per detected toolchain without writing config.json","status":"passed","title":"TEST-CLI-WORKFLOW-UX-006 proposes native commands per detected toolchain without writing config.json","duration":155.06846399999995,"failureMessages":[],"meta":{},"tags":[]}],"startTime":1790445223080,"endTime":1790445227580.0684,"status":"passed","message":"","name":"/home/nahisaho/GitHub/musubix3/tests/cli-workflow-ux.test.ts"}]}
+{
+  "schemaVersion": 1,
+  "commandName": "cli-workflow-ux-tests",
+  "commandSha256": "7566ec07d07e9b50c1ebe6a4056a7d3db447612486e9e0fce31a47f746fbbb2d",
+  "inputFingerprint": "fad7583614eea8547bc24036c951c24e3ee9a0ea1259df2c3a8319fd11c1a6ee",
+  "inputs": [
+    {
+      "path": "packages/analysis/src/approval.ts",
+      "sha256": "033bbf1b8e55e67dd0eeb0d73913ba4d767395486a1bbdf16c05a49f2f2041ac"
+    },
+    {
+      "path": "packages/analysis/src/config.ts",
+      "sha256": "52d5212f4057df9ed5caac0a0025ce744864909abceea3c64d259479ddffb998"
+    },
+    {
+      "path": "packages/analysis/src/files.ts",
+      "sha256": "8c444fac80a0f26dc7341b43e84f3e3906e346ad5e442f2909da7f18e031c72d"
+    },
+    {
+      "path": "packages/analysis/src/gate.ts",
+      "sha256": "d55d765f4ca0213bb3f28c33518a099f5229130be505211c230444287418d755"
+    },
+    {
+      "path": "packages/cli/src/main.ts",
+      "sha256": "25aa8d566e3851cee100b3c29b3d9c527594fe5778cd9e8222a00124e859991d"
+    },
+    {
+      "path": "tests/cli-workflow-ux.test.ts",
+      "sha256": "53bdc5375bef05b365d725f5a8948393d68ae8cd1116fad8ff36ca3de127a177"
+    }
+  ],
+  "adapter": "vitest",
+  "sourceKind": "file",
+  "reportPath": ".musubix/evidence/native/cli-workflow-ux-tests/aggregate.json",
+  "processStatus": "completed",
+  "exitCode": 0,
+  "tests": [
+    {
+      "id": "TEST-CLI-WORKFLOW-UX-001",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-CLI-WORKFLOW-UX-002",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-CLI-WORKFLOW-UX-003",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-CLI-WORKFLOW-UX-004",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-CLI-WORKFLOW-UX-005",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-CLI-WORKFLOW-UX-006",
+      "status": "passed"
+    }
+  ]
+}

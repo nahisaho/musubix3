@@ -1,1 +1,55 @@
-{"numTotalTestSuites":1,"numPassedTestSuites":1,"numFailedTestSuites":0,"numPendingTestSuites":0,"numTotalTests":10,"numPassedTests":10,"numFailedTests":0,"numPendingTests":0,"numTodoTests":0,"snapshot":{"added":0,"failure":false,"filesAdded":0,"filesRemoved":0,"filesRemovedList":[],"filesUnmatched":0,"filesUpdated":0,"matched":0,"total":0,"unchecked":0,"uncheckedKeysByFile":[],"unmatched":0,"updated":0,"didUpdate":false},"startTime":1790445249802,"success":true,"testResults":[{"assertionResults":[{"ancestorTitles":[],"fullName":"TEST-CHANGE-REQUIREMENT-BATCHES-001 completes an interleaved Red-Implement-Green loop per requirement batch","status":"passed","title":"TEST-CHANGE-REQUIREMENT-BATCHES-001 completes an interleaved Red-Implement-Green loop per requirement batch","duration":4564.272584,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-CHANGE-REQUIREMENT-BATCHES-002 rejects Implementation for a batch before its own Red and Green before its own Implementation","status":"passed","title":"TEST-CHANGE-REQUIREMENT-BATCHES-002 rejects Implementation for a batch before its own Red and Green before its own Implementation","duration":2377.3756779999994,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-CHANGE-REQUIREMENT-BATCHES-003 rejects Quality until every requirement has Green coverage","status":"passed","title":"TEST-CHANGE-REQUIREMENT-BATCHES-003 rejects Quality until every requirement has Green coverage","duration":4225.986703999999,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-CHANGE-REQUIREMENT-BATCHES-006 recognizes every requirement in one authoritative @verifies declaration","status":"passed","title":"TEST-CHANGE-REQUIREMENT-BATCHES-006 recognizes every requirement in one authoritative @verifies declaration","duration":2951.2475830000003,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-CHANGE-REQUIREMENT-BATCHES-007 uses trace-compatible polyglot comment blocks for authoritative tests","status":"passed","title":"TEST-CHANGE-REQUIREMENT-BATCHES-007 uses trace-compatible polyglot comment blocks for authoritative tests","duration":2883.8191419999985,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-CHANGE-REQUIREMENT-BATCHES-008 selects the latest overlapping requirement batch by Red order","status":"passed","title":"TEST-CHANGE-REQUIREMENT-BATCHES-008 selects the latest overlapping requirement batch by Red order","duration":0.5396340000006603,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-CHANGE-REQUIREMENT-BATCHES-009 binds only valid voids inside the current batch window","status":"passed","title":"TEST-CHANGE-REQUIREMENT-BATCHES-009 binds only valid voids inside the current batch window","duration":0.7567100000014761,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"keeps later incomplete batches current and projects current requirement IDs","status":"passed","title":"keeps later incomplete batches current and projects current requirement IDs","duration":0.2455980000013369,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"ignores superseded TDD cycles outside the current batch window","status":"passed","title":"ignores superseded TDD cycles outside the current batch window","duration":0.8547330000001239,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"suppresses fully superseded batch diagnostics in validation and waiver recording","status":"passed","title":"suppresses fully superseded batch diagnostics in validation and waiver recording","duration":4838.623116999999,"failureMessages":[],"meta":{},"tags":[]}],"startTime":1790445240194,"endTime":1790445260537.623,"status":"passed","message":"","name":"/home/nahisaho/GitHub/musubix3/tests/change-requirement-batches.test.ts"}]}
+{
+  "schemaVersion": 1,
+  "commandName": "change-requirement-batches-tests",
+  "commandSha256": "ae21b7bf077cdc32a98a3fca5666d3f12c18c30f5b92b9561f1fc44fff395431",
+  "inputFingerprint": "e59c73f436d626a03d0191674b226e4285228c3eb60f41380a8eaee8178bacb8",
+  "inputs": [
+    {
+      "path": "packages/analysis/src/change-evidence.ts",
+      "sha256": "564bceca2edd2d8922b421ecd3b83f6df4d428b556e81450cd0819b5728a29e2"
+    },
+    {
+      "path": "packages/analysis/src/change.ts",
+      "sha256": "0a39698ff4847828fc6d84e5421cd85434571ab278d5e048cc92d2c65bf403f2"
+    },
+    {
+      "path": "tests/change-requirement-batches.test.ts",
+      "sha256": "0ff22bb65020076f9bb84ddcce2ff1815881d6c7016039017bdfd4efe6087c30"
+    }
+  ],
+  "adapter": "vitest",
+  "sourceKind": "file",
+  "reportPath": ".musubix/evidence/native/change-requirement-batches-tests/aggregate.json",
+  "processStatus": "completed",
+  "exitCode": 0,
+  "tests": [
+    {
+      "id": "TEST-CHANGE-REQUIREMENT-BATCHES-001",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-CHANGE-REQUIREMENT-BATCHES-002",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-CHANGE-REQUIREMENT-BATCHES-003",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-CHANGE-REQUIREMENT-BATCHES-006",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-CHANGE-REQUIREMENT-BATCHES-007",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-CHANGE-REQUIREMENT-BATCHES-008",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-CHANGE-REQUIREMENT-BATCHES-009",
+      "status": "passed"
+    }
+  ]
+}

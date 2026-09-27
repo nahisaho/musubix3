@@ -1,1 +1,27 @@
-{"numTotalTestSuites":1,"numPassedTestSuites":1,"numFailedTestSuites":0,"numPendingTestSuites":0,"numTotalTests":2,"numPassedTests":2,"numFailedTests":0,"numPendingTests":0,"numTodoTests":0,"snapshot":{"added":0,"failure":false,"filesAdded":0,"filesRemoved":0,"filesRemovedList":[],"filesUnmatched":0,"filesUpdated":0,"matched":0,"total":0,"unchecked":0,"uncheckedKeysByFile":[],"unmatched":0,"updated":0,"didUpdate":false},"startTime":1790445414934,"success":true,"testResults":[{"assertionResults":[{"ancestorTitles":[],"fullName":"TEST-MODEL-CORRESPONDENCE-EVIDENCE-GUIDANCE-001 hints at `evidence refresh` when model-correspondence.json is missing","status":"passed","title":"TEST-MODEL-CORRESPONDENCE-EVIDENCE-GUIDANCE-001 hints at `evidence refresh` when model-correspondence.json is missing","duration":24.001729999999952,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-MODEL-CORRESPONDENCE-EVIDENCE-GUIDANCE-002 documents the `evidence refresh` prerequisite in --help","status":"passed","title":"TEST-MODEL-CORRESPONDENCE-EVIDENCE-GUIDANCE-002 documents the `evidence refresh` prerequisite in --help","duration":261.71522300000004,"failureMessages":[],"meta":{},"tags":[]}],"startTime":1790445405222,"endTime":1790445405507.7153,"status":"passed","message":"","name":"/home/nahisaho/GitHub/musubix3/tests/model-correspondence-evidence-guidance.test.ts"}]}
+{
+  "schemaVersion": 1,
+  "commandName": "model-correspondence-evidence-guidance-tests",
+  "commandSha256": "7f4f5f001070bff04ec512def79d54c8b65bf98255e011bad8d8f45dacafbee4",
+  "inputFingerprint": "4dcb45cf9f45dfef84daaf1038b4976ece9bc1ce146c1c18aeab03b5af87c70e",
+  "inputs": [
+    {
+      "path": "tests/model-correspondence-evidence-guidance.test.ts",
+      "sha256": "f32fef2927b6353cef035f67cc8df69c1fb37ef08b745d88215df9bfa46d65ad"
+    }
+  ],
+  "adapter": "vitest",
+  "sourceKind": "file",
+  "reportPath": ".musubix/evidence/native/model-correspondence-evidence-guidance-tests/aggregate.json",
+  "processStatus": "completed",
+  "exitCode": 0,
+  "tests": [
+    {
+      "id": "TEST-MODEL-CORRESPONDENCE-EVIDENCE-GUIDANCE-001",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-MODEL-CORRESPONDENCE-EVIDENCE-GUIDANCE-002",
+      "status": "passed"
+    }
+  ]
+}

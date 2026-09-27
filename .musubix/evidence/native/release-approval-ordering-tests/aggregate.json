@@ -1,1 +1,55 @@
-{"numTotalTestSuites":2,"numPassedTestSuites":2,"numFailedTestSuites":0,"numPendingTestSuites":0,"numTotalTests":7,"numPassedTests":7,"numFailedTests":0,"numPendingTests":0,"numTodoTests":0,"snapshot":{"added":0,"failure":false,"filesAdded":0,"filesRemoved":0,"filesRemovedList":[],"filesUnmatched":0,"filesUpdated":0,"matched":0,"total":0,"unchecked":0,"uncheckedKeysByFile":[],"unmatched":0,"updated":0,"didUpdate":false},"startTime":1790445424684,"success":true,"testResults":[{"assertionResults":[{"ancestorTitles":["release approval ordering"],"fullName":"release approval ordering TEST-RELEASE-APPROVAL-ORDERING-001 binds the approved Git candidate to the clean tagged release manifest","status":"passed","title":"TEST-RELEASE-APPROVAL-ORDERING-001 binds the approved Git candidate to the clean tagged release manifest","duration":242.3200569999999,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["release approval ordering"],"fullName":"release approval ordering TEST-RELEASE-APPROVAL-ORDERING-002 reports missing and complete stale drift in Unicode code-point order","status":"passed","title":"TEST-RELEASE-APPROVAL-ORDERING-002 reports missing and complete stale drift in Unicode code-point order","duration":176.00298999999995,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["release approval ordering"],"fullName":"release approval ordering TEST-RELEASE-APPROVAL-ORDERING-005 rejects internally inconsistent approval evidence","status":"passed","title":"TEST-RELEASE-APPROVAL-ORDERING-005 rejects internally inconsistent approval evidence","duration":101.87335699999994,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["release approval ordering"],"fullName":"release approval ordering TEST-RELEASE-APPROVAL-ORDERING-003 fails the CLI with one JSON report before output mutation","status":"passed","title":"TEST-RELEASE-APPROVAL-ORDERING-003 fails the CLI with one JSON report before output mutation","duration":80.55197599999997,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["release approval ordering"],"fullName":"release approval ordering TEST-RELEASE-APPROVAL-ORDERING-004 documents and wires the enforced release sequence in both languages","status":"passed","title":"TEST-RELEASE-APPROVAL-ORDERING-004 documents and wires the enforced release sequence in both languages","duration":3.6497179999998934,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["release approval ordering"],"fullName":"release approval ordering TEST-RELEASE-APPROVAL-ORDERING-006 isolates fixture tags from ambient CI identity and shell expressions","status":"passed","title":"TEST-RELEASE-APPROVAL-ORDERING-006 isolates fixture tags from ambient CI identity and shell expressions","duration":122.71382000000017,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["release approval ordering"],"fullName":"release approval ordering TEST-RELEASE-APPROVAL-ORDERING-007 rebuilds approved sources before validation and packaging","status":"passed","title":"TEST-RELEASE-APPROVAL-ORDERING-007 rebuilds approved sources before validation and packaging","duration":28.354117000000088,"failureMessages":[],"meta":{},"tags":[]}],"startTime":1790445425100,"endTime":1790445425856.354,"status":"passed","message":"","name":"/home/nahisaho/GitHub/musubix3/tests/release-approval-ordering.test.ts"}]}
+{
+  "schemaVersion": 1,
+  "commandName": "release-approval-ordering-tests",
+  "commandSha256": "c4eee1f24fb187bbe14aac5cc79ff9904a8ebb5f6f175d1bb4d45950d52deb8c",
+  "inputFingerprint": "eb97882217440f5eec258d261da7b06802ffee8975ed6b1d57729a9536f3172b",
+  "inputs": [
+    {
+      "path": "packages/analysis/src/approval.ts",
+      "sha256": "033bbf1b8e55e67dd0eeb0d73913ba4d767395486a1bbdf16c05a49f2f2041ac"
+    },
+    {
+      "path": "scripts/release-prepare.mjs",
+      "sha256": "e166ac42868ce134ad9d3e68a92e14831f2ad243b51f2c0782a47e49fe55a640"
+    },
+    {
+      "path": "tests/release-approval-ordering.test.ts",
+      "sha256": "27b3ace3195beda732e658f0a4854ed2b95a3f8b03edc51756d6ebb7caa24801"
+    }
+  ],
+  "adapter": "vitest",
+  "sourceKind": "file",
+  "reportPath": ".musubix/evidence/native/release-approval-ordering-tests/aggregate.json",
+  "processStatus": "completed",
+  "exitCode": 0,
+  "tests": [
+    {
+      "id": "TEST-RELEASE-APPROVAL-ORDERING-001",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-RELEASE-APPROVAL-ORDERING-002",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-RELEASE-APPROVAL-ORDERING-003",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-RELEASE-APPROVAL-ORDERING-004",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-RELEASE-APPROVAL-ORDERING-005",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-RELEASE-APPROVAL-ORDERING-006",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-RELEASE-APPROVAL-ORDERING-007",
+      "status": "passed"
+    }
+  ]
+}

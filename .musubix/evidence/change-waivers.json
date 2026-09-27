@@ -3672,6 +3672,19 @@
       "order": 1920,
       "previousSha256": "441b5151871197ea4c1c199ef56c9dc4f7143fc3c663d6ddd591cbc8c88d5d56",
       "payloadSha256": "4d173dbcc81d3a2ade7b5d6f9995263b768f052988ad30fec9fab7f2bc1488de"
+    },
+    {
+      "changeId": "CHANGE-0053",
+      "code": "CHANGE_TEST_CHANGED_AFTER_RED",
+      "detail": "REQ-NATIVE-TEST-EVIDENCE-STABILITY-001,REQ-NATIVE-TEST-EVIDENCE-STABILITY-002,REQ-NATIVE-TEST-EVIDENCE-STABILITY-003,REQ-NATIVE-TEST-EVIDENCE-STABILITY-004",
+      "approver": "nahisaho",
+      "reason": "The only post-Red test change updated the existing .NET adapter regression expectation from the tracked aggregate directory to the approved raw cache path; CHANGE-0053 authoritative tests remained unchanged through Green.",
+      "recordedAt": "2026-09-26T22:55:45.522Z",
+      "snapshotVersion": 1,
+      "snapshotHash": "72ee8b007d029594bbcbd4608d8f9b992bbe8cbdb44a2af7b676998138ee49ad",
+      "order": 1962,
+      "previousSha256": "4d173dbcc81d3a2ade7b5d6f9995263b768f052988ad30fec9fab7f2bc1488de",
+      "payloadSha256": "12576479a3ff1d91eca9822012420ed28a406a7a9a96c935c6411251b05d18c7"
     }
   ]
 }

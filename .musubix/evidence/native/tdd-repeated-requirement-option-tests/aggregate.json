@@ -1,1 +1,39 @@
-{"numTotalTestSuites":1,"numPassedTestSuites":1,"numFailedTestSuites":0,"numPendingTestSuites":0,"numTotalTests":3,"numPassedTests":3,"numFailedTests":0,"numPendingTests":0,"numTodoTests":0,"snapshot":{"added":0,"failure":false,"filesAdded":0,"filesRemoved":0,"filesRemovedList":[],"filesUnmatched":0,"filesUpdated":0,"matched":0,"total":0,"unchecked":0,"uncheckedKeysByFile":[],"unmatched":0,"updated":0,"didUpdate":false},"startTime":1790445409328,"success":true,"testResults":[{"assertionResults":[{"ancestorTitles":[],"fullName":"TEST-TDD-REPEATED-REQUIREMENT-OPTION-001 rejects repeated requirements before any TDD phase side effect","status":"passed","title":"TEST-TDD-REPEATED-REQUIREMENT-OPTION-001 rejects repeated requirements before any TDD phase side effect","duration":6260.2025029999995,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-TDD-REPEATED-REQUIREMENT-OPTION-002 documents one requirement per TDD invocation","status":"passed","title":"TEST-TDD-REPEATED-REQUIREMENT-OPTION-002 documents one requirement per TDD invocation","duration":974.737642,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-TDD-REPEATED-REQUIREMENT-OPTION-003 keeps the dedicated documentation contract test required by policy","status":"passed","title":"TEST-TDD-REPEATED-REQUIREMENT-OPTION-003 keeps the dedicated documentation contract test required by policy","duration":121.29449399999976,"failureMessages":[],"meta":{},"tags":[]}],"startTime":1790445409650,"endTime":1790445416541.2944,"status":"passed","message":"","name":"/home/nahisaho/GitHub/musubix3/tests/tdd-repeated-requirement-option.test.ts"}]}
+{
+  "schemaVersion": 1,
+  "commandName": "tdd-repeated-requirement-option-tests",
+  "commandSha256": "c4528f5d88d717e9ef8a41a2bdeae0bc779408df58bb45ffce96afc989dc9512",
+  "inputFingerprint": "110f1043d384dcd4f02a1e9b80cffdbf38edda5194da98f7957b88e191818092",
+  "inputs": [
+    {
+      "path": "packages/cli/src/main.ts",
+      "sha256": "25aa8d566e3851cee100b3c29b3d9c527594fe5778cd9e8222a00124e859991d"
+    },
+    {
+      "path": "scripts/check-gate-command-timeout-margin.mjs",
+      "sha256": "90a7481e30b3159b7524ebd4e0466a2d833a73f862046bff5cbeeb38128c68d2"
+    },
+    {
+      "path": "tests/tdd-repeated-requirement-option.test.ts",
+      "sha256": "94af359b07f52215f0f59ff8e346ffff4927965dd40b6ac3b5490847d59afcc0"
+    }
+  ],
+  "adapter": "vitest",
+  "sourceKind": "file",
+  "reportPath": ".musubix/evidence/native/tdd-repeated-requirement-option-tests/aggregate.json",
+  "processStatus": "completed",
+  "exitCode": 0,
+  "tests": [
+    {
+      "id": "TEST-TDD-REPEATED-REQUIREMENT-OPTION-001",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-TDD-REPEATED-REQUIREMENT-OPTION-002",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-TDD-REPEATED-REQUIREMENT-OPTION-003",
+      "status": "passed"
+    }
+  ]
+}

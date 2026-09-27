@@ -1,12 +1,18 @@
 import { error, validateRequirements, type Diagnostic, type FormalConstraint, type Requirement } from '../../domain/src/index.js';
-import { adapterInvocation, mergeAdapterArgs, normalizeAdapterReport, readAdapterOutput } from './adapters.js';
+import { adapterCommandArgs, adapterInvocation } from './adapters.js';
 import { loadConfig } from './config.js';
 import { digest, exists, files, readText, snapshot, within, writeJson } from './files.js';
 import type { FormalResult } from './formal.js';
 import type { PerformanceExecution } from './performance.js';
 import { parseMusubixTestReport } from './tdd.js';
-import { checkTrace, loadTrace, type TraceGraph } from './trace.js';
+import { buildTrace, checkTrace, loadTrace, type TraceGraph } from './trace.js';
 import { withEvidenceWriterLock } from './evidence-writer-lock.js';
+import {
+  createNativeTestEvidencePassContext,
+  nativeTestCommandSha256,
+  validateNativeTestEvidence,
+  type NativeTestEvidencePassContext,
+} from './native-test-evidence.js';
 
 export interface CorrespondenceTestEvidence {
   testId: string;
@@ -198,10 +204,17 @@ export function modelCorrespondenceEvidenceHead(evidence: Record<string, unknown
   }));
 }
 
-async function currentReport(root: string, commandName: string, reportPath: string): Promise<{
+async function currentReport(
+  root: string,
+  commandName: string,
+  reportPath: string,
+  trace: TraceGraph | undefined,
+  passContext: NativeTestEvidencePassContext,
+): Promise<{
   commandSha256: string;
   reportSha256: string;
   passed: Set<string>;
+  diagnostics: Diagnostic[];
 } | null> {
   const config = await loadConfig(root);
   const command = config.commands.find((candidate) => candidate.name === commandName);
@@ -209,26 +222,36 @@ async function currentReport(root: string, commandName: string, reportPath: stri
   const invocation = command.adapter ? adapterInvocation(command.adapter, command.name) : null;
   const configuredPath = command.testReport?.path ?? invocation!.reportPath;
   if (configuredPath !== reportPath) return null;
-  const configuredArgs = command.args.map((arg) => arg.replaceAll('{reportPath}', configuredPath));
   const args = invocation
-    ? mergeAdapterArgs(command.adapter!, configuredArgs, invocation.args)
-    : configuredArgs;
+    ? adapterCommandArgs(root, command, invocation)
+    : command.args.map((arg) => arg.replaceAll('{reportPath}', configuredPath));
   const absolute = within(root, reportPath);
-  const text = invocation
-    ? await readAdapterOutput(invocation, absolute, '', root)
-    : await exists(absolute) ? await readText(root, reportPath) : null;
+  const text = await exists(absolute) ? await readText(root, reportPath) : null;
   if (text === null) return null;
-  const report = command.testReport
-    ? parseMusubixTestReport(text)
-    : normalizeAdapterReport(command.adapter!, text);
+  if (invocation && !trace) throw new Error('Current trace is required for native test evidence validation.');
+  const validated = invocation
+    ? await validateNativeTestEvidence(root, trace!, text, {
+        commandName: command.name,
+        commandSha256: nativeTestCommandSha256(command.command, args),
+        adapter: command.adapter!,
+        sourceKind: invocation.source,
+        reportPath: invocation.reportPath,
+      }, passContext)
+    : null;
+  const tests = validated?.evidence?.tests ?? (command.testReport ? parseMusubixTestReport(text).tests : []);
   return {
-    commandSha256: digest(canonical({ executable: command.command, arguments: args })),
+    commandSha256: nativeTestCommandSha256(command.command, args),
     reportSha256: digest(text),
-    passed: new Set(report.tests.filter((test) => test.status === 'passed').map((test) => test.id)),
+    passed: new Set(tests.filter((test) => test.status === 'passed').map((test) => test.id)),
+    diagnostics: validated?.diagnostics ?? [],
   };
 }
 
-export async function validateModelCorrespondenceEvidence(root: string): Promise<{
+/** @id CODE-NATIVE-TEST-EVIDENCE-STABILITY-004
+ * @implements REQ-NATIVE-TEST-EVIDENCE-STABILITY-004
+ * @design DES-NATIVE-TEST-EVIDENCE-STABILITY-004
+ */
+export async function validateModelCorrespondenceEvidence(root: string, options: { trace?: TraceGraph } = {}): Promise<{
   present: boolean;
   valid: boolean;
   requirements: number;
@@ -276,10 +299,10 @@ export async function validateModelCorrespondenceEvidence(root: string): Promise
     };
   }
   const diagnostics: Diagnostic[] = [];
-  let trace: TraceGraph;
+  let correspondenceTrace: TraceGraph;
   try {
-    trace = await loadTrace(root);
-    const checkedTrace = await checkTrace(root, trace, true);
+    correspondenceTrace = await loadTrace(root);
+    const checkedTrace = await checkTrace(root, correspondenceTrace, true);
     if (!checkedTrace.valid) diagnostics.push(error('MODEL_CORRESPONDENCE_TRACE_STALE', 'Generated trace evidence is missing, stale, or invalid.', path));
   } catch {
     return {
@@ -287,7 +310,7 @@ export async function validateModelCorrespondenceEvidence(root: string): Promise
       diagnostics: [error('MODEL_CORRESPONDENCE_TRACE_STALE', 'Generated trace evidence is missing or invalid.', path)],
     };
   }
-  const currentTraceHash = traceHash(trace);
+  const currentTraceHash = traceHash(correspondenceTrace);
   if (value.traceEvidenceSha256 !== currentTraceHash) {
     diagnostics.push(error('MODEL_CORRESPONDENCE_TRACE_STALE', 'Correspondence trace fingerprint does not match the current generated trace.', path));
   }
@@ -295,6 +318,9 @@ export async function validateModelCorrespondenceEvidence(root: string): Promise
     diagnostics.push(error('MODEL_CORRESPONDENCE_FORMAL_TAMPERED', 'Correspondence formal evidence fingerprint is invalid.', path));
   }
   const requirementFingerprints = await snapshot(root, requirements.map((requirement) => requirement.path));
+  let validationTrace = options.trace;
+  const passContext = createNativeTestEvidencePassContext();
+  const currentValidationTrace = async (): Promise<TraceGraph> => validationTrace ??= await buildTrace(root, false);
   for (const requirement of requirements) {
     if (formalEvidence.fingerprints[requirement.path] !== requirementFingerprints[requirement.path]) {
       diagnostics.push(error('MODEL_CORRESPONDENCE_FORMAL_STALE', `${requirement.id} formal input fingerprint is stale.`, requirement.path, requirement.line));
@@ -342,8 +368,8 @@ export async function validateModelCorrespondenceEvidence(root: string): Promise
         diagnostics.push(error('MODEL_CORRESPONDENCE_PROVENANCE_TAMPERED', `${test.testId} correspondence provenance was changed.`, path));
         continue;
       }
-      const node = trace.nodes.find((candidate) => candidate.id === test.testId && candidate.kind === 'test');
-      if (!node || node.path !== test.testPath || !trace.edges.some((edge) =>
+      const node = correspondenceTrace.nodes.find((candidate) => candidate.id === test.testId && candidate.kind === 'test');
+      if (!node || node.path !== test.testPath || !correspondenceTrace.edges.some((edge) =>
         edge.from === test.testId && edge.to === requirement.id && edge.relation === 'verifies')) {
         diagnostics.push(error('MODEL_CORRESPONDENCE_TEST_UNLINKED', `${test.testId} is not an authoritative trace-linked test for ${requirement.id}.`, path));
         continue;
@@ -354,9 +380,18 @@ export async function validateModelCorrespondenceEvidence(root: string): Promise
         continue;
       }
       try {
-        const report = await currentReport(root, test.commandName, test.reportPath);
+        const command = (await loadConfig(root)).commands.find((candidate) => candidate.name === test.commandName);
+        const report = await currentReport(
+          root,
+          test.commandName,
+          test.reportPath,
+          command?.adapter ? await currentValidationTrace() : undefined,
+          passContext,
+        );
         if (!report || report.commandSha256 !== test.commandSha256
-          || report.reportSha256 !== test.reportSha256 || !report.passed.has(test.testId)) {
+          || report.reportSha256 !== test.reportSha256 || report.diagnostics.length
+          || !report.passed.has(test.testId)) {
+          if (report?.diagnostics.length) diagnostics.push(...report.diagnostics);
           diagnostics.push(error('MODEL_CORRESPONDENCE_TEST_NOT_PASSED', `${test.testId} lacks a current passing structured command report.`, test.reportPath));
           continue;
         }

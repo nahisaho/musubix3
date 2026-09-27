@@ -1,1 +1,47 @@
-{"numTotalTestSuites":2,"numPassedTestSuites":2,"numFailedTestSuites":0,"numPendingTestSuites":0,"numTotalTests":6,"numPassedTests":6,"numFailedTests":0,"numPendingTests":0,"numTodoTests":0,"snapshot":{"added":0,"failure":false,"filesAdded":0,"filesRemoved":0,"filesRemovedList":[],"filesUnmatched":0,"filesUpdated":0,"matched":0,"total":0,"unchecked":0,"uncheckedKeysByFile":[],"unmatched":0,"updated":0,"didUpdate":false},"startTime":1790444996690,"success":true,"testResults":[{"assertionResults":[{"ancestorTitles":["scaffold-artifact"],"fullName":"scaffold-artifact TEST-REQUIREMENTS-DESIGN-SCAFFOLD-001 scaffolds a valid requirements.md placeholder","status":"passed","title":"TEST-REQUIREMENTS-DESIGN-SCAFFOLD-001 scaffolds a valid requirements.md placeholder","duration":21.263352000000168,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["scaffold-artifact"],"fullName":"scaffold-artifact TEST-REQUIREMENTS-DESIGN-SCAFFOLD-002 refuses to overwrite an existing requirements.md","status":"passed","title":"TEST-REQUIREMENTS-DESIGN-SCAFFOLD-002 refuses to overwrite an existing requirements.md","duration":12.521405000000186,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["scaffold-artifact"],"fullName":"scaffold-artifact TEST-REQUIREMENTS-DESIGN-SCAFFOLD-003 scaffolds a valid design.md placeholder linked to the matching requirement","status":"passed","title":"TEST-REQUIREMENTS-DESIGN-SCAFFOLD-003 scaffolds a valid design.md placeholder linked to the matching requirement","duration":12.49410499999999,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["scaffold-artifact"],"fullName":"scaffold-artifact TEST-REQUIREMENTS-DESIGN-SCAFFOLD-004 refuses to overwrite an existing design.md","status":"passed","title":"TEST-REQUIREMENTS-DESIGN-SCAFFOLD-004 refuses to overwrite an existing design.md","duration":12.814135999999962,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["scaffold-artifact"],"fullName":"scaffold-artifact TEST-REQUIREMENTS-DESIGN-SCAFFOLD-005 rejects unsafe or malformed slugs for both commands without touching the filesystem","status":"passed","title":"TEST-REQUIREMENTS-DESIGN-SCAFFOLD-005 rejects unsafe or malformed slugs for both commands without touching the filesystem","duration":2.187400000000025,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["scaffold-artifact"],"fullName":"scaffold-artifact TEST-REQUIREMENTS-DESIGN-SCAFFOLD-006 uses a custom title and rejects invalid title values","status":"passed","title":"TEST-REQUIREMENTS-DESIGN-SCAFFOLD-006 uses a custom title and rejects invalid title values","duration":9.777570999999853,"failureMessages":[],"meta":{},"tags":[]}],"startTime":1790444997813,"endTime":1790444997884.7776,"status":"passed","message":"","name":"/home/nahisaho/GitHub/musubix3/tests/scaffold-artifact.test.ts"}]}
+{
+  "schemaVersion": 1,
+  "commandName": "requirements-design-scaffold-tests",
+  "commandSha256": "72af8afc812a4168fe5ba0fe88e329bb3648821272865027ae6324afe0fb25d8",
+  "inputFingerprint": "d6d36045d96112fcf4c4868b4c7fe5b06133a68bada071f17561f8d8a8b0a94e",
+  "inputs": [
+    {
+      "path": "packages/analysis/src/scaffold-artifact.ts",
+      "sha256": "e5e6fa31fbd97ce4dcc294ab26966eb0a4a2507eb4025a7a8a522831e7fb886d"
+    },
+    {
+      "path": "tests/scaffold-artifact.test.ts",
+      "sha256": "a8f074cdd9279f1b7c540fa1a721642ca762de9cd155f0894526a8f3daabc7d6"
+    }
+  ],
+  "adapter": "vitest",
+  "sourceKind": "file",
+  "reportPath": ".musubix/evidence/native/requirements-design-scaffold-tests/aggregate.json",
+  "processStatus": "completed",
+  "exitCode": 0,
+  "tests": [
+    {
+      "id": "TEST-REQUIREMENTS-DESIGN-SCAFFOLD-001",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-REQUIREMENTS-DESIGN-SCAFFOLD-002",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-REQUIREMENTS-DESIGN-SCAFFOLD-003",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-REQUIREMENTS-DESIGN-SCAFFOLD-004",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-REQUIREMENTS-DESIGN-SCAFFOLD-005",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-REQUIREMENTS-DESIGN-SCAFFOLD-006",
+      "status": "passed"
+    }
+  ]
+}

@@ -1,1 +1,31 @@
-{"numTotalTestSuites":2,"numPassedTestSuites":2,"numFailedTestSuites":0,"numPendingTestSuites":0,"numTotalTests":2,"numPassedTests":2,"numFailedTests":0,"numPendingTests":0,"numTodoTests":0,"snapshot":{"added":0,"failure":false,"filesAdded":0,"filesRemoved":0,"filesRemovedList":[],"filesUnmatched":0,"filesUpdated":0,"matched":0,"total":0,"unchecked":0,"uncheckedKeysByFile":[],"unmatched":0,"updated":0,"didUpdate":false},"startTime":1790445403316,"success":true,"testResults":[{"assertionResults":[{"ancestorTitles":["upgradeSkills"],"fullName":"upgradeSkills TEST-UPGRADE-WORKFLOW-001 replaces only stale bundled skill files and leaves user-owned artifacts untouched","status":"passed","title":"TEST-UPGRADE-WORKFLOW-001 replaces only stale bundled skill files and leaves user-owned artifacts untouched","duration":168.03343799999993,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["upgradeSkills"],"fullName":"upgradeSkills TEST-UPGRADE-WORKFLOW-002 dry-run reports planned replace without writing","status":"passed","title":"TEST-UPGRADE-WORKFLOW-002 dry-run reports planned replace without writing","duration":29.81976300000008,"failureMessages":[],"meta":{},"tags":[]}],"startTime":1790445404165,"endTime":1790445404362.8198,"status":"passed","message":"","name":"/home/nahisaho/GitHub/musubix3/tests/upgrade-workflow.test.ts"}]}
+{
+  "schemaVersion": 1,
+  "commandName": "upgrade-workflow-tests",
+  "commandSha256": "f1105d8277d9e24a01f7de62bc45253ad56738d8bb90e10b965cc0092a4bee14",
+  "inputFingerprint": "05c500d644e522b380ab9c6ca47393620f84bd4390d5aacb939f1839b6feba5a",
+  "inputs": [
+    {
+      "path": "packages/cli/src/install.ts",
+      "sha256": "346a6e66a29505010681ac32ea17651339cef3cfc1143422174981438e17bbf1"
+    },
+    {
+      "path": "tests/upgrade-workflow.test.ts",
+      "sha256": "487339a54f3169f91799aedab78f41813fc16b07f9825d165ec4e65157b1f802"
+    }
+  ],
+  "adapter": "vitest",
+  "sourceKind": "file",
+  "reportPath": ".musubix/evidence/native/upgrade-workflow-tests/aggregate.json",
+  "processStatus": "completed",
+  "exitCode": 0,
+  "tests": [
+    {
+      "id": "TEST-UPGRADE-WORKFLOW-001",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-UPGRADE-WORKFLOW-002",
+      "status": "passed"
+    }
+  ]
+}

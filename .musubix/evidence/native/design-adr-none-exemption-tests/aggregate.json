@@ -1,1 +1,43 @@
-{"numTotalTestSuites":2,"numPassedTestSuites":2,"numFailedTestSuites":0,"numPendingTestSuites":0,"numTotalTests":4,"numPassedTests":4,"numFailedTests":0,"numPendingTests":0,"numTodoTests":0,"snapshot":{"added":0,"failure":false,"filesAdded":0,"filesRemoved":0,"filesRemovedList":[],"filesUnmatched":0,"filesUpdated":0,"matched":0,"total":0,"unchecked":0,"uncheckedKeysByFile":[],"unmatched":0,"updated":0,"didUpdate":false},"startTime":1790445380465,"success":true,"testResults":[{"assertionResults":[{"ancestorTitles":["design ADR none-exemption"],"fullName":"design ADR none-exemption TEST-DESIGN-ADR-NONE-EXEMPTION-001 accepts a none marker with a concrete reason","status":"passed","title":"TEST-DESIGN-ADR-NONE-EXEMPTION-001 accepts a none marker with a concrete reason","duration":3.33791599999995,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["design ADR none-exemption"],"fullName":"design ADR none-exemption TEST-DESIGN-ADR-NONE-EXEMPTION-002 rejects a none marker with no reason or a placeholder reason","status":"passed","title":"TEST-DESIGN-ADR-NONE-EXEMPTION-002 rejects a none marker with no reason or a placeholder reason","duration":1.2169359999999187,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["design ADR none-exemption"],"fullName":"design ADR none-exemption TEST-DESIGN-ADR-NONE-EXEMPTION-003 keeps requiring a real ADR or exemption for every other case","status":"passed","title":"TEST-DESIGN-ADR-NONE-EXEMPTION-003 keeps requiring a real ADR or exemption for every other case","duration":0.7178049999999985,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["design ADR none-exemption"],"fullName":"design ADR none-exemption TEST-DESIGN-ADR-NONE-EXEMPTION-004 applies parsed exemptions to change completeness","status":"passed","title":"TEST-DESIGN-ADR-NONE-EXEMPTION-004 applies parsed exemptions to change completeness","duration":1160.3558690000002,"failureMessages":[],"meta":{},"tags":[]}],"startTime":1790445381365,"endTime":1790445382530.356,"status":"passed","message":"","name":"/home/nahisaho/GitHub/musubix3/tests/design-adr-none-exemption.test.ts"}]}
+{
+  "schemaVersion": 1,
+  "commandName": "design-adr-none-exemption-tests",
+  "commandSha256": "66c6467e31d41b5c2c6ee4857ab827c9e9d47227034d80f688d196507f4146ea",
+  "inputFingerprint": "7b5af7dd1f5944e86cb6a991b25f65f8adca8bd9ae9b4ad9dabdad26c5520cef",
+  "inputs": [
+    {
+      "path": "packages/analysis/src/change.ts",
+      "sha256": "0a39698ff4847828fc6d84e5421cd85434571ab278d5e048cc92d2c65bf403f2"
+    },
+    {
+      "path": "packages/domain/src/design.ts",
+      "sha256": "8ec1d6085bf11b22430815215aa267175228aef749fbeb92ab94c383416840cb"
+    },
+    {
+      "path": "tests/design-adr-none-exemption.test.ts",
+      "sha256": "281f24964dd699cb19e2bc58068bc125f09b351a690f722416973e6364025d80"
+    }
+  ],
+  "adapter": "vitest",
+  "sourceKind": "file",
+  "reportPath": ".musubix/evidence/native/design-adr-none-exemption-tests/aggregate.json",
+  "processStatus": "completed",
+  "exitCode": 0,
+  "tests": [
+    {
+      "id": "TEST-DESIGN-ADR-NONE-EXEMPTION-001",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-DESIGN-ADR-NONE-EXEMPTION-002",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-DESIGN-ADR-NONE-EXEMPTION-003",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-DESIGN-ADR-NONE-EXEMPTION-004",
+      "status": "passed"
+    }
+  ]
+}

@@ -995,7 +995,7 @@ export async function validateChangeCompleteness(root: string): Promise<{
   for (const path of (await files(root)).filter((entry) => /^\.musubix\/features\/[^/]+\/design\.md$/.test(entry))) {
     for (const component of validateDesign(await readText(root, path), path).value) designsById.set(component.id, component);
   }
-  const performance = await validatePerformanceEvidence(root);
+  const performance = await validatePerformanceEvidence(root, { trace });
   const changes: ChangeCompleteness[] = [];
   for (const change of evidence.changes) {
     const diagnosticStart = diagnostics.length;

@@ -1,4 +1,4 @@
-import { dirname, posix, sep } from 'node:path';
+import { dirname, posix, relative, resolve, sep } from 'node:path';
 import { mkdir, readdir, readFile, rm, unlink, writeFile } from 'node:fs/promises';
 import { exists } from './files.js';
 import { assertAbsoluteEvidencePathReady } from './evidence-merge-guard.js';
@@ -7,7 +7,7 @@ import {
   assertEvidenceWriterOwned,
   withEvidenceWriterLock,
 } from './evidence-writer-lock.js';
-import type { CommandConfig } from './config.js';
+import { commandCwd, type CommandConfig } from './config.js';
 import type { MusubixTestReport } from './test-report.js';
 
 export type TestAdapter = NonNullable<CommandConfig['adapter']>;
@@ -15,6 +15,7 @@ export type TestAdapter = NonNullable<CommandConfig['adapter']>;
 export interface AdapterInvocation {
   args: string[];
   reportPath: string;
+  rawReportPath: string;
   source: 'file' | 'directory' | 'stdout';
 }
 
@@ -116,11 +117,12 @@ export function mergeAdapterArgs(
   return [...configuredArgs, ...invocationArgs];
 }
 
-function reportPath(commandName: string, testId?: string, adapter?: TestAdapter): string {
+function reportPath(commandName: string, testId?: string, adapter?: TestAdapter, cache = false): string {
   const suffix = adapter === 'junit' || adapter === 'dotnet' ? '' : '.json';
+  const base = cache ? '.musubix/cache/native' : '.musubix/evidence/native';
   return testId
-    ? `.musubix/evidence/native/${commandName}/${testId}${suffix}`
-    : `.musubix/evidence/native/${commandName}/aggregate${suffix}`;
+    ? `${base}/${commandName}/${testId}${suffix}`
+    : `${base}/${commandName}/aggregate${suffix}`;
 }
 
 function identifier(testId: string): string {
@@ -134,43 +136,58 @@ export function adapterInvocation(
   testPath?: string,
 ): AdapterInvocation {
   const path = reportPath(commandName, testId, adapter);
+  const rawPath = testId ? path : reportPath(commandName, undefined, adapter, true);
   if (adapter === 'vitest') {
     return {
-      args: [...testPath ? [testPath] : [], ...testId ? ['-t', testId] : [], '--reporter=json', `--outputFile=${path}`],
+      args: [...testPath ? [testPath] : [], ...testId ? ['-t', testId] : [], '--reporter=json', `--outputFile=${rawPath}`],
       reportPath: path,
+      rawReportPath: rawPath,
       source: 'file',
     };
   }
   if (adapter === 'jest') {
     return {
-      args: [...testPath ? ['--runTestsByPath', testPath] : [], ...testId ? ['-t', testId] : [], '--json', `--outputFile=${path}`],
+      args: [...testPath ? ['--runTestsByPath', testPath] : [], ...testId ? ['-t', testId] : [], '--json', `--outputFile=${rawPath}`],
       reportPath: path,
+      rawReportPath: rawPath,
       source: 'file',
     };
   }
   if (adapter === 'pytest') {
     return {
-      args: [...testPath ? [testPath] : [], ...testId ? ['-k', identifier(testId)] : [], '--json-report', `--json-report-file=${path}`],
+      args: [...testPath ? [testPath] : [], ...testId ? ['-k', identifier(testId)] : [], '--json-report', `--json-report-file=${rawPath}`],
       reportPath: path,
+      rawReportPath: rawPath,
       source: 'file',
     };
   }
   if (adapter === 'go-test') {
     const packagePath = testPath ? `./${dirname(testPath)}`.replace(/\/\.$/, '') : './...';
-    return { args: ['test', '-json', packagePath, ...testId ? ['-run', `/${testId}`] : []], reportPath: path, source: 'stdout' };
+    return {
+      args: ['test', '-json', packagePath, ...testId ? ['-run', `/${testId}`] : []],
+      reportPath: path,
+      rawReportPath: rawPath,
+      source: 'stdout',
+    };
   }
   if (adapter === 'cargo') {
-    return { args: ['test', ...testId ? [identifier(testId)] : [], '--', '--format', 'pretty'], reportPath: path, source: 'stdout' };
+    return {
+      args: ['test', ...testId ? [identifier(testId)] : [], '--', '--format', 'pretty'],
+      reportPath: path,
+      rawReportPath: rawPath,
+      source: 'stdout',
+    };
   }
   if (adapter === 'dotnet') {
     return {
       args: [
         'test',
         '--logger', 'trx;LogFilePrefix=results',
-        '--results-directory', path,
+        '--results-directory', rawPath,
         ...testId ? ['--filter', `DisplayName~${testId}|Name~${testId}`] : [],
       ],
       reportPath: path,
+      rawReportPath: rawPath,
       source: 'directory',
     };
   }
@@ -178,11 +195,30 @@ export function adapterInvocation(
     args: [
       '--scan-class-path',
       ...testId ? [`--include-tag=${testId}`, '--fail-if-no-tests'] : [],
-      `--reports-dir=${path}`,
+      `--reports-dir=${rawPath}`,
     ],
     reportPath: path,
+    rawReportPath: rawPath,
     source: 'directory',
   };
+}
+
+/** @id CODE-NATIVE-TEST-EVIDENCE-STABILITY-002
+ * @implements REQ-NATIVE-TEST-EVIDENCE-STABILITY-001 REQ-NATIVE-TEST-EVIDENCE-STABILITY-002
+ * @design DES-NATIVE-TEST-EVIDENCE-STABILITY-003
+ */
+export function adapterCommandArgs(
+  root: string,
+  command: CommandConfig,
+  invocation: AdapterInvocation,
+): string[] {
+  const cwd = commandCwd(root, command);
+  const runnerReportPath = command.cwd === undefined
+    ? invocation.rawReportPath
+    : relative(cwd, resolve(root, invocation.rawReportPath)).split(sep).join('/');
+  const configuredArgs = command.args.map((arg) => arg.replaceAll('{reportPath}', runnerReportPath));
+  const invocationArgs = invocation.args.map((arg) => arg.replaceAll(invocation.rawReportPath, runnerReportPath));
+  return mergeAdapterArgs(command.adapter!, configuredArgs, invocationArgs);
 }
 
 function adapterProjectRoot(absolutePath: string): string | undefined {
@@ -200,12 +236,26 @@ async function clearAdapterOutputUnlocked(invocation: AdapterInvocation, absolut
   await mkdir(invocation.source === 'directory' ? absolutePath : dirname(absolutePath), { recursive: true });
 }
 
+async function removeAdapterOutputUnlocked(absolutePath: string): Promise<void> {
+  await assertAbsoluteEvidencePathReady(absolutePath);
+  await rm(absolutePath, { recursive: true, force: true });
+}
+
 export async function clearAdapterOutput(invocation: AdapterInvocation, absolutePath: string, root?: string): Promise<void> {
   const projectRoot = root ?? adapterProjectRoot(absolutePath);
   if (projectRoot === undefined) return clearAdapterOutputUnlocked(invocation, absolutePath);
   return withEvidenceWriterLock(projectRoot, 'adapter output clear', async () => {
     await assertEvidenceWriterOwned(projectRoot);
     await clearAdapterOutputUnlocked(invocation, absolutePath);
+  });
+}
+
+export async function removeAdapterOutput(absolutePath: string, root?: string): Promise<void> {
+  const projectRoot = root ?? adapterProjectRoot(absolutePath);
+  if (projectRoot === undefined) return removeAdapterOutputUnlocked(absolutePath);
+  return withEvidenceWriterLock(projectRoot, 'adapter output remove', async () => {
+    await assertEvidenceWriterOwned(projectRoot);
+    await removeAdapterOutputUnlocked(absolutePath);
   });
 }
 

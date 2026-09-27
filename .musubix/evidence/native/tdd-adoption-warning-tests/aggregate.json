@@ -1,1 +1,35 @@
-{"numTotalTestSuites":1,"numPassedTestSuites":1,"numFailedTestSuites":0,"numPendingTestSuites":0,"numTotalTests":7,"numPassedTests":7,"numFailedTests":0,"numPendingTests":0,"numTodoTests":0,"snapshot":{"added":0,"failure":false,"filesAdded":0,"filesRemoved":0,"filesRemovedList":[],"filesUnmatched":0,"filesUpdated":0,"matched":0,"total":0,"unchecked":0,"uncheckedKeysByFile":[],"unmatched":0,"updated":0,"didUpdate":false},"startTime":1790445406000,"success":true,"testResults":[{"assertionResults":[{"ancestorTitles":[],"fullName":"TEST-TDD-ADOPTION-WARNING-001 warns exactly once, listing other uncovered mandatory requirements, on the project-first Red","status":"passed","title":"TEST-TDD-ADOPTION-WARNING-001 warns exactly once, listing other uncovered mandatory requirements, on the project-first Red","duration":283.5098760000001,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"still produces the warning, explicitly stating zero other uncovered requirements, when there are none","status":"passed","title":"still produces the warning, explicitly stating zero other uncovered requirements, when there are none","duration":180.90957300000014,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"still warns when the first persisted Red is itself invalid","status":"passed","title":"still warns when the first persisted Red is itself invalid","duration":181.84614799999986,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"states \"already required\" wording when tdd is already required via config","status":"passed","title":"states \"already required\" wording when tdd is already required via config","duration":179.73241600000006,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"produces no warning and persists no cycle when the call throws before persistence","status":"passed","title":"produces no warning and persists no cycle when the call throws before persistence","duration":151.73683600000004,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"prints the warning message via the default (non-JSON) CLI output without changing exit code","status":"passed","title":"prints the warning message via the default (non-JSON) CLI output without changing exit code","duration":532.1506149999998,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-TDD-ADOPTION-WARNING-002 documents the project-wide adoption semantics in --help and README","status":"passed","title":"TEST-TDD-ADOPTION-WARNING-002 documents the project-wide adoption semantics in --help and README","duration":398.76313700000037,"failureMessages":[],"meta":{},"tags":[]}],"startTime":1790445406897,"endTime":1790445408805.7632,"status":"passed","message":"","name":"/home/nahisaho/GitHub/musubix3/tests/tdd-adoption-warning.test.ts"}]}
+{
+  "schemaVersion": 1,
+  "commandName": "tdd-adoption-warning-tests",
+  "commandSha256": "924823831b68cc1616b66a885deffdafd1bf5aa277a2219c8e9b5bbbf06d369e",
+  "inputFingerprint": "1b840ebe1c2a52864cd030e1ae519254d143bc3cbd97df5a0d114380f9d3dc7a",
+  "inputs": [
+    {
+      "path": "packages/analysis/src/tdd.ts",
+      "sha256": "d6e3da689cfa3a2a7cdfb19083452ad278bafcf6f5a391cfb657a9e38b5eff91"
+    },
+    {
+      "path": "packages/cli/src/main.ts",
+      "sha256": "25aa8d566e3851cee100b3c29b3d9c527594fe5778cd9e8222a00124e859991d"
+    },
+    {
+      "path": "tests/tdd-adoption-warning.test.ts",
+      "sha256": "fa0fc6267ad829bb4955dc352e986585f92daecd17865da7036ff2b9087d57e7"
+    }
+  ],
+  "adapter": "vitest",
+  "sourceKind": "file",
+  "reportPath": ".musubix/evidence/native/tdd-adoption-warning-tests/aggregate.json",
+  "processStatus": "completed",
+  "exitCode": 0,
+  "tests": [
+    {
+      "id": "TEST-TDD-ADOPTION-WARNING-001",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-TDD-ADOPTION-WARNING-002",
+      "status": "passed"
+    }
+  ]
+}

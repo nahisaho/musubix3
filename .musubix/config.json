@@ -40,6 +40,18 @@
       "timeoutMs": 120000
     },
     {
+      "name": "native-test-evidence-stability-tests",
+      "command": "npx",
+      "args": [
+        "vitest",
+        "run",
+        "tests/native-test-evidence-stability.test.ts"
+      ],
+      "adapter": "vitest",
+      "required": true,
+      "timeoutMs": 120000
+    },
+    {
       "name": "typecheck",
       "command": "npm",
       "args": [

@@ -1,1 +1,75 @@
-{"numTotalTestSuites":1,"numPassedTestSuites":1,"numFailedTestSuites":0,"numPendingTestSuites":0,"numTotalTests":13,"numPassedTests":13,"numFailedTests":0,"numPendingTests":0,"numTodoTests":0,"snapshot":{"added":0,"failure":false,"filesAdded":0,"filesRemoved":0,"filesRemovedList":[],"filesUnmatched":0,"filesUpdated":0,"matched":0,"total":0,"unchecked":0,"uncheckedKeysByFile":[],"unmatched":0,"updated":0,"didUpdate":false},"startTime":1790445234140,"success":true,"testResults":[{"assertionResults":[{"ancestorTitles":[],"fullName":"TEST-TDD-CYCLE-VOID-001 rejects voiding a cycle whose latest Green is already valid","status":"passed","title":"TEST-TDD-CYCLE-VOID-001 rejects voiding a cycle whose latest Green is already valid","duration":303.3866489999999,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-TDD-CYCLE-VOID-002 rejects voiding when no earlier non-voided valid fallback cycle exists","status":"passed","title":"TEST-TDD-CYCLE-VOID-002 rejects voiding when no earlier non-voided valid fallback cycle exists","duration":526.2758690000001,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-TDD-CYCLE-VOID-003 requires a non-empty approver and reason","status":"passed","title":"TEST-TDD-CYCLE-VOID-003 requires a non-empty approver and reason","duration":293.619052,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-TDD-CYCLE-VOID-004 records the void as a hash-chained, ordered, identity-bound entry without disturbing other evidence","status":"passed","title":"TEST-TDD-CYCLE-VOID-004 records the void as a hash-chained, ordered, identity-bound entry without disturbing other evidence","duration":303.8639589999998,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-TDD-CYCLE-VOID-005 treats a void payload with a mismatched cycleId chain record as not validly linked","status":"passed","title":"TEST-TDD-CYCLE-VOID-005 treats a void payload with a mismatched cycleId chain record as not validly linked","duration":331.6499670000003,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-TDD-CYCLE-VOID-006 reports malformed void evidence for a duplicated void chain record","status":"passed","title":"TEST-TDD-CYCLE-VOID-006 reports malformed void evidence for a duplicated void chain record","duration":339.52454799999987,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-TDD-CYCLE-VOID-007 still raises TDD_GREEN_MISSING alongside the malformed-void diagnostic","status":"passed","title":"TEST-TDD-CYCLE-VOID-007 still raises TDD_GREEN_MISSING alongside the malformed-void diagnostic","duration":325.3833450000002,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-TDD-CYCLE-VOID-008 suppresses missing-phase diagnostics independently for each validly voided trailing cycle","status":"passed","title":"TEST-TDD-CYCLE-VOID-008 suppresses missing-phase diagnostics independently for each validly voided trailing cycle","duration":407.04069900000013,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-TDD-CYCLE-VOID-009 leaves diagnostics for a non-voided cycle unaffected by voiding a different cycle","status":"passed","title":"TEST-TDD-CYCLE-VOID-009 leaves diagnostics for a non-voided cycle unaffected by voiding a different cycle","duration":361.90081699999973,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-TDD-CYCLE-VOID-010 computes TDD_TEST_STALE against the nearest earlier non-voided valid cycle after voiding","status":"passed","title":"TEST-TDD-CYCLE-VOID-010 computes TDD_TEST_STALE against the nearest earlier non-voided valid cycle after voiding","duration":324.3145459999996,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-TDD-CYCLE-VOID-011 rejects re-voiding but allows voiding a fresh later cycle","status":"passed","title":"TEST-TDD-CYCLE-VOID-011 rejects re-voiding but allows voiding a fresh later cycle","duration":445.289898,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-TDD-CYCLE-VOID-012 routes tdd migrate around a validly voided latest cycle","status":"passed","title":"TEST-TDD-CYCLE-VOID-012 routes tdd migrate around a validly voided latest cycle","duration":339.40448300000025,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-TDD-CYCLE-VOID-013 surfaces scoped void evidence in tdd validate output, keyed to its own cycle","status":"passed","title":"TEST-TDD-CYCLE-VOID-013 surfaces scoped void evidence in tdd validate output, keyed to its own cycle","duration":312.01584600000024,"failureMessages":[],"meta":{},"tags":[]}],"startTime":1790445234625,"endTime":1790445239239.0159,"status":"passed","message":"","name":"/home/nahisaho/GitHub/musubix3/tests/tdd-cycle-void.test.ts"}]}
+{
+  "schemaVersion": 1,
+  "commandName": "tdd-cycle-void-tests",
+  "commandSha256": "1048a0da0094d3adb140bb244f68186991b07223c77fc7160a7e676bbfa84c34",
+  "inputFingerprint": "afc10ba0cf676fbe40477e51884cef29fced76dfa58fab55751151b278dd3ebf",
+  "inputs": [
+    {
+      "path": "packages/analysis/src/tdd.ts",
+      "sha256": "d6e3da689cfa3a2a7cdfb19083452ad278bafcf6f5a391cfb657a9e38b5eff91"
+    },
+    {
+      "path": "tests/tdd-cycle-void.test.ts",
+      "sha256": "e7ea6272d9b5e0ab5377df280ba01dd38c8d1496f3a0c0f36f2053ad1b660baf"
+    }
+  ],
+  "adapter": "vitest",
+  "sourceKind": "file",
+  "reportPath": ".musubix/evidence/native/tdd-cycle-void-tests/aggregate.json",
+  "processStatus": "completed",
+  "exitCode": 0,
+  "tests": [
+    {
+      "id": "TEST-TDD-CYCLE-VOID-001",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-TDD-CYCLE-VOID-002",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-TDD-CYCLE-VOID-003",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-TDD-CYCLE-VOID-004",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-TDD-CYCLE-VOID-005",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-TDD-CYCLE-VOID-006",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-TDD-CYCLE-VOID-007",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-TDD-CYCLE-VOID-008",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-TDD-CYCLE-VOID-009",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-TDD-CYCLE-VOID-010",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-TDD-CYCLE-VOID-011",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-TDD-CYCLE-VOID-012",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-TDD-CYCLE-VOID-013",
+      "status": "passed"
+    }
+  ]
+}

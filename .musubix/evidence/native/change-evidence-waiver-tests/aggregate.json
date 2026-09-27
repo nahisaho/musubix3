@@ -1,1 +1,147 @@
-{"numTotalTestSuites":1,"numPassedTestSuites":1,"numFailedTestSuites":0,"numPendingTestSuites":0,"numTotalTests":28,"numPassedTests":28,"numFailedTests":0,"numPendingTests":0,"numTodoTests":0,"snapshot":{"added":0,"failure":false,"filesAdded":0,"filesRemoved":0,"filesRemovedList":[],"filesUnmatched":0,"filesUpdated":0,"matched":0,"total":0,"unchecked":0,"uncheckedKeysByFile":[],"unmatched":0,"updated":0,"didUpdate":false},"startTime":1790445321478,"success":true,"testResults":[{"assertionResults":[{"ancestorTitles":[],"fullName":"TEST-CHANGE-EVIDENCE-WAIVER-001 rejects a waiver for any code outside the twelve-code allow-list","status":"passed","title":"TEST-CHANGE-EVIDENCE-WAIVER-001 rejects a waiver for any code outside the twelve-code allow-list","duration":1776.831695,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-CHANGE-EVIDENCE-WAIVER-002 rejects a waiver when no matching diagnostic is currently reported","status":"passed","title":"TEST-CHANGE-EVIDENCE-WAIVER-002 rejects a waiver when no matching diagnostic is currently reported","duration":1288.8068480000002,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-CHANGE-EVIDENCE-WAIVER-003 requires a non-empty approver and reason","status":"passed","title":"TEST-CHANGE-EVIDENCE-WAIVER-003 requires a non-empty approver and reason","duration":1338.7165529999997,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-CHANGE-EVIDENCE-WAIVER-004 binds requirement-scoping to each code's own granularity","status":"passed","title":"TEST-CHANGE-EVIDENCE-WAIVER-004 binds requirement-scoping to each code's own granularity","duration":1247.2699270000003,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-CHANGE-EVIDENCE-WAIVER-005 records the waiver as a hash-chained, ordered, identity-bound entry, and starts non-stale","status":"passed","title":"TEST-CHANGE-EVIDENCE-WAIVER-005 records the waiver as a hash-chained, ordered, identity-bound entry, and starts non-stale","duration":1305.3920040000003,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-CHANGE-EVIDENCE-WAIVER-006 downgrades only the exact waived instance, never any other change/requirement/code","status":"passed","title":"TEST-CHANGE-EVIDENCE-WAIVER-006 downgrades only the exact waived instance, never any other change/requirement/code","duration":1247.9528280000004,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-CHANGE-EVIDENCE-WAIVER-007 rejects a duplicate waiver for an already validly waived, non-stale scope","status":"passed","title":"TEST-CHANGE-EVIDENCE-WAIVER-007 rejects a duplicate waiver for an already validly waived, non-stale scope","duration":1400.7115560000002,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-CHANGE-EVIDENCE-WAIVER-008 treats a waiver as stale once its snapshot payload changes, reporting it error again plus a stale diagnostic","status":"passed","title":"TEST-CHANGE-EVIDENCE-WAIVER-008 treats a waiver as stale once its snapshot payload changes, reporting it error again plus a stale diagnostic","duration":1462.2026929999993,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-CHANGE-EVIDENCE-WAIVER-009 reports malformed waiver evidence without downgrading the targeted diagnostic","status":"passed","title":"TEST-CHANGE-EVIDENCE-WAIVER-009 reports malformed waiver evidence without downgrading the targeted diagnostic","duration":1232.5865249999988,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-CHANGE-EVIDENCE-WAIVER-010 surfaces active waivers for audit visibility, excluding stale/malformed ones","status":"passed","title":"TEST-CHANGE-EVIDENCE-WAIVER-010 surfaces active waivers for audit visibility, excluding stale/malformed ones","duration":1188.1696859999993,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-CHANGE-EVIDENCE-WAIVER-011 attaches structured changeId/requirementId targets to every waivable diagnostic","status":"passed","title":"TEST-CHANGE-EVIDENCE-WAIVER-011 attaches structured changeId/requirementId targets to every waivable diagnostic","duration":1179.6425099999997,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-CHANGE-EVIDENCE-WAIVER-012 redefines change-history/change-completeness validity as free of error-severity diagnostics","status":"passed","title":"TEST-CHANGE-EVIDENCE-WAIVER-012 redefines change-history/change-completeness validity as free of error-severity diagnostics","duration":1709.2953550000002,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-CHANGE-EVIDENCE-WAIVER-013 waives CHANGE_RECORD_MISSING with no requirement/detail scope even when changes.json does not exist","status":"passed","title":"TEST-CHANGE-EVIDENCE-WAIVER-013 waives CHANGE_RECORD_MISSING with no requirement/detail scope even when changes.json does not exist","duration":167.8192339999987,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-CHANGE-EVIDENCE-WAIVER-014 waives detail-scoped CHANGE_PHASE_MISSING using the phase:<name> grammar","status":"passed","title":"TEST-CHANGE-EVIDENCE-WAIVER-014 waives detail-scoped CHANGE_PHASE_MISSING using the phase:<name> grammar","duration":502.6265089999979,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-CHANGE-EVIDENCE-WAIVER-015 waives batch-scoped CHANGE_TESTS_UNCHANGED using the bare batchKey grammar","status":"passed","title":"TEST-CHANGE-EVIDENCE-WAIVER-015 waives batch-scoped CHANGE_TESTS_UNCHANGED using the bare batchKey grammar","duration":1187.0507490000018,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-CHANGE-EVIDENCE-WAIVER-016 reports a resolved stale waiver as a warning without fabricating its target diagnostic","status":"passed","title":"TEST-CHANGE-EVIDENCE-WAIVER-016 reports a resolved stale waiver as a warning without fabricating its target diagnostic","duration":482.0537629999999,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-CHANGE-EVIDENCE-WAIVER-017 rejects an indeterminate absent-batch scope without writing evidence","status":"passed","title":"TEST-CHANGE-EVIDENCE-WAIVER-017 rejects an indeterminate absent-batch scope without writing evidence","duration":1173.7112549999983,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-CHANGE-EVIDENCE-WAIVER-018 keeps structurally valid historical evidence linked after mutable debt resolution","status":"passed","title":"TEST-CHANGE-EVIDENCE-WAIVER-018 keeps structurally valid historical evidence linked after mutable debt resolution","duration":481.817368,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-CHANGE-EVIDENCE-WAIVER-019 explains that resolved stale evidence no longer needs a replacement waiver","status":"passed","title":"TEST-CHANGE-EVIDENCE-WAIVER-019 explains that resolved stale evidence no longer needs a replacement waiver","duration":470.81255500000043,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-CHANGE-EVIDENCE-WAIVER-020 rejects a resolved scope without writing waiver evidence","status":"passed","title":"TEST-CHANGE-EVIDENCE-WAIVER-020 rejects a resolved scope without writing waiver evidence","duration":470.5290120000027,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-CHANGE-EVIDENCE-WAIVER-021 keeps linkage structural when the mutable change document is removed","status":"passed","title":"TEST-CHANGE-EVIDENCE-WAIVER-021 keeps linkage structural when the mutable change document is removed","duration":142.5974580000002,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-CHANGE-EVIDENCE-WAIVER-022 reports a hash-stable resolved waiver as stale warning in both validators","status":"passed","title":"TEST-CHANGE-EVIDENCE-WAIVER-022 reports a hash-stable resolved waiver as stale warning in both validators","duration":1273.6640630000002,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-CHANGE-EVIDENCE-WAIVER-023 stales a batch waiver when a later duplicate key owns the same debt","status":"passed","title":"TEST-CHANGE-EVIDENCE-WAIVER-023 stales a batch waiver when a later duplicate key owns the same debt","duration":1276.8504569999968,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-CHANGE-EVIDENCE-WAIVER-024 classifies a stored cross-code detail grammar as malformed linkage","status":"passed","title":"TEST-CHANGE-EVIDENCE-WAIVER-024 classifies a stored cross-code detail grammar as malformed linkage","duration":150.19711400000233,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-CHANGE-EVIDENCE-WAIVER-025 rejects cross-code detail grammar before condition evaluation without writes","status":"passed","title":"TEST-CHANGE-EVIDENCE-WAIVER-025 rejects cross-code detail grammar before condition evaluation without writes","duration":151.25355599999966,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-CHANGE-EVIDENCE-WAIVER-026 keeps the single-match hash stable while false condition alone makes it stale","status":"passed","title":"TEST-CHANGE-EVIDENCE-WAIVER-026 keeps the single-match hash stable while false condition alone makes it stale","duration":1209.0283130000025,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-CHANGE-EVIDENCE-WAIVER-027 reports precise false true and indeterminate stale remediation in both validators","status":"passed","title":"TEST-CHANGE-EVIDENCE-WAIVER-027 reports precise false true and indeterminate stale remediation in both validators","duration":2677.5438440000034,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":[],"fullName":"TEST-CHANGE-EVIDENCE-WAIVER-028 preserves batch parity and shared gate status audit order","status":"passed","title":"TEST-CHANGE-EVIDENCE-WAIVER-028 preserves batch parity and shared gate status audit order","duration":3321.8850880000027,"failureMessages":[],"meta":{},"tags":[]}],"startTime":1790445322491,"endTime":1790445356049.0283,"status":"passed","message":"","name":"/home/nahisaho/GitHub/musubix3/tests/change-evidence-waiver.test.ts"}]}
+{
+  "schemaVersion": 1,
+  "commandName": "change-evidence-waiver-tests",
+  "commandSha256": "61ebcc24c9ca35ef530c61721f3d54e2a3c0616ae079f077c9b0122c1f7e73f6",
+  "inputFingerprint": "f7944a8fff1da9b6edb862fa8f2f9240cc16954594763dee957c6d4892ddd13a",
+  "inputs": [
+    {
+      "path": "packages/analysis/src/change-evidence.ts",
+      "sha256": "564bceca2edd2d8922b421ecd3b83f6df4d428b556e81450cd0819b5728a29e2"
+    },
+    {
+      "path": "packages/analysis/src/change-waiver.ts",
+      "sha256": "2ca1c25d10e7c7bfc2fc0e92eda59eb96b1e364b33fd8d6b5cb42cba5b35cdc6"
+    },
+    {
+      "path": "packages/analysis/src/gate.ts",
+      "sha256": "d55d765f4ca0213bb3f28c33518a099f5229130be505211c230444287418d755"
+    },
+    {
+      "path": "packages/analysis/src/order.ts",
+      "sha256": "62104804c8fd55ee418206ef3b7c14364d8f78c92661ea7f38d4daf150b2ce1d"
+    },
+    {
+      "path": "tests/change-evidence-waiver.test.ts",
+      "sha256": "a218f2dc2d3c36f2443b5606aa023201fb06ede38dd36e21a33676c407ecff24"
+    }
+  ],
+  "adapter": "vitest",
+  "sourceKind": "file",
+  "reportPath": ".musubix/evidence/native/change-evidence-waiver-tests/aggregate.json",
+  "processStatus": "completed",
+  "exitCode": 0,
+  "tests": [
+    {
+      "id": "TEST-CHANGE-EVIDENCE-WAIVER-001",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-CHANGE-EVIDENCE-WAIVER-002",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-CHANGE-EVIDENCE-WAIVER-003",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-CHANGE-EVIDENCE-WAIVER-004",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-CHANGE-EVIDENCE-WAIVER-005",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-CHANGE-EVIDENCE-WAIVER-006",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-CHANGE-EVIDENCE-WAIVER-007",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-CHANGE-EVIDENCE-WAIVER-008",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-CHANGE-EVIDENCE-WAIVER-009",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-CHANGE-EVIDENCE-WAIVER-010",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-CHANGE-EVIDENCE-WAIVER-011",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-CHANGE-EVIDENCE-WAIVER-012",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-CHANGE-EVIDENCE-WAIVER-013",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-CHANGE-EVIDENCE-WAIVER-014",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-CHANGE-EVIDENCE-WAIVER-015",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-CHANGE-EVIDENCE-WAIVER-016",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-CHANGE-EVIDENCE-WAIVER-017",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-CHANGE-EVIDENCE-WAIVER-018",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-CHANGE-EVIDENCE-WAIVER-019",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-CHANGE-EVIDENCE-WAIVER-020",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-CHANGE-EVIDENCE-WAIVER-021",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-CHANGE-EVIDENCE-WAIVER-022",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-CHANGE-EVIDENCE-WAIVER-023",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-CHANGE-EVIDENCE-WAIVER-024",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-CHANGE-EVIDENCE-WAIVER-025",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-CHANGE-EVIDENCE-WAIVER-026",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-CHANGE-EVIDENCE-WAIVER-027",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-CHANGE-EVIDENCE-WAIVER-028",
+      "status": "passed"
+    }
+  ]
+}

@@ -28,6 +28,7 @@
     ".musubix/features/github-actions-project-node24/requirements.md": "1a2eddd6b5e2d35ddb900e1b1868120c25df10caacc17932d119270813efe5e3",
     ".musubix/features/human-approval-gates/requirements.md": "f2ae2380935831bb102cd6a7726f2a208ab1719e035157302ef51ed28f624fb0",
     ".musubix/features/model-correspondence-evidence-guidance/requirements.md": "d7ca8b823ddfd3265e89f2892003e5eb95faad7e9b3972b249de5f2902446511",
+    ".musubix/features/native-test-evidence-stability/requirements.md": "77d3d6349f9524bf74951962508fba951f903453434a447bdaee730b8f659127",
     ".musubix/features/npm-audit-remediation/requirements.md": "7f982e1ee2dccea7652047fba10a0b882525020e82c41863a3c85c788d3df6c9",
     ".musubix/features/release-approval-ordering/requirements.md": "53ae383ea5fc4e918225abfbadaeec9dbccccb624e512c8cff480a17ba15f112",
     ".musubix/features/release-asset-publishing/requirements.md": "8bf4436d5b694e32b683edbb620573589b28b74c35a076182c971bdb79cd4472",
@@ -50,7 +51,7 @@
     ".musubix/features/workflow-session-shutdown/requirements.md": "c00d313bbb445e0951fad5d2cd70f22341a19ce357659cd03e80f3049ef8d873",
     ".musubix/features/workflow-waiver-bulk-recording/requirements.md": "00d35b15a4a68505080c01058fd39fde9760e2f7a9fb94f826aced6207b7cd6a"
   },
-  "artifactSha256": "1ae4412dd3eee4b89e0c6adc405dca554dffe22df37f0002e0bdb1c790198191",
+  "artifactSha256": "accfeac4ff3611293a9577714e49d5755763b011d78ac264c99c510c04e6d816",
   "approver": "nahisaho",
-  "approvedAt": "2026-09-26T10:46:14.814Z"
+  "approvedAt": "2026-09-26T21:36:52.701Z"
 }

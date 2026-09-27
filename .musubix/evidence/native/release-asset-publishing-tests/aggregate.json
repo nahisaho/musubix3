@@ -1,1 +1,71 @@
-{"numTotalTestSuites":2,"numPassedTestSuites":2,"numFailedTestSuites":0,"numPendingTestSuites":0,"numTotalTests":14,"numPassedTests":14,"numFailedTests":0,"numPendingTests":0,"numTodoTests":0,"snapshot":{"added":0,"failure":false,"filesAdded":0,"filesRemoved":0,"filesRemovedList":[],"filesUnmatched":0,"filesUpdated":0,"matched":0,"total":0,"unchecked":0,"uncheckedKeysByFile":[],"unmatched":0,"updated":0,"didUpdate":false},"startTime":1790445437102,"success":true,"testResults":[{"assertionResults":[{"ancestorTitles":["release asset publishing"],"fullName":"release asset publishing TEST-RELEASE-ASSET-PUBLISHING-001 requires one canonical explicit release identity","status":"passed","title":"TEST-RELEASE-ASSET-PUBLISHING-001 requires one canonical explicit release identity","duration":27.252395000000007,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["release asset publishing"],"fullName":"release asset publishing TEST-RELEASE-ASSET-PUBLISHING-002 rejects missing, stale, extra, and linked tarballs","status":"passed","title":"TEST-RELEASE-ASSET-PUBLISHING-002 rejects missing, stale, extra, and linked tarballs","duration":6.555742000000009,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["release asset publishing"],"fullName":"release asset publishing TEST-RELEASE-ASSET-PUBLISHING-003 binds GitHub digests before strict archive identity inspection","status":"passed","title":"TEST-RELEASE-ASSET-PUBLISHING-003 binds GitHub digests before strict archive identity inspection","duration":12.899737999999985,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["release asset publishing"],"fullName":"release asset publishing TEST-RELEASE-ASSET-PUBLISHING-004 shares verification and permits provenance publishing only in matching GitHub Actions","status":"passed","title":"TEST-RELEASE-ASSET-PUBLISHING-004 shares verification and permits provenance publishing only in matching GitHub Actions","duration":5.026514999999989,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["release asset publishing"],"fullName":"release asset publishing rejects malformed release metadata, checksums, and tar structures","status":"passed","title":"rejects malformed release metadata, checksums, and tar structures","duration":20.62956700000001,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["release asset publishing"],"fullName":"release asset publishing preserves optional npm tokens and rechecks the tarball before publishing","status":"passed","title":"preserves optional npm tokens and rechecks the tarball before publishing","duration":6.134419000000008,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["release asset publishing"],"fullName":"release asset publishing TEST-RELEASE-ASSET-PUBLISHING-005 preserves historical workflow policy while accepting the reviewed publish contract","status":"passed","title":"TEST-RELEASE-ASSET-PUBLISHING-005 preserves historical workflow policy while accepting the reviewed publish contract","duration":106.503657,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["release asset publishing"],"fullName":"release asset publishing TEST-RELEASE-ASSET-PUBLISHING-006 binds inspected bytes and rejects a null duplicate manifest","status":"passed","title":"TEST-RELEASE-ASSET-PUBLISHING-006 binds inspected bytes and rejects a null duplicate manifest","duration":6.297814000000017,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["release asset publishing"],"fullName":"release asset publishing TEST-RELEASE-ASSET-PUBLISHING-007 validates a tag before checkout and detects privileged workflow drift","status":"passed","title":"TEST-RELEASE-ASSET-PUBLISHING-007 validates a tag before checkout and detects privileged workflow drift","duration":77.98197999999996,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["release asset publishing"],"fullName":"release asset publishing TEST-RELEASE-ASSET-PUBLISHING-008 binds privileged checkouts to fully qualified tag refs","status":"passed","title":"TEST-RELEASE-ASSET-PUBLISHING-008 binds privileged checkouts to fully qualified tag refs","duration":0.47939600000000837,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["release asset publishing"],"fullName":"release asset publishing TEST-RELEASE-ASSET-PUBLISHING-009 rejects dot-segment repository identities","status":"passed","title":"TEST-RELEASE-ASSET-PUBLISHING-009 rejects dot-segment repository identities","duration":3.060196000000019,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["release asset publishing"],"fullName":"release asset publishing TEST-RELEASE-ASSET-PUBLISHING-010 preserves canonical repository and tag-ref trust boundaries","status":"passed","title":"TEST-RELEASE-ASSET-PUBLISHING-010 preserves canonical repository and tag-ref trust boundaries","duration":2.4355449999999905,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["release asset publishing"],"fullName":"release asset publishing TEST-RELEASE-ASSET-PUBLISHING-011 preserves the closed asset set and digest-bound bytes","status":"passed","title":"TEST-RELEASE-ASSET-PUBLISHING-011 preserves the closed asset set and digest-bound bytes","duration":2.8221899999999778,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["release asset publishing"],"fullName":"release asset publishing detects dependency, checkout-ref, and command drift in privileged publishing jobs","status":"passed","title":"detects dependency, checkout-ref, and command drift in privileged publishing jobs","duration":246.268706,"failureMessages":[],"meta":{},"tags":[]}],"startTime":1790445437262,"endTime":1790445437786.2688,"status":"passed","message":"","name":"/home/nahisaho/GitHub/musubix3/tests/release-asset-publishing.test.ts"}]}
+{
+  "schemaVersion": 1,
+  "commandName": "release-asset-publishing-tests",
+  "commandSha256": "b791baf38da94d5158453510f139fee08e92eef19110683a69ab798d7a2ae9c8",
+  "inputFingerprint": "a618d888aad9c3fd5d3a7f788c55b31fe3d4e80277d32909ef341c13885cbf97",
+  "inputs": [
+    {
+      "path": "scripts/check-github-actions.mjs",
+      "sha256": "5d683b5289ee984f020a9802b87ca1e72cb0f6fad9707c821169bb0c6c82265c"
+    },
+    {
+      "path": "scripts/release-publish.mjs",
+      "sha256": "021ae204cca11fd66d583e27df16e9ead16d77df0503d717d63bda14ecf144f3"
+    },
+    {
+      "path": "tests/release-asset-publishing.test.ts",
+      "sha256": "cf2f5921615f741a06f1b48fd3632c4ffebbb5d64c46db8443f853c8d6086334"
+    }
+  ],
+  "adapter": "vitest",
+  "sourceKind": "file",
+  "reportPath": ".musubix/evidence/native/release-asset-publishing-tests/aggregate.json",
+  "processStatus": "completed",
+  "exitCode": 0,
+  "tests": [
+    {
+      "id": "TEST-RELEASE-ASSET-PUBLISHING-001",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-RELEASE-ASSET-PUBLISHING-002",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-RELEASE-ASSET-PUBLISHING-003",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-RELEASE-ASSET-PUBLISHING-004",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-RELEASE-ASSET-PUBLISHING-005",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-RELEASE-ASSET-PUBLISHING-006",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-RELEASE-ASSET-PUBLISHING-007",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-RELEASE-ASSET-PUBLISHING-008",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-RELEASE-ASSET-PUBLISHING-009",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-RELEASE-ASSET-PUBLISHING-010",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-RELEASE-ASSET-PUBLISHING-011",
+      "status": "passed"
+    }
+  ]
+}

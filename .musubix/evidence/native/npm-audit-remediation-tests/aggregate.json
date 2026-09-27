@@ -1,1 +1,51 @@
-{"numTotalTestSuites":2,"numPassedTestSuites":2,"numFailedTestSuites":0,"numPendingTestSuites":0,"numTotalTests":5,"numPassedTests":5,"numFailedTests":0,"numPendingTests":0,"numTodoTests":0,"snapshot":{"added":0,"failure":false,"filesAdded":0,"filesRemoved":0,"filesRemovedList":[],"filesUnmatched":0,"filesUpdated":0,"matched":0,"total":0,"unchecked":0,"uncheckedKeysByFile":[],"unmatched":0,"updated":0,"didUpdate":false},"startTime":1790445429606,"success":true,"testResults":[{"assertionResults":[{"ancestorTitles":["npm audit remediation"],"fullName":"npm audit remediation TEST-GATE-COMMAND-TIMEOUT-MARGIN-001 preserves full-test policy with the rebaselined 305-second timeout margin","status":"passed","title":"TEST-GATE-COMMAND-TIMEOUT-MARGIN-001 preserves full-test policy with the rebaselined 305-second timeout margin","duration":33.272874,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["npm audit remediation"],"fullName":"npm audit remediation TEST-NPM-AUDIT-REMEDIATION-001 records the reviewed advisory and reachability evidence","status":"passed","title":"TEST-NPM-AUDIT-REMEDIATION-001 records the reviewed advisory and reachability evidence","duration":857.9560090000001,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["npm audit remediation"],"fullName":"npm audit remediation TEST-NPM-AUDIT-REMEDIATION-002 resolves every Vitest tooling path outside the advisory range","status":"passed","title":"TEST-NPM-AUDIT-REMEDIATION-002 resolves every Vitest tooling path outside the advisory range","duration":1176.4998629999998,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["npm audit remediation"],"fullName":"npm audit remediation TEST-NPM-AUDIT-REMEDIATION-003 preserves test configuration and CI execution contracts","status":"passed","title":"TEST-NPM-AUDIT-REMEDIATION-003 preserves test configuration and CI execution contracts","duration":5026.364684,"failureMessages":[],"meta":{},"tags":[]},{"ancestorTitles":["npm audit remediation"],"fullName":"npm audit remediation TEST-NPM-AUDIT-REMEDIATION-004 documents the dependency-audit monitoring policy","status":"passed","title":"TEST-NPM-AUDIT-REMEDIATION-004 documents the dependency-audit monitoring policy","duration":816.2831769999993,"failureMessages":[],"meta":{},"tags":[]}],"startTime":1790445429766,"endTime":1790445436642.2832,"status":"passed","message":"","name":"/home/nahisaho/GitHub/musubix3/tests/npm-audit-remediation.test.ts"}]}
+{
+  "schemaVersion": 1,
+  "commandName": "npm-audit-remediation-tests",
+  "commandSha256": "cfe2281ca2a6cdad66be29fad07369ee89f8a54e4faf26716736e44a3c02331a",
+  "inputFingerprint": "9ca1e5346696659423d4eaa4c5cb9805be57bb1fd903bd8af73a2f9508d67a46",
+  "inputs": [
+    {
+      "path": "scripts/check-gate-command-timeout-margin.mjs",
+      "sha256": "90a7481e30b3159b7524ebd4e0466a2d833a73f862046bff5cbeeb38128c68d2"
+    },
+    {
+      "path": "scripts/check-github-actions.mjs",
+      "sha256": "5d683b5289ee984f020a9802b87ca1e72cb0f6fad9707c821169bb0c6c82265c"
+    },
+    {
+      "path": "scripts/check-npm-audit-remediation.mjs",
+      "sha256": "e7bf3483983ffaa3c322340312490d0d9e4be6546ad699391b1a3a2ebb3d75bb"
+    },
+    {
+      "path": "tests/npm-audit-remediation.test.ts",
+      "sha256": "afb783cda0b381c687707f5f70894ddfee13ac048d905900ba290689b7763a94"
+    }
+  ],
+  "adapter": "vitest",
+  "sourceKind": "file",
+  "reportPath": ".musubix/evidence/native/npm-audit-remediation-tests/aggregate.json",
+  "processStatus": "completed",
+  "exitCode": 0,
+  "tests": [
+    {
+      "id": "TEST-GATE-COMMAND-TIMEOUT-MARGIN-001",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-NPM-AUDIT-REMEDIATION-001",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-NPM-AUDIT-REMEDIATION-002",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-NPM-AUDIT-REMEDIATION-003",
+      "status": "passed"
+    },
+    {
+      "id": "TEST-NPM-AUDIT-REMEDIATION-004",
+      "status": "passed"
+    }
+  ]
+}

@@ -16130,6 +16130,304 @@
       "phase": "quality:4",
       "previousSha256": "b0986ad6b404167ac22241daca1d34b729305e000bb3c92bf63b3801f21f3171",
       "recordSha256": "e7bf3b189f7c6cddc4d9e554130fbaf28379d624ebabf2c926e06e925bef52a2"
+    },
+    {
+      "sequence": 1944,
+      "kind": "change",
+      "entityId": "CHANGE-0053",
+      "phase": "impact",
+      "previousSha256": "e7bf3b189f7c6cddc4d9e554130fbaf28379d624ebabf2c926e06e925bef52a2",
+      "recordSha256": "833a511a4d7df6f2f86d031cf0898d4fa85eda18419cb06f30bc285cbb19da7f"
+    },
+    {
+      "sequence": 1945,
+      "kind": "change",
+      "entityId": "CHANGE-0053",
+      "phase": "requirements",
+      "previousSha256": "833a511a4d7df6f2f86d031cf0898d4fa85eda18419cb06f30bc285cbb19da7f",
+      "recordSha256": "91a5d2e3c0f4dadba28f9e4b7ecb8d14572791468100e2097b32cbfc9752f2cb"
+    },
+    {
+      "sequence": 1946,
+      "kind": "change",
+      "entityId": "CHANGE-0053",
+      "phase": "design",
+      "previousSha256": "91a5d2e3c0f4dadba28f9e4b7ecb8d14572791468100e2097b32cbfc9752f2cb",
+      "recordSha256": "039e456424a3c902c09029a9204f1c9d4fa74c6ea8d486cef516c79ea1d96d82"
+    },
+    {
+      "sequence": 1947,
+      "kind": "tdd",
+      "entityId": "fc0da227-4f24-4b04-a175-0617dc5dcfd7",
+      "phase": "red",
+      "previousSha256": "039e456424a3c902c09029a9204f1c9d4fa74c6ea8d486cef516c79ea1d96d82",
+      "recordSha256": "4101251d9d3befeb6899d8ab83077770bf4b854b818d3c1869a36c1e1a6191a5"
+    },
+    {
+      "sequence": 1948,
+      "kind": "tdd",
+      "entityId": "7cf833b3-b91c-4884-8418-28474c629522",
+      "phase": "red",
+      "previousSha256": "4101251d9d3befeb6899d8ab83077770bf4b854b818d3c1869a36c1e1a6191a5",
+      "recordSha256": "85ad236e215c3d137aaae9d5a959b56cc092a1c37f6e01f4dc2de8ba4093c6bf"
+    },
+    {
+      "sequence": 1949,
+      "kind": "tdd",
+      "entityId": "9075ad95-3396-491e-9b7b-68a5aa989183",
+      "phase": "red",
+      "previousSha256": "85ad236e215c3d137aaae9d5a959b56cc092a1c37f6e01f4dc2de8ba4093c6bf",
+      "recordSha256": "ce74225d1227c2d999a6cb002c42527a0002016c3df1a36ce72c93413c1f079c"
+    },
+    {
+      "sequence": 1950,
+      "kind": "tdd",
+      "entityId": "ebf9befb-376e-4d6b-9315-20141ebc9eda",
+      "phase": "red",
+      "previousSha256": "ce74225d1227c2d999a6cb002c42527a0002016c3df1a36ce72c93413c1f079c",
+      "recordSha256": "c981ce28004db6b9be314cfb17508fd15e2ac1ec982f04226c1d3ed191fd4e19"
+    },
+    {
+      "sequence": 1951,
+      "kind": "change",
+      "entityId": "CHANGE-0053",
+      "phase": "red",
+      "previousSha256": "c981ce28004db6b9be314cfb17508fd15e2ac1ec982f04226c1d3ed191fd4e19",
+      "recordSha256": "4aa60beaebde831a96223880d0eb8db8bd9b6a0bdd733eff0bf081afe16c1220"
+    },
+    {
+      "sequence": 1952,
+      "kind": "change",
+      "entityId": "CHANGE-0053",
+      "phase": "implementation",
+      "previousSha256": "4aa60beaebde831a96223880d0eb8db8bd9b6a0bdd733eff0bf081afe16c1220",
+      "recordSha256": "36a598e10ff4d86c0e236ac37eb34892343986ba74b534afe8ddf7eb4e71c4af"
+    },
+    {
+      "sequence": 1953,
+      "kind": "tdd",
+      "entityId": "fc0da227-4f24-4b04-a175-0617dc5dcfd7",
+      "phase": "green",
+      "previousSha256": "36a598e10ff4d86c0e236ac37eb34892343986ba74b534afe8ddf7eb4e71c4af",
+      "recordSha256": "9513d3b67a9c3268aec96b254684604776209adb29e1a1f1ca05871807213e6d"
+    },
+    {
+      "sequence": 1954,
+      "kind": "tdd",
+      "entityId": "7cf833b3-b91c-4884-8418-28474c629522",
+      "phase": "green",
+      "previousSha256": "9513d3b67a9c3268aec96b254684604776209adb29e1a1f1ca05871807213e6d",
+      "recordSha256": "db980a5c4a1558a87f63bf59aabca4b8d0f9be72d61095cb341ba4fed7679813"
+    },
+    {
+      "sequence": 1955,
+      "kind": "tdd",
+      "entityId": "9075ad95-3396-491e-9b7b-68a5aa989183",
+      "phase": "green",
+      "previousSha256": "db980a5c4a1558a87f63bf59aabca4b8d0f9be72d61095cb341ba4fed7679813",
+      "recordSha256": "83a999bf94faea53f1342037340de3fd722495223df8bcb4113a809c6b28f801"
+    },
+    {
+      "sequence": 1956,
+      "kind": "tdd",
+      "entityId": "ebf9befb-376e-4d6b-9315-20141ebc9eda",
+      "phase": "green",
+      "previousSha256": "83a999bf94faea53f1342037340de3fd722495223df8bcb4113a809c6b28f801",
+      "recordSha256": "8a8f783265ff1bc2da9c488ef29249c4c046e61413c8db68ad9ab213ab6e79f9"
+    },
+    {
+      "sequence": 1957,
+      "kind": "change",
+      "entityId": "CHANGE-0053",
+      "phase": "green",
+      "previousSha256": "8a8f783265ff1bc2da9c488ef29249c4c046e61413c8db68ad9ab213ab6e79f9",
+      "recordSha256": "f9a6f1548cfb0438f2e69830bb8d41c178116fa40b03da5e8c5edf3be1244d2e"
+    },
+    {
+      "sequence": 1958,
+      "kind": "tdd",
+      "entityId": "fc0da227-4f24-4b04-a175-0617dc5dcfd7",
+      "phase": "refactor",
+      "previousSha256": "f9a6f1548cfb0438f2e69830bb8d41c178116fa40b03da5e8c5edf3be1244d2e",
+      "recordSha256": "fbac4c9413bed73567605c18978c46f2ac61e368488a89af7802fdd21851b41e"
+    },
+    {
+      "sequence": 1959,
+      "kind": "tdd",
+      "entityId": "7cf833b3-b91c-4884-8418-28474c629522",
+      "phase": "refactor",
+      "previousSha256": "fbac4c9413bed73567605c18978c46f2ac61e368488a89af7802fdd21851b41e",
+      "recordSha256": "3b2a3dcbe3a9a5c2b3339fd1eac7a2aeeaad5cd758b47b64671e36973651ae57"
+    },
+    {
+      "sequence": 1960,
+      "kind": "tdd",
+      "entityId": "9075ad95-3396-491e-9b7b-68a5aa989183",
+      "phase": "refactor",
+      "previousSha256": "3b2a3dcbe3a9a5c2b3339fd1eac7a2aeeaad5cd758b47b64671e36973651ae57",
+      "recordSha256": "c2e4fe112deb3a9b9bdfa1e12dd80ab552995907e28937065d1d2a87738cf8cf"
+    },
+    {
+      "sequence": 1961,
+      "kind": "tdd",
+      "entityId": "ebf9befb-376e-4d6b-9315-20141ebc9eda",
+      "phase": "refactor",
+      "previousSha256": "c2e4fe112deb3a9b9bdfa1e12dd80ab552995907e28937065d1d2a87738cf8cf",
+      "recordSha256": "7f3e98a3b9302cd7e31a2bb42194f6833cbf60c4186697ed9a1f3aec15d36407"
+    },
+    {
+      "sequence": 1962,
+      "kind": "change",
+      "entityId": "CHANGE-0053",
+      "phase": "waiver",
+      "code": "CHANGE_TEST_CHANGED_AFTER_RED",
+      "detail": "REQ-NATIVE-TEST-EVIDENCE-STABILITY-001,REQ-NATIVE-TEST-EVIDENCE-STABILITY-002,REQ-NATIVE-TEST-EVIDENCE-STABILITY-003,REQ-NATIVE-TEST-EVIDENCE-STABILITY-004",
+      "previousSha256": "7f3e98a3b9302cd7e31a2bb42194f6833cbf60c4186697ed9a1f3aec15d36407",
+      "recordSha256": "95102102ccd7bdef2c1ae68e4336303f4e85e1c5de62da6af49ee14ce418175b"
+    },
+    {
+      "sequence": 1963,
+      "kind": "change",
+      "entityId": "CHANGE-0053",
+      "phase": "quality",
+      "previousSha256": "95102102ccd7bdef2c1ae68e4336303f4e85e1c5de62da6af49ee14ce418175b",
+      "recordSha256": "674cedd6de982086000e5a6a8077025c8b4f62bc6468e27f20157de3513cb1d2"
+    },
+    {
+      "sequence": 1964,
+      "kind": "tdd",
+      "entityId": "c053b23a-2cde-4771-91e0-e25a327f8c79",
+      "phase": "red",
+      "previousSha256": "674cedd6de982086000e5a6a8077025c8b4f62bc6468e27f20157de3513cb1d2",
+      "recordSha256": "9d672de52d4014cb882ffdb99f27c87b50bab2048592fef0d1fc9550c354dcc2"
+    },
+    {
+      "sequence": 1965,
+      "kind": "tdd",
+      "entityId": "c52cff45-ba72-46f6-8c08-fc38f971da3b",
+      "phase": "red",
+      "previousSha256": "9d672de52d4014cb882ffdb99f27c87b50bab2048592fef0d1fc9550c354dcc2",
+      "recordSha256": "6708e6f28db7e60e5aea1044c89d874538e56dcd9ed4571b40c51b851904ec76"
+    },
+    {
+      "sequence": 1966,
+      "kind": "change",
+      "entityId": "CHANGE-0053",
+      "phase": "red:REQ-NATIVE-TEST-EVIDENCE-STABILITY-004",
+      "previousSha256": "6708e6f28db7e60e5aea1044c89d874538e56dcd9ed4571b40c51b851904ec76",
+      "recordSha256": "1a3ab86307a0b093c54ef063776808faad1d7177d5cc54deff06ee139a1f680b"
+    },
+    {
+      "sequence": 1967,
+      "kind": "change",
+      "entityId": "CHANGE-0053",
+      "phase": "implementation:REQ-NATIVE-TEST-EVIDENCE-STABILITY-004",
+      "previousSha256": "1a3ab86307a0b093c54ef063776808faad1d7177d5cc54deff06ee139a1f680b",
+      "recordSha256": "7c693364873a98a3283594a199d9dc0e7ce69d9e199aab1b358f95a060912d7e"
+    },
+    {
+      "sequence": 1968,
+      "kind": "tdd",
+      "entityId": "c52cff45-ba72-46f6-8c08-fc38f971da3b",
+      "phase": "green",
+      "previousSha256": "7c693364873a98a3283594a199d9dc0e7ce69d9e199aab1b358f95a060912d7e",
+      "recordSha256": "ebf527062a99b2f0989c055f1036ffc9dc5bcc991c19924ceb94a63ee90ed2cf"
+    },
+    {
+      "sequence": 1969,
+      "kind": "change",
+      "entityId": "CHANGE-0053",
+      "phase": "green:REQ-NATIVE-TEST-EVIDENCE-STABILITY-004",
+      "previousSha256": "ebf527062a99b2f0989c055f1036ffc9dc5bcc991c19924ceb94a63ee90ed2cf",
+      "recordSha256": "e997c509bc265c1152c06d5eb5f4b199c10fc5b43fcc23a775b5107c5d9c83e8"
+    },
+    {
+      "sequence": 1970,
+      "kind": "tdd",
+      "entityId": "8a4339bf-093a-49cc-8d73-f94ee185297e",
+      "phase": "red",
+      "previousSha256": "e997c509bc265c1152c06d5eb5f4b199c10fc5b43fcc23a775b5107c5d9c83e8",
+      "recordSha256": "83ab539292f0db048ca4c2f1dc36d013f9fca76d0d58386af8d216daba4975ea"
+    },
+    {
+      "sequence": 1971,
+      "kind": "change",
+      "entityId": "CHANGE-0053",
+      "phase": "red:REQ-NATIVE-TEST-EVIDENCE-STABILITY-001",
+      "previousSha256": "83ab539292f0db048ca4c2f1dc36d013f9fca76d0d58386af8d216daba4975ea",
+      "recordSha256": "59349e630140ebd9fea188d2f71251960ee1368df1c7058b4e33932bbfac8a9b"
+    },
+    {
+      "sequence": 1972,
+      "kind": "change",
+      "entityId": "CHANGE-0053",
+      "phase": "implementation:REQ-NATIVE-TEST-EVIDENCE-STABILITY-001",
+      "previousSha256": "59349e630140ebd9fea188d2f71251960ee1368df1c7058b4e33932bbfac8a9b",
+      "recordSha256": "2ab59fbab888494e3ddaca55ddc0e70c5c7f8d4fb051dd4e968188a405eb75c5"
+    },
+    {
+      "sequence": 1973,
+      "kind": "tdd",
+      "entityId": "87c42551-c087-4f05-a45d-9a05bf569f00",
+      "phase": "red",
+      "previousSha256": "2ab59fbab888494e3ddaca55ddc0e70c5c7f8d4fb051dd4e968188a405eb75c5",
+      "recordSha256": "0def11fc72a9f0165bc730de3ebe91f5befbc76dcbd39321825ea057f1038bae"
+    },
+    {
+      "sequence": 1974,
+      "kind": "tdd",
+      "entityId": "89470589-41a5-47aa-8586-7235b8e57e51",
+      "phase": "red",
+      "previousSha256": "0def11fc72a9f0165bc730de3ebe91f5befbc76dcbd39321825ea057f1038bae",
+      "recordSha256": "2b41370adfd9ebae2cbd4d2497588844d9f45e0a98c1ef3a0ef09cd9860450d4"
+    },
+    {
+      "sequence": 1975,
+      "kind": "change",
+      "entityId": "CHANGE-0053",
+      "phase": "red:REQ-NATIVE-TEST-EVIDENCE-STABILITY-001,REQ-NATIVE-TEST-EVIDENCE-STABILITY-004",
+      "previousSha256": "2b41370adfd9ebae2cbd4d2497588844d9f45e0a98c1ef3a0ef09cd9860450d4",
+      "recordSha256": "fe8ffa31123d9f2a8dac0c2789a354b886aaa1ddea8f240e5b77fe1c94bc093f"
+    },
+    {
+      "sequence": 1976,
+      "kind": "change",
+      "entityId": "CHANGE-0053",
+      "phase": "implementation:REQ-NATIVE-TEST-EVIDENCE-STABILITY-001,REQ-NATIVE-TEST-EVIDENCE-STABILITY-004",
+      "previousSha256": "fe8ffa31123d9f2a8dac0c2789a354b886aaa1ddea8f240e5b77fe1c94bc093f",
+      "recordSha256": "9faee89db40eb8681cfdfa083b94899dfab6c8e893145ef795ccaa57243a51e9"
+    },
+    {
+      "sequence": 1977,
+      "kind": "tdd",
+      "entityId": "87c42551-c087-4f05-a45d-9a05bf569f00",
+      "phase": "green",
+      "previousSha256": "9faee89db40eb8681cfdfa083b94899dfab6c8e893145ef795ccaa57243a51e9",
+      "recordSha256": "9373f2743733a0185813f3e3fb04ae1a1a5b35fecd9c9c6ab39e1f17461ef8e7"
+    },
+    {
+      "sequence": 1978,
+      "kind": "tdd",
+      "entityId": "89470589-41a5-47aa-8586-7235b8e57e51",
+      "phase": "green",
+      "previousSha256": "9373f2743733a0185813f3e3fb04ae1a1a5b35fecd9c9c6ab39e1f17461ef8e7",
+      "recordSha256": "96befb2a3ad2415abba82026f47d5c1860ec358f135e8a6576dd0c429a061519"
+    },
+    {
+      "sequence": 1979,
+      "kind": "change",
+      "entityId": "CHANGE-0053",
+      "phase": "green:REQ-NATIVE-TEST-EVIDENCE-STABILITY-001,REQ-NATIVE-TEST-EVIDENCE-STABILITY-004",
+      "previousSha256": "96befb2a3ad2415abba82026f47d5c1860ec358f135e8a6576dd0c429a061519",
+      "recordSha256": "34d9ec5c4b4912dc251e9349dc693161406b810905598a938c778703975ef9a0"
+    },
+    {
+      "sequence": 1980,
+      "kind": "change",
+      "entityId": "CHANGE-0053",
+      "phase": "quality:2",
+      "previousSha256": "34d9ec5c4b4912dc251e9349dc693161406b810905598a938c778703975ef9a0",
+      "recordSha256": "a44829394a50946381b1305afa3d2e9ff69c2af67710264d93d0154ed1b0ae87"
     }
   ]
 }
