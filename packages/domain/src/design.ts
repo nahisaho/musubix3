@@ -31,11 +31,17 @@ export function validateDesign(text: string, path = '<input>', context: DesignCo
     const decisions = references(adrField, 'ADR');
     const dependencies = references(field(s.body, 'Depends-On|依存'), 'DES');
     if (!requirements.length) diagnostics.push(error('DES_REQUIREMENTS', `${s.id} must link requirements.`, path, s.line));
+    /* @id CODE-DESIGN-ADR-NONE-EXEMPTION-002
+     * @implements REQ-DESIGN-ADR-NONE-EXEMPTION-004
+     * @design DES-DESIGN-ADR-NONE-EXEMPTION-002
+     */
+    let adrExempt = false;
     if (!decisions.length) {
       const exemption = /^none(?:\s*[-–—:]\s*(.*))?$/i.exec(adrField.trim());
       if (exemption) {
         const reason = exemption[1]?.trim() ?? '';
         if (!reason || /^(TODO|TBD|N\/A|未定)$/i.test(reason)) diagnostics.push(error('DES_ADR_EXEMPTION_REASON', `${s.id} declares "none" but must give a concrete reason (e.g. "none — <reason>").`, path, s.line));
+        else adrExempt = true;
       } else {
         diagnostics.push(error('DES_ADR', `${s.id} must reference an ADR.`, path, s.line));
       }
@@ -49,7 +55,7 @@ export function validateDesign(text: string, path = '<input>', context: DesignCo
     for (const id of dependencies) {
       if (!ids.design.test(id) || (context.designIds && !context.designIds.has(id))) diagnostics.push(error('DES_DEPENDENCY', `Unknown or invalid component dependency ${id}.`, path, s.line));
     }
-    return { id: s.id, title: s.title, responsibility, interfaces, constraints, requirements, decisions, dependencies, line: s.line };
+    return { id: s.id, title: s.title, responsibility, interfaces, constraints, requirements, decisions, dependencies, line: s.line, adrExempt };
   });
   return validation(value, diagnostics);
 }

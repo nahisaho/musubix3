@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-03T01:57:31.581Z",
+  "generatedAt": "2026-10-04T05:06:55.715Z",
   "nodes": [
     {
       "id": "ADR-0025",
@@ -2772,7 +2772,7 @@
     "packages/analysis/src/workflow-waiver.ts": "2c6b982bcdd99e33951ad47bd7e060a8cf4868b7caa48a7bb9fa896092eed123",
     "packages/analysis/src/workflow.ts": "37c332cdcd7f5bae240a192c10e8e39bdeb28233cf3c30b535516f521ef4d661",
     "packages/cli/src/main.ts": "25ae53c6cac1eea57020a33397138c9913831d11b4d255867785a1f09a013244",
-    "packages/domain/src/types.ts": "0f0cbd43bdee4db03b83e4869e9791531a63e9b63aa7a09661f62ad1bbc75cb3",
+    "packages/domain/src/types.ts": "b61d810e4beb76343d85f8fb0e3f165d1e6d8eaede39e4caef3ee270f68a455a",
     "tests/change-evidence-waiver.test.ts": "b408605ce04c54d6eae3904afc89e1a9ec3603c185152d5272b622190efbe074",
     "tests/workflow-evidence-waiver.test.ts": "d6f8226a516a744beddad3732fa969beb609a1ac6fe143f3d5018cf4ae9ac1c5",
     "tests/workflow-waiver-bulk-recording.test.ts": "031a81460fc182d6433e3d4768a5aef8794d169709c6b5a35f3ad732397b438a"

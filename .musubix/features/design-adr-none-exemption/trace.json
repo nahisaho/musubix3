@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-03T01:57:31.581Z",
+  "generatedAt": "2026-10-04T05:06:55.715Z",
   "nodes": [
     {
       "id": "ADR-0017",
@@ -15,10 +15,34 @@
       "line": 16
     },
     {
+      "id": "CODE-DESIGN-ADR-NONE-EXEMPTION-002",
+      "kind": "code",
+      "path": "packages/domain/src/design.ts",
+      "line": 34
+    },
+    {
+      "id": "CODE-DESIGN-ADR-NONE-EXEMPTION-003",
+      "kind": "code",
+      "path": "packages/domain/src/types.ts",
+      "line": 85
+    },
+    {
+      "id": "CODE-DESIGN-ADR-NONE-EXEMPTION-004",
+      "kind": "code",
+      "path": "packages/analysis/src/change.ts",
+      "line": 752
+    },
+    {
       "id": "DES-DESIGN-ADR-NONE-EXEMPTION-001",
       "kind": "design",
       "path": ".musubix/features/design-adr-none-exemption/design.md",
       "line": 7
+    },
+    {
+      "id": "DES-DESIGN-ADR-NONE-EXEMPTION-002",
+      "kind": "design",
+      "path": ".musubix/features/design-adr-none-exemption/design.md",
+      "line": 14
     },
     {
       "id": "REQ-DESIGN-ADR-NONE-EXEMPTION-001",
@@ -42,22 +66,35 @@
       "mandatory": true
     },
     {
+      "id": "REQ-DESIGN-ADR-NONE-EXEMPTION-004",
+      "kind": "requirement",
+      "path": ".musubix/features/design-adr-none-exemption/requirements.md",
+      "line": 39,
+      "mandatory": true
+    },
+    {
       "id": "TEST-DESIGN-ADR-NONE-EXEMPTION-001",
       "kind": "test",
       "path": "tests/design-adr-none-exemption.test.ts",
-      "line": 10
+      "line": 12
     },
     {
       "id": "TEST-DESIGN-ADR-NONE-EXEMPTION-002",
       "kind": "test",
       "path": "tests/design-adr-none-exemption.test.ts",
-      "line": 19
+      "line": 21
     },
     {
       "id": "TEST-DESIGN-ADR-NONE-EXEMPTION-003",
       "kind": "test",
       "path": "tests/design-adr-none-exemption.test.ts",
-      "line": 31
+      "line": 33
+    },
+    {
+      "id": "TEST-DESIGN-ADR-NONE-EXEMPTION-004",
+      "kind": "test",
+      "path": "tests/design-adr-none-exemption.test.ts",
+      "line": 48
     }
   ],
   "edges": [
@@ -87,6 +124,36 @@
       "relation": "implements"
     },
     {
+      "from": "CODE-DESIGN-ADR-NONE-EXEMPTION-002",
+      "to": "DES-DESIGN-ADR-NONE-EXEMPTION-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-DESIGN-ADR-NONE-EXEMPTION-002",
+      "to": "REQ-DESIGN-ADR-NONE-EXEMPTION-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-DESIGN-ADR-NONE-EXEMPTION-003",
+      "to": "DES-DESIGN-ADR-NONE-EXEMPTION-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-DESIGN-ADR-NONE-EXEMPTION-003",
+      "to": "REQ-DESIGN-ADR-NONE-EXEMPTION-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-DESIGN-ADR-NONE-EXEMPTION-004",
+      "to": "DES-DESIGN-ADR-NONE-EXEMPTION-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-DESIGN-ADR-NONE-EXEMPTION-004",
+      "to": "REQ-DESIGN-ADR-NONE-EXEMPTION-004",
+      "relation": "implements"
+    },
+    {
       "from": "DES-DESIGN-ADR-NONE-EXEMPTION-001",
       "to": "REQ-DESIGN-ADR-NONE-EXEMPTION-001",
       "relation": "satisfies"
@@ -99,6 +166,11 @@
     {
       "from": "DES-DESIGN-ADR-NONE-EXEMPTION-001",
       "to": "REQ-DESIGN-ADR-NONE-EXEMPTION-003",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-DESIGN-ADR-NONE-EXEMPTION-002",
+      "to": "REQ-DESIGN-ADR-NONE-EXEMPTION-004",
       "relation": "satisfies"
     },
     {
@@ -115,14 +187,21 @@
       "from": "TEST-DESIGN-ADR-NONE-EXEMPTION-003",
       "to": "REQ-DESIGN-ADR-NONE-EXEMPTION-003",
       "relation": "verifies"
+    },
+    {
+      "from": "TEST-DESIGN-ADR-NONE-EXEMPTION-004",
+      "to": "REQ-DESIGN-ADR-NONE-EXEMPTION-004",
+      "relation": "verifies"
     }
   ],
   "diagnostics": [],
   "fingerprints": {
     ".musubix/decisions/ADR-0017.md": "791187943432f1d0d420b4fddb0404f500d8f7a2f20f9ed8597f4f1d6b20779a",
-    ".musubix/features/design-adr-none-exemption/design.md": "8e15fe5029540a37c908ceeb7d3721ce7b2f2164e9d2c66e31d2211bd700eb63",
-    ".musubix/features/design-adr-none-exemption/requirements.md": "f7586dbbc34f8dccb06141efc277ab817b15a6ac0a9fb7ed2faff9bdab144373",
-    "packages/domain/src/design.ts": "fc1ca4d3249abc9705ba4b6f296e0f4fa3b3d6ff6d5d82e51c99f49fc7a93ac9",
-    "tests/design-adr-none-exemption.test.ts": "f8a4771eb8b71a8c83b9ef782e9ed8646ef408aa4169298ab7a02553aa1c9ed7"
+    ".musubix/features/design-adr-none-exemption/design.md": "dc35b200e020fe64ff326320ef71b0d43dfef3c148c055b52b878e41d01662d8",
+    ".musubix/features/design-adr-none-exemption/requirements.md": "504a64d246fbdbb23a1704b6dcd4104aa95226d0ec2d369a996640c63ec65648",
+    "packages/analysis/src/change.ts": "169b625e65df6f331bf4530c1b74de2c797a5fbbe4bf38924366f4406d90bc82",
+    "packages/domain/src/design.ts": "4ead6cea89bc6fe9367eea98df810b08eeb201e129b7f84e0b7de80bac7b7e61",
+    "packages/domain/src/types.ts": "b61d810e4beb76343d85f8fb0e3f165d1e6d8eaede39e4caef3ee270f68a455a",
+    "tests/design-adr-none-exemption.test.ts": "525453c5b14ce975026c6e60183bf77e9741c23f83ac775d4fa6c06140bddfb9"
   }
 }

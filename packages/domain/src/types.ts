@@ -82,6 +82,11 @@ export interface Component {
   decisions: string[];
   dependencies: string[];
   line: number;
+  /* @id CODE-DESIGN-ADR-NONE-EXEMPTION-003
+   * @implements REQ-DESIGN-ADR-NONE-EXEMPTION-004
+   * @design DES-DESIGN-ADR-NONE-EXEMPTION-002
+   */
+  adrExempt: boolean;
 }
 
 export interface ConstitutionRule {
