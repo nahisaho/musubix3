@@ -35,3 +35,10 @@ Type: functional
 Pattern: ubiquitous
 Statement: The system shall continue to require every design component to reference at least one valid ADR or declare a valid "none" exemption, rejecting a component whose ADRs field is empty, unrecognized, or references only unknown/invalid ADR IDs.
 Acceptance: Given a `DES-*` component with an empty `ADRs` field, `design validate` still reports `DES_ADR` exactly as before this change. Given a component whose `ADRs` field references only an ADR ID absent from the known ADR set, `design validate` still reports `DES_ADR_LINK` exactly as before this change.
+
+## REQ-DESIGN-ADR-NONE-EXEMPTION-004: Recognize the "none" exemption in the change-completeness gate
+Priority: must
+Type: functional
+Pattern: event-driven
+Statement: When a change's requirement is satisfied by design components that all declare a valid "none — <reason>" ADR exemption (per REQ-DESIGN-ADR-NONE-EXEMPTION-001/002) and none of them reference a real ADR, the `change-completeness` gate check shall accept that requirement as having satisfied its ADR-evidence obligation without requiring a `decides` trace edge from an ADR node.
+Acceptance: Given a change whose requirement is satisfied only by `DES-*` components whose `ADRs` field is a valid "none — <reason>" exemption, `gate --changed` reports no `CHANGE_COMPLETENESS_ADR` diagnostic for that requirement. Given a change whose requirement is satisfied by a `DES-*` component with an empty or unrecognized `ADRs` field (not a valid exemption and no real ADR reference), `gate --changed` still reports `CHANGE_COMPLETENESS_ADR` for that requirement exactly as before this change. Given a change whose requirement is satisfied by two `DES-*` components where one has a valid "none — <reason>" exemption and the other has an empty, unrecognized, or invalid "none" (no concrete reason) `ADRs` field, and neither has a real `decides` trace edge, `gate --changed` still reports `CHANGE_COMPLETENESS_ADR` for that requirement, since not every satisfying component is exempt or linked.

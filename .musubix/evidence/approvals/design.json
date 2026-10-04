@@ -65,8 +65,8 @@
     ".musubix/features/cli-workflow-ux-v019/requirements.md": "8ac7b7e793009d95a03b53de1e3aca043d4433a7b6de9511d8547ebc33b5e7b2",
     ".musubix/features/command-working-directory/design.md": "70ccde3b2777c2cf9e06881a20ecd5b50107d9dba680694f92b811cacb5052eb",
     ".musubix/features/command-working-directory/requirements.md": "4a376dfe7a6e9b1bb1ff4a947fb2807f7179a1798df369040c879a1b9e4fcb90",
-    ".musubix/features/design-adr-none-exemption/design.md": "8e15fe5029540a37c908ceeb7d3721ce7b2f2164e9d2c66e31d2211bd700eb63",
-    ".musubix/features/design-adr-none-exemption/requirements.md": "f7586dbbc34f8dccb06141efc277ab817b15a6ac0a9fb7ed2faff9bdab144373",
+    ".musubix/features/design-adr-none-exemption/design.md": "dc35b200e020fe64ff326320ef71b0d43dfef3c148c055b52b878e41d01662d8",
+    ".musubix/features/design-adr-none-exemption/requirements.md": "504a64d246fbdbb23a1704b6dcd4104aa95226d0ec2d369a996640c63ec65648",
     ".musubix/features/ears-id-diagnostic-messages/design.md": "d282350c0c5cd6c923c0a54e6e60d633f7ab4a6c570ffdc891ba4a92d2e4e1d2",
     ".musubix/features/ears-id-diagnostic-messages/requirements.md": "49afd4e574f1179a31707323fbbcfffabf1051f666ad1fcba60b39b2e7da3808",
     ".musubix/features/evidence-history-merge/design.md": "123823f034c53b76326f17e619a34a849c5672e179d77761550a21513f5d04ec",
@@ -120,7 +120,7 @@
     ".musubix/features/workflow-waiver-bulk-recording/design.md": "c956f35169212cedc0fc66a11902200c7dda10230fc326075644d908f29580ae",
     ".musubix/features/workflow-waiver-bulk-recording/requirements.md": "361cfba519d4ab189a2091cf7b99133b9c005f69fb28aa2d77bba17bd7ee7b33"
   },
-  "artifactSha256": "d360036bbdf3257e0eb8c316799e62cd2c1e65c49ffcb06044c78e50e1486eaa",
+  "artifactSha256": "8371f3535aad8b91de79681aeb695d0badcd2c5da8291881b733be93117b1a7e",
   "approver": "nahisaho",
-  "approvedAt": "2026-10-03T21:44:41.145Z"
+  "approvedAt": "2026-10-04T04:01:28.266Z"
 }

@@ -749,8 +749,14 @@ export async function validateChangeCompleteness(root: string): Promise<{
       const designs = trace.edges
         .filter((edge) => edge.relation === 'satisfies' && edge.to === requirementId && nodes.get(edge.from)?.kind === 'design')
         .map((edge) => edge.from);
-      const hasAdr = trace.edges.some((edge) =>
+      /* @id CODE-DESIGN-ADR-NONE-EXEMPTION-004
+       * @implements REQ-DESIGN-ADR-NONE-EXEMPTION-004
+       * @design DES-DESIGN-ADR-NONE-EXEMPTION-002
+       */
+      const hasRealAdrEdge = trace.edges.some((edge) =>
         edge.relation === 'decides' && designs.includes(edge.to) && nodes.get(edge.from)?.kind === 'adr');
+      const allDesignsExempt = designs.length > 0 && designs.every((designId) => designsById.get(designId)?.adrExempt === true);
+      const hasAdr = hasRealAdrEdge || allDesignsExempt;
       const hasCode = trace.edges.some((edge) =>
         edge.relation === 'implements'
         && (edge.to === requirementId || designs.includes(edge.to))

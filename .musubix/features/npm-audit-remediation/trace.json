@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-03T22:34:06.249Z",
+  "generatedAt": "2026-10-04T05:06:55.715Z",
   "nodes": [
     {
       "id": "ADR-0029",
@@ -2640,7 +2640,7 @@
     ".musubix/features/release-asset-publishing/requirements.md": "8bf4436d5b694e32b683edbb620573589b28b74c35a076182c971bdb79cd4472",
     "packages/analysis/src/approval.ts": "7b3940d96b8465a16fc1d28a100fc2d72dc0b7ee4e49e6f02ebb7db0449b1a9f",
     "packages/analysis/src/change-evidence.ts": "564bceca2edd2d8922b421ecd3b83f6df4d428b556e81450cd0819b5728a29e2",
-    "packages/analysis/src/change.ts": "2452e643e63fcb13678a2f38f7f06415f7a47f2512d7373d0973ac151528cb6b",
+    "packages/analysis/src/change.ts": "169b625e65df6f331bf4530c1b74de2c797a5fbbe4bf38924366f4406d90bc82",
     "packages/analysis/src/evidence-merge.ts": "c7766f8ef74da94027073d9516ec307d67d8f729395c2c010ab9820e5a12eecf",
     "packages/analysis/src/evidence-writer-lock.ts": "86d898cdcc6693e50279c193a9bf9d50b616520587871a82209146e286b7930f",
     "packages/analysis/src/quality-refresh.ts": "2b11461f84b7155ee1ec02d53d6e0af291ce26c40f6e77755e405c1b000e730d",

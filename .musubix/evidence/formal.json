@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-04T02:27:39.386Z",
-  "totalRequirements": 188,
+  "generatedAt": "2026-10-04T06:01:27.123Z",
+  "totalRequirements": 189,
   "modeledRequirements": 11,
-  "modeledFraction": 0.05851063829787234,
+  "modeledFraction": 0.0582010582010582,
   "result": {
     "valid": true,
     "abstraction": "Consistency of explicit branch-scoped conditional, exact unit-normalized integer numeric, bounded temporal interval, deterministic state-transition, and controlled unconditional Boolean constraints; not implementation correctness.",
@@ -149,6 +149,7 @@
       "REQ-DESIGN-ADR-NONE-EXEMPTION-001",
       "REQ-DESIGN-ADR-NONE-EXEMPTION-002",
       "REQ-DESIGN-ADR-NONE-EXEMPTION-003",
+      "REQ-DESIGN-ADR-NONE-EXEMPTION-004",
       "REQ-EARS-ID-DIAGNOSTIC-MESSAGES-001",
       "REQ-EARS-ID-DIAGNOSTIC-MESSAGES-002",
       "REQ-EARS-ID-DIAGNOSTIC-MESSAGES-003",
@@ -627,6 +628,11 @@
         "code": "FORMAL_UNSUPPORTED",
         "severity": "warning",
         "message": "REQ-DESIGN-ADR-NONE-EXEMPTION-003 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-DESIGN-ADR-NONE-EXEMPTION-004 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
       },
       {
         "code": "FORMAL_UNSUPPORTED",
@@ -1163,7 +1169,7 @@
     ".musubix/features/change-requirement-batches/requirements.md": "d4d2d1e9e12cd4e062ca3a14e4a28d9f011de634fb3c10defb53653260667110",
     ".musubix/features/cli-workflow-ux-v019/requirements.md": "8ac7b7e793009d95a03b53de1e3aca043d4433a7b6de9511d8547ebc33b5e7b2",
     ".musubix/features/command-working-directory/requirements.md": "4a376dfe7a6e9b1bb1ff4a947fb2807f7179a1798df369040c879a1b9e4fcb90",
-    ".musubix/features/design-adr-none-exemption/requirements.md": "f7586dbbc34f8dccb06141efc277ab817b15a6ac0a9fb7ed2faff9bdab144373",
+    ".musubix/features/design-adr-none-exemption/requirements.md": "504a64d246fbdbb23a1704b6dcd4104aa95226d0ec2d369a996640c63ec65648",
     ".musubix/features/ears-id-diagnostic-messages/requirements.md": "49afd4e574f1179a31707323fbbcfffabf1051f666ad1fcba60b39b2e7da3808",
     ".musubix/features/evidence-history-merge/requirements.md": "7fa32ee9bc9dd11e25bcdaff1959ab4d17156f9965c5904f4a0cf2283d5cd988",
     ".musubix/features/evidence-writer-lock/requirements.md": "4bc22eb3ad47ba2c41747ce5e9e992f85ef34a79e0397d5bfcd7c8739cd13a70",

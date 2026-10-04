@@ -17531,6 +17531,49 @@
         "diagnostics": [],
         "order": 1575
       }
+    },
+    {
+      "cycleId": "e6a23411-4171-4c98-b748-302a484083e3",
+      "requirementId": "REQ-DESIGN-ADR-NONE-EXEMPTION-004",
+      "testId": "TEST-DESIGN-ADR-NONE-EXEMPTION-004",
+      "testPath": "tests/design-adr-none-exemption.test.ts",
+      "commandName": "design-adr-none-exemption-tests",
+      "red": {
+        "phase": "red",
+        "valid": true,
+        "scoped": true,
+        "resultObserved": true,
+        "testStatus": "failed",
+        "reportSha256": "da74e4814ebe1538920e9d294159c79ba2e40dfc6a06648c71ebd5a07bf65d0d",
+        "commandSha256": "d65e8dae94be898cb3b82587e40378afad35c4abd196b0284d25fc060fd87f89",
+        "outputSha256": "878f656a72c574e6ae19d8b1fd7dc0746157353cd93f79b6f0483eb4042f2761",
+        "exitCode": 1,
+        "durationMs": 2035,
+        "testFingerprint": "3eb75ec0e4a5a94b889f6b1d15e112a60f938dae23ae197237dec5234342e28e",
+        "sourceFingerprint": "00dee452d86a66ae58c05f2aa9efa4439aa827ae097ad8a0ad9687df65fa3321",
+        "executionId": "90ae50c1-8584-469a-bf41-2c46455ae020",
+        "recordedAt": "2026-10-04T05:06:34.541Z",
+        "diagnostics": [],
+        "order": 1582
+      },
+      "green": {
+        "phase": "green",
+        "valid": true,
+        "scoped": true,
+        "resultObserved": true,
+        "testStatus": "passed",
+        "reportSha256": "a29882acd6be7b63146e1018b6e25951e6a79598b1b330b2b2c1117eeb59833b",
+        "commandSha256": "d65e8dae94be898cb3b82587e40378afad35c4abd196b0284d25fc060fd87f89",
+        "outputSha256": "878f656a72c574e6ae19d8b1fd7dc0746157353cd93f79b6f0483eb4042f2761",
+        "exitCode": 0,
+        "durationMs": 2257,
+        "testFingerprint": "3eb75ec0e4a5a94b889f6b1d15e112a60f938dae23ae197237dec5234342e28e",
+        "sourceFingerprint": "32c6cdd1b1c39ae8ab6efd8a3446ed524d414fa7096c1e43b5e2b561ceca2892",
+        "executionId": "952689a8-4349-4931-a435-502566c3f25c",
+        "recordedAt": "2026-10-04T05:06:58.943Z",
+        "diagnostics": [],
+        "order": 1585
+      }
     }
   ],
   "chain": [
@@ -27289,6 +27332,30 @@
       "phaseEvidenceSha256": "e8de3df5a47465eee571c6e4660c6e8e59e5e283e12820bc72a1335e236dcd93",
       "previousSha256": "5acff0f48908986672c7af7abaa90c62d0f76bc79e3e018177d3be342ef3571b",
       "recordSha256": "b075334834dbadc3a57c4591c4b8420b4eb601319130e90b6ad17825c83ed6c4"
+    },
+    {
+      "sequence": 814,
+      "cycleId": "e6a23411-4171-4c98-b748-302a484083e3",
+      "requirementId": "REQ-DESIGN-ADR-NONE-EXEMPTION-004",
+      "testId": "TEST-DESIGN-ADR-NONE-EXEMPTION-004",
+      "testPath": "tests/design-adr-none-exemption.test.ts",
+      "commandName": "design-adr-none-exemption-tests",
+      "phase": "red",
+      "phaseEvidenceSha256": "ba073c7adc165257de588e70f0626d0b84f7b153f178dfff6bdfa2ecea874326",
+      "previousSha256": "b075334834dbadc3a57c4591c4b8420b4eb601319130e90b6ad17825c83ed6c4",
+      "recordSha256": "bf0c24f64fb9c2e988367e61233f8de81978cdc87ee1bb7a6b5fe616487c283b"
+    },
+    {
+      "sequence": 815,
+      "cycleId": "e6a23411-4171-4c98-b748-302a484083e3",
+      "requirementId": "REQ-DESIGN-ADR-NONE-EXEMPTION-004",
+      "testId": "TEST-DESIGN-ADR-NONE-EXEMPTION-004",
+      "testPath": "tests/design-adr-none-exemption.test.ts",
+      "commandName": "design-adr-none-exemption-tests",
+      "phase": "green",
+      "phaseEvidenceSha256": "ddaf71d6d29d38bd8db2ba1c6a58014782f74f10ad5566ea7567b3d54ec8569d",
+      "previousSha256": "bf0c24f64fb9c2e988367e61233f8de81978cdc87ee1bb7a6b5fe616487c283b",
+      "recordSha256": "f8666fffb764c3cbc8963431c82c32e22cc2adff5b4fb1bfbe36510953850555"
     }
   ]
 }

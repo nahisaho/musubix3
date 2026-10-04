@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-03T22:34:06.249Z",
+  "generatedAt": "2026-10-04T05:06:55.715Z",
   "nodes": [
     {
       "id": "ADR-0002",
@@ -661,6 +661,24 @@
       "kind": "code",
       "path": "packages/domain/src/design.ts",
       "line": 16
+    },
+    {
+      "id": "CODE-DESIGN-ADR-NONE-EXEMPTION-002",
+      "kind": "code",
+      "path": "packages/domain/src/design.ts",
+      "line": 34
+    },
+    {
+      "id": "CODE-DESIGN-ADR-NONE-EXEMPTION-003",
+      "kind": "code",
+      "path": "packages/domain/src/types.ts",
+      "line": 85
+    },
+    {
+      "id": "CODE-DESIGN-ADR-NONE-EXEMPTION-004",
+      "kind": "code",
+      "path": "packages/analysis/src/change.ts",
+      "line": 752
     },
     {
       "id": "CODE-EARS-ID-DIAGNOSTIC-MESSAGES-001",
@@ -1471,6 +1489,12 @@
       "kind": "design",
       "path": ".musubix/features/design-adr-none-exemption/design.md",
       "line": 7
+    },
+    {
+      "id": "DES-DESIGN-ADR-NONE-EXEMPTION-002",
+      "kind": "design",
+      "path": ".musubix/features/design-adr-none-exemption/design.md",
+      "line": 14
     },
     {
       "id": "DES-EARS-ID-DIAGNOSTIC-MESSAGES-001",
@@ -2488,6 +2512,13 @@
       "kind": "requirement",
       "path": ".musubix/features/design-adr-none-exemption/requirements.md",
       "line": 32,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-DESIGN-ADR-NONE-EXEMPTION-004",
+      "kind": "requirement",
+      "path": ".musubix/features/design-adr-none-exemption/requirements.md",
+      "line": 39,
       "mandatory": true
     },
     {
@@ -3836,19 +3867,25 @@
       "id": "TEST-DESIGN-ADR-NONE-EXEMPTION-001",
       "kind": "test",
       "path": "tests/design-adr-none-exemption.test.ts",
-      "line": 10
+      "line": 12
     },
     {
       "id": "TEST-DESIGN-ADR-NONE-EXEMPTION-002",
       "kind": "test",
       "path": "tests/design-adr-none-exemption.test.ts",
-      "line": 19
+      "line": 21
     },
     {
       "id": "TEST-DESIGN-ADR-NONE-EXEMPTION-003",
       "kind": "test",
       "path": "tests/design-adr-none-exemption.test.ts",
-      "line": 31
+      "line": 33
+    },
+    {
+      "id": "TEST-DESIGN-ADR-NONE-EXEMPTION-004",
+      "kind": "test",
+      "path": "tests/design-adr-none-exemption.test.ts",
+      "line": 48
     },
     {
       "id": "TEST-EARS-ID-DIAGNOSTIC-MESSAGES-001",
@@ -6401,6 +6438,36 @@
       "relation": "implements"
     },
     {
+      "from": "CODE-DESIGN-ADR-NONE-EXEMPTION-002",
+      "to": "DES-DESIGN-ADR-NONE-EXEMPTION-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-DESIGN-ADR-NONE-EXEMPTION-002",
+      "to": "REQ-DESIGN-ADR-NONE-EXEMPTION-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-DESIGN-ADR-NONE-EXEMPTION-003",
+      "to": "DES-DESIGN-ADR-NONE-EXEMPTION-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-DESIGN-ADR-NONE-EXEMPTION-003",
+      "to": "REQ-DESIGN-ADR-NONE-EXEMPTION-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-DESIGN-ADR-NONE-EXEMPTION-004",
+      "to": "DES-DESIGN-ADR-NONE-EXEMPTION-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-DESIGN-ADR-NONE-EXEMPTION-004",
+      "to": "REQ-DESIGN-ADR-NONE-EXEMPTION-004",
+      "relation": "implements"
+    },
+    {
       "from": "CODE-EARS-ID-DIAGNOSTIC-MESSAGES-001",
       "to": "DES-EARS-ID-DIAGNOSTIC-MESSAGES-001",
       "relation": "implements"
@@ -8676,6 +8743,11 @@
       "relation": "satisfies"
     },
     {
+      "from": "DES-DESIGN-ADR-NONE-EXEMPTION-002",
+      "to": "REQ-DESIGN-ADR-NONE-EXEMPTION-004",
+      "relation": "satisfies"
+    },
+    {
       "from": "DES-EARS-ID-DIAGNOSTIC-MESSAGES-001",
       "to": "REQ-EARS-ID-DIAGNOSTIC-MESSAGES-001",
       "relation": "satisfies"
@@ -10406,6 +10478,11 @@
       "relation": "verifies"
     },
     {
+      "from": "TEST-DESIGN-ADR-NONE-EXEMPTION-004",
+      "to": "REQ-DESIGN-ADR-NONE-EXEMPTION-004",
+      "relation": "verifies"
+    },
+    {
       "from": "TEST-EARS-ID-DIAGNOSTIC-MESSAGES-001",
       "to": "REQ-EARS-ID-DIAGNOSTIC-MESSAGES-001",
       "relation": "verifies"
@@ -11499,8 +11576,8 @@
     ".musubix/features/cli-workflow-ux-v019/requirements.md": "8ac7b7e793009d95a03b53de1e3aca043d4433a7b6de9511d8547ebc33b5e7b2",
     ".musubix/features/command-working-directory/design.md": "70ccde3b2777c2cf9e06881a20ecd5b50107d9dba680694f92b811cacb5052eb",
     ".musubix/features/command-working-directory/requirements.md": "4a376dfe7a6e9b1bb1ff4a947fb2807f7179a1798df369040c879a1b9e4fcb90",
-    ".musubix/features/design-adr-none-exemption/design.md": "8e15fe5029540a37c908ceeb7d3721ce7b2f2164e9d2c66e31d2211bd700eb63",
-    ".musubix/features/design-adr-none-exemption/requirements.md": "f7586dbbc34f8dccb06141efc277ab817b15a6ac0a9fb7ed2faff9bdab144373",
+    ".musubix/features/design-adr-none-exemption/design.md": "dc35b200e020fe64ff326320ef71b0d43dfef3c148c055b52b878e41d01662d8",
+    ".musubix/features/design-adr-none-exemption/requirements.md": "504a64d246fbdbb23a1704b6dcd4104aa95226d0ec2d369a996640c63ec65648",
     ".musubix/features/ears-id-diagnostic-messages/design.md": "d282350c0c5cd6c923c0a54e6e60d633f7ab4a6c570ffdc891ba4a92d2e4e1d2",
     ".musubix/features/ears-id-diagnostic-messages/requirements.md": "49afd4e574f1179a31707323fbbcfffabf1051f666ad1fcba60b39b2e7da3808",
     ".musubix/features/evidence-history-merge/design.md": "123823f034c53b76326f17e619a34a849c5672e179d77761550a21513f5d04ec",
@@ -11560,7 +11637,7 @@
     "packages/analysis/src/attestation.ts": "c353b5d93f151665e1f5f0531b763db164cb54e5305a837efd47b2742eb3b949",
     "packages/analysis/src/change-evidence.ts": "564bceca2edd2d8922b421ecd3b83f6df4d428b556e81450cd0819b5728a29e2",
     "packages/analysis/src/change-waiver.ts": "2ca1c25d10e7c7bfc2fc0e92eda59eb96b1e364b33fd8d6b5cb42cba5b35cdc6",
-    "packages/analysis/src/change.ts": "2452e643e63fcb13678a2f38f7f06415f7a47f2512d7373d0973ac151528cb6b",
+    "packages/analysis/src/change.ts": "169b625e65df6f331bf4530c1b74de2c797a5fbbe4bf38924366f4406d90bc82",
     "packages/analysis/src/config.ts": "52d5212f4057df9ed5caac0a0025ce744864909abceea3c64d259479ddffb998",
     "packages/analysis/src/evidence-merge-guard.ts": "1c0b4735d974f4c5fa0b9edaa5bde075baa5ca09de645d32db41f2e24e9421e1",
     "packages/analysis/src/evidence-merge.ts": "c7766f8ef74da94027073d9516ec307d67d8f729395c2c010ab9820e5a12eecf",
@@ -11587,11 +11664,11 @@
     "packages/cli/src/install.ts": "a15942ca763881364b9e0f1a134d2d8f9c63f09ce2b7cd40f6467f523b089fc2",
     "packages/cli/src/main.ts": "25ae53c6cac1eea57020a33397138c9913831d11b4d255867785a1f09a013244",
     "packages/domain/src/constitution.ts": "514278499642ff46ed902864b9192f566b116b4f92eb3fafa6b62588335e170a",
-    "packages/domain/src/design.ts": "fc1ca4d3249abc9705ba4b6f296e0f4fa3b3d6ff6d5d82e51c99f49fc7a93ac9",
+    "packages/domain/src/design.ts": "4ead6cea89bc6fe9367eea98df810b08eeb201e129b7f84e0b7de80bac7b7e61",
     "packages/domain/src/index.ts": "43243e9279e3826b23cd8d8b4365854974112ce4cf17cfb0f0ee32e6b28e9cc6",
     "packages/domain/src/markdown.ts": "5c6b96486a2e31944d7d128d241f1772d0926f34464fa2b59c20748a6754487a",
     "packages/domain/src/requirements.ts": "65ea1e6d3bbd29e929c785037b930e5f5eb5535b607403e5f30c3657d36e9175",
-    "packages/domain/src/types.ts": "0f0cbd43bdee4db03b83e4869e9791531a63e9b63aa7a09661f62ad1bbc75cb3",
+    "packages/domain/src/types.ts": "b61d810e4beb76343d85f8fb0e3f165d1e6d8eaede39e4caef3ee270f68a455a",
     "scripts/check-gate-command-timeout-margin.mjs": "bc0d58f194064ad3b35580b2b5085da883312e09c80c861ef2731c318b83b218",
     "scripts/check-github-actions.mjs": "8e18568a2a4a69cf25aa6b825cc82a6258cf0388c27c552f7d69a100793d5437",
     "scripts/check-npm-audit-remediation.mjs": "82548a2681cde6be6d238f15678add9388c8aaac72a49a13af82d46d4b462cb6",
@@ -11616,7 +11693,7 @@
     "tests/cli-package.test.ts": "9050cda19c56670ea496754575b9bcfeda3e5d3f6753136f745d5714877adb59",
     "tests/cli-workflow-ux.test.ts": "53bdc5375bef05b365d725f5a8948393d68ae8cd1116fad8ff36ca3de127a177",
     "tests/command-working-directory.test.ts": "82dc863b1fcc5cd8a5ea1534238ef2f61f15e5d6c5e25d61fce43a7efe9bbc02",
-    "tests/design-adr-none-exemption.test.ts": "f8a4771eb8b71a8c83b9ef782e9ed8646ef408aa4169298ab7a02553aa1c9ed7",
+    "tests/design-adr-none-exemption.test.ts": "525453c5b14ce975026c6e60183bf77e9741c23f83ac775d4fa6c06140bddfb9",
     "tests/domain.test.ts": "be79af0613fe35d70659d15155efc859721d764a0ea40c9764c2e4d7f89ea16d",
     "tests/ears-id-diagnostic-messages.test.ts": "b87dbcbbd8a1c6d2c8fddd2ad0c7483da022281b4fae2f968972413933ee009a",
     "tests/evidence-history-merge-recovery.test.ts": "01821174b200d2b394129cb5d0d5e4de8c1eaa9069e797d7c759f4826d0b7a83",
