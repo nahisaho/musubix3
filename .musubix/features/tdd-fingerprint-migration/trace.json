@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-03T01:57:31.581Z",
+  "generatedAt": "2026-10-04T07:12:35.118Z",
   "nodes": [
     {
       "id": "ADR-0009",
@@ -12,7 +12,7 @@
       "id": "CODE-TDD-FINGERPRINT-MIGRATION-001",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 180
+      "line": 191
     },
     {
       "id": "DES-TDD-FINGERPRINT-MIGRATION-001",
@@ -66,7 +66,7 @@
     ".musubix/decisions/ADR-0009.md": "b81438c27d6710e45e9493ba831a8e5d0be89430183e3f581dd68c3c80fa38c1",
     ".musubix/features/tdd-fingerprint-migration/design.md": "3ce067571633c34991aeeb30067a5f76b1569b7fe017717d3f04d94ead17b5ac",
     ".musubix/features/tdd-fingerprint-migration/requirements.md": "e8ac10f4367e8b43e427d2a27616debbd836194854a86da4850773b9cde9e1ae",
-    "packages/analysis/src/tdd.ts": "d56d5b760c570eaf2495d32afa6c15caa6bca6ed4f40d1bffeefbf1141cdb135",
+    "packages/analysis/src/tdd.ts": "7fc946c4dcf8e9ae2c40303bbd252f8484f7a2194c7c7dc1224f35353919ba8e",
     "tests/tdd-fingerprint-migration.test.ts": "f5263df29b0987e4b7480c40b79fe686b317520e98fe0a6e6f3bcc68c7eca1da"
   }
 }

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-03T01:57:31.581Z",
+  "generatedAt": "2026-10-04T07:12:35.118Z",
   "nodes": [
     {
       "id": "ADR-0028",
@@ -12,7 +12,7 @@
       "id": "CODE-TDD-ADOPTION-WARNING-001",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 548
+      "line": 684
     },
     {
       "id": "CODE-TDD-ADOPTION-WARNING-003",
@@ -122,8 +122,8 @@
     ".musubix/decisions/ADR-0028.md": "e9507066f52f57e58105e16ceac3196fad091912edbe1a5c89e2705664c4bb22",
     ".musubix/features/tdd-adoption-warning/design.md": "0ecbc7966f90db909b6fd2afb00d13a34a9c799cbb3d75192692aac9e854fd27",
     ".musubix/features/tdd-adoption-warning/requirements.md": "9c81cc8bbb20ede59840340de1321972679d00aa97105e8fe5069f22bf4efd12",
-    "packages/analysis/src/tdd.ts": "d56d5b760c570eaf2495d32afa6c15caa6bca6ed4f40d1bffeefbf1141cdb135",
-    "packages/cli/src/main.ts": "25ae53c6cac1eea57020a33397138c9913831d11b4d255867785a1f09a013244",
+    "packages/analysis/src/tdd.ts": "7fc946c4dcf8e9ae2c40303bbd252f8484f7a2194c7c7dc1224f35353919ba8e",
+    "packages/cli/src/main.ts": "7e751d0c41b52d7b6e3c0c1cb753a9e490f93ebc28c7310534522878d9b7ebfc",
     "tests/tdd-adoption-warning.test.ts": "fa0fc6267ad829bb4955dc352e986585f92daecd17865da7036ff2b9087d57e7"
   }
 }

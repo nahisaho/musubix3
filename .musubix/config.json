@@ -161,6 +161,18 @@
       "timeoutMs": 120000
     },
     {
+      "name": "tdd-cycle-archive-tests",
+      "command": "npx",
+      "args": [
+        "vitest",
+        "run",
+        "tests/tdd-cycle-archive.test.ts"
+      ],
+      "adapter": "vitest",
+      "required": true,
+      "timeoutMs": 120000
+    },
+    {
       "name": "change-requirement-batches-tests",
       "command": "npx",
       "args": [
@@ -561,7 +573,8 @@
     "mode": "compatible",
     "maxAgeSeconds": 3600,
     "maxFutureSkewSeconds": 60,
-    "maxTranscriptBytes": 120000000
+    "maxTranscriptBytes": 120000000,
+    "maxTranscriptLineBytes": 2000000
   },
   "attestation": {
     "mode": "local",

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-03T02:11:54.486Z",
+  "generatedAt": "2026-10-04T06:28:13.084Z",
   "nodes": [
     {
       "id": "ADR-0038",
@@ -12,7 +12,7 @@
       "id": "CODE-GATE-COMMAND-TIMEOUT-MARGIN-001",
       "kind": "code",
       "path": "scripts/check-gate-command-timeout-margin.mjs",
-      "line": 74
+      "line": 75
     },
     {
       "id": "DES-GATE-COMMAND-TIMEOUT-MARGIN-001",
@@ -118,7 +118,7 @@
     ".musubix/decisions/ADR-0038.md": "7b486c1bf146f98d5dede59c6e7b98065fe3f1c3825fe9b94cfe2e4098378014",
     ".musubix/features/gate-command-timeout-margin/design.md": "a8ea53c4ba2c30c2ade92bbbbbff6f75a13d5e8bae215a9e1e7966cf4e2a1b91",
     ".musubix/features/gate-command-timeout-margin/requirements.md": "44cab1571eadf8ec0d4b33993891f9caf6ef2a95379ab475550b06a1cc4a0b5f",
-    "scripts/check-gate-command-timeout-margin.mjs": "bc0d58f194064ad3b35580b2b5085da883312e09c80c861ef2731c318b83b218",
+    "scripts/check-gate-command-timeout-margin.mjs": "37e0bf02ae7a1adbddc53675f21a9e3b565af0d3268a6d573bcee8c22687bc17",
     "tests/npm-audit-remediation.test.ts": "4ec1ca039effb3d548e54527094f8f73d7b4ddb4692dccbc42f290ac7c665a51"
   }
 }

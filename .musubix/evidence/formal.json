@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-04T06:01:27.123Z",
-  "totalRequirements": 189,
+  "generatedAt": "2026-10-04T09:32:32.134Z",
+  "totalRequirements": 202,
   "modeledRequirements": 11,
-  "modeledFraction": 0.0582010582010582,
+  "modeledFraction": 0.054455445544554455,
   "result": {
     "valid": true,
     "abstraction": "Consistency of explicit branch-scoped conditional, exact unit-normalized integer numeric, bounded temporal interval, deterministic state-transition, and controlled unconditional Boolean constraints; not implementation correctness.",
@@ -210,6 +210,19 @@
       "REQ-SESSION-SCOPED-DEVELOPMENT-002",
       "REQ-TDD-ADOPTION-WARNING-001",
       "REQ-TDD-ADOPTION-WARNING-002",
+      "REQ-TDD-CYCLE-ARCHIVE-001",
+      "REQ-TDD-CYCLE-ARCHIVE-002",
+      "REQ-TDD-CYCLE-ARCHIVE-003",
+      "REQ-TDD-CYCLE-ARCHIVE-004",
+      "REQ-TDD-CYCLE-ARCHIVE-005",
+      "REQ-TDD-CYCLE-ARCHIVE-006",
+      "REQ-TDD-CYCLE-ARCHIVE-007",
+      "REQ-TDD-CYCLE-ARCHIVE-008",
+      "REQ-TDD-CYCLE-ARCHIVE-009",
+      "REQ-TDD-CYCLE-ARCHIVE-010",
+      "REQ-TDD-CYCLE-ARCHIVE-011",
+      "REQ-TDD-CYCLE-ARCHIVE-012",
+      "REQ-TDD-CYCLE-ARCHIVE-013",
       "REQ-TDD-CYCLE-VOID-001",
       "REQ-TDD-CYCLE-VOID-002",
       "REQ-TDD-CYCLE-VOID-003",
@@ -937,6 +950,71 @@
       {
         "code": "FORMAL_UNSUPPORTED",
         "severity": "warning",
+        "message": "REQ-TDD-CYCLE-ARCHIVE-001 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-TDD-CYCLE-ARCHIVE-002 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-TDD-CYCLE-ARCHIVE-003 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-TDD-CYCLE-ARCHIVE-004 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-TDD-CYCLE-ARCHIVE-005 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-TDD-CYCLE-ARCHIVE-006 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-TDD-CYCLE-ARCHIVE-007 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-TDD-CYCLE-ARCHIVE-008 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-TDD-CYCLE-ARCHIVE-009 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-TDD-CYCLE-ARCHIVE-010 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-TDD-CYCLE-ARCHIVE-011 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-TDD-CYCLE-ARCHIVE-012 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-TDD-CYCLE-ARCHIVE-013 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
         "message": "REQ-TDD-CYCLE-VOID-001 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
       },
       {
@@ -1185,6 +1263,7 @@
     ".musubix/features/scoped-feature-trace-artifacts/requirements.md": "10470f52be3500bf20527b244be836c8cdf3ab4f46c84b5dbfd65f0efeb3f2e9",
     ".musubix/features/session-scoped-development/requirements.md": "640aece168b4e6848c0d1e6371f0bfeb433fa8addfd064a77d050891d69d9a4f",
     ".musubix/features/tdd-adoption-warning/requirements.md": "9c81cc8bbb20ede59840340de1321972679d00aa97105e8fe5069f22bf4efd12",
+    ".musubix/features/tdd-cycle-archive/requirements.md": "e1cd5bba974f55dadd7ba7bb74995c46a3930d13dc845773ee4f9ef927dee7b8",
     ".musubix/features/tdd-cycle-void/requirements.md": "331aa96ff3a63f0b20c6febc9bf1635fe93921cd30516c9b5c5066cde9fe0abe",
     ".musubix/features/tdd-fingerprint-migration/requirements.md": "e8ac10f4367e8b43e427d2a27616debbd836194854a86da4850773b9cde9e1ae",
     ".musubix/features/tdd-fingerprint-scoping/requirements.md": "d3e480fc0ef92edb87f2c22d1d67a00fc177fde913c68d0187aa45375b14d4c9",

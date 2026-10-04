@@ -43,7 +43,7 @@ export type EvidenceOperationClass = 'writer' | 'coordinated-reader' | 'exempt';
 
 export const EVIDENCE_OPERATION_CLASSIFICATION = {
   writer: [
-    'gate', 'evidence refresh', 'tdd red', 'tdd green', 'tdd refactor', 'tdd migrate', 'tdd void',
+    'gate', 'evidence refresh', 'tdd red', 'tdd green', 'tdd refactor', 'tdd migrate', 'tdd void', 'tdd archive',
     'change waiver record', 'workflow-record', 'workflow-verify',
     'workflow waiver record', 'workflow waiver record-all', 'approval record',
     'evidence merge --recover', 'change quality-recover', 'trace build', 'graph index', 'graph gate', 'knowledge build',
@@ -101,6 +101,7 @@ export const EVIDENCE_WRITER_ANALYSIS_ENTRIES = [
   'performance evidence generate',
   'protected write',
   'tdd <phase>',
+  'tdd archive',
   'tdd migrate',
   'tdd void',
   'trace build',

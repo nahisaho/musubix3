@@ -752,19 +752,27 @@
       "phase": "complete",
       "status": "completed",
       "recordedAt": "2026-10-04T03:56:35.205Z"
+    },
+    {
+      "skill": "sdd-quality",
+      "version": "0.1.8",
+      "provenance": "self-reported",
+      "phase": "complete",
+      "status": "completed",
+      "recordedAt": "2026-10-04T07:32:42.205Z"
     }
   ],
   "verification": {
     "mode": "compatible",
-    "sourceSha256": "49e0a919b9399d6c782ffa4519b3e5c55ecdf17bda0eaa9b6d1c17a9b34e2bab",
-    "eventsSha256": "e226a894bde3e450f58fb21753ea8611e561a127f2dc9117782c262aca1ceef1",
-    "verifiedAt": "2026-10-04T05:20:02.675Z",
+    "sourceSha256": "3509b6fad4fe013739fae25730eaee7190e1aabfcd13cc313d7bb0a35a79234b",
+    "eventsSha256": "2222e11896c2f020f14380332a954ebb0cd292421ef4b3997d863b58131d9ec2",
+    "verifiedAt": "2026-10-04T08:45:22.247Z",
     "invocations": [
       {
-        "skill": "japanese-prose",
-        "toolCallId": "call_MLSNKicpdqlh1hWYN7iA3XQw",
-        "invokedAt": "2026-10-02T15:07:41.201Z",
-        "completedAt": "2026-10-02T15:07:41.206Z",
+        "skill": "sdd-change",
+        "toolCallId": "toolu_01SGatx8aWX7xRDGVTPXAvHP",
+        "invokedAt": "2026-10-04T08:42:49.549Z",
+        "completedAt": "2026-10-04T08:42:49.558Z",
         "status": "completed"
       }
     ]
