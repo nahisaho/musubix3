@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-24T07:02:54.214Z",
-  "totalRequirements": 183,
+  "generatedAt": "2026-10-04T02:27:39.386Z",
+  "totalRequirements": 188,
   "modeledRequirements": 11,
-  "modeledFraction": 0.060109289617486336,
+  "modeledFraction": 0.05851063829787234,
   "result": {
     "valid": true,
     "abstraction": "Consistency of explicit branch-scoped conditional, exact unit-normalized integer numeric, bounded temporal interval, deterministic state-transition, and controlled unconditional Boolean constraints; not implementation correctness.",
@@ -200,6 +200,11 @@
       "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-004",
       "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-005",
       "REQ-REQUIREMENTS-DESIGN-SCAFFOLD-006",
+      "REQ-SCOPED-FEATURE-TRACE-ARTIFACTS-001",
+      "REQ-SCOPED-FEATURE-TRACE-ARTIFACTS-002",
+      "REQ-SCOPED-FEATURE-TRACE-ARTIFACTS-003",
+      "REQ-SCOPED-FEATURE-TRACE-ARTIFACTS-004",
+      "REQ-SCOPED-FEATURE-TRACE-ARTIFACTS-005",
       "REQ-SESSION-SCOPED-DEVELOPMENT-001",
       "REQ-SESSION-SCOPED-DEVELOPMENT-002",
       "REQ-TDD-ADOPTION-WARNING-001",
@@ -881,6 +886,31 @@
       {
         "code": "FORMAL_UNSUPPORTED",
         "severity": "warning",
+        "message": "REQ-SCOPED-FEATURE-TRACE-ARTIFACTS-001 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-SCOPED-FEATURE-TRACE-ARTIFACTS-002 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-SCOPED-FEATURE-TRACE-ARTIFACTS-003 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-SCOPED-FEATURE-TRACE-ARTIFACTS-004 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-SCOPED-FEATURE-TRACE-ARTIFACTS-005 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
         "message": "REQ-SESSION-SCOPED-DEVELOPMENT-001 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
       },
       {
@@ -1146,6 +1176,7 @@
     ".musubix/features/release-asset-publishing/requirements.md": "8bf4436d5b694e32b683edbb620573589b28b74c35a076182c971bdb79cd4472",
     ".musubix/features/release-version-synchronization/requirements.md": "afb3b57eb96d6e93e437e4a7c83f2f91a70af9c92967ce543ba399c244f6153f",
     ".musubix/features/requirements-design-scaffold/requirements.md": "0a968bc27756e715f68f22a8f6d65fc8fefce09ac79d1c8d0137282b821ebc45",
+    ".musubix/features/scoped-feature-trace-artifacts/requirements.md": "10470f52be3500bf20527b244be836c8cdf3ab4f46c84b5dbfd65f0efeb3f2e9",
     ".musubix/features/session-scoped-development/requirements.md": "640aece168b4e6848c0d1e6371f0bfeb433fa8addfd064a77d050891d69d9a4f",
     ".musubix/features/tdd-adoption-warning/requirements.md": "9c81cc8bbb20ede59840340de1321972679d00aa97105e8fe5069f22bf4efd12",
     ".musubix/features/tdd-cycle-void/requirements.md": "331aa96ff3a63f0b20c6febc9bf1635fe93921cd30516c9b5c5066cde9fe0abe",

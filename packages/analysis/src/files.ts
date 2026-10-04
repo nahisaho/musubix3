@@ -1,3 +1,7 @@
+// CHANGE-0038: evidenceInputPaths excludes feature trace.json from gate inputs (DES-SCOPED-FEATURE-TRACE-ARTIFACTS-002).
+// CHANGE-0038 (corrective Red-Implementation-Green batch): re-proved TDD evidence inside the change's valid order window.
+// CHANGE-0038 (2nd corrective batch): confirmed by expanded acceptance-clause test coverage; no behavior change.
+// CHANGE-0038 (4th corrective batch): confirmed by persisted-file shared-node/Depends-On coverage (REQ-001); no behavior change.
 import { createHash } from 'node:crypto';
 import { lstat, mkdir, readdir, readFile, rename, unlink, writeFile } from 'node:fs/promises';
 import { dirname, isAbsolute, relative, resolve, sep } from 'node:path';
@@ -162,6 +166,7 @@ export function isArtifact(path: string): boolean {
 export function evidenceInputPaths(paths: string[]): string[] {
   return paths.filter((path) =>
     !/^\.musubix\/features\/[^/]+\/trace\.json$/.test(path)
+    && path !== '.musubix/trace.json'
     && !path.endsWith('.tgz')
     && !/^\.github\/skills\//.test(path)
     && !/(?:^|\/)(?:logs?|session-logs)\//.test(path));

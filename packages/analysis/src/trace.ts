@@ -1,3 +1,12 @@
+// CHANGE-0038: scoped per-feature trace projection + canonical trace.json (see DES-SCOPED-FEATURE-TRACE-ARTIFACTS-001..004).
+// CHANGE-0038 (corrective Red-Implementation-Green batch): re-proved TDD evidence inside the change's valid order window.
+// CHANGE-0038 (2nd corrective batch): confirmed by expanded acceptance-clause test coverage; no behavior change.
+// CHANGE-0038 (4th corrective batch): confirmed by persisted-file shared-node/Depends-On
+// coverage (REQ-001) and cache-vs-fallback checkTrace equality coverage (REQ-004); no behavior change.
+// CHANGE-0038 (5th corrective batch): re-bounded REQ-004's TDD evidence window
+// after an earlier batch's order sequencing mistake; no behavior change.
+// CHANGE-0038 (6th corrective batch): re-bounded REQ-004's window a second time
+// after pairing it with REQ-005's own window fix; no behavior change.
 import ts from 'typescript';
 import { dirname, basename } from 'node:path';
 import { error, ids, validateDesign, validateRequirements, type Diagnostic } from '../../domain/src/index.js';
@@ -174,6 +183,83 @@ export function commentBlocks(text: string, path: string): { text: string; line:
   return isSource(path) ? typedCommentBlocks(text, path) : genericCommentBlocks(text, path);
 }
 
+/** @id CODE-SCOPED-FEATURE-TRACE-ARTIFACTS-003
+ * @implements REQ-SCOPED-FEATURE-TRACE-ARTIFACTS-003
+ * @design DES-SCOPED-FEATURE-TRACE-ARTIFACTS-003
+ */
+export const canonicalTracePath = '.musubix/trace.json';
+
+function diagnosticSortKey(diagnostic: Diagnostic): string {
+  return `${diagnostic.path ?? ''}\u0000${String(diagnostic.line ?? -1).padStart(20, '0')}\u0000${diagnostic.code}\u0000${diagnostic.severity}\u0000${diagnostic.message}\u0000${JSON.stringify(diagnostic)}`;
+}
+
+/** @id CODE-SCOPED-FEATURE-TRACE-ARTIFACTS-001
+ * @implements REQ-SCOPED-FEATURE-TRACE-ARTIFACTS-001 REQ-SCOPED-FEATURE-TRACE-ARTIFACTS-003
+ * @design DES-SCOPED-FEATURE-TRACE-ARTIFACTS-001
+ */
+export function canonicalSort(graph: TraceGraph): TraceGraph {
+  const nodes = [...graph.nodes].sort((a, b) => a.id < b.id ? -1 : a.id > b.id ? 1 : 0);
+  const edges = [...graph.edges].sort((a, b) => {
+    const keyA = `${a.from}\u0000${a.to}\u0000${a.relation}`;
+    const keyB = `${b.from}\u0000${b.to}\u0000${b.relation}`;
+    return keyA < keyB ? -1 : keyA > keyB ? 1 : 0;
+  });
+  const diagnostics = [...graph.diagnostics].sort((a, b) => {
+    const keyA = diagnosticSortKey(a);
+    const keyB = diagnosticSortKey(b);
+    return keyA < keyB ? -1 : keyA > keyB ? 1 : 0;
+  });
+  const fingerprints = Object.fromEntries(Object.keys(graph.fingerprints).sort().map((path) => [path, graph.fingerprints[path]!]));
+  return { schemaVersion: graph.schemaVersion, generatedAt: graph.generatedAt, nodes, edges, diagnostics, fingerprints };
+}
+
+/** @id CODE-SCOPED-FEATURE-TRACE-ARTIFACTS-002
+ * @implements REQ-SCOPED-FEATURE-TRACE-ARTIFACTS-001
+ * @design DES-SCOPED-FEATURE-TRACE-ARTIFACTS-001
+ */
+export function featureTraceProjection(graph: TraceGraph, featureDir: string): TraceGraph {
+  const prefix = `${featureDir}/`;
+  const owned = graph.nodes.filter((n) => n.path.startsWith(prefix)).map((n) => n.id);
+  const nodeIds = new Set(owned);
+  const queue = [...owned];
+  while (queue.length) {
+    const current = queue.shift()!;
+    for (const edge of graph.edges) {
+      const next = edge.from === current ? edge.to : edge.to === current ? edge.from : undefined;
+      if (next !== undefined && !nodeIds.has(next)) {
+        nodeIds.add(next);
+        queue.push(next);
+      }
+    }
+  }
+  const nodes = graph.nodes.filter((n) => nodeIds.has(n.id));
+  const edges = graph.edges.filter((e) => nodeIds.has(e.from) && nodeIds.has(e.to));
+  const paths = new Set(nodes.map((n) => n.path));
+  const diagnostics = graph.diagnostics.filter((d) => d.path !== undefined && paths.has(d.path));
+  const fingerprints = Object.fromEntries(Object.entries(graph.fingerprints).filter(([path]) => paths.has(path)));
+  return canonicalSort({ schemaVersion: graph.schemaVersion, generatedAt: graph.generatedAt, nodes, edges, diagnostics, fingerprints });
+}
+
+function sameIgnoringGeneratedAt(a: TraceGraph, b: TraceGraph): boolean {
+  return JSON.stringify({ ...a, generatedAt: null }) === JSON.stringify({ ...b, generatedAt: null });
+}
+
+/** @id CODE-SCOPED-FEATURE-TRACE-ARTIFACTS-004
+ * @implements REQ-SCOPED-FEATURE-TRACE-ARTIFACTS-002 REQ-SCOPED-FEATURE-TRACE-ARTIFACTS-003
+ * @design DES-SCOPED-FEATURE-TRACE-ARTIFACTS-002
+ */
+export async function writeTraceIfChanged(root: string, path: string, graph: TraceGraph): Promise<boolean> {
+  let existing: TraceGraph | undefined;
+  try {
+    existing = JSON.parse(await readText(root, path)) as TraceGraph;
+  } catch {
+    existing = undefined;
+  }
+  if (existing && sameIgnoringGeneratedAt(existing, graph)) return false;
+  await writeJson(root, path, graph);
+  return true;
+}
+
 export async function buildTrace(root: string, persist = true): Promise<TraceGraph> {
   if (persist) return withEvidenceWriterLock(root, 'trace build', () => buildTraceUnlocked(root, true));
   return buildTraceUnlocked(root, false);
@@ -243,18 +329,29 @@ async function buildTraceUnlocked(root: string, persist: boolean): Promise<Trace
   }
   if (persist) {
     await writeJson(root, '.musubix/cache/trace.json', graph);
+    await writeTraceIfChanged(root, canonicalTracePath, canonicalSort(graph));
     const features = new Set(paths.filter((p) => /^\.musubix\/features\/[^/]+\/requirements\.md$/.test(p)).map(dirname));
-    for (const feature of features) await writeJson(root, `${feature}/trace.json`, graph);
+    for (const feature of features) await writeTraceIfChanged(root, `${feature}/trace.json`, featureTraceProjection(graph, feature));
   }
   return graph;
 }
 
+function validTraceShape(value: unknown): value is TraceGraph {
+  const graph = value as TraceGraph;
+  return !!graph && graph.schemaVersion === 1 && Array.isArray(graph.nodes) && Array.isArray(graph.edges)
+    && !!graph.fingerprints && Array.isArray(graph.diagnostics);
+}
+
+/** @id CODE-SCOPED-FEATURE-TRACE-ARTIFACTS-006
+ * @implements REQ-SCOPED-FEATURE-TRACE-ARTIFACTS-004
+ * @design DES-SCOPED-FEATURE-TRACE-ARTIFACTS-004
+ */
 export async function loadTrace(root: string): Promise<TraceGraph> {
   const path = await exists(within(root, '.musubix/cache/trace.json')) ? '.musubix/cache/trace.json' :
-    (await files(root)).find((p) => /^\.musubix\/features\/[^/]+\/trace\.json$/.test(p));
+    await exists(within(root, canonicalTracePath)) ? canonicalTracePath : undefined;
   if (!path) throw new Error('Trace graph missing; run musubix3 trace build.');
   const value = JSON.parse(await readText(root, path)) as TraceGraph;
-  if (value.schemaVersion !== 1 || !Array.isArray(value.nodes) || !Array.isArray(value.edges) || !value.fingerprints || !Array.isArray(value.diagnostics)) throw new Error('Invalid trace graph; rebuild it.');
+  if (!validTraceShape(value)) throw new Error('Invalid trace graph; rebuild it.');
   return value;
 }
 
