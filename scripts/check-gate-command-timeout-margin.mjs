@@ -54,6 +54,7 @@ const EXPECTED_REQUIRED_COMMANDS = [
   'github-actions-node24-runtime-tests',
   'npm-audit-remediation-tests',
   'release-asset-publishing-tests',
+  'scoped-feature-trace-artifacts-tests',
 ];
 
 function diagnostic(message, path) {

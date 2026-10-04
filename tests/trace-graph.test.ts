@@ -2,7 +2,8 @@ import { unlink } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import {
-  buildTrace, checkTrace, cycles, defaultConfig, graphGate, graphImpact, indexGraph, loadGraph, loadTrace,
+  buildTrace, canonicalSort, canonicalTracePath, checkTrace, cycles, defaultConfig, featureTraceProjection,
+  graphGate, graphImpact, indexGraph, loadGraph, loadTrace,
   evidenceSnapshot, files, matchGlob, readText, traceImpact, writeText,
 } from '../packages/analysis/src/index.js';
 import { code, fixture, project } from './helpers.js';
@@ -19,9 +20,11 @@ describe('trace graph', () => {
       coverage: { design: 1, implementation: 1, tests: 1 },
     });
     const persisted = JSON.parse(await readText(root, '.musubix/features/example/trace.json'));
-    expect(persisted).toEqual(trace);
+    expect(persisted).toEqual(featureTraceProjection(trace, '.musubix/features/example'));
+    const canonical = JSON.parse(await readText(root, canonicalTracePath));
+    expect(canonical).toEqual(canonicalSort(trace));
     await unlink(resolve(root, '.musubix/cache/trace.json'));
-    expect(await loadTrace(root)).toEqual(trace);
+    expect(await loadTrace(root)).toEqual(canonicalSort(trace));
   });
 
   it('traverses bidirectionally with actual explanation paths', async () => {

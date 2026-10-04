@@ -509,6 +509,18 @@
       "adapter": "vitest",
       "required": true,
       "timeoutMs": 120000
+    },
+    {
+      "name": "scoped-feature-trace-artifacts-tests",
+      "command": "npx",
+      "args": [
+        "vitest",
+        "run",
+        "tests/scoped-feature-trace-artifacts.test.ts"
+      ],
+      "adapter": "vitest",
+      "required": true,
+      "timeoutMs": 120000
     }
   ],
   "requiredChecks": [

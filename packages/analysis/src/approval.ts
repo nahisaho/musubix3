@@ -102,6 +102,24 @@ export function approvalPath(stage: ApprovalStage, domain?: string): string {
 const featureRequirementsPattern = /^\.musubix\/features\/([^/]+)\/requirements\.md$/;
 const featureDesignPattern = /^\.musubix\/features\/([^/]+)\/design\.md$/;
 
+// CHANGE-0038: regression-guard coverage for REQ-SCOPED-FEATURE-TRACE-ARTIFACTS-005
+// (no behavior change: requirements/design stage filters below never match any
+// trace.json path, which is exactly the invariant that requirement asserts).
+// CHANGE-0038 (corrective Red-Implementation-Green batch): re-proved TDD evidence
+// inside the change's valid order window; no behavior change.
+// CHANGE-0038 (2nd corrective batch): confirmed by expanded design-stage manifest
+// acceptance-clause test coverage; no behavior change.
+// CHANGE-0038 (4th corrective batch): confirmed by a genuine multi-domain
+// (`approval.domains`) per-domain manifest scoping assertion, proved via
+// temporary regression injection into `owns()`; no behavior change.
+// CHANGE-0038 (5th corrective batch): re-bounded the REQ-002 TDD evidence
+// window after an earlier batch's order sequencing mistake; no behavior change.
+// CHANGE-0038 (6th corrective batch): re-bounded REQ-005's TDD evidence window
+// after pairing it with REQ-004's own window fix; no behavior change.
+/** @id CODE-SCOPED-FEATURE-TRACE-ARTIFACTS-007
+ * @implements REQ-SCOPED-FEATURE-TRACE-ARTIFACTS-005
+ * @design DES-SCOPED-FEATURE-TRACE-ARTIFACTS-005
+ */
 function stagePaths(paths: string[], stage: ApprovalStage): string[] {
   const requirements = (path: string): boolean =>
     path === '.musubix/constitution.md' || featureRequirementsPattern.test(path);

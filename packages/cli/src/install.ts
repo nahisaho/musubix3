@@ -1,15 +1,30 @@
+// CHANGE-0038: scaffold install no longer copies stale canonical graph into new feature trace.json (DES-SCOPED-FEATURE-TRACE-ARTIFACTS-001).
+// CHANGE-0038 (corrective Red-Implementation-Green batch): re-proved TDD evidence inside the change's valid order window.
+// CHANGE-0038 (2nd corrective batch): confirmed by expanded acceptance-clause test coverage; no behavior change.
+// CHANGE-0038 (3rd corrective batch): install now restores a missing canonical
+// graph and uses the change-detecting writer for the feature trace too.
+// CHANGE-0038 (4th corrective batch): genuinely reports 'replace' (not stale
+// 'preserve') when canonical-missing recovery actually rewrites the feature
+// trace; proved via temporary regression injection.
+// CHANGE-0038 (5th corrective batch): the same 'replace'-reporting fix above
+// is also attributed to REQ-SCOPED-FEATURE-TRACE-ARTIFACTS-002, since
+// CODE-SCOPED-FEATURE-TRACE-ARTIFACTS-008 implements both requirements.
 import { readdir, mkdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import {
   assertCoordinatedEvidenceRead,
   buildTrace,
+  canonicalSort,
+  canonicalTracePath,
   defaultConfig,
   defaultPolicyBaseline,
   exists,
+  featureTraceProjection,
   readText,
   safePath,
   writeJson,
   writeText,
+  writeTraceIfChanged,
   runProcess,
   withEvidenceWriterLock,
   type Runner,
@@ -77,10 +92,16 @@ async function installUnlocked(root: string, packageRoot: string, options: { dry
     writes.set('.gitignore', `${oldIgnore}${oldIgnore && !oldIgnore.endsWith('\n') ? '\n' : ''}\n# musubix3 generated coordination files\n${missingIgnores.join('\n')}\n`);
     actions.push({ path: '.gitignore', action: oldIgnore ? 'merge' : 'create' });
   } else actions.push({ path: '.gitignore', action: 'unchanged' });
+  /** @id CODE-SCOPED-FEATURE-TRACE-ARTIFACTS-008
+   * @implements REQ-SCOPED-FEATURE-TRACE-ARTIFACTS-002 REQ-SCOPED-FEATURE-TRACE-ARTIFACTS-003
+   * @design DES-SCOPED-FEATURE-TRACE-ARTIFACTS-002 DES-SCOPED-FEATURE-TRACE-ARTIFACTS-003
+   */
   const tracePath = `.musubix/features/${feature}/trace.json`;
   const traceExists = await exists(await safePath(root, tracePath));
-  const generateTrace = !traceExists || options.force;
-  actions.push({ path: tracePath, action: !traceExists ? 'create' : options.force ? 'replace' : 'preserve' });
+  const canonicalExists = await exists(await safePath(root, canonicalTracePath));
+  const generateTrace = !traceExists || !canonicalExists || options.force;
+  const traceAction: InstallAction = { path: tracePath, action: !traceExists ? 'create' : options.force ? 'replace' : 'preserve' };
+  actions.push(traceAction);
   const cachePath = await safePath(root, '.musubix/cache');
   if (!options.dryRun) {
     await mkdir(root, { recursive: true });
@@ -88,8 +109,13 @@ async function installUnlocked(root: string, packageRoot: string, options: { dry
     await mkdir(cachePath, { recursive: true });
     if (generateTrace) {
       const trace = await buildTrace(root, false);
-      await writeJson(root, tracePath, trace);
+      const traceWritten = await writeTraceIfChanged(root, tracePath, featureTraceProjection(trace, `.musubix/features/${feature}`));
+      // A feature trace that already existed (so the action above defaulted to
+      // 'preserve') may still be rewritten here when it's regenerated to
+      // restore a missing canonical graph; reflect that actual outcome.
+      if (traceExists && !options.force && traceWritten) traceAction.action = 'replace';
       await writeJson(root, '.musubix/cache/trace.json', trace);
+      await writeTraceIfChanged(root, canonicalTracePath, canonicalSort(trace));
     }
   }
   return { dryRun: options.dryRun ?? false, actions };
