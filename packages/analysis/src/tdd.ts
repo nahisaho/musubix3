@@ -34,7 +34,7 @@ export interface TddPhaseEvidence {
   warnings?: Diagnostic[];
 }
 
-export type TddChainPhase = TddPhase | 'migrate' | 'void';
+export type TddChainPhase = TddPhase | 'migrate' | 'void' | 'archive';
 
 export interface TddMigrationEvidence {
   phase: 'migrate';
@@ -53,6 +53,16 @@ export interface TddVoidEvidence {
   recordedAt: string;
 }
 
+export interface TddArchiveEvidence {
+  phase: 'archive';
+  approver: string;
+  reason: string;
+  testId: string;
+  cycleId: string;
+  order?: number;
+  recordedAt: string;
+}
+
 export interface TddCycle {
   cycleId?: string;
   requirementId: string;
@@ -64,6 +74,7 @@ export interface TddCycle {
   refactor?: TddPhaseEvidence;
   migrate?: TddMigrationEvidence;
   void?: TddVoidEvidence;
+  archive?: TddArchiveEvidence;
 }
 
 export interface TddChainRecord {
@@ -204,6 +215,10 @@ export interface TddMigrationResult {
   reason?: string;
 }
 
+/** @id CODE-TDD-CYCLE-ARCHIVE-006
+ * @implements REQ-TDD-CYCLE-ARCHIVE-012
+ * @design DES-TDD-CYCLE-ARCHIVE-005
+ */
 export async function migrateTddFingerprint(root: string, testId: string, approver: string): Promise<TddMigrationResult> {
   return withEvidenceWriterLock(root, 'tdd migrate', () => migrateTddFingerprintUnlocked(root, testId, approver));
 }
@@ -215,13 +230,21 @@ async function migrateTddFingerprintUnlocked(root: string, testId: string, appro
   let cycle = evidence.cycles.filter((entry) => entry.testId === testId).at(-1);
   if (!cycle) throw new Error(`No TDD cycle found for ${testId}.`);
   const order = await inspectEvidenceOrder(root);
+  /** @id CODE-TDD-CYCLE-ARCHIVE-005
+   * @implements REQ-TDD-CYCLE-ARCHIVE-012
+   * @design DES-TDD-CYCLE-ARCHIVE-005
+   */
+  if (archiveLinkage(evidence, order, cycle).valid) {
+    throw new Error(`${testId}'s latest cycle is archived and cannot be migrated; record a fresh Red-Green cycle instead.`);
+  }
   /** @id CODE-TDD-CYCLE-VOID-006
-   * @implements REQ-TDD-CYCLE-VOID-012
-   * @design DES-TDD-CYCLE-VOID-006
+   * @implements REQ-TDD-CYCLE-VOID-012 REQ-TDD-CYCLE-ARCHIVE-012
+   * @design DES-TDD-CYCLE-VOID-006 DES-TDD-CYCLE-ARCHIVE-005
    */
   if (voidLinkage(evidence, order, cycle).valid) {
     const validlyVoided = new Set(evidence.cycles.filter((entry) => voidLinkage(evidence, order, entry).valid));
-    const effective = effectiveLatestCycle(evidence, order, validlyVoided, testId, cycle);
+    const validlyArchived = new Set(evidence.cycles.filter((entry) => archiveLinkage(evidence, order, entry).valid));
+    const effective = effectiveLatestCycle(evidence, order, validlyVoided, validlyArchived, testId, cycle);
     if (effective) cycle = effective;
   }
   if (!cycle.cycleId) throw new Error(`${testId} lacks a cycle ID; regenerate its evidence before migrating.`);
@@ -276,11 +299,17 @@ function phaseLinkageValid(
   phaseEvidence: unknown,
 ): boolean {
   if (!order.valid || !cycle.cycleId || !chain) return false;
-  const phaseOrder = phase === 'void' ? cycle.void?.order : phase === 'migrate' ? cycle.migrate?.order : cycle[phase]?.order;
+  const phaseOrder = phase === 'void'
+    ? cycle.void?.order
+    : phase === 'archive'
+      ? cycle.archive?.order
+      : phase === 'migrate'
+        ? cycle.migrate?.order
+        : cycle[phase]?.order;
   if (phaseOrder === undefined) return false;
   const orderRecord = evidenceOrderRecord(order.records, 'tdd', cycle.cycleId, phase);
   if (!orderRecord || orderRecord.sequence !== phaseOrder) return false;
-  if (phase === 'void' && orderRecord.testId !== cycle.testId) return false;
+  if ((phase === 'void' || phase === 'archive') && orderRecord.testId !== cycle.testId) return false;
   const matches = chain.filter((record) => record.phase === phase && record.cycleId === cycle.cycleId && record.testId === cycle.testId);
   if (matches.length !== 1) return false;
   const record = matches[0]!;
@@ -326,6 +355,63 @@ function voidLinkage(
   return { valid: false, reason: `${cycle.testId}'s void evidence is malformed: ${reason}.` };
 }
 
+/** @id CODE-TDD-CYCLE-ARCHIVE-002
+ * @implements REQ-TDD-CYCLE-ARCHIVE-006 REQ-TDD-CYCLE-ARCHIVE-007 REQ-TDD-CYCLE-ARCHIVE-013
+ * @design DES-TDD-CYCLE-ARCHIVE-003
+ */
+function archiveLinkage(
+  evidence: TddEvidence,
+  order: ReturnType<typeof validateEvidenceOrderLog>,
+  cycle: TddCycle,
+): { valid: boolean; reason?: string } {
+  if (!cycle.archive) return { valid: false };
+  const matchingOrderRecords = !cycle.cycleId
+    ? []
+    : [...order.records.values()].filter((record) =>
+      record.kind === 'tdd' && record.entityId === cycle.cycleId && record.phase === 'archive');
+  // Chain records sharing this cycle's (cycleId, phase) identity regardless of
+  // testId: a conflicting record for a different testId must not be masked by
+  // phaseLinkageValid's testId-scoped match (REQ-TDD-CYCLE-ARCHIVE-007).
+  const identityChainRecords = (evidence.chain ?? []).filter((record) =>
+    record.phase === 'archive' && record.cycleId === cycle.cycleId);
+  if (cycle.archive.testId === cycle.testId
+    && cycle.archive.cycleId === cycle.cycleId
+    && matchingOrderRecords.length === 1
+    && identityChainRecords.length === 1
+    && phaseLinkageValid(order, evidence.chain, cycle, 'archive', cycle.archive)) {
+    return { valid: true };
+  }
+  let reason = 'an invalid monotonic evidence order log';
+  if (order.valid) {
+    if (cycle.archive.testId !== cycle.testId || cycle.archive.cycleId !== cycle.cycleId) {
+      reason = 'a payload identity mismatch';
+    } else if (!cycle.cycleId || cycle.archive.order === undefined) {
+      reason = 'a missing order record reference';
+    } else if (matchingOrderRecords.length === 0) {
+      reason = 'a missing or mismatched order record';
+    } else if (matchingOrderRecords.length > 1) {
+      reason = 'a duplicate order record';
+    } else if (matchingOrderRecords[0]!.sequence !== cycle.archive.order) {
+      reason = 'a missing or mismatched order record';
+    } else if (matchingOrderRecords[0]!.testId !== cycle.testId) {
+      reason = 'an order record testId mismatch';
+    } else if (!evidence.chain) {
+      reason = 'a missing hash chain';
+    } else if (identityChainRecords.length > 1) {
+      reason = 'a conflicting chain record';
+    } else {
+      const matches = evidence.chain.filter((record) =>
+        record.phase === 'archive' && record.cycleId === cycle.cycleId && record.testId === cycle.testId);
+      reason = matches.length === 0
+        ? 'a missing chain record'
+        : matches.length > 1
+          ? 'a duplicate chain record'
+          : 'a broken predecessor or payload hash link';
+    }
+  }
+  return { valid: false, reason: `${cycle.testId}'s archive evidence is malformed: ${reason}.` };
+}
+
 export function validlyVoidedTddCycles(
   evidence: TddEvidence | null,
   order: ReturnType<typeof validateEvidenceOrderLog>,
@@ -346,6 +432,7 @@ function effectiveLatestCycle(
   evidence: TddEvidence,
   order: ReturnType<typeof validateEvidenceOrderLog>,
   validlyVoidedCycles: Set<TddCycle>,
+  validlyArchivedCycles: Set<TddCycle>,
   testId: string,
   voidedCycle: TddCycle,
 ): TddCycle | undefined {
@@ -357,6 +444,7 @@ function effectiveLatestCycle(
     if (candidate.testId !== testId || candidate === voidedCycle) continue;
     if (!candidate.red.valid || !candidate.green?.valid) continue;
     if (validlyVoidedCycles.has(candidate)) continue;
+    if (validlyArchivedCycles.has(candidate)) continue;
     if (!candidate.cycleId) continue;
     if (!phaseLinkageValid(order, evidence.chain, candidate, 'green', candidate.green)) continue;
     const record = evidenceOrderRecord(order.records, 'tdd', candidate.cycleId, 'green');
@@ -373,12 +461,27 @@ export interface TddVoidResult {
   reason?: string;
 }
 
+export interface TddArchiveResult {
+  archived: boolean;
+  testId: string;
+  cycleId?: string;
+  reason?: string;
+}
+
 /** @id CODE-TDD-CYCLE-VOID-001
- * @implements REQ-TDD-CYCLE-VOID-001, REQ-TDD-CYCLE-VOID-002, REQ-TDD-CYCLE-VOID-003, REQ-TDD-CYCLE-VOID-004, REQ-TDD-CYCLE-VOID-011
- * @design DES-TDD-CYCLE-VOID-001, DES-TDD-CYCLE-VOID-005
+ * @implements REQ-TDD-CYCLE-VOID-001, REQ-TDD-CYCLE-VOID-002, REQ-TDD-CYCLE-VOID-003, REQ-TDD-CYCLE-VOID-004, REQ-TDD-CYCLE-VOID-011, REQ-TDD-CYCLE-ARCHIVE-004
+ * @design DES-TDD-CYCLE-VOID-001, DES-TDD-CYCLE-VOID-005, DES-TDD-CYCLE-ARCHIVE-002
  */
 export async function voidTddCycle(root: string, testId: string, approver: string, reason: string): Promise<TddVoidResult> {
   return withEvidenceWriterLock(root, 'tdd void', () => voidTddCycleUnlocked(root, testId, approver, reason));
+}
+
+/** @id CODE-TDD-CYCLE-ARCHIVE-001
+ * @implements REQ-TDD-CYCLE-ARCHIVE-001 REQ-TDD-CYCLE-ARCHIVE-002 REQ-TDD-CYCLE-ARCHIVE-003 REQ-TDD-CYCLE-ARCHIVE-004 REQ-TDD-CYCLE-ARCHIVE-005
+ * @design DES-TDD-CYCLE-ARCHIVE-001 DES-TDD-CYCLE-ARCHIVE-002
+ */
+export async function archiveTddCycle(root: string, testId: string, approver: string, reason: string): Promise<TddArchiveResult> {
+  return withEvidenceWriterLock(root, 'tdd archive', () => archiveTddCycleUnlocked(root, testId, approver, reason));
 }
 
 async function voidTddCycleUnlocked(root: string, testId: string, approver: string, reason: string): Promise<TddVoidResult> {
@@ -388,8 +491,9 @@ async function voidTddCycleUnlocked(root: string, testId: string, approver: stri
   if (!evidence) throw new Error('No TDD evidence found.');
   const cycle = evidence.cycles.filter((entry) => entry.testId === testId).at(-1);
   if (!cycle) throw new Error(`No TDD cycle found for ${testId}.`);
-  if (cycle.green?.valid) throw new Error(`${testId}'s latest cycle has a valid Green phase; only a dangling cycle can be voided.`);
   if (cycle.void) throw new Error(`${testId}'s latest cycle is already voided.`);
+  if (cycle.archive) throw new Error(`${testId}'s latest cycle already carries a void or archive marker.`);
+  if (cycle.green?.valid) throw new Error(`${testId}'s latest cycle has a valid Green phase; only a dangling cycle can be voided.`);
   if (!cycle.cycleId) throw new Error(`${testId} lacks a cycle ID; regenerate its evidence before voiding.`);
   if (!evidence.chain && evidence.cycles.some((entry) => entry !== cycle)) {
     throw new Error('Existing TDD evidence lacks an append-only hash chain; regenerate it before recording new phases.');
@@ -397,7 +501,7 @@ async function voidTddCycleUnlocked(root: string, testId: string, approver: stri
   const order = await inspectEvidenceOrder(root);
   const earlierCycles = evidence.cycles.slice(0, evidence.cycles.indexOf(cycle)).filter((entry) => entry.testId === testId);
   const eligibleFallback = earlierCycles.some((entry) =>
-    entry.red.valid && entry.green?.valid && !voidLinkage(evidence, order, entry).valid);
+    entry.red.valid && entry.green?.valid && !entry.void && !entry.archive);
   if (!eligibleFallback) {
     return {
       voided: false,
@@ -411,6 +515,38 @@ async function voidTddCycleUnlocked(root: string, testId: string, approver: stri
   appendChainRecord(evidence, cycle, 'void', record);
   await writeJson(root, '.musubix/evidence/tdd.json', evidence);
   return { voided: true, testId, cycleId: cycle.cycleId };
+}
+
+async function archiveTddCycleUnlocked(root: string, testId: string, approver: string, reason: string): Promise<TddArchiveResult> {
+  if (!approver?.trim()) throw new Error('An approver is required to archive a TDD cycle.');
+  if (!reason?.trim()) throw new Error('A reason is required to archive a TDD cycle.');
+  const evidence = await loadTddEvidence(root);
+  if (!evidence) throw new Error('No TDD evidence found.');
+  const cycle = evidence.cycles.filter((entry) => entry.testId === testId).at(-1);
+  if (!cycle) throw new Error(`No TDD cycle found for ${testId}.`);
+  if (cycle.void || cycle.archive) throw new Error(`${testId}'s latest cycle already carries a void or archive marker.`);
+  if (!cycle.cycleId) throw new Error(`${testId} lacks a cycle ID; regenerate its evidence before archiving.`);
+  if (!evidence.chain && evidence.cycles.some((entry) => entry !== cycle)) {
+    throw new Error('Existing TDD evidence lacks an append-only hash chain; regenerate it before recording new phases.');
+  }
+  const record: TddArchiveEvidence = {
+    phase: 'archive',
+    approver,
+    reason,
+    testId: cycle.testId,
+    cycleId: cycle.cycleId,
+    recordedAt: new Date().toISOString(),
+  };
+  record.order = (await appendEvidenceOrder(root, {
+    kind: 'tdd',
+    entityId: cycle.cycleId,
+    phase: 'archive',
+    testId: cycle.testId,
+  })).sequence;
+  cycle.archive = record;
+  appendChainRecord(evidence, cycle, 'archive', record);
+  await writeJson(root, '.musubix/evidence/tdd.json', evidence);
+  return { archived: true, testId, cycleId: cycle.cycleId };
 }
 
 export async function runTddPhase(
@@ -621,12 +757,17 @@ async function runTddPhaseUnlocked(
   return result;
 }
 
+/** @id CODE-TDD-CYCLE-ARCHIVE-004
+ * @implements REQ-TDD-CYCLE-ARCHIVE-006 REQ-TDD-CYCLE-ARCHIVE-007 REQ-TDD-CYCLE-ARCHIVE-008 REQ-TDD-CYCLE-ARCHIVE-009 REQ-TDD-CYCLE-ARCHIVE-010 REQ-TDD-CYCLE-ARCHIVE-013
+ * @design DES-TDD-CYCLE-ARCHIVE-003 DES-TDD-CYCLE-ARCHIVE-004 DES-TDD-CYCLE-ARCHIVE-005
+ */
 export async function validateTddEvidence(root: string): Promise<{
   present: boolean; valid: boolean; diagnostics: Diagnostic[]; cycles: number;
   voided: Array<{ testId: string; cycleId: string; void: { approver: string; reason: string; recordedAt: string } }>;
+  archived: Array<{ testId: string; cycleId: string; archive: { approver: string; reason: string; recordedAt: string } }>;
 }> {
   const evidence = await loadTddEvidence(root);
-  if (!evidence?.cycles.length) return { present: false, valid: false, diagnostics: [], cycles: 0, voided: [] };
+  if (!evidence?.cycles.length) return { present: false, valid: false, diagnostics: [], cycles: 0, voided: [], archived: [] };
   const diagnostics: Diagnostic[] = [];
   const order = await inspectEvidenceOrder(root);
   diagnostics.push(...order.diagnostics);
@@ -652,7 +793,7 @@ export async function validateTddEvidence(root: string): Promise<{
       records.set(key, record);
     }
     for (const cycle of evidence.cycles) {
-      for (const phase of ['red', 'green', 'refactor', 'migrate', 'void'] as const) {
+      for (const phase of ['red', 'green', 'refactor', 'migrate', 'void', 'archive'] as const) {
         const phaseEvidence = cycle[phase];
         if (!phaseEvidence) continue;
         const key = `${cycle.cycleId ?? 'missing'}:${phase}`;
@@ -701,6 +842,8 @@ export async function validateTddEvidence(root: string): Promise<{
    */
   const validlyVoidedCycles = new Set<TddCycle>();
   const voided: Array<{ testId: string; cycleId: string; void: { approver: string; reason: string; recordedAt: string } }> = [];
+  const validlyArchivedCycles = new Set<TddCycle>();
+  const archived: Array<{ testId: string; cycleId: string; archive: { approver: string; reason: string; recordedAt: string } }> = [];
   for (const cycle of evidence.cycles) {
     if (!cycle.void) continue;
     const linkage = voidLinkage(evidence, order, cycle);
@@ -719,6 +862,20 @@ export async function validateTddEvidence(root: string): Promise<{
       });
     } else {
       diagnostics.push(error('TDD_VOID_EVIDENCE_MALFORMED', linkage.reason!, cycle.testPath));
+    }
+  }
+  for (const cycle of evidence.cycles) {
+    if (!cycle.archive) continue;
+    const linkage = archiveLinkage(evidence, order, cycle);
+    if (linkage.valid) {
+      validlyArchivedCycles.add(cycle);
+      archived.push({
+        testId: cycle.testId,
+        cycleId: cycle.cycleId!,
+        archive: { approver: cycle.archive.approver, reason: cycle.archive.reason, recordedAt: cycle.archive.recordedAt },
+      });
+    } else {
+      diagnostics.push(error('TDD_ARCHIVE_EVIDENCE_MALFORMED', linkage.reason!, cycle.testPath));
     }
   }
   const trace = await buildTrace(root, false);
@@ -775,18 +932,19 @@ export async function validateTddEvidence(root: string): Promise<{
       if (cycle.migrate.order !== undefined && latestNonMigrateOrder !== undefined && cycle.migrate.order <= latestNonMigrateOrder) {
         diagnostics.push(error('TDD_ORDER_SEQUENCE', `${cycle.testId}:migrate is not after Green/Refactor in monotonic evidence order.`, cycle.testPath));
       }
-      if (!cycle.migrate.approver) {
+      if (!validlyArchivedCycles.has(cycle) && !cycle.migrate.approver) {
         diagnostics.push(error('TDD_LEGACY_OR_UNSCOPED_EVIDENCE', `${cycle.testId}:migrate lacks a recorded human approver.`, cycle.testPath));
       }
     }
-    if (!supersededCycles.has(cycle) && !validlyVoidedCycles.has(cycle)
+    if (!supersededCycles.has(cycle) && !validlyVoidedCycles.has(cycle) && !validlyArchivedCycles.has(cycle)
       && (!cycle.red.scoped || !cycle.red.resultObserved || cycle.red.testStatus !== 'failed' || !cycle.red.reportSha256 || !cycle.red.sourceFingerprint || !cycle.red.executionId)) {
       diagnostics.push(error('TDD_LEGACY_OR_UNSCOPED_EVIDENCE', `${cycle.testId} lacks test-scoped execution provenance; archive the legacy cycle and regenerate it from a clean Red baseline: move .musubix/evidence/tdd.json aside and re-record every cycle with tdd red/green/refactor. There is no partial prune command; hand-editing the evidence is not supported.`, cycle.testPath));
     }
-    if (!supersededCycles.has(cycle) && !validlyVoidedCycles.has(cycle) && !cycle.red.valid) diagnostics.push(error('TDD_RED_MISSING', `${cycle.testId} has no valid failing Red phase; archive it and regenerate the complete cycle by moving .musubix/evidence/tdd.json aside and re-recording every cycle.`, cycle.testPath));
-    if (!supersededCycles.has(cycle) && !validlyVoidedCycles.has(cycle) && !cycle.green?.valid) diagnostics.push(error('TDD_GREEN_MISSING', `${cycle.testId} has no valid passing Green phase; archive it and regenerate the complete cycle by moving .musubix/evidence/tdd.json aside and re-recording every cycle.`, cycle.testPath));
+    if (!supersededCycles.has(cycle) && !validlyVoidedCycles.has(cycle) && !validlyArchivedCycles.has(cycle) && !cycle.red.valid) diagnostics.push(error('TDD_RED_MISSING', `${cycle.testId} has no valid failing Red phase; archive it and regenerate the complete cycle by moving .musubix/evidence/tdd.json aside and re-recording every cycle.`, cycle.testPath));
+    if (!supersededCycles.has(cycle) && !validlyVoidedCycles.has(cycle) && !validlyArchivedCycles.has(cycle) && !cycle.green?.valid) diagnostics.push(error('TDD_GREEN_MISSING', `${cycle.testId} has no valid passing Green phase; archive it and regenerate the complete cycle by moving .musubix/evidence/tdd.json aside and re-recording every cycle.`, cycle.testPath));
     if (cycle.green?.valid) {
-      if (!cycle.green.scoped || !cycle.green.resultObserved || cycle.green.testStatus !== 'passed' || !cycle.green.reportSha256 || !cycle.green.sourceFingerprint || !cycle.green.executionId) {
+      if (!validlyArchivedCycles.has(cycle)
+        && (!cycle.green.scoped || !cycle.green.resultObserved || cycle.green.testStatus !== 'passed' || !cycle.green.reportSha256 || !cycle.green.sourceFingerprint || !cycle.green.executionId)) {
         diagnostics.push(error('TDD_LEGACY_OR_UNSCOPED_EVIDENCE', `${cycle.testId} Green lacks test-scoped execution provenance.`, cycle.testPath));
       }
       const actualLatest = latestCycles.get(cycle.testId);
@@ -794,8 +952,10 @@ export async function validateTddEvidence(root: string): Promise<{
       // is implemented by the shared `effectiveLatestCycle` helper, annotated
       // as CODE-TDD-CYCLE-VOID-004 above.
       const isStaleTarget = actualLatest === cycle
-        || (actualLatest !== undefined && validlyVoidedCycles.has(actualLatest)
-          && effectiveLatestCycle(evidence, order, validlyVoidedCycles, cycle.testId, actualLatest) === cycle);
+        ? !validlyArchivedCycles.has(cycle)
+        : (actualLatest !== undefined && validlyVoidedCycles.has(actualLatest)
+          && effectiveLatestCycle(evidence, order, validlyVoidedCycles, validlyArchivedCycles, cycle.testId, actualLatest) === cycle
+          && !validlyArchivedCycles.has(cycle));
       if (isStaleTarget) {
         const test = trace.nodes.find((node) => node.kind === 'test' && node.id === cycle.testId);
         const current = test ? await testFingerprint(root, test) : undefined;
@@ -808,17 +968,18 @@ export async function validateTddEvidence(root: string): Promise<{
         const latest = candidates.sort((a, b) => b.order - a.order)[0];
         if (latest && current !== latest.fingerprint) diagnostics.push(error('TDD_TEST_STALE', `${cycle.testId} changed after its latest passing TDD phase.`, cycle.testPath));
       }
-      if (cycle.red.sourceFingerprint === cycle.green.sourceFingerprint) {
+      if (!validlyArchivedCycles.has(cycle) && cycle.red.sourceFingerprint === cycle.green.sourceFingerprint) {
         diagnostics.push(error('TDD_GREEN_WITHOUT_SOURCE_CHANGE', `${cycle.testId} has no non-test project change between Red and Green.`, cycle.testPath));
       }
     }
-    if (cycle.green && cycle.green.commandSha256 !== cycle.red.commandSha256) {
+    if (!validlyArchivedCycles.has(cycle) && cycle.green && cycle.green.commandSha256 !== cycle.red.commandSha256) {
       diagnostics.push(error('TDD_COMMAND_CHANGED', `${cycle.testId} used a different command between Red and Green.`, cycle.testPath));
     }
-    if (cycle.refactor && cycle.refactor.commandSha256 !== cycle.red.commandSha256) {
+    if (!validlyArchivedCycles.has(cycle) && cycle.refactor && cycle.refactor.commandSha256 !== cycle.red.commandSha256) {
       diagnostics.push(error('TDD_COMMAND_CHANGED', `${cycle.testId} used a different command during Refactor.`, cycle.testPath));
     }
-    if (cycle.refactor?.valid && (!cycle.refactor.scoped || !cycle.refactor.resultObserved || cycle.refactor.testStatus !== 'passed' || !cycle.refactor.reportSha256 || !cycle.refactor.sourceFingerprint || !cycle.refactor.executionId)) {
+    if (cycle.refactor?.valid && !validlyArchivedCycles.has(cycle)
+      && (!cycle.refactor.scoped || !cycle.refactor.resultObserved || cycle.refactor.testStatus !== 'passed' || !cycle.refactor.reportSha256 || !cycle.refactor.sourceFingerprint || !cycle.refactor.executionId)) {
       diagnostics.push(error('TDD_LEGACY_OR_UNSCOPED_EVIDENCE', `${cycle.testId} Refactor lacks test-scoped execution provenance.`, cycle.testPath));
     }
   }
@@ -840,5 +1001,5 @@ export async function validateTddEvidence(root: string): Promise<{
       } else hashes.set(key, cycle);
     }
   }
-  return { present: true, valid: !diagnostics.length, diagnostics, cycles: evidence.cycles.length, voided };
+  return { present: true, valid: !diagnostics.length, diagnostics, cycles: evidence.cycles.length, voided, archived };
 }

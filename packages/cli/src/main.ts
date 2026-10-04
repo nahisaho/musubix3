@@ -11,7 +11,7 @@ import {
   graphImpact, indexGraph, loadConfig, loadGraph, loadTrace, portable, projectStatus, queryKnowledge,
   formalDoctor, generateFormalArtifacts, readText, runGate, traceImpact, type Solver,
   changePhases, recordChangePhase, recordWorkflow, runTddPhase, sanitizeWorkflowLogFile,
-  validateTddEvidence, verifyWorkflowLogFile, migrateTddFingerprint, voidTddCycle, type ChangePhase, type TddPhase,
+  validateTddEvidence, verifyWorkflowLogFile, migrateTddFingerprint, voidTddCycle, archiveTddCycle, type ChangePhase, type TddPhase,
   mergeEvidenceHistories, recoverEvidenceMerge,
   recoverQualityRefresh,
   attestationSigningPayload, createUnsignedAttestation, githubOidcAudience, verifyEvidenceAttestation,
@@ -785,6 +785,23 @@ source, quarantining merge files, and rerunning structural validation.`))
           : `VOID: FAIL (${testId}) ${voidResult.reason}`,
       );
       if (!voidResult.voided) process.exitCode = 1;
+    });
+  common(tdd.command('archive <test-id>'))
+    .requiredOption('--approver <name>', 'Human approver recording this archive')
+    .requiredOption('--reason <text>', 'Reason this TDD cycle is being archived')
+    .option('--confirm', 'Confirm the archive is reviewed and intended', false)
+    .action(async (testId: string, options: { root: string; json?: boolean; approver: string; reason: string; confirm?: boolean }) => {
+      if (!options.confirm) throw new Error('Archiving a TDD cycle requires --confirm.');
+      const root = resolve(options.root);
+      const archiveResult = await archiveTddCycle(root, testId, options.approver, options.reason);
+      output(
+        archiveResult,
+        !!options.json,
+        archiveResult.archived
+          ? `ARCHIVE: PASS (${testId}) cycle=${archiveResult.cycleId}`
+          : `ARCHIVE: FAIL (${testId}) ${archiveResult.reason}`,
+      );
+      if (!archiveResult.archived) process.exitCode = 1;
     });
   common(program.command('status').description('One-shot artifact and gate readiness summary'))
     .action(async (options: { root: string; json?: boolean }) => {

@@ -54,7 +54,7 @@ const WAIVERS_PATH = `${EVIDENCE_DIR}/change-waivers.json`;
 const JOURNAL_PATH = `${EVIDENCE_DIR}/.merge-transaction.json`;
 const STAGING_PREFIX = `${EVIDENCE_DIR}/.merge-transaction.`;
 const TARGETS = [ORDER_PATH, TDD_PATH, CHANGES_PATH, WAIVERS_PATH] as const;
-const TDD_PHASES = ['red', 'green', 'refactor', 'migrate', 'void'] as const;
+const TDD_PHASES = ['red', 'green', 'refactor', 'migrate', 'void', 'archive'] as const;
 const CHANGE_PHASES = ['impact', 'requirements', 'design', 'red', 'implementation', 'green', 'quality'] as const;
 const BATCH_PHASES = ['red', 'implementation', 'green'] as const;
 

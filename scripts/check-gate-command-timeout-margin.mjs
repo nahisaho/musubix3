@@ -27,6 +27,7 @@ const EXPECTED_REQUIRED_COMMANDS = [
   'tdd-fingerprint-migration-tests',
   'tdd-superseded-cycle-scoping-tests',
   'tdd-cycle-void-tests',
+  'tdd-cycle-archive-tests',
   'change-requirement-batches-tests',
   'change-quality-refresh-tests',
   'windows-core-portability-tests',

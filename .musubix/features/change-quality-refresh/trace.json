@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-04T05:06:55.715Z",
+  "generatedAt": "2026-10-04T07:12:35.118Z",
   "nodes": [
     {
       "id": "ADR-0029",
@@ -114,43 +114,43 @@
       "id": "CODE-EVIDENCE-WRITER-LOCK-002",
       "kind": "code",
       "path": "packages/analysis/src/evidence-writer-lock.ts",
-      "line": 644
+      "line": 645
     },
     {
       "id": "CODE-EVIDENCE-WRITER-LOCK-003",
       "kind": "code",
       "path": "packages/analysis/src/evidence-writer-lock.ts",
-      "line": 858
+      "line": 859
     },
     {
       "id": "CODE-EVIDENCE-WRITER-LOCK-004",
       "kind": "code",
       "path": "packages/analysis/src/evidence-writer-lock.ts",
-      "line": 897
+      "line": 898
     },
     {
       "id": "CODE-EVIDENCE-WRITER-LOCK-005",
       "kind": "code",
       "path": "packages/analysis/src/evidence-writer-lock.ts",
-      "line": 912
+      "line": 913
     },
     {
       "id": "CODE-EVIDENCE-WRITER-LOCK-006",
       "kind": "code",
       "path": "packages/analysis/src/evidence-writer-lock.ts",
-      "line": 1028
+      "line": 1029
     },
     {
       "id": "CODE-EVIDENCE-WRITER-LOCK-007",
       "kind": "code",
       "path": "packages/analysis/src/evidence-writer-lock.ts",
-      "line": 929
+      "line": 930
     },
     {
       "id": "CODE-EVIDENCE-WRITER-LOCK-008",
       "kind": "code",
       "path": "packages/analysis/src/evidence-writer-lock.ts",
-      "line": 959
+      "line": 960
     },
     {
       "id": "CODE-GITHUB-ACTIONS-NODE24-RUNTIME-001",
@@ -2641,10 +2641,10 @@
     "packages/analysis/src/approval.ts": "7b3940d96b8465a16fc1d28a100fc2d72dc0b7ee4e49e6f02ebb7db0449b1a9f",
     "packages/analysis/src/change-evidence.ts": "564bceca2edd2d8922b421ecd3b83f6df4d428b556e81450cd0819b5728a29e2",
     "packages/analysis/src/change.ts": "169b625e65df6f331bf4530c1b74de2c797a5fbbe4bf38924366f4406d90bc82",
-    "packages/analysis/src/evidence-merge.ts": "c7766f8ef74da94027073d9516ec307d67d8f729395c2c010ab9820e5a12eecf",
-    "packages/analysis/src/evidence-writer-lock.ts": "86d898cdcc6693e50279c193a9bf9d50b616520587871a82209146e286b7930f",
+    "packages/analysis/src/evidence-merge.ts": "1e43e03adb824375f3def9f996c497a7ac4a319dc1b397b28cdd8c9abee693db",
+    "packages/analysis/src/evidence-writer-lock.ts": "a1e7a13da4b5a3f9a96c24914f876166571df5aec20d54048a51a3188e865698",
     "packages/analysis/src/quality-refresh.ts": "2b11461f84b7155ee1ec02d53d6e0af291ce26c40f6e77755e405c1b000e730d",
-    "packages/cli/src/main.ts": "25ae53c6cac1eea57020a33397138c9913831d11b4d255867785a1f09a013244",
+    "packages/cli/src/main.ts": "7e751d0c41b52d7b6e3c0c1cb753a9e490f93ebc28c7310534522878d9b7ebfc",
     "scripts/check-github-actions.mjs": "8e18568a2a4a69cf25aa6b825cc82a6258cf0388c27c552f7d69a100793d5437",
     "scripts/check-npm-audit-remediation.mjs": "82548a2681cde6be6d238f15678add9388c8aaac72a49a13af82d46d4b462cb6",
     "scripts/release-prepare.mjs": "e166ac42868ce134ad9d3e68a92e14831f2ad243b51f2c0782a47e49fe55a640",

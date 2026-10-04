@@ -104,7 +104,8 @@
     "mode": "compatible",
     "maxAgeSeconds": 3600,
     "maxFutureSkewSeconds": 60,
-    "maxTranscriptBytes": 120000000
+    "maxTranscriptBytes": 120000000,
+    "maxTranscriptLineBytes": 2000000
   },
   "attestation": {
     "mode": "local",
