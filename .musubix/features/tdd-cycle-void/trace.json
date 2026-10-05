@@ -1,7 +1,13 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-04T07:12:35.118Z",
+  "generatedAt": "2026-10-05T11:45:19.197Z",
   "nodes": [
+    {
+      "id": "ADR-0009",
+      "kind": "adr",
+      "path": ".musubix/decisions/ADR-0009.md",
+      "line": 1
+    },
     {
       "id": "ADR-0023",
       "kind": "adr",
@@ -9,70 +15,106 @@
       "line": 1
     },
     {
+      "id": "ADR-0040",
+      "kind": "adr",
+      "path": ".musubix/decisions/ADR-0040.md",
+      "line": 1
+    },
+    {
+      "id": "CODE-TDD-ADOPTION-WARNING-003",
+      "kind": "code",
+      "path": "packages/cli/src/main.ts",
+      "line": 717
+    },
+    {
       "id": "CODE-TDD-CYCLE-ARCHIVE-001",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 479
+      "line": 727
     },
     {
       "id": "CODE-TDD-CYCLE-ARCHIVE-002",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 358
+      "line": 606
     },
     {
       "id": "CODE-TDD-CYCLE-ARCHIVE-004",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 760
+      "line": 1008
     },
     {
       "id": "CODE-TDD-CYCLE-ARCHIVE-005",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 233
+      "line": 351
     },
     {
       "id": "CODE-TDD-CYCLE-ARCHIVE-006",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 218
+      "line": 336
     },
     {
       "id": "CODE-TDD-CYCLE-VOID-001",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 471
+      "line": 719
     },
     {
       "id": "CODE-TDD-CYCLE-VOID-002",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 324
+      "line": 572
     },
     {
       "id": "CODE-TDD-CYCLE-VOID-003",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 839
+      "line": 1110
     },
     {
       "id": "CODE-TDD-CYCLE-VOID-004",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 427
+      "line": 675
     },
     {
       "id": "CODE-TDD-CYCLE-VOID-005",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 852
+      "line": 1123
     },
     {
       "id": "CODE-TDD-CYCLE-VOID-006",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 240
+      "line": 358
+    },
+    {
+      "id": "CODE-TDD-FINGERPRINT-MIGRATION-001",
+      "kind": "code",
+      "path": "packages/analysis/src/tdd.ts",
+      "line": 266
+    },
+    {
+      "id": "CODE-TDD-IDENTIFIER-MIGRATION-001",
+      "kind": "code",
+      "path": "packages/analysis/src/tdd.ts",
+      "line": 400
+    },
+    {
+      "id": "CODE-TDD-IDENTIFIER-MIGRATION-002",
+      "kind": "code",
+      "path": "packages/analysis/src/tdd.ts",
+      "line": 298
+    },
+    {
+      "id": "DES-TDD-ADOPTION-WARNING-003",
+      "kind": "design",
+      "path": ".musubix/features/tdd-adoption-warning/design.md",
+      "line": 90
     },
     {
       "id": "DES-TDD-CYCLE-ARCHIVE-001",
@@ -145,6 +187,43 @@
       "kind": "design",
       "path": ".musubix/features/tdd-cycle-void/design.md",
       "line": 251
+    },
+    {
+      "id": "DES-TDD-FINGERPRINT-MIGRATION-001",
+      "kind": "design",
+      "path": ".musubix/features/tdd-fingerprint-migration/design.md",
+      "line": 3
+    },
+    {
+      "id": "DES-TDD-IDENTIFIER-MIGRATION-001",
+      "kind": "design",
+      "path": ".musubix/features/tdd-identifier-migration/design.md",
+      "line": 7
+    },
+    {
+      "id": "DES-TDD-IDENTIFIER-MIGRATION-002",
+      "kind": "design",
+      "path": ".musubix/features/tdd-identifier-migration/design.md",
+      "line": 37
+    },
+    {
+      "id": "DES-TDD-IDENTIFIER-MIGRATION-003",
+      "kind": "design",
+      "path": ".musubix/features/tdd-identifier-migration/design.md",
+      "line": 79
+    },
+    {
+      "id": "DES-TDD-IDENTIFIER-MIGRATION-004",
+      "kind": "design",
+      "path": ".musubix/features/tdd-identifier-migration/design.md",
+      "line": 144
+    },
+    {
+      "id": "REQ-TDD-ADOPTION-WARNING-002",
+      "kind": "requirement",
+      "path": ".musubix/features/tdd-adoption-warning/requirements.md",
+      "line": 42,
+      "mandatory": true
     },
     {
       "id": "REQ-TDD-CYCLE-ARCHIVE-001",
@@ -329,6 +408,54 @@
       "mandatory": false
     },
     {
+      "id": "REQ-TDD-FINGERPRINT-MIGRATION-001",
+      "kind": "requirement",
+      "path": ".musubix/features/tdd-fingerprint-migration/requirements.md",
+      "line": 19,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-TDD-IDENTIFIER-MIGRATION-001",
+      "kind": "requirement",
+      "path": ".musubix/features/tdd-identifier-migration/requirements.md",
+      "line": 42,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-TDD-IDENTIFIER-MIGRATION-002",
+      "kind": "requirement",
+      "path": ".musubix/features/tdd-identifier-migration/requirements.md",
+      "line": 49,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-TDD-IDENTIFIER-MIGRATION-003",
+      "kind": "requirement",
+      "path": ".musubix/features/tdd-identifier-migration/requirements.md",
+      "line": 56,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-TDD-IDENTIFIER-MIGRATION-004",
+      "kind": "requirement",
+      "path": ".musubix/features/tdd-identifier-migration/requirements.md",
+      "line": 63,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-TDD-IDENTIFIER-MIGRATION-005",
+      "kind": "requirement",
+      "path": ".musubix/features/tdd-identifier-migration/requirements.md",
+      "line": 70,
+      "mandatory": true
+    },
+    {
+      "id": "TEST-TDD-ADOPTION-WARNING-002",
+      "kind": "test",
+      "path": "tests/tdd-adoption-warning.test.ts",
+      "line": 121
+    },
+    {
       "id": "TEST-TDD-CYCLE-ARCHIVE-001",
       "kind": "test",
       "path": "tests/tdd-cycle-archive.test.ts",
@@ -489,9 +616,42 @@
       "kind": "test",
       "path": "tests/tdd-cycle-void.test.ts",
       "line": 329
+    },
+    {
+      "id": "TEST-TDD-FINGERPRINT-MIGRATION-001",
+      "kind": "test",
+      "path": "tests/tdd-fingerprint-migration.test.ts",
+      "line": 83
+    },
+    {
+      "id": "TEST-TDD-IDENTIFIER-MIGRATION-002",
+      "kind": "test",
+      "path": "tests/tdd-fingerprint-migration.test.ts",
+      "line": 143
+    },
+    {
+      "id": "TEST-TDD-IDENTIFIER-MIGRATION-003",
+      "kind": "test",
+      "path": "tests/tdd-fingerprint-migration.test.ts",
+      "line": 220
     }
   ],
   "edges": [
+    {
+      "from": "ADR-0009",
+      "to": "DES-TDD-FINGERPRINT-MIGRATION-001",
+      "relation": "decides"
+    },
+    {
+      "from": "ADR-0009",
+      "to": "DES-TDD-IDENTIFIER-MIGRATION-001",
+      "relation": "decides"
+    },
+    {
+      "from": "ADR-0009",
+      "to": "DES-TDD-IDENTIFIER-MIGRATION-003",
+      "relation": "decides"
+    },
     {
       "from": "ADR-0023",
       "to": "DES-TDD-CYCLE-VOID-001",
@@ -526,6 +686,41 @@
       "from": "ADR-0023",
       "to": "DES-TDD-CYCLE-VOID-007",
       "relation": "decides"
+    },
+    {
+      "from": "ADR-0023",
+      "to": "DES-TDD-IDENTIFIER-MIGRATION-002",
+      "relation": "decides"
+    },
+    {
+      "from": "ADR-0040",
+      "to": "DES-TDD-IDENTIFIER-MIGRATION-001",
+      "relation": "decides"
+    },
+    {
+      "from": "ADR-0040",
+      "to": "DES-TDD-IDENTIFIER-MIGRATION-002",
+      "relation": "decides"
+    },
+    {
+      "from": "ADR-0040",
+      "to": "DES-TDD-IDENTIFIER-MIGRATION-003",
+      "relation": "decides"
+    },
+    {
+      "from": "ADR-0040",
+      "to": "DES-TDD-IDENTIFIER-MIGRATION-004",
+      "relation": "decides"
+    },
+    {
+      "from": "CODE-TDD-ADOPTION-WARNING-003",
+      "to": "DES-TDD-ADOPTION-WARNING-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-TDD-ADOPTION-WARNING-003",
+      "to": "REQ-TDD-ADOPTION-WARNING-002",
+      "relation": "implements"
     },
     {
       "from": "CODE-TDD-CYCLE-ARCHIVE-001",
@@ -766,6 +961,71 @@
       "from": "CODE-TDD-CYCLE-VOID-006",
       "to": "REQ-TDD-CYCLE-VOID-012",
       "relation": "implements"
+    },
+    {
+      "from": "CODE-TDD-FINGERPRINT-MIGRATION-001",
+      "to": "DES-TDD-FINGERPRINT-MIGRATION-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-TDD-FINGERPRINT-MIGRATION-001",
+      "to": "REQ-TDD-FINGERPRINT-MIGRATION-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-TDD-IDENTIFIER-MIGRATION-001",
+      "to": "DES-TDD-IDENTIFIER-MIGRATION-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-TDD-IDENTIFIER-MIGRATION-001",
+      "to": "DES-TDD-IDENTIFIER-MIGRATION-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-TDD-IDENTIFIER-MIGRATION-001",
+      "to": "DES-TDD-IDENTIFIER-MIGRATION-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-TDD-IDENTIFIER-MIGRATION-001",
+      "to": "REQ-TDD-IDENTIFIER-MIGRATION-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-TDD-IDENTIFIER-MIGRATION-001",
+      "to": "REQ-TDD-IDENTIFIER-MIGRATION-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-TDD-IDENTIFIER-MIGRATION-001",
+      "to": "REQ-TDD-IDENTIFIER-MIGRATION-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-TDD-IDENTIFIER-MIGRATION-001",
+      "to": "REQ-TDD-IDENTIFIER-MIGRATION-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-TDD-IDENTIFIER-MIGRATION-002",
+      "to": "DES-TDD-IDENTIFIER-MIGRATION-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-TDD-IDENTIFIER-MIGRATION-002",
+      "to": "REQ-TDD-IDENTIFIER-MIGRATION-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-TDD-IDENTIFIER-MIGRATION-002",
+      "to": "REQ-TDD-IDENTIFIER-MIGRATION-003",
+      "relation": "implements"
+    },
+    {
+      "from": "DES-TDD-ADOPTION-WARNING-003",
+      "to": "REQ-TDD-ADOPTION-WARNING-002",
+      "relation": "satisfies"
     },
     {
       "from": "DES-TDD-CYCLE-ARCHIVE-001",
@@ -928,6 +1188,76 @@
       "relation": "satisfies"
     },
     {
+      "from": "DES-TDD-FINGERPRINT-MIGRATION-001",
+      "to": "REQ-TDD-FINGERPRINT-MIGRATION-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-TDD-IDENTIFIER-MIGRATION-001",
+      "to": "REQ-TDD-IDENTIFIER-MIGRATION-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-TDD-IDENTIFIER-MIGRATION-001",
+      "to": "REQ-TDD-IDENTIFIER-MIGRATION-005",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-TDD-IDENTIFIER-MIGRATION-002",
+      "to": "DES-TDD-IDENTIFIER-MIGRATION-001",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-TDD-IDENTIFIER-MIGRATION-002",
+      "to": "REQ-TDD-IDENTIFIER-MIGRATION-002",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-TDD-IDENTIFIER-MIGRATION-002",
+      "to": "REQ-TDD-IDENTIFIER-MIGRATION-003",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-TDD-IDENTIFIER-MIGRATION-003",
+      "to": "DES-TDD-IDENTIFIER-MIGRATION-002",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-TDD-IDENTIFIER-MIGRATION-003",
+      "to": "REQ-TDD-IDENTIFIER-MIGRATION-003",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-TDD-IDENTIFIER-MIGRATION-003",
+      "to": "REQ-TDD-IDENTIFIER-MIGRATION-004",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-TDD-IDENTIFIER-MIGRATION-004",
+      "to": "DES-TDD-IDENTIFIER-MIGRATION-001",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-TDD-IDENTIFIER-MIGRATION-004",
+      "to": "REQ-TDD-ADOPTION-WARNING-002",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-TDD-IDENTIFIER-MIGRATION-004",
+      "to": "REQ-TDD-IDENTIFIER-MIGRATION-005",
+      "relation": "satisfies"
+    },
+    {
+      "from": "TEST-TDD-ADOPTION-WARNING-002",
+      "to": "REQ-TDD-ADOPTION-WARNING-002",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-TDD-ADOPTION-WARNING-002",
+      "to": "REQ-TDD-IDENTIFIER-MIGRATION-005",
+      "relation": "verifies"
+    },
+    {
       "from": "TEST-TDD-CYCLE-ARCHIVE-001",
       "to": "REQ-TDD-CYCLE-ARCHIVE-001",
       "relation": "verifies"
@@ -1061,17 +1391,53 @@
       "from": "TEST-TDD-CYCLE-VOID-013",
       "to": "REQ-TDD-CYCLE-VOID-013",
       "relation": "verifies"
+    },
+    {
+      "from": "TEST-TDD-FINGERPRINT-MIGRATION-001",
+      "to": "REQ-TDD-FINGERPRINT-MIGRATION-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-TDD-IDENTIFIER-MIGRATION-002",
+      "to": "REQ-TDD-IDENTIFIER-MIGRATION-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-TDD-IDENTIFIER-MIGRATION-002",
+      "to": "REQ-TDD-IDENTIFIER-MIGRATION-002",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-TDD-IDENTIFIER-MIGRATION-002",
+      "to": "REQ-TDD-IDENTIFIER-MIGRATION-004",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-TDD-IDENTIFIER-MIGRATION-003",
+      "to": "REQ-TDD-IDENTIFIER-MIGRATION-003",
+      "relation": "verifies"
     }
   ],
   "diagnostics": [],
   "fingerprints": {
+    ".musubix/decisions/ADR-0009.md": "b81438c27d6710e45e9493ba831a8e5d0be89430183e3f581dd68c3c80fa38c1",
     ".musubix/decisions/ADR-0023.md": "4ae677025df785fab3cc05052c84cbea1702108e40c615dff0276c9a2a5cddd8",
+    ".musubix/decisions/ADR-0040.md": "730b72e0a529ca69766a0b42ed51da0a9175032082d394fb7993810b1aed4d09",
+    ".musubix/features/tdd-adoption-warning/design.md": "29e1b978d465cf2f42d878da3282173e64a16ee13af9d626022e613fd9fc51a1",
+    ".musubix/features/tdd-adoption-warning/requirements.md": "377341710ec695b72324bbe94fc29d6dbe47f3bd3dad94a0ba2de2f3d5e7c934",
     ".musubix/features/tdd-cycle-archive/design.md": "037df4b04201e294c43a3381223804ef73ee59164c7890903b4dd481d405ff74",
     ".musubix/features/tdd-cycle-archive/requirements.md": "e1cd5bba974f55dadd7ba7bb74995c46a3930d13dc845773ee4f9ef927dee7b8",
     ".musubix/features/tdd-cycle-void/design.md": "96b0bd3707925d96f6b8190df6abc754c3b7d24aff9c39d644d0f9016ebf4ac3",
     ".musubix/features/tdd-cycle-void/requirements.md": "331aa96ff3a63f0b20c6febc9bf1635fe93921cd30516c9b5c5066cde9fe0abe",
-    "packages/analysis/src/tdd.ts": "7fc946c4dcf8e9ae2c40303bbd252f8484f7a2194c7c7dc1224f35353919ba8e",
+    ".musubix/features/tdd-fingerprint-migration/design.md": "3ce067571633c34991aeeb30067a5f76b1569b7fe017717d3f04d94ead17b5ac",
+    ".musubix/features/tdd-fingerprint-migration/requirements.md": "e8ac10f4367e8b43e427d2a27616debbd836194854a86da4850773b9cde9e1ae",
+    ".musubix/features/tdd-identifier-migration/design.md": "95d876ebd09890d0cbef5fa8adcbf5281147606b494db41cb65598b687c747b7",
+    ".musubix/features/tdd-identifier-migration/requirements.md": "a20640411a8b8c1d04f5577916c9252a74fbdf746689b10faebcbb3e233099ce",
+    "packages/analysis/src/tdd.ts": "cc3a8eacc2055c717f1c1ff7a1bd6dd42936baa3cd1745af0d111de3abf6164c",
+    "packages/cli/src/main.ts": "13a8934fa914cc133651ac88712a05ed9291c157cf273980036e51c9d667d24a",
+    "tests/tdd-adoption-warning.test.ts": "e7abeccab960ed5efdd77be8937ec556ebdf0c378a22f4671ba8d75305049343",
     "tests/tdd-cycle-archive.test.ts": "2984919b6cad8f520580df110646b00726207932a07209bfd52e9cc0ba58f011",
-    "tests/tdd-cycle-void.test.ts": "e7ea6272d9b5e0ab5377df280ba01dd38c8d1496f3a0c0f36f2053ad1b660baf"
+    "tests/tdd-cycle-void.test.ts": "e7ea6272d9b5e0ab5377df280ba01dd38c8d1496f3a0c0f36f2053ad1b660baf",
+    "tests/tdd-fingerprint-migration.test.ts": "509686f23b41d7256562a0e14ef1fe823833f0016f16a600eab2a77a80660ab0"
   }
 }

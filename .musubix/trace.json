@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-05T03:55:48.946Z",
+  "generatedAt": "2026-10-05T11:45:19.197Z",
   "nodes": [
     {
       "id": "ADR-0002",
@@ -231,6 +231,12 @@
       "line": 1
     },
     {
+      "id": "ADR-0040",
+      "kind": "adr",
+      "path": ".musubix/decisions/ADR-0040.md",
+      "line": 1
+    },
+    {
       "id": "CODE-ADAPTER-PATTERN-RECOGNITION-001",
       "kind": "code",
       "path": "packages/analysis/src/adapters.ts",
@@ -456,7 +462,7 @@
       "id": "CODE-CHANGE-EVIDENCE-WAIVER-013",
       "kind": "code",
       "path": "packages/analysis/src/order.ts",
-      "line": 76
+      "line": 91
     },
     {
       "id": "CODE-CHANGE-EVIDENCE-WAIVER-014",
@@ -504,7 +510,7 @@
       "id": "CODE-CHANGE-EVIDENCE-WAIVER-021",
       "kind": "code",
       "path": "packages/analysis/src/order.ts",
-      "line": 33
+      "line": 46
     },
     {
       "id": "CODE-CHANGE-EVIDENCE-WAIVER-022",
@@ -702,25 +708,25 @@
       "id": "CODE-EVIDENCE-HISTORY-MERGE-001",
       "kind": "code",
       "path": "packages/analysis/src/evidence-merge.ts",
-      "line": 462
+      "line": 501
     },
     {
       "id": "CODE-EVIDENCE-HISTORY-MERGE-002",
       "kind": "code",
       "path": "packages/analysis/src/evidence-merge.ts",
-      "line": 951
+      "line": 993
     },
     {
       "id": "CODE-EVIDENCE-HISTORY-MERGE-003",
       "kind": "code",
       "path": "packages/analysis/src/evidence-merge.ts",
-      "line": 1045
+      "line": 1087
     },
     {
       "id": "CODE-EVIDENCE-HISTORY-MERGE-004",
       "kind": "code",
       "path": "packages/analysis/src/evidence-merge.ts",
-      "line": 1143
+      "line": 1185
     },
     {
       "id": "CODE-EVIDENCE-WRITER-LOCK-001",
@@ -978,7 +984,7 @@
       "id": "CODE-TDD-ADOPTION-WARNING-001",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 684
+      "line": 932
     },
     {
       "id": "CODE-TDD-ADOPTION-WARNING-003",
@@ -990,85 +996,97 @@
       "id": "CODE-TDD-CYCLE-ARCHIVE-001",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 479
+      "line": 727
     },
     {
       "id": "CODE-TDD-CYCLE-ARCHIVE-002",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 358
+      "line": 606
     },
     {
       "id": "CODE-TDD-CYCLE-ARCHIVE-004",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 760
+      "line": 1008
     },
     {
       "id": "CODE-TDD-CYCLE-ARCHIVE-005",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 233
+      "line": 351
     },
     {
       "id": "CODE-TDD-CYCLE-ARCHIVE-006",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 218
+      "line": 336
     },
     {
       "id": "CODE-TDD-CYCLE-VOID-001",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 471
+      "line": 719
     },
     {
       "id": "CODE-TDD-CYCLE-VOID-002",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 324
+      "line": 572
     },
     {
       "id": "CODE-TDD-CYCLE-VOID-003",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 839
+      "line": 1110
     },
     {
       "id": "CODE-TDD-CYCLE-VOID-004",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 427
+      "line": 675
     },
     {
       "id": "CODE-TDD-CYCLE-VOID-005",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 852
+      "line": 1123
     },
     {
       "id": "CODE-TDD-CYCLE-VOID-006",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 240
+      "line": 358
     },
     {
       "id": "CODE-TDD-FINGERPRINT-MIGRATION-001",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 191
+      "line": 266
     },
     {
       "id": "CODE-TDD-FINGERPRINT-SCOPING-001",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 160
+      "line": 231
     },
     {
       "id": "CODE-TDD-GREEN-REQUIREMENT-SCOPING-001",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 606
+      "line": 854
+    },
+    {
+      "id": "CODE-TDD-IDENTIFIER-MIGRATION-001",
+      "kind": "code",
+      "path": "packages/analysis/src/tdd.ts",
+      "line": 400
+    },
+    {
+      "id": "CODE-TDD-IDENTIFIER-MIGRATION-002",
+      "kind": "code",
+      "path": "packages/analysis/src/tdd.ts",
+      "line": 298
     },
     {
       "id": "CODE-TDD-RED-COLLECTION-GUIDANCE-001",
@@ -1080,7 +1098,7 @@
       "id": "CODE-TDD-SUPERSEDED-CYCLE-SCOPING-001",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 821
+      "line": 1091
     },
     {
       "id": "CODE-UPGRADE-WORKFLOW-001",
@@ -1903,6 +1921,30 @@
       "kind": "design",
       "path": ".musubix/features/tdd-green-requirement-scoping/design.md",
       "line": 3
+    },
+    {
+      "id": "DES-TDD-IDENTIFIER-MIGRATION-001",
+      "kind": "design",
+      "path": ".musubix/features/tdd-identifier-migration/design.md",
+      "line": 7
+    },
+    {
+      "id": "DES-TDD-IDENTIFIER-MIGRATION-002",
+      "kind": "design",
+      "path": ".musubix/features/tdd-identifier-migration/design.md",
+      "line": 37
+    },
+    {
+      "id": "DES-TDD-IDENTIFIER-MIGRATION-003",
+      "kind": "design",
+      "path": ".musubix/features/tdd-identifier-migration/design.md",
+      "line": 79
+    },
+    {
+      "id": "DES-TDD-IDENTIFIER-MIGRATION-004",
+      "kind": "design",
+      "path": ".musubix/features/tdd-identifier-migration/design.md",
+      "line": 144
     },
     {
       "id": "DES-TDD-RED-COLLECTION-GUIDANCE-001",
@@ -3024,14 +3066,14 @@
       "id": "REQ-TDD-ADOPTION-WARNING-001",
       "kind": "requirement",
       "path": ".musubix/features/tdd-adoption-warning/requirements.md",
-      "line": 34,
+      "line": 35,
       "mandatory": true
     },
     {
       "id": "REQ-TDD-ADOPTION-WARNING-002",
       "kind": "requirement",
       "path": ".musubix/features/tdd-adoption-warning/requirements.md",
-      "line": 41,
+      "line": 42,
       "mandatory": true
     },
     {
@@ -3242,6 +3284,41 @@
       "kind": "requirement",
       "path": ".musubix/features/tdd-green-requirement-scoping/requirements.md",
       "line": 35,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-TDD-IDENTIFIER-MIGRATION-001",
+      "kind": "requirement",
+      "path": ".musubix/features/tdd-identifier-migration/requirements.md",
+      "line": 42,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-TDD-IDENTIFIER-MIGRATION-002",
+      "kind": "requirement",
+      "path": ".musubix/features/tdd-identifier-migration/requirements.md",
+      "line": 49,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-TDD-IDENTIFIER-MIGRATION-003",
+      "kind": "requirement",
+      "path": ".musubix/features/tdd-identifier-migration/requirements.md",
+      "line": 56,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-TDD-IDENTIFIER-MIGRATION-004",
+      "kind": "requirement",
+      "path": ".musubix/features/tdd-identifier-migration/requirements.md",
+      "line": 63,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-TDD-IDENTIFIER-MIGRATION-005",
+      "kind": "requirement",
+      "path": ".musubix/features/tdd-identifier-migration/requirements.md",
+      "line": 70,
       "mandatory": true
     },
     {
@@ -4823,7 +4900,7 @@
       "id": "TEST-TDD-FINGERPRINT-MIGRATION-001",
       "kind": "test",
       "path": "tests/tdd-fingerprint-migration.test.ts",
-      "line": 41
+      "line": 83
     },
     {
       "id": "TEST-TDD-FINGERPRINT-SCOPING-001",
@@ -4836,6 +4913,18 @@
       "kind": "test",
       "path": "tests/tdd-green-requirement-scoping.test.ts",
       "line": 12
+    },
+    {
+      "id": "TEST-TDD-IDENTIFIER-MIGRATION-002",
+      "kind": "test",
+      "path": "tests/tdd-fingerprint-migration.test.ts",
+      "line": 143
+    },
+    {
+      "id": "TEST-TDD-IDENTIFIER-MIGRATION-003",
+      "kind": "test",
+      "path": "tests/tdd-fingerprint-migration.test.ts",
+      "line": 220
     },
     {
       "id": "TEST-TDD-RED-COLLECTION-GUIDANCE-001",
@@ -5101,6 +5190,16 @@
       "relation": "decides"
     },
     {
+      "from": "ADR-0009",
+      "to": "DES-TDD-IDENTIFIER-MIGRATION-001",
+      "relation": "decides"
+    },
+    {
+      "from": "ADR-0009",
+      "to": "DES-TDD-IDENTIFIER-MIGRATION-003",
+      "relation": "decides"
+    },
+    {
       "from": "ADR-0010",
       "to": "DES-WORKFLOW-MULTI-SESSION-001",
       "relation": "decides"
@@ -5273,6 +5372,11 @@
     {
       "from": "ADR-0023",
       "to": "DES-TDD-CYCLE-VOID-007",
+      "relation": "decides"
+    },
+    {
+      "from": "ADR-0023",
+      "to": "DES-TDD-IDENTIFIER-MIGRATION-002",
       "relation": "decides"
     },
     {
@@ -5588,6 +5692,26 @@
     {
       "from": "ADR-0039",
       "to": "DES-SCOPED-FEATURE-TRACE-ARTIFACTS-005",
+      "relation": "decides"
+    },
+    {
+      "from": "ADR-0040",
+      "to": "DES-TDD-IDENTIFIER-MIGRATION-001",
+      "relation": "decides"
+    },
+    {
+      "from": "ADR-0040",
+      "to": "DES-TDD-IDENTIFIER-MIGRATION-002",
+      "relation": "decides"
+    },
+    {
+      "from": "ADR-0040",
+      "to": "DES-TDD-IDENTIFIER-MIGRATION-003",
+      "relation": "decides"
+    },
+    {
+      "from": "ADR-0040",
+      "to": "DES-TDD-IDENTIFIER-MIGRATION-004",
       "relation": "decides"
     },
     {
@@ -7941,6 +8065,56 @@
       "relation": "implements"
     },
     {
+      "from": "CODE-TDD-IDENTIFIER-MIGRATION-001",
+      "to": "DES-TDD-IDENTIFIER-MIGRATION-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-TDD-IDENTIFIER-MIGRATION-001",
+      "to": "DES-TDD-IDENTIFIER-MIGRATION-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-TDD-IDENTIFIER-MIGRATION-001",
+      "to": "DES-TDD-IDENTIFIER-MIGRATION-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-TDD-IDENTIFIER-MIGRATION-001",
+      "to": "REQ-TDD-IDENTIFIER-MIGRATION-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-TDD-IDENTIFIER-MIGRATION-001",
+      "to": "REQ-TDD-IDENTIFIER-MIGRATION-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-TDD-IDENTIFIER-MIGRATION-001",
+      "to": "REQ-TDD-IDENTIFIER-MIGRATION-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-TDD-IDENTIFIER-MIGRATION-001",
+      "to": "REQ-TDD-IDENTIFIER-MIGRATION-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-TDD-IDENTIFIER-MIGRATION-002",
+      "to": "DES-TDD-IDENTIFIER-MIGRATION-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-TDD-IDENTIFIER-MIGRATION-002",
+      "to": "REQ-TDD-IDENTIFIER-MIGRATION-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-TDD-IDENTIFIER-MIGRATION-002",
+      "to": "REQ-TDD-IDENTIFIER-MIGRATION-003",
+      "relation": "implements"
+    },
+    {
       "from": "CODE-TDD-RED-COLLECTION-GUIDANCE-001",
       "to": "DES-TDD-RED-COLLECTION-GUIDANCE-001",
       "relation": "implements"
@@ -10106,6 +10280,61 @@
       "relation": "satisfies"
     },
     {
+      "from": "DES-TDD-IDENTIFIER-MIGRATION-001",
+      "to": "REQ-TDD-IDENTIFIER-MIGRATION-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-TDD-IDENTIFIER-MIGRATION-001",
+      "to": "REQ-TDD-IDENTIFIER-MIGRATION-005",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-TDD-IDENTIFIER-MIGRATION-002",
+      "to": "DES-TDD-IDENTIFIER-MIGRATION-001",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-TDD-IDENTIFIER-MIGRATION-002",
+      "to": "REQ-TDD-IDENTIFIER-MIGRATION-002",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-TDD-IDENTIFIER-MIGRATION-002",
+      "to": "REQ-TDD-IDENTIFIER-MIGRATION-003",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-TDD-IDENTIFIER-MIGRATION-003",
+      "to": "DES-TDD-IDENTIFIER-MIGRATION-002",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-TDD-IDENTIFIER-MIGRATION-003",
+      "to": "REQ-TDD-IDENTIFIER-MIGRATION-003",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-TDD-IDENTIFIER-MIGRATION-003",
+      "to": "REQ-TDD-IDENTIFIER-MIGRATION-004",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-TDD-IDENTIFIER-MIGRATION-004",
+      "to": "DES-TDD-IDENTIFIER-MIGRATION-001",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-TDD-IDENTIFIER-MIGRATION-004",
+      "to": "REQ-TDD-ADOPTION-WARNING-002",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-TDD-IDENTIFIER-MIGRATION-004",
+      "to": "REQ-TDD-IDENTIFIER-MIGRATION-005",
+      "relation": "satisfies"
+    },
+    {
       "from": "DES-TDD-RED-COLLECTION-GUIDANCE-001",
       "to": "REQ-TDD-RED-COLLECTION-GUIDANCE-001",
       "relation": "satisfies"
@@ -11661,6 +11890,11 @@
       "relation": "verifies"
     },
     {
+      "from": "TEST-TDD-ADOPTION-WARNING-002",
+      "to": "REQ-TDD-IDENTIFIER-MIGRATION-005",
+      "relation": "verifies"
+    },
+    {
       "from": "TEST-TDD-CYCLE-ARCHIVE-001",
       "to": "REQ-TDD-CYCLE-ARCHIVE-001",
       "relation": "verifies"
@@ -11813,6 +12047,26 @@
     {
       "from": "TEST-TDD-GREEN-REQUIREMENT-SCOPING-001",
       "to": "REQ-TDD-GREEN-REQUIREMENT-SCOPING-002",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-TDD-IDENTIFIER-MIGRATION-002",
+      "to": "REQ-TDD-IDENTIFIER-MIGRATION-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-TDD-IDENTIFIER-MIGRATION-002",
+      "to": "REQ-TDD-IDENTIFIER-MIGRATION-002",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-TDD-IDENTIFIER-MIGRATION-002",
+      "to": "REQ-TDD-IDENTIFIER-MIGRATION-004",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-TDD-IDENTIFIER-MIGRATION-003",
+      "to": "REQ-TDD-IDENTIFIER-MIGRATION-003",
       "relation": "verifies"
     },
     {
@@ -12195,6 +12449,7 @@
     ".musubix/decisions/ADR-0037.md": "b64626a843de7f90ec4540c72fc2eab5daeb5a7d3854e8de2e80f1f44b88a5e4",
     ".musubix/decisions/ADR-0038.md": "7b486c1bf146f98d5dede59c6e7b98065fe3f1c3825fe9b94cfe2e4098378014",
     ".musubix/decisions/ADR-0039.md": "f83b714f37ca814ba19e6086866c3138e5dbbd5ebf10be3087e1b700fbcf2487",
+    ".musubix/decisions/ADR-0040.md": "730b72e0a529ca69766a0b42ed51da0a9175032082d394fb7993810b1aed4d09",
     ".musubix/features/adapter-pattern-recognition/design.md": "a8e0c4a11f626cb4a41c9b5b53359c072ec0c3161f704791f42ba8af38124a70",
     ".musubix/features/adapter-pattern-recognition/requirements.md": "5731561a0a04982b8a5c305bdeeae6084bcf0ee8846f295eaaaabc823d1f9793",
     ".musubix/features/approval-domain-scoping/design.md": "e8731f1e3094aa22192ae2ae5986fb4dc9a7698f7cfe66961e1342f6e0743bd9",
@@ -12249,8 +12504,8 @@
     ".musubix/features/scoped-feature-trace-artifacts/requirements.md": "10470f52be3500bf20527b244be836c8cdf3ab4f46c84b5dbfd65f0efeb3f2e9",
     ".musubix/features/session-scoped-development/design.md": "66a65a3fdc1747569f42b42798a88377ae2ff93e32ff2cc5e0bae5c62c2e9a42",
     ".musubix/features/session-scoped-development/requirements.md": "640aece168b4e6848c0d1e6371f0bfeb433fa8addfd064a77d050891d69d9a4f",
-    ".musubix/features/tdd-adoption-warning/design.md": "0ecbc7966f90db909b6fd2afb00d13a34a9c799cbb3d75192692aac9e854fd27",
-    ".musubix/features/tdd-adoption-warning/requirements.md": "9c81cc8bbb20ede59840340de1321972679d00aa97105e8fe5069f22bf4efd12",
+    ".musubix/features/tdd-adoption-warning/design.md": "29e1b978d465cf2f42d878da3282173e64a16ee13af9d626022e613fd9fc51a1",
+    ".musubix/features/tdd-adoption-warning/requirements.md": "377341710ec695b72324bbe94fc29d6dbe47f3bd3dad94a0ba2de2f3d5e7c934",
     ".musubix/features/tdd-cycle-archive/design.md": "037df4b04201e294c43a3381223804ef73ee59164c7890903b4dd481d405ff74",
     ".musubix/features/tdd-cycle-archive/requirements.md": "e1cd5bba974f55dadd7ba7bb74995c46a3930d13dc845773ee4f9ef927dee7b8",
     ".musubix/features/tdd-cycle-void/design.md": "96b0bd3707925d96f6b8190df6abc754c3b7d24aff9c39d644d0f9016ebf4ac3",
@@ -12261,6 +12516,8 @@
     ".musubix/features/tdd-fingerprint-scoping/requirements.md": "d3e480fc0ef92edb87f2c22d1d67a00fc177fde913c68d0187aa45375b14d4c9",
     ".musubix/features/tdd-green-requirement-scoping/design.md": "5e35edb88e48648223f0360f067fcad15d078455050d2ebabaf5ee572abca6c5",
     ".musubix/features/tdd-green-requirement-scoping/requirements.md": "456edab50870ba2fc3297eccee1c4dc114a8c8400354cb3e4b00769bb8b29ba1",
+    ".musubix/features/tdd-identifier-migration/design.md": "95d876ebd09890d0cbef5fa8adcbf5281147606b494db41cb65598b687c747b7",
+    ".musubix/features/tdd-identifier-migration/requirements.md": "a20640411a8b8c1d04f5577916c9252a74fbdf746689b10faebcbb3e233099ce",
     ".musubix/features/tdd-red-collection-guidance/design.md": "d1380ce63a1fbd0c6a1a08d899df11bf92477e2eb058954ee5cde2cd2eafd6bf",
     ".musubix/features/tdd-red-collection-guidance/requirements.md": "a4a49066c5146a4b8fc3ce8603a56c19721cb26573906d95de0bf150ed473fb7",
     ".musubix/features/tdd-superseded-cycle-scoping/design.md": "45f69705b11c56b5c7e2e243534d3918b7c46723d3f4bf7ee342df19187ee2cd",
@@ -12285,7 +12542,7 @@
     "packages/analysis/src/change.ts": "0806d63b8b7097b25d2fae717bd11f9696a71e74c7613e9be01ad732fa1e0893",
     "packages/analysis/src/config.ts": "52d5212f4057df9ed5caac0a0025ce744864909abceea3c64d259479ddffb998",
     "packages/analysis/src/evidence-merge-guard.ts": "1c0b4735d974f4c5fa0b9edaa5bde075baa5ca09de645d32db41f2e24e9421e1",
-    "packages/analysis/src/evidence-merge.ts": "1e43e03adb824375f3def9f996c497a7ac4a319dc1b397b28cdd8c9abee693db",
+    "packages/analysis/src/evidence-merge.ts": "40130d28f1e85e3776e7f804b2ad6ca10eabe212158a1f17c169e1cf149d1aff",
     "packages/analysis/src/evidence-writer-lock.ts": "a1e7a13da4b5a3f9a96c24914f876166571df5aec20d54048a51a3188e865698",
     "packages/analysis/src/files.ts": "1d72849db35bf2f0ba2f5ad713ff37d01f3eb299ee59e844483977cdd09c18c4",
     "packages/analysis/src/formal.ts": "3b214da239fbf5f796f76fb5d9141cf60f9b946a51560cde5944e7e2f9ca4891",
@@ -12295,19 +12552,19 @@
     "packages/analysis/src/knowledge.ts": "dfab1e023bcff8c937768746140d1ef3cdb7ffbe2bc8a2f1008a630298b41087",
     "packages/analysis/src/model-correspondence.ts": "c079c392ed21a76435868d70d942433feb7b3505020ff76bf60e4e55b0ea83c1",
     "packages/analysis/src/mutation.ts": "eabd67fe84a5bb1aa42743c364f34db66267fd7d42ce7d9093e31eeca8652bc4",
-    "packages/analysis/src/order.ts": "62104804c8fd55ee418206ef3b7c14364d8f78c92661ea7f38d4daf150b2ce1d",
+    "packages/analysis/src/order.ts": "38c131b3d84b08d8c58d37d82cc70fbb12fa24392c8505e4020a01a660ac8701",
     "packages/analysis/src/performance.ts": "87e478fe5bfaa453a559392497994b815df436cb4e329dcd56e3419ca558386b",
     "packages/analysis/src/process.ts": "8184c7f7c4c58cdc6987fd9d2ec2c02ce8557f94b6aa30853a0c6056ba79cf4a",
     "packages/analysis/src/quality-refresh.ts": "2b11461f84b7155ee1ec02d53d6e0af291ce26c40f6e77755e405c1b000e730d",
     "packages/analysis/src/scaffold-artifact.ts": "e5e6fa31fbd97ce4dcc294ab26966eb0a4a2507eb4025a7a8a522831e7fb886d",
-    "packages/analysis/src/tdd.ts": "7fc946c4dcf8e9ae2c40303bbd252f8484f7a2194c7c7dc1224f35353919ba8e",
+    "packages/analysis/src/tdd.ts": "cc3a8eacc2055c717f1c1ff7a1bd6dd42936baa3cd1745af0d111de3abf6164c",
     "packages/analysis/src/test-report.ts": "41c76811bfcb5e286bf097bf2f6aaf6cd5a414202efe8108f28219ecca063a01",
     "packages/analysis/src/trace.ts": "aaa937522921837e72ee2cb7423662b4e890663b002d28e18c6a37368ee5de21",
     "packages/analysis/src/workflow-types.ts": "427c3450352eb7799e2b49933e267f9888e87d51dc5c6482b5b1378620205309",
     "packages/analysis/src/workflow-waiver.ts": "2c6b982bcdd99e33951ad47bd7e060a8cf4868b7caa48a7bb9fa896092eed123",
     "packages/analysis/src/workflow.ts": "37c332cdcd7f5bae240a192c10e8e39bdeb28233cf3c30b535516f521ef4d661",
     "packages/cli/src/install.ts": "a15942ca763881364b9e0f1a134d2d8f9c63f09ce2b7cd40f6467f523b089fc2",
-    "packages/cli/src/main.ts": "7e751d0c41b52d7b6e3c0c1cb753a9e490f93ebc28c7310534522878d9b7ebfc",
+    "packages/cli/src/main.ts": "13a8934fa914cc133651ac88712a05ed9291c157cf273980036e51c9d667d24a",
     "packages/domain/src/constitution.ts": "514278499642ff46ed902864b9192f566b116b4f92eb3fafa6b62588335e170a",
     "packages/domain/src/design.ts": "4ead6cea89bc6fe9367eea98df810b08eeb201e129b7f84e0b7de80bac7b7e61",
     "packages/domain/src/index.ts": "43243e9279e3826b23cd8d8b4365854974112ce4cf17cfb0f0ee32e6b28e9cc6",
@@ -12365,10 +12622,10 @@
     "tests/release-version-synchronization.test.ts": "6886bfb2f0029a5f685f8152e7fb918a532a65f5ec5d84ffad063894c2ef49cb",
     "tests/scaffold-artifact.test.ts": "a8f074cdd9279f1b7c540fa1a721642ca762de9cd155f0894526a8f3daabc7d6",
     "tests/scoped-feature-trace-artifacts.test.ts": "c34b4fd44067a966f008827845a8fb6efce7bd4294d2cf3cb41110876763e3e1",
-    "tests/tdd-adoption-warning.test.ts": "fa0fc6267ad829bb4955dc352e986585f92daecd17865da7036ff2b9087d57e7",
+    "tests/tdd-adoption-warning.test.ts": "e7abeccab960ed5efdd77be8937ec556ebdf0c378a22f4671ba8d75305049343",
     "tests/tdd-cycle-archive.test.ts": "2984919b6cad8f520580df110646b00726207932a07209bfd52e9cc0ba58f011",
     "tests/tdd-cycle-void.test.ts": "e7ea6272d9b5e0ab5377df280ba01dd38c8d1496f3a0c0f36f2053ad1b660baf",
-    "tests/tdd-fingerprint-migration.test.ts": "f5263df29b0987e4b7480c40b79fe686b317520e98fe0a6e6f3bcc68c7eca1da",
+    "tests/tdd-fingerprint-migration.test.ts": "509686f23b41d7256562a0e14ef1fe823833f0016f16a600eab2a77a80660ab0",
     "tests/tdd-fingerprint-scoping.test.ts": "e10a3ee1d4a6d50d69051a84884ef61d6ecff5d9c47b37b25240a95821e0608e",
     "tests/tdd-green-requirement-scoping.test.ts": "e4248a6bf6c087f78752d48c8f6c89c82eca82c98b266a42938e9a6856e43d1d",
     "tests/tdd-red-collection-guidance.test.ts": "fa98caf353c567a253efe2177f777153c1582889642cdab5c3262aba86fa3909",

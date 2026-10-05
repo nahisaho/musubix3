@@ -189,6 +189,8 @@ function nonWaiverOrderKey(record: EvidenceOrderRecord): string {
     record.kind,
     record.entityId,
     record.phase,
+    record.oldTestId ?? null,
+    record.newTestId ?? null,
     record.code ?? null,
     record.requirementId ?? null,
     record.detail ?? null,
@@ -220,7 +222,13 @@ function batchPhase(record: EvidenceOrderRecord, change: ChangeRecord): ChangePh
 function payloadFor(history: EvidenceHistory, record: EvidenceOrderRecord): PayloadRef | undefined {
   if (record.kind === 'tdd') {
     const cycle = history.tdd.cycles.find((entry) => entry.cycleId === record.entityId);
-    const value = cycle?.[record.phase as TddChainPhase];
+    const value = record.phase === 'migrate'
+      ? (cycle?.migrateHistory?.find((entry) =>
+          entry.order === record.sequence
+          || ((entry.oldTestId ?? null) === (record.oldTestId ?? null)
+            && (entry.newTestId ?? null) === (record.newTestId ?? null)))
+        ?? (cycle?.migrate?.order === record.sequence ? cycle.migrate : undefined))
+      : cycle?.[record.phase as TddChainPhase];
     return value ? { kind: 'tdd', identity: `${record.entityId}:${record.phase}`, value } : undefined;
   }
   if (record.phase === 'waiver') {
@@ -309,14 +317,17 @@ function validateInputEntities(history: EvidenceHistory): EvidenceMergeDiagnosti
   }
   const phaseSet = new Set<string>();
   for (const record of history.tdd.chain ?? []) {
-    const key = `${record.cycleId}:${record.phase}`;
+    const key = canonicalJson(record.phase === 'migrate'
+      ? [record.cycleId, record.phase, record.oldTestId ?? null, record.newTestId ?? null]
+      : [record.cycleId, record.phase]);
     if (phaseSet.has(key)) diagnostics.push(mergeDiagnostic('EVIDENCE_MERGE_CONFLICT', 'Duplicate TDD chain identity.', TDD_PATH, key));
     phaseSet.add(key);
   }
   for (const cycle of history.tdd.cycles) {
-    for (const phase of TDD_PHASES) {
+    for (const phase of TDD_PHASES.filter((entry) => entry !== 'migrate')) {
       const value = cycle[phase];
-      if (value && !phaseSet.has(`${cycle.cycleId}:${phase}`)) {
+      const phaseIdentity = canonicalJson([cycle.cycleId, phase]);
+      if (value && !phaseSet.has(phaseIdentity)) {
         diagnostics.push(mergeDiagnostic('EVIDENCE_MERGE_CONFLICT', 'Missing TDD chain identity.', TDD_PATH, `${cycle.cycleId}:${phase}`));
       }
       if (value && !Number.isInteger(value.order)) {
@@ -334,11 +345,39 @@ function validateInputEntities(history: EvidenceHistory): EvidenceMergeDiagnosti
         }
       }
     }
+    const migrations = cycle.migrateHistory?.length ? cycle.migrateHistory : (cycle.migrate ? [cycle.migrate] : []);
+    for (const migration of migrations) {
+      const identity = canonicalJson([cycle.cycleId, 'migrate', migration.oldTestId ?? null, migration.newTestId ?? null]);
+      if (!phaseSet.has(identity)) {
+        diagnostics.push(mergeDiagnostic('EVIDENCE_MERGE_CONFLICT', 'Missing TDD chain identity.', TDD_PATH, `${cycle.cycleId}:migrate`));
+      }
+      if (!Number.isInteger(migration.order)) {
+        diagnostics.push(mergeDiagnostic('EVIDENCE_MERGE_CONFLICT',
+          'TDD phase lacks monotonic order evidence; migrate or regenerate it before merging.',
+          TDD_PATH, `${cycle.cycleId}:migrate`));
+      }
+      if (migration.order !== undefined) {
+        const matches = history.order.records.filter((record) =>
+          record.sequence === migration.order && record.kind === 'tdd'
+          && record.entityId === cycle.cycleId && record.phase === 'migrate'
+          && (record.oldTestId ?? null) === (migration.oldTestId ?? null)
+          && (record.newTestId ?? null) === (migration.newTestId ?? null));
+        if (matches.length !== 1) {
+          diagnostics.push(mergeDiagnostic('EVIDENCE_MERGE_CONFLICT', 'TDD phase does not pair to exactly one order record.',
+            TDD_PATH, `${cycle.cycleId}:migrate`));
+        }
+      }
+    }
   }
   for (const key of phaseSet) {
-    const [cycleId, phase] = key.split(':', 2);
+    const parsed = JSON.parse(key) as [string, TddChainPhase, (string | null)?, (string | null)?];
+    const [cycleId, phase, oldTestId, newTestId] = parsed;
     const cycle = history.tdd.cycles.find((entry) => entry.cycleId === cycleId);
-    if (!cycle?.[phase as TddChainPhase]) {
+    const present = phase === 'migrate'
+      ? (cycle?.migrateHistory?.some((entry) => (entry.oldTestId ?? null) === (oldTestId ?? null) && (entry.newTestId ?? null) === (newTestId ?? null))
+        || (cycle?.migrate && (cycle.migrate.oldTestId ?? null) === (oldTestId ?? null) && (cycle.migrate.newTestId ?? null) === (newTestId ?? null)))
+      : !!cycle?.[phase as TddChainPhase];
+    if (!present) {
       diagnostics.push(mergeDiagnostic('EVIDENCE_MERGE_CONFLICT', 'Extra TDD chain identity.', TDD_PATH, key));
     }
   }
@@ -854,10 +893,13 @@ function validateCandidateReferences(
         TDD_PATH, `${cycle.cycleId}:refactor`));
     }
     const latestNonMigrateOrder = cycle.refactor?.valid ? cycle.refactor.order : cycle.green?.order;
-    if (cycle.migrate?.order !== undefined && latestNonMigrateOrder !== undefined
-      && cycle.migrate.order <= latestNonMigrateOrder) {
-      diagnostics.push(mergeDiagnostic('TDD_ORDER_SEQUENCE', 'Migrate is not after Green/Refactor in monotonic evidence order.',
-        TDD_PATH, `${cycle.cycleId}:migrate`));
+    const migrations = cycle.migrateHistory?.length ? cycle.migrateHistory : (cycle.migrate ? [cycle.migrate] : []);
+    for (const migration of migrations) {
+      if (migration.order !== undefined && latestNonMigrateOrder !== undefined
+        && migration.order <= latestNonMigrateOrder) {
+        diagnostics.push(mergeDiagnostic('TDD_ORDER_SEQUENCE', 'Migrate is not after Green/Refactor in monotonic evidence order.',
+          TDD_PATH, `${cycle.cycleId}:migrate`));
+      }
     }
   }
   for (const identity of chainKeys) {

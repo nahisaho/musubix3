@@ -6,7 +6,7 @@ import { digest, evidenceInputPaths, exists, files, isSource, readText, safePath
 import { runProcess, type Runner } from './process.js';
 import { buildTrace, type TraceNode } from './trace.js';
 import { adapterInvocation, clearAdapterOutput, mergeAdapterArgs, normalizeAdapterReport, readAdapterOutput } from './adapters.js';
-import { appendEvidenceOrder, evidenceOrderRecord, inspectEvidenceOrder, type validateEvidenceOrderLog } from './order.js';
+import { appendEvidenceOrder, evidenceOrderRecord, inspectEvidenceOrder, type EvidenceOrderScope, type validateEvidenceOrderLog } from './order.js';
 import { requireApproval, resolveRequirementDomain } from './approval.js';
 import type { MusubixTestReport } from './test-report.js';
 import { withEvidenceWriterLock } from './evidence-writer-lock.js';
@@ -35,12 +35,16 @@ export interface TddPhaseEvidence {
 }
 
 export type TddChainPhase = TddPhase | 'migrate' | 'void' | 'archive';
+export type TddMigrationMode = 'fingerprint' | 'identifier';
 
 export interface TddMigrationEvidence {
   phase: 'migrate';
   fromFingerprint: string;
   toFingerprint: string;
   approver: string;
+  mode?: TddMigrationMode;
+  oldTestId?: string;
+  newTestId?: string;
   order?: number;
   recordedAt: string;
 }
@@ -73,6 +77,7 @@ export interface TddCycle {
   green?: TddPhaseEvidence;
   refactor?: TddPhaseEvidence;
   migrate?: TddMigrationEvidence;
+  migrateHistory?: TddMigrationEvidence[];
   void?: TddVoidEvidence;
   archive?: TddArchiveEvidence;
 }
@@ -85,6 +90,9 @@ export interface TddChainRecord {
   testPath: string;
   commandName: string;
   phase: TddChainPhase;
+  mode?: TddMigrationMode;
+  oldTestId?: string;
+  newTestId?: string;
   phaseEvidenceSha256: string;
   previousSha256: string | null;
   recordSha256: string;
@@ -120,6 +128,62 @@ function chainRecordSha256(record: Omit<TddChainRecord, 'recordSha256'>): string
   return digest(JSON.stringify(record));
 }
 
+function escapeRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function migrationMode(record: TddMigrationEvidence): TddMigrationMode {
+  return record.mode ?? 'fingerprint';
+}
+
+function migrationScope(record: TddMigrationEvidence): EvidenceOrderScope | undefined {
+  return migrationMode(record) === 'identifier'
+    ? {
+        ...(record.oldTestId !== undefined ? { oldTestId: record.oldTestId } : {}),
+        ...(record.newTestId !== undefined ? { newTestId: record.newTestId } : {}),
+      }
+    : undefined;
+}
+
+function migrationRecords(cycle: TddCycle): TddMigrationEvidence[] {
+  if (cycle.migrateHistory?.length) return cycle.migrateHistory;
+  return cycle.migrate ? [cycle.migrate] : [];
+}
+
+function latestMigration(cycle: TddCycle): TddMigrationEvidence | undefined {
+  return migrationRecords(cycle).at(-1);
+}
+
+function currentEffectiveTestId(cycle: TddCycle): string {
+  const identifierMigration = [...migrationRecords(cycle)].reverse().find((record) => migrationMode(record) === 'identifier');
+  return identifierMigration?.newTestId ?? cycle.testId;
+}
+
+function currentEffectiveFingerprint(cycle: TddCycle): string | undefined {
+  const migrate = latestMigration(cycle);
+  if (migrate) return migrate.toFingerprint;
+  if (cycle.refactor?.valid) return cycle.refactor.testFingerprint;
+  return cycle.green?.testFingerprint;
+}
+
+function currentEffectiveSourceFingerprint(cycle: TddCycle): string | undefined {
+  if (cycle.refactor?.valid) return cycle.refactor.sourceFingerprint;
+  return cycle.green?.sourceFingerprint;
+}
+
+function chainIdentity(record: Pick<TddChainRecord, 'cycleId' | 'phase' | 'mode' | 'oldTestId' | 'newTestId'>): string {
+  if (record.phase === 'migrate') {
+    return JSON.stringify([
+      record.cycleId,
+      record.phase,
+      record.mode ?? 'fingerprint',
+      record.oldTestId ?? null,
+      record.newTestId ?? null,
+    ]);
+  }
+  return JSON.stringify([record.cycleId, record.phase]);
+}
+
 function appendChainRecord(evidence: TddEvidence, cycle: TddCycle, phase: TddChainPhase, phaseEvidence: unknown): void {
   if (!cycle.cycleId) throw new Error('TDD cycle ID is required for append-only evidence.');
   if (!evidence.chain) {
@@ -137,6 +201,13 @@ function appendChainRecord(evidence: TddEvidence, cycle: TddCycle, phase: TddCha
     testPath: cycle.testPath,
     commandName: cycle.commandName,
     phase,
+    ...(phase === 'migrate' && phaseEvidence && typeof phaseEvidence === 'object'
+      ? {
+          mode: (phaseEvidence as TddMigrationEvidence).mode,
+          oldTestId: (phaseEvidence as TddMigrationEvidence).oldTestId,
+          newTestId: (phaseEvidence as TddMigrationEvidence).newTestId,
+        }
+      : {}),
     phaseEvidenceSha256: digest(JSON.stringify(phaseEvidence)),
     previousSha256: previous?.recordSha256 ?? null,
   };
@@ -166,7 +237,7 @@ function collectStatements(node: ts.Node, out: ts.Statement[]): void {
   ts.forEachChild(node, (child) => collectStatements(child, out));
 }
 
-async function testFingerprint(root: string, test: TraceNode): Promise<string> {
+async function testDeclarationText(root: string, test: TraceNode): Promise<string> {
   const text = await readText(root, test.path);
   const lines = text.split(/\r?\n/);
   const start = lines.slice(0, Math.max(0, test.line - 1)).join('\n').length + (test.line > 1 ? 1 : 0);
@@ -175,12 +246,16 @@ async function testFingerprint(root: string, test: TraceNode): Promise<string> {
     const statements: ts.Statement[] = [];
     collectStatements(source, statements);
     const declaration = statements.find((statement) => statement.getStart(source) >= start);
-    if (declaration) return digest(text.slice(start, declaration.end).trim());
+    if (declaration) return text.slice(start, declaration.end).trim();
   }
   const lineEnd = text.indexOf('\n', start);
   const searchFrom = lineEnd < 0 ? text.length : lineEnd + 1;
   const next = text.slice(searchFrom).search(/^[ \t]*(?:\/\*+|\/\/|#).*?@id\s+TEST-/m);
-  return digest(text.slice(start, next < 0 ? text.length : searchFrom + next).trim());
+  return text.slice(start, next < 0 ? text.length : searchFrom + next).trim();
+}
+
+async function testFingerprint(root: string, test: TraceNode): Promise<string> {
+  return digest(await testDeclarationText(root, test));
 }
 
 // The pre-REQ-TDD-FINGERPRINT-SCOPING-001 algorithm (top-level statements
@@ -213,6 +288,49 @@ export interface TddMigrationResult {
   fromFingerprint?: string;
   toFingerprint?: string;
   reason?: string;
+}
+
+export interface TddIdentifierMigrationResult extends TddMigrationResult {
+  oldTestId?: string;
+  newTestId?: string;
+}
+
+/** @id CODE-TDD-IDENTIFIER-MIGRATION-002
+ * @implements REQ-TDD-IDENTIFIER-MIGRATION-002 REQ-TDD-IDENTIFIER-MIGRATION-003
+ * @design DES-TDD-IDENTIFIER-MIGRATION-002
+ */
+async function normalizedIdentifierMigrationFingerprint(
+  root: string,
+  test: TraceNode,
+  oldTestId: string,
+  newTestId: string,
+): Promise<string> {
+  let declaration = await testDeclarationText(root, test);
+  const idPattern = new RegExp(`@id\\s+${escapeRegExp(newTestId)}\\b`, 'g');
+  const idMatches = declaration.match(idPattern) ?? [];
+  if (idMatches.length !== 1) {
+    throw new Error(`${newTestId} must contain exactly one authoritative @id annotation in its declaration.`);
+  }
+  declaration = declaration.replace(idPattern, `@id ${oldTestId}`);
+  if (!isSource(test.path)) return digest(declaration);
+
+  const source = ts.createSourceFile(test.path, declaration, ts.ScriptTarget.Latest, true);
+  const literals: Array<{ start: number; end: number; text: string }> = [];
+  const visit = (node: ts.Node) => {
+    if ((ts.isStringLiteral(node) || ts.isNoSubstitutionTemplateLiteral(node)) && node.text.includes(newTestId)) {
+      literals.push({ start: node.getStart(source), end: node.end, text: node.text });
+    }
+    ts.forEachChild(node, visit);
+  };
+  visit(source);
+  if (literals.length !== 1) {
+    throw new Error(`${newTestId} must differ from ${oldTestId} only in its @id annotation and one adapter-matched identity string.`);
+  }
+  const [literal] = literals;
+  if (!literal) throw new Error('Missing adapter identity literal.');
+  const replacement = declaration.slice(literal.start, literal.end).replace(new RegExp(escapeRegExp(newTestId), 'g'), oldTestId);
+  declaration = `${declaration.slice(0, literal.start)}${replacement}${declaration.slice(literal.end)}`;
+  return digest(declaration.trim());
 }
 
 /** @id CODE-TDD-CYCLE-ARCHIVE-006
@@ -249,12 +367,12 @@ async function migrateTddFingerprintUnlocked(root: string, testId: string, appro
   }
   if (!cycle.cycleId) throw new Error(`${testId} lacks a cycle ID; regenerate its evidence before migrating.`);
   if (!cycle.green?.valid) throw new Error(`${testId} has no valid Green phase to migrate.`);
-  if (cycle.migrate) throw new Error(`${testId} has already been migrated.`);
+  if (migrationRecords(cycle).length > 0) throw new Error(`${testId} has already been migrated.`);
   const trace = await buildTrace(root);
   const test = trace.nodes.find((node) => node.kind === 'test' && node.id === testId);
   if (!test) throw new Error(`Annotated test ID not found: ${testId}`);
-  const latestPhase = cycle.refactor?.valid ? cycle.refactor : cycle.green;
-  const storedFingerprint = latestPhase.testFingerprint;
+  const storedFingerprint = currentEffectiveFingerprint(cycle);
+  if (!storedFingerprint) throw new Error(`${testId} has no effective fingerprint to migrate.`);
   const legacyCurrent = await legacyTestFingerprint(root, test);
   if (legacyCurrent !== storedFingerprint) {
     return {
@@ -269,6 +387,7 @@ async function migrateTddFingerprintUnlocked(root: string, testId: string, appro
     fromFingerprint: storedFingerprint,
     toFingerprint,
     approver,
+    mode: 'fingerprint',
     recordedAt: new Date().toISOString(),
   };
   record.order = (await appendEvidenceOrder(root, { kind: 'tdd', entityId: cycle.cycleId, phase: 'migrate' })).sequence;
@@ -276,6 +395,105 @@ async function migrateTddFingerprintUnlocked(root: string, testId: string, appro
   appendChainRecord(evidence, cycle, 'migrate', record);
   await writeJson(root, '.musubix/evidence/tdd.json', evidence);
   return { migrated: true, testId, fromFingerprint: storedFingerprint, toFingerprint };
+}
+
+/** @id CODE-TDD-IDENTIFIER-MIGRATION-001
+ * @implements REQ-TDD-IDENTIFIER-MIGRATION-001 REQ-TDD-IDENTIFIER-MIGRATION-002 REQ-TDD-IDENTIFIER-MIGRATION-003 REQ-TDD-IDENTIFIER-MIGRATION-004
+ * @design DES-TDD-IDENTIFIER-MIGRATION-001 DES-TDD-IDENTIFIER-MIGRATION-002 DES-TDD-IDENTIFIER-MIGRATION-003
+ */
+export async function migrateTddIdentifier(
+  root: string,
+  oldTestId: string,
+  newTestId: string,
+  approver: string,
+): Promise<TddIdentifierMigrationResult> {
+  return withEvidenceWriterLock(root, 'tdd migrate', () => migrateTddIdentifierUnlocked(root, oldTestId, newTestId, approver));
+}
+
+async function migrateTddIdentifierUnlocked(
+  root: string,
+  oldTestId: string,
+  newTestId: string,
+  approver: string,
+): Promise<TddIdentifierMigrationResult> {
+  if (!approver?.trim()) throw new Error('An approver is required to migrate TDD identifier evidence.');
+  if (oldTestId === newTestId) throw new Error('Identifier migration requires old and new test IDs that must differ.');
+  const evidence = await loadTddEvidence(root);
+  if (!evidence) throw new Error('No TDD evidence found.');
+  let cycle = evidence.cycles.filter((entry) => entry.testId === oldTestId).at(-1);
+  if (!cycle) throw new Error(`No TDD cycle found for ${oldTestId}.`);
+  const order = await inspectEvidenceOrder(root);
+  if (archiveLinkage(evidence, order, cycle).valid) {
+    throw new Error(`${oldTestId}'s latest cycle is archived and cannot be migrated; record a fresh Red-Green cycle instead.`);
+  }
+  if (voidLinkage(evidence, order, cycle).valid) {
+    const validlyVoided = new Set(evidence.cycles.filter((entry) => voidLinkage(evidence, order, entry).valid));
+    const validlyArchived = new Set(evidence.cycles.filter((entry) => archiveLinkage(evidence, order, entry).valid));
+    const effective = effectiveLatestCycle(evidence, order, validlyVoided, validlyArchived, oldTestId, cycle);
+    if (effective) cycle = effective;
+  }
+  if (!cycle.cycleId) throw new Error(`${oldTestId} lacks a cycle ID; regenerate its evidence before migrating.`);
+  if (!cycle.green?.valid) throw new Error(`${oldTestId} has no valid Green phase to migrate.`);
+  const previousIdentifierMigration = [...migrationRecords(cycle)].reverse().find((record) => migrationMode(record) === 'identifier');
+  if (previousIdentifierMigration?.newTestId === newTestId) {
+    throw new Error(`${oldTestId} is already relinked to ${newTestId}.`);
+  }
+  if (previousIdentifierMigration) {
+    throw new Error(`${oldTestId} is already relinked to ${previousIdentifierMigration.newTestId}; conflicting relinks are not allowed.`);
+  }
+  if (evidence.cycles.some((entry) => entry !== cycle && currentEffectiveTestId(entry) === newTestId)) {
+    throw new Error(`${newTestId} already has a recorded cycle history.`);
+  }
+  const trace = await buildTrace(root);
+  if (trace.nodes.some((node) => node.kind === 'test' && node.id === oldTestId)) {
+    throw new Error(`${oldTestId} still has a surviving authoritative declaration in the current trace.`);
+  }
+  const matches = trace.nodes.filter((node) => node.kind === 'test' && node.id === newTestId);
+  if (matches.length !== 1) throw new Error(`${newTestId} must have exactly one surviving authoritative declaration.`);
+  const [test] = matches;
+  if (!test) throw new Error(`Annotated test ID not found: ${newTestId}`);
+  if (test.path !== cycle.testPath) throw new Error(`${newTestId} must remain in the same test file path as ${oldTestId}.`);
+  const expectedSourceFingerprint = currentEffectiveSourceFingerprint(cycle);
+  const currentSource = await sourceFingerprint(root, test.path);
+  if (expectedSourceFingerprint !== currentSource) {
+    throw new Error(`${oldTestId}'s non-test sourceFingerprint changed after Green; record a fresh Red-Green cycle instead.`);
+  }
+  const baselineFingerprint = currentEffectiveFingerprint(cycle);
+  if (!baselineFingerprint) throw new Error(`${oldTestId} has no effective fingerprint to relink.`);
+  const normalizedFingerprint = await normalizedIdentifierMigrationFingerprint(root, test, oldTestId, newTestId);
+  if (normalizedFingerprint !== baselineFingerprint) {
+    throw new Error(`${newTestId} is not a pure rename of ${oldTestId}; declaration fingerprint changed beyond rename-only tokens.`);
+  }
+  const toFingerprint = await testFingerprint(root, test);
+  const record: TddMigrationEvidence = {
+    phase: 'migrate',
+    mode: 'identifier',
+    fromFingerprint: baselineFingerprint,
+    toFingerprint,
+    oldTestId,
+    newTestId,
+    approver,
+    recordedAt: new Date().toISOString(),
+  };
+  record.order = (await appendEvidenceOrder(root, {
+    kind: 'tdd',
+    entityId: cycle.cycleId,
+    phase: 'migrate',
+    oldTestId,
+    newTestId,
+  })).sequence;
+  cycle.migrateHistory = [...migrationRecords(cycle), record];
+  if (!cycle.migrate) cycle.migrate = record;
+  appendChainRecord(evidence, cycle, 'migrate', record);
+  await writeJson(root, '.musubix/evidence/tdd.json', evidence);
+  return {
+    migrated: true,
+    testId: oldTestId,
+    oldTestId,
+    newTestId,
+    fromFingerprint: baselineFingerprint,
+    toFingerprint,
+  };
 }
 
 export async function loadTddEvidence(root: string): Promise<TddEvidence | null> {
@@ -319,6 +537,36 @@ function phaseLinkageValid(
   return recordSha256 === chainRecordSha256(payload)
     && record.previousSha256 === expectedPrevious
     && record.phaseEvidenceSha256 === digest(JSON.stringify(phaseEvidence));
+}
+
+function migrationLinkageValid(
+  order: ReturnType<typeof validateEvidenceOrderLog>,
+  chain: TddChainRecord[] | undefined,
+  cycle: TddCycle,
+  record: TddMigrationEvidence,
+): boolean {
+  if (!order.valid || !cycle.cycleId || record.order === undefined || !chain) return false;
+  const orderRecord = evidenceOrderRecord(order.records, 'tdd', cycle.cycleId, 'migrate', migrationScope(record));
+  if (!orderRecord || orderRecord.sequence !== record.order) return false;
+  if (migrationMode(record) === 'identifier'
+    && (orderRecord.oldTestId !== record.oldTestId || orderRecord.newTestId !== record.newTestId)) {
+    return false;
+  }
+  const matches = chain.filter((entry) =>
+    entry.phase === 'migrate'
+    && entry.cycleId === cycle.cycleId
+    && entry.testId === cycle.testId
+    && (entry.mode ?? 'fingerprint') === migrationMode(record)
+    && (entry.oldTestId ?? null) === (record.oldTestId ?? null)
+    && (entry.newTestId ?? null) === (record.newTestId ?? null));
+  if (matches.length !== 1) return false;
+  const chainRecord = matches[0]!;
+  const index = chain.indexOf(chainRecord);
+  const expectedPrevious = index === 0 ? null : chain[index - 1]!.recordSha256;
+  const { recordSha256, ...payload } = chainRecord;
+  return recordSha256 === chainRecordSha256(payload)
+    && chainRecord.previousSha256 === expectedPrevious
+    && chainRecord.phaseEvidenceSha256 === digest(JSON.stringify(record));
 }
 
 /** @id CODE-TDD-CYCLE-VOID-002
@@ -703,7 +951,7 @@ async function runTddPhaseUnlocked(
           .map((edge) => edge.from);
         return !evidence.cycles.some((cycle) =>
           cycle.requirementId === requirement.id
-          && verifiedTests.includes(cycle.testId)
+          && verifiedTests.includes(currentEffectiveTestId(cycle))
           && cycle.red.valid
           && cycle.green?.valid);
       })
@@ -788,15 +1036,15 @@ export async function validateTddEvidence(root: string): Promise<{
       if (recordSha256 !== chainRecordSha256(payload)) {
         diagnostics.push(error('TDD_CHAIN_HASH_MISMATCH', `TDD chain record ${record.sequence} has an invalid SHA-256.`));
       }
-      const key = `${record.cycleId}:${record.phase}`;
+      const key = chainIdentity(record);
       if (records.has(key)) diagnostics.push(error('TDD_CHAIN_PHASE_DUPLICATE', `${key} appears more than once in the TDD chain.`));
       records.set(key, record);
     }
     for (const cycle of evidence.cycles) {
-      for (const phase of ['red', 'green', 'refactor', 'migrate', 'void', 'archive'] as const) {
+      for (const phase of ['red', 'green', 'refactor', 'void', 'archive'] as const) {
         const phaseEvidence = cycle[phase];
         if (!phaseEvidence) continue;
-        const key = `${cycle.cycleId ?? 'missing'}:${phase}`;
+        const key = chainIdentity({ cycleId: cycle.cycleId ?? 'missing', phase });
         const record = records.get(key);
         if (!record) {
           diagnostics.push(error('TDD_CHAIN_PHASE_MISSING', `${cycle.testId}:${phase} is absent from the TDD hash chain.`, cycle.testPath));
@@ -811,13 +1059,35 @@ export async function validateTddEvidence(root: string): Promise<{
         }
         records.delete(key);
       }
+      for (const migration of migrationRecords(cycle)) {
+        const key = chainIdentity({
+          cycleId: cycle.cycleId ?? 'missing',
+          phase: 'migrate',
+          mode: migrationMode(migration),
+          ...(migration.oldTestId !== undefined ? { oldTestId: migration.oldTestId } : {}),
+          ...(migration.newTestId !== undefined ? { newTestId: migration.newTestId } : {}),
+        });
+        const record = records.get(key);
+        if (!record) {
+          diagnostics.push(error('TDD_CHAIN_PHASE_MISSING', `${cycle.testId}:migrate is absent from the TDD hash chain.`, cycle.testPath));
+          continue;
+        }
+        if (record.requirementId !== cycle.requirementId
+          || record.testId !== cycle.testId
+          || record.testPath !== cycle.testPath
+          || record.commandName !== cycle.commandName
+          || record.phaseEvidenceSha256 !== digest(JSON.stringify(migration))) {
+          diagnostics.push(error('TDD_CHAIN_PAYLOAD_MISMATCH', `${cycle.testId}:migrate does not match its immutable TDD chain record.`, cycle.testPath));
+        }
+        records.delete(key);
+      }
     }
     for (const record of records.values()) {
       diagnostics.push(error('TDD_CHAIN_ORPHAN', `TDD chain record ${record.sequence} has no matching cycle phase.`));
     }
   }
   const latestCycles = new Map<string, TddCycle>();
-  for (const cycle of evidence.cycles) latestCycles.set(cycle.testId, cycle);
+  for (const cycle of evidence.cycles) latestCycles.set(currentEffectiveTestId(cycle), cycle);
   /** @id CODE-TDD-SUPERSEDED-CYCLE-SCOPING-001
    * @implements REQ-TDD-SUPERSEDED-CYCLE-SCOPING-001
    */
@@ -825,8 +1095,9 @@ export async function validateTddEvidence(root: string): Promise<{
   {
     const cyclesByTest = new Map<string, TddCycle[]>();
     for (const cycle of evidence.cycles) {
-      const list = cyclesByTest.get(cycle.testId);
-      if (list) list.push(cycle); else cyclesByTest.set(cycle.testId, [cycle]);
+      const identity = currentEffectiveTestId(cycle);
+      const list = cyclesByTest.get(identity);
+      if (list) list.push(cycle); else cyclesByTest.set(identity, [cycle]);
     }
     for (const cycles of cyclesByTest.values()) {
       for (let index = 0; index < cycles.length; index++) {
@@ -885,7 +1156,7 @@ export async function validateTddEvidence(root: string): Promise<{
       .map((edge) => edge.from);
     const covered = evidence.cycles.some((cycle) =>
       cycle.requirementId === requirement.id
-      && verifiedTests.includes(cycle.testId)
+      && verifiedTests.includes(currentEffectiveTestId(cycle))
       && cycle.red.valid
       && cycle.green?.valid);
     if (!covered) {
@@ -919,21 +1190,29 @@ export async function validateTddEvidence(root: string): Promise<{
     if (cycle.refactor?.order !== undefined && cycle.green?.order !== undefined && cycle.refactor.order <= cycle.green.order) {
       diagnostics.push(error('TDD_ORDER_SEQUENCE', `${cycle.testId}:refactor is not after Green in monotonic evidence order.`, cycle.testPath));
     }
-    if (cycle.migrate) {
-      if (!cycle.cycleId || !Number.isInteger(cycle.migrate.order)) {
+    const migrations = migrationRecords(cycle);
+    for (const migration of migrations) {
+      if (!cycle.cycleId || !Number.isInteger(migration.order)) {
         diagnostics.push(error('TDD_ORDER_MIGRATION_REQUIRED', `${cycle.testId}:migrate lacks monotonic order evidence; archive legacy evidence and regenerate the complete cycle instead of editing append-only records.`, cycle.testPath));
-      } else {
-        const record = evidenceOrderRecord(order.records, 'tdd', cycle.cycleId, 'migrate');
-        if (!record || record.sequence !== cycle.migrate.order) {
+        continue;
+      }
+      if (!migrationLinkageValid(order, evidence.chain, cycle, migration)) {
+        const orderRecord = evidenceOrderRecord(order.records, 'tdd', cycle.cycleId, 'migrate', migrationScope(migration));
+        if (!orderRecord || orderRecord.sequence !== migration.order) {
           diagnostics.push(error('TDD_ORDER_MISMATCH', `${cycle.testId}:migrate does not match the monotonic evidence order log.`, cycle.testPath));
+        } else {
+          diagnostics.push(error('TDD_CHAIN_PAYLOAD_MISMATCH', `${cycle.testId}:migrate does not match its immutable TDD chain record.`, cycle.testPath));
         }
       }
       const latestNonMigrateOrder = cycle.refactor?.valid ? cycle.refactor.order : cycle.green?.order;
-      if (cycle.migrate.order !== undefined && latestNonMigrateOrder !== undefined && cycle.migrate.order <= latestNonMigrateOrder) {
+      if (migration.order !== undefined && latestNonMigrateOrder !== undefined && migration.order <= latestNonMigrateOrder) {
         diagnostics.push(error('TDD_ORDER_SEQUENCE', `${cycle.testId}:migrate is not after Green/Refactor in monotonic evidence order.`, cycle.testPath));
       }
-      if (!validlyArchivedCycles.has(cycle) && !cycle.migrate.approver) {
+      if (!validlyArchivedCycles.has(cycle) && !migration.approver) {
         diagnostics.push(error('TDD_LEGACY_OR_UNSCOPED_EVIDENCE', `${cycle.testId}:migrate lacks a recorded human approver.`, cycle.testPath));
+      }
+      if (migrationMode(migration) === 'identifier' && (!migration.oldTestId || !migration.newTestId)) {
+        diagnostics.push(error('TDD_MIGRATE_EVIDENCE_MALFORMED', `${cycle.testId}:migrate lacks old/new test ID linkage.`, cycle.testPath));
       }
     }
     if (!supersededCycles.has(cycle) && !validlyVoidedCycles.has(cycle) && !validlyArchivedCycles.has(cycle)
@@ -947,26 +1226,29 @@ export async function validateTddEvidence(root: string): Promise<{
         && (!cycle.green.scoped || !cycle.green.resultObserved || cycle.green.testStatus !== 'passed' || !cycle.green.reportSha256 || !cycle.green.sourceFingerprint || !cycle.green.executionId)) {
         diagnostics.push(error('TDD_LEGACY_OR_UNSCOPED_EVIDENCE', `${cycle.testId} Green lacks test-scoped execution provenance.`, cycle.testPath));
       }
-      const actualLatest = latestCycles.get(cycle.testId);
+      const effectiveTestId = currentEffectiveTestId(cycle);
+      const actualLatest = latestCycles.get(effectiveTestId);
       // Effective-latest resolution for TDD_TEST_STALE (REQ-TDD-CYCLE-VOID-010)
       // is implemented by the shared `effectiveLatestCycle` helper, annotated
       // as CODE-TDD-CYCLE-VOID-004 above.
       const isStaleTarget = actualLatest === cycle
         ? !validlyArchivedCycles.has(cycle)
         : (actualLatest !== undefined && validlyVoidedCycles.has(actualLatest)
-          && effectiveLatestCycle(evidence, order, validlyVoidedCycles, validlyArchivedCycles, cycle.testId, actualLatest) === cycle
+          && effectiveLatestCycle(evidence, order, validlyVoidedCycles, validlyArchivedCycles, effectiveTestId, actualLatest) === cycle
           && !validlyArchivedCycles.has(cycle));
       if (isStaleTarget) {
-        const test = trace.nodes.find((node) => node.kind === 'test' && node.id === cycle.testId);
+        const test = trace.nodes.find((node) => node.kind === 'test' && node.id === effectiveTestId);
         const current = test ? await testFingerprint(root, test) : undefined;
         const candidates: Array<{ order: number; fingerprint: string }> = [];
         if (cycle.green.order !== undefined) candidates.push({ order: cycle.green.order, fingerprint: cycle.green.testFingerprint });
         if (cycle.refactor?.valid && cycle.refactor.order !== undefined) {
           candidates.push({ order: cycle.refactor.order, fingerprint: cycle.refactor.testFingerprint });
         }
-        if (cycle.migrate?.order !== undefined) candidates.push({ order: cycle.migrate.order, fingerprint: cycle.migrate.toFingerprint });
+        for (const migration of migrations) {
+          if (migration.order !== undefined) candidates.push({ order: migration.order, fingerprint: migration.toFingerprint });
+        }
         const latest = candidates.sort((a, b) => b.order - a.order)[0];
-        if (latest && current !== latest.fingerprint) diagnostics.push(error('TDD_TEST_STALE', `${cycle.testId} changed after its latest passing TDD phase.`, cycle.testPath));
+        if (latest && current !== latest.fingerprint) diagnostics.push(error('TDD_TEST_STALE', `${effectiveTestId} changed after its latest passing TDD phase.`, cycle.testPath));
       }
       if (!validlyArchivedCycles.has(cycle) && cycle.red.sourceFingerprint === cycle.green.sourceFingerprint) {
         diagnostics.push(error('TDD_GREEN_WITHOUT_SOURCE_CHANGE', `${cycle.testId} has no non-test project change between Red and Green.`, cycle.testPath));

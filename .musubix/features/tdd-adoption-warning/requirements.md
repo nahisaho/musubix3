@@ -20,8 +20,9 @@ from an authoritative verifying test (this document calls such a requirement
 "covered"; one with no such cycle is "uncovered") for *every* mandatory requirement in the trace graph
 (`TDD_REQUIREMENT_UNCOVERED`), not just the ones touched by the current
 change. There is no incremental/opt-in scoping and no bulk-onboarding tool for
-requirements that never had TDD evidence (`tdd migrate` only re-fingerprints
-requirements that already have a valid Green cycle). This is the same
+requirements that never had TDD evidence (`tdd migrate` only reuses
+previously recorded valid Green-backed evidence, so it cannot bulk-onboard a
+requirement with no such prior coverage). This is the same
 "optional → required activates project-wide the instant ANY evidence exists"
 pattern already accepted for the `workflow` and `change-history` gate checks
 (`packages/analysis/src/gate.ts`), and this change keeps that existing,
@@ -42,5 +43,5 @@ Acceptance: Given a project whose `.musubix/evidence/tdd.json` has zero cycles (
 Priority: must
 Type: functional
 Pattern: ubiquitous
-Statement: The system shall document, in `tdd red`'s `--help` output and in the README's CLI command reference for `tdd red|green|refactor`, that recording the project's first TDD cycle makes gate's `tdd` check required for every mandatory requirement in the project (each surfaced as `TDD_REQUIREMENT_UNCOVERED` if it is uncovered), that `approval record release` always runs the full (non-`--changed`) project-wide gate and is therefore blocked by any resulting `TDD_REQUIREMENT_UNCOVERED` diagnostics, and that `tdd migrate` cannot be used to bulk-onboard previously-uncovered requirements because it only re-fingerprints an already-covered requirement (one with an existing valid Green cycle).
-Acceptance: Running `npx musubix3 tdd red --help` prints text matching all of /project-wide/i, /TDD_REQUIREMENT_UNCOVERED/, /approval record release/, and /tdd migrate/. The README's `tdd red|green|refactor` reference row (or an adjacent paragraph it directly references) contains the substrings "project-wide", "TDD_REQUIREMENT_UNCOVERED", "approval record release", and a statement that "tdd migrate" applies only to a requirement that already has a valid Green cycle (not bulk onboarding of previously-uncovered requirements).
+Statement: The system shall document, in `tdd red`'s `--help` output and in the README's CLI command reference for `tdd red|green|refactor`, that the first persisted TDD cycle activates project-wide `tdd` coverage evaluation for every mandatory requirement in the project (each surfaced as `TDD_REQUIREMENT_UNCOVERED` if it is uncovered), that this first cycle makes the check required only when it was not already required for another configured reason, that `approval record release` always runs the full (non-`--changed`) project-wide gate and is therefore blocked by any resulting `TDD_REQUIREMENT_UNCOVERED` diagnostics, and that `tdd migrate` cannot bulk-onboard previously-uncovered requirements because it only reuses previously recorded valid Green-backed evidence.
+Acceptance: Running `npx musubix3 tdd red --help` prints text that explicitly states all of the following: project-wide `tdd` coverage evaluation becomes active after the first persisted cycle, `TDD_REQUIREMENT_UNCOVERED` is the resulting requirement-level diagnostic, requiredness changes only when `tdd` was not already required for another reason, `approval record release` runs the full project-wide gate, and `tdd migrate` only reuses previously recorded valid Green-backed evidence rather than bulk onboarding previously-uncovered requirements. The help text also does not contain the exact phrase `only re-fingerprints`. The README's `tdd red|green|refactor` reference row (or an adjacent paragraph it directly references) states those same points explicitly and likewise does not contain the exact phrase `only re-fingerprints`.

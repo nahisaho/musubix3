@@ -119,7 +119,7 @@ it('prints the warning message via the default (non-JSON) CLI output without cha
 });
 
 /** @id TEST-TDD-ADOPTION-WARNING-002
- * @verifies REQ-TDD-ADOPTION-WARNING-002
+ * @verifies REQ-TDD-IDENTIFIER-MIGRATION-005 REQ-TDD-ADOPTION-WARNING-002
  */
 it('TEST-TDD-ADOPTION-WARNING-002 documents the project-wide adoption semantics in --help and README', async () => {
   const root = await project();
@@ -132,11 +132,24 @@ it('TEST-TDD-ADOPTION-WARNING-002 documents the project-wide adoption semantics 
   expect(help.stdout).toContain('TDD_REQUIREMENT_UNCOVERED');
   expect(help.stdout).toContain('approval record release');
   expect(help.stdout).toContain('tdd migrate');
+  expect(help.stdout).toMatch(/already required|not already required/i);
+
+  const migrateHelp = await runProcess(process.execPath, [cli, 'tdd', 'migrate', '--help'], {
+    cwd: root,
+    timeoutMs: 20_000,
+  });
+  expect(migrateHelp.stdout).toContain('tdd migrate <test-id>');
+  expect(migrateHelp.stdout).toContain('tdd migrate <old-id> <new-id>');
 
   const readme = await readFile(resolve('README.md'), 'utf8');
+  const migrateSection = readme.slice(readme.indexOf('`tdd migrate'));
   const section = readme.slice(readme.indexOf('`tdd red\\|green\\|refactor'));
+  expect(migrateSection).toContain('tdd migrate <test-id>');
+  expect(migrateSection).toContain('tdd migrate <old-id> <new-id>');
   expect(section).toContain('project-wide');
   expect(section).toContain('TDD_REQUIREMENT_UNCOVERED');
   expect(section).toContain('approval record release');
-  expect(section).toMatch(/tdd migrate.*only re-fingerprints a requirement that\s+already has a valid Green cycle/is);
+  expect(section).toContain('tdd migrate');
+  expect(section).toContain('already required');
+  expect(section).not.toContain('only re-fingerprints');
 });

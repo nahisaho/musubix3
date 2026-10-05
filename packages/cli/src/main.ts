@@ -11,7 +11,7 @@ import {
   graphImpact, indexGraph, loadConfig, loadGraph, loadTrace, portable, projectStatus, queryKnowledge,
   formalDoctor, generateFormalArtifacts, readText, runGate, traceImpact, type Solver,
   changePhases, recordChangePhase, recordWorkflow, runTddPhase, sanitizeWorkflowLogFile,
-  validateTddEvidence, verifyWorkflowLogFile, migrateTddFingerprint, voidTddCycle, archiveTddCycle, type ChangePhase, type TddPhase,
+  validateTddEvidence, verifyWorkflowLogFile, migrateTddFingerprint, migrateTddIdentifier, voidTddCycle, archiveTddCycle, type ChangePhase, type TddPhase,
   mergeEvidenceHistories, recoverEvidenceMerge,
   recoverQualityRefresh,
   attestationSigningPayload, createUnsignedAttestation, githubOidcAudience, verifyEvidenceAttestation,
@@ -725,13 +725,14 @@ source, quarantining merge files, and rerunning structural validation.`))
     if (phase === 'red') {
       phaseCommand.description(
         'Record a failing (Red) test as TDD evidence for a requirement. Persisting the '
-        + "project's first cycle here makes gate's tdd check required project-wide for "
-        + 'every mandatory requirement (each uncovered one surfaced as '
-        + 'TDD_REQUIREMENT_UNCOVERED); "approval record release" always runs the full '
-        + '(non-\'--changed\') gate, so it is blocked by any resulting '
-        + 'TDD_REQUIREMENT_UNCOVERED diagnostics. "tdd migrate" cannot bulk-onboard '
-        + 'previously-uncovered requirements: it only re-fingerprints a requirement that '
-        + 'already has a valid Green cycle.',
+        + "project's first cycle here activates gate's tdd coverage evaluation project-wide "
+        + 'for every mandatory requirement (each uncovered one surfaced as '
+        + 'TDD_REQUIREMENT_UNCOVERED); if tdd was not already required for another '
+        + 'configured reason, that same first cycle is what makes the check required. '
+        + '"approval record release" always runs the full (non-\'--changed\') gate, so '
+        + 'it is blocked by any resulting TDD_REQUIREMENT_UNCOVERED diagnostics. '
+        + '"tdd migrate" cannot bulk-onboard previously-uncovered requirements: it only '
+        + 'reuses already-covered valid Green-backed evidence.',
       );
     }
     phaseCommand
@@ -753,19 +754,24 @@ source, quarantining merge files, and rerunning structural validation.`))
         if (!evidence.valid) process.exitCode = 1;
       });
   }
-  common(tdd.command('migrate <test-id>'))
-    .requiredOption('--approver <name>', 'Human approver recording this fingerprint migration')
+  common(tdd.command('migrate [ids...]'))
+    .description('Relink existing covered evidence: `tdd migrate <test-id>` re-fingerprints one covered test; `tdd migrate <old-id> <new-id>` relinks a pure identifier rename.')
+    .requiredOption('--approver <name>', 'Human approver recording this migrate operation')
     .option('--confirm', 'Confirm the migration is reviewed and intended', false)
-    .action(async (testId: string, options: { root: string; json?: boolean; approver: string; confirm?: boolean }) => {
-      if (!options.confirm) throw new Error('Fingerprint migration requires --confirm.');
+    .action(async (ids: string[], options: { root: string; json?: boolean; approver: string; confirm?: boolean }) => {
+      if (!options.confirm) throw new Error('TDD migration requires --confirm.');
+      if (ids.length < 1 || ids.length > 2) throw new InvalidArgumentError('tdd migrate accepts either <test-id> or <old-id> <new-id>.');
       const root = resolve(options.root);
-      const migration = await migrateTddFingerprint(root, testId, options.approver);
+      const migration = ids.length === 1
+        ? await migrateTddFingerprint(root, ids[0]!, options.approver)
+        : await migrateTddIdentifier(root, ids[0]!, ids[1]!, options.approver);
+      const target = ids.join(' -> ');
       output(
         migration,
         !!options.json,
         migration.migrated
-          ? `MIGRATE: PASS (${testId}) ${migration.fromFingerprint} -> ${migration.toFingerprint}`
-          : `MIGRATE: FAIL (${testId}) ${migration.reason}`,
+          ? `MIGRATE: PASS (${target}) ${migration.fromFingerprint} -> ${migration.toFingerprint}`
+          : `MIGRATE: FAIL (${target}) ${migration.reason}`,
       );
       if (!migration.migrated) process.exitCode = 1;
     });

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-05T03:55:48.946Z",
+  "generatedAt": "2026-10-05T11:45:19.197Z",
   "nodes": [
     {
       "id": "ADR-0011",
@@ -711,7 +711,7 @@
     ".musubix/features/change-requirement-batches/requirements.md": "d4d2d1e9e12cd4e062ca3a14e4a28d9f011de634fb3c10defb53653260667110",
     "packages/analysis/src/change-evidence.ts": "889df36b5f045c47f6687980a04b6ea33947b988b2be5e40933f4acb927d3f31",
     "packages/analysis/src/change.ts": "0806d63b8b7097b25d2fae717bd11f9696a71e74c7613e9be01ad732fa1e0893",
-    "packages/cli/src/main.ts": "7e751d0c41b52d7b6e3c0c1cb753a9e490f93ebc28c7310534522878d9b7ebfc",
+    "packages/cli/src/main.ts": "13a8934fa914cc133651ac88712a05ed9291c157cf273980036e51c9d667d24a",
     "tests/change-record-fail-fast.test.ts": "2f69f19332049c206f39b42c3bc2b505ce63173db798d74c5a9ace7064cdfe78",
     "tests/change-requirement-batches.test.ts": "919b14e0fc9174e82b916dac0448ba2f9acf57f038f0ec820ed0aa6a397f77bd"
   }
