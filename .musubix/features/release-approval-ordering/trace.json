@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-05T03:55:48.946Z",
+  "generatedAt": "2026-10-05T11:45:19.197Z",
   "nodes": [
     {
       "id": "ADR-0029",
@@ -84,25 +84,25 @@
       "id": "CODE-EVIDENCE-HISTORY-MERGE-001",
       "kind": "code",
       "path": "packages/analysis/src/evidence-merge.ts",
-      "line": 462
+      "line": 501
     },
     {
       "id": "CODE-EVIDENCE-HISTORY-MERGE-002",
       "kind": "code",
       "path": "packages/analysis/src/evidence-merge.ts",
-      "line": 951
+      "line": 993
     },
     {
       "id": "CODE-EVIDENCE-HISTORY-MERGE-003",
       "kind": "code",
       "path": "packages/analysis/src/evidence-merge.ts",
-      "line": 1045
+      "line": 1087
     },
     {
       "id": "CODE-EVIDENCE-HISTORY-MERGE-004",
       "kind": "code",
       "path": "packages/analysis/src/evidence-merge.ts",
-      "line": 1143
+      "line": 1185
     },
     {
       "id": "CODE-EVIDENCE-WRITER-LOCK-001",
@@ -2641,10 +2641,10 @@
     "packages/analysis/src/approval.ts": "7b3940d96b8465a16fc1d28a100fc2d72dc0b7ee4e49e6f02ebb7db0449b1a9f",
     "packages/analysis/src/change-evidence.ts": "889df36b5f045c47f6687980a04b6ea33947b988b2be5e40933f4acb927d3f31",
     "packages/analysis/src/change.ts": "0806d63b8b7097b25d2fae717bd11f9696a71e74c7613e9be01ad732fa1e0893",
-    "packages/analysis/src/evidence-merge.ts": "1e43e03adb824375f3def9f996c497a7ac4a319dc1b397b28cdd8c9abee693db",
+    "packages/analysis/src/evidence-merge.ts": "40130d28f1e85e3776e7f804b2ad6ca10eabe212158a1f17c169e1cf149d1aff",
     "packages/analysis/src/evidence-writer-lock.ts": "a1e7a13da4b5a3f9a96c24914f876166571df5aec20d54048a51a3188e865698",
     "packages/analysis/src/quality-refresh.ts": "2b11461f84b7155ee1ec02d53d6e0af291ce26c40f6e77755e405c1b000e730d",
-    "packages/cli/src/main.ts": "7e751d0c41b52d7b6e3c0c1cb753a9e490f93ebc28c7310534522878d9b7ebfc",
+    "packages/cli/src/main.ts": "13a8934fa914cc133651ac88712a05ed9291c157cf273980036e51c9d667d24a",
     "scripts/check-github-actions.mjs": "8e18568a2a4a69cf25aa6b825cc82a6258cf0388c27c552f7d69a100793d5437",
     "scripts/check-npm-audit-remediation.mjs": "82548a2681cde6be6d238f15678add9388c8aaac72a49a13af82d46d4b462cb6",
     "scripts/release-prepare.mjs": "e166ac42868ce134ad9d3e68a92e14831f2ad243b51f2c0782a47e49fe55a640",

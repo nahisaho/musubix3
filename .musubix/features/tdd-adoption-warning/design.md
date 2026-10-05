@@ -94,14 +94,17 @@ with no description of its own — `npx musubix3 tdd red --help` renders only
 that subcommand's own description, never the parent `tdd` command's, so the
 text must live there, not on `program.command('tdd')`) and extend the
 README's `tdd validate` / `tdd red|green|refactor` CLI reference rows, to
-state: recording the project's first TDD cycle makes `gate`'s `tdd` check
-required for every mandatory requirement project-wide (each uncovered one
-surfaced as `TDD_REQUIREMENT_UNCOVERED`); `approval record release`
+state: recording the project's first TDD cycle always activates project-wide
+`tdd` coverage evaluation for every mandatory requirement (each uncovered one
+surfaced as `TDD_REQUIREMENT_UNCOVERED`), and makes `gate`'s `tdd` check
+required only when that check was not already required for another configured
+reason; `approval record release`
 (`packages/analysis/src/approval-record.ts`) always runs the full,
 non-`--changed` gate, so it is blocked by any resulting
 `TDD_REQUIREMENT_UNCOVERED` diagnostics; and `tdd migrate` cannot bulk-onboard
-previously-uncovered requirements, since it only re-fingerprints a
-requirement that already has a valid Green cycle.
+previously-uncovered requirements, since it only reuses already-covered valid
+Green-backed evidence (whether by one-ID fingerprint migration or two-ID
+identifier relinking).
 Interfaces: `packages/cli/src/main.ts`'s `red` subcommand's own
 `.description()` text (set on the same `Command` instance returned by
 `tdd.command('red <test-id>')`, before its existing `.requiredOption(...)`
@@ -115,7 +118,8 @@ REQ-TDD-ADOPTION-WARNING-002's acceptance only requires `tdd red --help`,
 which renders only its own subcommand's description). Must include the
 literal substrings `project-wide`, `TDD_REQUIREMENT_UNCOVERED`,
 `approval record release`, and `tdd migrate` in both the `tdd red --help`
-output and the README documentation, per REQ-TDD-ADOPTION-WARNING-002's
-acceptance criteria.
+output and the README documentation, while avoiding the stale
+`only re-fingerprints` wording that Issue #57 proposal (1) supersedes, per
+REQ-TDD-ADOPTION-WARNING-002's acceptance criteria.
 Requirements: REQ-TDD-ADOPTION-WARNING-002
 ADRs: none - documentation-only change; no alternative approach was rejected

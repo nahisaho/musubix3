@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-04T07:12:35.118Z",
+  "generatedAt": "2026-10-05T11:45:19.197Z",
   "nodes": [
     {
       "id": "ADR-0013",
@@ -12,7 +12,7 @@
       "id": "CODE-TDD-GREEN-REQUIREMENT-SCOPING-001",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 606
+      "line": 854
     },
     {
       "id": "DES-TDD-GREEN-REQUIREMENT-SCOPING-001",
@@ -88,7 +88,7 @@
     ".musubix/decisions/ADR-0013.md": "b22ea1b6049514c899a82e5964109e5d6f43c9a852a33168dce360768535aaca",
     ".musubix/features/tdd-green-requirement-scoping/design.md": "5e35edb88e48648223f0360f067fcad15d078455050d2ebabaf5ee572abca6c5",
     ".musubix/features/tdd-green-requirement-scoping/requirements.md": "456edab50870ba2fc3297eccee1c4dc114a8c8400354cb3e4b00769bb8b29ba1",
-    "packages/analysis/src/tdd.ts": "7fc946c4dcf8e9ae2c40303bbd252f8484f7a2194c7c7dc1224f35353919ba8e",
+    "packages/analysis/src/tdd.ts": "cc3a8eacc2055c717f1c1ff7a1bd6dd42936baa3cd1745af0d111de3abf6164c",
     "tests/tdd-green-requirement-scoping.test.ts": "e4248a6bf6c087f78752d48c8f6c89c82eca82c98b266a42938e9a6856e43d1d"
   }
 }

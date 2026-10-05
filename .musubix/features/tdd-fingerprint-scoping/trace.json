@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-04T07:12:35.118Z",
+  "generatedAt": "2026-10-05T11:45:19.197Z",
   "nodes": [
     {
       "id": "ADR-0008",
@@ -12,7 +12,7 @@
       "id": "CODE-TDD-FINGERPRINT-SCOPING-001",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 160
+      "line": 231
     },
     {
       "id": "DES-TDD-FINGERPRINT-SCOPING-001",
@@ -66,7 +66,7 @@
     ".musubix/decisions/ADR-0008.md": "ed668b4e69b832890fe0644b18b602cfa5224dd85c8a58af3e188b609659a276",
     ".musubix/features/tdd-fingerprint-scoping/design.md": "5a52655e1555ca194116d973accbfbd5a1eb384cfcf2bcf0a36893ff0783a662",
     ".musubix/features/tdd-fingerprint-scoping/requirements.md": "d3e480fc0ef92edb87f2c22d1d67a00fc177fde913c68d0187aa45375b14d4c9",
-    "packages/analysis/src/tdd.ts": "7fc946c4dcf8e9ae2c40303bbd252f8484f7a2194c7c7dc1224f35353919ba8e",
+    "packages/analysis/src/tdd.ts": "cc3a8eacc2055c717f1c1ff7a1bd6dd42936baa3cd1745af0d111de3abf6164c",
     "tests/tdd-fingerprint-scoping.test.ts": "e10a3ee1d4a6d50d69051a84884ef61d6ecff5d9c47b37b25240a95821e0608e"
   }
 }

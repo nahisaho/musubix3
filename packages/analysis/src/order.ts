@@ -18,6 +18,19 @@ export interface EvidenceOrderRecord {
    */
   testId?: string;
   /**
+   * Only ever set on `kind: 'tdd'` records for the identifier-mode `migrate`
+   * phase, so the order log can distinguish a later identifier relink from an
+   * earlier fingerprint-only migrate on the same cycle. Absent on legacy or
+   * fingerprint-only migrate records and every other kind/phase.
+   */
+  oldTestId?: string;
+  /**
+   * Only ever set on `kind: 'tdd'` records for the identifier-mode `migrate`
+   * phase. Absent on legacy or fingerprint-only migrate records and every
+   * other kind/phase.
+   */
+  newTestId?: string;
+  /**
    * Only ever set on `kind: 'change'` records for the `waiver` phase, since
    * `entityId` (the `changeId`) alone is not unique across the many
    * codes/requirements one change can waive. Absent on every other
@@ -56,6 +69,8 @@ export interface EvidenceOrderLog {
  * site) computes byte-identical keys to before this type existed.
  */
 export interface EvidenceOrderScope {
+  oldTestId?: string;
+  newTestId?: string;
   code?: string;
   requirementId?: string;
   detail?: string;
@@ -88,6 +103,8 @@ function recordSha256(record: Omit<EvidenceOrderRecord, 'recordSha256'>): string
  */
 function recordKey(kind: EvidenceOrderKind, entityId: string, phase: string, scope?: EvidenceOrderScope): string {
   const key: unknown[] = [kind, entityId, phase];
+  if (scope?.oldTestId !== undefined) key.push(scope.oldTestId);
+  if (scope?.newTestId !== undefined) key.push(scope.newTestId);
   if (scope?.code !== undefined) key.push(scope.code);
   if (scope?.requirementId !== undefined) key.push(scope.requirementId);
   if (scope?.detail !== undefined) key.push(scope.detail);
@@ -170,14 +187,14 @@ export async function inspectEvidenceOrder(root: string): Promise<ReturnType<typ
 
 export async function appendEvidenceOrder(
   root: string,
-  input: Pick<EvidenceOrderRecord, 'kind' | 'entityId' | 'phase'> & Partial<Pick<EvidenceOrderRecord, 'testId' | 'code' | 'requirementId' | 'detail'>>,
+  input: Pick<EvidenceOrderRecord, 'kind' | 'entityId' | 'phase'> & Partial<Pick<EvidenceOrderRecord, 'testId' | 'oldTestId' | 'newTestId' | 'code' | 'requirementId' | 'detail'>>,
 ): Promise<EvidenceOrderRecord> {
   return withEvidenceWriterLock(root, 'evidence order append', () => appendEvidenceOrderUnlocked(root, input));
 }
 
 async function appendEvidenceOrderUnlocked(
   root: string,
-  input: Pick<EvidenceOrderRecord, 'kind' | 'entityId' | 'phase'> & Partial<Pick<EvidenceOrderRecord, 'testId' | 'code' | 'requirementId' | 'detail'>>,
+  input: Pick<EvidenceOrderRecord, 'kind' | 'entityId' | 'phase'> & Partial<Pick<EvidenceOrderRecord, 'testId' | 'oldTestId' | 'newTestId' | 'code' | 'requirementId' | 'detail'>>,
 ): Promise<EvidenceOrderRecord> {
   const log = await loadEvidenceOrder(root) ?? { schemaVersion: 1, records: [] };
   const validated = validateEvidenceOrderLog(log);
@@ -185,6 +202,8 @@ async function appendEvidenceOrderUnlocked(
     throw new Error('Existing monotonic evidence order is invalid; regenerate evidence before appending.');
   }
   const scope: EvidenceOrderScope = {
+    ...(input.oldTestId !== undefined ? { oldTestId: input.oldTestId } : {}),
+    ...(input.newTestId !== undefined ? { newTestId: input.newTestId } : {}),
     ...(input.code !== undefined ? { code: input.code } : {}),
     ...(input.requirementId !== undefined ? { requirementId: input.requirementId } : {}),
     ...(input.detail !== undefined ? { detail: input.detail } : {}),
