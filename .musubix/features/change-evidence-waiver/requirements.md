@@ -29,8 +29,8 @@ diagnostic code (for one change and, where applicable, one requirement
 and/or one `--detail` scope per REQ-016) from `error` to `warning`, as an
 appended, hash-chained, audited record — never a deletion, edit, or blanket
 disable of the underlying check. It was first shipped scoped to exactly five
-codes (below), then extended by CHANGE-0012 to the twelve codes enumerated
-in REQ-001. It is narrowly scoped to this well-understood recording-order
+codes (below), then extended by CHANGE-0012 to twelve codes, then by
+CHANGE-0042 to the thirteen codes enumerated in REQ-001. It is narrowly scoped to this well-understood recording-order
 debt shape; it must not weaken `change-history`/`change-completeness` for any
 non-allow-listed diagnostic code, for any other change, requirement, or
 `--detail` scope, or for a genuinely fresh violation of the same scope once
@@ -73,11 +73,11 @@ ever waiving a sibling instance of the same code on the same change.
 Priority: must
 Type: functional
 Pattern: unwanted-behavior
-Statement: If `change waiver record <CHANGE-ID> <CODE>` is invoked with a `<CODE>` other than `CHANGE_REQUIREMENTS_UNCHANGED`, `CHANGE_DESIGN_UNCHANGED`, `CHANGE_RED_UNPROVEN`, `CHANGE_GREEN_UNPROVEN`, `CHANGE_COMPLETENESS_TDD`, `CHANGE_RECORD_MISSING`, `CHANGE_PHASE_MISSING`, `CHANGE_ORDER_MIGRATION_REQUIRED`, `CHANGE_TESTS_UNCHANGED`, `CHANGE_IMPLEMENTATION_UNCHANGED`, `CHANGE_RELEVANT_IMPLEMENTATION_UNCHANGED`, or `CHANGE_TEST_CHANGED_AFTER_RED`, then the system shall reject the invocation and record no evidence.
+Statement: If `change waiver record <CHANGE-ID> <CODE>` is invoked with a `<CODE>` other than `CHANGE_REQUIREMENTS_UNCHANGED`, `CHANGE_DESIGN_UNCHANGED`, `CHANGE_RED_UNPROVEN`, `CHANGE_GREEN_UNPROVEN`, `CHANGE_COMPLETENESS_TDD`, `CHANGE_RECORD_MISSING`, `CHANGE_PHASE_MISSING`, `CHANGE_ORDER_MIGRATION_REQUIRED`, `CHANGE_TESTS_UNCHANGED`, `CHANGE_IMPLEMENTATION_UNCHANGED`, `CHANGE_RELEVANT_IMPLEMENTATION_UNCHANGED`, `CHANGE_TEST_CHANGED_AFTER_RED`, or `CHANGE_PHASE_ORDER`, then the system shall reject the invocation and record no evidence.
 Acceptance: Given `<CODE>` is `CHANGE_COMPLETENESS_ACCEPTANCE`,
-`CHANGE_DOCUMENT_MISSING`, `CHANGE_PHASE_ORDER`, `CHANGE_ORDER_MISMATCH`,
+`CHANGE_DOCUMENT_MISSING`, `CHANGE_ORDER_MISMATCH`,
 `CHANGE_IMPLEMENTATION_SCOPE_MISSING`, `CHANGE_COMPLETENESS_CODE`, or any
-string not in the twelve-code allow-list, `change waiver record` exits
+string not in the thirteen-code allow-list, `change waiver record` exits
 nonzero with an error naming the rejected code and listing the allowed
 codes, and
 `.musubix/evidence/change-waivers.json` and `.musubix/evidence/order.json`
@@ -119,8 +119,8 @@ unchanged in every case.
 Priority: must
 Type: functional
 Pattern: unwanted-behavior
-Statement: If `change waiver record` is invoked with a `<CODE>`/`--requirement`/`--detail` combination that does not exactly match that `<CODE>`'s allow-listed scope-key row (`CHANGE_REQUIREMENTS_UNCHANGED`, `CHANGE_DESIGN_UNCHANGED`, `CHANGE_RECORD_MISSING`: neither key; `CHANGE_RED_UNPROVEN`, `CHANGE_GREEN_UNPROVEN`, `CHANGE_COMPLETENESS_TDD`: `--requirement` only; `CHANGE_RELEVANT_IMPLEMENTATION_UNCHANGED`: both `--requirement` and `--detail`; `CHANGE_PHASE_MISSING`, `CHANGE_ORDER_MIGRATION_REQUIRED`, `CHANGE_TESTS_UNCHANGED`, `CHANGE_IMPLEMENTATION_UNCHANGED`, `CHANGE_TEST_CHANGED_AFTER_RED`: `--detail` only), then the system shall reject the invocation and record no evidence.
-Acceptance: This matrix is exhaustive over all twelve
+Statement: If `change waiver record` is invoked with a `<CODE>`/`--requirement`/`--detail` combination that does not exactly match that `<CODE>`'s allow-listed scope-key row (`CHANGE_REQUIREMENTS_UNCHANGED`, `CHANGE_DESIGN_UNCHANGED`, `CHANGE_RECORD_MISSING`: neither key; `CHANGE_RED_UNPROVEN`, `CHANGE_GREEN_UNPROVEN`, `CHANGE_COMPLETENESS_TDD`: `--requirement` only; `CHANGE_RELEVANT_IMPLEMENTATION_UNCHANGED`: both `--requirement` and `--detail`; `CHANGE_PHASE_MISSING`, `CHANGE_ORDER_MIGRATION_REQUIRED`, `CHANGE_TESTS_UNCHANGED`, `CHANGE_IMPLEMENTATION_UNCHANGED`, `CHANGE_TEST_CHANGED_AFTER_RED`, `CHANGE_PHASE_ORDER`: `--detail` only), then the system shall reject the invocation and record no evidence.
+Acceptance: This matrix is exhaustive over all thirteen
 REQ-CHANGE-EVIDENCE-WAIVER-001 allow-listed codes; every code appears in
 exactly one row, and every row names exactly one of {neither key, `--requirement`
 only, `--detail` only, both keys}. Waiving `CHANGE_RED_UNPROVEN` without
@@ -138,7 +138,7 @@ that code requires both to disambiguate an overlapping-batch instance.
 Priority: must
 Type: functional
 Pattern: unwanted-behavior
-Statement: If `<CODE>` is one of `CHANGE_PHASE_MISSING`, `CHANGE_ORDER_MIGRATION_REQUIRED`, `CHANGE_TESTS_UNCHANGED`, `CHANGE_IMPLEMENTATION_UNCHANGED`, `CHANGE_TEST_CHANGED_AFTER_RED`, or `CHANGE_RELEVANT_IMPLEMENTATION_UNCHANGED`, and a supplied `--detail <value>` is not valid for that code's canonical grammar below, then the system shall reject the invocation before condition evaluation and record no evidence; a grammatically valid detail is subsequently accepted or rejected solely by the REQ-CHANGE-EVIDENCE-WAIVER-011 evaluator and REQ-CHANGE-EVIDENCE-WAIVER-002.
+Statement: If `<CODE>` is one of `CHANGE_PHASE_MISSING`, `CHANGE_ORDER_MIGRATION_REQUIRED`, `CHANGE_TESTS_UNCHANGED`, `CHANGE_IMPLEMENTATION_UNCHANGED`, `CHANGE_TEST_CHANGED_AFTER_RED`, `CHANGE_RELEVANT_IMPLEMENTATION_UNCHANGED`, or `CHANGE_PHASE_ORDER`, and a supplied `--detail <value>` is not valid for that code's canonical grammar below, then the system shall reject the invocation before condition evaluation and record no evidence; a grammatically valid detail is subsequently accepted or rejected solely by the REQ-CHANGE-EVIDENCE-WAIVER-011 evaluator and REQ-CHANGE-EVIDENCE-WAIVER-002.
 Acceptance: The canonical `detail` grammar is: for `CHANGE_PHASE_MISSING`,
 exactly `phase:<phaseName>` (`phaseName` one of
 `impact`/`requirements`/`design`/`quality`/`red`/`implementation`/`green`,
@@ -158,7 +158,13 @@ batch. For the TDD-cycle-order flavor of
 `CHANGE_TESTS_UNCHANGED`, `CHANGE_IMPLEMENTATION_UNCHANGED`,
 `CHANGE_TEST_CHANGED_AFTER_RED`, and the batch component of
 `CHANGE_RELEVANT_IMPLEMENTATION_UNCHANGED`, exactly `<batchKey>` alone (no
-prefix). Given a fixture change reports simultaneous `CHANGE_PHASE_MISSING`
+prefix); for `CHANGE_PHASE_ORDER`, exactly `phase:<phaseName>` (`phaseName`
+one of `requirements`/`design`, naming the later phase in that singular
+transition) for the two change-level transitions, or exactly
+`batch:<phaseName>:<batchKey>` (`phaseName` one of
+`red`/`implementation`/`green`/`quality`, naming the later phase/checkpoint
+in that batch's transition) for the four per-batch transitions. Given a
+fixture change reports simultaneous `CHANGE_PHASE_MISSING`
 instances with `detail` values `phase:requirements`, `phase:design`, and
 `phase:red` (same `changeId`/`code`), calling
 `change waiver record CHANGE-0001 CHANGE_PHASE_MISSING --detail
@@ -206,7 +212,7 @@ Type: functional
 Pattern: ubiquitous
 Statement: The system shall determine valid waiver linkage solely from an allow-listed `code`, the presence or absence and canonical grammar of `requirementId`/`detail` required by REQ-CHANGE-EVIDENCE-WAIVER-004/016, exactly one matching `phase: "waiver"` order record for that record's scope and stored `order` sequence, exclusive ownership of that order sequence by one waiver record, and a valid REQ-CHANGE-EVIDENCE-WAIVER-015 chain.
 Acceptance: Given a waiver record that is otherwise hash- and
-order-consistent but declares a `code` outside the twelve-value
+order-consistent but declares a `code` outside the thirteen-value
 allow-list, declares `requirementId`/`detail` whose presence or absence is
 inconsistent with its code's REQ-004 row, stores a `detail` that fails that
 code's REQ-016 canonical grammar, has no matching
@@ -502,10 +508,12 @@ indeterminate historical waiver evaluable again; the user then resolves the
 debt or records an allowed replacement, so append-only evidence does not
 require a deletion/tombstone path.
 Given a fixture with no waiver evidence, validation before and after this
-change emits the same set of the twelve allow-listed target diagnostics with
-the same severity, message, `changeId`, `requirementId`, and `detail`; sharing
-the evaluator as the predicate implementation must not alter waiver-free
-behavior.
+change emits the same set of the thirteen allow-listed target diagnostics
+with the same severity, message, `changeId`, `requirementId`, and `detail`;
+sharing the evaluator as the predicate implementation must not alter
+waiver-free behavior, including the six `CHANGE_PHASE_ORDER` emission sites,
+which must retain their pre-existing code/message/severity while gaining
+the REQ-013/016 structured `changeId`/`detail` fields.
 For an authoritative stale target whose condition is `indeterminate`,
 `CHANGE_WAIVER_STALE` itself remains the error-severity fail-closed
 diagnostic; the validator does not fabricate the unresolved target diagnostic.
@@ -591,11 +599,46 @@ values persisted by REQ-CHANGE-EVIDENCE-WAIVER-005; a stale or malformed
 waiver (per REQ-CHANGE-EVIDENCE-WAIVER-007/011) is excluded from this
 array.
 
+## REQ-CHANGE-EVIDENCE-WAIVER-017: Allow a bounded, audited waiver for a phase-order inversion
+Priority: must
+Type: functional
+Pattern: event-driven
+Statement: When `validateChangeEvidence` reports a `CHANGE_PHASE_ORDER` diagnostic for a `changeId` whose later phase's or batch item's recorded order is not greater than the order of the phase or batch item it must follow, the system shall accept `CHANGE_PHASE_ORDER` in `WAIVABLE_CODES` as a `detail`-only-scoped code (REQ-CHANGE-EVIDENCE-WAIVER-004), using `phase:<phaseName>` (`phaseName` one of `requirements`/`design`) for the two change-level transitions and `batch:<phaseName>:<batchKey>` (`phaseName` one of `red`/`implementation`/`green`/`quality`) for the four per-batch transitions, computed and parsed by the existing shared `diagnosticDetail`/`parseDetail` functions, so an operator can record one `change waiver record <CHANGE-ID> CHANGE_PHASE_ORDER --detail <value> --reason <text> --approver <name> --confirm` per exact transition instance when the underlying chronology cannot otherwise be repaired (for example, a later per-requirement corrective Red/Implementation/Green batch recorded for only a strict requirement subset, which `change quality-refresh`'s re-recorded Quality checkpoint already resolves when run, but which would otherwise stay permanently blocking for any transition the Quality-refresh mechanism itself does not cover).
+Acceptance: Given a change whose per-requirement corrective batch has made
+one `batch.green.order` exceed `change.phases.quality.order` (reproducing
+GitHub Issue #56's exact scenario) and an operator has not yet (or cannot
+yet) run a repairing `quality` re-recording, `change waiver record
+<CHANGE-ID> CHANGE_PHASE_ORDER --detail batch:quality:<batchKey> --reason
+<text> --approver <name> --confirm` downgrades exactly that diagnostic
+instance from `severity: "error"` to `severity: "warning"`, independently of
+every other diagnostic instance; `gate --json`'s `change-history` check
+reports `pass` once it is the only remaining error-severity diagnostic for
+that change. The waiver becomes stale (reverts to blocking per
+REQ-CHANGE-EVIDENCE-WAIVER-011) the moment the two compared orders change
+(for example, once `quality` is later correctly re-recorded with a higher
+order, resolving the inversion), rather than remaining silently authoritative
+over state it no longer describes. A waiver recorded for one transition
+instance (one exact `changeId`/`code`/`detail` scope, or additionally
+`requirementId` where applicable per REQ-016's multiple-matching-batch rule)
+never downgrades a different transition instance of the same or a different
+change. The same mechanism applies identically, each with its own `--detail`
+value and its own `{ firstOrder, secondOrder }` snapshot pair, to the other
+five transitions: `--detail phase:requirements` (comparing
+`requirements.order` against `impact.order`), `--detail phase:design`
+(comparing `design.order` against `requirements.order`), `--detail
+batch:red:<batchKey>` (comparing `batch.red.order` against
+`change.phases.design.order`), `--detail batch:implementation:<batchKey>`
+(comparing `batch.implementation.order` against `batch.red.order`), and
+`--detail batch:green:<batchKey>` (comparing `batch.green.order` against
+`batch.implementation.order`); each downgrades only its own transition
+instance and each independently becomes stale the moment its own pair of
+compared orders changes.
+
 ## REQ-CHANGE-EVIDENCE-WAIVER-013: Attach structured `changeId`/`requirementId`/`detail` targets to waivable diagnostics
 Priority: must
 Type: functional
 Pattern: ubiquitous
-Statement: The system shall attach a structured `changeId` field, a `requirementId` field when the diagnostic is requirement-scoped per REQ-CHANGE-EVIDENCE-WAIVER-004, and a `detail` field when the diagnostic is `detail`-scoped per REQ-CHANGE-EVIDENCE-WAIVER-016, to every `CHANGE_REQUIREMENTS_UNCHANGED`, `CHANGE_DESIGN_UNCHANGED`, `CHANGE_RED_UNPROVEN`, `CHANGE_GREEN_UNPROVEN`, `CHANGE_COMPLETENESS_TDD`, `CHANGE_RECORD_MISSING`, `CHANGE_PHASE_MISSING`, `CHANGE_ORDER_MIGRATION_REQUIRED`, `CHANGE_TESTS_UNCHANGED`, `CHANGE_IMPLEMENTATION_UNCHANGED`, `CHANGE_RELEVANT_IMPLEMENTATION_UNCHANGED`, and `CHANGE_TEST_CHANGED_AFTER_RED` diagnostic emitted by `validateChangeEvidence`/`validateChangeCompleteness`.
+Statement: The system shall attach a structured `changeId` field, a `requirementId` field when the diagnostic is requirement-scoped per REQ-CHANGE-EVIDENCE-WAIVER-004, and a `detail` field when the diagnostic is `detail`-scoped per REQ-CHANGE-EVIDENCE-WAIVER-016, to every `CHANGE_REQUIREMENTS_UNCHANGED`, `CHANGE_DESIGN_UNCHANGED`, `CHANGE_RED_UNPROVEN`, `CHANGE_GREEN_UNPROVEN`, `CHANGE_COMPLETENESS_TDD`, `CHANGE_RECORD_MISSING`, `CHANGE_PHASE_MISSING`, `CHANGE_ORDER_MIGRATION_REQUIRED`, `CHANGE_TESTS_UNCHANGED`, `CHANGE_IMPLEMENTATION_UNCHANGED`, `CHANGE_RELEVANT_IMPLEMENTATION_UNCHANGED`, `CHANGE_TEST_CHANGED_AFTER_RED`, and `CHANGE_PHASE_ORDER` diagnostic emitted by `validateChangeEvidence`/`validateChangeCompleteness`.
 Acceptance: Given two changes each emitting `CHANGE_RED_UNPROVEN` for
 different requirements, `gate --json`'s diagnostic entries each carry a
 `changeId` and `requirementId` field matching their originating change and

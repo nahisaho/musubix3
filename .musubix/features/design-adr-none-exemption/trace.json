@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-04T05:06:55.715Z",
+  "generatedAt": "2026-10-05T03:55:48.946Z",
   "nodes": [
     {
       "id": "ADR-0017",
@@ -30,7 +30,7 @@
       "id": "CODE-DESIGN-ADR-NONE-EXEMPTION-004",
       "kind": "code",
       "path": "packages/analysis/src/change.ts",
-      "line": 752
+      "line": 764
     },
     {
       "id": "DES-DESIGN-ADR-NONE-EXEMPTION-001",
@@ -199,7 +199,7 @@
     ".musubix/decisions/ADR-0017.md": "791187943432f1d0d420b4fddb0404f500d8f7a2f20f9ed8597f4f1d6b20779a",
     ".musubix/features/design-adr-none-exemption/design.md": "dc35b200e020fe64ff326320ef71b0d43dfef3c148c055b52b878e41d01662d8",
     ".musubix/features/design-adr-none-exemption/requirements.md": "504a64d246fbdbb23a1704b6dcd4104aa95226d0ec2d369a996640c63ec65648",
-    "packages/analysis/src/change.ts": "169b625e65df6f331bf4530c1b74de2c797a5fbbe4bf38924366f4406d90bc82",
+    "packages/analysis/src/change.ts": "0806d63b8b7097b25d2fae717bd11f9696a71e74c7613e9be01ad732fa1e0893",
     "packages/domain/src/design.ts": "4ead6cea89bc6fe9367eea98df810b08eeb201e129b7f84e0b7de80bac7b7e61",
     "packages/domain/src/types.ts": "b61d810e4beb76343d85f8fb0e3f165d1e6d8eaede39e4caef3ee270f68a455a",
     "tests/design-adr-none-exemption.test.ts": "525453c5b14ce975026c6e60183bf77e9741c23f83ac775d4fa6c06140bddfb9"

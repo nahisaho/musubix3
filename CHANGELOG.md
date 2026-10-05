@@ -2,6 +2,13 @@
 
 ## 0.1.20 - 2026-09-22
 
+- Add `CHANGE_PHASE_ORDER` as a thirteenth waivable code (`WAIVABLE_CODES`),
+  with `phase:<name>` detail scoping for the two change-level transitions
+  (`requirements`, `design`) and `batch:<name>:<batchKey>` detail scoping for
+  the four per-batch transitions (`red`, `implementation`, `green`,
+  `quality`). This provides a documented, human-approved safety net for a
+  corrective Red/Implementation/Green batch recorded after Quality that has
+  not yet been resolved by a Quality re-recording (#56).
 - Add repeatable Quality checkpoints after complete post-Quality corrective
   batches. Schema version 2 retains ordinal Quality history, validation and
   evidence merge pair every checkpoint deterministically, and

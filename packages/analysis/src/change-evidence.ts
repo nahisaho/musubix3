@@ -383,6 +383,71 @@ export function orderMigrationRequiredBatchCondition(
     .some((batch) => orderMigrationRequiredBatchItemCondition(batch, batchPhaseName));
 }
 
+/** @id CODE-CHANGE-EVIDENCE-WAIVER-024
+ * @implements REQ-CHANGE-EVIDENCE-WAIVER-017
+ * @design DES-CHANGE-EVIDENCE-WAIVER-004
+ * Pure re-derivations of `CHANGE_PHASE_ORDER`'s six transition conditions
+ * (GitHub Issue #56), mirroring `orderMigrationRequiredPhaseCondition`'s/
+ * `orderMigrationRequiredBatchCondition`'s shape so `evaluateWaiverCondition`
+ * never duplicates `change.ts`'s emission-site comparisons.
+ */
+export function phaseOrderPhaseCondition(change: ChangeRecord, phaseName: string): boolean {
+  if (phaseName === 'requirements') {
+    const requirements = change.phases.requirements;
+    const impact = change.phases.impact;
+    return requirements?.order !== undefined && impact?.order !== undefined && requirements.order <= impact.order;
+  }
+  if (phaseName === 'design') {
+    const design = change.phases.design;
+    const requirements = change.phases.requirements;
+    return design?.order !== undefined && requirements?.order !== undefined && design.order <= requirements.order;
+  }
+  return false;
+}
+
+export function phaseOrderBatchItemCondition(
+  change: Pick<ChangeRecord, 'phases'>,
+  batch: BatchOrderState,
+  batchPhaseName: string,
+): boolean {
+  if (batchPhaseName === 'red') {
+    const design = change.phases.design;
+    return batch.red?.order !== undefined && design?.order !== undefined && batch.red.order <= design.order;
+  }
+  if (batchPhaseName === 'implementation') {
+    return batch.implementation?.order !== undefined && batch.red?.order !== undefined
+      && batch.implementation.order <= batch.red.order;
+  }
+  if (batchPhaseName === 'green') {
+    return batch.green?.order !== undefined && batch.implementation?.order !== undefined
+      && batch.green.order <= batch.implementation.order;
+  }
+  if (batchPhaseName === 'quality') {
+    const quality = change.phases.quality;
+    return quality?.order !== undefined && batch.green?.order !== undefined && quality.order <= batch.green.order;
+  }
+  return false;
+}
+
+export function phaseOrderBatchCondition(
+  change: Pick<ChangeRecord, 'changeId' | 'requirementIds' | 'phases'> & { tddBatches?: BatchOrderState[] },
+  batchPhaseName: string,
+  key: string,
+): boolean {
+  const batches = [...(change.tddBatches ?? [])];
+  if (change.phases.red || change.phases.implementation || change.phases.green) {
+    const legacyBatch: BatchOrderState = {
+      requirementIds: [...change.requirementIds],
+      ...(change.phases.red ? { red: change.phases.red } : {}),
+      ...(change.phases.implementation ? { implementation: change.phases.implementation } : {}),
+      ...(change.phases.green ? { green: change.phases.green } : {}),
+    };
+    batches.unshift(legacyBatch);
+  }
+  return batchesForKey(batches, key)
+    .some((batch) => phaseOrderBatchItemCondition(change, batch, batchPhaseName));
+}
+
 export function orderMigrationRequiredRequirementCondition(
   change: ChangeRecord,
   requirementId: string,
