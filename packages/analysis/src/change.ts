@@ -574,11 +574,15 @@ export async function validateChangeEvidence(root: string): Promise<{
     }
     if (change.phases.requirements?.order !== undefined && change.phases.impact?.order !== undefined
       && change.phases.requirements.order <= change.phases.impact.order) {
-      diagnostics.push(error('CHANGE_PHASE_ORDER', `${change.changeId}:requirements is not after impact.`));
+      diagnostics.push(waivedDiagnostic(waiverContext, 'CHANGE_PHASE_ORDER',
+        `${change.changeId}:requirements is not after impact.`,
+        change.changeId, undefined, diagnosticDetail('CHANGE_PHASE_ORDER', { phaseName: 'requirements' })));
     }
     if (change.phases.design?.order !== undefined && change.phases.requirements?.order !== undefined
       && change.phases.design.order <= change.phases.requirements.order) {
-      diagnostics.push(error('CHANGE_PHASE_ORDER', `${change.changeId}:design is not after requirements.`));
+      diagnostics.push(waivedDiagnostic(waiverContext, 'CHANGE_PHASE_ORDER',
+        `${change.changeId}:design is not after requirements.`,
+        change.changeId, undefined, diagnosticDetail('CHANGE_PHASE_ORDER', { phaseName: 'design' })));
     }
     for (const batchPhase of tddBatchPhases) {
       const covered = new Set(batches.filter((batch) => batch[batchPhase]).flatMap((batch) => batch.requirementIds));
@@ -609,19 +613,27 @@ export async function validateChangeEvidence(root: string): Promise<{
       }
       if (batch.red?.order !== undefined && change.phases.design?.order !== undefined
         && batch.red.order <= change.phases.design.order) {
-        diagnostics.push(error('CHANGE_PHASE_ORDER', `${change.changeId}:red is not after design.`));
+        diagnostics.push(waivedDiagnostic(waiverContext, 'CHANGE_PHASE_ORDER',
+          `${change.changeId}:red is not after design.`,
+          change.changeId, undefined, diagnosticDetail('CHANGE_PHASE_ORDER', { batchPhaseName: 'red', batch })));
       }
       if (batch.implementation?.order !== undefined && batch.red?.order !== undefined
         && batch.implementation.order <= batch.red.order) {
-        diagnostics.push(error('CHANGE_PHASE_ORDER', `${change.changeId}:implementation is not after red.`));
+        diagnostics.push(waivedDiagnostic(waiverContext, 'CHANGE_PHASE_ORDER',
+          `${change.changeId}:implementation is not after red.`,
+          change.changeId, undefined, diagnosticDetail('CHANGE_PHASE_ORDER', { batchPhaseName: 'implementation', batch })));
       }
       if (batch.green?.order !== undefined && batch.implementation?.order !== undefined
         && batch.green.order <= batch.implementation.order) {
-        diagnostics.push(error('CHANGE_PHASE_ORDER', `${change.changeId}:green is not after implementation.`));
+        diagnostics.push(waivedDiagnostic(waiverContext, 'CHANGE_PHASE_ORDER',
+          `${change.changeId}:green is not after implementation.`,
+          change.changeId, undefined, diagnosticDetail('CHANGE_PHASE_ORDER', { batchPhaseName: 'green', batch })));
       }
       if (change.phases.quality?.order !== undefined && batch.green?.order !== undefined
         && change.phases.quality.order <= batch.green.order) {
-        diagnostics.push(error('CHANGE_PHASE_ORDER', `${change.changeId}:quality is not after green.`));
+        diagnostics.push(waivedDiagnostic(waiverContext, 'CHANGE_PHASE_ORDER',
+          `${change.changeId}:quality is not after green.`,
+          change.changeId, undefined, diagnosticDetail('CHANGE_PHASE_ORDER', { batchPhaseName: 'quality', batch })));
       }
     }
     const impact = change.phases.impact;

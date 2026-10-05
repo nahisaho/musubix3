@@ -6,7 +6,8 @@ import {
   implementationUnchangedCondition, loadChangeEvidence,
   orderMigrationRequiredBatchCondition,
   orderMigrationRequiredPhaseCondition, orderMigrationRequiredRequirementCondition,
-  phaseMissingCondition, recordMissingCondition, redUnprovenCondition, relevantImplementationUnchangedCondition,
+  phaseMissingCondition, phaseOrderBatchCondition, phaseOrderPhaseCondition,
+  recordMissingCondition, redUnprovenCondition, relevantImplementationUnchangedCondition,
   requirementsUnchangedCondition, testChangedAfterRedCondition, testsUnchangedCondition,
   voidedCycleOrdersInCurrentWindow,
   type ChangeEvidence, type ChangePhase, type ChangeTddBatch,
@@ -37,6 +38,7 @@ export const WAIVABLE_CODES = [
   'CHANGE_IMPLEMENTATION_UNCHANGED',
   'CHANGE_RELEVANT_IMPLEMENTATION_UNCHANGED',
   'CHANGE_TEST_CHANGED_AFTER_RED',
+  'CHANGE_PHASE_ORDER',
 ] as const;
 export type WaivableCode = typeof WAIVABLE_CODES[number];
 
@@ -51,7 +53,7 @@ export const NEITHER_KEY_CODES = new Set<WaivableCode>(['CHANGE_REQUIREMENTS_UNC
 export const REQUIREMENT_ONLY_CODES = new Set<WaivableCode>(['CHANGE_RED_UNPROVEN', 'CHANGE_GREEN_UNPROVEN', 'CHANGE_COMPLETENESS_TDD']);
 export const DETAIL_ONLY_CODES = new Set<WaivableCode>([
   'CHANGE_PHASE_MISSING', 'CHANGE_ORDER_MIGRATION_REQUIRED', 'CHANGE_TESTS_UNCHANGED',
-  'CHANGE_IMPLEMENTATION_UNCHANGED', 'CHANGE_TEST_CHANGED_AFTER_RED',
+  'CHANGE_IMPLEMENTATION_UNCHANGED', 'CHANGE_TEST_CHANGED_AFTER_RED', 'CHANGE_PHASE_ORDER',
 ]);
 export const BOTH_KEYS_CODES = new Set<WaivableCode>(['CHANGE_RELEVANT_IMPLEMENTATION_UNCHANGED']);
 
@@ -161,6 +163,13 @@ export function diagnosticDetail(code: WaivableCode, context: {
     || code === 'CHANGE_TEST_CHANGED_AFTER_RED' || code === 'CHANGE_RELEVANT_IMPLEMENTATION_UNCHANGED') {
     return context.batch !== undefined ? batchKey(context.batch.requirementIds) : undefined;
   }
+  if (code === 'CHANGE_PHASE_ORDER') {
+    if (context.batchPhaseName !== undefined && context.batch !== undefined) {
+      return `batch:${context.batchPhaseName}:${batchKey(context.batch.requirementIds)}`;
+    }
+    if (context.phaseName !== undefined) return `phase:${context.phaseName}`;
+    return undefined;
+  }
   return undefined;
 }
 
@@ -192,17 +201,22 @@ export function parseDetail(code: WaivableCode, detail: string | undefined): Par
       ? ['impact', 'requirements', 'design', 'quality', ...tddBatchPhaseNames]
       : code === 'CHANGE_ORDER_MIGRATION_REQUIRED'
         ? ['impact', 'requirements', 'design']
-        : [];
+        : code === 'CHANGE_PHASE_ORDER'
+          ? ['requirements', 'design']
+          : [];
     return allowed.includes(phaseName as never) ? { kind: 'phase', phaseName } : null;
   }
   if (detail.startsWith('batch:')) {
-    if (code !== 'CHANGE_ORDER_MIGRATION_REQUIRED') return null;
+    if (code !== 'CHANGE_ORDER_MIGRATION_REQUIRED' && code !== 'CHANGE_PHASE_ORDER') return null;
     const rest = detail.slice('batch:'.length);
     const separator = rest.indexOf(':');
     if (separator === -1) return null;
     const batchPhaseName = rest.slice(0, separator);
     const key = rest.slice(separator + 1);
-    return (tddBatchPhaseNames as readonly string[]).includes(batchPhaseName) && validBatchKey(key)
+    const allowedBatchPhaseNames: readonly string[] = code === 'CHANGE_PHASE_ORDER'
+      ? [...tddBatchPhaseNames, 'quality']
+      : tddBatchPhaseNames;
+    return allowedBatchPhaseNames.includes(batchPhaseName) && validBatchKey(key)
       ? { kind: 'batch', batchPhaseName, batchKey: key }
       : null;
   }
@@ -374,6 +388,35 @@ export async function snapshotPayload(
         ? voidedCycleOrdersInCurrentWindow(change, parsed.requirementId, tdd, validlyVoided)
         : [];
       return { cycles, ...(voidedCycleOrders.length ? { voidedCycleOrders } : {}) };
+    }
+    return null;
+  }
+
+  if (code === 'CHANGE_PHASE_ORDER') {
+    if (parsed.kind === 'phase') {
+      const laterItem = change?.phases[parsed.phaseName as ChangePhase];
+      const earlierPhaseName: ChangePhase = parsed.phaseName === 'requirements' ? 'impact' : 'requirements';
+      const earlierItem = change?.phases[earlierPhaseName];
+      return {
+        firstOrder: Number.isInteger(earlierItem?.order) ? earlierItem!.order : null,
+        secondOrder: Number.isInteger(laterItem?.order) ? laterItem!.order : null,
+      };
+    }
+    if (parsed.kind === 'batch') {
+      const matches = change ? batchesForKey(effectiveBatches(change), parsed.batchKey) : [];
+      const state = (batch: ChangeTddBatch | undefined) => {
+        const batchPhaseName = parsed.batchPhaseName as 'red' | 'implementation' | 'green' | 'quality';
+        const earlierItem = batchPhaseName === 'red' ? change?.phases.design
+          : batchPhaseName === 'implementation' ? batch?.red
+          : batchPhaseName === 'green' ? batch?.implementation
+          : batch?.green;
+        const laterItem = batchPhaseName === 'quality' ? change?.phases.quality : batch?.[batchPhaseName];
+        return {
+          firstOrder: Number.isInteger(earlierItem?.order) ? earlierItem!.order : null,
+          secondOrder: Number.isInteger(laterItem?.order) ? laterItem!.order : null,
+        };
+      };
+      return matches.length <= 1 ? state(matches[0]) : { matchingBatches: matches.map((batch) => state(batch)) };
     }
     return null;
   }
@@ -586,6 +629,15 @@ export async function evaluateWaiverCondition(
       const matches = batchesForKey(effectiveBatches(change), parsed.batchKey);
       if (!matches.length) return 'indeterminate';
       return result(orderMigrationRequiredBatchCondition(change, parsed.batchPhaseName, parsed.batchKey));
+    }
+    return 'indeterminate';
+  }
+  if (scope.code === 'CHANGE_PHASE_ORDER') {
+    if (parsed.kind === 'phase') return result(phaseOrderPhaseCondition(change, parsed.phaseName));
+    if (parsed.kind === 'batch') {
+      const matches = batchesForKey(effectiveBatches(change), parsed.batchKey);
+      if (!matches.length) return 'indeterminate';
+      return result(phaseOrderBatchCondition(change, parsed.batchPhaseName, parsed.batchKey));
     }
     return 'indeterminate';
   }

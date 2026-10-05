@@ -7,7 +7,7 @@ import {
   orderMigrationRequiredBatchItemCondition, projectStatus, readText, recordChangePhase, recordChangeWaiver, runGate,
   runTddPhase, validateChangeCompleteness, validateChangeEvidence, waiverEvidenceDiagnostics, within, writeJson, writeText,
 } from '../packages/analysis/src/index.js';
-import { code, processResult, project, tddResultRunner, testCode } from './helpers.js';
+import { code, processResult, project, req, tddResultRunner, testCode } from './helpers.js';
 
 /**
  * Stages CHANGE-0001 for REQ-EXAMPLE-001 through impact/requirements/design,
@@ -38,6 +38,47 @@ async function stageChangeThroughGreen(root: string, changeId = 'CHANGE-0001'): 
   await writeText(root, 'src/service.ts', code.replace('return true', 'return false'));
   await recordChangePhase(root, changeId, 'implementation', ['REQ-EXAMPLE-001']);
   await recordChangePhase(root, changeId, 'green', ['REQ-EXAMPLE-001']);
+}
+
+/** @id CODE-CHANGE-EVIDENCE-WAIVER-025
+ * @implements REQ-CHANGE-EVIDENCE-WAIVER-017
+ * @design DES-CHANGE-EVIDENCE-WAIVER-004
+ * Stages CHANGE-0001 for two requirements through its first Quality
+ * checkpoint, then records a corrective Red/Implementation/Green batch for
+ * only the second requirement without a later Quality re-recording,
+ * reproducing GitHub Issue #56's exact `CHANGE_PHASE_ORDER` ("quality is not
+ * after green") recording-order inversion for that batch.
+ */
+async function stageQualityThenUnrepairedCorrectiveBatch(root: string, changeId = 'CHANGE-0001'): Promise<void> {
+  const requirements = ['REQ-EXAMPLE-001', 'REQ-EXAMPLE-002'];
+  await writeText(root, '.musubix/features/example/requirements.md',
+    `${await readText(root, '.musubix/features/example/requirements.md')}\n${req('The system shall report secondary readiness.', 'REQ-EXAMPLE-002')}`);
+  await writeText(root, 'src/second.ts', code.replaceAll('EXAMPLE-001', 'EXAMPLE-002').replace('readiness', 'secondaryReadiness'));
+  await writeText(root, 'src/second.test.ts', testCode
+    .replace("from './service.js'", "from './second.js'")
+    .replaceAll('EXAMPLE-001', 'EXAMPLE-002').replaceAll('readiness', 'secondaryReadiness'));
+  await writeText(root, `.musubix/changes/${changeId}.md`, `# ${changeId}\nRequirements: ${requirements.join(' ')}\n`);
+  await recordChangePhase(root, changeId, 'impact', requirements);
+  await writeText(root, '.musubix/features/example/requirements.md',
+    `${await readText(root, '.musubix/features/example/requirements.md')}\nAcceptance: Both readiness checks are required.\n`);
+  await recordChangePhase(root, changeId, 'requirements', requirements);
+  await writeText(root, '.musubix/features/example/design.md',
+    `${await readText(root, '.musubix/features/example/design.md')}\nConstraints: Both components are quality-gated.\n`);
+  await recordChangePhase(root, changeId, 'design', requirements);
+  await writeText(root, 'src/service.test.ts', `${testCode}\n// initial red\n`);
+  await writeText(root, 'src/second.test.ts', `${await readText(root, 'src/second.test.ts')}\n// initial red\n`);
+  await recordChangePhase(root, changeId, 'red', requirements);
+  await writeText(root, 'src/service.ts', `${code}\n// initial implementation\n`);
+  await writeText(root, 'src/second.ts', `${await readText(root, 'src/second.ts')}\n// initial implementation\n`);
+  await recordChangePhase(root, changeId, 'implementation', requirements);
+  await recordChangePhase(root, changeId, 'green', requirements);
+  await recordChangePhase(root, changeId, 'quality', requirements);
+
+  await writeText(root, 'src/second.test.ts', `${await readText(root, 'src/second.test.ts')}\n// corrective red\n`);
+  await recordChangePhase(root, changeId, 'red', ['REQ-EXAMPLE-002']);
+  await writeText(root, 'src/second.ts', `${await readText(root, 'src/second.ts')}\n// corrective implementation\n`);
+  await recordChangePhase(root, changeId, 'implementation', ['REQ-EXAMPLE-002']);
+  await recordChangePhase(root, changeId, 'green', ['REQ-EXAMPLE-002']);
 }
 
 function diagnosticsFor(diagnostics: Diagnostic[], code: string): Diagnostic[] {
@@ -827,4 +868,106 @@ it('TEST-CHANGE-EVIDENCE-WAIVER-028 preserves batch parity and shared gate statu
     readText(root, '.musubix/evidence/order.json'),
     readText(root, '.musubix/evidence/change-waivers.json'),
   ])).toEqual(stable);
+});
+
+/** @id TEST-CHANGE-EVIDENCE-WAIVER-029
+ * @verifies REQ-CHANGE-EVIDENCE-WAIVER-017
+ * Reproduces GitHub Issue #56's exact scenario: a corrective Red/
+ * Implementation/Green batch recorded after Quality, for only a strict
+ * requirement subset, makes `batch.green.order` exceed
+ * `change.phases.quality.order` with no repair yet applied.
+ * `CHANGE_PHASE_ORDER` is accepted into the waivable allow-list, downgrades
+ * exactly that `batch:quality:<key>` instance, and leaves every other
+ * diagnostic (including the unrelated requirement's own evidence) untouched.
+ */
+it('TEST-CHANGE-EVIDENCE-WAIVER-029 waives CHANGE_PHASE_ORDER for an unrepaired post-Quality corrective batch (Issue #56)', async () => {
+  const root = await project();
+  await stageQualityThenUnrepairedCorrectiveBatch(root);
+
+  const before = await validateChangeEvidence(root);
+  const phaseOrder = diagnosticsFor(before.diagnostics, 'CHANGE_PHASE_ORDER');
+  expect(phaseOrder).toHaveLength(1);
+  expect(phaseOrder[0]).toMatchObject({
+    severity: 'error',
+    changeId: 'CHANGE-0001',
+    detail: 'batch:quality:REQ-EXAMPLE-002',
+  });
+  expect(phaseOrder[0]!.message).toMatch(/quality is not after green/);
+
+  await recordChangeWaiver(root, 'CHANGE-0001', 'CHANGE_PHASE_ORDER', undefined, 'batch:quality:REQ-EXAMPLE-002', 'nahisaho', 'Issue #56 safety net: Quality refresh not yet run.');
+
+  const after = await validateChangeEvidence(root);
+  expect(diagnosticsFor(after.diagnostics, 'CHANGE_PHASE_ORDER')).toEqual([
+    {
+      ...phaseOrder[0]!,
+      severity: 'warning',
+      waiver: expect.objectContaining({ approver: 'nahisaho', reason: 'Issue #56 safety net: Quality refresh not yet run.' }),
+    },
+  ]);
+  const report = await runGate(root, { feature: 'example' });
+  expect(report.waiverDiagnostics.filter((d) => d.code.startsWith('CHANGE_WAIVER_'))).toEqual([]);
+});
+
+/** @id TEST-CHANGE-EVIDENCE-WAIVER-030
+ * @verifies REQ-CHANGE-EVIDENCE-WAIVER-017
+ * A waiver recorded for the `quality is not after green` inversion becomes
+ * stale the instant a later Quality re-recording (`change quality-refresh`,
+ * CHANGE-0020) resolves it, per REQ-CHANGE-EVIDENCE-WAIVER-011/017.
+ */
+it('TEST-CHANGE-EVIDENCE-WAIVER-030 makes a CHANGE_PHASE_ORDER waiver stale once Quality is refreshed past the inversion', async () => {
+  const root = await project();
+  await stageQualityThenUnrepairedCorrectiveBatch(root);
+  await recordChangeWaiver(root, 'CHANGE-0001', 'CHANGE_PHASE_ORDER', undefined, 'batch:quality:REQ-EXAMPLE-002', 'nahisaho', 'Issue #56 safety net: Quality refresh not yet run.');
+  expect(diagnosticsFor((await validateChangeEvidence(root)).diagnostics, 'CHANGE_PHASE_ORDER')).toEqual([
+    expect.objectContaining({ severity: 'warning', detail: 'batch:quality:REQ-EXAMPLE-002' }),
+  ]);
+
+  await recordChangePhase(root, 'CHANGE-0001', 'quality', ['REQ-EXAMPLE-001', 'REQ-EXAMPLE-002']);
+
+  expect(diagnosticsFor((await validateChangeEvidence(root)).diagnostics, 'CHANGE_PHASE_ORDER')).toEqual([]);
+  expect((await waiverEvidenceDiagnostics(root)).map((d) => d.code)).toEqual(['CHANGE_WAIVER_STALE']);
+});
+
+/** @id TEST-CHANGE-EVIDENCE-WAIVER-031
+ * @verifies REQ-CHANGE-EVIDENCE-WAIVER-017
+ * `CHANGE_PHASE_ORDER` also accepts the two change-level `phase:` transitions
+ * (`requirements`-after-`impact`, `design`-after-`requirements`); each
+ * downgrades independently of the other and of the per-batch instance.
+ */
+it('TEST-CHANGE-EVIDENCE-WAIVER-031 waives a change-level CHANGE_PHASE_ORDER phase: transition independently of other instances', async () => {
+  const root = await project();
+  await stageQualityThenUnrepairedCorrectiveBatch(root);
+  const evidence = (await loadChangeEvidence(root))!;
+  const change = evidence.changes.find((entry) => entry.changeId === 'CHANGE-0001')!;
+  change.phases.requirements = { ...change.phases.requirements!, order: change.phases.impact!.order! };
+  await writeJson(root, '.musubix/evidence/changes.json', evidence);
+
+  const before = diagnosticsFor((await validateChangeEvidence(root)).diagnostics, 'CHANGE_PHASE_ORDER');
+  expect(before.map((d) => d.detail).sort()).toEqual(['batch:quality:REQ-EXAMPLE-002', 'phase:requirements']);
+
+  await recordChangeWaiver(root, 'CHANGE-0001', 'CHANGE_PHASE_ORDER', undefined, 'phase:requirements', 'nahisaho', 'fixture: waive requirements phase-order instance only');
+
+  const after = diagnosticsFor((await validateChangeEvidence(root)).diagnostics, 'CHANGE_PHASE_ORDER');
+  expect(after.sort((a, b) => (a.detail ?? '').localeCompare(b.detail ?? ''))).toEqual([
+    { ...before.find((d) => d.detail === 'batch:quality:REQ-EXAMPLE-002')! },
+    {
+      ...before.find((d) => d.detail === 'phase:requirements')!,
+      severity: 'warning',
+      waiver: expect.objectContaining({ approver: 'nahisaho', reason: 'fixture: waive requirements phase-order instance only' }),
+    },
+  ].sort((a, b) => (a.detail ?? '').localeCompare(b.detail ?? '')));
+});
+
+/** @id TEST-CHANGE-EVIDENCE-WAIVER-032
+ * @verifies REQ-CHANGE-EVIDENCE-WAIVER-017
+ * `parseDetail` rejects `phase:quality` for `CHANGE_PHASE_ORDER` (that
+ * transition is `batch:quality:<key>`, since Quality is change-level, not a
+ * bare phase), consistent with its rejection for
+ * `CHANGE_ORDER_MIGRATION_REQUIRED`.
+ */
+it('TEST-CHANGE-EVIDENCE-WAIVER-032 rejects phase:quality detail grammar for CHANGE_PHASE_ORDER', async () => {
+  const root = await project();
+  await stageQualityThenUnrepairedCorrectiveBatch(root);
+  await expect(recordChangeWaiver(root, 'CHANGE-0001', 'CHANGE_PHASE_ORDER', undefined, 'phase:quality', 'nahisaho', 'invalid grammar probe'))
+    .rejects.toThrow(/is not a valid --detail value/i);
 });
