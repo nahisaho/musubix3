@@ -1,6 +1,6 @@
 import { error, ids, validateDesign, validateRequirements, type Diagnostic, type Requirement } from '../../domain/src/index.js';
 import { digest, exists, files, snapshot, within, writeJson, readText } from './files.js';
-import { loadTddEvidence, validlyVoidedTddCycles } from './tdd.js';
+import { loadTddEvidence, validlyVoidedTddCycles, validlyArchivedTddCycles } from './tdd.js';
 import { buildTrace, commentBlocks } from './trace.js';
 import { indexGraph } from './graph.js';
 import { validatePerformanceEvidence } from './performance.js';
@@ -502,6 +502,10 @@ export async function validateChangeEvidence(root: string): Promise<{
   const diagnostics: Diagnostic[] = [...waiverDiagnostics];
   const order = waiverContext.order;
   const validlyVoided = validlyVoidedTddCycles(tdd, order);
+  // Issue #64 / REQ-CHANGE-EVIDENCE-WAIVER-018: exclude validly archived
+  // cycles from the order window the same way validly voided ones already
+  // are excluded, below.
+  const validlyArchived = validlyArchivedTddCycles(tdd, order);
   diagnostics.push(...order.diagnostics);
   for (const changeId of documents) {
     if (!evidence.changes.some((change) => change.changeId === changeId)) {
@@ -688,7 +692,7 @@ export async function validateChangeEvidence(root: string): Promise<{
       const red = batch?.red;
       const green = batch?.green;
       const validCycle = hasValidTddCycle(change, requirementId, tdd, validlyVoided);
-      if (orderMigrationRequiredRequirementCondition(change, requirementId, tdd, validlyVoided)) {
+      if (orderMigrationRequiredRequirementCondition(change, requirementId, tdd, validlyVoided, validlyArchived)) {
         diagnostics.push(waivedDiagnostic(waiverContext, 'CHANGE_ORDER_MIGRATION_REQUIRED',
           `${change.changeId}:${requirementId} references TDD evidence without monotonic order; regenerate the cycle.`,
           change.changeId, undefined, diagnosticDetail('CHANGE_ORDER_MIGRATION_REQUIRED', { requirementId })));

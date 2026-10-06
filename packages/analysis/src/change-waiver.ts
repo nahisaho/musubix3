@@ -12,7 +12,7 @@ import {
   voidedCycleOrdersInCurrentWindow,
   type ChangeEvidence, type ChangePhase, type ChangeTddBatch,
 } from './change-evidence.js';
-import { loadTddEvidence, validlyVoidedTddCycles, type TddEvidence } from './tdd.js';
+import { loadTddEvidence, validlyVoidedTddCycles, validlyArchivedTddCycles, type TddEvidence } from './tdd.js';
 import { appendEvidenceOrder, evidenceOrderRecord, inspectEvidenceOrder } from './order.js';
 import { withEvidenceWriterLock } from './evidence-writer-lock.js';
 
@@ -649,6 +649,10 @@ export async function evaluateWaiverCondition(
   if (scope.requirementId !== undefined && !change.requirementIds.includes(scope.requirementId)) return 'indeterminate';
 
   const validlyVoided = validlyVoidedTddCycles(tdd, order);
+  // Issue #64 / REQ-CHANGE-EVIDENCE-WAIVER-018: mirror the gate's exclusion
+  // of validly archived cycles so a waiver's "is this condition still true"
+  // re-check never disagrees with validateChangeEvidence.
+  const validlyArchived = validlyArchivedTddCycles(tdd, order);
   const result = (value: boolean): WaiverCondition => value ? 'true' : 'false';
   switch (scope.code) {
     case 'CHANGE_REQUIREMENTS_UNCHANGED':
@@ -676,7 +680,7 @@ export async function evaluateWaiverCondition(
     if (parsed.kind === 'phase') return result(orderMigrationRequiredPhaseCondition(change, parsed.phaseName));
     if (parsed.kind === 'requirement') {
       if (!change.requirementIds.includes(parsed.requirementId)) return 'indeterminate';
-      return result(orderMigrationRequiredRequirementCondition(change, parsed.requirementId, tdd, validlyVoided));
+      return result(orderMigrationRequiredRequirementCondition(change, parsed.requirementId, tdd, validlyVoided, validlyArchived));
     }
     if (parsed.kind === 'batch') {
       const matches = batchesForKey(effectiveBatches(change), parsed.batchKey);

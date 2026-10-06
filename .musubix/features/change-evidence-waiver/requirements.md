@@ -734,3 +734,28 @@ itself; validating the file detects and reports a broken chain (a record
 whose `previousSha256` does not equal its predecessor's `payloadSha256`,
 or a first record whose `previousSha256` is not the genesis value) as
 malformed per REQ-CHANGE-EVIDENCE-WAIVER-007.
+
+## REQ-CHANGE-EVIDENCE-WAIVER-018: Exclude validly archived TDD cycles from the Red-phase order window
+Priority: must
+Type: functional
+Pattern: unwanted-behavior
+Statement: If a requirement's current Red-phase order window (per REQ-011's `currentTddCycle`/`orderMigrationRequiredRequirementCondition` selection) contains a TDD cycle whose latest phase is a validly linked `archive` record (REQ-TDD-CYCLE-ARCHIVE-006/007/013), then the system shall exclude that cycle from the window's "current cycle" selection and from the "lacks monotonic Red order" scan the same way it already excludes a validly voided cycle, so the archived cycle can never be selected as the requirement's current cycle and can never by itself cause `CHANGE_ORDER_MIGRATION_REQUIRED` to fire.
+Acceptance: Given a change's Red-phase order window for a requirement
+contains exactly one TDD cycle, that cycle is validly archived (its
+`archive` record resolves via `archiveLinkage` to `valid: true`), and that
+cycle has no Green phase, `validateChangeEvidence`'s `change-history` check
+no longer raises `CHANGE_ORDER_MIGRATION_REQUIRED` for that requirement
+(reproducing GitHub Issue #64's exact scenario: a dangling cycle created
+for a test that already passed, correctly rejected by `tdd red`'s
+forced-failure check, then cleaned up with `tdd archive`). Given the same
+window instead contains, in addition to the archived cycle, a second,
+non-archived, non-voided cycle with monotonic Red order but no Green, the
+diagnostic still fires for that second cycle exactly as before — the
+archived cycle's exclusion changes which cycle is "current", never whether
+a genuinely incomplete non-archived cycle is detected. Given a cycle whose
+`archive` record is itself malformed (`archiveLinkage` resolves to `valid:
+false`, e.g. a broken predecessor link), that cycle remains included in the
+window exactly as today (unarchived), continuing to trigger
+`CHANGE_ORDER_MIGRATION_REQUIRED` when otherwise applicable, since only a
+validly linked archive record is trustworthy evidence that the cycle is
+inert.

@@ -186,11 +186,20 @@ export function voidedCycleOrdersInCurrentWindow(
     .sort((a, b) => a - b);
 }
 
+/** @id CODE-CHANGE-EVIDENCE-WAIVER-029
+ * @implements REQ-CHANGE-EVIDENCE-WAIVER-018
+ * @design DES-CHANGE-EVIDENCE-WAIVER-006
+ * Excludes validly archived cycles from the order window alongside validly
+ * voided ones (Issue #64): a cleaned-up dangling cycle (e.g. one `tdd
+ * archive`d because the forced-failing Red it required never applied) must
+ * never be selected as the "current" cycle for a requirement.
+ */
 function currentTddCycle(
   change: ChangeRecord,
   requirementId: string,
   tdd: TddEvidence | null,
   validlyVoided: ReadonlySet<TddCycle>,
+  validlyArchived: ReadonlySet<TddCycle> = new Set(),
 ) {
   const window = currentTddOrderWindow(change, requirementId);
   if (!window) return undefined;
@@ -198,6 +207,7 @@ function currentTddCycle(
     .filter((cycle) =>
       cycle.requirementId === requirementId
       && !validlyVoided.has(cycle)
+      && !validlyArchived.has(cycle)
       && Number.isInteger(cycle.red.order)
       && cycle.red.order! > window.after
       && cycle.red.order! <= window.through)
@@ -448,20 +458,28 @@ export function phaseOrderBatchCondition(
     .some((batch) => phaseOrderBatchItemCondition(change, batch, batchPhaseName));
 }
 
+/** @id CODE-CHANGE-EVIDENCE-WAIVER-028
+ * @implements REQ-CHANGE-EVIDENCE-WAIVER-018
+ * @design DES-CHANGE-EVIDENCE-WAIVER-006
+ * Accepts an optional `validlyArchived` set, mirroring `validlyVoided`, so
+ * archived TDD cycles are excluded from both the "lacks order evidence" scan
+ * and `currentTddCycle`'s window selection (Issue #64).
+ */
 export function orderMigrationRequiredRequirementCondition(
   change: ChangeRecord,
   requirementId: string,
   tdd: TddEvidence | null,
   validlyVoided: ReadonlySet<TddCycle> = new Set(),
+  validlyArchived: ReadonlySet<TddCycle> = new Set(),
 ): boolean {
   const batch = batchFor(effectiveBatches(change), requirementId);
   if (!batch?.red) return false;
   const cycles = (tdd?.cycles ?? []).filter((cycle) =>
-    cycle.requirementId === requirementId && !validlyVoided.has(cycle));
+    cycle.requirementId === requirementId && !validlyVoided.has(cycle) && !validlyArchived.has(cycle));
   if (cycles.some((cycle) => !Number.isInteger(cycle.red.order))) return true;
   const window = currentTddOrderWindow(change, requirementId);
   if (!window) return false;
-  const current = currentTddCycle(change, requirementId, tdd, validlyVoided);
+  const current = currentTddCycle(change, requirementId, tdd, validlyVoided, validlyArchived);
   return !!current && !Number.isInteger(current.green?.order);
 }
 

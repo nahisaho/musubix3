@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+- Exclude validly archived TDD cycles from the Red-phase order window that
+  `validateChangeEvidence`'s `CHANGE_ORDER_MIGRATION_REQUIRED` diagnostic
+  uses, mirroring the existing exclusion already applied to validly voided
+  cycles, so a dangling cycle correctly rejected by `tdd red`'s
+  forced-failure check and cleaned up with `tdd archive` can never be
+  selected as a requirement's "current" cycle or falsely trigger the
+  diagnostic (#64).
 - Tighten the bundled `sdd-change` operational guidance for documentation and
   review work: it now makes the Red → change-record Red → implementation →
   change-record implementation → Green → change-record Green ordering
