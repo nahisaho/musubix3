@@ -30,11 +30,15 @@ and/or one `--detail` scope per REQ-016) from `error` to `warning`, as an
 appended, hash-chained, audited record — never a deletion, edit, or blanket
 disable of the underlying check. It was first shipped scoped to exactly five
 codes (below), then extended by CHANGE-0012 to twelve codes, then by
-CHANGE-0042 to the thirteen codes enumerated in REQ-001. It is narrowly scoped to this well-understood recording-order
-debt shape; it must not weaken `change-history`/`change-completeness` for any
-non-allow-listed diagnostic code, for any other change, requirement, or
-`--detail` scope, or for a genuinely fresh violation of the same scope once
-the waived evidence state changes.
+CHANGE-0042 to the thirteen codes enumerated in REQ-001. CHANGE-0044 further
+narrows one snapshot rule so operators can append the waiver's own approval
+notes to the staged `CHANGE-*.md` document without immediately re-staling the
+same `CHANGE_RECORD_MISSING` waiver. The mechanism remains narrowly scoped to
+this well-understood recording-order debt shape; it must not weaken
+`change-history`/`change-completeness` for any non-allow-listed diagnostic
+code, for any other change, requirement, or `--detail` scope, or for a
+genuinely fresh violation of the same scope once the waived evidence state
+changes.
 
 A native `rubber-duck` review of the first draft is expected to probe
 duplicate-waiver handling, change-level vs. requirement-level code scoping,
@@ -68,6 +72,26 @@ batches each independently missing tests/implementation changes). REQ-016
 introduces an additional, optional `detail` scope key — alongside the existing
 `requirementId` key — so each such instance can be waived individually without
 ever waiving a sibling instance of the same code on the same change.
+
+## Extension: approval-note appends stay outside `CHANGE_RECORD_MISSING`'s normative snapshot (CHANGE-0044)
+
+Source: GitHub Issue #58, where a valid `CHANGE_RECORD_MISSING` waiver became
+immediately stale as soon as the operator appended a final
+`## Debt Remediation Approval` section documenting that very waiver's
+approver/hash/timestamp in the staged `CHANGE-*.md` document. That append is
+part of the normal SDD audit trail, but it does not change the substantive
+pre-impact debt the waiver approved: the document still exists while the
+change chronology entry is still missing. The snapshot must therefore remain
+fail-closed for substantive edits while excluding only a narrowly
+structured, final approval-only section from the hashed document digest used
+by REQ-011.
+
+Known cross-reference: REQ-011's `CHANGE_ORDER_MIGRATION_REQUIRED` detection
+is independent of, and may co-occur with, a separately tracked gap (GitHub
+Issue #64) in the Red-phase order-window check excluding voided but not
+archived TDD cycles. That gap belongs to the order-window check itself, not
+to this feature's waiver stability contract, and is resolved under its own
+issue rather than by changes to REQ-011.
 
 ## REQ-CHANGE-EVIDENCE-WAIVER-001: Restrict waivable codes to the documented recording-order allow-list
 Priority: must
@@ -324,7 +348,22 @@ serialized cycle object as final tie-breakers before `cycleId` is excluded.
 The `void.order` list is sorted numerically ascending independently;
 For `CHANGE_RECORD_MISSING`, the payload is `null` when the change document is
 absent; otherwise it contains the SHA-256 digest of
-`.musubix/changes/<CHANGE-ID>.md`'s current text content, plus whether
+`.musubix/changes/<CHANGE-ID>.md`'s current normative text content, where a
+final `## Debt Remediation Approval` section is excluded from the digest only
+when it is the last level-2 section in the document and every non-blank line
+in its body matches this approval-note schema exactly: one `Code:
+CHANGE_RECORD_MISSING` line; one `Approver: <text>` line; one `Recorded at:
+<timestamp>` line; one `Snapshot hash: <64-hex>` line; one `Files:` line; and
+exactly these three immediately following list items naming the deterministic
+evaluated file set for this waiver scope: `- .musubix/changes/<CHANGE-ID>.md`,
+`- .musubix/evidence/changes.json`, and `- .musubix/evidence/order.json`, with
+no additional prose, extra file entries, subheadings, or other content. The
+excluded section documents the waiver itself rather than new normative change
+intent, so the `Code`, `Approver`, `Recorded at`, and `Snapshot hash` values
+must match the currently evaluated authoritative waiver record for that exact
+scope, and the `Files:` list must match that fixed three-path set exactly;
+otherwise the section remains part of the hashed normative body. The payload
+also contains whether
 `.musubix/evidence/changes.json` currently has an entry for `changeId`
 (an explicit absent/present sentinel) and, when present, that entry's
 canonical-JSON digest, plus whether `.musubix/evidence/order.json`'s
@@ -562,6 +601,21 @@ waiver recorded from the former document-absent behavior and retained with
 chronology present, its recomputed hash differs and both validators report
 `CHANGE_WAIVER_STALE` with the severity determined by the current tri-state
 condition.
+Given a valid `CHANGE_RECORD_MISSING` waiver whose staged change document is
+later appended with a final `## Debt Remediation Approval` section that
+satisfies this exact schema and whose `Code`, `Approver`, `Recorded at`, and
+`Snapshot hash` values match that waiver record, the recomputed payload stays
+byte-identical and the waiver remains non-stale. Given that same section was
+already excluded for that same waiver scope, further edits that keep it within
+this exact schema and keep those four values matched likewise remain
+byte-identical and non-stale. Editing any line before that final section, adding any extra prose
+or extra/missing/misordered file-list item, changing one of those bound values
+so it no longer matches the authoritative waiver record, leaving any formerly
+excluded approval text in place after renaming or otherwise breaking the
+section heading so it is no longer the recognized approval section, or
+appending any later level-2 section after it changes the digest and therefore
+reports `CHANGE_WAIVER_STALE` with the usual tri-state severity determined by
+the current condition.
 The `CHANGE_WAIVER_STALE` diagnostic `message` contains `target code is no
 longer reported` and `replacement waiver is not required` for `false`, without
 saying that all related debt is resolved. For `true`, its message contains

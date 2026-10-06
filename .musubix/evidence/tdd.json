@@ -19466,6 +19466,74 @@
         "diagnostics": [],
         "order": 1707
       }
+    },
+    {
+      "cycleId": "5f8733a7-a412-4019-b8ce-f7ee85458407",
+      "requirementId": "REQ-CHANGE-EVIDENCE-WAIVER-011",
+      "testId": "TEST-CHANGE-EVIDENCE-WAIVER-033",
+      "testPath": "tests/change-evidence-waiver.test.ts",
+      "commandName": "change-evidence-waiver-tests",
+      "red": {
+        "phase": "red",
+        "valid": true,
+        "scoped": true,
+        "resultObserved": true,
+        "testStatus": "failed",
+        "reportSha256": "e9759fa4dd2e490b92a1baed38c1b1c375add9ebcac652fd4d9be9102237129b",
+        "commandSha256": "5d426757a94262d8f48c9dbec723bb9564bc53cb1e99decc8bb45cda590cf53b",
+        "outputSha256": "343838bc301c2f8c15b7433c75c0589a10c71e6214f844fe7f0647ef4e75125c",
+        "exitCode": 1,
+        "durationMs": 1724,
+        "testFingerprint": "11a1d8713ee3414df6a5934207cb636b975f4000fe1a71ed7cae200b4ac19597",
+        "sourceFingerprint": "b92e843f69dac3e0aefa1a98ff5c370a63e5d950205aa6e1f95413eeb56ec4ae",
+        "executionId": "26ae3777-4d19-4acc-aee7-d23c4a1fcf06",
+        "recordedAt": "2026-10-06T03:14:32.782Z",
+        "diagnostics": [],
+        "order": 1726
+      }
+    },
+    {
+      "cycleId": "7391aa5b-c228-4c0d-b90e-474c622513c0",
+      "requirementId": "REQ-CHANGE-EVIDENCE-WAIVER-011",
+      "testId": "TEST-CHANGE-EVIDENCE-WAIVER-033",
+      "testPath": "tests/change-evidence-waiver.test.ts",
+      "commandName": "change-evidence-waiver-tests",
+      "red": {
+        "phase": "red",
+        "valid": true,
+        "scoped": true,
+        "resultObserved": true,
+        "testStatus": "failed",
+        "reportSha256": "5451c67a42ed32c1f85cc472bc8c59e0302a371b687da8327d602a811ad95e2f",
+        "commandSha256": "5d426757a94262d8f48c9dbec723bb9564bc53cb1e99decc8bb45cda590cf53b",
+        "outputSha256": "343838bc301c2f8c15b7433c75c0589a10c71e6214f844fe7f0647ef4e75125c",
+        "exitCode": 1,
+        "durationMs": 1466,
+        "testFingerprint": "11a1d8713ee3414df6a5934207cb636b975f4000fe1a71ed7cae200b4ac19597",
+        "sourceFingerprint": "b92e843f69dac3e0aefa1a98ff5c370a63e5d950205aa6e1f95413eeb56ec4ae",
+        "executionId": "4dae7000-16a5-424b-a024-c96d74c61071",
+        "recordedAt": "2026-10-06T03:15:53.550Z",
+        "diagnostics": [],
+        "order": 1727
+      },
+      "green": {
+        "phase": "green",
+        "valid": true,
+        "scoped": true,
+        "resultObserved": true,
+        "testStatus": "passed",
+        "reportSha256": "14f7fd79d4e0d6ca1beb0b44bb81ed330444ebbfe39ec1da0a03ff9f98fbc3ce",
+        "commandSha256": "5d426757a94262d8f48c9dbec723bb9564bc53cb1e99decc8bb45cda590cf53b",
+        "outputSha256": "343838bc301c2f8c15b7433c75c0589a10c71e6214f844fe7f0647ef4e75125c",
+        "exitCode": 0,
+        "durationMs": 1498,
+        "testFingerprint": "11a1d8713ee3414df6a5934207cb636b975f4000fe1a71ed7cae200b4ac19597",
+        "sourceFingerprint": "bb85ab6e815c28876f885427ac8f06087b454c65fadd70f23a32a8ed93d3bbf9",
+        "executionId": "27c22ae5-6074-4cee-b7b4-946c79ab17ac",
+        "recordedAt": "2026-10-06T03:17:22.571Z",
+        "diagnostics": [],
+        "order": 1730
+      }
     }
   ],
   "chain": [
@@ -30304,6 +30372,42 @@
       "phaseEvidenceSha256": "b9339e4d7858477a65813240930a7b68213e659e978da1470870d7dbc050847d",
       "previousSha256": "922b38f77f9c6153e3b60833bc3f49aab0c20161bbe13fc93021949b0e0f63c5",
       "recordSha256": "7ca3a013ee5ba63feff57ff2788f619a5428ef1f112e8d5a4c2adb0c515c8de5"
+    },
+    {
+      "sequence": 904,
+      "cycleId": "5f8733a7-a412-4019-b8ce-f7ee85458407",
+      "requirementId": "REQ-CHANGE-EVIDENCE-WAIVER-011",
+      "testId": "TEST-CHANGE-EVIDENCE-WAIVER-033",
+      "testPath": "tests/change-evidence-waiver.test.ts",
+      "commandName": "change-evidence-waiver-tests",
+      "phase": "red",
+      "phaseEvidenceSha256": "cefd81e894beb625923d7d0b1e27dfe61472642bbf1fef233bd80cd0f62f5abe",
+      "previousSha256": "7ca3a013ee5ba63feff57ff2788f619a5428ef1f112e8d5a4c2adb0c515c8de5",
+      "recordSha256": "3edddcda54c71b18546ec85783bc7b8684e61fe3264e6e09557fdd9458ff8629"
+    },
+    {
+      "sequence": 905,
+      "cycleId": "7391aa5b-c228-4c0d-b90e-474c622513c0",
+      "requirementId": "REQ-CHANGE-EVIDENCE-WAIVER-011",
+      "testId": "TEST-CHANGE-EVIDENCE-WAIVER-033",
+      "testPath": "tests/change-evidence-waiver.test.ts",
+      "commandName": "change-evidence-waiver-tests",
+      "phase": "red",
+      "phaseEvidenceSha256": "47cea2f43f8fb3bfe668d504b3107cbbf1b134aea25ae44ee3fac38f38d6dd5f",
+      "previousSha256": "3edddcda54c71b18546ec85783bc7b8684e61fe3264e6e09557fdd9458ff8629",
+      "recordSha256": "bee6bba94990a52ae8cd610a29d6dd8463dd291f7dfd6c596df269d8a00316ce"
+    },
+    {
+      "sequence": 906,
+      "cycleId": "7391aa5b-c228-4c0d-b90e-474c622513c0",
+      "requirementId": "REQ-CHANGE-EVIDENCE-WAIVER-011",
+      "testId": "TEST-CHANGE-EVIDENCE-WAIVER-033",
+      "testPath": "tests/change-evidence-waiver.test.ts",
+      "commandName": "change-evidence-waiver-tests",
+      "phase": "green",
+      "phaseEvidenceSha256": "78e353afab71fbac16bb6a6a866333c5bfb35eb4e1ec0c2b204b0c86bf624a92",
+      "previousSha256": "bee6bba94990a52ae8cd610a29d6dd8463dd291f7dfd6c596df269d8a00316ce",
+      "recordSha256": "9feee46ee41f056ea735452e4871ff766773f45ea0dd9d41c41359905c8e332d"
     }
   ]
 }

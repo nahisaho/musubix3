@@ -110,6 +110,57 @@ export function canonicalJson(value: unknown): string {
   return JSON.stringify(value) ?? 'null';
 }
 
+function changeRecordMissingApprovalNoteLines(
+  changeId: string,
+  waiverRecord: Pick<ChangeWaiverRecord, 'code' | 'approver' | 'recordedAt' | 'snapshotHash'>,
+): string[] {
+  return [
+    'Code: CHANGE_RECORD_MISSING',
+    `Approver: ${waiverRecord.approver}`,
+    `Recorded at: ${waiverRecord.recordedAt}`,
+    `Snapshot hash: ${waiverRecord.snapshotHash}`,
+    'Files:',
+    `- .musubix/changes/${changeId}.md`,
+    '- .musubix/evidence/changes.json',
+    '- .musubix/evidence/order.json',
+  ];
+}
+
+function trimTrailingApprovalSeparator(prefix: string): string {
+  if (prefix.endsWith('\r\n\r\n')) return prefix.slice(0, -2);
+  if (prefix.endsWith('\n\n')) return prefix.slice(0, -1);
+  return prefix;
+}
+
+/** @id CODE-CHANGE-EVIDENCE-WAIVER-026
+ * @implements REQ-CHANGE-EVIDENCE-WAIVER-011
+ * @design DES-CHANGE-EVIDENCE-WAIVER-002
+ */
+export function normalizeChangeRecordMissingDocument(
+  text: string,
+  changeId: string,
+  waiverRecord?: Pick<ChangeWaiverRecord, 'code' | 'approver' | 'recordedAt' | 'snapshotHash'>,
+): string {
+  if (!waiverRecord || waiverRecord.code !== 'CHANGE_RECORD_MISSING') return text;
+
+  const headings = [...text.matchAll(/^## [^\r\n]+$/gm)];
+  const lastHeading = headings.at(-1);
+  if (!lastHeading || lastHeading[0] !== '## Debt Remediation Approval' || lastHeading.index === undefined) {
+    return text;
+  }
+
+  const sectionStart = lastHeading.index;
+  const afterHeading = text.slice(sectionStart + lastHeading[0].length).replace(/^\r?\n/, '');
+  const nonBlankLines = afterHeading
+    .split(/\r?\n/)
+    .filter((line) => line.length > 0);
+  const expectedLines = changeRecordMissingApprovalNoteLines(changeId, waiverRecord);
+  if (nonBlankLines.length !== expectedLines.length) return text;
+  if (!nonBlankLines.every((line, index) => line === expectedLines[index])) return text;
+
+  return trimTrailingApprovalSeparator(text.slice(0, sectionStart));
+}
+
 /** @id CODE-CHANGE-EVIDENCE-WAIVER-002
  * @implements REQ-CHANGE-EVIDENCE-WAIVER-007
  * @design DES-CHANGE-EVIDENCE-WAIVER-001
@@ -269,6 +320,7 @@ export async function snapshotPayload(
   code: WaivableCode,
   requirementId?: string,
   detail?: string,
+  waiverRecord?: Pick<ChangeWaiverRecord, 'code' | 'approver' | 'recordedAt' | 'snapshotHash'>,
 ): Promise<unknown | null> {
   const changePath = `.musubix/changes/${changeId}.md`;
   const change = evidence?.changes.find((entry) => entry.changeId === changeId);
@@ -292,8 +344,9 @@ export async function snapshotPayload(
   }
   if (code === 'CHANGE_RECORD_MISSING') {
     if (!await exists(within(root, changePath))) return null;
+    const documentText = await readText(root, changePath);
     return {
-      documentDigest: digest(await readText(root, changePath)),
+      documentDigest: digest(normalizeChangeRecordMissingDocument(documentText, changeId, waiverRecord)),
       everRecorded: [...order.records.values()].some((record) => record.kind === 'change' && record.entityId === changeId && record.phase !== 'waiver'),
       currentEntry: change ? digest(canonicalJson(change)) : null,
     };
@@ -695,7 +748,7 @@ export async function buildWaiverContext(
       if (recordLinkage.valid) {
         const record = loaded.waivers[index]!;
         currentHash.push(digest(canonicalJson(await snapshotPayload(
-          root, evidence, tdd, order, record.changeId, record.code as WaivableCode, record.requirementId, record.detail,
+          root, evidence, tdd, order, record.changeId, record.code as WaivableCode, record.requirementId, record.detail, record,
         ))));
         condition.push(await evaluateWaiverCondition(root, evidence, tdd, order, {
           changeId: record.changeId,
