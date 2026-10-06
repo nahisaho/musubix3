@@ -11,6 +11,11 @@
   requires confirming the `CHANGELOG.md` entry during quality review, and
   distinguishes iterative `gate --changed --json` runs from the single final
   full `gate --json` confirmation (#61).
+- Keep `CHANGE_RECORD_MISSING` waivers stable when the operator appends the
+  waiver's own final `## Debt Remediation Approval` note to the staged
+  `CHANGE-*.md` document, while keeping the stale check fail-closed for
+  mismatched approval metadata, extra content, non-final sections, or any
+  substantive edit outside that tightly structured carve-out (#58).
 
 ## 0.1.20 - 2026-09-22
 

@@ -372,7 +372,24 @@ approved replacement waiver. When
 empty to preserve existing hashes.
 For `CHANGE_RECORD_MISSING` (reachable in every case, since this
 function's only early `null` return is document-absence, not chronology
-absence): `{ documentDigest: digest(await readText(root, '.musubix/changes/' + changeId + '.md')), everRecorded: [...order.records.values()].some((r) => r.kind === 'change' && r.entityId === changeId && r.phase !== 'waiver'), currentEntry: change ? digest(canonicalJson(change)) : null }`
+absence): first read the change document text once, then pass it through a
+new shared normalizer dedicated to this code path before hashing. The
+normalizer strips a final section only when all of these hold
+simultaneously in the raw text: it starts with the exact heading line
+`## Debt Remediation Approval` (no closing `##`, no alternate heading
+syntax), that heading is the document's last level-2 heading, and its body
+contains exactly these subsequent non-blank lines in this order:
+`Code: CHANGE_RECORD_MISSING`, `Approver: <text>`, `Recorded at:
+<timestamp>`, `Snapshot hash: <64-hex>`, `Files:`,
+`- .musubix/changes/<CHANGE-ID>.md`,
+`- .musubix/evidence/changes.json`, and
+`- .musubix/evidence/order.json`. There is no extra prose, alternate bullet
+marker, extra file, subheading, or trailing content; and the four bound
+scalar values match the currently evaluated authoritative waiver record for
+this exact `changeId`/`code` scope. If any check fails, hash the full
+document text unchanged. The payload is then `{ documentDigest:
+digest(normalizedDocumentText), everRecorded:
+[...order.records.values()].some((r) => r.kind === 'change' && r.entityId === changeId && r.phase !== 'waiver'), currentEntry: change ? digest(canonicalJson(change)) : null }`
 — `everRecorded` is the monotonic, append-only-log-derived sentinel
 required to close the add-then-remove reactivation gap identified during
 requirements review: because `order.json` records are never
@@ -383,7 +400,30 @@ to `null` following a `changes.json` entry's removal, so the combined
 payload can never return to its exact original value once any
 non-`waiver` `change`-kind order record for this `changeId` has ever been
 appended. `currentEntry`'s digest additionally invalidates the waiver if
-the entry's own content later changes without disappearing.
+the entry's own content later changes without disappearing. This makes the
+approval note append hash-invisible only for the exact literal structured
+self-documentation case Issue #58 describes, while every substantive edit
+outside that carve-out still changes `documentDigest` and stales the
+waiver immediately.
+Testing strategy for this narrower carve-out: TEST-CHANGE-EVIDENCE-WAIVER-033
+asserts the positive case (an exact, literal `## Debt Remediation Approval`
+append whose bound `Approver`/`Recorded at`/`Snapshot hash` values match the
+just-recorded authoritative waiver keeps the diagnostic at `severity:
+"warning"` and raises no `CHANGE_WAIVER_STALE`); TEST-CHANGE-EVIDENCE-WAIVER-034
+asserts the fail-closed boundary (the same append shape with one mismatched
+`Files:` bullet reverts the diagnostic to `severity: "error"` and raises
+`CHANGE_WAIVER_STALE`), so both the carve-out's acceptance and its exact
+edges are exercised by Green evidence, not only by inspection of the
+normalizer's conditions above.
+Scope boundary note: the separately tracked GitHub Issue #64 gap (the
+`CHANGE_ORDER_MIGRATION_REQUIRED` order-window check excluding voided but
+not archived TDD cycles) lives entirely inside
+`currentTddCycle`/`orderMigrationRequiredRequirementCondition` in
+`change-evidence.ts`, not inside this carve-out's `CHANGE_RECORD_MISSING`
+normalizer or payload shape above; no change to this design's snapshot
+payload, hashing boundary, or test coverage is required to track or resolve
+it, since it is a distinct diagnostic code with its own predicate and
+remediation path.
 For `CHANGE_PHASE_MISSING`: resolve `item = change?.phases[phaseNameFromDetail]` for the singular-phase names (`impact`/`requirements`/`design`/`quality`), or, for the TDD-batch-phase names (`red`/`implementation`/`green`), treat the phase as an aggregate with no single `item` (it is inherently multi-batch); build
 `{ phasePresent: isTddBatchPhaseName(phaseNameFromDetail) ? null : item !== undefined, orderIsInteger: isTddBatchPhaseName(phaseNameFromDetail) ? null : Number.isInteger(item?.order), phaseOrder: isTddBatchPhaseName(phaseNameFromDetail) ? null : (Number.isInteger(item?.order) ? item.order : null), missingRequirementIds: isTddBatchPhaseName(phaseNameFromDetail) ? (change ? [...change.requirementIds].filter((id) => !effectiveBatches(change).some((b) => b[phaseNameFromDetail] && b.requirementIds.includes(id))).sort() : null) : null }`
 (`phaseNameFromDetail` parsed from the `phase:<name>` grammar below —
@@ -486,6 +526,16 @@ compared order changes — including the moment a `quality` re-recording
 (`refreshQuality`) raises `change.phases.quality.order` past the offending
 batch's `green.order`, which is the exact repair REQ-017's acceptance
 describes.
+Implement the document normalizer entirely inside `change-waiver.ts` as a
+pure helper used only by `CHANGE_RECORD_MISSING` snapshot recomputation and
+recording-time hashing. It must not read or mutate evidence files itself;
+the caller passes the raw document text, `changeId`, and (when one exists)
+the authoritative waiver metadata already loaded for the same scope, so the
+helper stays deterministic and testable without I/O. Restoration by
+removing the excluded section must reproduce the original normalized text
+and therefore keep the waiver non-stale, while any malformed or non-final
+section re-enters the normative body automatically because the helper
+returns the original text unchanged.
 Then
 `digest(canonicalJson(await snapshotPayload(...)))`
 combined with `CURRENT_SNAPSHOT_VERSION` is the snapshot identity used by

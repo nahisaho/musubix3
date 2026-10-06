@@ -971,3 +971,67 @@ it('TEST-CHANGE-EVIDENCE-WAIVER-032 rejects phase:quality detail grammar for CHA
   await expect(recordChangeWaiver(root, 'CHANGE-0001', 'CHANGE_PHASE_ORDER', undefined, 'phase:quality', 'nahisaho', 'invalid grammar probe'))
     .rejects.toThrow(/is not a valid --detail value/i);
 });
+
+/** @id TEST-CHANGE-EVIDENCE-WAIVER-033
+ * @verifies REQ-CHANGE-EVIDENCE-WAIVER-011
+ * Issue #58: after recording a valid `CHANGE_RECORD_MISSING` waiver, the
+ * operator must be able to append the waiver's own structured
+ * `## Debt Remediation Approval` note to the staged CHANGE document without
+ * immediately making the waiver stale again.
+ */
+it('TEST-CHANGE-EVIDENCE-WAIVER-033 keeps a CHANGE_RECORD_MISSING waiver non-stale after appending its exact approval note', async () => {
+  const root = await project();
+  await writeText(root, '.musubix/changes/CHANGE-0002.md', '# CHANGE-0002\nRequirements: REQ-EXAMPLE-001\n');
+  await recordChangeWaiver(root, 'CHANGE-0002', 'CHANGE_RECORD_MISSING', undefined, undefined, 'nahisaho', 'document staged before recording');
+
+  const waiverEvidence = await loadChangeWaiverEvidence(root);
+  const record = waiverEvidence!.waivers.at(-1)!;
+  await writeText(
+    root,
+    '.musubix/changes/CHANGE-0002.md',
+    `${await readText(root, '.musubix/changes/CHANGE-0002.md')}\n## Debt Remediation Approval\nCode: CHANGE_RECORD_MISSING\nApprover: ${record.approver}\nRecorded at: ${record.recordedAt}\nSnapshot hash: ${record.snapshotHash}\nFiles:\n- .musubix/changes/CHANGE-0002.md\n- .musubix/evidence/changes.json\n- .musubix/evidence/order.json\n`,
+  );
+
+  const diagnostics = (await validateChangeEvidence(root)).diagnostics;
+  expect(diagnosticsFor(diagnostics, 'CHANGE_RECORD_MISSING')).toEqual([
+    expect.objectContaining({
+      severity: 'warning',
+      changeId: 'CHANGE-0002',
+      waiver: expect.objectContaining({ approver: 'nahisaho', reason: 'document staged before recording' }),
+    }),
+  ]);
+  expect(diagnosticsFor(diagnostics, 'CHANGE_WAIVER_STALE')).toHaveLength(0);
+});
+
+/** @id TEST-CHANGE-EVIDENCE-WAIVER-034
+ * @verifies REQ-CHANGE-EVIDENCE-WAIVER-011
+ * This boundary case is unchanged by the CHANGE-0044 normalizer (a
+ * mismatched section is hashed exactly as the pre-existing, unconditional
+ * `digest(text)` path always did), so it intentionally has no TDD Red/Green
+ * cycle of its own: TEST-CHANGE-EVIDENCE-WAIVER-033 already carries the one
+ * Red/Green cycle that proves the new carve-out behavior for this
+ * requirement; this test only pins that the fail-closed default never
+ * regresses. (Unrelated to the separately tracked Issue #64 order-window
+ * gap, which concerns `CHANGE_ORDER_MIGRATION_REQUIRED`, not this code.)
+ */
+it('TEST-CHANGE-EVIDENCE-WAIVER-034 keeps the carve-out fail-closed for mismatched approval-note content', async () => {
+  const root = await project();
+  await writeText(root, '.musubix/changes/CHANGE-0002.md', '# CHANGE-0002\nRequirements: REQ-EXAMPLE-001\n');
+  await recordChangeWaiver(root, 'CHANGE-0002', 'CHANGE_RECORD_MISSING', undefined, undefined, 'nahisaho', 'document staged before recording');
+
+  const waiverEvidence = await loadChangeWaiverEvidence(root);
+  const record = waiverEvidence!.waivers.at(-1)!;
+  await writeText(
+    root,
+    '.musubix/changes/CHANGE-0002.md',
+    `${await readText(root, '.musubix/changes/CHANGE-0002.md')}\n## Debt Remediation Approval\nCode: CHANGE_RECORD_MISSING\nApprover: ${record.approver}\nRecorded at: ${record.recordedAt}\nSnapshot hash: ${record.snapshotHash}\nFiles:\n- .musubix/changes/CHANGE-0002.md\n- .musubix/evidence/changes.json\n- README.md\n`,
+  );
+
+  const diagnostics = (await validateChangeEvidence(root)).diagnostics;
+  expect(diagnosticsFor(diagnostics, 'CHANGE_RECORD_MISSING')).toEqual([
+    expect.objectContaining({ severity: 'error', changeId: 'CHANGE-0002' }),
+  ]);
+  expect(diagnosticsFor(diagnostics, 'CHANGE_WAIVER_STALE')).toEqual([
+    expect.objectContaining({ severity: 'error', changeId: 'CHANGE-0002' }),
+  ]);
+});
