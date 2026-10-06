@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-05T23:19:08.084Z",
+  "generatedAt": "2026-10-06T06:02:06.805Z",
   "nodes": [
     {
       "id": "ADR-0009",
@@ -30,7 +30,7 @@
       "id": "CODE-TDD-CYCLE-ARCHIVE-001",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 727
+      "line": 741
     },
     {
       "id": "CODE-TDD-CYCLE-ARCHIVE-002",
@@ -42,7 +42,7 @@
       "id": "CODE-TDD-CYCLE-ARCHIVE-004",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 1008
+      "line": 1022
     },
     {
       "id": "CODE-TDD-CYCLE-ARCHIVE-005",
@@ -60,7 +60,7 @@
       "id": "CODE-TDD-CYCLE-VOID-001",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 719
+      "line": 733
     },
     {
       "id": "CODE-TDD-CYCLE-VOID-002",
@@ -72,19 +72,19 @@
       "id": "CODE-TDD-CYCLE-VOID-003",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 1110
+      "line": 1124
     },
     {
       "id": "CODE-TDD-CYCLE-VOID-004",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 675
+      "line": 689
     },
     {
       "id": "CODE-TDD-CYCLE-VOID-005",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 1123
+      "line": 1137
     },
     {
       "id": "CODE-TDD-CYCLE-VOID-006",
@@ -1433,7 +1433,7 @@
     ".musubix/features/tdd-fingerprint-migration/requirements.md": "e8ac10f4367e8b43e427d2a27616debbd836194854a86da4850773b9cde9e1ae",
     ".musubix/features/tdd-identifier-migration/design.md": "95d876ebd09890d0cbef5fa8adcbf5281147606b494db41cb65598b687c747b7",
     ".musubix/features/tdd-identifier-migration/requirements.md": "a20640411a8b8c1d04f5577916c9252a74fbdf746689b10faebcbb3e233099ce",
-    "packages/analysis/src/tdd.ts": "cc3a8eacc2055c717f1c1ff7a1bd6dd42936baa3cd1745af0d111de3abf6164c",
+    "packages/analysis/src/tdd.ts": "ab9cd0f71923ce4661952e6af858889210137f1cf57bacf5bc5d8b14379147f5",
     "packages/cli/src/main.ts": "13a8934fa914cc133651ac88712a05ed9291c157cf273980036e51c9d667d24a",
     "tests/tdd-adoption-warning.test.ts": "e7abeccab960ed5efdd77be8937ec556ebdf0c378a22f4671ba8d75305049343",
     "tests/tdd-cycle-archive.test.ts": "2984919b6cad8f520580df110646b00726207932a07209bfd52e9cc0ba58f011",

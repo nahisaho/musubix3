@@ -1099,3 +1099,63 @@ the `waivers` array. Must not change `gate.ts`'s existing `featureDir`
 (`--feature`) branch behavior.
 Requirements: REQ-CHANGE-EVIDENCE-WAIVER-006, REQ-CHANGE-EVIDENCE-WAIVER-012, REQ-CHANGE-EVIDENCE-WAIVER-014
 ADRs: ADR-0025
+
+## DES-CHANGE-EVIDENCE-WAIVER-006: Exclude validly archived cycles from the Red-phase order window (Issue #64)
+Responsibilities: In `packages/analysis/src/tdd.ts`, add an exported
+`validlyArchivedTddCycles(evidence: TddEvidence | null, order:
+ReturnType<typeof validateEvidenceOrderLog>): ReadonlySet<TddCycle>`
+function that mirrors the existing exported `validlyVoidedTddCycles`
+exactly, substituting the module-local `archiveLinkage` check for
+`voidLinkage`. In `packages/analysis/src/change-evidence.ts`, give
+`currentTddCycle` a new optional fifth parameter `validlyArchived:
+ReadonlySet<TddCycle> = new Set()` and add `&& !validlyArchived.has(cycle)`
+to its existing filter predicate (alongside the existing `!validlyVoided
+.has(cycle)` check), and give the exported
+`orderMigrationRequiredRequirementCondition` a matching new optional fifth
+parameter `validlyArchived: ReadonlySet<TddCycle> = new Set()`, adding the
+same `&& !validlyArchived.has(cycle)` conjunct to its "lacks monotonic Red
+order" `cycles` filter and forwarding `validlyArchived` to its internal
+`currentTddCycle` call. Both new parameters default to an empty set so
+every other existing call site (`tddCyclesInCurrentWindow`, `hasValidTddCycle`,
+`redUnprovenCondition`, `greenUnprovenCondition`,
+`completenessTddUnsatisfiedCondition`, and their callers in `change.ts`/
+`change-waiver.ts` for the twelve other allow-listed codes) is unaffected —
+deliberately mirroring the pre-existing voided-cycle exclusion's shape and
+scope exactly rather than more broadly threading a new concept through
+unrelated diagnostics, per this feature's own scope boundary note
+cross-referencing Issue #64. In `packages/analysis/src/change.ts`'s
+`validateChangeEvidence` and `packages/analysis/src/change-waiver.ts`'s
+waiver-condition evaluator, compute `validlyArchivedTddCycles(tdd, order)`
+alongside the existing `validlyVoidedTddCycles(tdd, order)` call and pass
+it as the new argument at the two call sites of
+`orderMigrationRequiredRequirementCondition` (the gate-time diagnostic in
+`change.ts` and the waiver-recording-time "is this condition still true"
+re-check in `change-waiver.ts`), so a waiver recorded against this code is
+never evaluated against a stricter or looser predicate than the gate
+itself uses.
+Interfaces: New export `validlyArchivedTddCycles(evidence: TddEvidence |
+null, order: ReturnType<typeof validateEvidenceOrderLog>):
+ReadonlySet<TddCycle>` from `tdd.ts`. `currentTddCycle` (module-local,
+unexported) gains an optional fifth parameter (after its existing four:
+`change`, `requirementId`, `tdd`, `validlyVoided`). `orderMigrationRequiredRequirementCondition`'s
+exported signature gains an optional fifth parameter,
+backward-compatible with every existing caller that omits it.
+Constraints: Must not change the outcome for any cycle that is not validly
+archived — in particular, a cycle whose `archive` record fails
+`archiveLinkage` (malformed predecessor/payload-hash link, mismatched
+`testId`/`cycleId`, or a missing/ambiguous chain record) remains included
+in the window exactly as before this fix, continuing to trigger
+`CHANGE_ORDER_MIGRATION_REQUIRED` when otherwise applicable. Must not
+change behavior for `CHANGE_RED_UNPROVEN`/`CHANGE_GREEN_UNPROVEN`/
+`CHANGE_COMPLETENESS_TDD`, which do not receive the new parameter and keep
+their pre-existing window computation unchanged. Must not suppress
+`TDD_ORDER_MIGRATION_REQUIRED` (a distinct, `tdd.ts`-level diagnostic code
+already defined by `REQ-TDD-CYCLE-ARCHIVE-008` to remain unaffected by
+archiving) — this fix only changes `CHANGE_ORDER_MIGRATION_REQUIRED`'s
+predicate in `change-evidence.ts`.
+Requirements: REQ-CHANGE-EVIDENCE-WAIVER-018
+ADRs: none — a narrow bug fix extending an existing exclusion set
+(validly voided cycles) to also cover validly archived cycles in the same
+two functions, using the same pattern already accepted under ADR-0025;
+no new waivable code, scope-key grammar, or architectural decision is
+introduced.

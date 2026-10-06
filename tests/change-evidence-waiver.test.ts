@@ -2,8 +2,8 @@ import { unlink } from 'node:fs/promises';
 import { expect, it } from 'vitest';
 import type { Diagnostic } from '../packages/domain/src/index.js';
 import {
-  activeWaivers, appendEvidenceOrder, buildWaiverContext, canonicalJson, digest, exists, isWaiverStale, loadChangeEvidence,
-  loadChangeWaiverEvidence, loadTddEvidence, orderMigrationRequiredBatchCondition,
+  activeWaivers, appendEvidenceOrder, archiveTddCycle, buildWaiverContext, canonicalJson, digest, exists, isWaiverStale,
+  loadChangeEvidence, loadChangeWaiverEvidence, loadTddEvidence, orderMigrationRequiredBatchCondition,
   orderMigrationRequiredBatchItemCondition, projectStatus, readText, recordChangePhase, recordChangeWaiver, runGate,
   runTddPhase, validateChangeCompleteness, validateChangeEvidence, waiverEvidenceDiagnostics, within, writeJson, writeText,
 } from '../packages/analysis/src/index.js';
@@ -1033,5 +1033,80 @@ it('TEST-CHANGE-EVIDENCE-WAIVER-034 keeps the carve-out fail-closed for mismatch
   ]);
   expect(diagnosticsFor(diagnostics, 'CHANGE_WAIVER_STALE')).toEqual([
     expect.objectContaining({ severity: 'error', changeId: 'CHANGE-0002' }),
+  ]);
+});
+
+/** @id TEST-CHANGE-EVIDENCE-WAIVER-035
+ * @verifies REQ-CHANGE-EVIDENCE-WAIVER-018
+ * Reproduces GitHub Issue #64's exact scenario: an operator runs `tdd red`
+ * for `TEST-EXAMPLE-001` expecting a forced failure, but the test
+ * unexpectedly reports `passed` (and exits zero), so `tdd red` correctly
+ * records that cycle's Red phase as invalid (`TDD_TARGET_RESULT`/
+ * `TDD_PHASE_RESULT`). The operator cleans up the dangling, invalid cycle
+ * with `tdd archive`. Because that cycle's Red order still falls inside
+ * `REQ-EXAMPLE-001`'s current Red-phase order window, the archived cycle
+ * must never be selected as the "current" cycle, so
+ * `CHANGE_ORDER_MIGRATION_REQUIRED` must not fire for it.
+ */
+it('TEST-CHANGE-EVIDENCE-WAIVER-035 excludes a validly archived dangling cycle from the order window', async () => {
+  const root = await project();
+  await writeText(root, '.musubix/changes/CHANGE-0001.md', '# CHANGE-0001\nRequirements: REQ-EXAMPLE-001\n');
+  await recordChangePhase(root, 'CHANGE-0001', 'impact', ['REQ-EXAMPLE-001']);
+  await writeText(root, '.musubix/features/example/requirements.md',
+    `${await readText(root, '.musubix/features/example/requirements.md')}\nChange: revised acceptance behavior.\n`);
+  await recordChangePhase(root, 'CHANGE-0001', 'requirements', ['REQ-EXAMPLE-001']);
+  await writeText(root, '.musubix/features/example/design.md',
+    `${await readText(root, '.musubix/features/example/design.md')}\nChange: revised component behavior.\n`);
+  await recordChangePhase(root, 'CHANGE-0001', 'design', ['REQ-EXAMPLE-001']);
+
+  // The forced-failure Red cycle unexpectedly observes a passing test
+  // (status "passed", exit 0), so it is recorded but invalid, and dangling
+  // (no Green follows it).
+  await runTddPhase(root, 'red', 'TEST-EXAMPLE-001', 'REQ-EXAMPLE-001', 'test', tddResultRunner(root, 'passed'));
+  const beforeArchive = await loadTddEvidence(root);
+  expect(beforeArchive!.cycles.at(-1)!.red.valid).toBe(false);
+  expect(beforeArchive!.cycles.at(-1)!.green).toBeUndefined();
+
+  const archiveResult = await archiveTddCycle(root, 'TEST-EXAMPLE-001', 'nahisaho', 'dangling cycle: test already passed without the fix');
+  expect(archiveResult.archived).toBe(true);
+
+  await writeText(root, 'src/service.test.ts', `${testCode}\n// staged failing behavior, no further TDD Red evidence recorded\n`);
+  await recordChangePhase(root, 'CHANGE-0001', 'red', ['REQ-EXAMPLE-001']);
+
+  const diagnostics = (await validateChangeEvidence(root)).diagnostics;
+  expect(diagnosticsFor(diagnostics, 'CHANGE_ORDER_MIGRATION_REQUIRED')).toEqual([]);
+});
+
+/** @id TEST-CHANGE-EVIDENCE-WAIVER-036
+ * @verifies REQ-CHANGE-EVIDENCE-WAIVER-018
+ * The archived-cycle exclusion must change only which cycle is "current";
+ * a second, non-archived, non-voided cycle in the same window that is
+ * still genuinely incomplete (no Green) must keep triggering
+ * `CHANGE_ORDER_MIGRATION_REQUIRED` exactly as before this fix.
+ */
+it('TEST-CHANGE-EVIDENCE-WAIVER-036 still raises CHANGE_ORDER_MIGRATION_REQUIRED for a genuinely incomplete non-archived cycle', async () => {
+  const root = await project();
+  await writeText(root, '.musubix/changes/CHANGE-0001.md', '# CHANGE-0001\nRequirements: REQ-EXAMPLE-001\n');
+  await recordChangePhase(root, 'CHANGE-0001', 'impact', ['REQ-EXAMPLE-001']);
+  await writeText(root, '.musubix/features/example/requirements.md',
+    `${await readText(root, '.musubix/features/example/requirements.md')}\nChange: revised acceptance behavior.\n`);
+  await recordChangePhase(root, 'CHANGE-0001', 'requirements', ['REQ-EXAMPLE-001']);
+  await writeText(root, '.musubix/features/example/design.md',
+    `${await readText(root, '.musubix/features/example/design.md')}\nChange: revised component behavior.\n`);
+  await recordChangePhase(root, 'CHANGE-0001', 'design', ['REQ-EXAMPLE-001']);
+
+  await runTddPhase(root, 'red', 'TEST-EXAMPLE-001', 'REQ-EXAMPLE-001', 'test', tddResultRunner(root, 'passed'));
+  await archiveTddCycle(root, 'TEST-EXAMPLE-001', 'nahisaho', 'dangling cycle: test already passed without the fix');
+
+  // A second, later, genuinely incomplete Red cycle in the same window:
+  // forced failure correctly observed, but no Green recorded yet.
+  await runTddPhase(root, 'red', 'TEST-EXAMPLE-001', 'REQ-EXAMPLE-001', 'test', tddResultRunner(root, 'failed', { exitCode: 1 }));
+
+  await writeText(root, 'src/service.test.ts', `${testCode}\n// staged failing behavior, no further TDD Red evidence recorded\n`);
+  await recordChangePhase(root, 'CHANGE-0001', 'red', ['REQ-EXAMPLE-001']);
+
+  const diagnostics = (await validateChangeEvidence(root)).diagnostics;
+  expect(diagnosticsFor(diagnostics, 'CHANGE_ORDER_MIGRATION_REQUIRED')).toEqual([
+    expect.objectContaining({ severity: 'error', changeId: 'CHANGE-0001' }),
   ]);
 });

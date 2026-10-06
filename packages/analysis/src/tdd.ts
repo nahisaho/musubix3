@@ -667,6 +667,20 @@ export function validlyVoidedTddCycles(
   return new Set((evidence?.cycles ?? []).filter((cycle) => voidLinkage(evidence!, order, cycle).valid));
 }
 
+/** @id CODE-CHANGE-EVIDENCE-WAIVER-027
+ * @implements REQ-CHANGE-EVIDENCE-WAIVER-018
+ * @design DES-CHANGE-EVIDENCE-WAIVER-006
+ * Mirrors `validlyVoidedTddCycles` for archived cycles so callers can exclude
+ * validly archived evidence from change order-window checks the same way
+ * validly voided evidence is already excluded (Issue #64).
+ */
+export function validlyArchivedTddCycles(
+  evidence: TddEvidence | null,
+  order: ReturnType<typeof validateEvidenceOrderLog>,
+): ReadonlySet<TddCycle> {
+  return new Set((evidence?.cycles ?? []).filter((cycle) => archiveLinkage(evidence!, order, cycle).valid));
+}
+
 /** Resolves the effective latest cycle for `testId` when its actual latest
  * cycle (`voidedCycle`) is validly voided, per REQ-TDD-CYCLE-VOID-010: the
  * eligible, non-voided candidate with the greatest verified Green order
