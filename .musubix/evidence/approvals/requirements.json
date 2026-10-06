@@ -29,6 +29,7 @@
     ".musubix/features/release-version-synchronization/requirements.md": "afb3b57eb96d6e93e437e4a7c83f2f91a70af9c92967ce543ba399c244f6153f",
     ".musubix/features/requirements-design-scaffold/requirements.md": "0a968bc27756e715f68f22a8f6d65fc8fefce09ac79d1c8d0137282b821ebc45",
     ".musubix/features/scoped-feature-trace-artifacts/requirements.md": "10470f52be3500bf20527b244be836c8cdf3ab4f46c84b5dbfd65f0efeb3f2e9",
+    ".musubix/features/sdd-change-ops-improvements/requirements.md": "2ad09e36f23bd2d0212dfbde33ed4aa3d7bf2a4aead870ca91e25c8aeb0f4b9a",
     ".musubix/features/session-scoped-development/requirements.md": "640aece168b4e6848c0d1e6371f0bfeb433fa8addfd064a77d050891d69d9a4f",
     ".musubix/features/tdd-adoption-warning/requirements.md": "377341710ec695b72324bbe94fc29d6dbe47f3bd3dad94a0ba2de2f3d5e7c934",
     ".musubix/features/tdd-cycle-archive/requirements.md": "e1cd5bba974f55dadd7ba7bb74995c46a3930d13dc845773ee4f9ef927dee7b8",
@@ -45,7 +46,7 @@
     ".musubix/features/workflow-session-shutdown/requirements.md": "c00d313bbb445e0951fad5d2cd70f22341a19ce357659cd03e80f3049ef8d873",
     ".musubix/features/workflow-waiver-bulk-recording/requirements.md": "361cfba519d4ab189a2091cf7b99133b9c005f69fb28aa2d77bba17bd7ee7b33"
   },
-  "artifactSha256": "d178d9071a6933a0cb7c02a67634a4187f9886a86637e6512f0e2727eceeb821",
+  "artifactSha256": "18fb6252c91e0ab288bc9ad4b5580c4e39a1e696255ee18cccd5a91ab67faaa1",
   "approver": "nahisaho",
-  "approvedAt": "2026-10-05T11:34:23.724Z"
+  "approvedAt": "2026-10-05T23:16:07.769Z"
 }

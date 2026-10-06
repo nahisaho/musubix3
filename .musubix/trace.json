@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-05T11:45:19.197Z",
+  "generatedAt": "2026-10-05T23:48:37.258Z",
   "nodes": [
     {
       "id": "ADR-0002",
@@ -963,6 +963,12 @@
       "line": 95
     },
     {
+      "id": "CODE-SDD-CHANGE-OPS-IMPROVEMENTS-001",
+      "kind": "code",
+      "path": ".github/skills/sdd-change/SKILL.md",
+      "line": 10
+    },
+    {
       "id": "CODE-SESSION-SCOPED-DEVELOPMENT-001",
       "kind": "code",
       "path": ".github/skills/sdd-change/SKILL.md",
@@ -1801,6 +1807,24 @@
       "kind": "design",
       "path": ".musubix/features/scoped-feature-trace-artifacts/design.md",
       "line": 35
+    },
+    {
+      "id": "DES-SDD-CHANGE-OPS-IMPROVEMENTS-001",
+      "kind": "design",
+      "path": ".musubix/features/sdd-change-ops-improvements/design.md",
+      "line": 7
+    },
+    {
+      "id": "DES-SDD-CHANGE-OPS-IMPROVEMENTS-002",
+      "kind": "design",
+      "path": ".musubix/features/sdd-change-ops-improvements/design.md",
+      "line": 31
+    },
+    {
+      "id": "DES-SDD-CHANGE-OPS-IMPROVEMENTS-003",
+      "kind": "design",
+      "path": ".musubix/features/sdd-change-ops-improvements/design.md",
+      "line": 54
     },
     {
       "id": "DES-SESSION-SCOPED-DEVELOPMENT-001",
@@ -3046,6 +3070,48 @@
       "kind": "requirement",
       "path": ".musubix/features/scoped-feature-trace-artifacts/requirements.md",
       "line": 52,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-001",
+      "kind": "requirement",
+      "path": ".musubix/features/sdd-change-ops-improvements/requirements.md",
+      "line": 15,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-002",
+      "kind": "requirement",
+      "path": ".musubix/features/sdd-change-ops-improvements/requirements.md",
+      "line": 22,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-003",
+      "kind": "requirement",
+      "path": ".musubix/features/sdd-change-ops-improvements/requirements.md",
+      "line": 29,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-004",
+      "kind": "requirement",
+      "path": ".musubix/features/sdd-change-ops-improvements/requirements.md",
+      "line": 36,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-005",
+      "kind": "requirement",
+      "path": ".musubix/features/sdd-change-ops-improvements/requirements.md",
+      "line": 43,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-006",
+      "kind": "requirement",
+      "path": ".musubix/features/sdd-change-ops-improvements/requirements.md",
+      "line": 50,
       "mandatory": true
     },
     {
@@ -4709,6 +4775,12 @@
       "kind": "test",
       "path": "tests/scoped-feature-trace-artifacts.test.ts",
       "line": 232
+    },
+    {
+      "id": "TEST-SDD-CHANGE-OPS-IMPROVEMENTS-001",
+      "kind": "test",
+      "path": "tests/sdd-change-ops-improvements.test.ts",
+      "line": 4
     },
     {
       "id": "TEST-SESSION-SCOPED-DEVELOPMENT-001",
@@ -7725,6 +7797,51 @@
       "relation": "implements"
     },
     {
+      "from": "CODE-SDD-CHANGE-OPS-IMPROVEMENTS-001",
+      "to": "DES-SDD-CHANGE-OPS-IMPROVEMENTS-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-SDD-CHANGE-OPS-IMPROVEMENTS-001",
+      "to": "DES-SDD-CHANGE-OPS-IMPROVEMENTS-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-SDD-CHANGE-OPS-IMPROVEMENTS-001",
+      "to": "DES-SDD-CHANGE-OPS-IMPROVEMENTS-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-SDD-CHANGE-OPS-IMPROVEMENTS-001",
+      "to": "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-SDD-CHANGE-OPS-IMPROVEMENTS-001",
+      "to": "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-SDD-CHANGE-OPS-IMPROVEMENTS-001",
+      "to": "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-SDD-CHANGE-OPS-IMPROVEMENTS-001",
+      "to": "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-SDD-CHANGE-OPS-IMPROVEMENTS-001",
+      "to": "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-005",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-SDD-CHANGE-OPS-IMPROVEMENTS-001",
+      "to": "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-006",
+      "relation": "implements"
+    },
+    {
       "from": "CODE-SESSION-SCOPED-DEVELOPMENT-001",
       "to": "DES-SESSION-SCOPED-DEVELOPMENT-001",
       "relation": "implements"
@@ -10060,6 +10177,36 @@
       "relation": "satisfies"
     },
     {
+      "from": "DES-SDD-CHANGE-OPS-IMPROVEMENTS-001",
+      "to": "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-SDD-CHANGE-OPS-IMPROVEMENTS-001",
+      "to": "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-002",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-SDD-CHANGE-OPS-IMPROVEMENTS-002",
+      "to": "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-003",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-SDD-CHANGE-OPS-IMPROVEMENTS-002",
+      "to": "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-004",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-SDD-CHANGE-OPS-IMPROVEMENTS-003",
+      "to": "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-005",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-SDD-CHANGE-OPS-IMPROVEMENTS-003",
+      "to": "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-006",
+      "relation": "satisfies"
+    },
+    {
       "from": "DES-SESSION-SCOPED-DEVELOPMENT-001",
       "to": "REQ-SESSION-SCOPED-DEVELOPMENT-001",
       "relation": "satisfies"
@@ -11870,6 +12017,36 @@
       "relation": "verifies"
     },
     {
+      "from": "TEST-SDD-CHANGE-OPS-IMPROVEMENTS-001",
+      "to": "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-SDD-CHANGE-OPS-IMPROVEMENTS-001",
+      "to": "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-002",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-SDD-CHANGE-OPS-IMPROVEMENTS-001",
+      "to": "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-003",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-SDD-CHANGE-OPS-IMPROVEMENTS-001",
+      "to": "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-004",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-SDD-CHANGE-OPS-IMPROVEMENTS-001",
+      "to": "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-005",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-SDD-CHANGE-OPS-IMPROVEMENTS-001",
+      "to": "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-006",
+      "relation": "verifies"
+    },
+    {
       "from": "TEST-SESSION-SCOPED-DEVELOPMENT-001",
       "to": "REQ-SESSION-SCOPED-DEVELOPMENT-001",
       "relation": "verifies"
@@ -12402,7 +12579,7 @@
   ],
   "diagnostics": [],
   "fingerprints": {
-    ".github/skills/sdd-change/SKILL.md": "471aa19abcef418a8d8a1ad6620db6ec153b75f099073780e60759ae175558c8",
+    ".github/skills/sdd-change/SKILL.md": "f58b5c4f4763062f3254ddd7122bd1b7eaa3538e527e4acefe8043bd94850593",
     ".github/skills/sdd-design/SKILL.md": "7f9a4fa13b420f8436b4b33704111f3b70248408fe209ab7ee98a258b2712d66",
     ".github/skills/sdd-formal-codegraph/SKILL.md": "67944f2599609922f4957a1d99fa0f2139a21c1eb08e7264b5d72e45c2204721",
     ".github/skills/sdd-implementation/SKILL.md": "5d0465684458547ea65a4502dcfbf842115f188af5a9b054fa440932ee8362ee",
@@ -12502,6 +12679,8 @@
     ".musubix/features/requirements-design-scaffold/requirements.md": "0a968bc27756e715f68f22a8f6d65fc8fefce09ac79d1c8d0137282b821ebc45",
     ".musubix/features/scoped-feature-trace-artifacts/design.md": "d5a5fb04f6aab43aff2881d9cde8737cd2795278d06db4f9df90dd7ec981116f",
     ".musubix/features/scoped-feature-trace-artifacts/requirements.md": "10470f52be3500bf20527b244be836c8cdf3ab4f46c84b5dbfd65f0efeb3f2e9",
+    ".musubix/features/sdd-change-ops-improvements/design.md": "9f07518dd84d6ef92d2689770eed755cfcdee2929511c3ff02bd831b5a038e9d",
+    ".musubix/features/sdd-change-ops-improvements/requirements.md": "2ad09e36f23bd2d0212dfbde33ed4aa3d7bf2a4aead870ca91e25c8aeb0f4b9a",
     ".musubix/features/session-scoped-development/design.md": "66a65a3fdc1747569f42b42798a88377ae2ff93e32ff2cc5e0bae5c62c2e9a42",
     ".musubix/features/session-scoped-development/requirements.md": "640aece168b4e6848c0d1e6371f0bfeb433fa8addfd064a77d050891d69d9a4f",
     ".musubix/features/tdd-adoption-warning/design.md": "29e1b978d465cf2f42d878da3282173e64a16ee13af9d626022e613fd9fc51a1",
@@ -12622,6 +12801,7 @@
     "tests/release-version-synchronization.test.ts": "6886bfb2f0029a5f685f8152e7fb918a532a65f5ec5d84ffad063894c2ef49cb",
     "tests/scaffold-artifact.test.ts": "a8f074cdd9279f1b7c540fa1a721642ca762de9cd155f0894526a8f3daabc7d6",
     "tests/scoped-feature-trace-artifacts.test.ts": "c34b4fd44067a966f008827845a8fb6efce7bd4294d2cf3cb41110876763e3e1",
+    "tests/sdd-change-ops-improvements.test.ts": "72e5cb78a53b5f7a2bbcc257c7beb856837dc0ed7b81035e66d838cecf02fced",
     "tests/tdd-adoption-warning.test.ts": "e7abeccab960ed5efdd77be8937ec556ebdf0c378a22f4671ba8d75305049343",
     "tests/tdd-cycle-archive.test.ts": "2984919b6cad8f520580df110646b00726207932a07209bfd52e9cc0ba58f011",
     "tests/tdd-cycle-void.test.ts": "e7ea6272d9b5e0ab5377df280ba01dd38c8d1496f3a0c0f36f2053ad1b660baf",

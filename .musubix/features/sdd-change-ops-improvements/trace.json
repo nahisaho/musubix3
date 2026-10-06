@@ -1,0 +1,192 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-10-05T23:48:37.258Z",
+  "nodes": [
+    {
+      "id": "CODE-SDD-CHANGE-OPS-IMPROVEMENTS-001",
+      "kind": "code",
+      "path": ".github/skills/sdd-change/SKILL.md",
+      "line": 10
+    },
+    {
+      "id": "DES-SDD-CHANGE-OPS-IMPROVEMENTS-001",
+      "kind": "design",
+      "path": ".musubix/features/sdd-change-ops-improvements/design.md",
+      "line": 7
+    },
+    {
+      "id": "DES-SDD-CHANGE-OPS-IMPROVEMENTS-002",
+      "kind": "design",
+      "path": ".musubix/features/sdd-change-ops-improvements/design.md",
+      "line": 31
+    },
+    {
+      "id": "DES-SDD-CHANGE-OPS-IMPROVEMENTS-003",
+      "kind": "design",
+      "path": ".musubix/features/sdd-change-ops-improvements/design.md",
+      "line": 54
+    },
+    {
+      "id": "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-001",
+      "kind": "requirement",
+      "path": ".musubix/features/sdd-change-ops-improvements/requirements.md",
+      "line": 15,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-002",
+      "kind": "requirement",
+      "path": ".musubix/features/sdd-change-ops-improvements/requirements.md",
+      "line": 22,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-003",
+      "kind": "requirement",
+      "path": ".musubix/features/sdd-change-ops-improvements/requirements.md",
+      "line": 29,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-004",
+      "kind": "requirement",
+      "path": ".musubix/features/sdd-change-ops-improvements/requirements.md",
+      "line": 36,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-005",
+      "kind": "requirement",
+      "path": ".musubix/features/sdd-change-ops-improvements/requirements.md",
+      "line": 43,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-006",
+      "kind": "requirement",
+      "path": ".musubix/features/sdd-change-ops-improvements/requirements.md",
+      "line": 50,
+      "mandatory": true
+    },
+    {
+      "id": "TEST-SDD-CHANGE-OPS-IMPROVEMENTS-001",
+      "kind": "test",
+      "path": "tests/sdd-change-ops-improvements.test.ts",
+      "line": 4
+    }
+  ],
+  "edges": [
+    {
+      "from": "CODE-SDD-CHANGE-OPS-IMPROVEMENTS-001",
+      "to": "DES-SDD-CHANGE-OPS-IMPROVEMENTS-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-SDD-CHANGE-OPS-IMPROVEMENTS-001",
+      "to": "DES-SDD-CHANGE-OPS-IMPROVEMENTS-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-SDD-CHANGE-OPS-IMPROVEMENTS-001",
+      "to": "DES-SDD-CHANGE-OPS-IMPROVEMENTS-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-SDD-CHANGE-OPS-IMPROVEMENTS-001",
+      "to": "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-SDD-CHANGE-OPS-IMPROVEMENTS-001",
+      "to": "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-SDD-CHANGE-OPS-IMPROVEMENTS-001",
+      "to": "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-SDD-CHANGE-OPS-IMPROVEMENTS-001",
+      "to": "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-SDD-CHANGE-OPS-IMPROVEMENTS-001",
+      "to": "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-005",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-SDD-CHANGE-OPS-IMPROVEMENTS-001",
+      "to": "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-006",
+      "relation": "implements"
+    },
+    {
+      "from": "DES-SDD-CHANGE-OPS-IMPROVEMENTS-001",
+      "to": "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-SDD-CHANGE-OPS-IMPROVEMENTS-001",
+      "to": "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-002",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-SDD-CHANGE-OPS-IMPROVEMENTS-002",
+      "to": "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-003",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-SDD-CHANGE-OPS-IMPROVEMENTS-002",
+      "to": "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-004",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-SDD-CHANGE-OPS-IMPROVEMENTS-003",
+      "to": "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-005",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-SDD-CHANGE-OPS-IMPROVEMENTS-003",
+      "to": "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-006",
+      "relation": "satisfies"
+    },
+    {
+      "from": "TEST-SDD-CHANGE-OPS-IMPROVEMENTS-001",
+      "to": "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-SDD-CHANGE-OPS-IMPROVEMENTS-001",
+      "to": "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-002",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-SDD-CHANGE-OPS-IMPROVEMENTS-001",
+      "to": "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-003",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-SDD-CHANGE-OPS-IMPROVEMENTS-001",
+      "to": "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-004",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-SDD-CHANGE-OPS-IMPROVEMENTS-001",
+      "to": "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-005",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-SDD-CHANGE-OPS-IMPROVEMENTS-001",
+      "to": "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-006",
+      "relation": "verifies"
+    }
+  ],
+  "diagnostics": [],
+  "fingerprints": {
+    ".github/skills/sdd-change/SKILL.md": "f58b5c4f4763062f3254ddd7122bd1b7eaa3538e527e4acefe8043bd94850593",
+    ".musubix/features/sdd-change-ops-improvements/design.md": "9f07518dd84d6ef92d2689770eed755cfcdee2929511c3ff02bd831b5a038e9d",
+    ".musubix/features/sdd-change-ops-improvements/requirements.md": "2ad09e36f23bd2d0212dfbde33ed4aa3d7bf2a4aead870ca91e25c8aeb0f4b9a",
+    "tests/sdd-change-ops-improvements.test.ts": "72e5cb78a53b5f7a2bbcc257c7beb856837dc0ed7b81035e66d838cecf02fced"
+  }
+}

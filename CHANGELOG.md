@@ -1,12 +1,26 @@
 # Changelog
 
+## Unreleased
+
+- Tighten the bundled `sdd-change` operational guidance for documentation and
+  review work: it now makes the Red → change-record Red → implementation →
+  change-record implementation → Green → change-record Green ordering
+  checklist explicit, adds symmetric `origin/main` freshness checks for
+  long-lived parallel worktrees, caps rubber-duck review loops at three
+  rounds with diff-only follow-up reviews and explicit stop conditions,
+  requires confirming the `CHANGELOG.md` entry during quality review, and
+  distinguishes iterative `gate --changed --json` runs from the single final
+  full `gate --json` confirmation (#61).
+
 ## 0.1.20 - 2026-09-22
 
-- Add identifier-only TDD evidence migration to `tdd migrate <old-id> <new-id>`,
-  relinking existing Red/Green evidence for a pure test-identifier rename
-  without fabricating a new execution, alongside the preserved one-argument
-  fingerprint-migration mode and refusal cases for non-rename drift or
-  conflicting evidence (#57).
+- Add `CHANGE_PHASE_ORDER` as a thirteenth waivable code (`WAIVABLE_CODES`),
+  with `phase:<name>` detail scoping for the two change-level transitions
+  (`requirements`, `design`) and `batch:<name>:<batchKey>` detail scoping for
+  the four per-batch transitions (`red`, `implementation`, `green`,
+  `quality`). This provides a documented, human-approved safety net for a
+  corrective Red/Implementation/Green batch recorded after Quality that has
+  not yet been resolved by a Quality re-recording (#56).
 - Add repeatable Quality checkpoints after complete post-Quality corrective
   batches. Schema version 2 retains ordinal Quality history, validation and
   evidence merge pair every checkpoint deterministically, and

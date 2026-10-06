@@ -65,7 +65,8 @@
       "args": [
         "vitest",
         "run",
-        "tests/cli-package.test.ts"
+        "tests/cli-package.test.ts",
+        "tests/sdd-change-ops-improvements.test.ts"
       ],
       "adapter": "vitest",
       "required": true,
