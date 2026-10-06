@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-06T12:53:03.799Z",
-  "totalRequirements": 216,
+  "generatedAt": "2026-10-06T20:52:06.539Z",
+  "totalRequirements": 217,
   "modeledRequirements": 13,
-  "modeledFraction": 0.06018518518518518,
+  "modeledFraction": 0.059907834101382486,
   "result": {
     "valid": true,
     "abstraction": "Consistency of explicit branch-scoped conditional, exact unit-normalized integer numeric, bounded temporal interval, deterministic state-transition, and controlled unconditional Boolean constraints; not implementation correctness.",
@@ -196,6 +196,7 @@
       "REQ-RELEASE-APPROVAL-ORDERING-002",
       "REQ-RELEASE-APPROVAL-ORDERING-003",
       "REQ-RELEASE-APPROVAL-ORDERING-004",
+      "REQ-RELEASE-APPROVAL-ORDERING-005",
       "REQ-RELEASE-ASSET-PUBLISHING-001",
       "REQ-RELEASE-ASSET-PUBLISHING-002",
       "REQ-RELEASE-ASSET-PUBLISHING-003",
@@ -852,6 +853,11 @@
       {
         "code": "FORMAL_UNSUPPORTED",
         "severity": "warning",
+        "message": "REQ-RELEASE-APPROVAL-ORDERING-005 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
         "message": "REQ-RELEASE-ASSET-PUBLISHING-001 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
       },
       {
@@ -1338,7 +1344,7 @@
     ".musubix/features/human-approval-gates/requirements.md": "f2ae2380935831bb102cd6a7726f2a208ab1719e035157302ef51ed28f624fb0",
     ".musubix/features/model-correspondence-evidence-guidance/requirements.md": "d7ca8b823ddfd3265e89f2892003e5eb95faad7e9b3972b249de5f2902446511",
     ".musubix/features/npm-audit-remediation/requirements.md": "9a2c384b2d95a46c5537f54c6e1bfdb923aaa91a2f2c68c58ac25e0e584e23e7",
-    ".musubix/features/release-approval-ordering/requirements.md": "53ae383ea5fc4e918225abfbadaeec9dbccccb624e512c8cff480a17ba15f112",
+    ".musubix/features/release-approval-ordering/requirements.md": "19fd75e725b1838fe659f4c6f1837644321d9794e96c42236fa8c5fec140c8b5",
     ".musubix/features/release-asset-publishing/requirements.md": "8bf4436d5b694e32b683edbb620573589b28b74c35a076182c971bdb79cd4472",
     ".musubix/features/release-version-synchronization/requirements.md": "afb3b57eb96d6e93e437e4a7c83f2f91a70af9c92967ce543ba399c244f6153f",
     ".musubix/features/requirements-design-scaffold/requirements.md": "0a968bc27756e715f68f22a8f6d65fc8fefce09ac79d1c8d0137282b821ebc45",

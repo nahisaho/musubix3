@@ -678,6 +678,15 @@ approver文字列は明示的なlocal証拠であり、認証済みidentityで�
 local承認証拠は明示的な意思を記録しますが、承認者の暗号学的な本人確認ではありません。
 release権限はrepository review、CODEOWNERS/branch protection、またはCI/OIDC attestationで
 保護してください。
+`approval prepare release`のmanifestは、固定でsourceに埋め込まれたscratch file命名規則を
+untracked candidateから除外します：`.musubix/scratch/`配下のuntracked path、および
+basenameが`*.scratch.<ext>`に一致するuntracked file（例：`debug.scratch.json`）です。
+確認用のscratch/debug出力はこの命名規則で書くことで、確認のたびにrelease manifestの
+hashが変化することを防げます。この除外はconfigurableな設定ではなく固定・version管理
+された一覧です：untracked candidateにのみ適用され（同名のtracked fileは引き続き含まれ
+ます）、manifestの最終出力に対する後段filterとしてのみ適用され、構造的なnested
+workspace/生成directory除外のscanより前には適用されません。そのため、実際のtracked
+変更を隠すために範囲を広げることはできません。
 `tdd.redPreflightCommands`にはformatter等のplain command名を指定でき、
 Redのtest fingerprintを取得する前に成功が必須です。
 通常ファイルの`pyvenv.cfg`を含む`.venv`と`venv`に加え、生成された

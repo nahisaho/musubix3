@@ -378,4 +378,93 @@ export async function validateReleaseApprovalForTag() {
       ['/test/npm-cli.js', 'sbom', '--sbom-format', 'cyclonedx'],
     ]);
   });
+
+  /** @id TEST-RELEASE-APPROVAL-ORDERING-008
+   * @verifies REQ-RELEASE-APPROVAL-ORDERING-005
+   */
+  it('TEST-RELEASE-APPROVAL-ORDERING-008 excludes the fixed scratch-file convention from the untracked release manifest only', async () => {
+    const module = await api();
+    const root = await fixture();
+    initGit(root);
+    await writeText(root, 'src/index.ts', 'export const value = 1;\n');
+    commitAndTag(root);
+
+    const baseline = await module.approvalManifest(root, 'release');
+    expect(Object.keys(baseline.artifacts)).toEqual(['src/index.ts']);
+    const baselineHash = baseline.artifactSha256;
+
+    // An untracked scratch-directory file and an untracked *.scratch.<ext> file
+    // must never appear in the manifest, and must never perturb its hash.
+    await writeText(root, '.musubix/scratch/approval-prepare-release.json', '{"first":true}\n');
+    await writeText(root, 'relcheck-1.scratch.json', '{"second":true}\n');
+    const withScratch = await module.approvalManifest(root, 'release');
+    expect(Object.keys(withScratch.artifacts)).toEqual(['src/index.ts']);
+    expect(withScratch.artifactSha256).toBe(baselineHash);
+
+    // Rewriting the scratch files' content still never changes the hash.
+    await writeText(root, '.musubix/scratch/approval-prepare-release.json', '{"first":"changed"}\n');
+    await writeText(root, 'relcheck-1.scratch.json', '{"second":"changed"}\n');
+    const rewritten = await module.approvalManifest(root, 'release');
+    expect(rewritten.artifactSha256).toBe(baselineHash);
+
+    // Non-matching naming conventions (no extension, uppercase, multi-dot
+    // extension) remain fully included, as ordinary untracked files.
+    await writeText(root, 'foo.scratch', 'no extension\n');
+    await writeText(root, 'foo.SCRATCH.JSON', 'wrong case\n');
+    await writeText(root, 'foo.scratch.tar.gz', 'multi-dot extension\n');
+    const nonMatching = await module.approvalManifest(root, 'release');
+    expect(Object.keys(nonMatching.artifacts).sort()).toEqual([
+      'foo.SCRATCH.JSON', 'foo.scratch', 'foo.scratch.tar.gz', 'src/index.ts',
+    ]);
+    expect(nonMatching.artifactSha256).not.toBe(baselineHash);
+
+    // An ordinary untracked file (matching neither pattern) still participates
+    // in the manifest and still changes the hash.
+    await writeText(root, 'src/uncommitted.ts', 'export const uncommitted = true;\n');
+    const withOrdinaryUntracked = await module.approvalManifest(root, 'release');
+    expect(Object.keys(withOrdinaryUntracked.artifacts)).toContain('src/uncommitted.ts');
+    expect(withOrdinaryUntracked.artifactSha256).not.toBe(nonMatching.artifactSha256);
+
+    // A *tracked* (committed) file whose name matches either scratch pattern
+    // is still included exactly like any other tracked release input.
+    await writeText(root, 'notes.scratch.json', '{"tracked":true}\n');
+    await writeText(root, '.musubix/scratch/README.md', '# tracked scratch doc\n');
+    git(root, ['add', 'notes.scratch.json', '.musubix/scratch/README.md']);
+    git(root, ['commit', '--quiet', '-m', 'commit scratch-named files']);
+    const withTrackedScratch = await module.approvalManifest(root, 'release');
+    expect(Object.keys(withTrackedScratch.artifacts)).toContain('notes.scratch.json');
+    expect(Object.keys(withTrackedScratch.artifacts)).toContain('.musubix/scratch/README.md');
+    // The still-untracked scratch-convention files remain excluded.
+    expect(Object.keys(withTrackedScratch.artifacts)).not.toContain(
+      '.musubix/scratch/approval-prepare-release.json',
+    );
+    expect(Object.keys(withTrackedScratch.artifacts)).not.toContain('relcheck-1.scratch.json');
+  });
+
+  /** @id TEST-RELEASE-APPROVAL-ORDERING-009
+   * @verifies REQ-RELEASE-APPROVAL-ORDERING-005
+   */
+  it('TEST-RELEASE-APPROVAL-ORDERING-009 derives structural exclusion markers from the complete candidate set before removing scratch entries', async () => {
+    const module = await api();
+    const root = await fixture();
+    initGit(root);
+    await writeText(root, 'src/index.ts', 'export const value = 1;\n');
+    commitAndTag(root);
+
+    // "proj/app.scratch.csproj" matches BOTH the fixed scratch naming
+    // convention (so it must itself be excluded from the manifest) AND the
+    // existing .csproj marker pattern that marks "proj" as a .NET project
+    // directory whose generated "bin"/"obj" output is structurally excluded.
+    // The scratch exclusion must be applied only to the final output, after
+    // that marker derivation runs against the complete (unfiltered)
+    // candidate set — otherwise removing the scratch file first would also
+    // silently un-mark "proj" as a .NET directory, incorrectly letting its
+    // unrelated "bin"/"obj" build output back into the manifest.
+    await writeText(root, 'proj/app.scratch.csproj', '<Project />\n');
+    await writeText(root, 'proj/bin/output.dll', 'binary\n');
+    await writeText(root, 'proj/obj/output.obj', 'binary\n');
+
+    const manifest = await module.approvalManifest(root, 'release');
+    expect(Object.keys(manifest.artifacts).sort()).toEqual(['src/index.ts']);
+  });
 });

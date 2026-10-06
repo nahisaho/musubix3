@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+- Exclude a fixed, source-hardcoded scratch-file naming convention
+  (untracked files at or beneath `.musubix/scratch/`, and untracked files
+  whose basename matches `*.scratch.<ext>`) from the untracked candidates
+  that `approval prepare release`'s manifest hashes, so an operator's own
+  scratch/debug inspection output written into the worktree no longer
+  silently changes the release-manifest hash on every inspection. The
+  exclusion is applied only as a final post-filter on the untracked
+  candidate set, after (never before) the existing nested-workspace and
+  generated-directory structural exclusion scan runs against the complete,
+  unfiltered candidate set, and it never removes a tracked file by name, so
+  the cryptographic integrity guarantee that every tracked artifact is
+  always included is preserved (#66).
 - Add `assertWaiverStaleSeverityFix` to the `pack:check` release-packaging
   verification script so the packaged `change-waiver.js`'s `CHANGE_WAIVER_STALE`
   severity-downgrade behavior (already present in source since CHANGE-0028/0029)
