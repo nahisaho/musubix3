@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+- Add `assertWaiverStaleSeverityFix` to the `pack:check` release-packaging
+  verification script so the packaged `change-waiver.js`'s `CHANGE_WAIVER_STALE`
+  severity-downgrade behavior (already present in source since CHANGE-0028/0029)
+  is also verified against the actually built and packaged distribution before
+  release, preventing a regression in the published package from silently
+  reintroducing the "waiver stale deadlock" (a stale waiver for a diagnostic
+  whose root cause has since been fixed cannot be re-recorded and has no way
+  to be cleared) that Issue #55 describes (#55).
 - Exclude validly archived TDD cycles from the Red-phase order window that
   `validateChangeEvidence`'s `CHANGE_ORDER_MIGRATION_REQUIRED` diagnostic
   uses, mirroring the existing exclusion already applied to validly voided
