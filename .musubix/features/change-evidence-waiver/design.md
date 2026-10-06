@@ -1159,3 +1159,68 @@ ADRs: none — a narrow bug fix extending an existing exclusion set
 two functions, using the same pattern already accepted under ADR-0025;
 no new waivable code, scope-key grammar, or architectural decision is
 introduced.
+
+## DES-CHANGE-EVIDENCE-WAIVER-007: Packaging-time regression guard for the waiver stale-severity fix (Issue #55)
+Responsibilities: In `scripts/check-package.mjs`, add a new exported async
+function `assertWaiverStaleSeverityFix(directory)` that dynamically
+imports `${directory}/dist/packages/analysis/src/change-waiver.js` via
+`import(pathToFileURL(...).href)` and calls its exported
+`reportWaiverEvidenceDiagnostics` with a synthetic `WaiverContext`
+representing exactly one authoritative, non-malformed, order-valid,
+linkage-valid `CHANGE_WAIVER_STALE` scope whose `condition` array element
+is the literal string `'false'` (i.e. the underlying diagnostic this
+waiver was recorded against is no longer reported — the exact scenario
+Issue #55 describes). It asserts the returned diagnostics array contains
+exactly one `CHANGE_WAIVER_STALE` diagnostic whose `severity` is
+`'warning'` (never `'error'`) and whose `message` contains the literal
+substring `"replacement waiver is not required"` (the exact
+remediation text `reportWaiverEvidenceDiagnostics` already emits for this
+scope, per REQ-011), throwing a descriptive `Error` — naming the
+directory and the unexpected severity/message/diagnostics actually
+observed — when either assertion fails, so a regression (such as the one
+the published
+`musubix3@0.1.20` package exhibited, where this packaged file still
+reported `severity: 'error'` unconditionally) fails loudly instead of
+silently shipping. This function is deliberately independent of the
+existing synchronous `checkPackage(directory)` (owned by
+REQ-RELEASE-VERSION-SYNCHRONIZATION-006, exercised by
+`TEST-RELEASE-VERSION-SYNCHRONIZATION-003`'s synchronous-throw assertion
+on it): it is never called from inside `checkPackage`, never changes
+`checkPackage`'s signature, parameters, return type, or exceptions, and
+`checkPackage` remains fully synchronous. Instead, `scripts/check-package.mjs`'s
+existing CLI-entrypoint block (the `if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url))`
+guard at the bottom of the file, run by `npm run pack:check`) is extended,
+after its existing `try { checkPackage(); } catch (error) { ... }` block
+(which only recognizes `ReleaseVersionValidationError` and rethrows any
+other error uncaught, left entirely unchanged by this design), with a new,
+separate
+`try { await assertWaiverStaleSeverityFix(root); } catch (error) { process.stderr.write(\`${error.message}\n\`); process.exitCode = 1; }`
+statement — a second, independent try/catch, not a reuse or modification
+of the existing one, so a rejection from the new check is always reported
+with a formatted message and a non-zero exit code regardless of which
+branch the existing `checkPackage` try/catch took. The surrounding
+CLI-entrypoint `if` block does not need to become an `async function`
+to hold this `await`: `package.json`'s `"type": "module"` makes the file
+ESM, where top-level `await` is valid directly inside a module-level `if`
+statement. Because the packaged `dist/` tree is ESM for the same reason,
+it cannot be loaded with synchronous `require`; dynamic `import()` is
+therefore the only viable loading mechanism, which is why this check
+cannot be folded into `checkPackage`'s synchronous contract without
+breaking it.
+Interfaces: New export `assertWaiverStaleSeverityFix(directory: string):
+Promise<void>` from `scripts/check-package.mjs`, resolving when the
+packaged artifact exhibits the expected severity-downgrade behavior and
+rejecting with a descriptive `Error` otherwise. No change to
+`checkPackage(directory: string): void`'s existing signature, behavior, or
+call sites (including `tests/release-version-synchronization.test.ts`).
+Constraints: Must not change `checkPackage`'s synchronous contract or any
+of its existing diagnostics/behavior. Must not require network access or
+mutate the inspected `directory`'s packaged files. Must fail (reject) when
+the packaged `change-waiver.js` is missing, fails to import, or does not
+export `reportWaiverEvidenceDiagnostics`, rather than silently skipping
+the check. Must only be invoked from the CLI-entrypoint block of
+`scripts/check-package.mjs`, never from `checkPackage` itself, so existing
+callers of `checkPackage` (direct function callers, not only the CLI) are
+unaffected and remain synchronous.
+Requirements: REQ-CHANGE-EVIDENCE-WAIVER-019
+ADRs: ADR-0025

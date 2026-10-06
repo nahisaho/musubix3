@@ -759,3 +759,65 @@ window exactly as today (unarchived), continuing to trigger
 `CHANGE_ORDER_MIGRATION_REQUIRED` when otherwise applicable, since only a
 validly linked archive record is trustworthy evidence that the cycle is
 inert.
+
+## Rationale for REQ-CHANGE-EVIDENCE-WAIVER-019 (GitHub Issue #55 investigation)
+GitHub Issue #55 reported that a resolved diagnostic's old waiver can never
+be re-recorded and permanently blocks the gate ("waiver stale deadlock"),
+proposing three candidate fixes: (a) downgrade `CHANGE_WAIVER_STALE` to a
+non-blocking severity once the target diagnostic's condition is no longer
+true, (b) add an explicit `change waiver retract` command (the `tdd archive`
+precedent) to mark a stale waiver inert, or (c) allow `--force` re-recording
+even when the target diagnostic is not currently reported.
+
+Verifying against the actual `packages/analysis/src/change-waiver.ts` source
+on this branch (based on current `origin/main`, which already contains
+CHANGE-0028/CHANGE-0029) shows option (a) is already implemented:
+`reportWaiverEvidenceDiagnostics` calls `evaluateWaiverCondition` per
+REQ-011 and sets `severity: condition === 'false' ? 'warning' : 'error'`
+before pushing `CHANGE_WAIVER_STALE` (in `change-waiver.ts`'s
+`reportWaiverEvidenceDiagnostics`), with the exact `"The target code is no
+longer reported for this scope
+(condition=false); a replacement waiver is not required."` remediation
+text the issue's own closing comment quotes as the fix. REQ-014 already
+redefines validity as "no error-severity diagnostic", so a `condition:
+'false'` stale waiver is a warning that no longer blocks `gate --json`'s
+`ready` result. `recordChangeWaiver`'s rejection of a new waiver for a
+`condition: 'false'` (resolved) or `'indeterminate'` scope
+(`recordChangeWaiverUnlocked`, the `currentlyReported`-equivalent check) is
+therefore an intentional, already-accepted guard (CHANGE-0029): resolved
+debt does not need — and should not accumulate — a replacement waiver
+record, and option (c)'s `--force` would let an operator bypass that
+guard and re-legitimize a scope whose condition is no longer true, which
+CHANGE-0029 explicitly rejected as unauditable. Option (b)'s retract
+command is unnecessary for the same reason: a `condition: 'false'` waiver
+is already inert (warning-only, non-blocking); adding a second explicit
+command to silence an already-non-blocking audit warning would only hide
+audit trail entries without resolving any actual blocking state, so it is
+not pursued.
+
+The issue's second comment demonstrates the gap is real but lies elsewhere:
+the published `musubix3@0.1.20` npm package (`npm pack musubix3@0.1.20`)
+does **not** contain `evaluateWaiverCondition` or the
+`"replacement waiver is not required"` message, and its
+`reportWaiverEvidenceDiagnostics` still pushes `CHANGE_WAIVER_STALE` at an
+unconditional `error` severity — reproducing the original deadlock against
+a *released* artifact even though the *source* on `main` already carries
+the fix. This is a release-packaging verification gap, not a remaining
+logic defect: neither `npm run pack:check` nor `npm run pack:smoke`
+(both already run in `ci.yml` and in `release.yml`'s `validate` job before
+the GitHub Release and npm-publish jobs) assert anything about this
+behavior surviving the build-and-package boundary, so a stale or
+incorrectly rebuilt `dist/` could reach a published release undetected.
+REQ-CHANGE-EVIDENCE-WAIVER-019 closes exactly that verification gap by
+making `npm run pack:check` itself fail when the packaged
+`dist/packages/analysis/src/change-waiver.js` does not exhibit the
+severity-downgrade behavior, so the next release cannot repeat Issue #55's
+observed regression regardless of which option among (a)/(b)/(c) a future
+reader assumes is still missing.
+
+## REQ-CHANGE-EVIDENCE-WAIVER-019: Guard the packaged release artifact against a stale-waiver severity regression
+Priority: must
+Type: functional
+Pattern: unwanted-behavior
+Statement: If the `dist/packages/analysis/src/change-waiver.js` artifact within a directory that `npm run pack:check` inspects does not downgrade an authoritative, resolved (`condition === 'false'`) `CHANGE_WAIVER_STALE` scope to `severity: "warning"` carrying the `"replacement waiver is not required"` remediation text, then the system shall fail `npm run pack:check` for that directory with an error identifying the regressed file, rather than allowing an unreleased severity regression (GitHub Issue #55's reproduction against the published `musubix3@0.1.20` package) to reach a packaged or published release.
+Acceptance: `scripts/check-package.mjs` exports a new, independent `assertWaiverStaleSeverityFix(directory: string): Promise<void>` that dynamically imports `<directory>/dist/packages/analysis/src/change-waiver.js`, builds a synthetic, fully-linked `WaiverContext` for one authoritative record whose `condition` is `'false'` (alone sufficient to make it stale per REQ-011, independent of `snapshotHash`), calls the module's own `reportWaiverEvidenceDiagnostics(waiverContext)`, and rejects naming the file and instructing that `dist` be rebuilt before packaging/publishing unless the result is exactly one `CHANGE_WAIVER_STALE` diagnostic with `severity: "warning"` whose `message` contains `"replacement waiver is not required"`. This new function is independent of, and never changes the signature, synchrony, or existing REQ-RELEASE-VERSION-SYNCHRONIZATION-006 contract of, the pre-existing synchronous `checkPackage(directory)`; instead, `scripts/check-package.mjs`'s own CLI entrypoint (the `node scripts/check-package.mjs` execution invoked by `npm run pack:check`) calls synchronous `checkPackage(directory)` exactly as before and then separately `await`s `assertWaiverStaleSeverityFix(directory)`, setting a nonzero `process.exitCode` and reporting the rejection reason when it rejects. Given the current repository's own built `dist/`, `await assertWaiverStaleSeverityFix(repository root)` resolves without rejecting. Given a fixture directory whose `dist/packages/analysis/src/change-waiver.js` is an exact copy of the repository's built file except that its `severity: condition === 'false' ? 'warning' : 'error'` expression has been replaced with the literal `'error'` (reproducing the exact regression Issue #55 confirmed in the published `musubix3@0.1.20` package), `await assertWaiverStaleSeverityFix(fixture directory)` rejects. (`scripts/check-package.mjs`'s CLI entrypoint resolves its own `directory` from the script's fixed on-disk location — not from argv — so this rejection is verified by direct function invocation against the fixture, not by spawning `node scripts/check-package.mjs`/`npm run pack:check` against an arbitrary directory; no fixture-level CLI-exit-code test exists or is required.) Because `assertWaiverStaleSeverityFix(repository root)` runs unconditionally from `pack:check`'s own CLI entrypoint, and `pack:check` already runs in `ci.yml` and in `release.yml`'s `validate` job before `release:prepare`, the GitHub Release job, and the npm-publish job, a regression in the repository's own built `dist/` is release-blocking without any new workflow step.

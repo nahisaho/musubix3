@@ -8,7 +8,7 @@
     ".musubix/features/attestation-evidence-stability/requirements.md": "afab3f5ea642e0ff89d883ca4e612e460a6291afb0d263d4ffe7f878e4145406",
     ".musubix/features/bounded-file-read-concurrency/requirements.md": "9e08acde7e29a8f14b23d908c465c629e49d00bc29ae9bda1466427362c815be",
     ".musubix/features/change-acceptance-heuristic/requirements.md": "82b9c8d839d6663f97b67bba2c01fc775e3253e444440eb2833f82cdd877bcf6",
-    ".musubix/features/change-evidence-waiver/requirements.md": "10f2993072dfea10263e81b94ae9415083e17b1b74885437718e5afc385bea46",
+    ".musubix/features/change-evidence-waiver/requirements.md": "4f71a5726a2aa73a9bafeea1e3b204af462f183c8e6c85ddfae2d94659ee6cac",
     ".musubix/features/change-quality-refresh/requirements.md": "14202e150cc31cb45b8e0cc88124c8547fd93f733e1c929dee4382c30fffb5a9",
     ".musubix/features/change-record-fail-fast/requirements.md": "7488f2f96293ca03ca0690358aa528d1e329e70d39be3885540f54c81c14d94e",
     ".musubix/features/change-record-recordedat-order/requirements.md": "f43a1e3170ff7488fd2b3993ac9ba662b45ae159978513f929a99f59bdfcb83b",
@@ -46,7 +46,7 @@
     ".musubix/features/workflow-session-shutdown/requirements.md": "c00d313bbb445e0951fad5d2cd70f22341a19ce357659cd03e80f3049ef8d873",
     ".musubix/features/workflow-waiver-bulk-recording/requirements.md": "361cfba519d4ab189a2091cf7b99133b9c005f69fb28aa2d77bba17bd7ee7b33"
   },
-  "artifactSha256": "5e77f6c18cc1bc6bb1185a4827f59e51a5ad717ca77c14caef013f755df643cd",
+  "artifactSha256": "e6c7f85a039b397596f59366ac3f8d22224844ae2830ac85eefede08f4510579",
   "approver": "nahisaho",
-  "approvedAt": "2026-10-06T05:02:38.829Z"
+  "approvedAt": "2026-10-06T12:13:52.479Z"
 }

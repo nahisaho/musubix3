@@ -1,6 +1,7 @@
 import { generateKeyPairSync } from 'node:crypto';
-import { readdir, symlink } from 'node:fs/promises';
+import { cp, readFile, readdir, symlink, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
+import { pathToFileURL } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import { parseDocument } from 'yaml';
 import {
@@ -12,6 +13,39 @@ import { fixture, project, repository, req } from './helpers.js';
 const cli = resolve('dist/packages/cli/src/main.js');
 async function invoke(root: string, args: string[]): Promise<Awaited<ReturnType<typeof runProcess>>> {
   return runProcess(process.execPath, [cli, ...args], { cwd: root, timeoutMs: 20_000 });
+}
+
+type CheckPackageModule = {
+  checkPackage(directory?: string): { pack: unknown; files: Set<string>; skills: string[] };
+  assertWaiverStaleSeverityFix(directory: string): Promise<void>;
+};
+async function checkPackageModule(): Promise<CheckPackageModule> {
+  return import(pathToFileURL(resolve(repository, 'scripts/check-package.mjs')).href) as Promise<CheckPackageModule>;
+}
+
+const WAIVER_SEVERITY_EXPRESSION = "severity: condition === 'false' ? 'warning' : 'error'";
+
+/**
+ * Copies the real repository's built `dist/packages/analysis` and
+ * `dist/packages/domain` trees (the full transitive import closure of
+ * `change-waiver.js`) into a fresh fixture directory, then optionally
+ * mutates the packaged `change-waiver.js`'s severity-downgrade expression
+ * to reproduce the exact Issue #55 regression the published
+ * `musubix3@0.1.20` package exhibited.
+ */
+async function packagedWaiverFixture(options: { regress: boolean }): Promise<string> {
+  const root = await fixture();
+  await cp(resolve(repository, 'dist/packages/analysis'), resolve(root, 'dist/packages/analysis'), { recursive: true });
+  await cp(resolve(repository, 'dist/packages/domain'), resolve(root, 'dist/packages/domain'), { recursive: true });
+  if (options.regress) {
+    const waiverPath = resolve(root, 'dist/packages/analysis/src/change-waiver.js');
+    const original = await readFile(waiverPath, 'utf8');
+    if (!original.includes(WAIVER_SEVERITY_EXPRESSION)) {
+      throw new Error(`Fixture setup assumption broken: ${waiverPath} no longer contains ${WAIVER_SEVERITY_EXPRESSION}`);
+    }
+    await writeFile(waiverPath, original.replace(WAIVER_SEVERITY_EXPRESSION, "severity: 'error'"));
+  }
+  return root;
 }
 
 describe('CLI contracts', () => {
@@ -359,5 +393,24 @@ describe('distribution contracts', () => {
     const checked = await runProcess(process.execPath, ['scripts/check-package.mjs'], { cwd: repository, timeoutMs: 20_000 });
     expect(checked.exitCode, checked.stderr).toBe(0);
     expect(checked.stdout).toContain('9 skills');
+  });
+
+  /** @id TEST-CHANGE-EVIDENCE-WAIVER-037
+   * @verifies REQ-CHANGE-EVIDENCE-WAIVER-019
+   */
+  it('TEST-CHANGE-EVIDENCE-WAIVER-037 fails pack:check when the packaged waiver stale-severity fix regresses (Issue #55)', async () => {
+    const regressed = await packagedWaiverFixture({ regress: true });
+    const { assertWaiverStaleSeverityFix } = await checkPackageModule();
+    await expect(assertWaiverStaleSeverityFix(regressed)).rejects.toThrow(/severity/i);
+  });
+
+  /** @id TEST-CHANGE-EVIDENCE-WAIVER-038
+   * @verifies REQ-CHANGE-EVIDENCE-WAIVER-019
+   */
+  it('TEST-CHANGE-EVIDENCE-WAIVER-038 accepts the real built package severity-downgrade fix', async () => {
+    const correct = await packagedWaiverFixture({ regress: false });
+    const { assertWaiverStaleSeverityFix } = await checkPackageModule();
+    await expect(assertWaiverStaleSeverityFix(correct)).resolves.toBeUndefined();
+    await expect(assertWaiverStaleSeverityFix(repository)).resolves.toBeUndefined();
   });
 });

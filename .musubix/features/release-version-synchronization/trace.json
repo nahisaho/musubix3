@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-05T11:44:33.475Z",
+  "generatedAt": "2026-10-06T11:41:38.395Z",
   "nodes": [
     {
       "id": "ADR-0032",
@@ -544,7 +544,7 @@
     ".musubix/decisions/ADR-0032.md": "31bfdd12d54dcf9b5335d10c38de351ab396ee0c1e9834b4a275fbc4de00d06d",
     ".musubix/features/release-version-synchronization/design.md": "8df85935c9e2151cba0b0640fb5b25af81a529cfa7d2e7ec43f7730a44ebf42e",
     ".musubix/features/release-version-synchronization/requirements.md": "afb3b57eb96d6e93e437e4a7c83f2f91a70af9c92967ce543ba399c244f6153f",
-    "scripts/check-package.mjs": "f5cdb012f3ec097b52501dba3a2f106bf7a3b38468769f12977ccd14d9a4ee83",
+    "scripts/check-package.mjs": "49239593648d027069f38fb06c328128af476aaf4c99201b660bf715e0b4e664",
     "scripts/release-prepare.mjs": "e166ac42868ce134ad9d3e68a92e14831f2ad243b51f2c0782a47e49fe55a640",
     "scripts/release-version.mjs": "24f8d0d1cd72408d5462238a99db3856639a94cb904337a8fabddad7af1cb6de",
     "tests/release-version-synchronization.test.ts": "6886bfb2f0029a5f685f8152e7fb918a532a65f5ec5d84ffad063894c2ef49cb"

@@ -49214,6 +49214,166 @@
           "order": 1741
         }
       }
+    },
+    {
+      "changeId": "CHANGE-0047",
+      "requirementIds": [
+        "REQ-CHANGE-EVIDENCE-WAIVER-019"
+      ],
+      "phases": {
+        "impact": {
+          "phase": "impact",
+          "recordedAt": "2026-10-06T10:57:48.629Z",
+          "fingerprints": {
+            "impact": "a4f908749f67c42db6bdc1f431f872440d1b28a8dce077d3a2e97089816a1790",
+            "requirements": "290c7dfcdec8233b9af879db51a4f6c873ee2d51c87a6d86533ea86d7d600946",
+            "design": "7f7446f4aa5e07031e115f616fa5017f5b57a3dbfa26836062f9cc6674586b19",
+            "implementation": "2bf17d6918b4dcfa47278c96738c425df16a0c642c36961f4a3295db36bee9c9",
+            "tests": "a0466bfdfb4f865aaab0353487bc059878573b830c9e99f551fde92d065fa343",
+            "tdd": "1ce21cb0267c188c2ae0f5dc3c2859328a7a4b8a45007ae6e72e5d7a40cfb769",
+            "requirementImplementations": {
+              "REQ-CHANGE-EVIDENCE-WAIVER-019": {
+                "paths": [],
+                "fingerprints": {}
+              }
+            }
+          },
+          "order": 1742
+        },
+        "requirements": {
+          "phase": "requirements",
+          "recordedAt": "2026-10-06T10:58:19.893Z",
+          "fingerprints": {
+            "impact": "a4f908749f67c42db6bdc1f431f872440d1b28a8dce077d3a2e97089816a1790",
+            "requirements": "290c7dfcdec8233b9af879db51a4f6c873ee2d51c87a6d86533ea86d7d600946",
+            "design": "7f7446f4aa5e07031e115f616fa5017f5b57a3dbfa26836062f9cc6674586b19",
+            "implementation": "2bf17d6918b4dcfa47278c96738c425df16a0c642c36961f4a3295db36bee9c9",
+            "tests": "a0466bfdfb4f865aaab0353487bc059878573b830c9e99f551fde92d065fa343",
+            "tdd": "1ce21cb0267c188c2ae0f5dc3c2859328a7a4b8a45007ae6e72e5d7a40cfb769",
+            "requirementImplementations": {
+              "REQ-CHANGE-EVIDENCE-WAIVER-019": {
+                "paths": [],
+                "fingerprints": {}
+              }
+            }
+          },
+          "allowUnchanged": true,
+          "order": 1743
+        },
+        "design": {
+          "phase": "design",
+          "recordedAt": "2026-10-06T11:12:38.734Z",
+          "fingerprints": {
+            "impact": "c74821af0a827e544622d2cf96c90059a13a60be626a5d04e39ec41d69246e96",
+            "requirements": "290c7dfcdec8233b9af879db51a4f6c873ee2d51c87a6d86533ea86d7d600946",
+            "design": "1f791dfafb5f292d6059351a6de76a2c0aa38a2f301eabe95abc0c2823550c8e",
+            "implementation": "2bf17d6918b4dcfa47278c96738c425df16a0c642c36961f4a3295db36bee9c9",
+            "tests": "a0466bfdfb4f865aaab0353487bc059878573b830c9e99f551fde92d065fa343",
+            "tdd": "1ce21cb0267c188c2ae0f5dc3c2859328a7a4b8a45007ae6e72e5d7a40cfb769",
+            "requirementImplementations": {
+              "REQ-CHANGE-EVIDENCE-WAIVER-019": {
+                "paths": [],
+                "fingerprints": {}
+              }
+            }
+          },
+          "order": 1744
+        },
+        "red": {
+          "phase": "red",
+          "recordedAt": "2026-10-06T11:40:43.187Z",
+          "fingerprints": {
+            "impact": "c74821af0a827e544622d2cf96c90059a13a60be626a5d04e39ec41d69246e96",
+            "requirements": "290c7dfcdec8233b9af879db51a4f6c873ee2d51c87a6d86533ea86d7d600946",
+            "design": "1f791dfafb5f292d6059351a6de76a2c0aa38a2f301eabe95abc0c2823550c8e",
+            "implementation": "2bf17d6918b4dcfa47278c96738c425df16a0c642c36961f4a3295db36bee9c9",
+            "tests": "7a94cc9cee8297ff565642513df18113f09ed1b0e5e4315172c0f37b1f8804af",
+            "tdd": "acdd445e7d2b39d11872e656d586595cf1a62ec69d3e496037bc8ebbbea2fbe8",
+            "requirementImplementations": {
+              "REQ-CHANGE-EVIDENCE-WAIVER-019": {
+                "paths": [],
+                "fingerprints": {}
+              }
+            }
+          },
+          "order": 1747
+        },
+        "implementation": {
+          "phase": "implementation",
+          "recordedAt": "2026-10-06T11:41:27.480Z",
+          "fingerprints": {
+            "impact": "c74821af0a827e544622d2cf96c90059a13a60be626a5d04e39ec41d69246e96",
+            "requirements": "290c7dfcdec8233b9af879db51a4f6c873ee2d51c87a6d86533ea86d7d600946",
+            "design": "1f791dfafb5f292d6059351a6de76a2c0aa38a2f301eabe95abc0c2823550c8e",
+            "implementation": "659f89250924dbe9cae0dce38ddc3e42430b993777e42ec42dfb5eb6c3f77f3e",
+            "tests": "7a94cc9cee8297ff565642513df18113f09ed1b0e5e4315172c0f37b1f8804af",
+            "tdd": "acdd445e7d2b39d11872e656d586595cf1a62ec69d3e496037bc8ebbbea2fbe8",
+            "requirementImplementations": {
+              "REQ-CHANGE-EVIDENCE-WAIVER-019": {
+                "paths": [
+                  "scripts/check-package.mjs",
+                  "scripts/release-version.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-package.mjs": "49239593648d027069f38fb06c328128af476aaf4c99201b660bf715e0b4e664",
+                  "scripts/release-version.mjs": "24f8d0d1cd72408d5462238a99db3856639a94cb904337a8fabddad7af1cb6de"
+                }
+              }
+            }
+          },
+          "order": 1748
+        },
+        "green": {
+          "phase": "green",
+          "recordedAt": "2026-10-06T11:41:53.262Z",
+          "fingerprints": {
+            "impact": "c74821af0a827e544622d2cf96c90059a13a60be626a5d04e39ec41d69246e96",
+            "requirements": "290c7dfcdec8233b9af879db51a4f6c873ee2d51c87a6d86533ea86d7d600946",
+            "design": "1f791dfafb5f292d6059351a6de76a2c0aa38a2f301eabe95abc0c2823550c8e",
+            "implementation": "659f89250924dbe9cae0dce38ddc3e42430b993777e42ec42dfb5eb6c3f77f3e",
+            "tests": "7a94cc9cee8297ff565642513df18113f09ed1b0e5e4315172c0f37b1f8804af",
+            "tdd": "89afd0168c421e43248701bb571e3076afd66a408b4e8df1d1863bc2af0df2d3",
+            "requirementImplementations": {
+              "REQ-CHANGE-EVIDENCE-WAIVER-019": {
+                "paths": [
+                  "scripts/check-package.mjs",
+                  "scripts/release-version.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-package.mjs": "49239593648d027069f38fb06c328128af476aaf4c99201b660bf715e0b4e664",
+                  "scripts/release-version.mjs": "24f8d0d1cd72408d5462238a99db3856639a94cb904337a8fabddad7af1cb6de"
+                }
+              }
+            }
+          },
+          "order": 1751
+        },
+        "quality": {
+          "phase": "quality",
+          "recordedAt": "2026-10-06T11:42:47.981Z",
+          "fingerprints": {
+            "impact": "c74821af0a827e544622d2cf96c90059a13a60be626a5d04e39ec41d69246e96",
+            "requirements": "290c7dfcdec8233b9af879db51a4f6c873ee2d51c87a6d86533ea86d7d600946",
+            "design": "1f791dfafb5f292d6059351a6de76a2c0aa38a2f301eabe95abc0c2823550c8e",
+            "implementation": "659f89250924dbe9cae0dce38ddc3e42430b993777e42ec42dfb5eb6c3f77f3e",
+            "tests": "7a94cc9cee8297ff565642513df18113f09ed1b0e5e4315172c0f37b1f8804af",
+            "tdd": "89afd0168c421e43248701bb571e3076afd66a408b4e8df1d1863bc2af0df2d3",
+            "requirementImplementations": {
+              "REQ-CHANGE-EVIDENCE-WAIVER-019": {
+                "paths": [
+                  "scripts/check-package.mjs",
+                  "scripts/release-version.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-package.mjs": "49239593648d027069f38fb06c328128af476aaf4c99201b660bf715e0b4e664",
+                  "scripts/release-version.mjs": "24f8d0d1cd72408d5462238a99db3856639a94cb904337a8fabddad7af1cb6de"
+                }
+              }
+            }
+          },
+          "order": 1752
+        }
+      }
     }
   ]
 }

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-05T23:48:37.258Z",
+  "generatedAt": "2026-10-06T11:15:30.241Z",
   "nodes": [
     {
       "id": "ADR-0003",
@@ -56,13 +56,13 @@
       "id": "TEST-SESSION-SCOPED-DEVELOPMENT-001",
       "kind": "test",
       "path": "tests/cli-package.test.ts",
-      "line": 307
+      "line": 341
     },
     {
       "id": "TEST-SESSION-SCOPED-DEVELOPMENT-002",
       "kind": "test",
       "path": "tests/cli-package.test.ts",
-      "line": 331
+      "line": 365
     }
   ],
   "edges": [
@@ -165,6 +165,6 @@
     ".musubix/features/session-scoped-development/design.md": "66a65a3fdc1747569f42b42798a88377ae2ff93e32ff2cc5e0bae5c62c2e9a42",
     ".musubix/features/session-scoped-development/requirements.md": "640aece168b4e6848c0d1e6371f0bfeb433fa8addfd064a77d050891d69d9a4f",
     "packages/analysis/src/trace.ts": "aaa937522921837e72ee2cb7423662b4e890663b002d28e18c6a37368ee5de21",
-    "tests/cli-package.test.ts": "9050cda19c56670ea496754575b9bcfeda3e5d3f6753136f745d5714877adb59"
+    "tests/cli-package.test.ts": "4f21a664ca80b70790dc04d297982bf981f8e886a542856c0d4f806ccc2ce9d9"
   }
 }

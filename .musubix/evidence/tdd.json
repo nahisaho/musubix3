@@ -19577,6 +19577,92 @@
         "diagnostics": [],
         "order": 1739
       }
+    },
+    {
+      "cycleId": "af6d65d3-ad58-4589-8646-ee776e1de575",
+      "requirementId": "REQ-CHANGE-EVIDENCE-WAIVER-019",
+      "testId": "TEST-CHANGE-EVIDENCE-WAIVER-037",
+      "testPath": "tests/cli-package.test.ts",
+      "commandName": "session-tests",
+      "red": {
+        "phase": "red",
+        "valid": true,
+        "scoped": true,
+        "resultObserved": true,
+        "testStatus": "failed",
+        "reportSha256": "8a5aef25e2e0fd9c83ac7cfa37ee98d0a7bf1c421b5310ed18abcd7301a7a8c0",
+        "commandSha256": "3f4350e6a8274555714b5b3a1c4030d7fc37529d6591ebe8b7119da106b6a445",
+        "outputSha256": "3ae60763c549dc8117f940a2170706fe57693d69213d17a0675c91f354333a11",
+        "exitCode": 1,
+        "durationMs": 1511,
+        "testFingerprint": "0fdc460d3a8c34a448bab3bdaa247f7c72f56dbf89e72eebd987ca2aef86f40c",
+        "sourceFingerprint": "0a11afadfe456575d63d6fd0f2157b1a6bdec41261def14fccae3bb051885a99",
+        "executionId": "9abe3641-50af-4dde-92b4-97d2b5b7336c",
+        "recordedAt": "2026-10-06T11:40:31.826Z",
+        "diagnostics": [],
+        "order": 1745
+      },
+      "green": {
+        "phase": "green",
+        "valid": true,
+        "scoped": true,
+        "resultObserved": true,
+        "testStatus": "passed",
+        "reportSha256": "899744fbfccac32dc1534e0d148e91b3a9a23d9518163ff4343f0b029daac5bc",
+        "commandSha256": "3f4350e6a8274555714b5b3a1c4030d7fc37529d6591ebe8b7119da106b6a445",
+        "outputSha256": "4242c98e66462a8f62d1f8db945c344b93d7b811da266416ab95c8921bcdf54d",
+        "exitCode": 0,
+        "durationMs": 1794,
+        "testFingerprint": "0fdc460d3a8c34a448bab3bdaa247f7c72f56dbf89e72eebd987ca2aef86f40c",
+        "sourceFingerprint": "a0e8ad4388f14cefc133acb4e667d3ebcf853730bf2bedb1a4aa08004e940085",
+        "executionId": "10031161-268e-4670-9f91-672eb117401b",
+        "recordedAt": "2026-10-06T11:41:41.234Z",
+        "diagnostics": [],
+        "order": 1749
+      }
+    },
+    {
+      "cycleId": "9ba35431-70ef-4a7c-b5f3-02765d375449",
+      "requirementId": "REQ-CHANGE-EVIDENCE-WAIVER-019",
+      "testId": "TEST-CHANGE-EVIDENCE-WAIVER-038",
+      "testPath": "tests/cli-package.test.ts",
+      "commandName": "session-tests",
+      "red": {
+        "phase": "red",
+        "valid": true,
+        "scoped": true,
+        "resultObserved": true,
+        "testStatus": "failed",
+        "reportSha256": "d34045f6a05a86daa537280272756864af2277c0492f412e57fcf6cf426e786a",
+        "commandSha256": "a5f317e71fd2ae1cb75a132b6b114e2108da768ba07890e7b73233a49a5361f4",
+        "outputSha256": "aa63ca1def2d2ef39cd10fda25c3c527a62fae3f8edc20220e75a7644f23ab27",
+        "exitCode": 1,
+        "durationMs": 1504,
+        "testFingerprint": "fd41e82791f7f66d8155c1e1f0fcfd2ae1458c6a2e49807a7e9147349b95748d",
+        "sourceFingerprint": "0a11afadfe456575d63d6fd0f2157b1a6bdec41261def14fccae3bb051885a99",
+        "executionId": "f2b183ab-fdf2-4d1e-a40f-e1a8af903e0e",
+        "recordedAt": "2026-10-06T11:40:34.895Z",
+        "diagnostics": [],
+        "order": 1746
+      },
+      "green": {
+        "phase": "green",
+        "valid": true,
+        "scoped": true,
+        "resultObserved": true,
+        "testStatus": "passed",
+        "reportSha256": "bb6358266ddc0a4782ecaa8eeb1660ea9f105ae888c636a59b6deeaf40d11ef6",
+        "commandSha256": "a5f317e71fd2ae1cb75a132b6b114e2108da768ba07890e7b73233a49a5361f4",
+        "outputSha256": "3dfc0fc2cb2881f8e3e0e2eec6f894edc87cd2a0bc09eb230c2579da620ca1fa",
+        "exitCode": 0,
+        "durationMs": 2012,
+        "testFingerprint": "fd41e82791f7f66d8155c1e1f0fcfd2ae1458c6a2e49807a7e9147349b95748d",
+        "sourceFingerprint": "a0e8ad4388f14cefc133acb4e667d3ebcf853730bf2bedb1a4aa08004e940085",
+        "executionId": "428f8e72-0887-4996-a153-fa3e559eb7c6",
+        "recordedAt": "2026-10-06T11:41:44.866Z",
+        "diagnostics": [],
+        "order": 1750
+      }
     }
   ],
   "chain": [
@@ -30475,6 +30561,54 @@
       "phaseEvidenceSha256": "3964da7f95497fee1adcf481ee2adc2b5a75ab71285d3cfdb945d1ff753dc618",
       "previousSha256": "ff21014b5947327b6ed506e06520e00ced29bd44e05c4d65164b7d9f3659b7b6",
       "recordSha256": "8cb7ac125a3da957bf11cd9db38a5c90fc74024480d2e9ea377354c39009ff98"
+    },
+    {
+      "sequence": 909,
+      "cycleId": "af6d65d3-ad58-4589-8646-ee776e1de575",
+      "requirementId": "REQ-CHANGE-EVIDENCE-WAIVER-019",
+      "testId": "TEST-CHANGE-EVIDENCE-WAIVER-037",
+      "testPath": "tests/cli-package.test.ts",
+      "commandName": "session-tests",
+      "phase": "red",
+      "phaseEvidenceSha256": "e42484506414e844c3d736ea58d258aef9ecfe282e2e750e7e44f5f8037c5b73",
+      "previousSha256": "8cb7ac125a3da957bf11cd9db38a5c90fc74024480d2e9ea377354c39009ff98",
+      "recordSha256": "95caa99e9a4b84b1403b6fe4fe9049608164c0dc8d9a130cf0c9422d3120920c"
+    },
+    {
+      "sequence": 910,
+      "cycleId": "9ba35431-70ef-4a7c-b5f3-02765d375449",
+      "requirementId": "REQ-CHANGE-EVIDENCE-WAIVER-019",
+      "testId": "TEST-CHANGE-EVIDENCE-WAIVER-038",
+      "testPath": "tests/cli-package.test.ts",
+      "commandName": "session-tests",
+      "phase": "red",
+      "phaseEvidenceSha256": "e23ecdcc5ad33287745738a6da660e55dab81cf1bfb08046f102f2bca850cb4f",
+      "previousSha256": "95caa99e9a4b84b1403b6fe4fe9049608164c0dc8d9a130cf0c9422d3120920c",
+      "recordSha256": "83a8d99180f36a1dbc6117d12929170bbf2157ff9f3593b416e2485b3fec27e0"
+    },
+    {
+      "sequence": 911,
+      "cycleId": "af6d65d3-ad58-4589-8646-ee776e1de575",
+      "requirementId": "REQ-CHANGE-EVIDENCE-WAIVER-019",
+      "testId": "TEST-CHANGE-EVIDENCE-WAIVER-037",
+      "testPath": "tests/cli-package.test.ts",
+      "commandName": "session-tests",
+      "phase": "green",
+      "phaseEvidenceSha256": "f12e421e072a7cc964fd5e59e663c84e70378c6da48abeccb91ff528b71ecf8c",
+      "previousSha256": "83a8d99180f36a1dbc6117d12929170bbf2157ff9f3593b416e2485b3fec27e0",
+      "recordSha256": "dbc6c8b618cb9930a00b4c14f8312665f3a5bad7c45cd91e98a49446926be8f7"
+    },
+    {
+      "sequence": 912,
+      "cycleId": "9ba35431-70ef-4a7c-b5f3-02765d375449",
+      "requirementId": "REQ-CHANGE-EVIDENCE-WAIVER-019",
+      "testId": "TEST-CHANGE-EVIDENCE-WAIVER-038",
+      "testPath": "tests/cli-package.test.ts",
+      "commandName": "session-tests",
+      "phase": "green",
+      "phaseEvidenceSha256": "92f274889ba83efbe7466ebd47d02a51c4f091b9be7a7a51405c93813c79a8a2",
+      "previousSha256": "dbc6c8b618cb9930a00b4c14f8312665f3a5bad7c45cd91e98a49446926be8f7",
+      "recordSha256": "1527ecad71586b0341271c70597f1ce9b08c7e2e2c373ab215f13ea4d8a1ff48"
     }
   ]
 }

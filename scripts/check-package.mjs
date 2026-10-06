@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import {
   inspectReleaseVersionSurfaces,
   ReleaseVersionValidationError,
@@ -45,12 +45,72 @@ export function checkPackage(directory = root) {
   return { pack, files, skills };
 }
 
+/** @id CODE-CHANGE-EVIDENCE-WAIVER-030
+ * @implements REQ-CHANGE-EVIDENCE-WAIVER-019
+ * @design DES-CHANGE-EVIDENCE-WAIVER-007
+ * Independent of `checkPackage`: never called from inside it, never
+ * changes its signature/synchrony/contract. Dynamically imports the
+ * packaged `change-waiver.js` (ESM, so only dynamic `import()` can load
+ * it) and functionally asserts the CHANGE-0028/CHANGE-0029
+ * severity-downgrade fix for a resolved (`condition: 'false'`)
+ * `CHANGE_WAIVER_STALE` scope is present, reproducing the exact gap
+ * Issue #55 found in the published `musubix3@0.1.20` package.
+ */
+export async function assertWaiverStaleSeverityFix(directory) {
+  const waiverModuleUrl = pathToFileURL(resolve(directory, 'dist/packages/analysis/src/change-waiver.js')).href;
+  const { reportWaiverEvidenceDiagnostics } = await import(waiverModuleUrl);
+  assert.equal(
+    typeof reportWaiverEvidenceDiagnostics,
+    'function',
+    `${waiverModuleUrl} does not export reportWaiverEvidenceDiagnostics; cannot verify the Issue #55 waiver stale-severity fix.`,
+  );
+  const record = {
+    changeId: 'CHANGE-0000',
+    code: 'CHANGE_REQUIREMENTS_UNCHANGED',
+    approver: 'pack-check',
+    reason: 'Synthetic resolved-debt scope used only to verify the packaged severity-downgrade fix.',
+    recordedAt: new Date(0).toISOString(),
+    snapshotVersion: 1,
+    snapshotHash: 'synthetic-before',
+    order: 1,
+    previousSha256: '0'.repeat(64),
+    payloadSha256: '1'.repeat(64),
+  };
+  const waiverContext = {
+    loaded: { schemaVersion: 1, waivers: [record], malformed: false },
+    order: { valid: true, records: [] },
+    linkage: [{ valid: true }],
+    currentHash: ['synthetic-after'],
+    condition: ['false'],
+  };
+  const diagnostics = reportWaiverEvidenceDiagnostics(waiverContext);
+  const stale = diagnostics.filter((diagnostic) => diagnostic.code === 'CHANGE_WAIVER_STALE');
+  const matches = stale.length === 1
+    && stale[0].severity === 'warning'
+    && typeof stale[0].message === 'string'
+    && stale[0].message.includes('replacement waiver is not required');
+  if (!matches) {
+    throw new Error(
+      `Packaged ${waiverModuleUrl} failed the Issue #55 waiver stale-severity regression check: expected exactly `
+      + 'one CHANGE_WAIVER_STALE diagnostic with severity "warning" and a message containing '
+      + `"replacement waiver is not required" for a resolved (condition=false) waiver scope, but got `
+      + `${JSON.stringify(diagnostics)}. Rebuild dist before packaging/publishing.`,
+    );
+  }
+}
+
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   try {
     checkPackage();
   } catch (error) {
     if (!(error instanceof ReleaseVersionValidationError)) throw error;
     process.stderr.write(`${JSON.stringify(error.report)}\n`);
+    process.exitCode = 1;
+  }
+  try {
+    await assertWaiverStaleSeverityFix(root);
+  } catch (error) {
+    process.stderr.write(`${error.message}\n`);
     process.exitCode = 1;
   }
 }
