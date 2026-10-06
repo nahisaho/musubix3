@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-06T06:02:06.805Z",
+  "generatedAt": "2026-10-06T13:59:03.649Z",
   "nodes": [
     {
       "id": "ADR-0029",
@@ -48,6 +48,12 @@
       "id": "ADR-0037",
       "kind": "adr",
       "path": ".musubix/decisions/ADR-0037.md",
+      "line": 1
+    },
+    {
+      "id": "ADR-0041",
+      "kind": "adr",
+      "path": ".musubix/decisions/ADR-0041.md",
       "line": 1
     },
     {
@@ -192,19 +198,25 @@
       "id": "CODE-RELEASE-APPROVAL-ORDERING-001",
       "kind": "code",
       "path": "packages/analysis/src/approval.ts",
-      "line": 287
+      "line": 315
     },
     {
       "id": "CODE-RELEASE-APPROVAL-ORDERING-002",
       "kind": "code",
       "path": "packages/analysis/src/approval.ts",
-      "line": 420
+      "line": 448
     },
     {
       "id": "CODE-RELEASE-APPROVAL-ORDERING-003",
       "kind": "code",
       "path": "scripts/release-prepare.mjs",
       "line": 71
+    },
+    {
+      "id": "CODE-RELEASE-APPROVAL-ORDERING-004",
+      "kind": "code",
+      "path": "packages/analysis/src/approval.ts",
+      "line": 178
     },
     {
       "id": "CODE-RELEASE-ASSET-PUBLISHING-001",
@@ -361,6 +373,12 @@
       "kind": "design",
       "path": ".musubix/features/release-approval-ordering/design.md",
       "line": 22
+    },
+    {
+      "id": "DES-RELEASE-APPROVAL-ORDERING-004",
+      "kind": "design",
+      "path": ".musubix/features/release-approval-ordering/design.md",
+      "line": 34
     },
     {
       "id": "DES-RELEASE-ASSET-PUBLISHING-001",
@@ -564,6 +582,13 @@
       "kind": "requirement",
       "path": ".musubix/features/release-approval-ordering/requirements.md",
       "line": 28,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-RELEASE-APPROVAL-ORDERING-005",
+      "kind": "requirement",
+      "path": ".musubix/features/release-approval-ordering/requirements.md",
+      "line": 35,
       "mandatory": true
     },
     {
@@ -907,6 +932,18 @@
       "line": 334
     },
     {
+      "id": "TEST-RELEASE-APPROVAL-ORDERING-008",
+      "kind": "test",
+      "path": "tests/release-approval-ordering.test.ts",
+      "line": 382
+    },
+    {
+      "id": "TEST-RELEASE-APPROVAL-ORDERING-009",
+      "kind": "test",
+      "path": "tests/release-approval-ordering.test.ts",
+      "line": 444
+    },
+    {
       "id": "TEST-RELEASE-ASSET-PUBLISHING-001",
       "kind": "test",
       "path": "tests/release-asset-publishing.test.ts",
@@ -1141,6 +1178,11 @@
     {
       "from": "ADR-0037",
       "to": "DES-RELEASE-ASSET-PUBLISHING-006",
+      "relation": "decides"
+    },
+    {
+      "from": "ADR-0041",
+      "to": "DES-RELEASE-APPROVAL-ORDERING-004",
       "relation": "decides"
     },
     {
@@ -1601,6 +1643,16 @@
     {
       "from": "CODE-RELEASE-APPROVAL-ORDERING-003",
       "to": "REQ-RELEASE-APPROVAL-ORDERING-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-RELEASE-APPROVAL-ORDERING-004",
+      "to": "DES-RELEASE-APPROVAL-ORDERING-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-RELEASE-APPROVAL-ORDERING-004",
+      "to": "REQ-RELEASE-APPROVAL-ORDERING-005",
       "relation": "implements"
     },
     {
@@ -2051,6 +2103,16 @@
     {
       "from": "DES-RELEASE-APPROVAL-ORDERING-003",
       "to": "REQ-RELEASE-APPROVAL-ORDERING-004",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-RELEASE-APPROVAL-ORDERING-004",
+      "to": "DES-RELEASE-APPROVAL-ORDERING-001",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-RELEASE-APPROVAL-ORDERING-004",
+      "to": "REQ-RELEASE-APPROVAL-ORDERING-005",
       "relation": "satisfies"
     },
     {
@@ -2459,6 +2521,16 @@
       "relation": "verifies"
     },
     {
+      "from": "TEST-RELEASE-APPROVAL-ORDERING-008",
+      "to": "REQ-RELEASE-APPROVAL-ORDERING-005",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-RELEASE-APPROVAL-ORDERING-009",
+      "to": "REQ-RELEASE-APPROVAL-ORDERING-005",
+      "relation": "verifies"
+    },
+    {
       "from": "TEST-RELEASE-ASSET-PUBLISHING-001",
       "to": "REQ-RELEASE-ASSET-PUBLISHING-001",
       "relation": "verifies"
@@ -2624,6 +2696,7 @@
     ".musubix/decisions/ADR-0035.md": "14befbc7cb086ab8e9da1779546c274b795e58d084441b1c0823a82681e5a896",
     ".musubix/decisions/ADR-0036.md": "c4ed0289564d2b19e3c28e06e4784d792c694ff2be59d97c8f24431157d3faa3",
     ".musubix/decisions/ADR-0037.md": "b64626a843de7f90ec4540c72fc2eab5daeb5a7d3854e8de2e80f1f44b88a5e4",
+    ".musubix/decisions/ADR-0041.md": "31acae0e740e0c179af3f67949ca5062f4eb9cad2a82d6ca226f0aaea516ad1e",
     ".musubix/features/change-quality-refresh/design.md": "d2552cf174d4463963fca9bdeea96a6e142b11e9016659bfd9994ba4f819f923",
     ".musubix/features/change-quality-refresh/requirements.md": "14202e150cc31cb45b8e0cc88124c8547fd93f733e1c929dee4382c30fffb5a9",
     ".musubix/features/evidence-history-merge/design.md": "123823f034c53b76326f17e619a34a849c5672e179d77761550a21513f5d04ec",
@@ -2634,11 +2707,11 @@
     ".musubix/features/github-actions-node24-runtime/requirements.md": "bd51b35f5bad232267c6535d0f84e6dfd75f988038e1c9381ee37fa9dee70b3f",
     ".musubix/features/npm-audit-remediation/design.md": "78fcb8b7a741b4415ed10bbccb232fc251fa7f30aa8af15c24f448c275705f27",
     ".musubix/features/npm-audit-remediation/requirements.md": "9a2c384b2d95a46c5537f54c6e1bfdb923aaa91a2f2c68c58ac25e0e584e23e7",
-    ".musubix/features/release-approval-ordering/design.md": "704ecad7d218ae4734e3b8ce4d9953676788a3354196039b65546aaa206e49a9",
-    ".musubix/features/release-approval-ordering/requirements.md": "53ae383ea5fc4e918225abfbadaeec9dbccccb624e512c8cff480a17ba15f112",
+    ".musubix/features/release-approval-ordering/design.md": "235e4f2169e38965cb575b2dcab50fcca33909e9ed58d1a517150ee00e825b0b",
+    ".musubix/features/release-approval-ordering/requirements.md": "19fd75e725b1838fe659f4c6f1837644321d9794e96c42236fa8c5fec140c8b5",
     ".musubix/features/release-asset-publishing/design.md": "1ceba4afd1ffff0fac9c88c8b826828eeba3fcd4d3a4ca8f71d11aa758a81472",
     ".musubix/features/release-asset-publishing/requirements.md": "8bf4436d5b694e32b683edbb620573589b28b74c35a076182c971bdb79cd4472",
-    "packages/analysis/src/approval.ts": "7b3940d96b8465a16fc1d28a100fc2d72dc0b7ee4e49e6f02ebb7db0449b1a9f",
+    "packages/analysis/src/approval.ts": "232ef37866d07c72f762c1ccffde3c57d310aec0df82e252f5e850bc76976027",
     "packages/analysis/src/change-evidence.ts": "a8356256b78bf5a4143bf218162c63b006e0a47f8b6db4ebc7741791e77c2bf6",
     "packages/analysis/src/change.ts": "0d7a71d450f63c26c2ad322f1c09db7b6f2b72a629ea293b6b7a89974fa2dc03",
     "packages/analysis/src/evidence-merge.ts": "40130d28f1e85e3776e7f804b2ad6ca10eabe212158a1f17c169e1cf149d1aff",
@@ -2656,7 +2729,7 @@
     "tests/evidence-writer-lock.test.ts": "87e516ef8434489740c73b0a2e6695e2a0de28a5424a668b9b56c2304e093439",
     "tests/github-actions-node24-runtime.test.ts": "9a444869a4d0dcdb76fb34fc5e017eb8f4f39896ec7b8aa8e0d36e8a6552e28d",
     "tests/npm-audit-remediation.test.ts": "4ec1ca039effb3d548e54527094f8f73d7b4ddb4692dccbc42f290ac7c665a51",
-    "tests/release-approval-ordering.test.ts": "27b3ace3195beda732e658f0a4854ed2b95a3f8b03edc51756d6ebb7caa24801",
+    "tests/release-approval-ordering.test.ts": "9f1076b7d450fd7e8cd7d2e2dec4ae0ed498ff0b587338c102df8bfd0ad40174",
     "tests/release-asset-publishing.test.ts": "cf2f5921615f741a06f1b48fd3632c4ffebbb5d64c46db8443f853c8d6086334",
     "tests/windows-core-portability.test.ts": "69977ab1a9805ea1c8ccf34f7bf256c990beb9d273d493f5b74580ff1a8a5e6c"
   }

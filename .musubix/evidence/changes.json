@@ -49374,6 +49374,238 @@
           "order": 1752
         }
       }
+    },
+    {
+      "changeId": "CHANGE-0048",
+      "requirementIds": [
+        "REQ-RELEASE-APPROVAL-ORDERING-005"
+      ],
+      "phases": {
+        "impact": {
+          "phase": "impact",
+          "recordedAt": "2026-10-06T13:34:06.171Z",
+          "fingerprints": {
+            "impact": "07a427a03990788d729bb01a6c8b225e269b884902d107246ce415f808796087",
+            "requirements": "9d21a588b8f4a8907a79ea01ea04f60a1a531ffe45534481f27fdaf115749a50",
+            "design": "1f791dfafb5f292d6059351a6de76a2c0aa38a2f301eabe95abc0c2823550c8e",
+            "implementation": "659f89250924dbe9cae0dce38ddc3e42430b993777e42ec42dfb5eb6c3f77f3e",
+            "tests": "7a94cc9cee8297ff565642513df18113f09ed1b0e5e4315172c0f37b1f8804af",
+            "tdd": "199943257884febb0324015e4fd0256f2f4a70c0de4371e555c778ddf3ca234e",
+            "requirementImplementations": {
+              "REQ-RELEASE-APPROVAL-ORDERING-005": {
+                "paths": [],
+                "fingerprints": {}
+              }
+            }
+          },
+          "order": 1753
+        },
+        "requirements": {
+          "phase": "requirements",
+          "recordedAt": "2026-10-06T13:34:38.625Z",
+          "fingerprints": {
+            "impact": "07a427a03990788d729bb01a6c8b225e269b884902d107246ce415f808796087",
+            "requirements": "9d21a588b8f4a8907a79ea01ea04f60a1a531ffe45534481f27fdaf115749a50",
+            "design": "1f791dfafb5f292d6059351a6de76a2c0aa38a2f301eabe95abc0c2823550c8e",
+            "implementation": "659f89250924dbe9cae0dce38ddc3e42430b993777e42ec42dfb5eb6c3f77f3e",
+            "tests": "7a94cc9cee8297ff565642513df18113f09ed1b0e5e4315172c0f37b1f8804af",
+            "tdd": "199943257884febb0324015e4fd0256f2f4a70c0de4371e555c778ddf3ca234e",
+            "requirementImplementations": {
+              "REQ-RELEASE-APPROVAL-ORDERING-005": {
+                "paths": [],
+                "fingerprints": {}
+              }
+            }
+          },
+          "allowUnchanged": true,
+          "order": 1754
+        },
+        "design": {
+          "phase": "design",
+          "recordedAt": "2026-10-06T13:48:04.845Z",
+          "fingerprints": {
+            "impact": "72735ec9b8c2bd0d692e29a0c91b699029ba7c3480318ed9edad6192a96621de",
+            "requirements": "9d21a588b8f4a8907a79ea01ea04f60a1a531ffe45534481f27fdaf115749a50",
+            "design": "699e990defd46fab0c93a427db1de68af4c9a8cee66ef7e51ebe7f5a649ea52e",
+            "implementation": "659f89250924dbe9cae0dce38ddc3e42430b993777e42ec42dfb5eb6c3f77f3e",
+            "tests": "7a94cc9cee8297ff565642513df18113f09ed1b0e5e4315172c0f37b1f8804af",
+            "tdd": "199943257884febb0324015e4fd0256f2f4a70c0de4371e555c778ddf3ca234e",
+            "requirementImplementations": {
+              "REQ-RELEASE-APPROVAL-ORDERING-005": {
+                "paths": [],
+                "fingerprints": {}
+              }
+            }
+          },
+          "order": 1755
+        },
+        "red": {
+          "phase": "red",
+          "recordedAt": "2026-10-06T13:51:05.924Z",
+          "fingerprints": {
+            "impact": "72735ec9b8c2bd0d692e29a0c91b699029ba7c3480318ed9edad6192a96621de",
+            "requirements": "9d21a588b8f4a8907a79ea01ea04f60a1a531ffe45534481f27fdaf115749a50",
+            "design": "699e990defd46fab0c93a427db1de68af4c9a8cee66ef7e51ebe7f5a649ea52e",
+            "implementation": "659f89250924dbe9cae0dce38ddc3e42430b993777e42ec42dfb5eb6c3f77f3e",
+            "tests": "f1de688076a02ced8557dc538c74c0b6a25cf6474355f773942a5dbdde8df7a4",
+            "tdd": "cda187e1eeb4a94da02dde8ddfdee187d881049e110542fe581a2fca6de4c933",
+            "requirementImplementations": {
+              "REQ-RELEASE-APPROVAL-ORDERING-005": {
+                "paths": [],
+                "fingerprints": {}
+              }
+            }
+          },
+          "order": 1758
+        },
+        "implementation": {
+          "phase": "implementation",
+          "recordedAt": "2026-10-06T13:51:44.149Z",
+          "fingerprints": {
+            "impact": "72735ec9b8c2bd0d692e29a0c91b699029ba7c3480318ed9edad6192a96621de",
+            "requirements": "9d21a588b8f4a8907a79ea01ea04f60a1a531ffe45534481f27fdaf115749a50",
+            "design": "699e990defd46fab0c93a427db1de68af4c9a8cee66ef7e51ebe7f5a649ea52e",
+            "implementation": "17e9cb0c2bb2a6adebfaeb202d038ada070f50b53ed1d1ffa091a50677b41ce9",
+            "tests": "f1de688076a02ced8557dc538c74c0b6a25cf6474355f773942a5dbdde8df7a4",
+            "tdd": "cda187e1eeb4a94da02dde8ddfdee187d881049e110542fe581a2fca6de4c933",
+            "requirementImplementations": {
+              "REQ-RELEASE-APPROVAL-ORDERING-005": {
+                "paths": [
+                  "packages/analysis/src/approval-domains.ts",
+                  "packages/analysis/src/approval.ts",
+                  "packages/analysis/src/config.ts",
+                  "packages/analysis/src/evidence-merge-guard.ts",
+                  "packages/analysis/src/evidence-writer-lock.ts",
+                  "packages/analysis/src/files.ts",
+                  "packages/analysis/src/graph.ts",
+                  "packages/analysis/src/process.ts",
+                  "packages/domain/src/constitution.ts",
+                  "packages/domain/src/design.ts",
+                  "packages/domain/src/index.ts",
+                  "packages/domain/src/markdown.ts",
+                  "packages/domain/src/requirements.ts",
+                  "packages/domain/src/types.ts"
+                ],
+                "fingerprints": {
+                  "packages/analysis/src/approval-domains.ts": "bc45836374021f86c4c2085184185546cc4291880aea32b9084188545b9394b4",
+                  "packages/analysis/src/approval.ts": "17a6a79a53945d94892cbfb0d9433a70036bbbbaf37f59287b1b0a1b8d89f448",
+                  "packages/analysis/src/config.ts": "52d5212f4057df9ed5caac0a0025ce744864909abceea3c64d259479ddffb998",
+                  "packages/analysis/src/evidence-merge-guard.ts": "1c0b4735d974f4c5fa0b9edaa5bde075baa5ca09de645d32db41f2e24e9421e1",
+                  "packages/analysis/src/evidence-writer-lock.ts": "a1e7a13da4b5a3f9a96c24914f876166571df5aec20d54048a51a3188e865698",
+                  "packages/analysis/src/files.ts": "1d72849db35bf2f0ba2f5ad713ff37d01f3eb299ee59e844483977cdd09c18c4",
+                  "packages/analysis/src/graph.ts": "e79836480c0d7a005f23c59e12bc9a1fd4fc6932f5635addb46a45561ef28e6d",
+                  "packages/analysis/src/process.ts": "8184c7f7c4c58cdc6987fd9d2ec2c02ce8557f94b6aa30853a0c6056ba79cf4a",
+                  "packages/domain/src/constitution.ts": "514278499642ff46ed902864b9192f566b116b4f92eb3fafa6b62588335e170a",
+                  "packages/domain/src/design.ts": "4ead6cea89bc6fe9367eea98df810b08eeb201e129b7f84e0b7de80bac7b7e61",
+                  "packages/domain/src/index.ts": "43243e9279e3826b23cd8d8b4365854974112ce4cf17cfb0f0ee32e6b28e9cc6",
+                  "packages/domain/src/markdown.ts": "5c6b96486a2e31944d7d128d241f1772d0926f34464fa2b59c20748a6754487a",
+                  "packages/domain/src/requirements.ts": "65ea1e6d3bbd29e929c785037b930e5f5eb5535b607403e5f30c3657d36e9175",
+                  "packages/domain/src/types.ts": "b61d810e4beb76343d85f8fb0e3f165d1e6d8eaede39e4caef3ee270f68a455a"
+                }
+              }
+            }
+          },
+          "order": 1759
+        },
+        "green": {
+          "phase": "green",
+          "recordedAt": "2026-10-06T13:52:16.465Z",
+          "fingerprints": {
+            "impact": "72735ec9b8c2bd0d692e29a0c91b699029ba7c3480318ed9edad6192a96621de",
+            "requirements": "9d21a588b8f4a8907a79ea01ea04f60a1a531ffe45534481f27fdaf115749a50",
+            "design": "699e990defd46fab0c93a427db1de68af4c9a8cee66ef7e51ebe7f5a649ea52e",
+            "implementation": "17e9cb0c2bb2a6adebfaeb202d038ada070f50b53ed1d1ffa091a50677b41ce9",
+            "tests": "f1de688076a02ced8557dc538c74c0b6a25cf6474355f773942a5dbdde8df7a4",
+            "tdd": "e6c964fc53a23c909cf1b13009c1a29d2ed85a7b8714339a2e816b8f3e130502",
+            "requirementImplementations": {
+              "REQ-RELEASE-APPROVAL-ORDERING-005": {
+                "paths": [
+                  "packages/analysis/src/approval-domains.ts",
+                  "packages/analysis/src/approval.ts",
+                  "packages/analysis/src/config.ts",
+                  "packages/analysis/src/evidence-merge-guard.ts",
+                  "packages/analysis/src/evidence-writer-lock.ts",
+                  "packages/analysis/src/files.ts",
+                  "packages/analysis/src/graph.ts",
+                  "packages/analysis/src/process.ts",
+                  "packages/domain/src/constitution.ts",
+                  "packages/domain/src/design.ts",
+                  "packages/domain/src/index.ts",
+                  "packages/domain/src/markdown.ts",
+                  "packages/domain/src/requirements.ts",
+                  "packages/domain/src/types.ts"
+                ],
+                "fingerprints": {
+                  "packages/analysis/src/approval-domains.ts": "bc45836374021f86c4c2085184185546cc4291880aea32b9084188545b9394b4",
+                  "packages/analysis/src/approval.ts": "17a6a79a53945d94892cbfb0d9433a70036bbbbaf37f59287b1b0a1b8d89f448",
+                  "packages/analysis/src/config.ts": "52d5212f4057df9ed5caac0a0025ce744864909abceea3c64d259479ddffb998",
+                  "packages/analysis/src/evidence-merge-guard.ts": "1c0b4735d974f4c5fa0b9edaa5bde075baa5ca09de645d32db41f2e24e9421e1",
+                  "packages/analysis/src/evidence-writer-lock.ts": "a1e7a13da4b5a3f9a96c24914f876166571df5aec20d54048a51a3188e865698",
+                  "packages/analysis/src/files.ts": "1d72849db35bf2f0ba2f5ad713ff37d01f3eb299ee59e844483977cdd09c18c4",
+                  "packages/analysis/src/graph.ts": "e79836480c0d7a005f23c59e12bc9a1fd4fc6932f5635addb46a45561ef28e6d",
+                  "packages/analysis/src/process.ts": "8184c7f7c4c58cdc6987fd9d2ec2c02ce8557f94b6aa30853a0c6056ba79cf4a",
+                  "packages/domain/src/constitution.ts": "514278499642ff46ed902864b9192f566b116b4f92eb3fafa6b62588335e170a",
+                  "packages/domain/src/design.ts": "4ead6cea89bc6fe9367eea98df810b08eeb201e129b7f84e0b7de80bac7b7e61",
+                  "packages/domain/src/index.ts": "43243e9279e3826b23cd8d8b4365854974112ce4cf17cfb0f0ee32e6b28e9cc6",
+                  "packages/domain/src/markdown.ts": "5c6b96486a2e31944d7d128d241f1772d0926f34464fa2b59c20748a6754487a",
+                  "packages/domain/src/requirements.ts": "65ea1e6d3bbd29e929c785037b930e5f5eb5535b607403e5f30c3657d36e9175",
+                  "packages/domain/src/types.ts": "b61d810e4beb76343d85f8fb0e3f165d1e6d8eaede39e4caef3ee270f68a455a"
+                }
+              }
+            }
+          },
+          "order": 1762
+        },
+        "quality": {
+          "phase": "quality",
+          "recordedAt": "2026-10-06T14:19:56.509Z",
+          "fingerprints": {
+            "impact": "72735ec9b8c2bd0d692e29a0c91b699029ba7c3480318ed9edad6192a96621de",
+            "requirements": "9d21a588b8f4a8907a79ea01ea04f60a1a531ffe45534481f27fdaf115749a50",
+            "design": "699e990defd46fab0c93a427db1de68af4c9a8cee66ef7e51ebe7f5a649ea52e",
+            "implementation": "f8a6a91d479e55db7e2e68082a47d33b2d8ea5137f00a6932d3d16195e4060b0",
+            "tests": "f1de688076a02ced8557dc538c74c0b6a25cf6474355f773942a5dbdde8df7a4",
+            "tdd": "e6c964fc53a23c909cf1b13009c1a29d2ed85a7b8714339a2e816b8f3e130502",
+            "requirementImplementations": {
+              "REQ-RELEASE-APPROVAL-ORDERING-005": {
+                "paths": [
+                  "packages/analysis/src/approval-domains.ts",
+                  "packages/analysis/src/approval.ts",
+                  "packages/analysis/src/config.ts",
+                  "packages/analysis/src/evidence-merge-guard.ts",
+                  "packages/analysis/src/evidence-writer-lock.ts",
+                  "packages/analysis/src/files.ts",
+                  "packages/analysis/src/graph.ts",
+                  "packages/analysis/src/process.ts",
+                  "packages/domain/src/constitution.ts",
+                  "packages/domain/src/design.ts",
+                  "packages/domain/src/index.ts",
+                  "packages/domain/src/markdown.ts",
+                  "packages/domain/src/requirements.ts",
+                  "packages/domain/src/types.ts"
+                ],
+                "fingerprints": {
+                  "packages/analysis/src/approval-domains.ts": "bc45836374021f86c4c2085184185546cc4291880aea32b9084188545b9394b4",
+                  "packages/analysis/src/approval.ts": "232ef37866d07c72f762c1ccffde3c57d310aec0df82e252f5e850bc76976027",
+                  "packages/analysis/src/config.ts": "52d5212f4057df9ed5caac0a0025ce744864909abceea3c64d259479ddffb998",
+                  "packages/analysis/src/evidence-merge-guard.ts": "1c0b4735d974f4c5fa0b9edaa5bde075baa5ca09de645d32db41f2e24e9421e1",
+                  "packages/analysis/src/evidence-writer-lock.ts": "a1e7a13da4b5a3f9a96c24914f876166571df5aec20d54048a51a3188e865698",
+                  "packages/analysis/src/files.ts": "1d72849db35bf2f0ba2f5ad713ff37d01f3eb299ee59e844483977cdd09c18c4",
+                  "packages/analysis/src/graph.ts": "e79836480c0d7a005f23c59e12bc9a1fd4fc6932f5635addb46a45561ef28e6d",
+                  "packages/analysis/src/process.ts": "8184c7f7c4c58cdc6987fd9d2ec2c02ce8557f94b6aa30853a0c6056ba79cf4a",
+                  "packages/domain/src/constitution.ts": "514278499642ff46ed902864b9192f566b116b4f92eb3fafa6b62588335e170a",
+                  "packages/domain/src/design.ts": "4ead6cea89bc6fe9367eea98df810b08eeb201e129b7f84e0b7de80bac7b7e61",
+                  "packages/domain/src/index.ts": "43243e9279e3826b23cd8d8b4365854974112ce4cf17cfb0f0ee32e6b28e9cc6",
+                  "packages/domain/src/markdown.ts": "5c6b96486a2e31944d7d128d241f1772d0926f34464fa2b59c20748a6754487a",
+                  "packages/domain/src/requirements.ts": "65ea1e6d3bbd29e929c785037b930e5f5eb5535b607403e5f30c3657d36e9175",
+                  "packages/domain/src/types.ts": "b61d810e4beb76343d85f8fb0e3f165d1e6d8eaede39e4caef3ee270f68a455a"
+                }
+              }
+            }
+          },
+          "order": 1763
+        }
+      }
     }
   ]
 }

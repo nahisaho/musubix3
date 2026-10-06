@@ -727,6 +727,17 @@ CODEOWNERS, or CI/OIDC controls.
 Local approval evidence records explicit intent but does not cryptographically
 authenticate the approver; protect release authorization with repository review,
 CODEOWNERS/branch protection, or CI/OIDC attestation.
+`approval prepare release`'s manifest excludes a fixed, source-hardcoded
+scratch-file convention from its untracked candidates: any untracked path at
+or beneath `.musubix/scratch/`, and any untracked file whose basename matches
+`*.scratch.<ext>` (for example `debug.scratch.json`). Write ad hoc
+inspection/debug output using this convention so it never changes the
+release-manifest hash on repeated inspection. This exclusion is a fixed,
+version-controlled list, not a configurable setting: it applies only to
+untracked candidates (a tracked file named this way is still included), and
+only as a final filter on the manifest's output, never before the structural
+nested-workspace/generated-directory exclusion scan, so it cannot be widened
+to quietly hide a real tracked change.
 Use `tdd.redPreflightCommands` to reference plain configured formatter commands;
 they must pass before Red captures the authoritative test fingerprint.
 Conventional `.venv` and `venv` Python environments containing a regular

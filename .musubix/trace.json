@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-06T12:09:16.612Z",
+  "generatedAt": "2026-10-06T13:59:03.649Z",
   "nodes": [
     {
       "id": "ADR-0002",
@@ -237,6 +237,12 @@
       "line": 1
     },
     {
+      "id": "ADR-0041",
+      "kind": "adr",
+      "path": ".musubix/decisions/ADR-0041.md",
+      "line": 1
+    },
+    {
       "id": "CODE-ADAPTER-PATTERN-RECOGNITION-001",
       "kind": "code",
       "path": "packages/analysis/src/adapters.ts",
@@ -264,67 +270,67 @@
       "id": "CODE-APPROVAL-DOMAIN-SCOPING-003",
       "kind": "code",
       "path": "packages/analysis/src/approval.ts",
-      "line": 306
+      "line": 334
     },
     {
       "id": "CODE-APPROVAL-DOMAIN-SCOPING-004",
       "kind": "code",
       "path": "packages/analysis/src/approval.ts",
-      "line": 553
+      "line": 581
     },
     {
       "id": "CODE-APPROVAL-DOMAIN-SCOPING-005",
       "kind": "code",
       "path": "packages/analysis/src/approval.ts",
-      "line": 659
+      "line": 687
     },
     {
       "id": "CODE-APPROVAL-DOMAIN-SCOPING-006",
       "kind": "code",
       "path": "packages/analysis/src/approval.ts",
-      "line": 613
+      "line": 641
     },
     {
       "id": "CODE-APPROVAL-DOMAIN-SCOPING-007",
       "kind": "code",
       "path": "packages/analysis/src/approval.ts",
-      "line": 339
+      "line": 367
     },
     {
       "id": "CODE-APPROVAL-DOMAIN-SCOPING-008",
       "kind": "code",
       "path": "packages/analysis/src/approval.ts",
-      "line": 589
+      "line": 617
     },
     {
       "id": "CODE-APPROVAL-DOMAIN-SCOPING-009",
       "kind": "code",
       "path": "packages/analysis/src/approval.ts",
-      "line": 624
+      "line": 652
     },
     {
       "id": "CODE-APPROVAL-DOMAIN-SCOPING-010",
       "kind": "code",
       "path": "packages/analysis/src/approval.ts",
-      "line": 672
+      "line": 700
     },
     {
       "id": "CODE-APPROVAL-DOMAIN-SCOPING-011",
       "kind": "code",
       "path": "packages/analysis/src/approval.ts",
-      "line": 686
+      "line": 714
     },
     {
       "id": "CODE-APPROVAL-DOMAIN-SCOPING-012",
       "kind": "code",
       "path": "packages/analysis/src/approval.ts",
-      "line": 699
+      "line": 727
     },
     {
       "id": "CODE-APPROVAL-DOMAIN-SCOPING-013",
       "kind": "code",
       "path": "packages/analysis/src/approval.ts",
-      "line": 710
+      "line": 738
     },
     {
       "id": "CODE-APPROVAL-DOMAIN-SCOPING-014",
@@ -678,7 +684,7 @@
       "id": "CODE-CLI-WORKFLOW-UX-003",
       "kind": "code",
       "path": "packages/analysis/src/approval.ts",
-      "line": 655
+      "line": 683
     },
     {
       "id": "CODE-CLI-WORKFLOW-UX-004",
@@ -834,7 +840,7 @@
       "id": "CODE-HUMAN-APPROVAL-GATES-001",
       "kind": "code",
       "path": "packages/analysis/src/approval.ts",
-      "line": 333
+      "line": 361
     },
     {
       "id": "CODE-HUMAN-APPROVAL-GATES-002",
@@ -864,19 +870,25 @@
       "id": "CODE-RELEASE-APPROVAL-ORDERING-001",
       "kind": "code",
       "path": "packages/analysis/src/approval.ts",
-      "line": 287
+      "line": 315
     },
     {
       "id": "CODE-RELEASE-APPROVAL-ORDERING-002",
       "kind": "code",
       "path": "packages/analysis/src/approval.ts",
-      "line": 420
+      "line": 448
     },
     {
       "id": "CODE-RELEASE-APPROVAL-ORDERING-003",
       "kind": "code",
       "path": "scripts/release-prepare.mjs",
       "line": 71
+    },
+    {
+      "id": "CODE-RELEASE-APPROVAL-ORDERING-004",
+      "kind": "code",
+      "path": "packages/analysis/src/approval.ts",
+      "line": 178
     },
     {
       "id": "CODE-RELEASE-ASSET-PUBLISHING-001",
@@ -1747,6 +1759,12 @@
       "kind": "design",
       "path": ".musubix/features/release-approval-ordering/design.md",
       "line": 22
+    },
+    {
+      "id": "DES-RELEASE-APPROVAL-ORDERING-004",
+      "kind": "design",
+      "path": ".musubix/features/release-approval-ordering/design.md",
+      "line": 34
     },
     {
       "id": "DES-RELEASE-ASSET-PUBLISHING-001",
@@ -2965,6 +2983,13 @@
       "kind": "requirement",
       "path": ".musubix/features/release-approval-ordering/requirements.md",
       "line": 28,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-RELEASE-APPROVAL-ORDERING-005",
+      "kind": "requirement",
+      "path": ".musubix/features/release-approval-ordering/requirements.md",
+      "line": 35,
       "mandatory": true
     },
     {
@@ -4695,6 +4720,18 @@
       "line": 334
     },
     {
+      "id": "TEST-RELEASE-APPROVAL-ORDERING-008",
+      "kind": "test",
+      "path": "tests/release-approval-ordering.test.ts",
+      "line": 382
+    },
+    {
+      "id": "TEST-RELEASE-APPROVAL-ORDERING-009",
+      "kind": "test",
+      "path": "tests/release-approval-ordering.test.ts",
+      "line": 444
+    },
+    {
       "id": "TEST-RELEASE-ASSET-PUBLISHING-001",
       "kind": "test",
       "path": "tests/release-asset-publishing.test.ts",
@@ -5881,6 +5918,11 @@
     {
       "from": "ADR-0040",
       "to": "DES-TDD-IDENTIFIER-MIGRATION-004",
+      "relation": "decides"
+    },
+    {
+      "from": "ADR-0041",
+      "to": "DES-RELEASE-APPROVAL-ORDERING-004",
       "relation": "decides"
     },
     {
@@ -7601,6 +7643,16 @@
     {
       "from": "CODE-RELEASE-APPROVAL-ORDERING-003",
       "to": "REQ-RELEASE-APPROVAL-ORDERING-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-RELEASE-APPROVAL-ORDERING-004",
+      "to": "DES-RELEASE-APPROVAL-ORDERING-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-RELEASE-APPROVAL-ORDERING-004",
+      "to": "REQ-RELEASE-APPROVAL-ORDERING-005",
       "relation": "implements"
     },
     {
@@ -10034,6 +10086,16 @@
       "relation": "satisfies"
     },
     {
+      "from": "DES-RELEASE-APPROVAL-ORDERING-004",
+      "to": "DES-RELEASE-APPROVAL-ORDERING-001",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-RELEASE-APPROVAL-ORDERING-004",
+      "to": "REQ-RELEASE-APPROVAL-ORDERING-005",
+      "relation": "satisfies"
+    },
+    {
       "from": "DES-RELEASE-ASSET-PUBLISHING-001",
       "to": "REQ-RELEASE-ASSET-PUBLISHING-001",
       "relation": "satisfies"
@@ -11994,6 +12056,16 @@
       "relation": "verifies"
     },
     {
+      "from": "TEST-RELEASE-APPROVAL-ORDERING-008",
+      "to": "REQ-RELEASE-APPROVAL-ORDERING-005",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-RELEASE-APPROVAL-ORDERING-009",
+      "to": "REQ-RELEASE-APPROVAL-ORDERING-005",
+      "relation": "verifies"
+    },
+    {
       "from": "TEST-RELEASE-ASSET-PUBLISHING-001",
       "to": "REQ-RELEASE-ASSET-PUBLISHING-001",
       "relation": "verifies"
@@ -12814,6 +12886,7 @@
     ".musubix/decisions/ADR-0038.md": "7b486c1bf146f98d5dede59c6e7b98065fe3f1c3825fe9b94cfe2e4098378014",
     ".musubix/decisions/ADR-0039.md": "f83b714f37ca814ba19e6086866c3138e5dbbd5ebf10be3087e1b700fbcf2487",
     ".musubix/decisions/ADR-0040.md": "730b72e0a529ca69766a0b42ed51da0a9175032082d394fb7993810b1aed4d09",
+    ".musubix/decisions/ADR-0041.md": "31acae0e740e0c179af3f67949ca5062f4eb9cad2a82d6ca226f0aaea516ad1e",
     ".musubix/features/adapter-pattern-recognition/design.md": "a8e0c4a11f626cb4a41c9b5b53359c072ec0c3161f704791f42ba8af38124a70",
     ".musubix/features/adapter-pattern-recognition/requirements.md": "5731561a0a04982b8a5c305bdeeae6084bcf0ee8846f295eaaaabc823d1f9793",
     ".musubix/features/approval-domain-scoping/design.md": "e8731f1e3094aa22192ae2ae5986fb4dc9a7698f7cfe66961e1342f6e0743bd9",
@@ -12856,8 +12929,8 @@
     ".musubix/features/model-correspondence-evidence-guidance/requirements.md": "d7ca8b823ddfd3265e89f2892003e5eb95faad7e9b3972b249de5f2902446511",
     ".musubix/features/npm-audit-remediation/design.md": "78fcb8b7a741b4415ed10bbccb232fc251fa7f30aa8af15c24f448c275705f27",
     ".musubix/features/npm-audit-remediation/requirements.md": "9a2c384b2d95a46c5537f54c6e1bfdb923aaa91a2f2c68c58ac25e0e584e23e7",
-    ".musubix/features/release-approval-ordering/design.md": "704ecad7d218ae4734e3b8ce4d9953676788a3354196039b65546aaa206e49a9",
-    ".musubix/features/release-approval-ordering/requirements.md": "53ae383ea5fc4e918225abfbadaeec9dbccccb624e512c8cff480a17ba15f112",
+    ".musubix/features/release-approval-ordering/design.md": "235e4f2169e38965cb575b2dcab50fcca33909e9ed58d1a517150ee00e825b0b",
+    ".musubix/features/release-approval-ordering/requirements.md": "19fd75e725b1838fe659f4c6f1837644321d9794e96c42236fa8c5fec140c8b5",
     ".musubix/features/release-asset-publishing/design.md": "1ceba4afd1ffff0fac9c88c8b826828eeba3fcd4d3a4ca8f71d11aa758a81472",
     ".musubix/features/release-asset-publishing/requirements.md": "8bf4436d5b694e32b683edbb620573589b28b74c35a076182c971bdb79cd4472",
     ".musubix/features/release-version-synchronization/design.md": "8df85935c9e2151cba0b0640fb5b25af81a529cfa7d2e7ec43f7730a44ebf42e",
@@ -12901,7 +12974,7 @@
     "packages/analysis/src/adapters.ts": "c377a988a65f710edc5a77d555a1b15e8376fc725543d8ee41db4c3ba719b3bd",
     "packages/analysis/src/approval-domains.ts": "bc45836374021f86c4c2085184185546cc4291880aea32b9084188545b9394b4",
     "packages/analysis/src/approval-record.ts": "08b934d8c43b6d9b298ec4615b2bcabefbaf7cd143152fe6e1e08ea95cdd288d",
-    "packages/analysis/src/approval.ts": "7b3940d96b8465a16fc1d28a100fc2d72dc0b7ee4e49e6f02ebb7db0449b1a9f",
+    "packages/analysis/src/approval.ts": "232ef37866d07c72f762c1ccffde3c57d310aec0df82e252f5e850bc76976027",
     "packages/analysis/src/attestation.ts": "c353b5d93f151665e1f5f0531b763db164cb54e5305a837efd47b2742eb3b949",
     "packages/analysis/src/change-evidence.ts": "a8356256b78bf5a4143bf218162c63b006e0a47f8b6db4ebc7741791e77c2bf6",
     "packages/analysis/src/change-waiver.ts": "586201e7fdc98007e44012de4858fbaafaa8e03a05ec9eddf9edcb325f96031e",
@@ -12983,7 +13056,7 @@
     "tests/p4-correspondence-mutation.test.ts": "d8ab95e6cfcd01518bc130e190913e172c6eb7519cd98e37bac1525391ce43fa",
     "tests/p4-workflow-streaming.test.ts": "6389d083b5bca81f88bbed2f54228a17d711cb8fa16a30a68614eb59bfb1d8bf",
     "tests/php-verification.test.ts": "bc70946615f3faa3cb3b5467e552140ba2ec8e25fb4d5276f72f65393ed04315",
-    "tests/release-approval-ordering.test.ts": "27b3ace3195beda732e658f0a4854ed2b95a3f8b03edc51756d6ebb7caa24801",
+    "tests/release-approval-ordering.test.ts": "9f1076b7d450fd7e8cd7d2e2dec4ae0ed498ff0b587338c102df8bfd0ad40174",
     "tests/release-asset-publishing.test.ts": "cf2f5921615f741a06f1b48fd3632c4ffebbb5d64c46db8443f853c8d6086334",
     "tests/release-version-synchronization.test.ts": "6886bfb2f0029a5f685f8152e7fb918a532a65f5ec5d84ffad063894c2ef49cb",
     "tests/scaffold-artifact.test.ts": "a8f074cdd9279f1b7c540fa1a721642ca762de9cd155f0894526a8f3daabc7d6",

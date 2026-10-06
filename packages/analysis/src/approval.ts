@@ -166,6 +166,24 @@ function markerPath(directory: string, name: string): string {
   return directory === '.' ? name : `${directory}/${name}`;
 }
 
+// CHANGE-0048: fixed, source-hardcoded scratch-file convention (Issue #66).
+// Never configurable via `.musubix/config.json`, environment, or CLI flags;
+// widening it requires a reviewed source change through the same
+// requirements/design/TDD/quality gate as any other change to the release
+// manifest. Applied only as a post-filter, gated on untracked origin, inside
+// `releaseCandidateInventory` — see DES-RELEASE-APPROVAL-ORDERING-004 /
+// ADR-0041 for why this must never run before structural marker derivation.
+const scratchFileNamePattern = /^[^/]+\.scratch\.[^/.]+$/;
+
+/** @id CODE-RELEASE-APPROVAL-ORDERING-004
+ * @implements REQ-RELEASE-APPROVAL-ORDERING-005
+ * @design DES-RELEASE-APPROVAL-ORDERING-004
+ */
+function isScratchCandidate(path: string): boolean {
+  return path === '.musubix/scratch' || path.startsWith('.musubix/scratch/')
+    || scratchFileNamePattern.test(basename(path));
+}
+
 function releaseProjectPaths(entries: GitPathEntry[], includeSpecialModes: boolean): string[] {
   const candidates = new Set(entries.map((entry) => entry.path));
   const nestedWorkspaces = new Set<string>();
@@ -258,13 +276,23 @@ async function releaseCandidateInventory(root: string, runner: Runner): Promise<
   for (const path of untrackedOutput.split('\0')) {
     if (path && await regularFile(root, path)) untracked.push({ mode: '100644', path });
   }
+  const untrackedPaths = new Set(untracked.map((entry) => entry.path));
   const raw = [...tracked, ...untracked];
   const present: GitPathEntry[] = [];
   for (const entry of raw) {
     if (await regularFile(root, entry.path)) present.push(entry);
   }
+  // CHANGE-0048 (REQ-RELEASE-APPROVAL-ORDERING-005): structural marker
+  // derivation (`releaseProjectPaths`) always runs against the complete,
+  // unfiltered candidate set first. The scratch-file exclusion is applied
+  // only afterward, as a post-filter on the final output `paths`, and only
+  // to entries whose origin is untracked — a tracked file is never removed
+  // by name alone. `structuralPaths` is intentionally left unfiltered; see
+  // DES-RELEASE-APPROVAL-ORDERING-004 / ADR-0041.
+  const paths = releaseProjectPaths(present, false)
+    .filter((path) => !(untrackedPaths.has(path) && isScratchCandidate(path)));
   return {
-    paths: releaseProjectPaths(present, false),
+    paths,
     structuralPaths: releaseProjectPaths(raw, true),
   };
 }

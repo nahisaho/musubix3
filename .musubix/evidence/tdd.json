@@ -19663,6 +19663,92 @@
         "diagnostics": [],
         "order": 1750
       }
+    },
+    {
+      "cycleId": "4f20f91f-aced-405e-a078-048ad829f467",
+      "requirementId": "REQ-RELEASE-APPROVAL-ORDERING-005",
+      "testId": "TEST-RELEASE-APPROVAL-ORDERING-008",
+      "testPath": "tests/release-approval-ordering.test.ts",
+      "commandName": "release-approval-ordering-tests",
+      "red": {
+        "phase": "red",
+        "valid": true,
+        "scoped": true,
+        "resultObserved": true,
+        "testStatus": "failed",
+        "reportSha256": "be374ddf374ce2502dfdaa13ec089d971699540b6396221a8e97bc31f013ba96",
+        "commandSha256": "b4c6c8a1ddb57d36c5ec4aa3ab32603454b0b69ef1f3b3c85c1a36f473deefc7",
+        "outputSha256": "075611226e5a150eb4972bba053b48d22d874300fd3eb4c875a99b5fb80e8234",
+        "exitCode": 1,
+        "durationMs": 1529,
+        "testFingerprint": "2cc8be16d69f2ae39824a81449d91862d258876a7d2dbcb13a5cdebc17ab7855",
+        "sourceFingerprint": "42da4208592f628b129ab92a1858fdea08805dabad5cd511599b7fffb43d1266",
+        "executionId": "3771110b-69b5-4c4b-8e22-262c70d56b66",
+        "recordedAt": "2026-10-06T13:50:51.977Z",
+        "diagnostics": [],
+        "order": 1756
+      },
+      "green": {
+        "phase": "green",
+        "valid": true,
+        "scoped": true,
+        "resultObserved": true,
+        "testStatus": "passed",
+        "reportSha256": "96a011772d6580b985c12f6a835e4e076dc2e259e6cd516b40d1c41568572afb",
+        "commandSha256": "b4c6c8a1ddb57d36c5ec4aa3ab32603454b0b69ef1f3b3c85c1a36f473deefc7",
+        "outputSha256": "075611226e5a150eb4972bba053b48d22d874300fd3eb4c875a99b5fb80e8234",
+        "exitCode": 0,
+        "durationMs": 1601,
+        "testFingerprint": "2cc8be16d69f2ae39824a81449d91862d258876a7d2dbcb13a5cdebc17ab7855",
+        "sourceFingerprint": "46233e99464a355cc4df1d4265b90851e530d09595ccf558839b73ecd6e20e09",
+        "executionId": "9e0611e0-2721-4e28-8e59-cb2705a46aa4",
+        "recordedAt": "2026-10-06T13:51:57.517Z",
+        "diagnostics": [],
+        "order": 1760
+      }
+    },
+    {
+      "cycleId": "519553ff-a870-403b-9da4-ba27f283a32a",
+      "requirementId": "REQ-RELEASE-APPROVAL-ORDERING-005",
+      "testId": "TEST-RELEASE-APPROVAL-ORDERING-009",
+      "testPath": "tests/release-approval-ordering.test.ts",
+      "commandName": "release-approval-ordering-tests",
+      "red": {
+        "phase": "red",
+        "valid": true,
+        "scoped": true,
+        "resultObserved": true,
+        "testStatus": "failed",
+        "reportSha256": "c0a47b42e2d8d2433fa9d82115e4011e622fbb5dfdd8939fb5d68af9be92d3c3",
+        "commandSha256": "2474bb77bff94be8d6d700a9c1aa7389fb7322e3ae08b6695b31d00bfa0d28b9",
+        "outputSha256": "ea1b9a87f133cbbf30dd528240e8f855b2cf7e42ee212a3b6d17d10f06b3cbd2",
+        "exitCode": 1,
+        "durationMs": 1424,
+        "testFingerprint": "ef57ba888bf3596b1ee0d90658ef2189c7bb9f291c2c4093657198b79626ed31",
+        "sourceFingerprint": "42da4208592f628b129ab92a1858fdea08805dabad5cd511599b7fffb43d1266",
+        "executionId": "4ad2128e-9bb3-4de7-a2db-a5776aa63d82",
+        "recordedAt": "2026-10-06T13:50:58.596Z",
+        "diagnostics": [],
+        "order": 1757
+      },
+      "green": {
+        "phase": "green",
+        "valid": true,
+        "scoped": true,
+        "resultObserved": true,
+        "testStatus": "passed",
+        "reportSha256": "193d1dc539db9b53f62d2a6e35d78de632e47298040f5bfe69d05591b705a822",
+        "commandSha256": "2474bb77bff94be8d6d700a9c1aa7389fb7322e3ae08b6695b31d00bfa0d28b9",
+        "outputSha256": "ea1b9a87f133cbbf30dd528240e8f855b2cf7e42ee212a3b6d17d10f06b3cbd2",
+        "exitCode": 0,
+        "durationMs": 1458,
+        "testFingerprint": "ef57ba888bf3596b1ee0d90658ef2189c7bb9f291c2c4093657198b79626ed31",
+        "sourceFingerprint": "46233e99464a355cc4df1d4265b90851e530d09595ccf558839b73ecd6e20e09",
+        "executionId": "b3defc85-ca8c-4611-aee3-3db81cb28689",
+        "recordedAt": "2026-10-06T13:52:04.341Z",
+        "diagnostics": [],
+        "order": 1761
+      }
     }
   ],
   "chain": [
@@ -30609,6 +30695,54 @@
       "phaseEvidenceSha256": "92f274889ba83efbe7466ebd47d02a51c4f091b9be7a7a51405c93813c79a8a2",
       "previousSha256": "dbc6c8b618cb9930a00b4c14f8312665f3a5bad7c45cd91e98a49446926be8f7",
       "recordSha256": "1527ecad71586b0341271c70597f1ce9b08c7e2e2c373ab215f13ea4d8a1ff48"
+    },
+    {
+      "sequence": 913,
+      "cycleId": "4f20f91f-aced-405e-a078-048ad829f467",
+      "requirementId": "REQ-RELEASE-APPROVAL-ORDERING-005",
+      "testId": "TEST-RELEASE-APPROVAL-ORDERING-008",
+      "testPath": "tests/release-approval-ordering.test.ts",
+      "commandName": "release-approval-ordering-tests",
+      "phase": "red",
+      "phaseEvidenceSha256": "96f8213c6e7d11f5f33641893d0e7f1d8d042c58c552bd2212109cc6dc121003",
+      "previousSha256": "1527ecad71586b0341271c70597f1ce9b08c7e2e2c373ab215f13ea4d8a1ff48",
+      "recordSha256": "3c7716a69db93cc8f01a45e0f72d87b72ba8037444088841db455d4f7ff65b4a"
+    },
+    {
+      "sequence": 914,
+      "cycleId": "519553ff-a870-403b-9da4-ba27f283a32a",
+      "requirementId": "REQ-RELEASE-APPROVAL-ORDERING-005",
+      "testId": "TEST-RELEASE-APPROVAL-ORDERING-009",
+      "testPath": "tests/release-approval-ordering.test.ts",
+      "commandName": "release-approval-ordering-tests",
+      "phase": "red",
+      "phaseEvidenceSha256": "89567fa5ac529c1521104c9b7d4665b24745885164bb5b31fb800211e67bd62a",
+      "previousSha256": "3c7716a69db93cc8f01a45e0f72d87b72ba8037444088841db455d4f7ff65b4a",
+      "recordSha256": "1d40fa2ee9dab76f30eebfe77691eeefb58e30ee09d49159edbb3784d939f259"
+    },
+    {
+      "sequence": 915,
+      "cycleId": "4f20f91f-aced-405e-a078-048ad829f467",
+      "requirementId": "REQ-RELEASE-APPROVAL-ORDERING-005",
+      "testId": "TEST-RELEASE-APPROVAL-ORDERING-008",
+      "testPath": "tests/release-approval-ordering.test.ts",
+      "commandName": "release-approval-ordering-tests",
+      "phase": "green",
+      "phaseEvidenceSha256": "a427617bfd7a681be84053e90ace34ee108838b57bc6b21c8ceec45ee8146da5",
+      "previousSha256": "1d40fa2ee9dab76f30eebfe77691eeefb58e30ee09d49159edbb3784d939f259",
+      "recordSha256": "a4300945a7e98e614b08885a9f21335839774e691c8589b786d59ed2468ea33a"
+    },
+    {
+      "sequence": 916,
+      "cycleId": "519553ff-a870-403b-9da4-ba27f283a32a",
+      "requirementId": "REQ-RELEASE-APPROVAL-ORDERING-005",
+      "testId": "TEST-RELEASE-APPROVAL-ORDERING-009",
+      "testPath": "tests/release-approval-ordering.test.ts",
+      "commandName": "release-approval-ordering-tests",
+      "phase": "green",
+      "phaseEvidenceSha256": "0794b86c9177edcba4c748f70c3bc7713a1df90b169da69e7312c166953eaf12",
+      "previousSha256": "a4300945a7e98e614b08885a9f21335839774e691c8589b786d59ed2468ea33a",
+      "recordSha256": "93a38fad75ee3f13f547c4346ecea49f34c86a8d9a70920ff05cee1568b83a90"
     }
   ]
 }

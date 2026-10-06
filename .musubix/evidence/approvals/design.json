@@ -42,6 +42,7 @@
     ".musubix/decisions/ADR-0038.md": "7b486c1bf146f98d5dede59c6e7b98065fe3f1c3825fe9b94cfe2e4098378014",
     ".musubix/decisions/ADR-0039.md": "f83b714f37ca814ba19e6086866c3138e5dbbd5ebf10be3087e1b700fbcf2487",
     ".musubix/decisions/ADR-0040.md": "730b72e0a529ca69766a0b42ed51da0a9175032082d394fb7993810b1aed4d09",
+    ".musubix/decisions/ADR-0041.md": "31acae0e740e0c179af3f67949ca5062f4eb9cad2a82d6ca226f0aaea516ad1e",
     ".musubix/features/adapter-pattern-recognition/design.md": "a8e0c4a11f626cb4a41c9b5b53359c072ec0c3161f704791f42ba8af38124a70",
     ".musubix/features/adapter-pattern-recognition/requirements.md": "5731561a0a04982b8a5c305bdeeae6084bcf0ee8846f295eaaaabc823d1f9793",
     ".musubix/features/approval-domain-scoping/design.md": "e8731f1e3094aa22192ae2ae5986fb4dc9a7698f7cfe66961e1342f6e0743bd9",
@@ -84,8 +85,8 @@
     ".musubix/features/model-correspondence-evidence-guidance/requirements.md": "d7ca8b823ddfd3265e89f2892003e5eb95faad7e9b3972b249de5f2902446511",
     ".musubix/features/npm-audit-remediation/design.md": "78fcb8b7a741b4415ed10bbccb232fc251fa7f30aa8af15c24f448c275705f27",
     ".musubix/features/npm-audit-remediation/requirements.md": "9a2c384b2d95a46c5537f54c6e1bfdb923aaa91a2f2c68c58ac25e0e584e23e7",
-    ".musubix/features/release-approval-ordering/design.md": "704ecad7d218ae4734e3b8ce4d9953676788a3354196039b65546aaa206e49a9",
-    ".musubix/features/release-approval-ordering/requirements.md": "53ae383ea5fc4e918225abfbadaeec9dbccccb624e512c8cff480a17ba15f112",
+    ".musubix/features/release-approval-ordering/design.md": "235e4f2169e38965cb575b2dcab50fcca33909e9ed58d1a517150ee00e825b0b",
+    ".musubix/features/release-approval-ordering/requirements.md": "19fd75e725b1838fe659f4c6f1837644321d9794e96c42236fa8c5fec140c8b5",
     ".musubix/features/release-asset-publishing/design.md": "1ceba4afd1ffff0fac9c88c8b826828eeba3fcd4d3a4ca8f71d11aa758a81472",
     ".musubix/features/release-asset-publishing/requirements.md": "8bf4436d5b694e32b683edbb620573589b28b74c35a076182c971bdb79cd4472",
     ".musubix/features/release-version-synchronization/design.md": "8df85935c9e2151cba0b0640fb5b25af81a529cfa7d2e7ec43f7730a44ebf42e",
@@ -127,7 +128,7 @@
     ".musubix/features/workflow-waiver-bulk-recording/design.md": "c956f35169212cedc0fc66a11902200c7dda10230fc326075644d908f29580ae",
     ".musubix/features/workflow-waiver-bulk-recording/requirements.md": "361cfba519d4ab189a2091cf7b99133b9c005f69fb28aa2d77bba17bd7ee7b33"
   },
-  "artifactSha256": "b06fd1a0dd905b44498286c4f4b69522d7c3c101b03409e8d936fdb78e72d5d8",
+  "artifactSha256": "d0b824949482560b958caf1ce491034f8c17d4dee379fd8523a1f8d0c521e282",
   "approver": "nahisaho",
-  "approvedAt": "2026-10-06T12:15:14.940Z"
+  "approvedAt": "2026-10-06T13:48:16.925Z"
 }
