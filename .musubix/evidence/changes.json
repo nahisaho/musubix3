@@ -48175,6 +48175,175 @@
           "order": 1691
         }
       }
+    },
+    {
+      "changeId": "CHANGE-0045",
+      "requirementIds": [
+        "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-001",
+        "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-002",
+        "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-003",
+        "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-004",
+        "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-005",
+        "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-006"
+      ],
+      "phases": {
+        "impact": {
+          "phase": "impact",
+          "recordedAt": "2026-10-05T23:41:39.195Z",
+          "fingerprints": {
+            "impact": "ef7035241b2ffa04911b41aa0236fb559d23039d630fe0ce985d74c97a58085f",
+            "requirements": "188ee3ef9ef4cfcf85c372eb384ec5999751f87eb507a58e0435d06479e89b3f",
+            "design": "c55dd317540379944807a2c93b95240fe0935063eb789c5f6cdfde226ab4bc34",
+            "implementation": "43b021fbfef9b083699a258663b30f31f965259a3f3c63655d16c32225d5c9db",
+            "tests": "ba60730f1f91fa9bc40e977e589ef532d29d204c45ef2c8275df2ac97382235c",
+            "tdd": "03ef9c8d5810084026afbce595ba3e9ffafd948e3fbfd23ec9f41b79eaa3a259",
+            "requirementImplementations": {
+              "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-001": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-002": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-003": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-004": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-005": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-006": {
+                "paths": [],
+                "fingerprints": {}
+              }
+            }
+          },
+          "order": 1692
+        },
+        "requirements": {
+          "phase": "requirements",
+          "recordedAt": "2026-10-05T23:41:49.609Z",
+          "fingerprints": {
+            "impact": "ef7035241b2ffa04911b41aa0236fb559d23039d630fe0ce985d74c97a58085f",
+            "requirements": "ca00b2349a7fad573e662366827f3c7c2339288456a1b17fcef13c143ad018f9",
+            "design": "c55dd317540379944807a2c93b95240fe0935063eb789c5f6cdfde226ab4bc34",
+            "implementation": "43b021fbfef9b083699a258663b30f31f965259a3f3c63655d16c32225d5c9db",
+            "tests": "ba60730f1f91fa9bc40e977e589ef532d29d204c45ef2c8275df2ac97382235c",
+            "tdd": "03ef9c8d5810084026afbce595ba3e9ffafd948e3fbfd23ec9f41b79eaa3a259",
+            "requirementImplementations": {
+              "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-001": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-002": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-003": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-004": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-005": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-006": {
+                "paths": [],
+                "fingerprints": {}
+              }
+            }
+          },
+          "order": 1693
+        },
+        "design": {
+          "phase": "design",
+          "recordedAt": "2026-10-05T23:42:00.524Z",
+          "fingerprints": {
+            "impact": "ef7035241b2ffa04911b41aa0236fb559d23039d630fe0ce985d74c97a58085f",
+            "requirements": "ca00b2349a7fad573e662366827f3c7c2339288456a1b17fcef13c143ad018f9",
+            "design": "d52d8ceb01b963db6b337a89eb2afb215eda8532aef1cf25ed967ed9beb78ae4",
+            "implementation": "43b021fbfef9b083699a258663b30f31f965259a3f3c63655d16c32225d5c9db",
+            "tests": "ba60730f1f91fa9bc40e977e589ef532d29d204c45ef2c8275df2ac97382235c",
+            "tdd": "03ef9c8d5810084026afbce595ba3e9ffafd948e3fbfd23ec9f41b79eaa3a259",
+            "requirementImplementations": {
+              "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-001": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-002": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-003": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-004": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-005": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-006": {
+                "paths": [],
+                "fingerprints": {}
+              }
+            }
+          },
+          "order": 1694
+        },
+        "red": {
+          "phase": "red",
+          "recordedAt": "2026-10-05T23:43:14.277Z",
+          "fingerprints": {
+            "impact": "ef7035241b2ffa04911b41aa0236fb559d23039d630fe0ce985d74c97a58085f",
+            "requirements": "ca00b2349a7fad573e662366827f3c7c2339288456a1b17fcef13c143ad018f9",
+            "design": "d52d8ceb01b963db6b337a89eb2afb215eda8532aef1cf25ed967ed9beb78ae4",
+            "implementation": "43b021fbfef9b083699a258663b30f31f965259a3f3c63655d16c32225d5c9db",
+            "tests": "bc9714d4f5d14ddd1ac8ceb5a71128df0299c44d66c28fab93bd99304775618c",
+            "tdd": "b290f1b3a14882e7317c1ebd5cb5ea6080c764b7ec3e77e4b95330b5e2a0351d",
+            "requirementImplementations": {
+              "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-001": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-002": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-003": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-004": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-005": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-SDD-CHANGE-OPS-IMPROVEMENTS-006": {
+                "paths": [],
+                "fingerprints": {}
+              }
+            }
+          },
+          "order": 1701
+        }
+      }
     }
   ]
 }

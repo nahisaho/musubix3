@@ -94,6 +94,8 @@
     ".musubix/features/requirements-design-scaffold/requirements.md": "0a968bc27756e715f68f22a8f6d65fc8fefce09ac79d1c8d0137282b821ebc45",
     ".musubix/features/scoped-feature-trace-artifacts/design.md": "d5a5fb04f6aab43aff2881d9cde8737cd2795278d06db4f9df90dd7ec981116f",
     ".musubix/features/scoped-feature-trace-artifacts/requirements.md": "10470f52be3500bf20527b244be836c8cdf3ab4f46c84b5dbfd65f0efeb3f2e9",
+    ".musubix/features/sdd-change-ops-improvements/design.md": "9f07518dd84d6ef92d2689770eed755cfcdee2929511c3ff02bd831b5a038e9d",
+    ".musubix/features/sdd-change-ops-improvements/requirements.md": "2ad09e36f23bd2d0212dfbde33ed4aa3d7bf2a4aead870ca91e25c8aeb0f4b9a",
     ".musubix/features/session-scoped-development/design.md": "66a65a3fdc1747569f42b42798a88377ae2ff93e32ff2cc5e0bae5c62c2e9a42",
     ".musubix/features/session-scoped-development/requirements.md": "640aece168b4e6848c0d1e6371f0bfeb433fa8addfd064a77d050891d69d9a4f",
     ".musubix/features/tdd-adoption-warning/design.md": "29e1b978d465cf2f42d878da3282173e64a16ee13af9d626022e613fd9fc51a1",
@@ -125,7 +127,7 @@
     ".musubix/features/workflow-waiver-bulk-recording/design.md": "c956f35169212cedc0fc66a11902200c7dda10230fc326075644d908f29580ae",
     ".musubix/features/workflow-waiver-bulk-recording/requirements.md": "361cfba519d4ab189a2091cf7b99133b9c005f69fb28aa2d77bba17bd7ee7b33"
   },
-  "artifactSha256": "510b21caf4acd454dd99b4a10add4ba579f2d1a8972ba668b79f6b3f09e36862",
+  "artifactSha256": "c344068b8631209618ffef2da54baad6970c415ccbdf48728f39b87763acbec3",
   "approver": "nahisaho",
-  "approvedAt": "2026-10-05T11:39:00.632Z"
+  "approvedAt": "2026-10-05T23:35:48.728Z"
 }
