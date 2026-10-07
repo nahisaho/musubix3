@@ -40,6 +40,18 @@
       "timeoutMs": 120000
     },
     {
+      "name": "approval-prepare-diff-only-tests",
+      "command": "npx",
+      "args": [
+        "vitest",
+        "run",
+        "tests/approval-prepare-diff-only.test.ts"
+      ],
+      "adapter": "vitest",
+      "required": true,
+      "timeoutMs": 120000
+    },
+    {
       "name": "typecheck",
       "command": "npm",
       "args": [

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-06T22:41:14.184Z",
+  "generatedAt": "2026-10-07T03:52:01.681Z",
   "nodes": [
     {
       "id": "ADR-0029",
@@ -204,7 +204,7 @@
       "id": "CODE-RELEASE-APPROVAL-ORDERING-002",
       "kind": "code",
       "path": "packages/analysis/src/approval.ts",
-      "line": 448
+      "line": 475
     },
     {
       "id": "CODE-RELEASE-APPROVAL-ORDERING-003",
@@ -2711,13 +2711,13 @@
     ".musubix/features/release-approval-ordering/requirements.md": "19fd75e725b1838fe659f4c6f1837644321d9794e96c42236fa8c5fec140c8b5",
     ".musubix/features/release-asset-publishing/design.md": "1ceba4afd1ffff0fac9c88c8b826828eeba3fcd4d3a4ca8f71d11aa758a81472",
     ".musubix/features/release-asset-publishing/requirements.md": "8bf4436d5b694e32b683edbb620573589b28b74c35a076182c971bdb79cd4472",
-    "packages/analysis/src/approval.ts": "232ef37866d07c72f762c1ccffde3c57d310aec0df82e252f5e850bc76976027",
+    "packages/analysis/src/approval.ts": "14015adfe994d2f1be5b805e240f9cd774b99fead432d3d0162d60324db1be8a",
     "packages/analysis/src/change-evidence.ts": "cd31da952e1501376b89e93dfe38ab6f81276ae7e42b1c30748a0d68a238fa2d",
     "packages/analysis/src/change.ts": "1bda1e7ba06f9792df067526b6393a4491fb0ca9dc6a7a88903650669c751092",
     "packages/analysis/src/evidence-merge.ts": "40130d28f1e85e3776e7f804b2ad6ca10eabe212158a1f17c169e1cf149d1aff",
     "packages/analysis/src/evidence-writer-lock.ts": "a1e7a13da4b5a3f9a96c24914f876166571df5aec20d54048a51a3188e865698",
     "packages/analysis/src/quality-refresh.ts": "2b11461f84b7155ee1ec02d53d6e0af291ce26c40f6e77755e405c1b000e730d",
-    "packages/cli/src/main.ts": "13a8934fa914cc133651ac88712a05ed9291c157cf273980036e51c9d667d24a",
+    "packages/cli/src/main.ts": "6b66dfce0436c633cf4bd081c3ef3ae98dcead15f8741de0d1b04ff3a497d318",
     "scripts/check-github-actions.mjs": "8e18568a2a4a69cf25aa6b825cc82a6258cf0388c27c552f7d69a100793d5437",
     "scripts/check-npm-audit-remediation.mjs": "82548a2681cde6be6d238f15678add9388c8aaac72a49a13af82d46d4b462cb6",
     "scripts/release-prepare.mjs": "e166ac42868ce134ad9d3e68a92e14831f2ad243b51f2c0782a47e49fe55a640",

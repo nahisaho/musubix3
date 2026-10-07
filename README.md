@@ -389,7 +389,7 @@ validation/gate or requested solver failure, **2** usage, I/O or malformed confi
 | `design validate <file>` | Fields, global requirement IDs, existing ADR references |
 | `design scaffold <slug>` | Create `.musubix/features/<slug>/design.md` from a fixed placeholder template; never overwrites an existing file, and does not require a pre-existing `requirements.md` |
 | `design c4 <file>` | Mermaid component/dependency diagram from explicit fields |
-| `approval prepare <requirements\|design\|release>` | Display the exact deterministic manifest and hash for human review |
+| `approval prepare <requirements\|design\|release> [--diff-only]` | Display the exact deterministic manifest and hash for human review; `--diff-only` additionally reports `changedFiles` (only paths whose content differs from the last recorded approval for that stage; all current paths with `diffOnlyBaseline: "none"` when no prior approval exists) without altering `artifactSha256`/`artifacts` |
 | `approval record <stage> --approver <name> --artifact-sha256 <hash> --confirm` | Record approval only if the reviewed hash is still current |
 | `approval validate` | Report each approval as approved, missing, or stale; never infer approval from validation |
 | `trace build` | Generate global trace snapshot and feature copies |
@@ -721,6 +721,22 @@ SHA-256. Run `approval prepare` before review and pass that exact hash to
 `approval record`; an intervening change is rejected and later changes become
 stale. Release recording recomputes the gate and requires every required
 non-approval check to pass rather than trusting cached quality evidence.
+`approval prepare <stage> --diff-only` additionally reports `changedFiles`:
+only the artifact paths whose content differs from that stage's last
+*recorded* approval (not a live `git diff`), computed from the same
+deterministic manifest used for `artifactSha256` — the full hash and
+`artifacts` map are always still returned unchanged, so integrity verification
+is never weakened. `diffOnlyBaseline` is `"approved"` when compared against a
+prior recorded approval, or `"none"` (with every current path listed) when
+this stage has never been approved before. With `--domain`, the comparison is
+scoped to that domain's prior approval, matching normal domain-scoped approval
+semantics. If the last recorded approval file for that stage exists but fails
+schema validation, `approval prepare --diff-only` fails fast with the same
+`Invalid <stage> approval evidence.` error `approval validate` reports,
+rather than silently treating corrupted evidence as "no prior approval".
+Without `--diff-only`, non-JSON output is unchanged; with `--diff-only` and no
+`--json`, the console summary prints only the changed paths and a short
+baseline note instead of the full artifact listing.
 The approver string is explicit local evidence, not authenticated identity;
 repositories that require independent identity must also use protected review,
 CODEOWNERS, or CI/OIDC controls.

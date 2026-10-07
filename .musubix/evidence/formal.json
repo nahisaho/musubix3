@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-07T00:42:19.063Z",
-  "totalRequirements": 218,
+  "generatedAt": "2026-10-07T05:32:23.396Z",
+  "totalRequirements": 225,
   "modeledRequirements": 13,
-  "modeledFraction": 0.05963302752293578,
+  "modeledFraction": 0.057777777777777775,
   "result": {
     "valid": true,
     "abstraction": "Consistency of explicit branch-scoped conditional, exact unit-normalized integer numeric, bounded temporal interval, deterministic state-transition, and controlled unconditional Boolean constraints; not implementation correctness.",
@@ -110,6 +110,13 @@
       "REQ-APPROVAL-DOMAIN-SCOPING-022",
       "REQ-APPROVAL-DOMAIN-SCOPING-023",
       "REQ-APPROVAL-DOMAIN-SCOPING-024",
+      "REQ-APPROVAL-PREPARE-DIFF-ONLY-001",
+      "REQ-APPROVAL-PREPARE-DIFF-ONLY-002",
+      "REQ-APPROVAL-PREPARE-DIFF-ONLY-003",
+      "REQ-APPROVAL-PREPARE-DIFF-ONLY-004",
+      "REQ-APPROVAL-PREPARE-DIFF-ONLY-005",
+      "REQ-APPROVAL-PREPARE-DIFF-ONLY-006",
+      "REQ-APPROVAL-PREPARE-DIFF-ONLY-007",
       "REQ-ATTESTATION-EVIDENCE-STABILITY-001",
       "REQ-ATTESTATION-EVIDENCE-STABILITY-002",
       "REQ-ATTESTATION-EVIDENCE-STABILITY-003",
@@ -420,6 +427,41 @@
         "code": "FORMAL_UNSUPPORTED",
         "severity": "warning",
         "message": "REQ-APPROVAL-DOMAIN-SCOPING-024 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-APPROVAL-PREPARE-DIFF-ONLY-001 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-APPROVAL-PREPARE-DIFF-ONLY-002 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-APPROVAL-PREPARE-DIFF-ONLY-003 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-APPROVAL-PREPARE-DIFF-ONLY-004 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-APPROVAL-PREPARE-DIFF-ONLY-005 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-APPROVAL-PREPARE-DIFF-ONLY-006 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-APPROVAL-PREPARE-DIFF-ONLY-007 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
       },
       {
         "code": "FORMAL_UNSUPPORTED",
@@ -1331,6 +1373,7 @@
   "fingerprints": {
     ".musubix/features/adapter-pattern-recognition/requirements.md": "5731561a0a04982b8a5c305bdeeae6084bcf0ee8846f295eaaaabc823d1f9793",
     ".musubix/features/approval-domain-scoping/requirements.md": "c886926622fe022052c81b1ea4e76f21c04f42636f4a37d074f7d34c0505210f",
+    ".musubix/features/approval-prepare-diff-only/requirements.md": "a6cc071b830412abe2ac5f401b93a66265e11a4f3a1a546c7fac2c0d0466dbe0",
     ".musubix/features/attestation-evidence-stability/requirements.md": "36661538d67523f444f537dbc8466ac4919dd20650fcdd78c2ae3d4a402039a5",
     ".musubix/features/bounded-file-read-concurrency/requirements.md": "9e08acde7e29a8f14b23d908c465c629e49d00bc29ae9bda1466427362c815be",
     ".musubix/features/change-acceptance-heuristic/requirements.md": "82b9c8d839d6663f97b67bba2c01fc775e3253e444440eb2833f82cdd877bcf6",
