@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-07T04:18:51.618Z",
+  "generatedAt": "2026-10-07T10:42:14.903Z",
   "nodes": [
     {
       "id": "ADR-0002",
@@ -255,6 +255,12 @@
       "line": 1
     },
     {
+      "id": "ADR-0044",
+      "kind": "adr",
+      "path": ".musubix/decisions/ADR-0044.md",
+      "line": 1
+    },
+    {
       "id": "CODE-ADAPTER-PATTERN-RECOGNITION-001",
       "kind": "code",
       "path": "packages/analysis/src/adapters.ts",
@@ -391,6 +397,30 @@
       "kind": "code",
       "path": "packages/analysis/src/attestation.ts",
       "line": 67
+    },
+    {
+      "id": "CODE-AUDIT-OVERRIDE-CONTRACT-001",
+      "kind": "code",
+      "path": "scripts/check-npm-audit-remediation.mjs",
+      "line": 79
+    },
+    {
+      "id": "CODE-AUDIT-OVERRIDE-CONTRACT-002",
+      "kind": "code",
+      "path": "scripts/check-npm-audit-remediation.mjs",
+      "line": 362
+    },
+    {
+      "id": "CODE-AUDIT-OVERRIDE-CONTRACT-003",
+      "kind": "code",
+      "path": "scripts/check-npm-audit-remediation.mjs",
+      "line": 115
+    },
+    {
+      "id": "CODE-AUDIT-OVERRIDE-CONTRACT-004",
+      "kind": "code",
+      "path": "scripts/check-npm-audit-remediation.mjs",
+      "line": 163
     },
     {
       "id": "CODE-BOUNDED-FILE-READ-CONCURRENCY-001",
@@ -882,19 +912,19 @@
       "id": "CODE-NPM-AUDIT-REMEDIATION-001",
       "kind": "code",
       "path": "scripts/check-npm-audit-remediation.mjs",
-      "line": 72
+      "line": 265
     },
     {
       "id": "CODE-NPM-AUDIT-REMEDIATION-002",
       "kind": "code",
       "path": "scripts/check-npm-audit-remediation.mjs",
-      "line": 146
+      "line": 341
     },
     {
       "id": "CODE-NPM-AUDIT-REMEDIATION-003",
       "kind": "code",
       "path": "scripts/check-npm-audit-remediation.mjs",
-      "line": 332
+      "line": 533
     },
     {
       "id": "CODE-RELEASE-APPROVAL-ORDERING-001",
@@ -1477,6 +1507,30 @@
       "kind": "design",
       "path": ".musubix/features/attestation-evidence-stability/design.md",
       "line": 188
+    },
+    {
+      "id": "DES-AUDIT-OVERRIDE-CONTRACT-001",
+      "kind": "design",
+      "path": ".musubix/features/audit-override-contract/design.md",
+      "line": 12
+    },
+    {
+      "id": "DES-AUDIT-OVERRIDE-CONTRACT-002",
+      "kind": "design",
+      "path": ".musubix/features/audit-override-contract/design.md",
+      "line": 25
+    },
+    {
+      "id": "DES-AUDIT-OVERRIDE-CONTRACT-003",
+      "kind": "design",
+      "path": ".musubix/features/audit-override-contract/design.md",
+      "line": 39
+    },
+    {
+      "id": "DES-AUDIT-OVERRIDE-CONTRACT-004",
+      "kind": "design",
+      "path": ".musubix/features/audit-override-contract/design.md",
+      "line": 54
     },
     {
       "id": "DES-BOUNDED-FILE-READ-CONCURRENCY-001",
@@ -2461,6 +2515,34 @@
       "kind": "requirement",
       "path": ".musubix/features/attestation-evidence-stability/requirements.md",
       "line": 56,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-AUDIT-OVERRIDE-CONTRACT-001",
+      "kind": "requirement",
+      "path": ".musubix/features/audit-override-contract/requirements.md",
+      "line": 28,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-AUDIT-OVERRIDE-CONTRACT-002",
+      "kind": "requirement",
+      "path": ".musubix/features/audit-override-contract/requirements.md",
+      "line": 35,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-AUDIT-OVERRIDE-CONTRACT-003",
+      "kind": "requirement",
+      "path": ".musubix/features/audit-override-contract/requirements.md",
+      "line": 42,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-AUDIT-OVERRIDE-CONTRACT-004",
+      "kind": "requirement",
+      "path": ".musubix/features/audit-override-contract/requirements.md",
+      "line": 49,
       "mandatory": true
     },
     {
@@ -4002,6 +4084,30 @@
       "line": 282
     },
     {
+      "id": "TEST-AUDIT-OVERRIDE-CONTRACT-001",
+      "kind": "test",
+      "path": "tests/npm-audit-remediation.test.ts",
+      "line": 250
+    },
+    {
+      "id": "TEST-AUDIT-OVERRIDE-CONTRACT-002",
+      "kind": "test",
+      "path": "tests/npm-audit-remediation.test.ts",
+      "line": 299
+    },
+    {
+      "id": "TEST-AUDIT-OVERRIDE-CONTRACT-003",
+      "kind": "test",
+      "path": "tests/npm-audit-remediation.test.ts",
+      "line": 331
+    },
+    {
+      "id": "TEST-AUDIT-OVERRIDE-CONTRACT-004",
+      "kind": "test",
+      "path": "tests/npm-audit-remediation.test.ts",
+      "line": 390
+    },
+    {
       "id": "TEST-BOUNDED-FILE-READ-CONCURRENCY-001",
       "kind": "test",
       "path": "tests/bounded-file-read-concurrency.test.ts",
@@ -4737,7 +4843,7 @@
       "id": "TEST-GATE-COMMAND-TIMEOUT-MARGIN-001",
       "kind": "test",
       "path": "tests/npm-audit-remediation.test.ts",
-      "line": 122
+      "line": 479
     },
     {
       "id": "TEST-GITHUB-ACTIONS-NODE24-RUNTIME-001",
@@ -4821,25 +4927,25 @@
       "id": "TEST-NPM-AUDIT-REMEDIATION-001",
       "kind": "test",
       "path": "tests/npm-audit-remediation.test.ts",
-      "line": 132
+      "line": 489
     },
     {
       "id": "TEST-NPM-AUDIT-REMEDIATION-002",
       "kind": "test",
       "path": "tests/npm-audit-remediation.test.ts",
-      "line": 184
+      "line": 541
     },
     {
       "id": "TEST-NPM-AUDIT-REMEDIATION-003",
       "kind": "test",
       "path": "tests/npm-audit-remediation.test.ts",
-      "line": 253
+      "line": 610
     },
     {
       "id": "TEST-NPM-AUDIT-REMEDIATION-004",
       "kind": "test",
       "path": "tests/npm-audit-remediation.test.ts",
-      "line": 321
+      "line": 678
     },
     {
       "id": "TEST-RELEASE-APPROVAL-ORDERING-001",
@@ -6111,6 +6217,31 @@
       "relation": "decides"
     },
     {
+      "from": "ADR-0044",
+      "to": "DES-AUDIT-OVERRIDE-CONTRACT-001",
+      "relation": "decides"
+    },
+    {
+      "from": "ADR-0044",
+      "to": "DES-AUDIT-OVERRIDE-CONTRACT-002",
+      "relation": "decides"
+    },
+    {
+      "from": "ADR-0044",
+      "to": "DES-AUDIT-OVERRIDE-CONTRACT-003",
+      "relation": "decides"
+    },
+    {
+      "from": "ADR-0044",
+      "to": "DES-AUDIT-OVERRIDE-CONTRACT-004",
+      "relation": "decides"
+    },
+    {
+      "from": "ADR-0044",
+      "to": "DES-NPM-AUDIT-REMEDIATION-002",
+      "relation": "decides"
+    },
+    {
       "from": "CODE-ADAPTER-PATTERN-RECOGNITION-001",
       "to": "DES-ADAPTER-PATTERN-RECOGNITION-001",
       "relation": "implements"
@@ -6518,6 +6649,46 @@
     {
       "from": "CODE-ATTESTATION-EVIDENCE-STABILITY-002",
       "to": "REQ-ATTESTATION-EVIDENCE-STABILITY-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-AUDIT-OVERRIDE-CONTRACT-001",
+      "to": "DES-AUDIT-OVERRIDE-CONTRACT-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-AUDIT-OVERRIDE-CONTRACT-001",
+      "to": "REQ-AUDIT-OVERRIDE-CONTRACT-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-AUDIT-OVERRIDE-CONTRACT-002",
+      "to": "DES-AUDIT-OVERRIDE-CONTRACT-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-AUDIT-OVERRIDE-CONTRACT-002",
+      "to": "REQ-AUDIT-OVERRIDE-CONTRACT-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-AUDIT-OVERRIDE-CONTRACT-003",
+      "to": "DES-AUDIT-OVERRIDE-CONTRACT-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-AUDIT-OVERRIDE-CONTRACT-003",
+      "to": "REQ-AUDIT-OVERRIDE-CONTRACT-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-AUDIT-OVERRIDE-CONTRACT-004",
+      "to": "DES-AUDIT-OVERRIDE-CONTRACT-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-AUDIT-OVERRIDE-CONTRACT-004",
+      "to": "REQ-AUDIT-OVERRIDE-CONTRACT-004",
       "relation": "implements"
     },
     {
@@ -9616,6 +9787,56 @@
       "relation": "satisfies"
     },
     {
+      "from": "DES-AUDIT-OVERRIDE-CONTRACT-001",
+      "to": "REQ-AUDIT-OVERRIDE-CONTRACT-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-AUDIT-OVERRIDE-CONTRACT-002",
+      "to": "DES-AUDIT-OVERRIDE-CONTRACT-001",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-AUDIT-OVERRIDE-CONTRACT-002",
+      "to": "REQ-AUDIT-OVERRIDE-CONTRACT-002",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-AUDIT-OVERRIDE-CONTRACT-003",
+      "to": "DES-AUDIT-OVERRIDE-CONTRACT-001",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-AUDIT-OVERRIDE-CONTRACT-003",
+      "to": "DES-AUDIT-OVERRIDE-CONTRACT-002",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-AUDIT-OVERRIDE-CONTRACT-003",
+      "to": "REQ-AUDIT-OVERRIDE-CONTRACT-003",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-AUDIT-OVERRIDE-CONTRACT-004",
+      "to": "DES-AUDIT-OVERRIDE-CONTRACT-001",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-AUDIT-OVERRIDE-CONTRACT-004",
+      "to": "DES-AUDIT-OVERRIDE-CONTRACT-002",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-AUDIT-OVERRIDE-CONTRACT-004",
+      "to": "DES-AUDIT-OVERRIDE-CONTRACT-003",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-AUDIT-OVERRIDE-CONTRACT-004",
+      "to": "REQ-AUDIT-OVERRIDE-CONTRACT-004",
+      "relation": "satisfies"
+    },
+    {
       "from": "DES-BOUNDED-FILE-READ-CONCURRENCY-001",
       "to": "REQ-BOUNDED-FILE-READ-CONCURRENCY-001",
       "relation": "satisfies"
@@ -11581,6 +11802,26 @@
       "relation": "verifies"
     },
     {
+      "from": "TEST-AUDIT-OVERRIDE-CONTRACT-001",
+      "to": "REQ-AUDIT-OVERRIDE-CONTRACT-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-AUDIT-OVERRIDE-CONTRACT-002",
+      "to": "REQ-AUDIT-OVERRIDE-CONTRACT-002",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-AUDIT-OVERRIDE-CONTRACT-003",
+      "to": "REQ-AUDIT-OVERRIDE-CONTRACT-003",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-AUDIT-OVERRIDE-CONTRACT-004",
+      "to": "REQ-AUDIT-OVERRIDE-CONTRACT-004",
+      "relation": "verifies"
+    },
+    {
       "from": "TEST-BOUNDED-FILE-READ-CONCURRENCY-001",
       "to": "REQ-BOUNDED-FILE-READ-CONCURRENCY-001",
       "relation": "verifies"
@@ -13259,6 +13500,7 @@
     ".musubix/decisions/ADR-0041.md": "31acae0e740e0c179af3f67949ca5062f4eb9cad2a82d6ca226f0aaea516ad1e",
     ".musubix/decisions/ADR-0042.md": "750f2fb7060fbf3d9d57f327b1f8bf78a3ad2e7e667f87702e7a9bd75f0e6221",
     ".musubix/decisions/ADR-0043.md": "6219ff0024fd0997d7bfdaeb8f6ef28cffdbfc63539a91a9e66160881237958b",
+    ".musubix/decisions/ADR-0044.md": "2ad8069a566cdf3eb0253bca129208c69052a7cccf4a40eef7e6200fd389a237",
     ".musubix/features/adapter-pattern-recognition/design.md": "a8e0c4a11f626cb4a41c9b5b53359c072ec0c3161f704791f42ba8af38124a70",
     ".musubix/features/adapter-pattern-recognition/requirements.md": "5731561a0a04982b8a5c305bdeeae6084bcf0ee8846f295eaaaabc823d1f9793",
     ".musubix/features/approval-domain-scoping/design.md": "e8731f1e3094aa22192ae2ae5986fb4dc9a7698f7cfe66961e1342f6e0743bd9",
@@ -13267,6 +13509,8 @@
     ".musubix/features/approval-prepare-diff-only/requirements.md": "a6cc071b830412abe2ac5f401b93a66265e11a4f3a1a546c7fac2c0d0466dbe0",
     ".musubix/features/attestation-evidence-stability/design.md": "37d4ea079a8b422df744d5a0835adafbb9c2bee440866d5f8a24cddcae43c326",
     ".musubix/features/attestation-evidence-stability/requirements.md": "36661538d67523f444f537dbc8466ac4919dd20650fcdd78c2ae3d4a402039a5",
+    ".musubix/features/audit-override-contract/design.md": "4b00b05cd6949ce94bf9909f947cf9e1bf749bae161d9c5edbb4978d33cb4df3",
+    ".musubix/features/audit-override-contract/requirements.md": "77a9fdb5b7bd3b9e225c4f20bbc12d8759e8eb9756dcff34a21956f571021a26",
     ".musubix/features/bounded-file-read-concurrency/design.md": "f62902f2ffe3e37202076e4fed2c390667af87dab84cd0e97316eaaab2d10394",
     ".musubix/features/bounded-file-read-concurrency/requirements.md": "9e08acde7e29a8f14b23d908c465c629e49d00bc29ae9bda1466427362c815be",
     ".musubix/features/change-acceptance-heuristic/design.md": "ce67823a2c44f55a8fbfebc36b9532a0ca1f7a754613443c99ea8171ab136910",
@@ -13301,7 +13545,7 @@
     ".musubix/features/human-approval-gates/requirements.md": "f2ae2380935831bb102cd6a7726f2a208ab1719e035157302ef51ed28f624fb0",
     ".musubix/features/model-correspondence-evidence-guidance/design.md": "708350f1f2a95dd9ab36b3da739db89be8b4895085a3c0fdf6b64482fe04837a",
     ".musubix/features/model-correspondence-evidence-guidance/requirements.md": "d7ca8b823ddfd3265e89f2892003e5eb95faad7e9b3972b249de5f2902446511",
-    ".musubix/features/npm-audit-remediation/design.md": "78fcb8b7a741b4415ed10bbccb232fc251fa7f30aa8af15c24f448c275705f27",
+    ".musubix/features/npm-audit-remediation/design.md": "37f6b81ebfe328b941027003f4efffba4e67882b39f13aef04c1f6bdb41d5791",
     ".musubix/features/npm-audit-remediation/requirements.md": "9a2c384b2d95a46c5537f54c6e1bfdb923aaa91a2f2c68c58ac25e0e584e23e7",
     ".musubix/features/release-approval-ordering/design.md": "235e4f2169e38965cb575b2dcab50fcca33909e9ed58d1a517150ee00e825b0b",
     ".musubix/features/release-approval-ordering/requirements.md": "19fd75e725b1838fe659f4c6f1837644321d9794e96c42236fa8c5fec140c8b5",
@@ -13386,7 +13630,7 @@
     "packages/domain/src/types.ts": "b61d810e4beb76343d85f8fb0e3f165d1e6d8eaede39e4caef3ee270f68a455a",
     "scripts/check-gate-command-timeout-margin.mjs": "5749e6dd810b994e762885fbc8da38fb7785fc5f801afb35660bba5f75b2f1c4",
     "scripts/check-github-actions.mjs": "8e18568a2a4a69cf25aa6b825cc82a6258cf0388c27c552f7d69a100793d5437",
-    "scripts/check-npm-audit-remediation.mjs": "82548a2681cde6be6d238f15678add9388c8aaac72a49a13af82d46d4b462cb6",
+    "scripts/check-npm-audit-remediation.mjs": "19b03bb6b964883046c6ff7d1ba0db5f8ec41a4cf3a161c06ebd1de873e54216",
     "scripts/check-package.mjs": "49239593648d027069f38fb06c328128af476aaf4c99201b660bf715e0b4e664",
     "scripts/release-attestation.mjs": "b15842f6f83eb768c361a5e054a984af0da846f3b6e789bc0c91127415576d15",
     "scripts/release-prepare.mjs": "e166ac42868ce134ad9d3e68a92e14831f2ad243b51f2c0782a47e49fe55a640",
@@ -13421,7 +13665,7 @@
     "tests/github-actions-node24-runtime.test.ts": "9a444869a4d0dcdb76fb34fc5e017eb8f4f39896ec7b8aa8e0d36e8a6552e28d",
     "tests/helpers.ts": "718d3833355787d04c50bd33deb94aad6dceb62d9a7fd854956ba20b6d6af18e",
     "tests/model-correspondence-evidence-guidance.test.ts": "f32fef2927b6353cef035f67cc8df69c1fb37ef08b745d88215df9bfa46d65ad",
-    "tests/npm-audit-remediation.test.ts": "4ec1ca039effb3d548e54527094f8f73d7b4ddb4692dccbc42f290ac7c665a51",
+    "tests/npm-audit-remediation.test.ts": "36182ed37d8d8e02b6bb371788563c95dd9b96f8c688be3bbb027c49098f2664",
     "tests/p2-improvements.test.ts": "0d96ebf371ac344778ecc5a84b75cbac2ff972263d85264e861392fca5c976e4",
     "tests/p3-attestation-oidc.test.ts": "6b7080699b02670e1575cdfda24dcbd301b5bd98c5df3f45a03d2fc80cc3ba05",
     "tests/p3-codegraph-policy.test.ts": "f7772220ef1c3cb73170d43e64855c539f262d4aab64a268b743640ce088bfd6",

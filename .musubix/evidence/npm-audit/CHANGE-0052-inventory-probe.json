@@ -1,0 +1,165 @@
+{
+  "fixtureOnly": true,
+  "observedAt": "2026-10-07T11:23:18.659Z",
+  "sourceTestSha256": "36182ed37d8d8e02b6bb371788563c95dd9b96f8c688be3bbb027c49098f2664",
+  "backendSha256": "19b03bb6b964883046c6ff7d1ba0db5f8ec41a4cf3a161c06ebd1de873e54216",
+  "baseline": {
+    "exitCode": 0,
+    "result": {
+      "valid": true,
+      "diagnostics": []
+    }
+  },
+  "mutations": [
+    {
+      "field": "kind",
+      "value": null,
+      "exitCode": 1,
+      "result": {
+        "valid": false,
+        "diagnostics": [
+          {
+            "code": "AUDIT_OVERRIDE_ASSESSMENT",
+            "message": "Consumer inventory must exactly match the current lockfile in canonical order without duplicates.",
+            "path": "/home/nahisaho/GitHub/musubix3-change-0052/.test-work/change-0052-inventory-probe/.musubix/changes/CHANGE-0052.md"
+          }
+        ]
+      }
+    },
+    {
+      "field": "kind",
+      "value": 1,
+      "exitCode": 1,
+      "result": {
+        "valid": false,
+        "diagnostics": [
+          {
+            "code": "AUDIT_OVERRIDE_ASSESSMENT",
+            "message": "Consumer inventory must exactly match the current lockfile in canonical order without duplicates.",
+            "path": "/home/nahisaho/GitHub/musubix3-change-0052/.test-work/change-0052-inventory-probe/.musubix/changes/CHANGE-0052.md"
+          }
+        ]
+      }
+    },
+    {
+      "field": "kind",
+      "value": [],
+      "exitCode": 1,
+      "result": {
+        "valid": false,
+        "diagnostics": [
+          {
+            "code": "AUDIT_OVERRIDE_ASSESSMENT",
+            "message": "Consumer inventory must exactly match the current lockfile in canonical order without duplicates.",
+            "path": "/home/nahisaho/GitHub/musubix3-change-0052/.test-work/change-0052-inventory-probe/.musubix/changes/CHANGE-0052.md"
+          }
+        ]
+      }
+    },
+    {
+      "field": "kind",
+      "value": {},
+      "exitCode": 1,
+      "result": {
+        "valid": false,
+        "diagnostics": [
+          {
+            "code": "AUDIT_OVERRIDE_ASSESSMENT",
+            "message": "Consumer inventory must exactly match the current lockfile in canonical order without duplicates.",
+            "path": "/home/nahisaho/GitHub/musubix3-change-0052/.test-work/change-0052-inventory-probe/.musubix/changes/CHANGE-0052.md"
+          }
+        ]
+      }
+    },
+    {
+      "field": "kind",
+      "value": "invalid",
+      "exitCode": 1,
+      "result": {
+        "valid": false,
+        "diagnostics": [
+          {
+            "code": "AUDIT_OVERRIDE_ASSESSMENT",
+            "message": "Consumer inventory must exactly match the current lockfile in canonical order without duplicates.",
+            "path": "/home/nahisaho/GitHub/musubix3-change-0052/.test-work/change-0052-inventory-probe/.musubix/changes/CHANGE-0052.md"
+          }
+        ]
+      }
+    },
+    {
+      "field": "range",
+      "value": null,
+      "exitCode": 1,
+      "result": {
+        "valid": false,
+        "diagnostics": [
+          {
+            "code": "AUDIT_OVERRIDE_ASSESSMENT",
+            "message": "Consumer inventory must exactly match the current lockfile in canonical order without duplicates.",
+            "path": "/home/nahisaho/GitHub/musubix3-change-0052/.test-work/change-0052-inventory-probe/.musubix/changes/CHANGE-0052.md"
+          }
+        ]
+      }
+    },
+    {
+      "field": "range",
+      "value": 1,
+      "exitCode": 1,
+      "result": {
+        "valid": false,
+        "diagnostics": [
+          {
+            "code": "AUDIT_OVERRIDE_ASSESSMENT",
+            "message": "Consumer inventory must exactly match the current lockfile in canonical order without duplicates.",
+            "path": "/home/nahisaho/GitHub/musubix3-change-0052/.test-work/change-0052-inventory-probe/.musubix/changes/CHANGE-0052.md"
+          }
+        ]
+      }
+    },
+    {
+      "field": "range",
+      "value": [],
+      "exitCode": 1,
+      "result": {
+        "valid": false,
+        "diagnostics": [
+          {
+            "code": "AUDIT_OVERRIDE_ASSESSMENT",
+            "message": "Consumer inventory must exactly match the current lockfile in canonical order without duplicates.",
+            "path": "/home/nahisaho/GitHub/musubix3-change-0052/.test-work/change-0052-inventory-probe/.musubix/changes/CHANGE-0052.md"
+          }
+        ]
+      }
+    },
+    {
+      "field": "range",
+      "value": {},
+      "exitCode": 1,
+      "result": {
+        "valid": false,
+        "diagnostics": [
+          {
+            "code": "AUDIT_OVERRIDE_ASSESSMENT",
+            "message": "Consumer inventory must exactly match the current lockfile in canonical order without duplicates.",
+            "path": "/home/nahisaho/GitHub/musubix3-change-0052/.test-work/change-0052-inventory-probe/.musubix/changes/CHANGE-0052.md"
+          }
+        ]
+      }
+    },
+    {
+      "field": "range",
+      "value": "invalid",
+      "exitCode": 1,
+      "result": {
+        "valid": false,
+        "diagnostics": [
+          {
+            "code": "AUDIT_OVERRIDE_ASSESSMENT",
+            "message": "Consumer inventory must exactly match the current lockfile in canonical order without duplicates.",
+            "path": "/home/nahisaho/GitHub/musubix3-change-0052/.test-work/change-0052-inventory-probe/.musubix/changes/CHANGE-0052.md"
+          }
+        ]
+      }
+    }
+  ]
+}

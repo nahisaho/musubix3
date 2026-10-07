@@ -45,6 +45,7 @@
     ".musubix/decisions/ADR-0041.md": "31acae0e740e0c179af3f67949ca5062f4eb9cad2a82d6ca226f0aaea516ad1e",
     ".musubix/decisions/ADR-0042.md": "750f2fb7060fbf3d9d57f327b1f8bf78a3ad2e7e667f87702e7a9bd75f0e6221",
     ".musubix/decisions/ADR-0043.md": "6219ff0024fd0997d7bfdaeb8f6ef28cffdbfc63539a91a9e66160881237958b",
+    ".musubix/decisions/ADR-0044.md": "2ad8069a566cdf3eb0253bca129208c69052a7cccf4a40eef7e6200fd389a237",
     ".musubix/features/adapter-pattern-recognition/design.md": "a8e0c4a11f626cb4a41c9b5b53359c072ec0c3161f704791f42ba8af38124a70",
     ".musubix/features/adapter-pattern-recognition/requirements.md": "5731561a0a04982b8a5c305bdeeae6084bcf0ee8846f295eaaaabc823d1f9793",
     ".musubix/features/approval-domain-scoping/design.md": "e8731f1e3094aa22192ae2ae5986fb4dc9a7698f7cfe66961e1342f6e0743bd9",
@@ -53,6 +54,8 @@
     ".musubix/features/approval-prepare-diff-only/requirements.md": "a6cc071b830412abe2ac5f401b93a66265e11a4f3a1a546c7fac2c0d0466dbe0",
     ".musubix/features/attestation-evidence-stability/design.md": "37d4ea079a8b422df744d5a0835adafbb9c2bee440866d5f8a24cddcae43c326",
     ".musubix/features/attestation-evidence-stability/requirements.md": "36661538d67523f444f537dbc8466ac4919dd20650fcdd78c2ae3d4a402039a5",
+    ".musubix/features/audit-override-contract/design.md": "4b00b05cd6949ce94bf9909f947cf9e1bf749bae161d9c5edbb4978d33cb4df3",
+    ".musubix/features/audit-override-contract/requirements.md": "77a9fdb5b7bd3b9e225c4f20bbc12d8759e8eb9756dcff34a21956f571021a26",
     ".musubix/features/bounded-file-read-concurrency/design.md": "f62902f2ffe3e37202076e4fed2c390667af87dab84cd0e97316eaaab2d10394",
     ".musubix/features/bounded-file-read-concurrency/requirements.md": "9e08acde7e29a8f14b23d908c465c629e49d00bc29ae9bda1466427362c815be",
     ".musubix/features/change-acceptance-heuristic/design.md": "ce67823a2c44f55a8fbfebc36b9532a0ca1f7a754613443c99ea8171ab136910",
@@ -87,7 +90,7 @@
     ".musubix/features/human-approval-gates/requirements.md": "f2ae2380935831bb102cd6a7726f2a208ab1719e035157302ef51ed28f624fb0",
     ".musubix/features/model-correspondence-evidence-guidance/design.md": "708350f1f2a95dd9ab36b3da739db89be8b4895085a3c0fdf6b64482fe04837a",
     ".musubix/features/model-correspondence-evidence-guidance/requirements.md": "d7ca8b823ddfd3265e89f2892003e5eb95faad7e9b3972b249de5f2902446511",
-    ".musubix/features/npm-audit-remediation/design.md": "78fcb8b7a741b4415ed10bbccb232fc251fa7f30aa8af15c24f448c275705f27",
+    ".musubix/features/npm-audit-remediation/design.md": "37f6b81ebfe328b941027003f4efffba4e67882b39f13aef04c1f6bdb41d5791",
     ".musubix/features/npm-audit-remediation/requirements.md": "9a2c384b2d95a46c5537f54c6e1bfdb923aaa91a2f2c68c58ac25e0e584e23e7",
     ".musubix/features/release-approval-ordering/design.md": "235e4f2169e38965cb575b2dcab50fcca33909e9ed58d1a517150ee00e825b0b",
     ".musubix/features/release-approval-ordering/requirements.md": "19fd75e725b1838fe659f4c6f1837644321d9794e96c42236fa8c5fec140c8b5",
@@ -132,7 +135,7 @@
     ".musubix/features/workflow-waiver-bulk-recording/design.md": "c956f35169212cedc0fc66a11902200c7dda10230fc326075644d908f29580ae",
     ".musubix/features/workflow-waiver-bulk-recording/requirements.md": "361cfba519d4ab189a2091cf7b99133b9c005f69fb28aa2d77bba17bd7ee7b33"
   },
-  "artifactSha256": "3999a35b25da3737ae0bc0195f30c00eb4d6cb85d0e7e5c0265269613f1030c3",
+  "artifactSha256": "fddba96c50446c790ccf6a735785c380e579589d1b977cc1b5db4e5cded85549",
   "approver": "nahisaho",
-  "approvedAt": "2026-10-07T03:39:27.831Z"
+  "approvedAt": "2026-10-07T09:18:08.741Z"
 }

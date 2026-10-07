@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+- Remove the development-only `sprintf-js` advisory chain using the single
+  reviewed `js-yaml: "^5.4.3"` override. Pin that exact override and npm-generated
+  root metadata, reject graph/evidence drift offline, retain a full zero-finding
+  audit bound to the current lockfile, and verify YAML/native Jest/package
+  compatibility without changing production dependencies or the package version
+  (CHANGE-0052).
+
 - Add a `--diff-only` option to `approval prepare <requirements|design|release>`
   that additionally reports a `changedFiles` array: only the artifact paths
   whose content differs from that same stage's (and domain's, when

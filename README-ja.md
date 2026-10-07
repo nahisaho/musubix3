@@ -1007,6 +1007,11 @@ cleanであることの証明として扱いません。
 `.github/workflows/dependency-audit.yml`は週次および手動dispatchでfull reportを
 再実行します。失敗したrunはrelease前にreviewし、remediationしてください。
 
+レビュー済みの依存例外は root `overrides` の
+`{"js-yaml":"^5.4.3"}` だけです（CHANGE-0052）。オフライン検査は異なる値・
+追加override・`sprintf-js` 再混入を拒否し、保存audit証拠は現在lockfileの
+bytesに一致させます。Vitestへの一般的なoverride許可や開発時脆弱性の容認ではありません。
+
 ビルド前に、機械管理されるすべてのリリース version を同期します。
 
 ```sh

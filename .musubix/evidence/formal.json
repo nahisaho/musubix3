@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-07T05:32:23.396Z",
-  "totalRequirements": 225,
+  "generatedAt": "2026-10-07T12:23:22.202Z",
+  "totalRequirements": 229,
   "modeledRequirements": 13,
-  "modeledFraction": 0.057777777777777775,
+  "modeledFraction": 0.056768558951965066,
   "result": {
     "valid": true,
     "abstraction": "Consistency of explicit branch-scoped conditional, exact unit-normalized integer numeric, bounded temporal interval, deterministic state-transition, and controlled unconditional Boolean constraints; not implementation correctness.",
@@ -121,6 +121,10 @@
       "REQ-ATTESTATION-EVIDENCE-STABILITY-002",
       "REQ-ATTESTATION-EVIDENCE-STABILITY-003",
       "REQ-ATTESTATION-EVIDENCE-STABILITY-004",
+      "REQ-AUDIT-OVERRIDE-CONTRACT-001",
+      "REQ-AUDIT-OVERRIDE-CONTRACT-002",
+      "REQ-AUDIT-OVERRIDE-CONTRACT-003",
+      "REQ-AUDIT-OVERRIDE-CONTRACT-004",
       "REQ-CHANGE-ACCEPTANCE-HEURISTIC-001",
       "REQ-CHANGE-ACCEPTANCE-HEURISTIC-002",
       "REQ-CHANGE-EVIDENCE-WAIVER-001",
@@ -482,6 +486,26 @@
         "code": "FORMAL_UNSUPPORTED",
         "severity": "warning",
         "message": "REQ-ATTESTATION-EVIDENCE-STABILITY-004 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-AUDIT-OVERRIDE-CONTRACT-001 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-AUDIT-OVERRIDE-CONTRACT-002 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-AUDIT-OVERRIDE-CONTRACT-003 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-AUDIT-OVERRIDE-CONTRACT-004 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
       },
       {
         "code": "FORMAL_UNSUPPORTED",
@@ -1375,6 +1399,7 @@
     ".musubix/features/approval-domain-scoping/requirements.md": "c886926622fe022052c81b1ea4e76f21c04f42636f4a37d074f7d34c0505210f",
     ".musubix/features/approval-prepare-diff-only/requirements.md": "a6cc071b830412abe2ac5f401b93a66265e11a4f3a1a546c7fac2c0d0466dbe0",
     ".musubix/features/attestation-evidence-stability/requirements.md": "36661538d67523f444f537dbc8466ac4919dd20650fcdd78c2ae3d4a402039a5",
+    ".musubix/features/audit-override-contract/requirements.md": "77a9fdb5b7bd3b9e225c4f20bbc12d8759e8eb9756dcff34a21956f571021a26",
     ".musubix/features/bounded-file-read-concurrency/requirements.md": "9e08acde7e29a8f14b23d908c465c629e49d00bc29ae9bda1466427362c815be",
     ".musubix/features/change-acceptance-heuristic/requirements.md": "82b9c8d839d6663f97b67bba2c01fc775e3253e444440eb2833f82cdd877bcf6",
     ".musubix/features/change-evidence-waiver/requirements.md": "4f71a5726a2aa73a9bafeea1e3b204af462f183c8e6c85ddfae2d94659ee6cac",

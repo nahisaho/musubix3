@@ -6,6 +6,10 @@ import { parse } from 'yaml';
 const root = resolve(process.env.NPM_AUDIT_REMEDIATION_ROOT ?? '.');
 const changePath = process.env.NPM_AUDIT_REMEDIATION_CHANGE_PATH
   ?? resolve(root, '.musubix/changes/CHANGE-0022.md');
+const overrideChangePath = process.env.NPM_AUDIT_OVERRIDE_CHANGE_PATH
+  ?? resolve(root, '.musubix/changes/CHANGE-0052.md');
+const overrideReportPath = process.env.NPM_AUDIT_OVERRIDE_REPORT_PATH
+  ?? resolve(root, '.musubix/evidence/npm-audit/CHANGE-0052.json');
 
 function rootPath(path) {
   return resolve(root, path);
@@ -46,6 +50,195 @@ function compareVersion(left, right) {
     if (left[index] !== right[index]) return left[index] - right[index];
   }
   return 0;
+}
+
+function isRecord(value) {
+  return value !== null && typeof value === 'object' && !Array.isArray(value);
+}
+
+function emptyDependencies(value) {
+  return value === undefined || (isRecord(value) && Object.keys(value).length === 0);
+}
+
+function section(text, heading) {
+  return text.split(/\r?\n(?=## )/).find((part) => part.startsWith(`## ${heading}\n`)) ?? '';
+}
+
+function singleValue(text, pattern) {
+  const matches = [...text.matchAll(pattern)];
+  return matches.length === 1 ? matches[0][1] : undefined;
+}
+
+function validCapture(value) {
+  const time = value ? Date.parse(value) : Number.NaN;
+  return Number.isFinite(time)
+    && new Date(time).toISOString().replace('.000Z', 'Z') === value
+    && time <= Date.now() + 300_000;
+}
+
+/** @id CODE-AUDIT-OVERRIDE-CONTRACT-001
+ * @implements REQ-AUDIT-OVERRIDE-CONTRACT-001
+ * @design DES-AUDIT-OVERRIDE-CONTRACT-001
+ */
+function checkOverrideGraph(packages, lockPath) {
+  const diagnostics = [];
+  for (const [name, minimum, nextMajor] of [
+    ['js-yaml', [5, 4, 3], [6, 0, 0]],
+    ['argparse', [2, 0, 1], [3, 0, 0]],
+  ]) {
+    const records = packageRecords(packages, name);
+    if (!records.length) {
+      diagnostics.push(diagnostic('LOCK_OVERRIDE_GRAPH', `Missing ${name} replacement record.`, lockPath));
+    }
+    for (const { key, value } of records) {
+      const version = isRecord(value) && typeof value.version === 'string' ? stableVersion(value.version) : null;
+      const dependenciesValid = isRecord(value) && (name === 'js-yaml'
+        ? JSON.stringify(value.dependencies) === JSON.stringify({ argparse: '^2.0.1' })
+        : emptyDependencies(value.dependencies));
+      if (!version || compareVersion(version, minimum) < 0 || compareVersion(version, nextMajor) >= 0
+        || value.dev !== true || !dependenciesValid
+        || !emptyDependencies(value.optionalDependencies) || !emptyDependencies(value.peerDependencies)) {
+        diagnostics.push(diagnostic(
+          'LOCK_OVERRIDE_GRAPH',
+          `${key} must preserve the stable development-only ${name} replacement graph.`,
+          lockPath,
+        ));
+      }
+    }
+  }
+  for (const { key } of packageRecords(packages, 'sprintf-js')) {
+    diagnostics.push(diagnostic('LOCK_OVERRIDE_GRAPH', `${key} reintroduces vulnerable sprintf-js.`, lockPath));
+  }
+  return diagnostics;
+}
+
+/** @id CODE-AUDIT-OVERRIDE-CONTRACT-003
+ * @implements REQ-AUDIT-OVERRIDE-CONTRACT-003
+ * @design DES-AUDIT-OVERRIDE-CONTRACT-003
+ */
+function checkOverrideAudit(oldChange, lockSha256) {
+  const diagnostics = [];
+  let bytes;
+  let audit;
+  let change;
+  try {
+    bytes = readFileSync(overrideReportPath);
+    audit = JSON.parse(bytes.toString('utf8'));
+  } catch {
+    return [diagnostic('AUDIT_OVERRIDE_EVIDENCE', 'Missing or malformed retained audit JSON.', overrideReportPath)];
+  }
+  try {
+    change = section(readFileSync(overrideChangePath, 'utf8'), 'Verification evidence');
+  } catch {
+    return [diagnostic('AUDIT_OVERRIDE_EVIDENCE', 'Missing override verification evidence.', overrideChangePath)];
+  }
+  const counts = audit?.metadata?.vulnerabilities;
+  if (!isRecord(audit?.vulnerabilities) || Object.keys(audit.vulnerabilities).length !== 0
+    || !isRecord(counts)
+    || ['info', 'low', 'moderate', 'high', 'critical', 'total'].some((severity) => counts[severity] !== 0)) {
+    diagnostics.push(diagnostic('AUDIT_OVERRIDE_EVIDENCE', 'Retained full audit must report zero findings.', overrideReportPath));
+  }
+  const reportSha256 = createHash('sha256').update(bytes).digest('hex');
+  if (singleValue(change, /^Audit report SHA-256: `([a-f0-9]{64})`\.$/gm) !== reportSha256) {
+    diagnostics.push(diagnostic('AUDIT_OVERRIDE_EVIDENCE', 'Retained audit bytes do not match their reviewed digest.', overrideReportPath));
+  }
+  if (singleValue(change, /^Override lockfile SHA-256: `([a-f0-9]{64})`\.$/gm) !== lockSha256) {
+    diagnostics.push(diagnostic('AUDIT_OVERRIDE_EVIDENCE', 'Override evidence must bind current lockfile bytes.', overrideChangePath));
+  }
+  const capture = singleValue(change, /^Override audit captured at: ([^\n]+)\.$/gm);
+  const oldCapture = /Audit captured at: (\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z)\./.exec(oldChange)?.[1];
+  if (!validCapture(capture) || capture !== oldCapture) {
+    diagnostics.push(diagnostic('AUDIT_OVERRIDE_EVIDENCE', 'Both changes must bind the same valid audit capture.', overrideChangePath));
+  }
+  if (!oldChange.includes(`Audited package-lock SHA-256: \`${lockSha256}\``)
+    || !oldChange.includes('Follow-up remediation: CHANGE-0052.')) {
+    diagnostics.push(diagnostic('AUDIT_OVERRIDE_EVIDENCE', 'CHANGE-0022 must retain current evidence and remediation history.', changePath));
+  }
+  if (!/^Remediation history: CHANGE-0022 -> CHANGE-0052\.$/m.test(change)) {
+    diagnostics.push(diagnostic('AUDIT_OVERRIDE_EVIDENCE', 'Override verification must reference CHANGE-0022 history.', overrideChangePath));
+  }
+  return diagnostics;
+}
+
+/** @id CODE-AUDIT-OVERRIDE-CONTRACT-004
+ * @implements REQ-AUDIT-OVERRIDE-CONTRACT-004
+ * @design DES-AUDIT-OVERRIDE-CONTRACT-004
+ */
+function checkOverrideAssessment(packages) {
+  const diagnostics = [];
+  let change;
+  try {
+    change = readFileSync(overrideChangePath, 'utf8');
+  } catch {
+    return [diagnostic('AUDIT_OVERRIDE_ASSESSMENT', 'Missing override advisory assessment.', overrideChangePath)];
+  }
+  const assessment = section(change, 'Override advisory assessment').replace(/\s+/g, ' ');
+  const anchors = [
+    'Advisory: GHSA-hp3w-g68c-fv3c.',
+    'jest@30.5.1 > @jest/core@30.5.1 > @jest/transform@30.5.1 > babel-plugin-istanbul@8.0.0 > @istanbuljs/load-nyc-config@1.1.0 > js-yaml@3.15.2 > argparse@1.0.10 > sprintf-js@1.0.3',
+    'attacker-controlled unbounded precision specifiers',
+    'none published; affected <=1.1.3',
+    'development-only Jest tooling',
+    'production source does not import Jest/js-yaml/sprintf-js',
+    'package archive contains none of this dependency chain',
+    'Decision: remove sprintf-js',
+    'not accept it as harmless',
+    'declares js-yaml "^3.13.1"',
+    'the override deliberately exceeds that range',
+    "require('js-yaml').load(await readFile(configFile, 'utf8'))",
+    'no universal unreachability claim',
+    'compatibility is not inferred solely from an unchanged method name',
+    'Residual risk:',
+    'recurring weekly/manual audit monitoring',
+  ];
+  for (const anchor of anchors) {
+    if (!assessment.includes(anchor)) {
+      diagnostics.push(diagnostic('AUDIT_OVERRIDE_ASSESSMENT', `Missing assessment: ${anchor}.`, overrideChangePath));
+    }
+  }
+  const expected = [];
+  let recordsValid = isRecord(packages);
+  for (const [path, value] of Object.entries(isRecord(packages) ? packages : {})) {
+    if (!isRecord(value)) {
+      recordsValid = false;
+      continue;
+    }
+    for (const kind of ['dependencies', 'optionalDependencies', 'peerDependencies']) {
+      if (value[kind] === undefined) continue;
+      if (!isRecord(value[kind])) {
+        recordsValid = false;
+        continue;
+      }
+      if (Object.hasOwn(value[kind], 'js-yaml')) {
+        const range = value[kind]['js-yaml'];
+        if (typeof range !== 'string') recordsValid = false;
+        else expected.push({ path, kind, range });
+      }
+    }
+  }
+  expected.sort((left, right) => {
+    const a = `${left.path}\0${left.kind}\0${left.range}`;
+    const b = `${right.path}\0${right.kind}\0${right.range}`;
+    return a < b ? -1 : a > b ? 1 : 0;
+  });
+  let inventory;
+  try {
+    inventory = JSON.parse(singleValue(change, /^Js-yaml consumer inventory: (.*)$/gm) ?? '');
+  } catch {
+    inventory = null;
+  }
+  const shapeValid = Array.isArray(inventory) && inventory.every((entry) =>
+    isRecord(entry) && Object.keys(entry).length === 3
+    && ['path', 'kind', 'range'].every((key) => typeof entry[key] === 'string'));
+  const normalized = shapeValid ? inventory.map(({ path, kind, range }) => ({ path, kind, range })) : null;
+  if (!recordsValid || !shapeValid || JSON.stringify(normalized) !== JSON.stringify(expected)) {
+    diagnostics.push(diagnostic(
+      'AUDIT_OVERRIDE_ASSESSMENT',
+      'Consumer inventory must exactly match the current lockfile in canonical order without duplicates.',
+      overrideChangePath,
+    ));
+  }
+  return diagnostics;
 }
 
 function hasSetupNode(job, version) {
@@ -140,6 +333,8 @@ function checkEvidence() {
       changePath,
     ));
   }
+  diagnostics.push(...checkOverrideAudit(change, lockSha256));
+  diagnostics.push(...checkOverrideAssessment(readJson(rootPath('package-lock.json')).packages));
   return diagnostics;
 }
 
@@ -164,7 +359,12 @@ function checkLock() {
   if (Object.hasOwn(lock, 'dependencies')) {
     diagnostics.push(diagnostic('LOCK_LEGACY', 'Legacy top-level lockfile dependencies are forbidden.', lockPath));
   }
+  /** @id CODE-AUDIT-OVERRIDE-CONTRACT-002
+   * @implements REQ-AUDIT-OVERRIDE-CONTRACT-002
+   * @design DES-AUDIT-OVERRIDE-CONTRACT-002
+   */
   const expectedProductionSurface = {
+    overrides: { 'js-yaml': '^5.4.3' },
     dependencies: {
       commander: '^13.1.0',
       typescript: '~5.9.3',
@@ -190,13 +390,13 @@ function checkLock() {
   if (packageJson.devDependencies?.vitest !== '^4.1.11'
     || Object.hasOwn(packageJson.devDependencies ?? {}, '@vitest/mocker')
     || packageJson.engines?.node !== '>=20'
-    || Object.hasOwn(packageJson, 'overrides')
     || Object.entries(expectedProductionSurface).some(([key, value]) =>
       JSON.stringify(packageJson[key]) !== JSON.stringify(value))) {
     diagnostics.push(diagnostic('MANIFEST_CONTRACT', 'package.json dependency or distribution contract changed.', packagePath));
   }
   const rootLockPackage = lock.packages[''];
   if (rootLockPackage?.devDependencies?.vitest !== '^4.1.11'
+    || Object.hasOwn(rootLockPackage ?? {}, 'overrides')
     || JSON.stringify(rootLockPackage?.devDependencies)
       !== JSON.stringify(packageJson.devDependencies)
     || rootLockPackage?.engines?.node !== packageJson.engines?.node
@@ -208,6 +408,7 @@ function checkLock() {
       lockPath,
     ));
   }
+  diagnostics.push(...checkOverrideGraph(lock.packages, lockPath));
   const fixedMinimum = [4, 1, 11];
   const nextMajor = [5, 0, 0];
   for (const name of ['vitest', '@vitest/mocker']) {

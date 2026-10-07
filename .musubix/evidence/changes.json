@@ -52509,6 +52509,407 @@
           }
         }
       ]
+    },
+    {
+      "changeId": "CHANGE-0052",
+      "requirementIds": [
+        "REQ-AUDIT-OVERRIDE-CONTRACT-001",
+        "REQ-AUDIT-OVERRIDE-CONTRACT-002",
+        "REQ-AUDIT-OVERRIDE-CONTRACT-003",
+        "REQ-AUDIT-OVERRIDE-CONTRACT-004"
+      ],
+      "phases": {
+        "impact": {
+          "phase": "impact",
+          "recordedAt": "2026-10-07T06:44:51.171Z",
+          "fingerprints": {
+            "impact": "637fb355bc0783bc0d7d4b26395fa004e3694a856f764ef8f3321873c19ca42b",
+            "requirements": "3d346aa78ceb39f791a3ff1341ba93c9e7ae8edfcf6fd68cdcdff86c55c8cca1",
+            "design": "753529e8fefd52bc52bec92a43eb156c79e870f2d33e1a9b7759f52bffe58dcd",
+            "implementation": "469f007aee4c8c9e8de913c276a4aa45194fd26d57bebc7572f41184a9aa19a0",
+            "tests": "91aac36512de3e4e235a04fb56cc8426509d638b3fcd1d44be5d15025c3c70fa",
+            "tdd": "e937653c79a2697fe248eebda143690cb135505150fd6af36eb6ba716b6962ca",
+            "requirementImplementations": {
+              "REQ-AUDIT-OVERRIDE-CONTRACT-001": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-AUDIT-OVERRIDE-CONTRACT-002": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-AUDIT-OVERRIDE-CONTRACT-003": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-AUDIT-OVERRIDE-CONTRACT-004": {
+                "paths": [],
+                "fingerprints": {}
+              }
+            }
+          },
+          "order": 1806
+        },
+        "requirements": {
+          "phase": "requirements",
+          "recordedAt": "2026-10-07T06:45:41.742Z",
+          "fingerprints": {
+            "impact": "637fb355bc0783bc0d7d4b26395fa004e3694a856f764ef8f3321873c19ca42b",
+            "requirements": "cacc107d260c18a37ba678f77912f56138e3cb8ae1c7ae7cda676844a824bc04",
+            "design": "753529e8fefd52bc52bec92a43eb156c79e870f2d33e1a9b7759f52bffe58dcd",
+            "implementation": "469f007aee4c8c9e8de913c276a4aa45194fd26d57bebc7572f41184a9aa19a0",
+            "tests": "91aac36512de3e4e235a04fb56cc8426509d638b3fcd1d44be5d15025c3c70fa",
+            "tdd": "e937653c79a2697fe248eebda143690cb135505150fd6af36eb6ba716b6962ca",
+            "requirementImplementations": {
+              "REQ-AUDIT-OVERRIDE-CONTRACT-001": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-AUDIT-OVERRIDE-CONTRACT-002": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-AUDIT-OVERRIDE-CONTRACT-003": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-AUDIT-OVERRIDE-CONTRACT-004": {
+                "paths": [],
+                "fingerprints": {}
+              }
+            }
+          },
+          "order": 1807
+        },
+        "design": {
+          "phase": "design",
+          "recordedAt": "2026-10-07T07:50:52.318Z",
+          "fingerprints": {
+            "impact": "2566834e2371ceeb846561379868fb836ce33590873a0700baae8913f4310b26",
+            "requirements": "232640cd8fb610dbcd468d359c06f4775cee3d9ad9582d7701d12ff5fa9f8ed2",
+            "design": "60aaafde8e8aebc4e10d5b56d348a31baff16e5e8af87fe04ce0150a3be56458",
+            "implementation": "469f007aee4c8c9e8de913c276a4aa45194fd26d57bebc7572f41184a9aa19a0",
+            "tests": "91aac36512de3e4e235a04fb56cc8426509d638b3fcd1d44be5d15025c3c70fa",
+            "tdd": "e937653c79a2697fe248eebda143690cb135505150fd6af36eb6ba716b6962ca",
+            "requirementImplementations": {
+              "REQ-AUDIT-OVERRIDE-CONTRACT-001": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-AUDIT-OVERRIDE-CONTRACT-002": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-AUDIT-OVERRIDE-CONTRACT-003": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-AUDIT-OVERRIDE-CONTRACT-004": {
+                "paths": [],
+                "fingerprints": {}
+              }
+            }
+          },
+          "order": 1808
+        },
+        "red": {
+          "phase": "red",
+          "recordedAt": "2026-10-07T09:23:30.972Z",
+          "fingerprints": {
+            "impact": "2566834e2371ceeb846561379868fb836ce33590873a0700baae8913f4310b26",
+            "requirements": "232640cd8fb610dbcd468d359c06f4775cee3d9ad9582d7701d12ff5fa9f8ed2",
+            "design": "60aaafde8e8aebc4e10d5b56d348a31baff16e5e8af87fe04ce0150a3be56458",
+            "implementation": "469f007aee4c8c9e8de913c276a4aa45194fd26d57bebc7572f41184a9aa19a0",
+            "tests": "6a1b85c2b859ad49a0769f3d19b3462dc49426d0962f8a89e6031ac8454600b6",
+            "tdd": "eb204f9f2d76f09640ad40e3a8dcd821ca573143ba086129f8be974fd0f675b5",
+            "requirementImplementations": {
+              "REQ-AUDIT-OVERRIDE-CONTRACT-001": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-AUDIT-OVERRIDE-CONTRACT-002": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-AUDIT-OVERRIDE-CONTRACT-003": {
+                "paths": [],
+                "fingerprints": {}
+              },
+              "REQ-AUDIT-OVERRIDE-CONTRACT-004": {
+                "paths": [],
+                "fingerprints": {}
+              }
+            }
+          },
+          "order": 1813
+        },
+        "implementation": {
+          "phase": "implementation",
+          "recordedAt": "2026-10-07T09:34:08.564Z",
+          "fingerprints": {
+            "impact": "1dbd4b34f90af1e87bb02dd4b493f26fdc3559e0ccad8e525f4ab8cb9440b963",
+            "requirements": "232640cd8fb610dbcd468d359c06f4775cee3d9ad9582d7701d12ff5fa9f8ed2",
+            "design": "60aaafde8e8aebc4e10d5b56d348a31baff16e5e8af87fe04ce0150a3be56458",
+            "implementation": "52b3a2756779dbd02633c3ec20329136ce371561ff1ad751d8c4db4a1266347c",
+            "tests": "6a1b85c2b859ad49a0769f3d19b3462dc49426d0962f8a89e6031ac8454600b6",
+            "tdd": "eb204f9f2d76f09640ad40e3a8dcd821ca573143ba086129f8be974fd0f675b5",
+            "requirementImplementations": {
+              "REQ-AUDIT-OVERRIDE-CONTRACT-001": {
+                "paths": [
+                  "scripts/check-npm-audit-remediation.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-npm-audit-remediation.mjs": "19b03bb6b964883046c6ff7d1ba0db5f8ec41a4cf3a161c06ebd1de873e54216"
+                }
+              },
+              "REQ-AUDIT-OVERRIDE-CONTRACT-002": {
+                "paths": [
+                  "scripts/check-npm-audit-remediation.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-npm-audit-remediation.mjs": "19b03bb6b964883046c6ff7d1ba0db5f8ec41a4cf3a161c06ebd1de873e54216"
+                }
+              },
+              "REQ-AUDIT-OVERRIDE-CONTRACT-003": {
+                "paths": [
+                  "scripts/check-npm-audit-remediation.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-npm-audit-remediation.mjs": "19b03bb6b964883046c6ff7d1ba0db5f8ec41a4cf3a161c06ebd1de873e54216"
+                }
+              },
+              "REQ-AUDIT-OVERRIDE-CONTRACT-004": {
+                "paths": [
+                  "scripts/check-npm-audit-remediation.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-npm-audit-remediation.mjs": "19b03bb6b964883046c6ff7d1ba0db5f8ec41a4cf3a161c06ebd1de873e54216"
+                }
+              }
+            }
+          },
+          "order": 1814
+        },
+        "green": {
+          "phase": "green",
+          "recordedAt": "2026-10-07T09:34:26.985Z",
+          "fingerprints": {
+            "impact": "1dbd4b34f90af1e87bb02dd4b493f26fdc3559e0ccad8e525f4ab8cb9440b963",
+            "requirements": "232640cd8fb610dbcd468d359c06f4775cee3d9ad9582d7701d12ff5fa9f8ed2",
+            "design": "60aaafde8e8aebc4e10d5b56d348a31baff16e5e8af87fe04ce0150a3be56458",
+            "implementation": "52b3a2756779dbd02633c3ec20329136ce371561ff1ad751d8c4db4a1266347c",
+            "tests": "6a1b85c2b859ad49a0769f3d19b3462dc49426d0962f8a89e6031ac8454600b6",
+            "tdd": "a1e7df51c2856b99e11af59dea2d8cc0afbb07e3e3b0bb6d1de7992fe4739417",
+            "requirementImplementations": {
+              "REQ-AUDIT-OVERRIDE-CONTRACT-001": {
+                "paths": [
+                  "scripts/check-npm-audit-remediation.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-npm-audit-remediation.mjs": "19b03bb6b964883046c6ff7d1ba0db5f8ec41a4cf3a161c06ebd1de873e54216"
+                }
+              },
+              "REQ-AUDIT-OVERRIDE-CONTRACT-002": {
+                "paths": [
+                  "scripts/check-npm-audit-remediation.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-npm-audit-remediation.mjs": "19b03bb6b964883046c6ff7d1ba0db5f8ec41a4cf3a161c06ebd1de873e54216"
+                }
+              },
+              "REQ-AUDIT-OVERRIDE-CONTRACT-003": {
+                "paths": [
+                  "scripts/check-npm-audit-remediation.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-npm-audit-remediation.mjs": "19b03bb6b964883046c6ff7d1ba0db5f8ec41a4cf3a161c06ebd1de873e54216"
+                }
+              },
+              "REQ-AUDIT-OVERRIDE-CONTRACT-004": {
+                "paths": [
+                  "scripts/check-npm-audit-remediation.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-npm-audit-remediation.mjs": "19b03bb6b964883046c6ff7d1ba0db5f8ec41a4cf3a161c06ebd1de873e54216"
+                }
+              }
+            }
+          },
+          "order": 1819
+        },
+        "quality": {
+          "phase": "quality",
+          "recordedAt": "2026-10-07T10:53:07.478Z",
+          "fingerprints": {
+            "impact": "1c69988de14577d9c154f0306f346b89c149906f2e056017e96c09d9c80edfc6",
+            "requirements": "232640cd8fb610dbcd468d359c06f4775cee3d9ad9582d7701d12ff5fa9f8ed2",
+            "design": "60aaafde8e8aebc4e10d5b56d348a31baff16e5e8af87fe04ce0150a3be56458",
+            "implementation": "52b3a2756779dbd02633c3ec20329136ce371561ff1ad751d8c4db4a1266347c",
+            "tests": "b813b73cf1797ce2f4a1b64b2ab382d70a8977c01240a0f1d4d89c4e2ddc3771",
+            "tdd": "d04f59a835ef3c44164496f37b738b2cb1a93298de4a761fbf271e1bd24e7999",
+            "requirementImplementations": {
+              "REQ-AUDIT-OVERRIDE-CONTRACT-001": {
+                "paths": [
+                  "scripts/check-npm-audit-remediation.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-npm-audit-remediation.mjs": "19b03bb6b964883046c6ff7d1ba0db5f8ec41a4cf3a161c06ebd1de873e54216"
+                }
+              },
+              "REQ-AUDIT-OVERRIDE-CONTRACT-002": {
+                "paths": [
+                  "scripts/check-npm-audit-remediation.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-npm-audit-remediation.mjs": "19b03bb6b964883046c6ff7d1ba0db5f8ec41a4cf3a161c06ebd1de873e54216"
+                }
+              },
+              "REQ-AUDIT-OVERRIDE-CONTRACT-003": {
+                "paths": [
+                  "scripts/check-npm-audit-remediation.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-npm-audit-remediation.mjs": "19b03bb6b964883046c6ff7d1ba0db5f8ec41a4cf3a161c06ebd1de873e54216"
+                }
+              },
+              "REQ-AUDIT-OVERRIDE-CONTRACT-004": {
+                "paths": [
+                  "scripts/check-npm-audit-remediation.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-npm-audit-remediation.mjs": "19b03bb6b964883046c6ff7d1ba0db5f8ec41a4cf3a161c06ebd1de873e54216"
+                }
+              }
+            }
+          },
+          "order": 1826
+        }
+      },
+      "tddBatches": [
+        {
+          "requirementIds": [
+            "REQ-AUDIT-OVERRIDE-CONTRACT-004"
+          ],
+          "red": {
+            "phase": "red",
+            "recordedAt": "2026-10-07T10:41:52.481Z",
+            "fingerprints": {
+              "impact": "1c69988de14577d9c154f0306f346b89c149906f2e056017e96c09d9c80edfc6",
+              "requirements": "232640cd8fb610dbcd468d359c06f4775cee3d9ad9582d7701d12ff5fa9f8ed2",
+              "design": "60aaafde8e8aebc4e10d5b56d348a31baff16e5e8af87fe04ce0150a3be56458",
+              "implementation": "229e4bf21e84b52d8226257ba735e80f9b01aebdc535ff880defba50f4efc8c2",
+              "tests": "b813b73cf1797ce2f4a1b64b2ab382d70a8977c01240a0f1d4d89c4e2ddc3771",
+              "tdd": "2c78d202e63258b3933af75e9dfd208e5389c9b08205c384294564e820ca20e7",
+              "requirementImplementations": {
+                "REQ-AUDIT-OVERRIDE-CONTRACT-004": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "bd44b7c9a183424be9cc4c98c85ce34fbeb15d5206263a4d295b897f514004af"
+                  }
+                }
+              }
+            },
+            "order": 1822
+          },
+          "implementation": {
+            "phase": "implementation",
+            "recordedAt": "2026-10-07T10:42:14.427Z",
+            "fingerprints": {
+              "impact": "1c69988de14577d9c154f0306f346b89c149906f2e056017e96c09d9c80edfc6",
+              "requirements": "232640cd8fb610dbcd468d359c06f4775cee3d9ad9582d7701d12ff5fa9f8ed2",
+              "design": "60aaafde8e8aebc4e10d5b56d348a31baff16e5e8af87fe04ce0150a3be56458",
+              "implementation": "52b3a2756779dbd02633c3ec20329136ce371561ff1ad751d8c4db4a1266347c",
+              "tests": "b813b73cf1797ce2f4a1b64b2ab382d70a8977c01240a0f1d4d89c4e2ddc3771",
+              "tdd": "2c78d202e63258b3933af75e9dfd208e5389c9b08205c384294564e820ca20e7",
+              "requirementImplementations": {
+                "REQ-AUDIT-OVERRIDE-CONTRACT-004": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "19b03bb6b964883046c6ff7d1ba0db5f8ec41a4cf3a161c06ebd1de873e54216"
+                  }
+                }
+              }
+            },
+            "order": 1823
+          },
+          "green": {
+            "phase": "green",
+            "recordedAt": "2026-10-07T10:42:22.197Z",
+            "fingerprints": {
+              "impact": "1c69988de14577d9c154f0306f346b89c149906f2e056017e96c09d9c80edfc6",
+              "requirements": "232640cd8fb610dbcd468d359c06f4775cee3d9ad9582d7701d12ff5fa9f8ed2",
+              "design": "60aaafde8e8aebc4e10d5b56d348a31baff16e5e8af87fe04ce0150a3be56458",
+              "implementation": "52b3a2756779dbd02633c3ec20329136ce371561ff1ad751d8c4db4a1266347c",
+              "tests": "b813b73cf1797ce2f4a1b64b2ab382d70a8977c01240a0f1d4d89c4e2ddc3771",
+              "tdd": "d04f59a835ef3c44164496f37b738b2cb1a93298de4a761fbf271e1bd24e7999",
+              "requirementImplementations": {
+                "REQ-AUDIT-OVERRIDE-CONTRACT-004": {
+                  "paths": [
+                    "scripts/check-npm-audit-remediation.mjs"
+                  ],
+                  "fingerprints": {
+                    "scripts/check-npm-audit-remediation.mjs": "19b03bb6b964883046c6ff7d1ba0db5f8ec41a4cf3a161c06ebd1de873e54216"
+                  }
+                }
+              }
+            },
+            "order": 1825
+          }
+        }
+      ],
+      "qualityHistory": [
+        {
+          "phase": "quality",
+          "recordedAt": "2026-10-07T09:58:33.910Z",
+          "fingerprints": {
+            "impact": "13d2d3fe2968f14ad4a31f96d880a0bdb49de51f4ed1e5addbfe56a7fc75636e",
+            "requirements": "232640cd8fb610dbcd468d359c06f4775cee3d9ad9582d7701d12ff5fa9f8ed2",
+            "design": "60aaafde8e8aebc4e10d5b56d348a31baff16e5e8af87fe04ce0150a3be56458",
+            "implementation": "52b3a2756779dbd02633c3ec20329136ce371561ff1ad751d8c4db4a1266347c",
+            "tests": "6de89ababecef2cd3344f5f721526c84cd427fd79c439e0e61eab876c5e334aa",
+            "tdd": "a1e7df51c2856b99e11af59dea2d8cc0afbb07e3e3b0bb6d1de7992fe4739417",
+            "requirementImplementations": {
+              "REQ-AUDIT-OVERRIDE-CONTRACT-001": {
+                "paths": [
+                  "scripts/check-npm-audit-remediation.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-npm-audit-remediation.mjs": "19b03bb6b964883046c6ff7d1ba0db5f8ec41a4cf3a161c06ebd1de873e54216"
+                }
+              },
+              "REQ-AUDIT-OVERRIDE-CONTRACT-002": {
+                "paths": [
+                  "scripts/check-npm-audit-remediation.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-npm-audit-remediation.mjs": "19b03bb6b964883046c6ff7d1ba0db5f8ec41a4cf3a161c06ebd1de873e54216"
+                }
+              },
+              "REQ-AUDIT-OVERRIDE-CONTRACT-003": {
+                "paths": [
+                  "scripts/check-npm-audit-remediation.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-npm-audit-remediation.mjs": "19b03bb6b964883046c6ff7d1ba0db5f8ec41a4cf3a161c06ebd1de873e54216"
+                }
+              },
+              "REQ-AUDIT-OVERRIDE-CONTRACT-004": {
+                "paths": [
+                  "scripts/check-npm-audit-remediation.mjs"
+                ],
+                "fingerprints": {
+                  "scripts/check-npm-audit-remediation.mjs": "19b03bb6b964883046c6ff7d1ba0db5f8ec41a4cf3a161c06ebd1de873e54216"
+                }
+              }
+            }
+          },
+          "order": 1820
+        }
+      ]
     }
   ]
 }
