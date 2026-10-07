@@ -180,8 +180,8 @@ Inspection commands completed before implementation:
 
 ## Verification evidence
 
-Override audit captured at: 2026-10-07T10:04:08Z.
-Override lockfile SHA-256: `ee6bbf3ea0bd21f66baa5eeb61f5d95100127506c16d475304ac9a1699150014`.
+Override audit captured at: 2026-10-07T18:14:54Z.
+Override lockfile SHA-256: `e248b4a3ac1fecf1560ee2bb9c60ade9287645e114a4b3ec1b7fafac16cab13a`.
 Audit report SHA-256: `7b1b59d3542ad0bda8459610803e0a0ef29e700cbf81d2bb43c1e39cc0419651`.
 Remediation history: CHANGE-0022 -> CHANGE-0052.
 Js-yaml consumer inventory: [{"path":"node_modules/@istanbuljs/load-nyc-config","kind":"dependencies","range":"^3.13.1"}]

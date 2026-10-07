@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.1.21 - 2026-10-07
 
 - Remove the development-only `sprintf-js` advisory chain using the single
   reviewed `js-yaml: "^5.4.3"` override. Pin that exact override and npm-generated

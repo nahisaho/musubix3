@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-07T03:52:01.681Z",
+  "generatedAt": "2026-10-07T18:21:01.296Z",
   "nodes": [
     {
       "id": "ADR-0043",
@@ -309,7 +309,7 @@
     ".musubix/features/approval-prepare-diff-only/design.md": "1a32781519854b3cf42201b8635bdcaac3010e89535056be2851ef0caa22cda6",
     ".musubix/features/approval-prepare-diff-only/requirements.md": "a6cc071b830412abe2ac5f401b93a66265e11a4f3a1a546c7fac2c0d0466dbe0",
     "packages/analysis/src/approval.ts": "14015adfe994d2f1be5b805e240f9cd774b99fead432d3d0162d60324db1be8a",
-    "packages/cli/src/main.ts": "6b66dfce0436c633cf4bd081c3ef3ae98dcead15f8741de0d1b04ff3a497d318",
+    "packages/cli/src/main.ts": "73ff89c11b1f9ff84f9f1efd11829b2867c5ae14aae950438fbd046d7aefded7",
     "tests/approval-prepare-diff-only.test.ts": "f67b08d119a6d3cc9e3154728121b5c2e00be0f3abda28efb8e8acdcd072173a"
   }
 }
