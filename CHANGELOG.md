@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+- Add a `--diff-only` option to `approval prepare <requirements|design|release>`
+  that additionally reports a `changedFiles` array: only the artifact paths
+  whose content differs from that same stage's (and domain's, when
+  applicable) last recorded approval, or every current path tagged
+  `diffOnlyBaseline: "none"` when no prior approval exists yet. The full,
+  unfiltered `artifactSha256` and `artifacts` manifest used by
+  `approval record` are computed identically with or without the flag, so the
+  cryptographic integrity guarantee is never weakened — `--diff-only` only
+  makes the already-required full review easier to perform by letting a human
+  reviewer see at a glance which files are new since their own last approval,
+  instead of manually diffing against `origin/main` for every requirements/
+  design/release approval request (#68).
 - Reject `tdd red`/`tdd green` with a new `CHANGE_RECORD_PHASE_PRECONDITION`
   error, before any TDD evidence is appended, when the requirement's staged
   change has not yet recorded the `design` phase (for `red`) or the `red`/
