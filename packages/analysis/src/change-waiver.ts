@@ -1,18 +1,21 @@
 import { error, type Diagnostic } from '../../domain/src/index.js';
 import { digest, exists, readText, within, writeJson } from './files.js';
 import {
-  batchFor, batchesForKey, batchKey, completenessTddUnsatisfiedCondition, designUnchangedCondition,
-  currentRequirementIdsForBatch, effectiveBatches, greenUnprovenCondition,
+  batchFor, batchesForKey, batchKey, designUnchangedCondition,
+  currentRequirementIdsForBatch, effectiveBatches,
   implementationUnchangedCondition, loadChangeEvidence,
   orderMigrationRequiredBatchCondition,
-  orderMigrationRequiredPhaseCondition, orderMigrationRequiredRequirementCondition,
+  orderMigrationRequiredPhaseCondition,
   phaseMissingCondition, phaseOrderBatchCondition, phaseOrderPhaseCondition,
-  recordMissingCondition, redUnprovenCondition, relevantImplementationUnchangedCondition,
+  recordMissingCondition, relevantImplementationUnchangedCondition,
   requirementsUnchangedCondition, testChangedAfterRedCondition, testsUnchangedCondition,
-  voidedCycleOrdersInCurrentWindow,
   type ChangeEvidence, type ChangePhase, type ChangeTddBatch,
 } from './change-evidence.js';
-import { loadTddEvidence, validlyVoidedTddCycles, validlyArchivedTddCycles, type TddEvidence } from './tdd.js';
+import {
+  loadTddEvidence, validlyVoidedTddCycles, validlyArchivedTddCycles, type TddEvidence,
+  completenessTddUnsatisfiedCondition, greenUnprovenCondition, orderMigrationRequiredRequirementCondition,
+  redUnprovenCondition, voidedCycleOrdersInCurrentWindow,
+} from './tdd.js';
 import { appendEvidenceOrder, evidenceOrderRecord, inspectEvidenceOrder } from './order.js';
 import { withEvidenceWriterLock } from './evidence-writer-lock.js';
 

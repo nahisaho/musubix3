@@ -4,11 +4,13 @@ import {
   validateChangeEvidence, writeJson, writeText,
 } from '../packages/analysis/src/index.js';
 import {
-  batchFor, currentRequirementIdsForBatch, effectiveBatches, hasValidTddCycle,
-  orderMigrationRequiredRequirementCondition, voidedCycleOrdersInCurrentWindow,
+  batchFor, currentRequirementIdsForBatch, effectiveBatches,
   type ChangePhaseEvidence, type ChangeRecord,
 } from '../packages/analysis/src/change-evidence.js';
-import type { TddEvidence, TddPhaseEvidence } from '../packages/analysis/src/tdd.js';
+import {
+  hasValidTddCycle, orderMigrationRequiredRequirementCondition, voidedCycleOrdersInCurrentWindow,
+  type TddEvidence, type TddPhaseEvidence,
+} from '../packages/analysis/src/tdd.js';
 import { code, project, tddResultRunner, testCode } from './helpers.js';
 
 function batchPhase(

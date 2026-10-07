@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-06T13:59:03.649Z",
+  "generatedAt": "2026-10-06T22:41:14.184Z",
   "nodes": [
     {
       "id": "ADR-0029",
@@ -60,7 +60,7 @@
       "id": "CODE-CHANGE-QUALITY-REFRESH-001",
       "kind": "code",
       "path": "packages/analysis/src/change-evidence.ts",
-      "line": 75
+      "line": 74
     },
     {
       "id": "CODE-CHANGE-QUALITY-REFRESH-002",
@@ -78,7 +78,7 @@
       "id": "CODE-CHANGE-QUALITY-REFRESH-004",
       "kind": "code",
       "path": "packages/analysis/src/change.ts",
-      "line": 345
+      "line": 348
     },
     {
       "id": "CODE-CHANGE-QUALITY-REFRESH-005",
@@ -2712,8 +2712,8 @@
     ".musubix/features/release-asset-publishing/design.md": "1ceba4afd1ffff0fac9c88c8b826828eeba3fcd4d3a4ca8f71d11aa758a81472",
     ".musubix/features/release-asset-publishing/requirements.md": "8bf4436d5b694e32b683edbb620573589b28b74c35a076182c971bdb79cd4472",
     "packages/analysis/src/approval.ts": "232ef37866d07c72f762c1ccffde3c57d310aec0df82e252f5e850bc76976027",
-    "packages/analysis/src/change-evidence.ts": "a8356256b78bf5a4143bf218162c63b006e0a47f8b6db4ebc7741791e77c2bf6",
-    "packages/analysis/src/change.ts": "0d7a71d450f63c26c2ad322f1c09db7b6f2b72a629ea293b6b7a89974fa2dc03",
+    "packages/analysis/src/change-evidence.ts": "cd31da952e1501376b89e93dfe38ab6f81276ae7e42b1c30748a0d68a238fa2d",
+    "packages/analysis/src/change.ts": "1bda1e7ba06f9792df067526b6393a4491fb0ca9dc6a7a88903650669c751092",
     "packages/analysis/src/evidence-merge.ts": "40130d28f1e85e3776e7f804b2ad6ca10eabe212158a1f17c169e1cf149d1aff",
     "packages/analysis/src/evidence-writer-lock.ts": "a1e7a13da4b5a3f9a96c24914f876166571df5aec20d54048a51a3188e865698",
     "packages/analysis/src/quality-refresh.ts": "2b11461f84b7155ee1ec02d53d6e0af291ce26c40f6e77755e405c1b000e730d",

@@ -43,12 +43,13 @@
     ".musubix/decisions/ADR-0039.md": "f83b714f37ca814ba19e6086866c3138e5dbbd5ebf10be3087e1b700fbcf2487",
     ".musubix/decisions/ADR-0040.md": "730b72e0a529ca69766a0b42ed51da0a9175032082d394fb7993810b1aed4d09",
     ".musubix/decisions/ADR-0041.md": "31acae0e740e0c179af3f67949ca5062f4eb9cad2a82d6ca226f0aaea516ad1e",
+    ".musubix/decisions/ADR-0042.md": "750f2fb7060fbf3d9d57f327b1f8bf78a3ad2e7e667f87702e7a9bd75f0e6221",
     ".musubix/features/adapter-pattern-recognition/design.md": "a8e0c4a11f626cb4a41c9b5b53359c072ec0c3161f704791f42ba8af38124a70",
     ".musubix/features/adapter-pattern-recognition/requirements.md": "5731561a0a04982b8a5c305bdeeae6084bcf0ee8846f295eaaaabc823d1f9793",
     ".musubix/features/approval-domain-scoping/design.md": "e8731f1e3094aa22192ae2ae5986fb4dc9a7698f7cfe66961e1342f6e0743bd9",
     ".musubix/features/approval-domain-scoping/requirements.md": "c886926622fe022052c81b1ea4e76f21c04f42636f4a37d074f7d34c0505210f",
-    ".musubix/features/attestation-evidence-stability/design.md": "878b28a4f673bcbcf9684de3d759538a8226fb2c3bd63536d12a408723e19d1a",
-    ".musubix/features/attestation-evidence-stability/requirements.md": "afab3f5ea642e0ff89d883ca4e612e460a6291afb0d263d4ffe7f878e4145406",
+    ".musubix/features/attestation-evidence-stability/design.md": "37d4ea079a8b422df744d5a0835adafbb9c2bee440866d5f8a24cddcae43c326",
+    ".musubix/features/attestation-evidence-stability/requirements.md": "36661538d67523f444f537dbc8466ac4919dd20650fcdd78c2ae3d4a402039a5",
     ".musubix/features/bounded-file-read-concurrency/design.md": "f62902f2ffe3e37202076e4fed2c390667af87dab84cd0e97316eaaab2d10394",
     ".musubix/features/bounded-file-read-concurrency/requirements.md": "9e08acde7e29a8f14b23d908c465c629e49d00bc29ae9bda1466427362c815be",
     ".musubix/features/change-acceptance-heuristic/design.md": "ce67823a2c44f55a8fbfebc36b9532a0ca1f7a754613443c99ea8171ab136910",
@@ -109,8 +110,8 @@
     ".musubix/features/tdd-fingerprint-migration/requirements.md": "e8ac10f4367e8b43e427d2a27616debbd836194854a86da4850773b9cde9e1ae",
     ".musubix/features/tdd-fingerprint-scoping/design.md": "5a52655e1555ca194116d973accbfbd5a1eb384cfcf2bcf0a36893ff0783a662",
     ".musubix/features/tdd-fingerprint-scoping/requirements.md": "d3e480fc0ef92edb87f2c22d1d67a00fc177fde913c68d0187aa45375b14d4c9",
-    ".musubix/features/tdd-green-requirement-scoping/design.md": "5e35edb88e48648223f0360f067fcad15d078455050d2ebabaf5ee572abca6c5",
-    ".musubix/features/tdd-green-requirement-scoping/requirements.md": "456edab50870ba2fc3297eccee1c4dc114a8c8400354cb3e4b00769bb8b29ba1",
+    ".musubix/features/tdd-green-requirement-scoping/design.md": "25ab3a12c476e84ade147858e20716d349ce3fe7ce7c79cd9d22025274beea74",
+    ".musubix/features/tdd-green-requirement-scoping/requirements.md": "de597ccac5afd4bd395a7dbda50ebc88f20f97439ead243d7552980dba06f682",
     ".musubix/features/tdd-identifier-migration/design.md": "95d876ebd09890d0cbef5fa8adcbf5281147606b494db41cb65598b687c747b7",
     ".musubix/features/tdd-identifier-migration/requirements.md": "a20640411a8b8c1d04f5577916c9252a74fbdf746689b10faebcbb3e233099ce",
     ".musubix/features/tdd-red-collection-guidance/design.md": "d1380ce63a1fbd0c6a1a08d899df11bf92477e2eb058954ee5cde2cd2eafd6bf",
@@ -128,7 +129,7 @@
     ".musubix/features/workflow-waiver-bulk-recording/design.md": "c956f35169212cedc0fc66a11902200c7dda10230fc326075644d908f29580ae",
     ".musubix/features/workflow-waiver-bulk-recording/requirements.md": "361cfba519d4ab189a2091cf7b99133b9c005f69fb28aa2d77bba17bd7ee7b33"
   },
-  "artifactSha256": "d0b824949482560b958caf1ce491034f8c17d4dee379fd8523a1f8d0c521e282",
+  "artifactSha256": "07690b436e1c77cfb5dda1147763bf126a5c0eb8e2762d02309dd237477316a0",
   "approver": "nahisaho",
-  "approvedAt": "2026-10-06T13:48:16.925Z"
+  "approvedAt": "2026-10-06T22:46:20.261Z"
 }

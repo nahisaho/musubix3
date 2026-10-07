@@ -2,6 +2,19 @@
 
 ## Unreleased
 
+- Reject `tdd red`/`tdd green` with a new `CHANGE_RECORD_PHASE_PRECONDITION`
+  error, before any TDD evidence is appended, when the requirement's staged
+  change has not yet recorded the `design` phase (for `red`) or the `red`/
+  `implementation` phases (for `green`) in the correct order; the error names
+  the exact `change-record <id> <phase> --requirement <id>` command to run
+  first (or, when no staged change references the requirement at all, that a
+  staged change must record `design` first). This is a fail-fast,
+  complementary guard alongside the existing post-hoc `hasValidTddCycle`
+  validation — not a replacement for it — so an out-of-order `tdd green`
+  (one recorded before its requirement's `change-record red`/
+  `implementation` phases) can never corrupt the append-only, hash-chained
+  TDD evidence log in the first place, eliminating the manual hash-chain
+  recovery this exact scenario required during CHANGE-0047/Issue #55 (#67).
 - Exclude a fixed, source-hardcoded scratch-file naming convention
   (untracked files at or beneath `.musubix/scratch/`, and untracked files
   whose basename matches `*.scratch.<ext>`) from the untracked candidates
