@@ -402,7 +402,11 @@ export async function loadApproval(root: string, stage: ApprovalStage, domain?: 
     return value as ApprovalEvidence;
 }
 
-function releaseDrift(
+/** @id CODE-APPROVAL-PREPARE-DIFF-ONLY-001
+ * @implements REQ-APPROVAL-PREPARE-DIFF-ONLY-003
+ * @design DES-APPROVAL-PREPARE-DIFF-ONLY-001
+ */
+export function artifactDrift(
     approved: Record<string, string>,
     current: Record<string, string>,
   ): ReleaseApprovalDrift[] {
@@ -415,6 +419,29 @@ function releaseDrift(
       return [{ path, change, approvedSha256, currentSha256 }];
     });
   }
+
+export type DiffOnlyBaseline = 'approved' | 'none';
+
+export interface DiffOnlyResult {
+  changedFiles: string[];
+  diffOnlyBaseline: DiffOnlyBaseline;
+}
+
+/** @id CODE-APPROVAL-PREPARE-DIFF-ONLY-002
+ * @implements REQ-APPROVAL-PREPARE-DIFF-ONLY-002 REQ-APPROVAL-PREPARE-DIFF-ONLY-003
+ * @implements REQ-APPROVAL-PREPARE-DIFF-ONLY-004
+ * @design DES-APPROVAL-PREPARE-DIFF-ONLY-001
+ */
+export function diffOnlyChangedFiles(
+  manifest: Pick<ApprovalManifest, 'artifacts'>,
+  previous: ApprovalEvidence | null,
+): DiffOnlyResult {
+  if (!previous) {
+    return { changedFiles: Object.keys(manifest.artifacts).sort(codePointOrder), diffOnlyBaseline: 'none' };
+  }
+  const changedFiles = artifactDrift(previous.artifacts, manifest.artifacts).map((drift) => drift.path);
+  return { changedFiles, diffOnlyBaseline: 'approved' };
+}
 
 type GitStatusRecord = {
   status: string;
@@ -515,7 +542,7 @@ export async function validateReleaseApprovalForTag(
         );
       }
       const current = await snapshot(root, candidate.paths);
-      const diagnostics = releaseDrift(evidence.artifacts, current);
+      const diagnostics = artifactDrift(evidence.artifacts, current);
       if (!diagnostics.length) {
         throw new ReleaseApprovalPreconditionError(
           'RELEASE_APPROVAL_DIRTY',
@@ -527,7 +554,7 @@ export async function validateReleaseApprovalForTag(
 
     if (!evidence) return { valid: true, stage: 'release', status: 'missing', diagnostics: [] };
     const current = await snapshot(root, tagged.paths);
-    const diagnostics = releaseDrift(evidence.artifacts, current);
+    const diagnostics = artifactDrift(evidence.artifacts, current);
     return diagnostics.length
       ? { valid: false, stage: 'release', status: 'stale', diagnostics }
       : { valid: true, stage: 'release', status: 'approved', diagnostics: [] };

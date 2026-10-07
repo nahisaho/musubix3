@@ -339,7 +339,7 @@ npx musubix3 tdd green TEST-EXAMPLE-002 --requirement REQ-EXAMPLE-002 --command 
 | `constitution validate [file]` | 版・原則・測定可能な規則の定義検査 |
 | `design validate <file>` | 必須項目・要求ID・既存ADRの参照検査 |
 | `design c4 <file>` | 明示的なコンポーネントと依存から Mermaid 図 |
-| `approval prepare <requirements\|design\|release>` | 人間が確認する決定的manifestとhashを表示 |
+| `approval prepare <requirements\|design\|release> [--diff-only]` | 人間が確認する決定的manifestとhashを表示。`--diff-only`はそのステージの直近の記録済み承認からハッシュが変化したファイルパスのみを`changedFiles`として追加表示（未承認なら`diffOnlyBaseline: "none"`で現在の全ファイルを表示）。`artifactSha256`/`artifacts`自体は変化しない |
 | `approval record <stage> --approver <name> --artifact-sha256 <hash> --confirm` | 確認済みhashが現在も一致するときだけ承認を記録 |
 | `approval validate` | 各承認をapproved・missing・staleとして表示し、検証結果から承認を推測しない |
 | `trace build` | リポジトリ全体のグラフと機能別コピーを生成 |
@@ -673,6 +673,17 @@ evidence/reportのpath（`tddReport`/`testReport`/`mutationReport`、
 なります。承認fileはstage、approver、`approvedAt`、artifactごとのSHA-256、決定的
 manifest SHA-256を保持します。release記録はcache済みquality evidenceを信頼せずgateを
 再計算し、承認以外の必須checkがすべてpassした場合だけ成功します。
+`approval prepare <stage> --diff-only`は、同じ決定的manifestから計算した
+`changedFiles`（そのstageの直近の*記録済み*承認とハッシュが異なるartifact pathのみ。
+ライブな`git diff`ではない）を追加表示します。`artifactSha256`と`artifacts`自体は
+常に従来通り返り、整合性検証は一切弱まりません。`diffOnlyBaseline`は、直近の承認と
+比較できた場合は`"approved"`、そのstageが一度も承認されたことがない場合は`"none"`
+（現在の全pathを表示）になります。`--domain`指定時はそのdomainの直近承認に限定して
+比較します。直近の承認fileが存在してもschema検証に失敗する場合、`approval validate`
+と同じ`Invalid <stage> approval evidence.`エラーで即座に失敗し、壊れた証拠を
+「未承認」として黙って扱うことはありません。`--diff-only`なしの非JSON出力は従来通り
+変化せず、`--diff-only`かつ`--json`なしの場合のconsole要約は全artifact一覧ではなく
+変更pathのみと簡潔なbaseline注記を表示します。
 approver文字列は明示的なlocal証拠であり、認証済みidentityではありません。
 独立identityが必要なrepositoryではprotected review、CODEOWNERS、CI/OIDCも併用します。
 local承認証拠は明示的な意思を記録しますが、承認者の暗号学的な本人確認ではありません。

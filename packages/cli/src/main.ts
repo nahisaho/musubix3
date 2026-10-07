@@ -16,7 +16,7 @@ import {
   recoverQualityRefresh,
   attestationSigningPayload, createUnsignedAttestation, githubOidcAudience, verifyEvidenceAttestation,
   mutationDoctor, mutationIdentity, validateMutationEvidence, validateModelCorrespondenceEvidence, within,
-  approvalManifest, approvalStages, recordApproval, requireApproval,   requireDomainOption, requireValidateDomainOption, resolveDesignFileDomain, resolveNamedDomain,
+  approvalManifest, approvalStages, diffOnlyChangedFiles, loadApproval, recordApproval, requireApproval,   requireDomainOption, requireValidateDomainOption, resolveDesignFileDomain, resolveNamedDomain,
   validateApprovals, validateApprovalsForDomain, type ApprovalStage,
   scaffoldCommands, scaffoldRequirements, scaffoldDesign,
   recordChangeWaiver, recordWorkflowWaiver, recordAllWorkflowWaivers,
@@ -650,9 +650,15 @@ source, quarantining merge files, and rerunning structural validation.`))
       output(result, !!options.json, `WAIVER: PASS (${changeId}:${code}${options.requirement ? `:${options.requirement}` : ''}${options.detail ? `:${options.detail}` : ''})`);
     });
   const approval = program.command('approval').description('Prepare, record and validate explicit artifact-bound human approvals');
+  /** @id CODE-APPROVAL-PREPARE-DIFF-ONLY-003
+   * @implements REQ-APPROVAL-PREPARE-DIFF-ONLY-001 REQ-APPROVAL-PREPARE-DIFF-ONLY-002 REQ-APPROVAL-PREPARE-DIFF-ONLY-004
+   * @implements REQ-APPROVAL-PREPARE-DIFF-ONLY-005 REQ-APPROVAL-PREPARE-DIFF-ONLY-006 REQ-APPROVAL-PREPARE-DIFF-ONLY-007
+   * @design DES-APPROVAL-PREPARE-DIFF-ONLY-002 DES-APPROVAL-PREPARE-DIFF-ONLY-003
+   */
   common(approval.command('prepare <stage>').description('Show the exact artifact manifest a human must review'))
     .option('--domain <name>', 'Approval domain (required when approval.domains is configured, except for release)')
-    .action(async (stage: string, options: { root: string; json?: boolean; domain?: string }) => {
+    .option('--diff-only', 'Additionally report only the file paths whose content changed since the last recorded approval for this stage')
+    .action(async (stage: string, options: { root: string; json?: boolean; domain?: string; diffOnly?: boolean }) => {
       if (!approvalStages.includes(stage as ApprovalStage)) throw new Error(`stage must be one of: ${approvalStages.join(', ')}`);
       const root = resolve(options.root);
       await assertCoordinatedEvidenceRead(root);
@@ -660,7 +666,24 @@ source, quarantining merge files, and rerunning structural validation.`))
       requireDomainOption(config.approval, stage as ApprovalStage, options.domain);
       const domain = options.domain ? await resolveNamedDomain(root, config.approval, options.domain) : undefined;
       const manifest = await approvalManifest(root, stage as ApprovalStage, domain);
-      output(manifest, !!options.json, `${stage} artifact manifest: ${manifest.artifactSha256}\n${Object.keys(manifest.artifacts).join('\n')}`);
+      if (!options.diffOnly) {
+        output(manifest, !!options.json, `${stage} artifact manifest: ${manifest.artifactSha256}\n${Object.keys(manifest.artifacts).join('\n')}`);
+        return;
+      }
+      // REQ-APPROVAL-PREPARE-DIFF-ONLY-007: no try/catch here — a corrupted prior
+      // approval file must abort the command via loadApproval's thrown error,
+      // never be silently treated as "no prior approval".
+      const previous = await loadApproval(root, stage as ApprovalStage, domain?.name);
+      const { changedFiles: changed, diffOnlyBaseline } = diffOnlyChangedFiles(manifest, previous);
+      const withDiff = { ...manifest, changedFiles: changed, diffOnlyBaseline };
+      // REQ-APPROVAL-PREPARE-DIFF-ONLY-006: the non-JSON summary shows only the
+      // changed paths (plus the full hash and an explicit baseline note), never
+      // the complete artifact listing; --json output above is unaffected.
+      const baselineNote = diffOnlyBaseline === 'none'
+        ? 'no prior approval found; showing all current artifacts'
+        : 'compared against the previously recorded approval';
+      const diffSummary = `${stage} artifact manifest: ${manifest.artifactSha256}\n(diff-only: ${baselineNote})\n${changed.join('\n')}`;
+      output(withDiff, !!options.json, diffSummary);
     });
   common(approval.command('record <stage>'))
     .requiredOption('--approver <name>', 'Human approver name')

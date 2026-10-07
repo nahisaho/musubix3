@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-06T13:59:03.649Z",
+  "generatedAt": "2026-10-07T03:52:01.681Z",
   "nodes": [
     {
       "id": "ADR-0007",
@@ -24,7 +24,7 @@
       "id": "CODE-CLI-WORKFLOW-UX-003",
       "kind": "code",
       "path": "packages/analysis/src/approval.ts",
-      "line": 683
+      "line": 710
     },
     {
       "id": "CODE-CLI-WORKFLOW-UX-004",
@@ -397,10 +397,10 @@
     ".musubix/features/cli-workflow-ux-v019/requirements.md": "8ac7b7e793009d95a03b53de1e3aca043d4433a7b6de9511d8547ebc33b5e7b2",
     ".musubix/features/command-working-directory/design.md": "70ccde3b2777c2cf9e06881a20ecd5b50107d9dba680694f92b811cacb5052eb",
     ".musubix/features/command-working-directory/requirements.md": "4a376dfe7a6e9b1bb1ff4a947fb2807f7179a1798df369040c879a1b9e4fcb90",
-    "packages/analysis/src/approval.ts": "232ef37866d07c72f762c1ccffde3c57d310aec0df82e252f5e850bc76976027",
+    "packages/analysis/src/approval.ts": "14015adfe994d2f1be5b805e240f9cd774b99fead432d3d0162d60324db1be8a",
     "packages/analysis/src/config.ts": "52d5212f4057df9ed5caac0a0025ce744864909abceea3c64d259479ddffb998",
     "packages/analysis/src/gate.ts": "f0da290dbd9a263be82c8df685988607f952e544e2d518a582bc2f9202fdcccb",
-    "packages/cli/src/main.ts": "13a8934fa914cc133651ac88712a05ed9291c157cf273980036e51c9d667d24a",
+    "packages/cli/src/main.ts": "6b66dfce0436c633cf4bd081c3ef3ae98dcead15f8741de0d1b04ff3a497d318",
     "tests/cli-workflow-ux.test.ts": "53bdc5375bef05b365d725f5a8948393d68ae8cd1116fad8ff36ca3de127a177",
     "tests/command-working-directory.test.ts": "82dc863b1fcc5cd8a5ea1534238ef2f61f15e5d6c5e25d61fce43a7efe9bbc02"
   }
