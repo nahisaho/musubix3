@@ -155,6 +155,10 @@ describe('attestation evidence-head stability across no-op gate re-runs', () => 
       .toMatchObject({ valid: true, status: 'verified' });
   });
 
+  // CHANGE-0050 / Issue #67: this test's fixture now records requirements/
+  // design/implementation change-record phases (see below) to satisfy
+  // REQ-TDD-GREEN-REQUIREMENT-SCOPING-003's change-record phase
+  // precondition; re-fingerprinted via a genuine Red/Green TDD redo.
   /** @id TEST-ATTESTATION-EVIDENCE-STABILITY-003
    * @verifies REQ-ATTESTATION-EVIDENCE-STABILITY-001
    */
@@ -207,6 +211,18 @@ describe('attestation evidence-head stability across no-op gate re-runs', () => 
     // Seed `changes`.
     await writeText(root, '.musubix/changes/CHANGE-9001.md', '# CHANGE-9001\n\nRequirements: REQ-EXAMPLE-001\n');
     await recordChangePhase(root, 'CHANGE-9001', 'impact', ['REQ-EXAMPLE-001']);
+    // `tdd red`/`tdd green` below now require this staged change's chronology
+    // to satisfy REQ-TDD-GREEN-REQUIREMENT-SCOPING-003's change-record phase
+    // precondition (design before Red; Red+implementation before Green), so
+    // requirements and design must be recorded here too, not just impact.
+    await writeText(root, '.musubix/features/example/requirements.md',
+      `${await readText(root, '.musubix/features/example/requirements.md')}\nChange: revised acceptance behavior.\n`);
+    await recordChangePhase(root, 'CHANGE-9001', 'requirements', ['REQ-EXAMPLE-001']);
+    await writeText(root, '.musubix/features/example/design.md',
+      `${await readText(root, '.musubix/features/example/design.md')}\nChange: revised component behavior.\n`);
+    await recordChangePhase(root, 'CHANGE-9001', 'design', ['REQ-EXAMPLE-001']);
+    await writeText(root, 'src/service.test.ts',
+      `${await readText(root, 'src/service.test.ts')}\n// CHANGE-9001 red phase tests marker.\n`);
 
     // Seed `tdd`: Red (failing, nonzero exit) then Green (passing, zero exit); the Red→Green
     // config edits below (reconfiguring the `test` command's args) themselves constitute the
@@ -218,6 +234,17 @@ describe('attestation evidence-head stability across no-op gate re-runs', () => 
     await writeJson(root, '.musubix/config.json', redConfig);
     const redResult = await runTddPhase(root, 'red', 'TEST-EXAMPLE-001', 'REQ-EXAMPLE-001', 'test');
     expect(redResult.valid).toBe(true);
+    await recordChangePhase(root, 'CHANGE-9001', 'red', ['REQ-EXAMPLE-001']);
+    // A tracked implementation-code change (distinct from the TDD-level
+    // source-change check above, which the config edits already satisfy) is
+    // required for CHANGE-9001's own `implementation` change-record phase.
+    await writeText(root, 'src/service.ts', `/** @id CODE-EXAMPLE-001
+ * @implements REQ-EXAMPLE-001
+ * @design DES-EXAMPLE-001
+ */
+export function readiness() { return true; } // CHANGE-9001 implementation phase marker.
+`);
+    await recordChangePhase(root, 'CHANGE-9001', 'implementation', ['REQ-EXAMPLE-001']);
 
     const greenConfig = await loadConfig(root);
     greenConfig.commands[0]!.args = ['-e', reportScript('passed'), '{reportPath}'];

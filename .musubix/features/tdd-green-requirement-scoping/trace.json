@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-06T06:02:06.805Z",
+  "generatedAt": "2026-10-06T23:22:46.262Z",
   "nodes": [
     {
       "id": "ADR-0013",
@@ -9,16 +9,40 @@
       "line": 1
     },
     {
+      "id": "ADR-0042",
+      "kind": "adr",
+      "path": ".musubix/decisions/ADR-0042.md",
+      "line": 1
+    },
+    {
       "id": "CODE-TDD-GREEN-REQUIREMENT-SCOPING-001",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 868
+      "line": 1050
+    },
+    {
+      "id": "CODE-TDD-GREEN-REQUIREMENT-SCOPING-002",
+      "kind": "code",
+      "path": "packages/analysis/src/change-evidence.ts",
+      "line": 133
+    },
+    {
+      "id": "CODE-TDD-GREEN-REQUIREMENT-SCOPING-003",
+      "kind": "code",
+      "path": "packages/analysis/src/tdd.ts",
+      "line": 997
     },
     {
       "id": "DES-TDD-GREEN-REQUIREMENT-SCOPING-001",
       "kind": "design",
       "path": ".musubix/features/tdd-green-requirement-scoping/design.md",
       "line": 3
+    },
+    {
+      "id": "DES-TDD-GREEN-REQUIREMENT-SCOPING-002",
+      "kind": "design",
+      "path": ".musubix/features/tdd-green-requirement-scoping/design.md",
+      "line": 36
     },
     {
       "id": "REQ-TDD-GREEN-REQUIREMENT-SCOPING-001",
@@ -31,6 +55,13 @@
       "id": "REQ-TDD-GREEN-REQUIREMENT-SCOPING-002",
       "kind": "requirement",
       "path": ".musubix/features/tdd-green-requirement-scoping/requirements.md",
+      "line": 28,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-TDD-GREEN-REQUIREMENT-SCOPING-003",
+      "kind": "requirement",
+      "path": ".musubix/features/tdd-green-requirement-scoping/requirements.md",
       "line": 35,
       "mandatory": true
     },
@@ -38,13 +69,24 @@
       "id": "TEST-TDD-GREEN-REQUIREMENT-SCOPING-001",
       "kind": "test",
       "path": "tests/tdd-green-requirement-scoping.test.ts",
-      "line": 12
+      "line": 21
+    },
+    {
+      "id": "TEST-TDD-GREEN-REQUIREMENT-SCOPING-002",
+      "kind": "test",
+      "path": "tests/tdd-green-requirement-scoping.test.ts",
+      "line": 70
     }
   ],
   "edges": [
     {
       "from": "ADR-0013",
       "to": "DES-TDD-GREEN-REQUIREMENT-SCOPING-001",
+      "relation": "decides"
+    },
+    {
+      "from": "ADR-0042",
+      "to": "DES-TDD-GREEN-REQUIREMENT-SCOPING-002",
       "relation": "decides"
     },
     {
@@ -63,6 +105,26 @@
       "relation": "implements"
     },
     {
+      "from": "CODE-TDD-GREEN-REQUIREMENT-SCOPING-002",
+      "to": "DES-TDD-GREEN-REQUIREMENT-SCOPING-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-TDD-GREEN-REQUIREMENT-SCOPING-002",
+      "to": "REQ-TDD-GREEN-REQUIREMENT-SCOPING-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-TDD-GREEN-REQUIREMENT-SCOPING-003",
+      "to": "DES-TDD-GREEN-REQUIREMENT-SCOPING-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-TDD-GREEN-REQUIREMENT-SCOPING-003",
+      "to": "REQ-TDD-GREEN-REQUIREMENT-SCOPING-003",
+      "relation": "implements"
+    },
+    {
       "from": "DES-TDD-GREEN-REQUIREMENT-SCOPING-001",
       "to": "REQ-TDD-GREEN-REQUIREMENT-SCOPING-001",
       "relation": "satisfies"
@@ -70,6 +132,11 @@
     {
       "from": "DES-TDD-GREEN-REQUIREMENT-SCOPING-001",
       "to": "REQ-TDD-GREEN-REQUIREMENT-SCOPING-002",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-TDD-GREEN-REQUIREMENT-SCOPING-002",
+      "to": "REQ-TDD-GREEN-REQUIREMENT-SCOPING-003",
       "relation": "satisfies"
     },
     {
@@ -80,15 +147,22 @@
     {
       "from": "TEST-TDD-GREEN-REQUIREMENT-SCOPING-001",
       "to": "REQ-TDD-GREEN-REQUIREMENT-SCOPING-002",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-TDD-GREEN-REQUIREMENT-SCOPING-002",
+      "to": "REQ-TDD-GREEN-REQUIREMENT-SCOPING-003",
       "relation": "verifies"
     }
   ],
   "diagnostics": [],
   "fingerprints": {
     ".musubix/decisions/ADR-0013.md": "b22ea1b6049514c899a82e5964109e5d6f43c9a852a33168dce360768535aaca",
-    ".musubix/features/tdd-green-requirement-scoping/design.md": "5e35edb88e48648223f0360f067fcad15d078455050d2ebabaf5ee572abca6c5",
-    ".musubix/features/tdd-green-requirement-scoping/requirements.md": "456edab50870ba2fc3297eccee1c4dc114a8c8400354cb3e4b00769bb8b29ba1",
-    "packages/analysis/src/tdd.ts": "ab9cd0f71923ce4661952e6af858889210137f1cf57bacf5bc5d8b14379147f5",
-    "tests/tdd-green-requirement-scoping.test.ts": "e4248a6bf6c087f78752d48c8f6c89c82eca82c98b266a42938e9a6856e43d1d"
+    ".musubix/decisions/ADR-0042.md": "750f2fb7060fbf3d9d57f327b1f8bf78a3ad2e7e667f87702e7a9bd75f0e6221",
+    ".musubix/features/tdd-green-requirement-scoping/design.md": "25ab3a12c476e84ade147858e20716d349ce3fe7ce7c79cd9d22025274beea74",
+    ".musubix/features/tdd-green-requirement-scoping/requirements.md": "de597ccac5afd4bd395a7dbda50ebc88f20f97439ead243d7552980dba06f682",
+    "packages/analysis/src/change-evidence.ts": "cd31da952e1501376b89e93dfe38ab6f81276ae7e42b1c30748a0d68a238fa2d",
+    "packages/analysis/src/tdd.ts": "3bafdb9456be59049ffd2c9ccc17140d0fe0201eb88a867f3a1cb05adde0a9b9",
+    "tests/tdd-green-requirement-scoping.test.ts": "0a68e9819a958906e3f30ece685de5a82052074a1454b6d05624b189450d3b52"
   }
 }

@@ -8,6 +8,10 @@ import { buildTrace, type TraceNode } from './trace.js';
 import { adapterInvocation, clearAdapterOutput, mergeAdapterArgs, normalizeAdapterReport, readAdapterOutput } from './adapters.js';
 import { appendEvidenceOrder, evidenceOrderRecord, inspectEvidenceOrder, type EvidenceOrderScope, type validateEvidenceOrderLog } from './order.js';
 import { requireApproval, resolveRequirementDomain } from './approval.js';
+import {
+  batchFor, changeRecordPhasePrecondition, currentTddOrderWindow, effectiveBatches, loadChangeEvidence,
+  type ChangeRecord, type ChangeTddBatch,
+} from './change-evidence.js';
 import type { MusubixTestReport } from './test-report.js';
 import { withEvidenceWriterLock } from './evidence-writer-lock.js';
 export type { MusubixTestReport } from './test-report.js';
@@ -102,6 +106,160 @@ export interface TddEvidence {
   schemaVersion: 1;
   cycles: TddCycle[];
   chain?: TddChainRecord[];
+}
+
+// TDD cycle-validity re-derivations. Relocated here (unchanged bodies) from
+// change-evidence.ts: they need TddCycle/TddEvidence, which are defined in
+// this file, and change-evidence.ts must stay free of any dependency on
+// this file so that this file's own (new, CHANGE-0049) runtime dependency
+// on change-evidence.ts (for changeRecordPhasePrecondition/loadChangeEvidence)
+// does not create a module-dependency cycle between the two files.
+
+/** @id CODE-CHANGE-REQUIREMENT-BATCHES-004
+ * @implements REQ-CHANGE-REQUIREMENT-BATCHES-005
+ * @design DES-CHANGE-REQUIREMENT-BATCHES-002
+ */
+export function voidedCycleOrdersInCurrentWindow(
+  change: ChangeRecord,
+  requirementId: string,
+  tdd: TddEvidence | null,
+  validlyVoided: ReadonlySet<TddCycle>,
+): number[] {
+  const window = currentTddOrderWindow(change, requirementId);
+  if (!window) return [];
+  return (tdd?.cycles ?? [])
+    .filter((cycle) =>
+      cycle.requirementId === requirementId
+      && validlyVoided.has(cycle)
+      && Number.isInteger(cycle.red.order)
+      && cycle.red.order! > window.after
+      && cycle.red.order! <= window.through
+      && Number.isInteger(cycle.void?.order))
+    .map((cycle) => cycle.void!.order!)
+    .sort((a, b) => a - b);
+}
+
+/** @id CODE-CHANGE-EVIDENCE-WAIVER-029
+ * @implements REQ-CHANGE-EVIDENCE-WAIVER-018
+ * @design DES-CHANGE-EVIDENCE-WAIVER-006
+ * Excludes validly archived cycles from the order window alongside validly
+ * voided ones (Issue #64): a cleaned-up dangling cycle (e.g. one `tdd
+ * archive`d because the forced-failing Red it required never applied) must
+ * never be selected as the "current" cycle for a requirement.
+ */
+function currentTddCycle(
+  change: ChangeRecord,
+  requirementId: string,
+  tdd: TddEvidence | null,
+  validlyVoided: ReadonlySet<TddCycle>,
+  validlyArchived: ReadonlySet<TddCycle> = new Set(),
+) {
+  const window = currentTddOrderWindow(change, requirementId);
+  if (!window) return undefined;
+  return (tdd?.cycles ?? [])
+    .filter((cycle) =>
+      cycle.requirementId === requirementId
+      && !validlyVoided.has(cycle)
+      && !validlyArchived.has(cycle)
+      && Number.isInteger(cycle.red.order)
+      && cycle.red.order! > window.after
+      && cycle.red.order! <= window.through)
+    .reduce<(TddEvidence['cycles'][number] & { red: { order: number } }) | undefined>(
+      (selected, cycle) =>
+        !selected || cycle.red.order! >= selected.red.order ? cycle as typeof selected : selected,
+      undefined,
+    );
+}
+
+function tddCyclesInCurrentWindow(
+  change: ChangeRecord,
+  requirementId: string,
+  tdd: TddEvidence | null,
+  validlyVoided: ReadonlySet<TddCycle>,
+): TddCycle[] {
+  const window = currentTddOrderWindow(change, requirementId);
+  if (!window) return [];
+  return (tdd?.cycles ?? []).filter((cycle) =>
+    cycle.requirementId === requirementId
+    && !validlyVoided.has(cycle)
+    && Number.isInteger(cycle.red.order)
+    && cycle.red.order! > window.after
+    && cycle.red.order! <= window.through);
+}
+
+export function hasValidTddCycle(
+  change: ChangeRecord,
+  requirementId: string,
+  tdd: TddEvidence | null,
+  validlyVoided: ReadonlySet<TddCycle> = new Set(),
+): boolean {
+  const batch = batchFor(effectiveBatches(change), requirementId);
+  const implementation = batch?.implementation;
+  const green = batch?.green;
+  return tddCyclesInCurrentWindow(change, requirementId, tdd, validlyVoided).some((cycle) =>
+    !!implementation
+    && green
+    && Number.isInteger(implementation.order)
+    && Number.isInteger(green.order)
+    && Number.isInteger(cycle.green?.order)
+    && cycle.red.valid
+    && cycle.green?.valid
+    && cycle.green.order! > implementation.order!
+    && cycle.green.order! <= green.order!);
+}
+
+export function redUnprovenCondition(
+  change: ChangeRecord,
+  requirementId: string,
+  tdd: TddEvidence | null,
+  validlyVoided: ReadonlySet<TddCycle> = new Set(),
+): boolean {
+  const batch = batchFor(effectiveBatches(change), requirementId);
+  return !!batch?.red && !hasValidTddCycle(change, requirementId, tdd, validlyVoided);
+}
+
+export function greenUnprovenCondition(
+  change: ChangeRecord,
+  requirementId: string,
+  tdd: TddEvidence | null,
+  validlyVoided: ReadonlySet<TddCycle> = new Set(),
+): boolean {
+  const batch = batchFor(effectiveBatches(change), requirementId);
+  return !!batch?.green && !hasValidTddCycle(change, requirementId, tdd, validlyVoided);
+}
+
+export function completenessTddUnsatisfiedCondition(
+  change: ChangeRecord,
+  requirementId: string,
+  tdd: TddEvidence | null,
+  validlyVoided: ReadonlySet<TddCycle> = new Set(),
+): boolean {
+  return !hasValidTddCycle(change, requirementId, tdd, validlyVoided);
+}
+
+/** @id CODE-CHANGE-EVIDENCE-WAIVER-028
+ * @implements REQ-CHANGE-EVIDENCE-WAIVER-018
+ * @design DES-CHANGE-EVIDENCE-WAIVER-006
+ * Accepts an optional `validlyArchived` set, mirroring `validlyVoided`, so
+ * archived TDD cycles are excluded from both the "lacks order evidence" scan
+ * and `currentTddCycle`'s window selection (Issue #64).
+ */
+export function orderMigrationRequiredRequirementCondition(
+  change: ChangeRecord,
+  requirementId: string,
+  tdd: TddEvidence | null,
+  validlyVoided: ReadonlySet<TddCycle> = new Set(),
+  validlyArchived: ReadonlySet<TddCycle> = new Set(),
+): boolean {
+  const batch = batchFor(effectiveBatches(change), requirementId);
+  if (!batch?.red) return false;
+  const cycles = (tdd?.cycles ?? []).filter((cycle) =>
+    cycle.requirementId === requirementId && !validlyVoided.has(cycle) && !validlyArchived.has(cycle));
+  if (cycles.some((cycle) => !Number.isInteger(cycle.red.order))) return true;
+  const window = currentTddOrderWindow(change, requirementId);
+  if (!window) return false;
+  const current = currentTddCycle(change, requirementId, tdd, validlyVoided, validlyArchived);
+  return !!current && !Number.isInteger(current.green?.order);
 }
 
 function render(value: string, testId: string, testPath: string, reportPath: string): string {
@@ -832,6 +990,30 @@ async function runTddPhaseUnlocked(
   runner: Runner,
 ): Promise<TddPhaseEvidence> {
   const config = await loadConfig(root);
+  // Hoisted so both this check and the TDD_ADOPTION_PROJECT_WIDE warning
+  // logic below share one computation (same `.musubix/changes/CHANGE-\d+\.md`
+  // existence check gate.ts's own `hasChangeDocuments` formula uses).
+  const hasChangeDocuments = (await files(root)).some((path) => /^\.musubix\/changes\/CHANGE-\d+\.md$/.test(path));
+  /** @id CODE-TDD-GREEN-REQUIREMENT-SCOPING-003
+   * @implements REQ-TDD-GREEN-REQUIREMENT-SCOPING-003
+   * @design DES-TDD-GREEN-REQUIREMENT-SCOPING-002
+   * Runs strictly before every other existing `tdd red`/`tdd green`
+   * validation (the `red`-only design-approval check immediately below and
+   * REQ-002's cycle-matching check after `buildTrace`), and before any
+   * preflight command, test-command execution, or evidence/order-log write,
+   * so a staged-change phase-ordering mistake is rejected before it can
+   * corrupt the append-only TDD evidence chain (Issue #67).
+   */
+  if (hasChangeDocuments && (phase === 'red' || phase === 'green')) {
+    const changeEvidence = await loadChangeEvidence(root);
+    const precondition = changeRecordPhasePrecondition(changeEvidence, phase, requirementId);
+    if (!precondition.satisfied) {
+      const instruction = precondition.changeId
+        ? `change-record ${precondition.changeId} ${precondition.missingPhase} --requirement ${requirementId}`
+        : `a staged change must record design --requirement ${requirementId} first`;
+      throw new Error(`CHANGE_RECORD_PHASE_PRECONDITION: tdd ${phase} for ${requirementId} requires ${instruction} before it can be recorded.`);
+    }
+  }
   if (phase === 'red') {
     const domain = await resolveRequirementDomain(root, config.approval, requirementId);
     await requireApproval(root, 'design', config.approval, domain);
@@ -970,7 +1152,6 @@ async function runTddPhaseUnlocked(
           && cycle.green?.valid);
       })
       .map((requirement) => requirement.id);
-    const hasChangeDocuments = (await files(root)).some((path) => /^\.musubix\/changes\/CHANGE-\d+\.md$/.test(path));
     const alreadyRequired = config.requiredChecks.includes('tdd') || hasChangeDocuments;
     const uncoveredText = uncoveredIds.length
       ? `Other uncovered mandatory requirements: ${uncoveredIds.join(', ')}.`

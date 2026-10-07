@@ -1,6 +1,9 @@
 import { error, ids, validateDesign, validateRequirements, type Diagnostic, type Requirement } from '../../domain/src/index.js';
 import { digest, exists, files, snapshot, within, writeJson, readText } from './files.js';
-import { loadTddEvidence, validlyVoidedTddCycles, validlyArchivedTddCycles } from './tdd.js';
+import {
+  loadTddEvidence, validlyVoidedTddCycles, validlyArchivedTddCycles,
+  hasValidTddCycle, orderMigrationRequiredRequirementCondition,
+} from './tdd.js';
 import { buildTrace, commentBlocks } from './trace.js';
 import { indexGraph } from './graph.js';
 import { validatePerformanceEvidence } from './performance.js';
@@ -10,9 +13,9 @@ import {
 } from './order.js';
 import { loadChangeWaiverEvidence, buildWaiverContext, diagnosticDetail, errorFor, reportWaiverEvidenceDiagnostics, waivedDiagnostic } from './change-waiver.js';
 import {
-  batchFor, batchKey, changePhases, currentRequirementIdsForBatch, effectiveBatches, hasValidTddCycle,
+  batchFor, batchKey, changePhases, currentRequirementIdsForBatch, effectiveBatches,
   designUnchangedCondition, implementationUnchangedCondition, loadChangeEvidence,
-  orderMigrationRequiredBatchItemCondition, orderMigrationRequiredRequirementCondition, relevantImplementationUnchangedCondition,
+  orderMigrationRequiredBatchItemCondition, relevantImplementationUnchangedCondition,
   requirementsUnchangedCondition, testChangedAfterRedCondition, testsUnchangedCondition,
   qualityIdentity, qualityLineage,
   type ChangeCompleteness, type ChangeEvidence, type ChangeFingerprints, type ChangePhase,

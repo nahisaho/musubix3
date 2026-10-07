@@ -265,6 +265,20 @@ not touch `.musubix/config.json` or any other tracked file between the
 two `runGate` calls in each mode's pair (the mutation command's own
 runtime counter file under `.musubix/evidence/`, per DES-002, is the only
 thing that may legitimately vary between the pair).
+Update (Issue #67 / CHANGE-0049 / REQ-TDD-GREEN-REQUIREMENT-SCOPING-003):
+`tdd red`/`tdd green` now reject a recording up front when the target
+requirement's change lacks the change-record phase(s) their own design
+(DES-TDD-GREEN-REQUIREMENT-SCOPING-002) requires first, and this guard
+applies to any project satisfying its `hasChangeDocuments` check —
+including the isolated fixture project this test builds to seed the
+`tdd`/`changes`/`order` evidence inputs, since that fixture stages its own
+`.musubix/changes/CHANGE-9001.md`. The fixture's setup was accordingly
+extended to also record `requirements`/`design` (before its seeded Red)
+and `implementation` (before its seeded Green) change-record phases for
+its own `CHANGE-9001`/`REQ-EXAMPLE-001`, so its seeded TDD cycle stays
+genuinely valid under the new guard. This is fixture-setup-only: no
+assertion, acceptance criterion, or `collectEvidenceHeads` behavior this
+design describes changed.
 Requirements: REQ-ATTESTATION-EVIDENCE-STABILITY-001
 ADRs: none — a regression test exercising already-decided gate and
 evidence-writer mechanics; no new architectural decision.

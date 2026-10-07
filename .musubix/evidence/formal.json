@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-06T20:52:06.539Z",
-  "totalRequirements": 217,
+  "generatedAt": "2026-10-07T00:42:19.063Z",
+  "totalRequirements": 218,
   "modeledRequirements": 13,
-  "modeledFraction": 0.059907834101382486,
+  "modeledFraction": 0.05963302752293578,
   "result": {
     "valid": true,
     "abstraction": "Consistency of explicit branch-scoped conditional, exact unit-normalized integer numeric, bounded temporal interval, deterministic state-transition, and controlled unconditional Boolean constraints; not implementation correctness.",
@@ -258,6 +258,7 @@
       "REQ-TDD-FINGERPRINT-SCOPING-001",
       "REQ-TDD-GREEN-REQUIREMENT-SCOPING-001",
       "REQ-TDD-GREEN-REQUIREMENT-SCOPING-002",
+      "REQ-TDD-GREEN-REQUIREMENT-SCOPING-003",
       "REQ-TDD-IDENTIFIER-MIGRATION-001",
       "REQ-TDD-IDENTIFIER-MIGRATION-002",
       "REQ-TDD-IDENTIFIER-MIGRATION-003",
@@ -1163,6 +1164,11 @@
       {
         "code": "FORMAL_UNSUPPORTED",
         "severity": "warning",
+        "message": "REQ-TDD-GREEN-REQUIREMENT-SCOPING-003 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
         "message": "REQ-TDD-IDENTIFIER-MIGRATION-001 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
       },
       {
@@ -1325,7 +1331,7 @@
   "fingerprints": {
     ".musubix/features/adapter-pattern-recognition/requirements.md": "5731561a0a04982b8a5c305bdeeae6084bcf0ee8846f295eaaaabc823d1f9793",
     ".musubix/features/approval-domain-scoping/requirements.md": "c886926622fe022052c81b1ea4e76f21c04f42636f4a37d074f7d34c0505210f",
-    ".musubix/features/attestation-evidence-stability/requirements.md": "afab3f5ea642e0ff89d883ca4e612e460a6291afb0d263d4ffe7f878e4145406",
+    ".musubix/features/attestation-evidence-stability/requirements.md": "36661538d67523f444f537dbc8466ac4919dd20650fcdd78c2ae3d4a402039a5",
     ".musubix/features/bounded-file-read-concurrency/requirements.md": "9e08acde7e29a8f14b23d908c465c629e49d00bc29ae9bda1466427362c815be",
     ".musubix/features/change-acceptance-heuristic/requirements.md": "82b9c8d839d6663f97b67bba2c01fc775e3253e444440eb2833f82cdd877bcf6",
     ".musubix/features/change-evidence-waiver/requirements.md": "4f71a5726a2aa73a9bafeea1e3b204af462f183c8e6c85ddfae2d94659ee6cac",
@@ -1356,7 +1362,7 @@
     ".musubix/features/tdd-cycle-void/requirements.md": "331aa96ff3a63f0b20c6febc9bf1635fe93921cd30516c9b5c5066cde9fe0abe",
     ".musubix/features/tdd-fingerprint-migration/requirements.md": "e8ac10f4367e8b43e427d2a27616debbd836194854a86da4850773b9cde9e1ae",
     ".musubix/features/tdd-fingerprint-scoping/requirements.md": "d3e480fc0ef92edb87f2c22d1d67a00fc177fde913c68d0187aa45375b14d4c9",
-    ".musubix/features/tdd-green-requirement-scoping/requirements.md": "456edab50870ba2fc3297eccee1c4dc114a8c8400354cb3e4b00769bb8b29ba1",
+    ".musubix/features/tdd-green-requirement-scoping/requirements.md": "de597ccac5afd4bd395a7dbda50ebc88f20f97439ead243d7552980dba06f682",
     ".musubix/features/tdd-identifier-migration/requirements.md": "a20640411a8b8c1d04f5577916c9252a74fbdf746689b10faebcbb3e233099ce",
     ".musubix/features/tdd-red-collection-guidance/requirements.md": "a4a49066c5146a4b8fc3ce8603a56c19721cb26573906d95de0bf150ed473fb7",
     ".musubix/features/tdd-superseded-cycle-scoping/requirements.md": "b02f10b42474ac383e278c6fa38291ba965210213d45bc759ff7db67f368e80a",

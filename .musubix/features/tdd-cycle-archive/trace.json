@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-06T06:02:06.805Z",
+  "generatedAt": "2026-10-06T23:22:46.262Z",
   "nodes": [
     {
       "id": "ADR-0009",
@@ -30,85 +30,85 @@
       "id": "CODE-TDD-CYCLE-ARCHIVE-001",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 741
+      "line": 899
     },
     {
       "id": "CODE-TDD-CYCLE-ARCHIVE-002",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 606
+      "line": 764
     },
     {
       "id": "CODE-TDD-CYCLE-ARCHIVE-004",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 1022
+      "line": 1203
     },
     {
       "id": "CODE-TDD-CYCLE-ARCHIVE-005",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 351
+      "line": 509
     },
     {
       "id": "CODE-TDD-CYCLE-ARCHIVE-006",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 336
+      "line": 494
     },
     {
       "id": "CODE-TDD-CYCLE-VOID-001",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 733
+      "line": 891
     },
     {
       "id": "CODE-TDD-CYCLE-VOID-002",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 572
+      "line": 730
     },
     {
       "id": "CODE-TDD-CYCLE-VOID-003",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 1124
+      "line": 1305
     },
     {
       "id": "CODE-TDD-CYCLE-VOID-004",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 689
+      "line": 847
     },
     {
       "id": "CODE-TDD-CYCLE-VOID-005",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 1137
+      "line": 1318
     },
     {
       "id": "CODE-TDD-CYCLE-VOID-006",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 358
+      "line": 516
     },
     {
       "id": "CODE-TDD-FINGERPRINT-MIGRATION-001",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 266
+      "line": 424
     },
     {
       "id": "CODE-TDD-IDENTIFIER-MIGRATION-001",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 400
+      "line": 558
     },
     {
       "id": "CODE-TDD-IDENTIFIER-MIGRATION-002",
       "kind": "code",
       "path": "packages/analysis/src/tdd.ts",
-      "line": 298
+      "line": 456
     },
     {
       "id": "DES-TDD-ADOPTION-WARNING-003",
@@ -1433,7 +1433,7 @@
     ".musubix/features/tdd-fingerprint-migration/requirements.md": "e8ac10f4367e8b43e427d2a27616debbd836194854a86da4850773b9cde9e1ae",
     ".musubix/features/tdd-identifier-migration/design.md": "95d876ebd09890d0cbef5fa8adcbf5281147606b494db41cb65598b687c747b7",
     ".musubix/features/tdd-identifier-migration/requirements.md": "a20640411a8b8c1d04f5577916c9252a74fbdf746689b10faebcbb3e233099ce",
-    "packages/analysis/src/tdd.ts": "ab9cd0f71923ce4661952e6af858889210137f1cf57bacf5bc5d8b14379147f5",
+    "packages/analysis/src/tdd.ts": "3bafdb9456be59049ffd2c9ccc17140d0fe0201eb88a867f3a1cb05adde0a9b9",
     "packages/cli/src/main.ts": "13a8934fa914cc133651ac88712a05ed9291c157cf273980036e51c9d667d24a",
     "tests/tdd-adoption-warning.test.ts": "e7abeccab960ed5efdd77be8937ec556ebdf0c378a22f4671ba8d75305049343",
     "tests/tdd-cycle-archive.test.ts": "2984919b6cad8f520580df110646b00726207932a07209bfd52e9cc0ba58f011",

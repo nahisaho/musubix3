@@ -76,6 +76,10 @@ function repositoryName(remote: string): string {
 // `workflow`'s `invocations`) are retained as recorded, which no-op re-runs
 // do not append to or reorder. See
 // `tests/attestation-evidence-stability.test.ts`'s mode-matrix regression test.
+// (CHANGE-0050 / Issue #67: that test's `changes`/`tdd` head seeding fixture
+// now also records `requirements`/`design`/`implementation` change-record
+// phases, per REQ-TDD-GREEN-REQUIREMENT-SCOPING-003's change-record phase
+// precondition; the `changes`/`tdd` head computation below is unaffected.)
 export async function collectEvidenceHeads(root: string): Promise<Record<string, string>> {
   const heads: Record<string, string> = {};
   const load = async (path: string): Promise<Record<string, unknown> | null> =>

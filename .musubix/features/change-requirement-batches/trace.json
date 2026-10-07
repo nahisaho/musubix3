@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-06T06:02:06.805Z",
+  "generatedAt": "2026-10-06T23:22:46.262Z",
   "nodes": [
     {
       "id": "ADR-0011",
@@ -18,7 +18,7 @@
       "id": "CODE-CHANGE-RECORD-FAIL-FAST-001",
       "kind": "code",
       "path": "packages/analysis/src/change.ts",
-      "line": 98
+      "line": 101
     },
     {
       "id": "CODE-CHANGE-RECORD-FAIL-FAST-002",
@@ -30,31 +30,31 @@
       "id": "CODE-CHANGE-RECORD-FAIL-FAST-003",
       "kind": "code",
       "path": "packages/analysis/src/change.ts",
-      "line": 137
+      "line": 140
     },
     {
       "id": "CODE-CHANGE-REQUIREMENT-BATCHES-001",
       "kind": "code",
       "path": "packages/analysis/src/change-evidence.ts",
-      "line": 106
+      "line": 105
     },
     {
       "id": "CODE-CHANGE-REQUIREMENT-BATCHES-002",
       "kind": "code",
       "path": "packages/analysis/src/change.ts",
-      "line": 472
+      "line": 475
     },
     {
       "id": "CODE-CHANGE-REQUIREMENT-BATCHES-003",
       "kind": "code",
       "path": "packages/analysis/src/change-evidence.ts",
-      "line": 122
+      "line": 121
     },
     {
       "id": "CODE-CHANGE-REQUIREMENT-BATCHES-004",
       "kind": "code",
-      "path": "packages/analysis/src/change-evidence.ts",
-      "line": 165
+      "path": "packages/analysis/src/tdd.ts",
+      "line": 118
     },
     {
       "id": "DES-CHANGE-RECORD-FAIL-FAST-001",
@@ -260,43 +260,43 @@
       "id": "TEST-CHANGE-REQUIREMENT-BATCHES-001",
       "kind": "test",
       "path": "tests/change-requirement-batches.test.ts",
-      "line": 87
+      "line": 89
     },
     {
       "id": "TEST-CHANGE-REQUIREMENT-BATCHES-002",
       "kind": "test",
       "path": "tests/change-requirement-batches.test.ts",
-      "line": 134
+      "line": 136
     },
     {
       "id": "TEST-CHANGE-REQUIREMENT-BATCHES-003",
       "kind": "test",
       "path": "tests/change-requirement-batches.test.ts",
-      "line": 164
+      "line": 166
     },
     {
       "id": "TEST-CHANGE-REQUIREMENT-BATCHES-006",
       "kind": "test",
       "path": "tests/change-requirement-batches.test.ts",
-      "line": 195
+      "line": 197
     },
     {
       "id": "TEST-CHANGE-REQUIREMENT-BATCHES-007",
       "kind": "test",
       "path": "tests/change-requirement-batches.test.ts",
-      "line": 235
+      "line": 237
     },
     {
       "id": "TEST-CHANGE-REQUIREMENT-BATCHES-008",
       "kind": "test",
       "path": "tests/change-requirement-batches.test.ts",
-      "line": 276
+      "line": 278
     },
     {
       "id": "TEST-CHANGE-REQUIREMENT-BATCHES-009",
       "kind": "test",
       "path": "tests/change-requirement-batches.test.ts",
-      "line": 301
+      "line": 303
     }
   ],
   "edges": [
@@ -709,10 +709,11 @@
     ".musubix/features/change-record-fail-fast/requirements.md": "7488f2f96293ca03ca0690358aa528d1e329e70d39be3885540f54c81c14d94e",
     ".musubix/features/change-requirement-batches/design.md": "11ee9d356f4f2e9a144cf9368294efa76daf31de0dbe96d6326d0141d581f6b7",
     ".musubix/features/change-requirement-batches/requirements.md": "d4d2d1e9e12cd4e062ca3a14e4a28d9f011de634fb3c10defb53653260667110",
-    "packages/analysis/src/change-evidence.ts": "a8356256b78bf5a4143bf218162c63b006e0a47f8b6db4ebc7741791e77c2bf6",
-    "packages/analysis/src/change.ts": "0d7a71d450f63c26c2ad322f1c09db7b6f2b72a629ea293b6b7a89974fa2dc03",
+    "packages/analysis/src/change-evidence.ts": "cd31da952e1501376b89e93dfe38ab6f81276ae7e42b1c30748a0d68a238fa2d",
+    "packages/analysis/src/change.ts": "1bda1e7ba06f9792df067526b6393a4491fb0ca9dc6a7a88903650669c751092",
+    "packages/analysis/src/tdd.ts": "3bafdb9456be59049ffd2c9ccc17140d0fe0201eb88a867f3a1cb05adde0a9b9",
     "packages/cli/src/main.ts": "13a8934fa914cc133651ac88712a05ed9291c157cf273980036e51c9d667d24a",
     "tests/change-record-fail-fast.test.ts": "2f69f19332049c206f39b42c3bc2b505ce63173db798d74c5a9ace7064cdfe78",
-    "tests/change-requirement-batches.test.ts": "919b14e0fc9174e82b916dac0448ba2f9acf57f038f0ec820ed0aa6a397f77bd"
+    "tests/change-requirement-batches.test.ts": "148760fcb46533b576d4a8263da9d67724cde01774b47167b3f23660fab757cb"
   }
 }

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-05T11:44:33.475Z",
+  "generatedAt": "2026-10-06T23:26:27.183Z",
   "nodes": [
     {
       "id": "CODE-ATTESTATION-EVIDENCE-STABILITY-001",
@@ -49,21 +49,21 @@
       "id": "REQ-ATTESTATION-EVIDENCE-STABILITY-002",
       "kind": "requirement",
       "path": ".musubix/features/attestation-evidence-stability/requirements.md",
-      "line": 41,
+      "line": 42,
       "mandatory": true
     },
     {
       "id": "REQ-ATTESTATION-EVIDENCE-STABILITY-003",
       "kind": "requirement",
       "path": ".musubix/features/attestation-evidence-stability/requirements.md",
-      "line": 48,
+      "line": 49,
       "mandatory": true
     },
     {
       "id": "REQ-ATTESTATION-EVIDENCE-STABILITY-004",
       "kind": "requirement",
       "path": ".musubix/features/attestation-evidence-stability/requirements.md",
-      "line": 55,
+      "line": 56,
       "mandatory": true
     },
     {
@@ -82,13 +82,13 @@
       "id": "TEST-ATTESTATION-EVIDENCE-STABILITY-003",
       "kind": "test",
       "path": "tests/attestation-evidence-stability.test.ts",
-      "line": 158
+      "line": 162
     },
     {
       "id": "TEST-ATTESTATION-EVIDENCE-STABILITY-004",
       "kind": "test",
       "path": "tests/attestation-evidence-stability.test.ts",
-      "line": 255
+      "line": 282
     }
   ],
   "edges": [
@@ -170,10 +170,10 @@
   ],
   "diagnostics": [],
   "fingerprints": {
-    ".musubix/features/attestation-evidence-stability/design.md": "878b28a4f673bcbcf9684de3d759538a8226fb2c3bd63536d12a408723e19d1a",
-    ".musubix/features/attestation-evidence-stability/requirements.md": "afab3f5ea642e0ff89d883ca4e612e460a6291afb0d263d4ffe7f878e4145406",
-    "packages/analysis/src/attestation.ts": "c353b5d93f151665e1f5f0531b763db164cb54e5305a837efd47b2742eb3b949",
+    ".musubix/features/attestation-evidence-stability/design.md": "37d4ea079a8b422df744d5a0835adafbb9c2bee440866d5f8a24cddcae43c326",
+    ".musubix/features/attestation-evidence-stability/requirements.md": "36661538d67523f444f537dbc8466ac4919dd20650fcdd78c2ae3d4a402039a5",
+    "packages/analysis/src/attestation.ts": "179596934f96e148498d0974fa9536d152186588f2da116a3244c0a1e705f937",
     "packages/analysis/src/mutation.ts": "eabd67fe84a5bb1aa42743c364f34db66267fd7d42ce7d9093e31eeca8652bc4",
-    "tests/attestation-evidence-stability.test.ts": "dec3454d000cd88edb943d5aef3adeb6d2854c56de1c514a0aaa2b2ab63c3e1e"
+    "tests/attestation-evidence-stability.test.ts": "e2051ec76faf4bb1b8955477fde57100f86072e6b4b9662b82915a62fa151026"
   }
 }

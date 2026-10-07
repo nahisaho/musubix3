@@ -19749,6 +19749,92 @@
         "diagnostics": [],
         "order": 1761
       }
+    },
+    {
+      "cycleId": "0dabe321-039d-4417-98e9-f996b2a75104",
+      "requirementId": "REQ-TDD-GREEN-REQUIREMENT-SCOPING-003",
+      "testId": "TEST-TDD-GREEN-REQUIREMENT-SCOPING-002",
+      "testPath": "tests/tdd-green-requirement-scoping.test.ts",
+      "commandName": "tdd-green-requirement-scoping-tests",
+      "red": {
+        "phase": "red",
+        "valid": true,
+        "scoped": true,
+        "resultObserved": true,
+        "testStatus": "failed",
+        "reportSha256": "457320f4aa802d26e8eecc2c631a917bcab21cb186ef528263cd8b552ac36da2",
+        "commandSha256": "8530bcdf3e2ccad4b5701ed63fbd1d5a5fc77b5373b9a087d72d5cedd3995a83",
+        "outputSha256": "fad46d8b09eeac04ae47aaf7a56dcc2f9d216ae8ac1b6739777df31b70c91781",
+        "exitCode": 1,
+        "durationMs": 2864,
+        "testFingerprint": "955d7286a7ec52ac1bafbfda4674f922bea7939d6e31884d7e178cb138e470a3",
+        "sourceFingerprint": "7752d3ad50cfc94c2b993d68edf84dbbb178b9519f05e640ef2aeedb447eea1f",
+        "executionId": "f7bd873c-1b3a-4647-9b38-8f67b3ae3d81",
+        "recordedAt": "2026-10-06T23:21:59.827Z",
+        "diagnostics": [],
+        "order": 1767
+      },
+      "green": {
+        "phase": "green",
+        "valid": true,
+        "scoped": true,
+        "resultObserved": true,
+        "testStatus": "passed",
+        "reportSha256": "820dfebc657e313f430bff495663e2883866ce22f71f0d91a1a54fe51dd2afdb",
+        "commandSha256": "8530bcdf3e2ccad4b5701ed63fbd1d5a5fc77b5373b9a087d72d5cedd3995a83",
+        "outputSha256": "fad46d8b09eeac04ae47aaf7a56dcc2f9d216ae8ac1b6739777df31b70c91781",
+        "exitCode": 0,
+        "durationMs": 5438,
+        "testFingerprint": "955d7286a7ec52ac1bafbfda4674f922bea7939d6e31884d7e178cb138e470a3",
+        "sourceFingerprint": "0157663b7d5b26686319b0380f023950b6917439a2b7231c0e37a9ea4fb375e1",
+        "executionId": "a35afcfe-ba88-44a6-8914-a38e90c57c3d",
+        "recordedAt": "2026-10-06T23:22:53.083Z",
+        "diagnostics": [],
+        "order": 1770
+      }
+    },
+    {
+      "cycleId": "c2e72ffe-f5d0-414d-ad29-006b5327c58b",
+      "requirementId": "REQ-ATTESTATION-EVIDENCE-STABILITY-001",
+      "testId": "TEST-ATTESTATION-EVIDENCE-STABILITY-003",
+      "testPath": "tests/attestation-evidence-stability.test.ts",
+      "commandName": "attestation-evidence-stability-tests",
+      "red": {
+        "phase": "red",
+        "valid": true,
+        "scoped": true,
+        "resultObserved": true,
+        "testStatus": "failed",
+        "reportSha256": "db825c498a14d8abdb40722b677bd851f27e344564daa43106342d8d68da0eaf",
+        "commandSha256": "a6e36e463245160da0d98483b6ccb268987667946a50806eed62f8871caffa49",
+        "outputSha256": "d83fc3ee036970cb01dbed5f306691cedff9205bf6198bac692432f3b344b734",
+        "exitCode": 1,
+        "durationMs": 6063,
+        "testFingerprint": "bbd671de24a5986f1b1404a4b145d211454ec5a028c4ed447584afdc56d84341",
+        "sourceFingerprint": "48e175949c1ef080d7f4b8a4e0f80d43d2ae6e3542740e0f5dad85323e3b5f58",
+        "executionId": "b2a1d1ae-4d5d-4b4a-83ca-b997d1501fca",
+        "recordedAt": "2026-10-06T23:25:44.347Z",
+        "diagnostics": [],
+        "order": 1775
+      },
+      "green": {
+        "phase": "green",
+        "valid": true,
+        "scoped": true,
+        "resultObserved": true,
+        "testStatus": "passed",
+        "reportSha256": "7dd74b4c2fc037c02abe63b81813cb9f5d6e5fe05b6e1d6388b8c999178b1f8e",
+        "commandSha256": "a6e36e463245160da0d98483b6ccb268987667946a50806eed62f8871caffa49",
+        "outputSha256": "d83fc3ee036970cb01dbed5f306691cedff9205bf6198bac692432f3b344b734",
+        "exitCode": 0,
+        "durationMs": 8505,
+        "testFingerprint": "bbd671de24a5986f1b1404a4b145d211454ec5a028c4ed447584afdc56d84341",
+        "sourceFingerprint": "89fe53c1ca756c8a023806d2efd29a4a57aada0a159fcb987a162a2a0924ddab",
+        "executionId": "4c0a37f4-57f4-48b2-ab0f-6b3364336e85",
+        "recordedAt": "2026-10-06T23:26:36.701Z",
+        "diagnostics": [],
+        "order": 1778
+      }
     }
   ],
   "chain": [
@@ -30743,6 +30829,54 @@
       "phaseEvidenceSha256": "0794b86c9177edcba4c748f70c3bc7713a1df90b169da69e7312c166953eaf12",
       "previousSha256": "a4300945a7e98e614b08885a9f21335839774e691c8589b786d59ed2468ea33a",
       "recordSha256": "93a38fad75ee3f13f547c4346ecea49f34c86a8d9a70920ff05cee1568b83a90"
+    },
+    {
+      "sequence": 917,
+      "cycleId": "0dabe321-039d-4417-98e9-f996b2a75104",
+      "requirementId": "REQ-TDD-GREEN-REQUIREMENT-SCOPING-003",
+      "testId": "TEST-TDD-GREEN-REQUIREMENT-SCOPING-002",
+      "testPath": "tests/tdd-green-requirement-scoping.test.ts",
+      "commandName": "tdd-green-requirement-scoping-tests",
+      "phase": "red",
+      "phaseEvidenceSha256": "5e9779e8b3085f640b8bb1bc590b34d8e6ace13f194578122557473f74080012",
+      "previousSha256": "93a38fad75ee3f13f547c4346ecea49f34c86a8d9a70920ff05cee1568b83a90",
+      "recordSha256": "415b1baf980617235aa8ea8e0b01b401e10d6b9c38031cbd4ce107069a1a062f"
+    },
+    {
+      "sequence": 918,
+      "cycleId": "0dabe321-039d-4417-98e9-f996b2a75104",
+      "requirementId": "REQ-TDD-GREEN-REQUIREMENT-SCOPING-003",
+      "testId": "TEST-TDD-GREEN-REQUIREMENT-SCOPING-002",
+      "testPath": "tests/tdd-green-requirement-scoping.test.ts",
+      "commandName": "tdd-green-requirement-scoping-tests",
+      "phase": "green",
+      "phaseEvidenceSha256": "d865c9171df0feadbae1455264429a7d693e0de086d04f5db37e9896dc1622c9",
+      "previousSha256": "415b1baf980617235aa8ea8e0b01b401e10d6b9c38031cbd4ce107069a1a062f",
+      "recordSha256": "5da5a5b582b3899d3c555c0c45964d32ea91a78ac6d7c99b856fabd2b27deca5"
+    },
+    {
+      "sequence": 919,
+      "cycleId": "c2e72ffe-f5d0-414d-ad29-006b5327c58b",
+      "requirementId": "REQ-ATTESTATION-EVIDENCE-STABILITY-001",
+      "testId": "TEST-ATTESTATION-EVIDENCE-STABILITY-003",
+      "testPath": "tests/attestation-evidence-stability.test.ts",
+      "commandName": "attestation-evidence-stability-tests",
+      "phase": "red",
+      "phaseEvidenceSha256": "6323ec88e6539d601588172d5cbec2cac508bb0afe6f891a3507254ebde4e22d",
+      "previousSha256": "5da5a5b582b3899d3c555c0c45964d32ea91a78ac6d7c99b856fabd2b27deca5",
+      "recordSha256": "24e37d38c6f4eac17c30a8a2f5328ae4255d2143ff9367e1d6d5eda9318af75b"
+    },
+    {
+      "sequence": 920,
+      "cycleId": "c2e72ffe-f5d0-414d-ad29-006b5327c58b",
+      "requirementId": "REQ-ATTESTATION-EVIDENCE-STABILITY-001",
+      "testId": "TEST-ATTESTATION-EVIDENCE-STABILITY-003",
+      "testPath": "tests/attestation-evidence-stability.test.ts",
+      "commandName": "attestation-evidence-stability-tests",
+      "phase": "green",
+      "phaseEvidenceSha256": "6fd06c7de606fa562c80a415bd9740a11f5573028761316f986340f4f9faba6b",
+      "previousSha256": "24e37d38c6f4eac17c30a8a2f5328ae4255d2143ff9367e1d6d5eda9318af75b",
+      "recordSha256": "e3d92ca03e932c074435b48b91653ca5d4bee5b65d467dd59ceff217414ecc4d"
     }
   ]
 }
