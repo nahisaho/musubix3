@@ -1,0 +1,18 @@
+{
+  "observedAt": "2026-10-07T09:28:02.597Z",
+  "lockSha256": "ee6bbf3ea0bd21f66baa5eeb61f5d95100127506c16d475304ac9a1699150014",
+  "consumer": "@istanbuljs/load-nyc-config",
+  "jsYamlVersion": "5.4.3",
+  "result": {
+    "cwd": "/home/nahisaho/GitHub/musubix3-change-0052/.test-work/yaml-observation",
+    "checkCoverage": true,
+    "lines": 85,
+    "exclude": [
+      "excluded-file.ts"
+    ],
+    "extension": [
+      ".ts",
+      ".js"
+    ]
+  }
+}

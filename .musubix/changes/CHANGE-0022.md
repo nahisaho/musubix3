@@ -75,6 +75,10 @@ repeatable dependency-audit review obligation.
 
 ## Verification
 
+The audit timestamp/digest/result below are living evidence for the current
+lockfile. The remaining approval, TDD, and suite-count entries retain this
+change's historical verification rather than claiming a new release approval.
+
 - Requirements artifact
   `126ca0824fbbb1302834361ceed0d5fcfa3fa8908e6a9adac28da5a48c70c0e9`
   and design artifact
@@ -84,11 +88,17 @@ repeatable dependency-audit review obligation.
   `@vitest/mocker` 4.1.11 as development-only packages and resolve Vite 8.3.0
   with Node.js floor `^20.19.0 || >=22.12.0`.
 - Audit command: `npm run audit:report` (`npm audit --json`).
-- Audit captured at: 2026-09-22T18:13:20Z.
+- Audit captured at: 2026-10-07T10:04:08Z.
 - Audited package-lock SHA-256:
-  `7b9becf368784a85f4bfa3d1f9353d089b28ce74db36861c6321375c120eb95a`.
+  `ee6bbf3ea0bd21f66baa5eeb61f5d95100127506c16d475304ac9a1699150014`.
 - Audit result: info 0, low 0, moderate 0, high 0, critical 0, total 0;
   GHSA-82fw-gwwq-j7x9 findings: 0; moderate-or-higher findings: 0.
+- Follow-up remediation: CHANGE-0052.
+  GHSA-hp3w-g68c-fv3c subsequently affected the development-only Jest
+  `js-yaml > argparse > sprintf-js` chain. The reviewed js-yaml override
+  removes sprintf-js; non-breaking brace-expansion/source-map-js updates
+  also remediate the newly reported high findings. CHANGE-0052 records
+  the actual dependency paths, compatibility checks, and retained full audit JSON.
 - All four authoritative tests completed verified Red/Green cycles. Corrective
   cycles additionally made malformed lockfile package collections fail closed,
   bound root lockfile production metadata to the reviewed manifest, rejected

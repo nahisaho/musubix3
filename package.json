@@ -57,5 +57,8 @@
     "@types/node": "^22.19.0",
     "jest": "^30.5.1",
     "vitest": "^4.1.11"
+  },
+  "overrides": {
+    "js-yaml": "^5.4.3"
   }
 }

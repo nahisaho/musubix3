@@ -1,0 +1,844 @@
+{
+  "observedAt": "2026-10-07T09:34:03.666Z",
+  "lockSha256": "ee6bbf3ea0bd21f66baa5eeb61f5d95100127506c16d475304ac9a1699150014",
+  "archiveSha256": "600b407dc964685e291b03a24cdab2e5aed97be0677de38912493f2cd98df9a3",
+  "packed": {
+    "id": "musubix3@0.1.20",
+    "name": "musubix3",
+    "version": "0.1.20",
+    "size": 402305,
+    "unpackedSize": 2000945,
+    "shasum": "b98270afdcfff449e8d877c7767be13dc4858b35",
+    "integrity": "sha512-vYJa87diwRoCveUwkxtLweUXEGEJKaRXb4UPvJ7AwYnPWTQgyggF2ozhJkBVgVawGmw7apqWnQ5xy0YmrkScRA==",
+    "filename": "musubix3-0.1.20.tgz",
+    "files": [
+      {
+        "path": ".github/plugin/marketplace.json",
+        "size": 396,
+        "mode": 420
+      },
+      {
+        "path": ".github/skills/sdd-change/SKILL.md",
+        "size": 12257,
+        "mode": 420
+      },
+      {
+        "path": ".github/skills/sdd-design/SKILL.md",
+        "size": 2374,
+        "mode": 420
+      },
+      {
+        "path": ".github/skills/sdd-formal-codegraph/SKILL.md",
+        "size": 3549,
+        "mode": 420
+      },
+      {
+        "path": ".github/skills/sdd-implementation/SKILL.md",
+        "size": 4274,
+        "mode": 420
+      },
+      {
+        "path": ".github/skills/sdd-issue-report/SKILL.md",
+        "size": 3140,
+        "mode": 420
+      },
+      {
+        "path": ".github/skills/sdd-knowledge/SKILL.md",
+        "size": 1487,
+        "mode": 420
+      },
+      {
+        "path": ".github/skills/sdd-quality/SKILL.md",
+        "size": 6135,
+        "mode": 420
+      },
+      {
+        "path": ".github/skills/sdd-requirements/SKILL.md",
+        "size": 4408,
+        "mode": 420
+      },
+      {
+        "path": ".github/skills/sdd-traceability/SKILL.md",
+        "size": 2056,
+        "mode": 420
+      },
+      {
+        "path": "CHANGELOG.md",
+        "size": 41899,
+        "mode": 420
+      },
+      {
+        "path": "LICENSE",
+        "size": 1065,
+        "mode": 420
+      },
+      {
+        "path": "README-ja.md",
+        "size": 76805,
+        "mode": 420
+      },
+      {
+        "path": "README.md",
+        "size": 81950,
+        "mode": 420
+      },
+      {
+        "path": "assets/ADR-0001.md",
+        "size": 526,
+        "mode": 420
+      },
+      {
+        "path": "assets/constitution.md",
+        "size": 518,
+        "mode": 420
+      },
+      {
+        "path": "assets/design.md",
+        "size": 417,
+        "mode": 420
+      },
+      {
+        "path": "assets/requirements.md",
+        "size": 492,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/adapters.d.ts",
+        "size": 973,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/adapters.js",
+        "size": 19565,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/adapters.js.map",
+        "size": 19987,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/approval-domains.d.ts",
+        "size": 1056,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/approval-domains.js",
+        "size": 3477,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/approval-domains.js.map",
+        "size": 3322,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/approval-record.d.ts",
+        "size": 794,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/approval-record.js",
+        "size": 3423,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/approval-record.js.map",
+        "size": 2898,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/approval.d.ts",
+        "size": 8164,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/approval.js",
+        "size": 33535,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/approval.js.map",
+        "size": 29742,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/attestation.d.ts",
+        "size": 2066,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/attestation.js",
+        "size": 26348,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/attestation.js.map",
+        "size": 24446,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/change-evidence.d.ts",
+        "size": 7562,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/change-evidence.js",
+        "size": 14560,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/change-evidence.js.map",
+        "size": 12535,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/change-waiver.d.ts",
+        "size": 12359,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/change-waiver.js",
+        "size": 50622,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/change-waiver.js.map",
+        "size": 45782,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/change.d.ts",
+        "size": 1280,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/change.js",
+        "size": 46409,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/change.js.map",
+        "size": 41082,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/config.d.ts",
+        "size": 5564,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/config.js",
+        "size": 44290,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/config.js.map",
+        "size": 38169,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/evidence-merge-guard.d.ts",
+        "size": 542,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/evidence-merge-guard.js",
+        "size": 2438,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/evidence-merge-guard.js.map",
+        "size": 2403,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/evidence-merge.d.ts",
+        "size": 2123,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/evidence-merge.js",
+        "size": 60042,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/evidence-merge.js.map",
+        "size": 59020,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/evidence-writer-lock.d.ts",
+        "size": 9433,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/evidence-writer-lock.js",
+        "size": 33791,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/evidence-writer-lock.js.map",
+        "size": 28433,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/files.d.ts",
+        "size": 1635,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/files.js",
+        "size": 8723,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/files.js.map",
+        "size": 8244,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/formal.d.ts",
+        "size": 2926,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/formal.js",
+        "size": 32422,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/formal.js.map",
+        "size": 32643,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/gate.d.ts",
+        "size": 3316,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/gate.js",
+        "size": 40864,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/gate.js.map",
+        "size": 36122,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/graph.d.ts",
+        "size": 1812,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/graph.js",
+        "size": 86128,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/graph.js.map",
+        "size": 95732,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/index.d.ts",
+        "size": 1147,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/index.js",
+        "size": 1180,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/index.js.map",
+        "size": 811,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/knowledge.d.ts",
+        "size": 1146,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/knowledge.js",
+        "size": 5815,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/knowledge.js.map",
+        "size": 7284,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/model-correspondence.d.ts",
+        "size": 1581,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/model-correspondence.js",
+        "size": 16533,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/model-correspondence.js.map",
+        "size": 15906,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/mutation.d.ts",
+        "size": 2520,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/mutation.js",
+        "size": 22750,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/mutation.js.map",
+        "size": 20508,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/order.d.ts",
+        "size": 3968,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/order.js",
+        "size": 7022,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/order.js.map",
+        "size": 6953,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/performance.d.ts",
+        "size": 2475,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/performance.js",
+        "size": 18150,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/performance.js.map",
+        "size": 17549,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/process.d.ts",
+        "size": 472,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/process.js",
+        "size": 3277,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/process.js.map",
+        "size": 4065,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/quality-refresh.d.ts",
+        "size": 946,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/quality-refresh.js",
+        "size": 14284,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/quality-refresh.js.map",
+        "size": 13160,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/scaffold-artifact.d.ts",
+        "size": 211,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/scaffold-artifact.js",
+        "size": 3008,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/scaffold-artifact.js.map",
+        "size": 1903,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/tdd.d.ts",
+        "size": 8197,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/tdd.js",
+        "size": 70499,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/tdd.js.map",
+        "size": 60468,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/test-report.d.ts",
+        "size": 212,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/test-report.js",
+        "size": 50,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/test-report.js.map",
+        "size": 141,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/trace.d.ts",
+        "size": 2916,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/trace.js",
+        "size": 21356,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/trace.js.map",
+        "size": 23312,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/workflow-types.d.ts",
+        "size": 1785,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/workflow-types.js",
+        "size": 2078,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/workflow-types.js.map",
+        "size": 2186,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/workflow-waiver.d.ts",
+        "size": 7116,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/workflow-waiver.js",
+        "size": 17233,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/workflow-waiver.js.map",
+        "size": 14245,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/workflow.d.ts",
+        "size": 3986,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/workflow.js",
+        "size": 55018,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/analysis/src/workflow.js.map",
+        "size": 44947,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/cli/src/install.d.ts",
+        "size": 897,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/cli/src/install.js",
+        "size": 8959,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/cli/src/install.js.map",
+        "size": 7978,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/cli/src/main.d.ts",
+        "size": 107,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/cli/src/main.js",
+        "size": 53758,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/cli/src/main.js.map",
+        "size": 46543,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/domain/src/constitution.d.ts",
+        "size": 379,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/domain/src/constitution.js",
+        "size": 2733,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/domain/src/constitution.js.map",
+        "size": 2789,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/domain/src/design.d.ts",
+        "size": 397,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/domain/src/design.js",
+        "size": 4702,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/domain/src/design.js.map",
+        "size": 4849,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/domain/src/index.d.ts",
+        "size": 158,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/domain/src/index.js",
+        "size": 191,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/domain/src/index.js.map",
+        "size": 234,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/domain/src/markdown.d.ts",
+        "size": 557,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/domain/src/markdown.js",
+        "size": 2853,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/domain/src/markdown.js.map",
+        "size": 3440,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/domain/src/requirements.d.ts",
+        "size": 343,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/domain/src/requirements.js",
+        "size": 15167,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/domain/src/requirements.js.map",
+        "size": 14560,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/domain/src/types.d.ts",
+        "size": 2998,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/domain/src/types.js",
+        "size": 596,
+        "mode": 420
+      },
+      {
+        "path": "dist/packages/domain/src/types.js.map",
+        "size": 751,
+        "mode": 420
+      },
+      {
+        "path": "package.json",
+        "size": 1724,
+        "mode": 420
+      },
+      {
+        "path": "plugin.json",
+        "size": 363,
+        "mode": 420
+      }
+    ],
+    "entryCount": 137,
+    "bundled": []
+  },
+  "archiveFiles": [
+    "package/LICENSE",
+    "package/dist/packages/analysis/src/adapters.js",
+    "package/dist/packages/analysis/src/approval-domains.js",
+    "package/dist/packages/analysis/src/approval-record.js",
+    "package/dist/packages/analysis/src/approval.js",
+    "package/dist/packages/analysis/src/attestation.js",
+    "package/dist/packages/analysis/src/change-evidence.js",
+    "package/dist/packages/analysis/src/change-waiver.js",
+    "package/dist/packages/analysis/src/change.js",
+    "package/dist/packages/analysis/src/config.js",
+    "package/dist/packages/domain/src/constitution.js",
+    "package/dist/packages/domain/src/design.js",
+    "package/dist/packages/analysis/src/evidence-merge-guard.js",
+    "package/dist/packages/analysis/src/evidence-merge.js",
+    "package/dist/packages/analysis/src/evidence-writer-lock.js",
+    "package/dist/packages/analysis/src/files.js",
+    "package/dist/packages/analysis/src/formal.js",
+    "package/dist/packages/analysis/src/gate.js",
+    "package/dist/packages/analysis/src/graph.js",
+    "package/dist/packages/analysis/src/index.js",
+    "package/dist/packages/domain/src/index.js",
+    "package/dist/packages/cli/src/install.js",
+    "package/dist/packages/analysis/src/knowledge.js",
+    "package/dist/packages/cli/src/main.js",
+    "package/dist/packages/domain/src/markdown.js",
+    "package/dist/packages/analysis/src/model-correspondence.js",
+    "package/dist/packages/analysis/src/mutation.js",
+    "package/dist/packages/analysis/src/order.js",
+    "package/dist/packages/analysis/src/performance.js",
+    "package/dist/packages/analysis/src/process.js",
+    "package/dist/packages/analysis/src/quality-refresh.js",
+    "package/dist/packages/domain/src/requirements.js",
+    "package/dist/packages/analysis/src/scaffold-artifact.js",
+    "package/dist/packages/analysis/src/tdd.js",
+    "package/dist/packages/analysis/src/test-report.js",
+    "package/dist/packages/analysis/src/trace.js",
+    "package/dist/packages/domain/src/types.js",
+    "package/dist/packages/analysis/src/workflow-types.js",
+    "package/dist/packages/analysis/src/workflow-waiver.js",
+    "package/dist/packages/analysis/src/workflow.js",
+    "package/.github/plugin/marketplace.json",
+    "package/package.json",
+    "package/plugin.json",
+    "package/dist/packages/analysis/src/adapters.js.map",
+    "package/dist/packages/analysis/src/approval-domains.js.map",
+    "package/dist/packages/analysis/src/approval-record.js.map",
+    "package/dist/packages/analysis/src/approval.js.map",
+    "package/dist/packages/analysis/src/attestation.js.map",
+    "package/dist/packages/analysis/src/change-evidence.js.map",
+    "package/dist/packages/analysis/src/change-waiver.js.map",
+    "package/dist/packages/analysis/src/change.js.map",
+    "package/dist/packages/analysis/src/config.js.map",
+    "package/dist/packages/domain/src/constitution.js.map",
+    "package/dist/packages/domain/src/design.js.map",
+    "package/dist/packages/analysis/src/evidence-merge-guard.js.map",
+    "package/dist/packages/analysis/src/evidence-merge.js.map",
+    "package/dist/packages/analysis/src/evidence-writer-lock.js.map",
+    "package/dist/packages/analysis/src/files.js.map",
+    "package/dist/packages/analysis/src/formal.js.map",
+    "package/dist/packages/analysis/src/gate.js.map",
+    "package/dist/packages/analysis/src/graph.js.map",
+    "package/dist/packages/analysis/src/index.js.map",
+    "package/dist/packages/domain/src/index.js.map",
+    "package/dist/packages/cli/src/install.js.map",
+    "package/dist/packages/analysis/src/knowledge.js.map",
+    "package/dist/packages/cli/src/main.js.map",
+    "package/dist/packages/domain/src/markdown.js.map",
+    "package/dist/packages/analysis/src/model-correspondence.js.map",
+    "package/dist/packages/analysis/src/mutation.js.map",
+    "package/dist/packages/analysis/src/order.js.map",
+    "package/dist/packages/analysis/src/performance.js.map",
+    "package/dist/packages/analysis/src/process.js.map",
+    "package/dist/packages/analysis/src/quality-refresh.js.map",
+    "package/dist/packages/domain/src/requirements.js.map",
+    "package/dist/packages/analysis/src/scaffold-artifact.js.map",
+    "package/dist/packages/analysis/src/tdd.js.map",
+    "package/dist/packages/analysis/src/test-report.js.map",
+    "package/dist/packages/analysis/src/trace.js.map",
+    "package/dist/packages/domain/src/types.js.map",
+    "package/dist/packages/analysis/src/workflow-types.js.map",
+    "package/dist/packages/analysis/src/workflow-waiver.js.map",
+    "package/dist/packages/analysis/src/workflow.js.map",
+    "package/assets/ADR-0001.md",
+    "package/CHANGELOG.md",
+    "package/assets/constitution.md",
+    "package/assets/design.md",
+    "package/README-ja.md",
+    "package/README.md",
+    "package/assets/requirements.md",
+    "package/.github/skills/sdd-change/SKILL.md",
+    "package/.github/skills/sdd-design/SKILL.md",
+    "package/.github/skills/sdd-formal-codegraph/SKILL.md",
+    "package/.github/skills/sdd-implementation/SKILL.md",
+    "package/.github/skills/sdd-issue-report/SKILL.md",
+    "package/.github/skills/sdd-knowledge/SKILL.md",
+    "package/.github/skills/sdd-quality/SKILL.md",
+    "package/.github/skills/sdd-requirements/SKILL.md",
+    "package/.github/skills/sdd-traceability/SKILL.md",
+    "package/dist/packages/analysis/src/adapters.d.ts",
+    "package/dist/packages/analysis/src/approval-domains.d.ts",
+    "package/dist/packages/analysis/src/approval-record.d.ts",
+    "package/dist/packages/analysis/src/approval.d.ts",
+    "package/dist/packages/analysis/src/attestation.d.ts",
+    "package/dist/packages/analysis/src/change-evidence.d.ts",
+    "package/dist/packages/analysis/src/change-waiver.d.ts",
+    "package/dist/packages/analysis/src/change.d.ts",
+    "package/dist/packages/analysis/src/config.d.ts",
+    "package/dist/packages/domain/src/constitution.d.ts",
+    "package/dist/packages/domain/src/design.d.ts",
+    "package/dist/packages/analysis/src/evidence-merge-guard.d.ts",
+    "package/dist/packages/analysis/src/evidence-merge.d.ts",
+    "package/dist/packages/analysis/src/evidence-writer-lock.d.ts",
+    "package/dist/packages/analysis/src/files.d.ts",
+    "package/dist/packages/analysis/src/formal.d.ts",
+    "package/dist/packages/analysis/src/gate.d.ts",
+    "package/dist/packages/analysis/src/graph.d.ts",
+    "package/dist/packages/analysis/src/index.d.ts",
+    "package/dist/packages/domain/src/index.d.ts",
+    "package/dist/packages/cli/src/install.d.ts",
+    "package/dist/packages/analysis/src/knowledge.d.ts",
+    "package/dist/packages/cli/src/main.d.ts",
+    "package/dist/packages/domain/src/markdown.d.ts",
+    "package/dist/packages/analysis/src/model-correspondence.d.ts",
+    "package/dist/packages/analysis/src/mutation.d.ts",
+    "package/dist/packages/analysis/src/order.d.ts",
+    "package/dist/packages/analysis/src/performance.d.ts",
+    "package/dist/packages/analysis/src/process.d.ts",
+    "package/dist/packages/analysis/src/quality-refresh.d.ts",
+    "package/dist/packages/domain/src/requirements.d.ts",
+    "package/dist/packages/analysis/src/scaffold-artifact.d.ts",
+    "package/dist/packages/analysis/src/tdd.d.ts",
+    "package/dist/packages/analysis/src/test-report.d.ts",
+    "package/dist/packages/analysis/src/trace.d.ts",
+    "package/dist/packages/domain/src/types.d.ts",
+    "package/dist/packages/analysis/src/workflow-types.d.ts",
+    "package/dist/packages/analysis/src/workflow-waiver.d.ts",
+    "package/dist/packages/analysis/src/workflow.d.ts"
+  ],
+  "forbiddenPayload": []
+}

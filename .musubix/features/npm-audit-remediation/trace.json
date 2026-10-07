@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-07T03:52:01.681Z",
+  "generatedAt": "2026-10-07T10:42:14.903Z",
   "nodes": [
     {
       "id": "ADR-0029",
@@ -55,6 +55,36 @@
       "kind": "adr",
       "path": ".musubix/decisions/ADR-0041.md",
       "line": 1
+    },
+    {
+      "id": "ADR-0044",
+      "kind": "adr",
+      "path": ".musubix/decisions/ADR-0044.md",
+      "line": 1
+    },
+    {
+      "id": "CODE-AUDIT-OVERRIDE-CONTRACT-001",
+      "kind": "code",
+      "path": "scripts/check-npm-audit-remediation.mjs",
+      "line": 79
+    },
+    {
+      "id": "CODE-AUDIT-OVERRIDE-CONTRACT-002",
+      "kind": "code",
+      "path": "scripts/check-npm-audit-remediation.mjs",
+      "line": 362
+    },
+    {
+      "id": "CODE-AUDIT-OVERRIDE-CONTRACT-003",
+      "kind": "code",
+      "path": "scripts/check-npm-audit-remediation.mjs",
+      "line": 115
+    },
+    {
+      "id": "CODE-AUDIT-OVERRIDE-CONTRACT-004",
+      "kind": "code",
+      "path": "scripts/check-npm-audit-remediation.mjs",
+      "line": 163
     },
     {
       "id": "CODE-CHANGE-QUALITY-REFRESH-001",
@@ -180,19 +210,19 @@
       "id": "CODE-NPM-AUDIT-REMEDIATION-001",
       "kind": "code",
       "path": "scripts/check-npm-audit-remediation.mjs",
-      "line": 72
+      "line": 265
     },
     {
       "id": "CODE-NPM-AUDIT-REMEDIATION-002",
       "kind": "code",
       "path": "scripts/check-npm-audit-remediation.mjs",
-      "line": 146
+      "line": 341
     },
     {
       "id": "CODE-NPM-AUDIT-REMEDIATION-003",
       "kind": "code",
       "path": "scripts/check-npm-audit-remediation.mjs",
-      "line": 332
+      "line": 533
     },
     {
       "id": "CODE-RELEASE-APPROVAL-ORDERING-001",
@@ -247,6 +277,30 @@
       "kind": "code",
       "path": "scripts/release-publish.mjs",
       "line": 421
+    },
+    {
+      "id": "DES-AUDIT-OVERRIDE-CONTRACT-001",
+      "kind": "design",
+      "path": ".musubix/features/audit-override-contract/design.md",
+      "line": 12
+    },
+    {
+      "id": "DES-AUDIT-OVERRIDE-CONTRACT-002",
+      "kind": "design",
+      "path": ".musubix/features/audit-override-contract/design.md",
+      "line": 25
+    },
+    {
+      "id": "DES-AUDIT-OVERRIDE-CONTRACT-003",
+      "kind": "design",
+      "path": ".musubix/features/audit-override-contract/design.md",
+      "line": 39
+    },
+    {
+      "id": "DES-AUDIT-OVERRIDE-CONTRACT-004",
+      "kind": "design",
+      "path": ".musubix/features/audit-override-contract/design.md",
+      "line": 54
     },
     {
       "id": "DES-CHANGE-QUALITY-REFRESH-001",
@@ -415,6 +469,34 @@
       "kind": "design",
       "path": ".musubix/features/release-asset-publishing/design.md",
       "line": 46
+    },
+    {
+      "id": "REQ-AUDIT-OVERRIDE-CONTRACT-001",
+      "kind": "requirement",
+      "path": ".musubix/features/audit-override-contract/requirements.md",
+      "line": 28,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-AUDIT-OVERRIDE-CONTRACT-002",
+      "kind": "requirement",
+      "path": ".musubix/features/audit-override-contract/requirements.md",
+      "line": 35,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-AUDIT-OVERRIDE-CONTRACT-003",
+      "kind": "requirement",
+      "path": ".musubix/features/audit-override-contract/requirements.md",
+      "line": 42,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-AUDIT-OVERRIDE-CONTRACT-004",
+      "kind": "requirement",
+      "path": ".musubix/features/audit-override-contract/requirements.md",
+      "line": 49,
+      "mandatory": true
     },
     {
       "id": "REQ-CHANGE-QUALITY-REFRESH-001",
@@ -618,6 +700,30 @@
       "path": ".musubix/features/release-asset-publishing/requirements.md",
       "line": 39,
       "mandatory": true
+    },
+    {
+      "id": "TEST-AUDIT-OVERRIDE-CONTRACT-001",
+      "kind": "test",
+      "path": "tests/npm-audit-remediation.test.ts",
+      "line": 250
+    },
+    {
+      "id": "TEST-AUDIT-OVERRIDE-CONTRACT-002",
+      "kind": "test",
+      "path": "tests/npm-audit-remediation.test.ts",
+      "line": 299
+    },
+    {
+      "id": "TEST-AUDIT-OVERRIDE-CONTRACT-003",
+      "kind": "test",
+      "path": "tests/npm-audit-remediation.test.ts",
+      "line": 331
+    },
+    {
+      "id": "TEST-AUDIT-OVERRIDE-CONTRACT-004",
+      "kind": "test",
+      "path": "tests/npm-audit-remediation.test.ts",
+      "line": 390
     },
     {
       "id": "TEST-CHANGE-QUALITY-REFRESH-001",
@@ -869,25 +975,25 @@
       "id": "TEST-NPM-AUDIT-REMEDIATION-001",
       "kind": "test",
       "path": "tests/npm-audit-remediation.test.ts",
-      "line": 132
+      "line": 489
     },
     {
       "id": "TEST-NPM-AUDIT-REMEDIATION-002",
       "kind": "test",
       "path": "tests/npm-audit-remediation.test.ts",
-      "line": 184
+      "line": 541
     },
     {
       "id": "TEST-NPM-AUDIT-REMEDIATION-003",
       "kind": "test",
       "path": "tests/npm-audit-remediation.test.ts",
-      "line": 253
+      "line": 610
     },
     {
       "id": "TEST-NPM-AUDIT-REMEDIATION-004",
       "kind": "test",
       "path": "tests/npm-audit-remediation.test.ts",
-      "line": 321
+      "line": 678
     },
     {
       "id": "TEST-RELEASE-APPROVAL-ORDERING-001",
@@ -1184,6 +1290,71 @@
       "from": "ADR-0041",
       "to": "DES-RELEASE-APPROVAL-ORDERING-004",
       "relation": "decides"
+    },
+    {
+      "from": "ADR-0044",
+      "to": "DES-AUDIT-OVERRIDE-CONTRACT-001",
+      "relation": "decides"
+    },
+    {
+      "from": "ADR-0044",
+      "to": "DES-AUDIT-OVERRIDE-CONTRACT-002",
+      "relation": "decides"
+    },
+    {
+      "from": "ADR-0044",
+      "to": "DES-AUDIT-OVERRIDE-CONTRACT-003",
+      "relation": "decides"
+    },
+    {
+      "from": "ADR-0044",
+      "to": "DES-AUDIT-OVERRIDE-CONTRACT-004",
+      "relation": "decides"
+    },
+    {
+      "from": "ADR-0044",
+      "to": "DES-NPM-AUDIT-REMEDIATION-002",
+      "relation": "decides"
+    },
+    {
+      "from": "CODE-AUDIT-OVERRIDE-CONTRACT-001",
+      "to": "DES-AUDIT-OVERRIDE-CONTRACT-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-AUDIT-OVERRIDE-CONTRACT-001",
+      "to": "REQ-AUDIT-OVERRIDE-CONTRACT-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-AUDIT-OVERRIDE-CONTRACT-002",
+      "to": "DES-AUDIT-OVERRIDE-CONTRACT-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-AUDIT-OVERRIDE-CONTRACT-002",
+      "to": "REQ-AUDIT-OVERRIDE-CONTRACT-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-AUDIT-OVERRIDE-CONTRACT-003",
+      "to": "DES-AUDIT-OVERRIDE-CONTRACT-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-AUDIT-OVERRIDE-CONTRACT-003",
+      "to": "REQ-AUDIT-OVERRIDE-CONTRACT-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-AUDIT-OVERRIDE-CONTRACT-004",
+      "to": "DES-AUDIT-OVERRIDE-CONTRACT-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-AUDIT-OVERRIDE-CONTRACT-004",
+      "to": "REQ-AUDIT-OVERRIDE-CONTRACT-004",
+      "relation": "implements"
     },
     {
       "from": "CODE-CHANGE-QUALITY-REFRESH-001",
@@ -1734,6 +1905,56 @@
       "from": "CODE-RELEASE-ASSET-PUBLISHING-005",
       "to": "REQ-RELEASE-ASSET-PUBLISHING-004",
       "relation": "implements"
+    },
+    {
+      "from": "DES-AUDIT-OVERRIDE-CONTRACT-001",
+      "to": "REQ-AUDIT-OVERRIDE-CONTRACT-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-AUDIT-OVERRIDE-CONTRACT-002",
+      "to": "DES-AUDIT-OVERRIDE-CONTRACT-001",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-AUDIT-OVERRIDE-CONTRACT-002",
+      "to": "REQ-AUDIT-OVERRIDE-CONTRACT-002",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-AUDIT-OVERRIDE-CONTRACT-003",
+      "to": "DES-AUDIT-OVERRIDE-CONTRACT-001",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-AUDIT-OVERRIDE-CONTRACT-003",
+      "to": "DES-AUDIT-OVERRIDE-CONTRACT-002",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-AUDIT-OVERRIDE-CONTRACT-003",
+      "to": "REQ-AUDIT-OVERRIDE-CONTRACT-003",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-AUDIT-OVERRIDE-CONTRACT-004",
+      "to": "DES-AUDIT-OVERRIDE-CONTRACT-001",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-AUDIT-OVERRIDE-CONTRACT-004",
+      "to": "DES-AUDIT-OVERRIDE-CONTRACT-002",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-AUDIT-OVERRIDE-CONTRACT-004",
+      "to": "DES-AUDIT-OVERRIDE-CONTRACT-003",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-AUDIT-OVERRIDE-CONTRACT-004",
+      "to": "REQ-AUDIT-OVERRIDE-CONTRACT-004",
+      "relation": "satisfies"
     },
     {
       "from": "DES-CHANGE-QUALITY-REFRESH-001",
@@ -2199,6 +2420,26 @@
       "from": "DES-RELEASE-ASSET-PUBLISHING-006",
       "to": "REQ-RELEASE-ASSET-PUBLISHING-004",
       "relation": "satisfies"
+    },
+    {
+      "from": "TEST-AUDIT-OVERRIDE-CONTRACT-001",
+      "to": "REQ-AUDIT-OVERRIDE-CONTRACT-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-AUDIT-OVERRIDE-CONTRACT-002",
+      "to": "REQ-AUDIT-OVERRIDE-CONTRACT-002",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-AUDIT-OVERRIDE-CONTRACT-003",
+      "to": "REQ-AUDIT-OVERRIDE-CONTRACT-003",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-AUDIT-OVERRIDE-CONTRACT-004",
+      "to": "REQ-AUDIT-OVERRIDE-CONTRACT-004",
+      "relation": "verifies"
     },
     {
       "from": "TEST-CHANGE-QUALITY-REFRESH-001",
@@ -2697,6 +2938,9 @@
     ".musubix/decisions/ADR-0036.md": "c4ed0289564d2b19e3c28e06e4784d792c694ff2be59d97c8f24431157d3faa3",
     ".musubix/decisions/ADR-0037.md": "b64626a843de7f90ec4540c72fc2eab5daeb5a7d3854e8de2e80f1f44b88a5e4",
     ".musubix/decisions/ADR-0041.md": "31acae0e740e0c179af3f67949ca5062f4eb9cad2a82d6ca226f0aaea516ad1e",
+    ".musubix/decisions/ADR-0044.md": "2ad8069a566cdf3eb0253bca129208c69052a7cccf4a40eef7e6200fd389a237",
+    ".musubix/features/audit-override-contract/design.md": "4b00b05cd6949ce94bf9909f947cf9e1bf749bae161d9c5edbb4978d33cb4df3",
+    ".musubix/features/audit-override-contract/requirements.md": "77a9fdb5b7bd3b9e225c4f20bbc12d8759e8eb9756dcff34a21956f571021a26",
     ".musubix/features/change-quality-refresh/design.md": "d2552cf174d4463963fca9bdeea96a6e142b11e9016659bfd9994ba4f819f923",
     ".musubix/features/change-quality-refresh/requirements.md": "14202e150cc31cb45b8e0cc88124c8547fd93f733e1c929dee4382c30fffb5a9",
     ".musubix/features/evidence-history-merge/design.md": "123823f034c53b76326f17e619a34a849c5672e179d77761550a21513f5d04ec",
@@ -2705,7 +2949,7 @@
     ".musubix/features/evidence-writer-lock/requirements.md": "4bc22eb3ad47ba2c41747ce5e9e992f85ef34a79e0397d5bfcd7c8739cd13a70",
     ".musubix/features/github-actions-node24-runtime/design.md": "2a0a2aa7b4237a66469ec0683c2621a5499e4946e430760b2cbea393ecd3c8f4",
     ".musubix/features/github-actions-node24-runtime/requirements.md": "bd51b35f5bad232267c6535d0f84e6dfd75f988038e1c9381ee37fa9dee70b3f",
-    ".musubix/features/npm-audit-remediation/design.md": "78fcb8b7a741b4415ed10bbccb232fc251fa7f30aa8af15c24f448c275705f27",
+    ".musubix/features/npm-audit-remediation/design.md": "37f6b81ebfe328b941027003f4efffba4e67882b39f13aef04c1f6bdb41d5791",
     ".musubix/features/npm-audit-remediation/requirements.md": "9a2c384b2d95a46c5537f54c6e1bfdb923aaa91a2f2c68c58ac25e0e584e23e7",
     ".musubix/features/release-approval-ordering/design.md": "235e4f2169e38965cb575b2dcab50fcca33909e9ed58d1a517150ee00e825b0b",
     ".musubix/features/release-approval-ordering/requirements.md": "19fd75e725b1838fe659f4c6f1837644321d9794e96c42236fa8c5fec140c8b5",
@@ -2719,7 +2963,7 @@
     "packages/analysis/src/quality-refresh.ts": "2b11461f84b7155ee1ec02d53d6e0af291ce26c40f6e77755e405c1b000e730d",
     "packages/cli/src/main.ts": "6b66dfce0436c633cf4bd081c3ef3ae98dcead15f8741de0d1b04ff3a497d318",
     "scripts/check-github-actions.mjs": "8e18568a2a4a69cf25aa6b825cc82a6258cf0388c27c552f7d69a100793d5437",
-    "scripts/check-npm-audit-remediation.mjs": "82548a2681cde6be6d238f15678add9388c8aaac72a49a13af82d46d4b462cb6",
+    "scripts/check-npm-audit-remediation.mjs": "19b03bb6b964883046c6ff7d1ba0db5f8ec41a4cf3a161c06ebd1de873e54216",
     "scripts/release-prepare.mjs": "e166ac42868ce134ad9d3e68a92e14831f2ad243b51f2c0782a47e49fe55a640",
     "scripts/release-publish.mjs": "021ae204cca11fd66d583e27df16e9ead16d77df0503d717d63bda14ecf144f3",
     "tests/change-quality-refresh.test.ts": "854f6d0f2d6069c675867b3b5642e6e3252abff24f2ecb4f87ea77b7e6a16cf3",
@@ -2728,7 +2972,7 @@
     "tests/evidence-writer-lock-integration.test.ts": "ad5a6d651dcb2f0fc81bfd93e8a640632a1fb2d73e2c49db59adbdbced087dc8",
     "tests/evidence-writer-lock.test.ts": "87e516ef8434489740c73b0a2e6695e2a0de28a5424a668b9b56c2304e093439",
     "tests/github-actions-node24-runtime.test.ts": "9a444869a4d0dcdb76fb34fc5e017eb8f4f39896ec7b8aa8e0d36e8a6552e28d",
-    "tests/npm-audit-remediation.test.ts": "4ec1ca039effb3d548e54527094f8f73d7b4ddb4692dccbc42f290ac7c665a51",
+    "tests/npm-audit-remediation.test.ts": "36182ed37d8d8e02b6bb371788563c95dd9b96f8c688be3bbb027c49098f2664",
     "tests/release-approval-ordering.test.ts": "9f1076b7d450fd7e8cd7d2e2dec4ae0ed498ff0b587338c102df8bfd0ad40174",
     "tests/release-asset-publishing.test.ts": "cf2f5921615f741a06f1b48fd3632c4ffebbb5d64c46db8443f853c8d6086334",
     "tests/windows-core-portability.test.ts": "69977ab1a9805ea1c8ccf34f7bf256c990beb9d273d493f5b74580ff1a8a5e6c"

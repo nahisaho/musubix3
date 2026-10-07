@@ -776,13 +776,146 @@
       "phase": "complete",
       "status": "completed",
       "recordedAt": "2026-10-05T11:39:35.102Z"
+    },
+    {
+      "skill": "sdd-requirements",
+      "version": "0.1.8",
+      "provenance": "self-reported",
+      "phase": "complete",
+      "status": "completed",
+      "recordedAt": "2026-10-07T07:05:04.231Z"
+    },
+    {
+      "skill": "sdd-change",
+      "version": "0.1.8",
+      "provenance": "self-reported",
+      "phase": "complete",
+      "status": "completed",
+      "recordedAt": "2026-10-07T07:05:04.473Z"
+    },
+    {
+      "skill": "sdd-design",
+      "version": "0.1.8",
+      "provenance": "self-reported",
+      "phase": "complete",
+      "status": "completed",
+      "recordedAt": "2026-10-07T07:50:52.774Z"
+    },
+    {
+      "skill": "sdd-change",
+      "version": "0.1.8",
+      "provenance": "self-reported",
+      "phase": "complete",
+      "status": "completed",
+      "recordedAt": "2026-10-07T07:50:53.081Z"
+    },
+    {
+      "skill": "sdd-implementation",
+      "version": "0.1.8",
+      "provenance": "self-reported",
+      "phase": "complete",
+      "status": "completed",
+      "recordedAt": "2026-10-07T09:34:27.447Z"
+    },
+    {
+      "skill": "sdd-quality",
+      "version": "0.1.8",
+      "provenance": "self-reported",
+      "phase": "complete",
+      "status": "failed",
+      "reason": "Pre-gate validation blocks quality: historical TEST-NPM-AUDIT-REMEDIATION-001 has TDD_TEST_STALE after shared test-module additions; refactor refuses the changed test fingerprint. Awaiting human direction; no release readiness claimed.",
+      "recordedAt": "2026-10-07T09:43:26.441Z"
+    },
+    {
+      "skill": "sdd-change",
+      "version": "0.1.8",
+      "provenance": "self-reported",
+      "phase": "complete",
+      "status": "failed",
+      "reason": "CHANGE-0052 implementation and four Greens passed; full npm test passed 619 with 8 optional skips; zero audit remains bound to current lockfile. A historical TDD fingerprint blocks quality and requires human direction before release approval preparation.",
+      "recordedAt": "2026-10-07T09:43:26.694Z"
+    },
+    {
+      "skill": "sdd-change",
+      "version": "0.1.8",
+      "provenance": "self-reported",
+      "phase": "complete",
+      "status": "failed",
+      "reason": "Human-proposed legacy REQ batch is structurally rejected: A requirement batch must use a non-empty subset of the change requirement IDs. Root cause is one directory-creation statement edited inside the legacy test, not sibling tests; exact original-fingerprint restoration is verified read-only and awaits human judgment.",
+      "recordedAt": "2026-10-07T09:46:43.521Z"
+    },
+    {
+      "skill": "sdd-change",
+      "version": "0.1.8",
+      "provenance": "self-reported",
+      "phase": "complete",
+      "status": "failed",
+      "reason": "Approved legacy test restoration resolves TDD. Quality technical checks pass, but declaration-scoped workflow reconciliation requires explicitly authorized waivers before release candidate; no self-approval or release readiness claimed.",
+      "recordedAt": "2026-10-07T10:05:12.657Z"
+    },
+    {
+      "skill": "sdd-quality",
+      "version": "0.1.8",
+      "provenance": "self-reported",
+      "phase": "complete",
+      "status": "completed",
+      "recordedAt": "2026-10-07T10:05:12.893Z"
+    },
+    {
+      "skill": "sdd-quality",
+      "version": "0.1.8",
+      "provenance": "self-reported",
+      "phase": "complete",
+      "status": "completed",
+      "recordedAt": "2026-10-07T10:36:28.025Z"
+    },
+    {
+      "skill": "sdd-change",
+      "version": "0.1.8",
+      "provenance": "self-reported",
+      "phase": "complete",
+      "status": "failed",
+      "reason": "Technical candidate passes all non-release checks after reviewed waiver operations, but native review found supplied waiver date rationale inaccurate: 73/97 scopes outside Sept9-12, including two CHANGE-0052-era order scopes. Need accurate human authorization and permission for another diff-only review after three substantive native calls; no release preparation or self-approval.",
+      "recordedAt": "2026-10-07T11:30:10.452Z"
+    },
+    {
+      "skill": "sdd-implementation",
+      "version": "0.1.8",
+      "provenance": "self-reported",
+      "phase": "complete",
+      "status": "completed",
+      "recordedAt": "2026-10-07T11:30:10.718Z"
+    },
+    {
+      "skill": "sdd-quality",
+      "version": "0.1.8",
+      "provenance": "self-reported",
+      "phase": "complete",
+      "status": "completed",
+      "recordedAt": "2026-10-07T11:30:10.969Z"
+    },
+    {
+      "skill": "sdd-change",
+      "version": "0.1.8",
+      "provenance": "self-reported",
+      "phase": "complete",
+      "status": "completed",
+      "recordedAt": "2026-10-07T11:51:44.126Z"
+    },
+    {
+      "skill": "sdd-change",
+      "version": "0.1.8",
+      "provenance": "self-reported",
+      "phase": "complete",
+      "status": "completed",
+      "recordedAt": "2026-10-07T12:21:24.248Z"
     }
   ],
   "verification": {
     "mode": "compatible",
-    "sourceSha256": "8d6d75b93b5a7f186105fd3364637bce83c1e83af0f687439ab8a01dc3775dbb",
-    "eventsSha256": "9601a737af89a957ef8ab32e88be8239ee1c9eb0b06177acd93c933ac6a03b05",
-    "verifiedAt": "2026-10-05T12:11:33.563Z",
+    "sourceSha256": "a84a24a8bf7df62066180b69cd4a91bbaf2777bf23851fc6745606c0ce76a8da",
+    "eventsSha256": "0fc44b4b1659f8b73d2e4dbb046a4f702156496fead6f13a241a450d3436aef0",
+    "verifiedAt": "2026-10-07T12:21:25.503Z",
     "invocations": [
       {
         "skill": "sdd-change",
@@ -971,6 +1104,174 @@
         "toolCallId": "call_jC6uokSOMrYzquXKc75HjkVv",
         "invokedAt": "2026-10-05T11:37:44.569Z",
         "completedAt": "2026-10-05T11:37:44.572Z",
+        "status": "completed"
+      },
+      {
+        "skill": "sdd-change",
+        "toolCallId": "call_bIIiKaNQ8aJVUo0hr7Pmv3Um",
+        "invokedAt": "2026-10-05T12:52:43.695Z",
+        "completedAt": "2026-10-05T12:52:43.713Z",
+        "status": "completed"
+      },
+      {
+        "skill": "sdd-change",
+        "toolCallId": "call_rZ9wSnbQLfLQMokhxNRmiXpk",
+        "invokedAt": "2026-10-05T12:53:12.451Z",
+        "completedAt": "2026-10-05T12:53:12.589Z",
+        "status": "completed"
+      },
+      {
+        "skill": "sdd-traceability",
+        "toolCallId": "call_U12V4L5KdhyAyaBPsryKe5B9",
+        "invokedAt": "2026-10-05T13:18:26.043Z",
+        "completedAt": "2026-10-05T13:18:26.056Z",
+        "status": "completed"
+      },
+      {
+        "skill": "sdd-traceability",
+        "toolCallId": "call_OA7UM0agvNApAsfskGCGBVyo",
+        "invokedAt": "2026-10-05T13:28:05.541Z",
+        "completedAt": "2026-10-05T13:28:05.545Z",
+        "status": "completed"
+      },
+      {
+        "skill": "sdd-change",
+        "toolCallId": "call_G3VUQCKFSLpSSFuyZA7ageNv",
+        "invokedAt": "2026-10-05T22:58:06.403Z",
+        "completedAt": "2026-10-05T22:58:06.405Z",
+        "status": "completed"
+      },
+      {
+        "skill": "sdd-change",
+        "toolCallId": "call_XMT5ZfMiGFRaHdM0RB6eIA0b",
+        "invokedAt": "2026-10-05T22:58:28.237Z",
+        "completedAt": "2026-10-05T22:58:28.562Z",
+        "status": "completed"
+      },
+      {
+        "skill": "sdd-change",
+        "toolCallId": "toolu_013Yf1bWVqUXoW6DA5a1g99A",
+        "invokedAt": "2026-10-06T04:50:04.838Z",
+        "completedAt": "2026-10-06T04:50:04.843Z",
+        "status": "completed"
+      },
+      {
+        "skill": "sdd-change",
+        "toolCallId": "toolu_013vfxGxyKUYFN9kd3Gsjzt6",
+        "invokedAt": "2026-10-06T09:35:32.412Z",
+        "completedAt": "2026-10-06T09:35:32.450Z",
+        "status": "completed"
+      },
+      {
+        "skill": "sdd-change",
+        "toolCallId": "toolu_013vchJxytTdtVBivjrn9Yt8",
+        "invokedAt": "2026-10-07T01:20:16.975Z",
+        "completedAt": "2026-10-07T01:20:16.979Z",
+        "status": "completed"
+      },
+      {
+        "skill": "sdd-change",
+        "toolCallId": "call_WzeD7hHPepjef9o7P1l3BanF",
+        "invokedAt": "2026-10-07T06:42:35.266Z",
+        "completedAt": "2026-10-07T06:42:35.270Z",
+        "status": "completed"
+      },
+      {
+        "skill": "sdd-requirements",
+        "toolCallId": "call_d2g2MUqU4oTpJdVUcvHrCf09",
+        "invokedAt": "2026-10-07T06:43:44.723Z",
+        "completedAt": "2026-10-07T06:43:44.726Z",
+        "status": "completed"
+      },
+      {
+        "skill": "sdd-change",
+        "toolCallId": "call_NLbyLz3ky8NkrRV1zEJeizsO",
+        "invokedAt": "2026-10-07T07:20:15.821Z",
+        "completedAt": "2026-10-07T07:20:15.825Z",
+        "status": "completed"
+      },
+      {
+        "skill": "sdd-design",
+        "toolCallId": "call_o2Sb2SNaLAiHlFwO62GyXco3",
+        "invokedAt": "2026-10-07T07:20:26.828Z",
+        "completedAt": "2026-10-07T07:20:26.856Z",
+        "status": "completed"
+      },
+      {
+        "skill": "sdd-change",
+        "toolCallId": "call_59FvqKnxart8BPQYlyHK69GN",
+        "invokedAt": "2026-10-07T09:18:00.870Z",
+        "completedAt": "2026-10-07T09:18:00.875Z",
+        "status": "completed"
+      },
+      {
+        "skill": "sdd-implementation",
+        "toolCallId": "call_MdcPQGJQDHExU0EtZMJO2sMT",
+        "invokedAt": "2026-10-07T09:18:17.987Z",
+        "completedAt": "2026-10-07T09:18:17.992Z",
+        "status": "completed"
+      },
+      {
+        "skill": "sdd-quality",
+        "toolCallId": "call_PQsmbQEIDhMktVjvPa4RRdqn",
+        "invokedAt": "2026-10-07T09:37:54.819Z",
+        "completedAt": "2026-10-07T09:37:54.823Z",
+        "status": "completed"
+      },
+      {
+        "skill": "sdd-change",
+        "toolCallId": "call_09ph2HVZcRMABfSWisDgAIK9",
+        "invokedAt": "2026-10-07T09:44:29.758Z",
+        "completedAt": "2026-10-07T09:44:29.763Z",
+        "status": "completed"
+      },
+      {
+        "skill": "sdd-change",
+        "toolCallId": "call_QrvLrdlDEDIn6VGbpC3POkx7",
+        "invokedAt": "2026-10-07T09:47:00.139Z",
+        "completedAt": "2026-10-07T09:47:00.142Z",
+        "status": "completed"
+      },
+      {
+        "skill": "sdd-quality",
+        "toolCallId": "call_xIA3WgGlCkybBaaG8wajYS3N",
+        "invokedAt": "2026-10-07T09:47:12.276Z",
+        "completedAt": "2026-10-07T09:47:12.279Z",
+        "status": "completed"
+      },
+      {
+        "skill": "sdd-change",
+        "toolCallId": "call_QVRRNhozITIOChelBUcTLS8G",
+        "invokedAt": "2026-10-07T10:15:24.605Z",
+        "completedAt": "2026-10-07T10:15:24.608Z",
+        "status": "completed"
+      },
+      {
+        "skill": "sdd-implementation",
+        "toolCallId": "call_zwNF7pRI2fG1JWS7emaNmUjt",
+        "invokedAt": "2026-10-07T10:38:40.378Z",
+        "completedAt": "2026-10-07T10:38:40.386Z",
+        "status": "completed"
+      },
+      {
+        "skill": "sdd-quality",
+        "toolCallId": "call_kcdFvKa9BJBdqeOCTdEnJVU7",
+        "invokedAt": "2026-10-07T10:43:01.112Z",
+        "completedAt": "2026-10-07T10:43:01.116Z",
+        "status": "completed"
+      },
+      {
+        "skill": "sdd-change",
+        "toolCallId": "call_M24eXDm4eWNu6swvyHTcXAso",
+        "invokedAt": "2026-10-07T11:38:17.184Z",
+        "completedAt": "2026-10-07T11:38:17.224Z",
+        "status": "completed"
+      },
+      {
+        "skill": "sdd-change",
+        "toolCallId": "call_pRidXNLNf5vw1yWQbMBVgph3",
+        "invokedAt": "2026-10-07T12:06:22.609Z",
+        "completedAt": "2026-10-07T12:06:22.613Z",
         "status": "completed"
       }
     ]

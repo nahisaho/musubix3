@@ -1204,6 +1204,12 @@ be treated as proof that future audits remain clean.
 `.github/workflows/dependency-audit.yml` repeats the full report weekly and on
 manual dispatch; review and remediate any failing run before release.
 
+The reviewed dependency exception is exactly `{"js-yaml":"^5.4.3"}` in root
+`overrides` (CHANGE-0052). The offline remediation checker rejects different or
+additional overrides and reintroduced `sprintf-js`; retained audit evidence
+must match the current lockfile bytes. This is not general permission to override
+Vitest packages or to accept development-only vulnerabilities.
+
 Synchronize every mechanically managed release-version surface before building:
 
 ```sh

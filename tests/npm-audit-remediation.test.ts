@@ -1,9 +1,11 @@
 import { execFileSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
+import { createRequire } from 'node:module';
 import {
   existsSync, mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync,
 } from 'node:fs';
+import { dirname, join, resolve } from 'node:path';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
 type CheckReport = {
@@ -59,7 +61,7 @@ function runGateCommandTimeoutMarginCheck(): CheckReport {
 }
 
 function withFixture(run: (root: string) => void): void {
-  const root = mkdtempSync(join(tmpdir(), 'musubix3-audit-'));
+  const root = fixtureDirectory('audit-');
   try {
     for (const path of [
       'package.json',
@@ -69,6 +71,9 @@ function withFixture(run: (root: string) => void): void {
       'README-ja.md',
       '.github/workflows/ci.yml',
       '.github/workflows/dependency-audit.yml',
+      '.musubix/changes/CHANGE-0022.md',
+      '.musubix/changes/CHANGE-0052.md',
+      '.musubix/evidence/npm-audit/CHANGE-0052.json',
     ]) {
       if (!existsSync(path)) continue;
       const target = join(root, path);
@@ -79,6 +84,12 @@ function withFixture(run: (root: string) => void): void {
   } finally {
     rmSync(root, { recursive: true, force: true });
   }
+}
+
+function fixtureDirectory(prefix: string): string {
+  const base = resolve('.test-work');
+  mkdirSync(base, { recursive: true });
+  return mkdtempSync(join(base, prefix));
 }
 
 function readJson(path: string): Record<string, unknown> {
@@ -107,7 +118,7 @@ function expectLockDiagnostic(
 }
 
 function expectEvidenceDiagnostic(mutate: (change: string) => string): void {
-  const directory = mkdtempSync(join(tmpdir(), 'musubix3-audit-evidence-'));
+  const directory = fixtureDirectory('audit-evidence-');
   const path = join(directory, 'CHANGE-0022.md');
   try {
     writeFileSync(path, mutate(readFileSync('.musubix/changes/CHANGE-0022.md', 'utf8')));
@@ -117,6 +128,352 @@ function expectEvidenceDiagnostic(mutate: (change: string) => string): void {
     rmSync(directory, { recursive: true, force: true });
   }
 }
+
+function reviewedGraph(packageJson: Record<string, unknown>, lock: Record<string, unknown>): void {
+  packageJson.overrides = { 'js-yaml': '^5.4.3' };
+  const packages = lock.packages as Record<string, Record<string, unknown>>;
+  delete packages['']!.overrides;
+  for (const [key, value] of Object.entries(packages)) {
+    if (key.endsWith('node_modules/js-yaml')) {
+      value.version = '5.4.3';
+      value.dev = true;
+      value.dependencies = { argparse: '^2.0.1' };
+      delete value.optionalDependencies;
+      delete value.peerDependencies;
+    } else if (key.endsWith('node_modules/argparse')) {
+      value.version = '2.0.1';
+      value.dev = true;
+      delete value.dependencies;
+      delete value.optionalDependencies;
+      delete value.peerDependencies;
+    } else if (key.endsWith('node_modules/sprintf-js')) {
+      delete packages[key];
+    }
+  }
+}
+
+function expectOverrideLockDiagnostic(
+  mutate: Parameters<typeof expectLockDiagnostic>[0],
+  code: string,
+): void {
+  expectLockDiagnostic((root, packageJson, lock) => {
+    reviewedGraph(packageJson, lock);
+    mutate(root, packageJson, lock);
+  }, code);
+}
+
+function consumers(lock: Record<string, unknown>): Array<{ path: string; kind: string; range: string }> {
+  const result: Array<{ path: string; kind: string; range: string }> = [];
+  for (const [path, raw] of Object.entries(lock.packages as Record<string, unknown>)) {
+    const value = raw as Record<string, Record<string, string> | undefined>;
+    for (const kind of ['dependencies', 'optionalDependencies', 'peerDependencies']) {
+      const range = value?.[kind]?.['js-yaml'];
+      if (typeof range === 'string') result.push({ path, kind, range });
+    }
+  }
+  return result.sort((left, right) => {
+    const a = `${left.path}\0${left.kind}\0${left.range}`;
+    const b = `${right.path}\0${right.kind}\0${right.range}`;
+    return a < b ? -1 : a > b ? 1 : 0;
+  });
+}
+
+function digest(path: string): string {
+  return createHash('sha256').update(readFileSync(path)).digest('hex');
+}
+
+const assessmentFixture = `## Override advisory assessment
+
+Advisory: GHSA-hp3w-g68c-fv3c.
+Dependency path: \`jest@30.5.1 > @jest/core@30.5.1 > @jest/transform@30.5.1 > babel-plugin-istanbul@8.0.0 > @istanbuljs/load-nyc-config@1.1.0 > js-yaml@3.15.2 > argparse@1.0.10 > sprintf-js@1.0.3\`.
+Impact: CPU denial of service through attacker-controlled unbounded precision specifiers.
+Fixed sprintf-js release: none published; affected <=1.1.3.
+Exposure: development-only Jest tooling; production source does not import Jest/js-yaml/sprintf-js and the package archive contains none of this dependency chain.
+Decision: remove sprintf-js through the reviewed js-yaml override, not accept it as harmless.
+Consumer: @istanbuljs/load-nyc-config declares js-yaml "^3.13.1"; the override deliberately exceeds that range.
+Call site: \`require('js-yaml').load(await readFile(configFile, 'utf8'))\`.
+Limits: no universal unreachability claim; compatibility is not inferred solely from an unchanged method name.
+Residual risk: future advisories or future attacker-controlled developer input remain possible; recurring weekly/manual audit monitoring and release-time review remain required.
+`;
+
+function replaceSection(text: string, heading: string, content: string): string {
+  const pattern = new RegExp(`^## ${heading}\\n[\\s\\S]*?(?=^## |$(?![\\s\\S]))`, 'm');
+  return pattern.test(text) ? text.replace(pattern, content) : `${text}\n${content}`;
+}
+
+function evidenceFixture(root: string): void {
+  const lockPath = join(root, 'package-lock.json');
+  const reportPath = join(root, '.musubix/evidence/npm-audit/CHANGE-0052.json');
+  mkdirSync(dirname(reportPath), { recursive: true });
+  // Synthetic audit data belongs only to isolated tests, never repository evidence.
+  writeJson(reportPath, {
+    auditReportVersion: 2,
+    vulnerabilities: {},
+    metadata: { vulnerabilities: { info: 0, low: 0, moderate: 0, high: 0, critical: 0, total: 0 } },
+  });
+  const capture = new Date().toISOString().replace(/\.\d{3}Z$/, 'Z');
+  const lockDigest = digest(lockPath);
+  const oldPath = join(root, '.musubix/changes/CHANGE-0022.md');
+  writeFileSync(oldPath, readFileSync(oldPath, 'utf8')
+    .replace(/Audit captured at: [^.]+\./, `Audit captured at: ${capture}.`)
+    .replace(/Audited package-lock SHA-256:\s+`[a-f0-9]{64}`/, `Audited package-lock SHA-256: \`${lockDigest}\``)
+    .replace(/^.*Follow-up remediation: CHANGE-0052.*\n?/gm, '')
+    + '\nFollow-up remediation: CHANGE-0052.\n');
+  const changePath = join(root, '.musubix/changes/CHANGE-0052.md');
+  let change = replaceSection(readFileSync(changePath, 'utf8'), 'Override advisory assessment', assessmentFixture);
+  change = replaceSection(change, 'Verification evidence', `## Verification evidence
+
+Override audit captured at: ${capture}.
+Override lockfile SHA-256: \`${lockDigest}\`.
+Audit report SHA-256: \`${digest(reportPath)}\`.
+Remediation history: CHANGE-0022 -> CHANGE-0052.
+Js-yaml consumer inventory: ${JSON.stringify(consumers(readJson(lockPath)))}
+
+`);
+  writeFileSync(changePath, change);
+}
+
+function expectOverrideEvidenceDiagnostic(
+  mutate: (root: string) => void,
+  code: string,
+  relativePath: string,
+): void {
+  withFixture((root) => {
+    evidenceFixture(root);
+    mutate(root);
+    expect(runCheck('evidence', { NPM_AUDIT_REMEDIATION_ROOT: root }).diagnostics)
+      .toContainEqual(expect.objectContaining({ code, path: join(root, relativePath) }));
+  });
+}
+
+describe('reviewed audit override contract', () => {
+  /** @id TEST-AUDIT-OVERRIDE-CONTRACT-001
+   * @verifies REQ-AUDIT-OVERRIDE-CONTRACT-001
+   */
+  it('TEST-AUDIT-OVERRIDE-CONTRACT-001 pins and guards every replacement dependency record', () => {
+    expect(readJson('package.json').overrides).toEqual({ 'js-yaml': '^5.4.3' });
+    expect(runCheck('lock')).toEqual({ valid: true, diagnostics: [] });
+    for (const name of ['js-yaml', 'argparse']) {
+      const mutations: Array<(value: Record<string, unknown>) => void> = [
+        (value) => { value.version = '1.0.0'; },
+        (value) => { value.version = name === 'js-yaml' ? '6.0.0' : '3.0.0'; },
+        (value) => { value.version = '5.4.3-beta.1'; },
+        (value) => { value.dev = false; },
+        (value) => { value.dependencies = null; },
+        (value) => { value.dependencies = []; },
+        (value) => { value.dependencies = { unexpected: '^1.0.0' }; },
+        (value) => { value.optionalDependencies = { unexpected: '^1.0.0' }; },
+        (value) => { value.peerDependencies = 'malformed'; },
+      ];
+      for (const mutate of mutations) {
+        expectOverrideLockDiagnostic((_root, _manifest, lock) => {
+          const packages = lock.packages as Record<string, Record<string, unknown>>;
+          mutate(packages[`node_modules/${name}`]!);
+        }, 'LOCK_OVERRIDE_GRAPH');
+      }
+      for (const malformed of [null, [], 'invalid']) {
+        expectOverrideLockDiagnostic((_root, _manifest, lock) => {
+          (lock.packages as Record<string, unknown>)[`node_modules/${name}`] = malformed;
+        }, 'LOCK_OVERRIDE_GRAPH');
+      }
+      expectOverrideLockDiagnostic((_root, _manifest, lock) => {
+        delete (lock.packages as Record<string, unknown>)[`node_modules/${name}`];
+      }, 'LOCK_OVERRIDE_GRAPH');
+      expectOverrideLockDiagnostic((_root, _manifest, lock) => {
+        (lock.packages as Record<string, unknown>)[`node_modules/other/node_modules/${name}`] = {
+          version: '1.0.0', dev: true,
+        };
+      }, 'LOCK_OVERRIDE_GRAPH');
+    }
+    expectOverrideLockDiagnostic((_root, _manifest, lock) => {
+      const packages = lock.packages as Record<string, Record<string, unknown>>;
+      packages['node_modules/js-yaml']!.version = '5.4.2';
+    }, 'LOCK_OVERRIDE_GRAPH');
+    for (const path of ['node_modules/sprintf-js', 'node_modules/other/node_modules/sprintf-js']) {
+      expectOverrideLockDiagnostic((_root, _manifest, lock) => {
+        (lock.packages as Record<string, unknown>)[path] = { version: '1.0.3', dev: true };
+      }, 'LOCK_OVERRIDE_GRAPH');
+    }
+  });
+
+  /** @id TEST-AUDIT-OVERRIDE-CONTRACT-002
+   * @verifies REQ-AUDIT-OVERRIDE-CONTRACT-002
+   */
+  it('TEST-AUDIT-OVERRIDE-CONTRACT-002 accepts only the reviewed manifest and generated root representation', () => {
+    withFixture((root) => {
+      const manifest = readJson(join(root, 'package.json'));
+      const lock = readJson(join(root, 'package-lock.json'));
+      reviewedGraph(manifest, lock);
+      writeJson(join(root, 'package.json'), manifest);
+      writeJson(join(root, 'package-lock.json'), lock);
+      expect(runCheck('lock', { NPM_AUDIT_REMEDIATION_ROOT: root })).toEqual({ valid: true, diagnostics: [] });
+    });
+    for (const overrides of [
+      undefined, {}, { different: '^5.4.3' }, { 'js-yaml': '^5.4.2' },
+      { 'js-yaml': '^5.4.3', extra: '^1.0.0' },
+      { 'js-yaml': { '.': '^5.4.3' } }, null, [], 'invalid',
+    ]) {
+      expectOverrideLockDiagnostic((_root, manifest) => {
+        if (overrides === undefined) delete manifest.overrides;
+        else manifest.overrides = overrides;
+      }, 'MANIFEST_CONTRACT');
+    }
+    for (const overrides of [{ 'js-yaml': '^5.4.3' }, {}, null, 'invalid']) {
+      expectOverrideLockDiagnostic((_root, _manifest, lock) => {
+        (lock.packages as Record<string, Record<string, unknown>>)['']!.overrides = overrides;
+      }, 'MANIFEST_CONTRACT');
+    }
+    for (const key of ['dependencies', 'bin', 'exports', 'files', 'engines']) {
+      expectOverrideLockDiagnostic((_root, manifest) => { manifest[key] = {}; }, 'MANIFEST_CONTRACT');
+    }
+  });
+
+  /** @id TEST-AUDIT-OVERRIDE-CONTRACT-003
+   * @verifies REQ-AUDIT-OVERRIDE-CONTRACT-003
+   */
+  it('TEST-AUDIT-OVERRIDE-CONTRACT-003 binds the retained full audit to current lockfile evidence', () => {
+    const reportPath = '.musubix/evidence/npm-audit/CHANGE-0052.json';
+    expect(existsSync(reportPath)).toBe(true);
+    expect(runCheck('evidence')).toEqual({ valid: true, diagnostics: [] });
+    withFixture((root) => {
+      evidenceFixture(root);
+      expect(runCheck('evidence', { NPM_AUDIT_REMEDIATION_ROOT: root })).toEqual({ valid: true, diagnostics: [] });
+    });
+    for (const severity of ['info', 'low', 'moderate', 'high', 'critical', 'total']) {
+      expectOverrideEvidenceDiagnostic((root) => {
+        const path = join(root, reportPath);
+        const report = readJson(path);
+        ((report.metadata as Record<string, unknown>).vulnerabilities as Record<string, unknown>)[severity] = 1;
+        writeJson(path, report);
+      }, 'AUDIT_OVERRIDE_EVIDENCE', reportPath);
+    }
+    for (const mutate of [
+      (report: Record<string, unknown>) => { delete report.metadata; },
+      (report: Record<string, unknown>) => { report.vulnerabilities = []; },
+      (report: Record<string, unknown>) => { report.vulnerabilities = { injected: {} }; },
+      (report: Record<string, unknown>) => {
+        ((report.metadata as Record<string, unknown>).vulnerabilities as Record<string, unknown>).total = '0';
+      },
+    ]) {
+      expectOverrideEvidenceDiagnostic((root) => {
+        const path = join(root, reportPath);
+        const report = readJson(path);
+        mutate(report);
+        writeJson(path, report);
+      }, 'AUDIT_OVERRIDE_EVIDENCE', reportPath);
+    }
+    for (const content of ['not JSON', '{}']) {
+      expectOverrideEvidenceDiagnostic((root) => { writeFileSync(join(root, reportPath), content); },
+        'AUDIT_OVERRIDE_EVIDENCE', reportPath);
+    }
+    expectOverrideEvidenceDiagnostic((root) => {
+      const path = join(root, reportPath);
+      writeFileSync(path, `${readFileSync(path, 'utf8')}\n`);
+    }, 'AUDIT_OVERRIDE_EVIDENCE', reportPath);
+    const changePath = '.musubix/changes/CHANGE-0052.md';
+    for (const [pattern, replacement] of [
+      [/Override lockfile SHA-256: `[^`]+`/, 'Override lockfile SHA-256: `invalid`'],
+      [/Override audit captured at: [^.]+\./, 'Override audit captured at: 2999-01-01T00:00:00Z.'],
+      [/Remediation history: CHANGE-0022 -> CHANGE-0052\./, 'Remediation history: missing.'],
+    ] as const) {
+      expectOverrideEvidenceDiagnostic((root) => {
+        const path = join(root, changePath);
+        writeFileSync(path, readFileSync(path, 'utf8').replace(pattern, replacement));
+      }, 'AUDIT_OVERRIDE_EVIDENCE', changePath);
+    }
+    expectOverrideEvidenceDiagnostic((root) => {
+      const path = join(root, '.musubix/changes/CHANGE-0022.md');
+      writeFileSync(path, readFileSync(path, 'utf8').replace('Follow-up remediation: CHANGE-0052.', 'Follow-up: missing.'));
+    }, 'AUDIT_OVERRIDE_EVIDENCE', '.musubix/changes/CHANGE-0022.md');
+  });
+
+  /** @id TEST-AUDIT-OVERRIDE-CONTRACT-004
+   * @verifies REQ-AUDIT-OVERRIDE-CONTRACT-004
+   */
+  it('TEST-AUDIT-OVERRIDE-CONTRACT-004 checks exposure evidence and executes the overridden YAML consumer', async () => {
+    const changePath = '.musubix/changes/CHANGE-0052.md';
+    expectOverrideEvidenceDiagnostic((root) => {
+      const path = join(root, changePath);
+      writeFileSync(path, readFileSync(path, 'utf8').replace('Decision: remove sprintf-js', 'Decision: unknown'));
+    }, 'AUDIT_OVERRIDE_ASSESSMENT', changePath);
+    for (const anchor of [
+      'Advisory: GHSA-hp3w-g68c-fv3c.', 'attacker-controlled unbounded precision specifiers',
+      'none published; affected <=1.1.3', 'production source does not import Jest/js-yaml/sprintf-js',
+      'the override deliberately exceeds that range',
+      "require('js-yaml').load(await readFile(configFile, 'utf8'))",
+      'no universal unreachability claim',
+      'compatibility is not inferred solely from an unchanged method name',
+      'recurring weekly/manual audit monitoring',
+    ]) {
+      expectOverrideEvidenceDiagnostic((root) => {
+        const path = join(root, changePath);
+        writeFileSync(path, readFileSync(path, 'utf8').replace(anchor, 'missing'));
+      }, 'AUDIT_OVERRIDE_ASSESSMENT', changePath);
+    }
+    for (const inventory of ['[]', 'not-json', '[{"path":"wrong","kind":"dependencies","range":"^3.13.1"}]']) {
+      expectOverrideEvidenceDiagnostic((root) => {
+        const path = join(root, changePath);
+        writeFileSync(path, readFileSync(path, 'utf8').replace(/^Js-yaml consumer inventory: .*$/m,
+          `Js-yaml consumer inventory: ${inventory}`));
+      }, 'AUDIT_OVERRIDE_ASSESSMENT', changePath);
+    }
+    for (const field of ['kind', 'range']) {
+      for (const value of [null, 1, [], {}, 'invalid']) {
+        expectOverrideEvidenceDiagnostic((root) => {
+          const path = join(root, changePath);
+          const content = readFileSync(path, 'utf8');
+          const line = /^Js-yaml consumer inventory: (.*)$/m.exec(content)!;
+          const entries = JSON.parse(line[1]!) as Array<Record<string, unknown>>;
+          entries[0]![field] = value;
+          writeFileSync(path, content.replace(line[0],
+            `Js-yaml consumer inventory: ${JSON.stringify(entries)}`));
+        }, 'AUDIT_OVERRIDE_ASSESSMENT', changePath);
+      }
+    }
+    for (const mode of ['multiple', 'duplicate', 'order']) {
+      expectOverrideEvidenceDiagnostic((root) => {
+        if (mode === 'order') {
+          const lockPath = join(root, 'package-lock.json');
+          const lock = readJson(lockPath);
+          (lock.packages as Record<string, unknown>)['node_modules/z-extra-consumer'] = {
+            version: '1.0.0', dev: true, dependencies: { 'js-yaml': '^3.13.1' },
+          };
+          writeJson(lockPath, lock);
+          evidenceFixture(root);
+        }
+        const path = join(root, changePath);
+        const content = readFileSync(path, 'utf8');
+        const line = /^Js-yaml consumer inventory: (.*)$/m.exec(content)!;
+        const entries = JSON.parse(line[1]!) as unknown[];
+        if (mode === 'multiple') writeFileSync(path, `${content}\n${line[0]}\n`);
+        else writeFileSync(path, content.replace(line[0],
+          `Js-yaml consumer inventory: ${JSON.stringify(mode === 'duplicate' ? [...entries, entries[0]] : entries.reverse())}`));
+      }, 'AUDIT_OVERRIDE_ASSESSMENT', changePath);
+    }
+    expect(runCheck('evidence')).toEqual({ valid: true, diagnostics: [] });
+    const require = createRequire(import.meta.url);
+    const consumerRequire = createRequire(require.resolve('@istanbuljs/load-nyc-config'));
+    let directory = dirname(consumerRequire.resolve('js-yaml'));
+    while (!existsSync(join(directory, 'package.json')) && dirname(directory) !== directory) directory = dirname(directory);
+    const installed = readJson(join(directory, 'package.json'));
+    expect(installed.name).toBe('js-yaml');
+    expect(installed.version).toMatch(/^5\.\d+\.\d+$/);
+    const root = fixtureDirectory('yaml-consumer-');
+    try {
+      writeJson(join(root, 'package.json'), { name: 'yaml-consumer-fixture', private: true });
+      writeFileSync(join(root, '.nycrc.yaml'),
+        'check-coverage: true\nlines: 85\nexclude: excluded-file.ts\nextension:\n  - .ts\n  - .js\n');
+      const { loadNycConfig } = require('@istanbuljs/load-nyc-config') as {
+        loadNycConfig: (options: { cwd: string; nycrcPath: string }) => Promise<Record<string, unknown>>;
+      };
+      expect(await loadNycConfig({ cwd: root, nycrcPath: '.nycrc.yaml' })).toMatchObject({
+        cwd: root, checkCoverage: true, lines: 85, exclude: ['excluded-file.ts'], extension: ['.ts', '.js'],
+      });
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+});
 
 describe('npm audit remediation', () => {
   /** @id TEST-GATE-COMMAND-TIMEOUT-MARGIN-001
