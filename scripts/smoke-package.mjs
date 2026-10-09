@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { firstPackEntry } from './pack-json.mjs';
 import { execFileSync } from 'node:child_process';
 import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
@@ -11,9 +12,9 @@ const npmCli = process.env.npm_execpath;
 assert(npmCli, 'Run this check through npm so npm_execpath is available.');
 mkdirSync(consumer, { recursive: true });
 try {
-  const packed = JSON.parse(execFileSync(process.execPath, [
+  const packed = firstPackEntry(execFileSync(process.execPath, [
     npmCli, 'pack', '--json', '--ignore-scripts', '--pack-destination', work,
-  ], { cwd: root, encoding: 'utf8' }))[0];
+  ], { cwd: root, encoding: 'utf8' }));
   writeFileSync(resolve(consumer, 'package.json'), '{"name":"musubix3-smoke-consumer","private":true,"type":"module"}\n');
   execFileSync(process.execPath, [
     npmCli, 'install', '--ignore-scripts', '--no-audit', '--no-fund', '--workspaces=false', resolve(work, packed.filename),
