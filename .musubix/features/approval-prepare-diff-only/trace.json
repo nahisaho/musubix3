@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-07T18:21:01.296Z",
+  "generatedAt": "2026-10-09T09:19:53.672Z",
   "nodes": [
     {
       "id": "ADR-0043",
@@ -12,19 +12,19 @@
       "id": "CODE-APPROVAL-PREPARE-DIFF-ONLY-001",
       "kind": "code",
       "path": "packages/analysis/src/approval.ts",
-      "line": 405
+      "line": 417
     },
     {
       "id": "CODE-APPROVAL-PREPARE-DIFF-ONLY-002",
       "kind": "code",
       "path": "packages/analysis/src/approval.ts",
-      "line": 430
+      "line": 476
     },
     {
       "id": "CODE-APPROVAL-PREPARE-DIFF-ONLY-003",
       "kind": "code",
       "path": "packages/cli/src/main.ts",
-      "line": 653
+      "line": 654
     },
     {
       "id": "DES-APPROVAL-PREPARE-DIFF-ONLY-001",
@@ -308,8 +308,8 @@
     ".musubix/decisions/ADR-0043.md": "6219ff0024fd0997d7bfdaeb8f6ef28cffdbfc63539a91a9e66160881237958b",
     ".musubix/features/approval-prepare-diff-only/design.md": "1a32781519854b3cf42201b8635bdcaac3010e89535056be2851ef0caa22cda6",
     ".musubix/features/approval-prepare-diff-only/requirements.md": "a6cc071b830412abe2ac5f401b93a66265e11a4f3a1a546c7fac2c0d0466dbe0",
-    "packages/analysis/src/approval.ts": "14015adfe994d2f1be5b805e240f9cd774b99fead432d3d0162d60324db1be8a",
-    "packages/cli/src/main.ts": "73ff89c11b1f9ff84f9f1efd11829b2867c5ae14aae950438fbd046d7aefded7",
+    "packages/analysis/src/approval.ts": "0ba42be9b8e3179ed2ea010e34d23ad476206d95c087bf93dac715a4b05a2b62",
+    "packages/cli/src/main.ts": "4320d07380e38334a683284ed5796b35f168d14ec718e6e661583619fbeea4d8",
     "tests/approval-prepare-diff-only.test.ts": "f67b08d119a6d3cc9e3154728121b5c2e00be0f3abda28efb8e8acdcd072173a"
   }
 }

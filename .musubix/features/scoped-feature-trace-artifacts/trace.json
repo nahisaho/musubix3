@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-07T03:48:06.580Z",
+  "generatedAt": "2026-10-09T09:19:53.672Z",
   "nodes": [
     {
       "id": "ADR-0039",
@@ -42,7 +42,7 @@
       "id": "CODE-SCOPED-FEATURE-TRACE-ARTIFACTS-007",
       "kind": "code",
       "path": "packages/analysis/src/approval.ts",
-      "line": 119
+      "line": 126
     },
     {
       "id": "CODE-SCOPED-FEATURE-TRACE-ARTIFACTS-008",
@@ -348,7 +348,7 @@
     ".musubix/decisions/ADR-0039.md": "f83b714f37ca814ba19e6086866c3138e5dbbd5ebf10be3087e1b700fbcf2487",
     ".musubix/features/scoped-feature-trace-artifacts/design.md": "d5a5fb04f6aab43aff2881d9cde8737cd2795278d06db4f9df90dd7ec981116f",
     ".musubix/features/scoped-feature-trace-artifacts/requirements.md": "10470f52be3500bf20527b244be836c8cdf3ab4f46c84b5dbfd65f0efeb3f2e9",
-    "packages/analysis/src/approval.ts": "14015adfe994d2f1be5b805e240f9cd774b99fead432d3d0162d60324db1be8a",
+    "packages/analysis/src/approval.ts": "0ba42be9b8e3179ed2ea010e34d23ad476206d95c087bf93dac715a4b05a2b62",
     "packages/analysis/src/trace.ts": "aaa937522921837e72ee2cb7423662b4e890663b002d28e18c6a37368ee5de21",
     "packages/cli/src/install.ts": "a15942ca763881364b9e0f1a134d2d8f9c63f09ce2b7cd40f6467f523b089fc2",
     "tests/scoped-feature-trace-artifacts.test.ts": "c34b4fd44067a966f008827845a8fb6efce7bd4294d2cf3cb41110876763e3e1"

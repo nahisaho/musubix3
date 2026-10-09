@@ -6,6 +6,7 @@
     ".musubix/features/adapter-pattern-recognition/requirements.md": "5731561a0a04982b8a5c305bdeeae6084bcf0ee8846f295eaaaabc823d1f9793",
     ".musubix/features/approval-domain-scoping/requirements.md": "c886926622fe022052c81b1ea4e76f21c04f42636f4a37d074f7d34c0505210f",
     ".musubix/features/approval-prepare-diff-only/requirements.md": "a6cc071b830412abe2ac5f401b93a66265e11a4f3a1a546c7fac2c0d0466dbe0",
+    ".musubix/features/approval-rebase-fast-reapproval/requirements.md": "5649399a4998117c2ce862580ebf3f92a3bd8064c8245f1c46e7786007585d18",
     ".musubix/features/attestation-evidence-stability/requirements.md": "36661538d67523f444f537dbc8466ac4919dd20650fcdd78c2ae3d4a402039a5",
     ".musubix/features/audit-override-contract/requirements.md": "77a9fdb5b7bd3b9e225c4f20bbc12d8759e8eb9756dcff34a21956f571021a26",
     ".musubix/features/bounded-file-read-concurrency/requirements.md": "9e08acde7e29a8f14b23d908c465c629e49d00bc29ae9bda1466427362c815be",
@@ -48,7 +49,7 @@
     ".musubix/features/workflow-session-shutdown/requirements.md": "c00d313bbb445e0951fad5d2cd70f22341a19ce357659cd03e80f3049ef8d873",
     ".musubix/features/workflow-waiver-bulk-recording/requirements.md": "361cfba519d4ab189a2091cf7b99133b9c005f69fb28aa2d77bba17bd7ee7b33"
   },
-  "artifactSha256": "9ff89491f0f1ea36a7e3fc29a18f7386cac6ca74d83691f56da7f45741760472",
+  "artifactSha256": "357b712623e248425e3f1836588c2779724b016a63e27c3d772affce1624b3b7",
   "approver": "nahisaho",
-  "approvedAt": "2026-10-07T07:20:22.626Z"
+  "approvedAt": "2026-10-09T08:59:47.760Z"
 }

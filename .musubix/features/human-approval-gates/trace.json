@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-07T03:48:06.580Z",
+  "generatedAt": "2026-10-09T09:19:53.672Z",
   "nodes": [
     {
       "id": "ADR-0002",
@@ -30,67 +30,67 @@
       "id": "CODE-APPROVAL-DOMAIN-SCOPING-003",
       "kind": "code",
       "path": "packages/analysis/src/approval.ts",
-      "line": 334
+      "line": 341
     },
     {
       "id": "CODE-APPROVAL-DOMAIN-SCOPING-004",
       "kind": "code",
       "path": "packages/analysis/src/approval.ts",
-      "line": 608
+      "line": 654
     },
     {
       "id": "CODE-APPROVAL-DOMAIN-SCOPING-005",
       "kind": "code",
       "path": "packages/analysis/src/approval.ts",
-      "line": 714
+      "line": 760
     },
     {
       "id": "CODE-APPROVAL-DOMAIN-SCOPING-006",
       "kind": "code",
       "path": "packages/analysis/src/approval.ts",
-      "line": 668
+      "line": 714
     },
     {
       "id": "CODE-APPROVAL-DOMAIN-SCOPING-007",
       "kind": "code",
       "path": "packages/analysis/src/approval.ts",
-      "line": 367
+      "line": 374
     },
     {
       "id": "CODE-APPROVAL-DOMAIN-SCOPING-008",
       "kind": "code",
       "path": "packages/analysis/src/approval.ts",
-      "line": 644
+      "line": 690
     },
     {
       "id": "CODE-APPROVAL-DOMAIN-SCOPING-009",
       "kind": "code",
       "path": "packages/analysis/src/approval.ts",
-      "line": 679
+      "line": 725
     },
     {
       "id": "CODE-APPROVAL-DOMAIN-SCOPING-010",
       "kind": "code",
       "path": "packages/analysis/src/approval.ts",
-      "line": 727
+      "line": 773
     },
     {
       "id": "CODE-APPROVAL-DOMAIN-SCOPING-011",
       "kind": "code",
       "path": "packages/analysis/src/approval.ts",
-      "line": 741
+      "line": 787
     },
     {
       "id": "CODE-APPROVAL-DOMAIN-SCOPING-012",
       "kind": "code",
       "path": "packages/analysis/src/approval.ts",
-      "line": 754
+      "line": 800
     },
     {
       "id": "CODE-APPROVAL-DOMAIN-SCOPING-013",
       "kind": "code",
       "path": "packages/analysis/src/approval.ts",
-      "line": 765
+      "line": 811
     },
     {
       "id": "CODE-APPROVAL-DOMAIN-SCOPING-014",
@@ -114,7 +114,7 @@
       "id": "CODE-HUMAN-APPROVAL-GATES-001",
       "kind": "code",
       "path": "packages/analysis/src/approval.ts",
-      "line": 361
+      "line": 368
     },
     {
       "id": "CODE-HUMAN-APPROVAL-GATES-002",
@@ -1425,8 +1425,8 @@
     ".musubix/features/human-approval-gates/design.md": "ce1e316afee28082001ddedbce734a7766562889bd28f3eea610909c8d736206",
     ".musubix/features/human-approval-gates/requirements.md": "f2ae2380935831bb102cd6a7726f2a208ab1719e035157302ef51ed28f624fb0",
     "packages/analysis/src/approval-domains.ts": "bc45836374021f86c4c2085184185546cc4291880aea32b9084188545b9394b4",
-    "packages/analysis/src/approval-record.ts": "08b934d8c43b6d9b298ec4615b2bcabefbaf7cd143152fe6e1e08ea95cdd288d",
-    "packages/analysis/src/approval.ts": "14015adfe994d2f1be5b805e240f9cd774b99fead432d3d0162d60324db1be8a",
+    "packages/analysis/src/approval-record.ts": "804c2d5f0788a6e474667ec5bd05ad7462471271b1a9b69426e1a28e56538638",
+    "packages/analysis/src/approval.ts": "0ba42be9b8e3179ed2ea010e34d23ad476206d95c087bf93dac715a4b05a2b62",
     "packages/analysis/src/config.ts": "52d5212f4057df9ed5caac0a0025ce744864909abceea3c64d259479ddffb998",
     "tests/approval-domain-scoping.test.ts": "130399e4bb168e0f15d7385b9704e7b0fb9a1f7d59f862204ffbcb67354c6043",
     "tests/approval.test.ts": "6e0e909eff23c37a6a3b7bfdb0bf495bcca3084d1b44c852d1eeb902bb3d44ca"

@@ -1,5 +1,31 @@
 # Changelog
 
+## Unreleased
+
+- Add `--fast-reapprove --own-files <path...>` to
+  `approval record <requirements|design|release>`: once the reviewer has
+  manually confirmed that a rebase-only merge only shifted the content hash
+  of files outside the `--own-files` paths they explicitly list, this
+  re-records an otherwise-stale approval against the current manifest hash
+  without a fresh full human re-review, as long as (1) a prior approval by
+  the same approver exists, (2) every *listed* own file is present in and
+  unchanged across both the prior and current manifest, and (3) every other
+  existing precondition for that stage (structural validation, prior
+  `requirements`/`design` approval, full-hash binding, gate/quality blockers
+  for `release`) still passes unchanged. Any listed own file that was itself
+  added, removed, or modified, or any `--own-files` path unknown to both
+  manifests, is rejected by name without writing evidence; `--own-files`
+  without `--fast-reapprove` is also rejected. The system only verifies the
+  paths the reviewer names — it cannot detect an own file the reviewer
+  forgot to list, so completeness of the `--own-files` set remains the
+  reviewer's responsibility, exactly as the equivalent manual re-review
+  already relied on reviewer diligence. The written evidence carries the
+  same `artifactSha256`/`artifacts` a non-fast approval would have written,
+  plus `fastReapproval: true` and `priorArtifactSha256` for audit
+  traceability. This reduces the full-manifest re-approval friction that
+  parallel in-flight changes previously incurred on every intervening
+  rebase (CHANGE-0053, #71).
+
 ## 0.1.21 - 2026-10-07
 
 - Remove the development-only `sprintf-js` advisory chain using the single

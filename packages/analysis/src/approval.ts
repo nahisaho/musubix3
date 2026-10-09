@@ -32,6 +32,13 @@ export interface ApprovalEvidence extends ApprovalManifest {
   schemaVersion: 1;
   approver: string;
   approvedAt: string;
+  /** @id CODE-APPROVAL-REBASE-FAST-REAPPROVAL-005
+   * @implements REQ-APPROVAL-REBASE-FAST-REAPPROVAL-006
+   * Marks evidence recorded via `recordFastReapproval`, carrying the prior
+   * approval's own manifest hash for audit traceability.
+   */
+  fastReapproval?: true;
+  priorArtifactSha256?: string;
 }
 
 export interface ApprovalStageValidation {
@@ -396,7 +403,12 @@ export async function loadApproval(root: string, stage: ApprovalStage, domain?: 
     || !value.artifacts || typeof value.artifacts !== 'object' || Array.isArray(value.artifacts)
     || Object.entries(value.artifacts).some(([path, sha256]) => !path || path.startsWith('/')
       || path.includes('\0') || typeof sha256 !== 'string' || !/^[a-f0-9]{64}$/.test(sha256))
-    || (domain !== undefined && (value.domain !== domain || !Array.isArray(value.features) || value.features.some((f) => typeof f !== 'string')))) {
+    || (domain !== undefined && (value.domain !== domain || !Array.isArray(value.features) || value.features.some((f) => typeof f !== 'string')))
+    // REQ-APPROVAL-REBASE-FAST-REAPPROVAL-006: `fastReapproval`/`priorArtifactSha256`
+    // are an all-or-nothing optional pair: both present-and-well-formed, or both absent.
+    || ('fastReapproval' in value) !== ('priorArtifactSha256' in value)
+    || ('fastReapproval' in value && (value.fastReapproval !== true
+      || typeof value.priorArtifactSha256 !== 'string' || !/^[a-f0-9]{64}$/.test(value.priorArtifactSha256)))) {
     throw new Error(`Invalid ${stage} approval evidence.`);
   }
     return value as ApprovalEvidence;
@@ -419,6 +431,40 @@ export function artifactDrift(
       return [{ path, change, approvedSha256, currentSha256 }];
     });
   }
+
+/** @id CODE-APPROVAL-REBASE-FAST-REAPPROVAL-001
+ * @implements REQ-APPROVAL-REBASE-FAST-REAPPROVAL-002 REQ-APPROVAL-REBASE-FAST-REAPPROVAL-004
+ * @design DES-APPROVAL-REBASE-FAST-REAPPROVAL-001
+ */
+export type FastReapprovalEligibility =
+  | { eligible: false; reason: 'no-own-files' }
+  | { eligible: false; reason: 'unknown-own-files'; paths: string[] }
+  | { eligible: false; reason: 'own-files-changed'; changes: ReleaseApprovalDrift[] }
+  | { eligible: true; outsideChanged: ReleaseApprovalDrift[] };
+
+// `ReleaseApprovalDrift.change`'s existing 'deleted' value is rendered as the
+// user-facing word "removed" only by the caller's error-message construction
+// (DES-APPROVAL-REBASE-FAST-REAPPROVAL-002); this function never renames it.
+export function fastReapprovalEligibility(
+  previous: ApprovalEvidence,
+  current: Pick<ApprovalManifest, 'artifacts'>,
+  ownFiles: string[],
+): FastReapprovalEligibility {
+  // Checked before calling artifactDrift: an empty ownFiles set would otherwise
+  // vacuously classify everything as "outside", which REQ-004 forbids.
+  if (!ownFiles.length) return { eligible: false, reason: 'no-own-files' };
+  const knownPaths = new Set([...Object.keys(previous.artifacts), ...Object.keys(current.artifacts)]);
+  // Checked before own/outside classification so an unrecognized path is never
+  // silently folded into "outside changed".
+  const unknownOwnFiles = ownFiles.filter((path) => !knownPaths.has(path));
+  if (unknownOwnFiles.length) return { eligible: false, reason: 'unknown-own-files', paths: unknownOwnFiles };
+  const ownFileSet = new Set(ownFiles);
+  const drift = artifactDrift(previous.artifacts, current.artifacts);
+  const ownChanged = drift.filter((entry) => ownFileSet.has(entry.path));
+  if (ownChanged.length) return { eligible: false, reason: 'own-files-changed', changes: ownChanged };
+  const outsideChanged = drift.filter((entry) => !ownFileSet.has(entry.path));
+  return { eligible: true, outsideChanged };
+}
 
 export type DiffOnlyBaseline = 'approved' | 'none';
 
