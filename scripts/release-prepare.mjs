@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { firstPackEntry } from './pack-json.mjs';
 import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
@@ -95,9 +96,9 @@ export async function prepareRelease(tag, outputDirectory, directory = root, dep
   rmSync(output, { recursive: true, force: true });
   mkdirSync(output, { recursive: true });
 
-  const pack = JSON.parse(execute(npm, packArgs, {
+  const pack = firstPackEntry(execute(npm, packArgs, {
     cwd: directory, encoding: 'utf8',
-  }))[0];
+  }));
   const tarball = resolve(output, basename(pack.filename));
   const sbom = execute(npmForSbom, sbomArgs, {
     cwd: directory,

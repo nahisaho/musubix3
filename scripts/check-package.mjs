@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { firstPackEntry } from './pack-json.mjs';
 import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
@@ -21,9 +22,9 @@ export function checkPackage(directory = root) {
 
   const npmCli = process.env.npm_execpath;
   assert(npmCli, 'Run this check through npm so npm_execpath is available.');
-  const pack = JSON.parse(execFileSync(process.execPath, [
+  const pack = firstPackEntry(execFileSync(process.execPath, [
     npmCli, 'pack', '--dry-run', '--json', '--ignore-scripts',
-  ], { cwd: directory, encoding: 'utf8' }))[0];
+  ], { cwd: directory, encoding: 'utf8' }));
   const files = new Set(pack.files.map((file) => file.path));
   const manifest = JSON.parse(readFileSync(resolve(directory, 'plugin.json'), 'utf8'));
   const marketplace = JSON.parse(readFileSync(resolve(directory, '.github/plugin/marketplace.json'), 'utf8'));
