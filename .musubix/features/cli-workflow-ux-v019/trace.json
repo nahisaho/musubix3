@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-09T09:19:53.672Z",
+  "generatedAt": "2026-10-09T10:48:47.511Z",
   "nodes": [
     {
       "id": "ADR-0006",
@@ -458,7 +458,7 @@
     "packages/analysis/src/config.ts": "52d5212f4057df9ed5caac0a0025ce744864909abceea3c64d259479ddffb998",
     "packages/analysis/src/files.ts": "1d72849db35bf2f0ba2f5ad713ff37d01f3eb299ee59e844483977cdd09c18c4",
     "packages/analysis/src/gate.ts": "f0da290dbd9a263be82c8df685988607f952e544e2d518a582bc2f9202fdcccb",
-    "packages/cli/src/main.ts": "4320d07380e38334a683284ed5796b35f168d14ec718e6e661583619fbeea4d8",
+    "packages/cli/src/main.ts": "a5e64e70e187c11c3a626ff13afffa504e4a7bbab14929d2cfe8f58d149342c1",
     "tests/cli-workflow-ux.test.ts": "53bdc5375bef05b365d725f5a8948393d68ae8cd1116fad8ff36ca3de127a177",
     "tests/command-working-directory.test.ts": "82dc863b1fcc5cd8a5ea1534238ef2f61f15e5d6c5e25d61fce43a7efe9bbc02"
   }

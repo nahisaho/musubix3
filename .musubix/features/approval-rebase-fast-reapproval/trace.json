@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-09T09:19:53.672Z",
+  "generatedAt": "2026-10-09T10:48:47.511Z",
   "nodes": [
     {
       "id": "ADR-0045",
@@ -478,7 +478,7 @@
     ".musubix/features/approval-rebase-fast-reapproval/requirements.md": "5649399a4998117c2ce862580ebf3f92a3bd8064c8245f1c46e7786007585d18",
     "packages/analysis/src/approval-record.ts": "804c2d5f0788a6e474667ec5bd05ad7462471271b1a9b69426e1a28e56538638",
     "packages/analysis/src/approval.ts": "0ba42be9b8e3179ed2ea010e34d23ad476206d95c087bf93dac715a4b05a2b62",
-    "packages/cli/src/main.ts": "4320d07380e38334a683284ed5796b35f168d14ec718e6e661583619fbeea4d8",
+    "packages/cli/src/main.ts": "a5e64e70e187c11c3a626ff13afffa504e4a7bbab14929d2cfe8f58d149342c1",
     "tests/approval-rebase-fast-reapproval.test.ts": "e300078f580d37e08ee772308bdc95fdde070445474353b4621ee7355d6e51b7"
   }
 }

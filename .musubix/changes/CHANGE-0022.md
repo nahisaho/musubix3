@@ -89,9 +89,9 @@ change's historical verification rather than claiming a new release approval.
   with Node.js floor `^20.19.0 || >=22.12.0`.
 - Audit command: `npm run audit:report` (`npm audit --json`).
 
-- Audit captured at: 2026-10-07T18:14:54Z.
+- Audit captured at: 2026-10-09T10:44:43Z.
 - Audited package-lock SHA-256:
-  `e248b4a3ac1fecf1560ee2bb9c60ade9287645e114a4b3ec1b7fafac16cab13a`.
+  `86bde77ee355b5e91db5ece80a43a1b76e4b2d2d4b76d704a624706578d3bf0f`.
 - Audit result: info 0, low 0, moderate 0, high 0, critical 0, total 0;
   GHSA-82fw-gwwq-j7x9 findings: 0; moderate-or-higher findings: 0.
 - Follow-up remediation: CHANGE-0052.
@@ -100,8 +100,8 @@ change's historical verification rather than claiming a new release approval.
   removes sprintf-js; non-breaking brace-expansion/source-map-js updates
   also remediate the newly reported high findings. CHANGE-0052 records
   the actual dependency paths, compatibility checks, and retained full audit JSON.
-  This hash reflects the 0.1.21 version-synchronized lockfile regenerated via
-  `npm install` after CHANGE-0052 merged; the audit result is unchanged
+  This hash reflects the 0.1.22 version-synchronized lockfile regenerated via
+  `npm ci` after CHANGE-0053 merged; the audit result is unchanged
   (zero findings), confirming the override's remediation is version-bump
   independent.
 - All four authoritative tests completed verified Red/Green cycles. Corrective

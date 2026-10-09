@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.1.22 - 2026-10-09
 
 - Add `--fast-reapprove --own-files <path...>` to
   `approval record <requirements|design|release>`: once the reviewer has

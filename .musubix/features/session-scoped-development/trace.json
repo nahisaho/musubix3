@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-07T18:21:01.296Z",
+  "generatedAt": "2026-10-09T10:48:47.511Z",
   "nodes": [
     {
       "id": "ADR-0003",
@@ -165,6 +165,6 @@
     ".musubix/features/session-scoped-development/design.md": "66a65a3fdc1747569f42b42798a88377ae2ff93e32ff2cc5e0bae5c62c2e9a42",
     ".musubix/features/session-scoped-development/requirements.md": "640aece168b4e6848c0d1e6371f0bfeb433fa8addfd064a77d050891d69d9a4f",
     "packages/analysis/src/trace.ts": "aaa937522921837e72ee2cb7423662b4e890663b002d28e18c6a37368ee5de21",
-    "tests/cli-package.test.ts": "0ccf113ba206d67f0b298a6011bb0bd10b80fd3c1d12050dc88062ebcbd4c548"
+    "tests/cli-package.test.ts": "b7bf7f47110f35c7e7bdd927ea088e2082dafa22d5ca4bb3b18760deb88f53a1"
   }
 }
