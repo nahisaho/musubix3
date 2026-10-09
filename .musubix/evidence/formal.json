@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-07T19:01:02.800Z",
-  "totalRequirements": 229,
+  "generatedAt": "2026-10-09T10:10:16.385Z",
+  "totalRequirements": 236,
   "modeledRequirements": 13,
-  "modeledFraction": 0.056768558951965066,
+  "modeledFraction": 0.05508474576271186,
   "result": {
     "valid": true,
     "abstraction": "Consistency of explicit branch-scoped conditional, exact unit-normalized integer numeric, bounded temporal interval, deterministic state-transition, and controlled unconditional Boolean constraints; not implementation correctness.",
@@ -117,6 +117,13 @@
       "REQ-APPROVAL-PREPARE-DIFF-ONLY-005",
       "REQ-APPROVAL-PREPARE-DIFF-ONLY-006",
       "REQ-APPROVAL-PREPARE-DIFF-ONLY-007",
+      "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-001",
+      "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-002",
+      "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-003",
+      "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-004",
+      "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-005",
+      "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-006",
+      "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-007",
       "REQ-ATTESTATION-EVIDENCE-STABILITY-001",
       "REQ-ATTESTATION-EVIDENCE-STABILITY-002",
       "REQ-ATTESTATION-EVIDENCE-STABILITY-003",
@@ -466,6 +473,41 @@
         "code": "FORMAL_UNSUPPORTED",
         "severity": "warning",
         "message": "REQ-APPROVAL-PREPARE-DIFF-ONLY-007 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-001 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-002 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-003 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-004 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-005 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-006 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
+      },
+      {
+        "code": "FORMAL_UNSUPPORTED",
+        "severity": "warning",
+        "message": "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-007 is outside the unconditional English/Japanese Boolean abstraction; it was not checked for consistency."
       },
       {
         "code": "FORMAL_UNSUPPORTED",
@@ -1398,6 +1440,7 @@
     ".musubix/features/adapter-pattern-recognition/requirements.md": "5731561a0a04982b8a5c305bdeeae6084bcf0ee8846f295eaaaabc823d1f9793",
     ".musubix/features/approval-domain-scoping/requirements.md": "c886926622fe022052c81b1ea4e76f21c04f42636f4a37d074f7d34c0505210f",
     ".musubix/features/approval-prepare-diff-only/requirements.md": "a6cc071b830412abe2ac5f401b93a66265e11a4f3a1a546c7fac2c0d0466dbe0",
+    ".musubix/features/approval-rebase-fast-reapproval/requirements.md": "5649399a4998117c2ce862580ebf3f92a3bd8064c8245f1c46e7786007585d18",
     ".musubix/features/attestation-evidence-stability/requirements.md": "36661538d67523f444f537dbc8466ac4919dd20650fcdd78c2ae3d4a402039a5",
     ".musubix/features/audit-override-contract/requirements.md": "77a9fdb5b7bd3b9e225c4f20bbc12d8759e8eb9756dcff34a21956f571021a26",
     ".musubix/features/bounded-file-read-concurrency/requirements.md": "9e08acde7e29a8f14b23d908c465c629e49d00bc29ae9bda1466427362c815be",

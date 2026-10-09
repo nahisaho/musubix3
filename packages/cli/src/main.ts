@@ -16,7 +16,8 @@ import {
   recoverQualityRefresh,
   attestationSigningPayload, createUnsignedAttestation, githubOidcAudience, verifyEvidenceAttestation,
   mutationDoctor, mutationIdentity, validateMutationEvidence, validateModelCorrespondenceEvidence, within,
-  approvalManifest, approvalStages, diffOnlyChangedFiles, loadApproval, recordApproval, requireApproval,   requireDomainOption, requireValidateDomainOption, resolveDesignFileDomain, resolveNamedDomain,
+  approvalManifest, approvalStages, diffOnlyChangedFiles, loadApproval, recordApproval, recordFastReapproval,
+  requireApproval, requireDomainOption, requireValidateDomainOption, resolveDesignFileDomain, resolveNamedDomain,
   validateApprovals, validateApprovalsForDomain, type ApprovalStage,
   scaffoldCommands, scaffoldRequirements, scaffoldDesign,
   recordChangeWaiver, recordWorkflowWaiver, recordAllWorkflowWaivers,
@@ -685,22 +686,36 @@ source, quarantining merge files, and rerunning structural validation.`))
       const diffSummary = `${stage} artifact manifest: ${manifest.artifactSha256}\n(diff-only: ${baselineNote})\n${changed.join('\n')}`;
       output(withDiff, !!options.json, diffSummary);
     });
+  /** @id CODE-APPROVAL-REBASE-FAST-REAPPROVAL-004
+   * @implements REQ-APPROVAL-REBASE-FAST-REAPPROVAL-001 REQ-APPROVAL-REBASE-FAST-REAPPROVAL-006
+   * @design DES-APPROVAL-REBASE-FAST-REAPPROVAL-003
+   */
   common(approval.command('record <stage>'))
     .requiredOption('--approver <name>', 'Human approver name')
     .requiredOption('--artifact-sha256 <hash>', 'Exact manifest SHA-256 shown to and approved by the human')
     .requiredOption('--confirm', 'Explicitly confirm this human approval')
     .option('--domain <name>', 'Approval domain (required when approval.domains is configured, except for release)')
+    .option('--fast-reapprove', 'Re-record the original approver\'s prior decision without re-reviewing files listed in --own-files, which must be unchanged since that prior approval')
+    .option('--own-files <path...>', 'Paths this change owns; required with --fast-reapprove')
     .action(async (stage: string, options: {
       root: string; json?: boolean; approver: string; artifactSha256: string; confirm: boolean; domain?: string;
+      fastReapprove?: boolean; ownFiles?: string[];
     }) => {
       if (!approvalStages.includes(stage as ApprovalStage)) {
         throw new Error(`stage must be one of: ${approvalStages.join(', ')}`);
       }
       if (options.confirm !== true) throw new Error('--confirm is required to record human approval.');
+      if (options.ownFiles !== undefined && !options.fastReapprove) {
+        throw new Error('--own-files requires --fast-reapprove.');
+      }
       const root = resolve(options.root);
       await withEvidenceWriterLock(root, 'approval record', async () => {
         const config = await loadConfig(root);
-        const evidence = await recordApproval(root, stage as ApprovalStage, options.approver, options.artifactSha256, config.approval, options.domain);
+        const evidence = options.fastReapprove
+          ? await recordFastReapproval(
+            root, stage as ApprovalStage, options.approver, options.artifactSha256, options.ownFiles ?? [],
+            config.approval, options.domain)
+          : await recordApproval(root, stage as ApprovalStage, options.approver, options.artifactSha256, config.approval, options.domain);
         output(evidence, !!options.json, `Recorded explicit ${stage} approval by ${evidence.approver} for ${evidence.artifactSha256}.`);
       });
     });

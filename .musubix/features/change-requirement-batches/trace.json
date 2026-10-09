@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-07T18:21:01.296Z",
+  "generatedAt": "2026-10-09T09:00:59.500Z",
   "nodes": [
     {
       "id": "ADR-0011",
@@ -24,7 +24,7 @@
       "id": "CODE-CHANGE-RECORD-FAIL-FAST-002",
       "kind": "code",
       "path": "packages/cli/src/main.ts",
-      "line": 615
+      "line": 616
     },
     {
       "id": "CODE-CHANGE-RECORD-FAIL-FAST-003",
@@ -712,7 +712,7 @@
     "packages/analysis/src/change-evidence.ts": "cd31da952e1501376b89e93dfe38ab6f81276ae7e42b1c30748a0d68a238fa2d",
     "packages/analysis/src/change.ts": "1bda1e7ba06f9792df067526b6393a4491fb0ca9dc6a7a88903650669c751092",
     "packages/analysis/src/tdd.ts": "3bafdb9456be59049ffd2c9ccc17140d0fe0201eb88a867f3a1cb05adde0a9b9",
-    "packages/cli/src/main.ts": "73ff89c11b1f9ff84f9f1efd11829b2867c5ae14aae950438fbd046d7aefded7",
+    "packages/cli/src/main.ts": "4320d07380e38334a683284ed5796b35f168d14ec718e6e661583619fbeea4d8",
     "tests/change-record-fail-fast.test.ts": "2f69f19332049c206f39b42c3bc2b505ce63173db798d74c5a9ace7064cdfe78",
     "tests/change-requirement-batches.test.ts": "148760fcb46533b576d4a8263da9d67724cde01774b47167b3f23660fab757cb"
   }

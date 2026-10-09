@@ -52,6 +52,18 @@
       "timeoutMs": 120000
     },
     {
+      "name": "approval-rebase-fast-reapproval-tests",
+      "command": "npx",
+      "args": [
+        "vitest",
+        "run",
+        "tests/approval-rebase-fast-reapproval.test.ts"
+      ],
+      "adapter": "vitest",
+      "required": true,
+      "timeoutMs": 120000
+    },
+    {
       "name": "typecheck",
       "command": "npm",
       "args": [

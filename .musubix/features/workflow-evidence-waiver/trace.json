@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-07T18:21:01.296Z",
+  "generatedAt": "2026-10-09T09:00:59.500Z",
   "nodes": [
     {
       "id": "ADR-0025",
@@ -312,7 +312,7 @@
       "id": "CODE-WORKFLOW-EVIDENCE-WAIVER-023",
       "kind": "code",
       "path": "packages/cli/src/main.ts",
-      "line": 473
+      "line": 474
     },
     {
       "id": "CODE-WORKFLOW-EVIDENCE-WAIVER-024",
@@ -336,7 +336,7 @@
       "id": "CODE-WORKFLOW-WAIVER-BULK-002",
       "kind": "code",
       "path": "packages/cli/src/main.ts",
-      "line": 509
+      "line": 510
     },
     {
       "id": "DES-CHANGE-EVIDENCE-WAIVER-001",
@@ -2973,7 +2973,7 @@
     "packages/analysis/src/order.ts": "38c131b3d84b08d8c58d37d82cc70fbb12fa24392c8505e4020a01a660ac8701",
     "packages/analysis/src/workflow-waiver.ts": "2c6b982bcdd99e33951ad47bd7e060a8cf4868b7caa48a7bb9fa896092eed123",
     "packages/analysis/src/workflow.ts": "37c332cdcd7f5bae240a192c10e8e39bdeb28233cf3c30b535516f521ef4d661",
-    "packages/cli/src/main.ts": "73ff89c11b1f9ff84f9f1efd11829b2867c5ae14aae950438fbd046d7aefded7",
+    "packages/cli/src/main.ts": "4320d07380e38334a683284ed5796b35f168d14ec718e6e661583619fbeea4d8",
     "packages/domain/src/types.ts": "b61d810e4beb76343d85f8fb0e3f165d1e6d8eaede39e4caef3ee270f68a455a",
     "scripts/check-package.mjs": "49239593648d027069f38fb06c328128af476aaf4c99201b660bf715e0b4e664",
     "tests/change-evidence-waiver.test.ts": "79f8209b9e6392daecea89fb3ab25d35c4792d8ccf15308d3ae1d38f83db83cb",

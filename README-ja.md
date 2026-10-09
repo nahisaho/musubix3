@@ -340,7 +340,7 @@ npx musubix3 tdd green TEST-EXAMPLE-002 --requirement REQ-EXAMPLE-002 --command 
 | `design validate <file>` | 必須項目・要求ID・既存ADRの参照検査 |
 | `design c4 <file>` | 明示的なコンポーネントと依存から Mermaid 図 |
 | `approval prepare <requirements\|design\|release> [--diff-only]` | 人間が確認する決定的manifestとhashを表示。`--diff-only`はそのステージの直近の記録済み承認からハッシュが変化したファイルパスのみを`changedFiles`として追加表示（未承認なら`diffOnlyBaseline: "none"`で現在の全ファイルを表示）。`artifactSha256`/`artifacts`自体は変化しない |
-| `approval record <stage> --approver <name> --artifact-sha256 <hash> --confirm` | 確認済みhashが現在も一致するときだけ承認を記録 |
+| `approval record <stage> --approver <name> --artifact-sha256 <hash> --confirm [--fast-reapprove --own-files <path...>]` | 確認済みhashが現在も一致するときだけ承認を記録。`--fast-reapprove --own-files <path...>` は、リベースにより `--own-files` で指定したパス以外にしかドリフトが生じていないことをレビュアーが手動で確認済みであることを前提に、陳腐化した承認を再記録する。同一承認者による事前承認を必須とし、*指定した* own file 自体が変化している場合、指定パスが事前・現在どちらのmanifestにも存在しない場合、own-filesが空の場合は該当パスを示してrejectする。`--fast-reapprove`なしの`--own-files`はrejectされる。システムが検証できるのはレビュアーが指定したパスのみであり、指定し忘れたown fileの変更は検知できない — own-filesの網羅性についてはレビュアー自身が引き続き責任を負う |
 | `approval validate` | 各承認をapproved・missing・staleとして表示し、検証結果から承認を推測しない |
 | `trace build` | リポジトリ全体のグラフと機能別コピーを生成 |
 | `trace check [--strict]` | 未解決ID、陳腐化、必須要求の網羅性 |

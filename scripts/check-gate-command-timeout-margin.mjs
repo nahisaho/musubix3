@@ -57,8 +57,8 @@ const EXPECTED_REQUIRED_COMMANDS = [
   'npm-audit-remediation-tests',
   'release-asset-publishing-tests',
   'scoped-feature-trace-artifacts-tests',
+  'approval-rebase-fast-reapproval-tests',
 ];
-
 function diagnostic(message, path) {
   return { code: 'GATE_COMMAND_TIMEOUT_MARGIN', message, path };
 }

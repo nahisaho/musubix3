@@ -1,0 +1,484 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-10-09T09:19:53.672Z",
+  "nodes": [
+    {
+      "id": "ADR-0045",
+      "kind": "adr",
+      "path": ".musubix/decisions/ADR-0045.md",
+      "line": 1
+    },
+    {
+      "id": "CODE-APPROVAL-REBASE-FAST-REAPPROVAL-001",
+      "kind": "code",
+      "path": "packages/analysis/src/approval.ts",
+      "line": 435
+    },
+    {
+      "id": "CODE-APPROVAL-REBASE-FAST-REAPPROVAL-002",
+      "kind": "code",
+      "path": "packages/analysis/src/approval-record.ts",
+      "line": 32
+    },
+    {
+      "id": "CODE-APPROVAL-REBASE-FAST-REAPPROVAL-003",
+      "kind": "code",
+      "path": "packages/analysis/src/approval-record.ts",
+      "line": 105
+    },
+    {
+      "id": "CODE-APPROVAL-REBASE-FAST-REAPPROVAL-004",
+      "kind": "code",
+      "path": "packages/cli/src/main.ts",
+      "line": 689
+    },
+    {
+      "id": "CODE-APPROVAL-REBASE-FAST-REAPPROVAL-005",
+      "kind": "code",
+      "path": "packages/analysis/src/approval.ts",
+      "line": 35
+    },
+    {
+      "id": "DES-APPROVAL-REBASE-FAST-REAPPROVAL-001",
+      "kind": "design",
+      "path": ".musubix/features/approval-rebase-fast-reapproval/design.md",
+      "line": 7
+    },
+    {
+      "id": "DES-APPROVAL-REBASE-FAST-REAPPROVAL-002",
+      "kind": "design",
+      "path": ".musubix/features/approval-rebase-fast-reapproval/design.md",
+      "line": 24
+    },
+    {
+      "id": "DES-APPROVAL-REBASE-FAST-REAPPROVAL-003",
+      "kind": "design",
+      "path": ".musubix/features/approval-rebase-fast-reapproval/design.md",
+      "line": 34
+    },
+    {
+      "id": "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-001",
+      "kind": "requirement",
+      "path": ".musubix/features/approval-rebase-fast-reapproval/requirements.md",
+      "line": 7,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-002",
+      "kind": "requirement",
+      "path": ".musubix/features/approval-rebase-fast-reapproval/requirements.md",
+      "line": 14,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-003",
+      "kind": "requirement",
+      "path": ".musubix/features/approval-rebase-fast-reapproval/requirements.md",
+      "line": 21,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-004",
+      "kind": "requirement",
+      "path": ".musubix/features/approval-rebase-fast-reapproval/requirements.md",
+      "line": 28,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-005",
+      "kind": "requirement",
+      "path": ".musubix/features/approval-rebase-fast-reapproval/requirements.md",
+      "line": 35,
+      "mandatory": true
+    },
+    {
+      "id": "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-006",
+      "kind": "requirement",
+      "path": ".musubix/features/approval-rebase-fast-reapproval/requirements.md",
+      "line": 42,
+      "mandatory": false
+    },
+    {
+      "id": "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-007",
+      "kind": "requirement",
+      "path": ".musubix/features/approval-rebase-fast-reapproval/requirements.md",
+      "line": 49,
+      "mandatory": true
+    },
+    {
+      "id": "TEST-APPROVAL-REBASE-FAST-REAPPROVAL-001",
+      "kind": "test",
+      "path": "tests/approval-rebase-fast-reapproval.test.ts",
+      "line": 45
+    },
+    {
+      "id": "TEST-APPROVAL-REBASE-FAST-REAPPROVAL-002",
+      "kind": "test",
+      "path": "tests/approval-rebase-fast-reapproval.test.ts",
+      "line": 59
+    },
+    {
+      "id": "TEST-APPROVAL-REBASE-FAST-REAPPROVAL-003",
+      "kind": "test",
+      "path": "tests/approval-rebase-fast-reapproval.test.ts",
+      "line": 70
+    },
+    {
+      "id": "TEST-APPROVAL-REBASE-FAST-REAPPROVAL-004",
+      "kind": "test",
+      "path": "tests/approval-rebase-fast-reapproval.test.ts",
+      "line": 84
+    },
+    {
+      "id": "TEST-APPROVAL-REBASE-FAST-REAPPROVAL-005",
+      "kind": "test",
+      "path": "tests/approval-rebase-fast-reapproval.test.ts",
+      "line": 98
+    },
+    {
+      "id": "TEST-APPROVAL-REBASE-FAST-REAPPROVAL-006",
+      "kind": "test",
+      "path": "tests/approval-rebase-fast-reapproval.test.ts",
+      "line": 112
+    },
+    {
+      "id": "TEST-APPROVAL-REBASE-FAST-REAPPROVAL-007",
+      "kind": "test",
+      "path": "tests/approval-rebase-fast-reapproval.test.ts",
+      "line": 124
+    },
+    {
+      "id": "TEST-APPROVAL-REBASE-FAST-REAPPROVAL-008",
+      "kind": "test",
+      "path": "tests/approval-rebase-fast-reapproval.test.ts",
+      "line": 137
+    },
+    {
+      "id": "TEST-APPROVAL-REBASE-FAST-REAPPROVAL-009",
+      "kind": "test",
+      "path": "tests/approval-rebase-fast-reapproval.test.ts",
+      "line": 151
+    },
+    {
+      "id": "TEST-APPROVAL-REBASE-FAST-REAPPROVAL-010",
+      "kind": "test",
+      "path": "tests/approval-rebase-fast-reapproval.test.ts",
+      "line": 160
+    },
+    {
+      "id": "TEST-APPROVAL-REBASE-FAST-REAPPROVAL-011",
+      "kind": "test",
+      "path": "tests/approval-rebase-fast-reapproval.test.ts",
+      "line": 171
+    },
+    {
+      "id": "TEST-APPROVAL-REBASE-FAST-REAPPROVAL-012",
+      "kind": "test",
+      "path": "tests/approval-rebase-fast-reapproval.test.ts",
+      "line": 181
+    },
+    {
+      "id": "TEST-APPROVAL-REBASE-FAST-REAPPROVAL-013",
+      "kind": "test",
+      "path": "tests/approval-rebase-fast-reapproval.test.ts",
+      "line": 192
+    },
+    {
+      "id": "TEST-APPROVAL-REBASE-FAST-REAPPROVAL-014",
+      "kind": "test",
+      "path": "tests/approval-rebase-fast-reapproval.test.ts",
+      "line": 205
+    },
+    {
+      "id": "TEST-APPROVAL-REBASE-FAST-REAPPROVAL-015",
+      "kind": "test",
+      "path": "tests/approval-rebase-fast-reapproval.test.ts",
+      "line": 220
+    },
+    {
+      "id": "TEST-APPROVAL-REBASE-FAST-REAPPROVAL-016",
+      "kind": "test",
+      "path": "tests/approval-rebase-fast-reapproval.test.ts",
+      "line": 232
+    },
+    {
+      "id": "TEST-APPROVAL-REBASE-FAST-REAPPROVAL-017",
+      "kind": "test",
+      "path": "tests/approval-rebase-fast-reapproval.test.ts",
+      "line": 299
+    },
+    {
+      "id": "TEST-APPROVAL-REBASE-FAST-REAPPROVAL-018",
+      "kind": "test",
+      "path": "tests/approval-rebase-fast-reapproval.test.ts",
+      "line": 324
+    }
+  ],
+  "edges": [
+    {
+      "from": "ADR-0045",
+      "to": "DES-APPROVAL-REBASE-FAST-REAPPROVAL-001",
+      "relation": "decides"
+    },
+    {
+      "from": "ADR-0045",
+      "to": "DES-APPROVAL-REBASE-FAST-REAPPROVAL-002",
+      "relation": "decides"
+    },
+    {
+      "from": "ADR-0045",
+      "to": "DES-APPROVAL-REBASE-FAST-REAPPROVAL-003",
+      "relation": "decides"
+    },
+    {
+      "from": "CODE-APPROVAL-REBASE-FAST-REAPPROVAL-001",
+      "to": "DES-APPROVAL-REBASE-FAST-REAPPROVAL-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-REBASE-FAST-REAPPROVAL-001",
+      "to": "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-REBASE-FAST-REAPPROVAL-001",
+      "to": "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-REBASE-FAST-REAPPROVAL-002",
+      "to": "DES-APPROVAL-REBASE-FAST-REAPPROVAL-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-REBASE-FAST-REAPPROVAL-002",
+      "to": "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-007",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-REBASE-FAST-REAPPROVAL-003",
+      "to": "DES-APPROVAL-REBASE-FAST-REAPPROVAL-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-REBASE-FAST-REAPPROVAL-003",
+      "to": "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-REBASE-FAST-REAPPROVAL-003",
+      "to": "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-002",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-REBASE-FAST-REAPPROVAL-003",
+      "to": "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-REBASE-FAST-REAPPROVAL-003",
+      "to": "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-004",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-REBASE-FAST-REAPPROVAL-003",
+      "to": "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-005",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-REBASE-FAST-REAPPROVAL-003",
+      "to": "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-006",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-REBASE-FAST-REAPPROVAL-003",
+      "to": "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-007",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-REBASE-FAST-REAPPROVAL-004",
+      "to": "DES-APPROVAL-REBASE-FAST-REAPPROVAL-003",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-REBASE-FAST-REAPPROVAL-004",
+      "to": "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-001",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-REBASE-FAST-REAPPROVAL-004",
+      "to": "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-006",
+      "relation": "implements"
+    },
+    {
+      "from": "CODE-APPROVAL-REBASE-FAST-REAPPROVAL-005",
+      "to": "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-006",
+      "relation": "implements"
+    },
+    {
+      "from": "DES-APPROVAL-REBASE-FAST-REAPPROVAL-001",
+      "to": "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-002",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-APPROVAL-REBASE-FAST-REAPPROVAL-001",
+      "to": "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-004",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-APPROVAL-REBASE-FAST-REAPPROVAL-002",
+      "to": "DES-APPROVAL-REBASE-FAST-REAPPROVAL-001",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-APPROVAL-REBASE-FAST-REAPPROVAL-002",
+      "to": "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-APPROVAL-REBASE-FAST-REAPPROVAL-002",
+      "to": "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-002",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-APPROVAL-REBASE-FAST-REAPPROVAL-002",
+      "to": "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-003",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-APPROVAL-REBASE-FAST-REAPPROVAL-002",
+      "to": "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-004",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-APPROVAL-REBASE-FAST-REAPPROVAL-002",
+      "to": "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-005",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-APPROVAL-REBASE-FAST-REAPPROVAL-002",
+      "to": "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-006",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-APPROVAL-REBASE-FAST-REAPPROVAL-002",
+      "to": "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-007",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-APPROVAL-REBASE-FAST-REAPPROVAL-003",
+      "to": "DES-APPROVAL-REBASE-FAST-REAPPROVAL-002",
+      "relation": "depends-on"
+    },
+    {
+      "from": "DES-APPROVAL-REBASE-FAST-REAPPROVAL-003",
+      "to": "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-001",
+      "relation": "satisfies"
+    },
+    {
+      "from": "DES-APPROVAL-REBASE-FAST-REAPPROVAL-003",
+      "to": "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-006",
+      "relation": "satisfies"
+    },
+    {
+      "from": "TEST-APPROVAL-REBASE-FAST-REAPPROVAL-001",
+      "to": "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-002",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-APPROVAL-REBASE-FAST-REAPPROVAL-002",
+      "to": "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-004",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-APPROVAL-REBASE-FAST-REAPPROVAL-003",
+      "to": "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-004",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-APPROVAL-REBASE-FAST-REAPPROVAL-004",
+      "to": "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-APPROVAL-REBASE-FAST-REAPPROVAL-005",
+      "to": "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-002",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-APPROVAL-REBASE-FAST-REAPPROVAL-006",
+      "to": "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-002",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-APPROVAL-REBASE-FAST-REAPPROVAL-007",
+      "to": "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-002",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-APPROVAL-REBASE-FAST-REAPPROVAL-008",
+      "to": "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-003",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-APPROVAL-REBASE-FAST-REAPPROVAL-009",
+      "to": "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-004",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-APPROVAL-REBASE-FAST-REAPPROVAL-010",
+      "to": "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-004",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-APPROVAL-REBASE-FAST-REAPPROVAL-011",
+      "to": "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-004",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-APPROVAL-REBASE-FAST-REAPPROVAL-012",
+      "to": "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-005",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-APPROVAL-REBASE-FAST-REAPPROVAL-013",
+      "to": "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-005",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-APPROVAL-REBASE-FAST-REAPPROVAL-014",
+      "to": "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-006",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-APPROVAL-REBASE-FAST-REAPPROVAL-015",
+      "to": "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-007",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-APPROVAL-REBASE-FAST-REAPPROVAL-016",
+      "to": "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-007",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-APPROVAL-REBASE-FAST-REAPPROVAL-017",
+      "to": "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-001",
+      "relation": "verifies"
+    },
+    {
+      "from": "TEST-APPROVAL-REBASE-FAST-REAPPROVAL-018",
+      "to": "REQ-APPROVAL-REBASE-FAST-REAPPROVAL-001",
+      "relation": "verifies"
+    }
+  ],
+  "diagnostics": [],
+  "fingerprints": {
+    ".musubix/decisions/ADR-0045.md": "e4d6b7c3f868f333ef860ac012608b5923c935eddb3e005dc68af9c510a48a9b",
+    ".musubix/features/approval-rebase-fast-reapproval/design.md": "b95ec2eafe38a271d541fa7c108f62aea3abf837e2a1c61a6eac765573e4db60",
+    ".musubix/features/approval-rebase-fast-reapproval/requirements.md": "5649399a4998117c2ce862580ebf3f92a3bd8064c8245f1c46e7786007585d18",
+    "packages/analysis/src/approval-record.ts": "804c2d5f0788a6e474667ec5bd05ad7462471271b1a9b69426e1a28e56538638",
+    "packages/analysis/src/approval.ts": "0ba42be9b8e3179ed2ea010e34d23ad476206d95c087bf93dac715a4b05a2b62",
+    "packages/cli/src/main.ts": "4320d07380e38334a683284ed5796b35f168d14ec718e6e661583619fbeea4d8",
+    "tests/approval-rebase-fast-reapproval.test.ts": "e300078f580d37e08ee772308bdc95fdde070445474353b4621ee7355d6e51b7"
+  }
+}
